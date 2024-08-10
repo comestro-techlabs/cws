@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 class PublicControlller extends Controller
 {
     public function index(){
-        return view("homepage");
+        return view("public.homepage");
     }
 
     public function logIn(){

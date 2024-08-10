@@ -5,13 +5,9 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\PublicControlller;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function(){
-    return view('welcome');
+Route::controller(PublicControlller::class)->group(function(){
+    Route::get("/","index")->name('public.index');
 });
-
-// Route::get('/',function(){
-//     return view("public.layout");
-// });
 
 
 // admin Routes  

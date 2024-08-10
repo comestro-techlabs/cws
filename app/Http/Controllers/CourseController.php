@@ -12,7 +12,8 @@ class CourseController extends Controller
      */
     public function index()
     {
-        return view("admin.manageCourse");
+        $data['courses'] = Course::all();
+        return view("admin.manageCourse",$data);
     }
 
     /**
@@ -36,7 +37,7 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
-        //
+        
     }
 
     /**
@@ -44,7 +45,7 @@ class CourseController extends Controller
      */
     public function edit(Course $course)
     {
-        //
+        
     }
 
     /**

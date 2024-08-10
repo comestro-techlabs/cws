@@ -1,7 +1,4 @@
-
-
-<nav class="bg-white border-gray-200 dark:bg-gray-900 shadow-lg">
-    <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl p-4">
+<nav class="flex flex-wrap justify-between items-center mx-auto md:px-[10%] py-3 px-4 bg-red border-gray-200 dark:bg-gray-900 shadow-lg">
         <div class="flex gap-2 items-center">
             <button class="" type="button" data-drawer-target="drawer-navigation" data-drawer-show="drawer-navigation" aria-controls="drawer-navigation">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 text-slate-500">
@@ -17,6 +14,5 @@
             <a href="tel:5541251234" class="text-sm  text-gray-500 dark:text-white hover:underline">(+91) 9546-80-55-80</a>
             <a href="#" class="text-sm  text-blue-600 dark:text-blue-500 hover:underline">Login</a>
         </div>
-    </div>
 </nav>
 
