@@ -13,7 +13,9 @@
             <div class="flex justify-between items-center py-4">
                 <!-- Logo -->
                 <div class="text-2xl font-bold text-gray-800 dark:text-white">
-                    <a href="#">Code with Sadiq</a>
+                    <a href="#">
+                        <img src="{{asset('assets/logosmall.png')}}" alt="">
+                    </a>
                 </div>
 
                 <!-- Primary Navigation -->
