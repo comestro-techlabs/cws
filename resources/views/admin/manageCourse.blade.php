@@ -68,8 +68,8 @@
                                      @endif
                                 </td>
                                 <td class="px-6 py-4">
-                                     @if ($course->image)
-                                         <img src="{{ asset('storage/'.$course->image)}}" width="50" alt="course image">
+                                     @if ($course->course_image)
+                                         <img src="{{ asset('storage/image/'.$course->course_image)}}" width="50" alt="course image">
                                      @else
                                          <img src="{{ asset('storage/default-course.jpg')}}" width="50" alt="course image">
                                      @endif
