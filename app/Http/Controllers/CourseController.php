@@ -28,7 +28,27 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'duration' => 'required',
+            'instructor' => 'required',
+            'fees' => 'required',
+            'discounted_fee' => 'required',
+            'image' => 'required',
+        ]);
+
+        $request->image->store("/public/image");
+        $course = new Course();
+        $course->title = $request->title;
+        $course->description = $request->description;
+        $course->duration = $request->duration;
+        $course->instructor = $request->instructor;
+        $course->fees = $request->fees;
+        $course->discounted_fees = $request->discounted_fee;
+        $course->course_image = $request->file('image')->hashName();
+        $course->save();
+        return redirect()->route('course.index');
     }
 
     /**
