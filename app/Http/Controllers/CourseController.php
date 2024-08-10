@@ -65,7 +65,7 @@ class CourseController extends Controller
      */
     public function edit(Course $course)
     {
-        
+        return view('admin.edit_course', ['course' => $course]);
     }
 
     /**
@@ -73,7 +73,26 @@ class CourseController extends Controller
      */
     public function update(Request $request, Course $course)
     {
-        //
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'duration' => 'required',
+            'instructor' => 'required',
+            'fees' => 'required',
+            'discounted_fee' => 'required',
+        ]);
+
+        $data = [
+                'title' => $request->title,
+                'description' => $request->description,
+                'duration' => $request->duration,
+                'instructor' => $request->instructor,
+                'fees' => $request->fees,
+                'discounted_fees' => $request->discounted_fee
+        ];
+
+        $course->update($data);
+        return redirect()->route('course.index');
     }
 
     /**
@@ -81,6 +100,7 @@ class CourseController extends Controller
      */
     public function destroy(Course $course)
     {
-        //
+        Course::find($course->id)->delete();
+        return redirect()->route('course.index');
     }
 }
