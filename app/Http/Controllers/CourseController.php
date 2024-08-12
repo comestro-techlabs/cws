@@ -103,4 +103,6 @@ class CourseController extends Controller
         Course::find($course->id)->delete();
         return redirect()->route('course.index');
     }
+
+    
 }
