@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('instructor');
             $table->float('fees');            
             $table->float('discounted_fees')->nullable();
+            $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->string('course_image');          
             $table->timestamps();
         });

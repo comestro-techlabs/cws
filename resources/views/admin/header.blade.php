@@ -6,13 +6,14 @@
                   </svg>
                   
                 </button>
-            <a href="https://flowbite.com" class="flex items-center space-x-3 rtl:space-x-reverse">
-                <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">{{env('APP_NAME')}}</span>
+            <a href="{{env('APP_URL')}}" class="flex items-center space-x-3 rtl:space-x-reverse">
+                <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+                    <img src="{{asset('assets/logosmall.png')}}" width="100px"/>
+                </span>
             </a>
         </div>
         <div class="flex items-center space-x-6 rtl:space-x-reverse">
-            <a href="tel:5541251234" class="text-sm  text-gray-500 dark:text-white hover:underline">(+91) 9546-80-55-80</a>
-            <a href="#" class="text-sm  text-blue-600 dark:text-blue-500 hover:underline">Login</a>
+            <a href="#" class="text-sm  text-white rounded dark:text-blue-500 bg-black dark:bg-slate-700 px-3 py-2 hover:bg-red-600">Logout</a>
         </div>
 </nav>
 

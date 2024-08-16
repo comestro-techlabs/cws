@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
 use Illuminate\Http\Request;
 
 class PublicControlller extends Controller
 {
     public function index(){
-        return view("public.homepage");
+        $courses = Course::all();
+        return view("public.homepage")->with('courses', $courses);
     }
 
     public function logIn(){

@@ -5,9 +5,9 @@
 @section('content')
     <div class="flex flex-1 flex-col">
         <div class="md:px-[10%] px-5 py-5">
-            <div class="flex gap-3 justify-between items-center">
+            <div class="flex gap-3 flex-col md:flex-row justify-between md:items-center">
 
-                <h2 class="md:text-2xl text-lg font-semibold capitalize">@if(isset($_GET['search']) && $_GET['search'] !== "")
+                <h2 class="md:text-xl text-lg font-semibold dark:text-slate-300 text-slate-500 border-s-4 border-s-orange-400 pl-3">@if(isset($_GET['search']) && $_GET['search'] !== "")
                     {{$_GET['search']}}
                 @else 
                     {{"Manage all"}}
@@ -15,41 +15,36 @@
 
 
                 {{-- search form starts here --}}
-                <form action="{{ route('course.search') }}" method="get" class="max-w-md mx-auto">
-                    <label for="default-search"
-                        class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                            </svg>
-                        </div>
-                        <input type="search" id="default-search" name="search"
-                            value="{{old('search')}}"
-                            class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="Search course by name..." size="60"  />
-                        <button type="submit"
-                            class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
-                    </div>
-                </form>
+                
                 {{-- search form ends here --}}
 
 
-                <div class="inline-flex rounded-md items-center" role="group">
+                <div class="inline-flex md:flex-row flex-col  md:items-center gap-2" role="group">
+                    <form action="{{ route('course.search') }}" method="get" class=" md:max-w-md md:mx-auto">
+                   
+                        <div class="flex border rounded-lg ps-3">
+                           
+                            <input type="search" id="default-search" name="search"
+                                value="{{old('search')}}"
+                                class="border-0 focus:outline-none focus:border-none w-full"
+                                placeholder="Search course by name..." size="30"  />
+                            <button type="submit"
+                                class="bg-slate-100 px-3">
+                                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                            </svg></button>
+                        </div>
+                    </form>
                     <a href="{{ route('course.create') }}"
-                        class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-s-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white">
+                        class="px-3 py-2 bg-emerald-600 rounded-lg text-white self-start">
                         Add Course
                     </a>
-                    <button type="button"
-                        class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-r rounded-e-lg border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white">
-                        Download PDF
-                    </button>
                 </div>
 
             </div>
-            <div class="relative overflow-x-auto flex-1 border mt-10">
+            <div class="relative overflow-x-auto flex-1 border dark:border-slate-500 mt-5">
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
@@ -106,23 +101,23 @@
                                             alt="course image">
                                     @endif
                                 </td>
-                                <td>
+                                <td class="px-6 py-4">
                                     {{ $course->duration }} Week
                                     @if ($course->duration > 1)
                                         ({{ $course->duration }} Weeks)
                                     @endif
                                 </td>
-                                <td>
+                                <td class="flex gap-2 items-center px-6 py-4">
                                     <a href="{{ route('course.edit', $course->id) }}"
-                                        class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-s-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white">
+                                        class="px-3 py-2 text-sm font-medium text-white bg-sky-500">
                                         Edit
                                     </a>
                                     <form action="{{ route('course.destroy', $course->id) }}" method="POST"
-                                        class="inline-flex">
+                                        class="inline-flex items-center">
                                         @csrf
                                         @method('delete')
                                         <button type="submit" name="delete"
-                                            class="px-3 py-3 text-sm font-medium text-white bg-red-500" value="X">
+                                            class="px-3 py-2 text-sm font-medium text-white bg-red-500" value="X">
                                             Delete
                                         </button>
                                     </form>
@@ -132,6 +127,9 @@
 
                     </tbody>
                 </table>
+            </div>
+            <div class="flex flex-1 space-x-2 justify-center mt-2 pagination">
+                {{$courses->links()}}
             </div>
 
         </div>

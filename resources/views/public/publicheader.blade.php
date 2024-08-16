@@ -14,7 +14,7 @@
                 <!-- Logo -->
                 <div class="text-2xl font-bold text-gray-800 dark:text-white">
                     <a href="#">
-                        <img src="{{asset('assets/logosmall.png')}}" alt="">
+                        <img src="{{asset('assets/logosmall.png')}}" class="w-[120px]" alt="">
                     </a>
                 </div>
 
