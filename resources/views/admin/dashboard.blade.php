@@ -95,7 +95,6 @@
         </tbody>
     </table>
 </div>
-
         </div>
         <div class="hidden p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800" id="about" role="tabpanel" aria-labelledby="about-tab">
             
