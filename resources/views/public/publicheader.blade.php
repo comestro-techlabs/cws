@@ -5,6 +5,7 @@
               Material Tailwind
             </a>
             <div class="flex items-center gap-4">
+             
               <div class="hidden mr-4 lg:block">
                 <ul class="flex flex-col gap-2 mt-2 mb-4 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
                   <li class="block p-1 font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
@@ -43,7 +44,8 @@
               </div>
               <button
                 class="relative ml-auto h-6 max-h-[40px] w-6 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-inherit transition-all hover:bg-transparent focus:bg-transparent active:bg-transparent disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none lg:hidden"
-                type="button">
+                type="button"  data-ripple-light="true"
+                data-collapse-target="collapse">
                 <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
                   <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" stroke="currentColor"
                     stroke-width="2">
@@ -52,6 +54,32 @@
                 </span>
               </button>
             </div>
+
+            
           </div>
         </nav>
+        <div class="block lg:hidden h-0 w-full basis-full overflow-hidden" data-collapse="collapse">
+          <ul class="flex flex-col gap-2 mt-2 mb-4 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
+            <li class="block px-3 py-2 font-sans hover:bg-slate-100 text-sm antialiased font-normal leading-normal text-blue-gray-900">
+              <a href="#" class="flex items-center">
+                Pages
+              </a>
+            </li>
+            <li class="block px-3 py-2 font-sans hover:bg-slate-100 text-sm antialiased font-normal leading-normal text-blue-gray-900">
+              <a href="#" class="flex items-center">
+                Account
+              </a>
+            </li>
+            <li class="block px-3 py-2 font-sans hover:bg-slate-100 text-sm antialiased font-normal leading-normal text-blue-gray-900">
+              <a href="#" class="flex items-center">
+                Blocks
+              </a>
+            </li>
+            <li class="block px-3 py-2 font-sans hover:bg-slate-100 text-sm antialiased font-normal leading-normal text-blue-gray-900">
+              <a href="#" class="flex items-center">
+                Docs
+              </a>
+            </li>
+          </ul>
+        </div>
       

@@ -8,15 +8,16 @@
     <link
   rel="stylesheet"
   href="https://unpkg.com/@material-tailwind/html@latest/styles/material-tailwind.css"
-/>@vite("resources/css/app.css")
+/>
+<script async src="https://unpkg.com/@material-tailwind/html@latest/scripts/ripple.js"></script>
+
+@vite("resources/css/app.css")
     
   <link
   href="https://fonts.googleapis.com/icon?family=Material+Icons"
   rel="stylesheet"
 />
 
-<script  src="https://unpkg.com/@material-tailwind/html@latest/scripts/ripple.js"></script>
-<script src="https://unpkg.com/@material-tailwind/html@latest/scripts/collapse.js"></script>
 
 </head>
 <body>
@@ -26,6 +27,9 @@
    @section('content')
        
    @show
+
+   <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/collapse.js"></script>
+
 
 
 </body>
