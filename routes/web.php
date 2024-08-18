@@ -15,6 +15,7 @@ Route::controller(PublicControlller::class)->group(function(){
 Route::prefix('admin')->group(function(){
     Route::get("/",[AdminController::class,"dashboard"])->name('admin.dashboard');
     Route::resource('course', CourseController::class);
+    Route::patch('courses/{course}/{field}', [CourseController::class, 'update'])->name('course.update');
     Route::resource("category", CategoryController::class)->except(['create','show']);
     Route::get("/search",[AdminController::class,"searchCourse"])->name('course.search');
 });

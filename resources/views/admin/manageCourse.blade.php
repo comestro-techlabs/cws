@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="flex flex-1 flex-col">
-        <div class="md:px-[10%] px-5 py-5">
+        <div class="md:px-[2%] px-5 py-5">
             <div class="flex gap-3 flex-col md:flex-row justify-between md:items-center">
 
                 <h2 class="md:text-xl text-lg font-semibold dark:text-slate-300 text-slate-500 border-s-4 border-s-orange-400 pl-3">@if(isset($_GET['search']) && $_GET['search'] !== "")
@@ -38,7 +38,7 @@
                         </div>
                     </form>
                     <a href="{{ route('course.create') }}"
-                        class="px-3 py-2 bg-emerald-600 rounded-lg text-white self-start">
+                        class="px-3 py-2 bg-teal-600 rounded-lg text-white self-start">
                         Add Course
                     </a>
                 </div>
@@ -60,9 +60,7 @@
                             <th scope="col" class="px-6 py-3">
                                 Fees
                             </th>
-                            <th scope="col" class="px-6 py-3">
-                                Image
-                            </th>
+                          
                             <th scope="col" class="px-6 py-3">
                                 Duration
                             </th>
@@ -92,15 +90,7 @@
                                         {{ $course->fees }}
                                     @endif
                                 </td>
-                                <td class="px-6 py-4">
-                                    @if ($course->course_image)
-                                        <img src="{{ asset('storage/image/' . $course->course_image) }}" width="50"
-                                            alt="course image">
-                                    @else
-                                        <img src="{{ asset('storage/default-course.jpg') }}" width="50"
-                                            alt="course image">
-                                    @endif
-                                </td>
+                               
                                 <td class="px-6 py-4">
                                     {{ $course->duration }} Week
                                     @if ($course->duration > 1)
@@ -108,8 +98,8 @@
                                     @endif
                                 </td>
                                 <td class="flex gap-2 items-center px-6 py-4">
-                                    <a href="{{ route('course.edit', $course->id) }}"
-                                        class="px-3 py-2 text-sm font-medium text-white bg-sky-500">
+                                    <a href="{{ route('course.show', $course->id) }}"
+                                        class="px-3 py-2 text-sm font-medium text-white bg-teal-500">
                                         Edit
                                     </a>
                                     <form action="{{ route('course.destroy', $course->id) }}" method="POST"

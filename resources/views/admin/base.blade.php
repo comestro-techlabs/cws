@@ -10,15 +10,23 @@
 
 </head>
 <body class="dark:bg-slate-700">
-    @include('admin.header')
 
 
-    @section('content')
+   <div class="flex">
+    <div class="hidden shadow-lg h-full md:flex lg:fixed top-0 left-0 z-40 overflow-y-auto bg-white w-64 dark:bg-gray-800 flex-1 flex-col p-3">
+        <x-side-nav/>
+    </div>
+    <div class="md:flex-1 md:ml-64 ml-0">
+        <x-admin-header/>
+
+        @section('content')
         @show()
+    </div>
+    @include('admin.drawer')   
+</div>
 
     
 
-    @include('admin.drawer')
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
 </body>
 </html>

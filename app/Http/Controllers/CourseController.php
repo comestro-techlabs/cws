@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Course;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class CourseController extends Controller
 {
@@ -31,23 +33,11 @@ class CourseController extends Controller
     {
         $request->validate([
             'title' => 'required',
-            'description' => 'required',
-            'duration' => 'required',
-            'instructor' => 'required',
-            'fees' => 'required',
-            'discounted_fee' => 'required',
-            'image' => 'required',
         ]);
 
-        $request->image->store("/public/image");
         $course = new Course();
         $course->title = $request->title;
-        $course->description = $request->description;
-        $course->duration = $request->duration;
-        $course->instructor = $request->instructor;
-        $course->fees = $request->fees;
-        $course->discounted_fees = $request->discounted_fee;
-        $course->course_image = $request->file('image')->hashName();
+        $course->slug = Str::slug($request->title);
         $course->save();
         return redirect()->route('course.index');
     }
@@ -57,7 +47,8 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
-        
+        $categories = Category::all();  // Assuming Category model exists and has all categories
+        return view("admin.viewCourse", array("course" => $course,'categories' => $categories));
     }
 
     /**
@@ -71,28 +62,19 @@ class CourseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Course $course)
+    public function update(Request $request, $id, $field)
     {
-        $request->validate([
-            'title' => 'required',
-            'description' => 'required',
-            'duration' => 'required',
-            'instructor' => 'required',
-            'fees' => 'required',
-            'discounted_fee' => 'required',
+        $course = Course::findOrFail($id);
+    
+        // Validate only the field being updated
+        $validatedData = $request->validate([
+            $field => 'required' // Add more validation rules based on your needs
         ]);
-
-        $data = [
-                'title' => $request->title,
-                'description' => $request->description,
-                'duration' => $request->duration,
-                'instructor' => $request->instructor,
-                'fees' => $request->fees,
-                'discounted_fees' => $request->discounted_fee
-        ];
-
-        $course->update($data);
-        return redirect()->route('course.index');
+    
+        // Update the specific field
+        $course->update($validatedData);
+    
+        return redirect()->route('course.show', $course->id)->with('success', ucfirst($field) . ' updated successfully!');
     }
 
     /**
