@@ -5,8 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Lesson extends Model
+class Feature extends Model
 {
     use HasFactory;
-    protected $fillable = ['title'];
+
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class, 'course_feature');
+    }
 }
