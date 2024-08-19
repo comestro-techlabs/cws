@@ -10,7 +10,7 @@
     <div class="flex h-screen">
        
         {{-- here is the image to visualize what we teach --}}
-        <div class="w-1/2 relative flex items-center justify-center overflow-hidden">
+        <div class="w-4/12 relative flex items-center justify-center overflow-hidden">
             <div id="carousel" class="flex transition-transform duration-500 ease-in-out">
                 <div class="w-full flex-shrink-0 flex justify-center items-center">
                     <img src="https://cdn.pixabay.com/photo/2024/06/02/06/16/child-8803596_640.png" class="max-w-full max-h-full object-contain rounded-xl shadow-2xl" alt="Image 1">
@@ -57,6 +57,7 @@
                 <button type="submit" class="w-full bg-sky-500 text-white py-2 rounded-md hover:bg-sky-600 transition duration-200">Register</button>
             </form>
         </div>
+       
     
     </div>
 

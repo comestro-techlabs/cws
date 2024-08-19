@@ -2,7 +2,7 @@ import withMT from "@material-tailwind/html/utils/withMT";
 
  
 /** @type {import('tailwindcss').Config} */
-export default withMT({
+export default {
     content: [
         "./resources/**/*.blade.php",
         "./resources/**/**/*.blade.php",
@@ -13,4 +13,4 @@ export default withMT({
         extend: {},
     },
     plugins: [],
-});
+};
