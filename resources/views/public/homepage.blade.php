@@ -9,4 +9,4 @@
                 <x-course-card :course="$course"/>
         @endforeach
     </div>
-@endsection
+@endsection 

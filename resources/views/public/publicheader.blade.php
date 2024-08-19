@@ -33,6 +33,8 @@
                             <path d="M12 3v3m0 12v3m9-9h-3M3 12H0m16.24 6.364l-2.12-2.121M7.879 7.879l-2.121-2.121m10.242 10.243l-2.12 2.12M7.879 16.243l-2.121 2.121M12 1.5A10.5 10.5 0 0112 22.5 10.5 10.5 0 0112 1.5z"></path>
                         </svg>
                     </button>
+
+                    <div><a href="{{route("public.apply")}}" class="bg-blue-600 text-slate-100 px-3 py-2 text-xl font-semibold rounded">Login/Signup</a></div>
                     
                     <!-- Mobile Menu Button -->
                     <button id="menu-toggle" class="md:hidden text-gray-600 dark:text-gray-200 focus:outline-none">
