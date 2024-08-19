@@ -24,10 +24,10 @@
             </div>
         
             <div class="inline-flex flex-row md:items-center gap-2" role="group">
-                <form action="{{ route('course.publish', $course->id) }}" method="POST" class="inline-flex" enctype="multipart/form-data">
+                <form action="{{ route($course->published ? 'course.unpublish' : 'course.publish', $course->id) }}" method="POST" class="inline-flex" enctype="multipart/form-data">
                     @csrf
-                    <button type="submit" class="px-3 py-2 bg-teal-600 text-white rounded-lg {{ $countCompletedFields == $totalFields ? 'opacity-100' : 'opacity-50 cursor-not-allowed' }}" {{ $countCompletedFields != $totalFields ? 'disabled' : '' }}>
-                        Publish Course
+                    <button type="submit" class="px-3 py-2 {{$course->published ? "bg-white hover:bg-teal-600 border border-teal-600 hover:text-white text-teal-600" : "bg-teal-600 text-white" }}  rounded-lg {{ $countCompletedFields == $totalFields ? 'opacity-100' : 'opacity-50 cursor-not-allowed' }}" {{ $countCompletedFields != $totalFields ? 'disabled' : '' }}>
+                        {{ $course->published ? 'Unpublish Course' : 'Publish Course' }}
                     </button>
                 </form>
             </div>
@@ -47,20 +47,36 @@
 
                         <span id="{{ $field }}-value">
                             @if ($course->$field)
-                                {{ ($field == 'fees' || $field == 'discounted_fees') ? '₹ ' . number_format($course->$field, 2) : (($field == 'duration') ? $course->$field . ' Weeks' : ($field == 'category_id' ? $course->category->cat_title : $course->$field)) }}
+                            {!! 
+                                $field == 'fees' || $field == 'discounted_fees' 
+                                ? '₹ ' . number_format($course->$field, 2) 
+                                : ($field == 'duration' 
+                                    ? $course->$field . ' Weeks' 
+                                    : ($field == 'category_id' 
+                                        ? $course->category->cat_title 
+                                        : ($field == 'course_image' 
+                                            ? "<img src='" . ($course->$field ? asset('storage/course_images/' . $course->$field) : 'https://placehold.co/600x400?text=Upload+Image') . "' alt='Image Preview' class='w-full h-auto object-cover border'>" 
+                                            : e($course->$field)
+                                        )
+                                    )
+                                )
+                            !!}
+                            
                             @else
                                 <span class="italic">{{ $field }} is empty</span>
                             @endif
                         </span>
-                        <form id="{{ $field }}-form" action="{{ route('course.update', ['course' => $course->id, 'field' => $field]) }}" method="POST" style="display: none;" class="flex flex-col w-full">
+                        <form id="{{ $field }}-form" action="{{ route('course.update', ['course' => $course->id, 'field' => $field]) }}" method="POST" enctype="multipart/form-data" style="display: none;" class="flex flex-col w-full">
                             @csrf
                             @method('PATCH')
                             <div class="mb-3 flex flex-1 flex-col gap-1">
                                 @if ($field == 'description')
                                     <textarea name="{{ $field }}" class="border w-full px-3 py-2" rows="5">{{ $course->$field }}</textarea>
                                 @elseif ($field == 'course_image')
-                                    <input type="file" name="{{ $field }}">
-                            
+                                    <input type="file" name="{{ $field }}" id="{{ $field }}" onchange="previewImage(event)">
+                                    <div class="mt-2">
+                                        <img id="{{ $field }}-preview" src="{{ $course->$field ? asset('storage/course_images/' . $course->$field) : 'https://placehold.co/600x400?text=Upload+Image' }}" alt="Image Preview" class="w-56 h-32 object-cover border">
+                                    </div>
                                 @elseif ($field == 'category_id')
                                     <select name="{{ $field }}" class="px-3 py-2 w-full">
                                         @foreach ($categories as $category)
@@ -76,6 +92,7 @@
                                 <button type="button" onclick="toggleEdit('{{ $field }}')" class="bg-gray-500 text-white px-3 py-2 rounded">Cancel</button>
                             </div>
                         </form>
+                        
                     </div>
                 </div>
             @endforeach
@@ -206,6 +223,15 @@
                 form.style.display = 'block';
             }
         }
+
+        function previewImage(event) {
+        const reader = new FileReader();
+        reader.onload = function() {
+            const output = document.getElementById(event.target.id + '-preview');
+            output.src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
 
         function toggleAddChapterForm() {
             const form = document.getElementById('add-chapter-form');

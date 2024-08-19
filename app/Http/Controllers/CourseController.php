@@ -163,6 +163,15 @@ class CourseController extends Controller
     return redirect()->route('course.show', $course->id);
     }
 
+    public function unpublish($id)
+{
+    $course = Course::find($id);
+    $course->published = false;
+    $course->save();
+
+    return redirect()->back()->with('success', 'Course unpublished successfully!');
+}
+
     public function destroy(Course $course)
     {
         Course::find($course->id)->delete();

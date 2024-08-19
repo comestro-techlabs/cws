@@ -26,6 +26,8 @@ Route::prefix('admin')->group(function(){
     Route::patch('/chapters/{chapter}', [ChapterController::class, 'update'])->name('chapter.update');
     Route::post('/courses/{id}/features', [CourseController::class, 'addFeature'])->name('course.addFeature');
     Route::post('/courses/{course}/publish', [CourseController::class, 'publish'])->name('course.publish');
+    Route::post('/course/{id}/unpublish', [CourseController::class, 'unpublish'])->name('course.unpublish');
+
 
     Route::get('/chapters/{chapter}/lessons/create', [LessonController::class, 'create'])->name('lessons.create');
     Route::post('/chapters/{chapter}/lessons', [LessonController::class, 'store'])->name('lessons.store');
