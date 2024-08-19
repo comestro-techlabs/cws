@@ -65,6 +65,9 @@
                                 Duration
                             </th>
                             <th scope="col" class="px-6 py-3">
+                                IsPublished
+                            </th>
+                            <th scope="col" class="px-6 py-3">
                                 Action
                             </th>
                         </tr>
@@ -82,32 +85,42 @@
                                 <td class="px-6 py-4">
                                     {{ $course->instructor }}
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-4 text-slate-600">
                                     @if ($course->discounted_fees)
                                         {{ $course->discounted_fees }}
-                                        <span class=""><del>{{ $course->fees }}</del></span>
+                                        <span class="text-slate-300"><del>{{ '₹' . number_format($course->discounted_fees, 2) }}</del></span>
                                     @else
-                                        {{ $course->fees }}
+                                        {{'₹' . number_format($course->fees, 2) }}
                                     @endif
                                 </td>
                                
                                 <td class="px-6 py-4">
-                                    {{ $course->duration }} Week
                                     @if ($course->duration > 1)
-                                        ({{ $course->duration }} Weeks)
+                                        {{ $course->duration }} Weeks
+                                    @else
+                                        @if ($course->duration == 0)
+                                            {{"NULL"}}
+                                        @else:
+                                            {{ $course->duration }} Week
+                                        @endif
                                     @endif
+                                </td>
+                                <td class="px-3 py-4">
+                                    {!!(!$course->published)? 
+                                    "<span class='text-slate-100 bg-slate-600 text-xs px-2 py-1 rounded-xl'>Draft</span>" : 
+                                    "<span class='text-slate-100 bg-teal-600 text-xs px-2 py-1 rounded-xl'>Published</span>"!!}
                                 </td>
                                 <td class="flex gap-2 items-center px-6 py-4">
                                     <a href="{{ route('course.show', $course->id) }}"
-                                        class="px-3 py-2 text-sm font-medium text-white bg-teal-500">
-                                        Edit
+                                        class="px-3 py-2 text-xs rounded-xl font-medium text-white bg-teal-500">
+                                        Show
                                     </a>
                                     <form action="{{ route('course.destroy', $course->id) }}" method="POST"
                                         class="inline-flex items-center">
                                         @csrf
                                         @method('delete')
                                         <button type="submit" name="delete"
-                                            class="px-3 py-2 text-sm font-medium text-white bg-red-500" value="X">
+                                            class="px-3 py-2 text-xs rounded-xl font-medium text-white bg-red-500" value="X">
                                             Delete
                                         </button>
                                     </form>

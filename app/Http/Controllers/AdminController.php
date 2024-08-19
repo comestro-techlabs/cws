@@ -14,7 +14,7 @@ class AdminController extends Controller
     // search Course
     public function searchCourse(Request $request){
         $search = $request->search;
-        $search_course = Course::whereLike('title', "%$search%")->get();
+        $search_course = Course::whereLike('title', "%$search%")->paginate(10);
         return view("admin.manageCourse",['courses' => $search_course]);
     }
     

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BatchController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChapterController;
 use App\Http\Controllers\CourseController;
@@ -34,6 +35,10 @@ Route::prefix('admin')->group(function(){
     
     Route::patch('courses/{course}/{field}', [CourseController::class, 'update'])->name('course.update');
     Route::resource("category", CategoryController::class)->except(['create','show']);
+    Route::get('/batches', [BatchController::class, 'index'])->name('batches.index');
+    Route::post('/batches', [BatchController::class, 'store'])->name('batches.store');
+    Route::delete('batches/{batch}/disable', [BatchController::class, 'destroy'])->name('batches.destroy');
+
     Route::get("/search",[AdminController::class,"searchCourse"])->name('course.search');
 });
 

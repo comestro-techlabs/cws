@@ -1,32 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>@yield('title') Admin Panel | {{env('APP_NAME')}}</title>
-    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css"  rel="stylesheet" />
+    <title>@yield('title') Admin Panel | {{ env('APP_NAME') }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
     @vite('resources/css/app.css')
 
 </head>
+
 <body class="dark:bg-slate-700">
 
 
-   <div class="flex">
-    <div class="hidden shadow-lg h-full md:flex lg:fixed top-0 left-0 z-40 overflow-y-auto bg-white w-64 dark:bg-gray-800 flex-1 flex-col p-3">
-        <x-side-nav/>
-    </div>
-    <div class="md:flex-1 md:ml-64 ml-0">
-        <x-admin-header/>
+    <x-admin-header/>
 
+    <aside id="logo-sidebar"
+        class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
+        aria-label="Sidebar">
+        <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
+            <x-side-nav />
+        </div>
+    </aside>
+
+    <div class="p-4 sm:ml-64">
         @section('content')
         @show()
     </div>
-    @include('admin.drawer')   
-</div>
+
 
     
 
+
+
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
 </body>
+
 </html>
