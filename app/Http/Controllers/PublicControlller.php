@@ -28,23 +28,37 @@ class PublicControlller extends Controller
     // to actually sign up
     public function register(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:225',
-            'email' => 'required|string|email|max:225|unique:users',
-            'password' => 'required|string|min:8|confirmed',
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'contact' => 'required|unique:users,contact',
+            'dob' => 'required|date',
+            'gender' => 'required|in:male,female,other',
+            'course' => 'required|in:php,nextjs,react,laravel',
+            'password' => 'required|confirmed|min:8',
+            'referral' => 'nullable|string|max:255',
+            'education' => 'required|string|max:255',
         ]);
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            'contact' => $validatedData['contact'],
+            'dob' => $validatedData['dob'],
+            'gender' => $validatedData['gender'],
+            'course' => $validatedData['course'],
+            'referral' => $validatedData['referral'],
+            'education' => $validatedData['education'],
+            'password' => Hash::make($validatedData['password']),
+
         ]);
 
         return redirect()->route('public.index');
+    }
+
+    // to visit the signup page (testing)
+    public function signup(){
+        return view('public.signup');
     }
 
     public function viewCourse() {}
