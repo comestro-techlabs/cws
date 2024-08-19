@@ -1,78 +1,85 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Code with Sadiq - Navbar</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 dark:bg-gray-900">
-    <!-- Navbar -->
-    <nav class="bg-white dark:bg-gray-800 shadow-lg  w-full z-50">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex justify-between items-center py-4">
-                <!-- Logo -->
-                <div class="text-2xl font-bold text-gray-800 dark:text-white">
-                    <a href="#">
-                        <img src="{{asset('assets/logosmall.png')}}" class="w-[120px]" alt="">
+ <nav class="sticky top-0 z-10 block w-full max-w-full px-4 py-2  bg-white border rounded-none shadow-md h-max border-white/80 bg-opacity-80 backdrop-blur-2xl backdrop-saturate-200 lg:px-8 lg:py-4">
+          <div class="flex items-center justify-between text-blue-gray-900">
+            <a href="#"
+              class="mr-4 block cursor-pointer py-1.5 font-sans text-base font-medium leading-relaxed text-inherit antialiased">
+              {{env("APP_NAME")}}
+            </a>
+            <div class="flex items-center gap-4">
+             
+              <div class="hidden mr-4 lg:block">
+                <ul class="flex flex-col gap-2 mt-2 mb-4 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
+                  <li class="block p-1 font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
+                    <a href="#" class="flex items-center">
+                      Pages
                     </a>
-                </div>
-
-                <!-- Primary Navigation -->
-                <div class="hidden md:flex space-x-6">
-                    <a href="#" class="text-gray-600 dark:text-gray-200 hover:text-blue-600">Home</a>
-                    <a href="#" class="text-gray-600 dark:text-gray-200 hover:text-blue-600">Courses</a>
-                    <a href="#" class="text-gray-600 dark:text-gray-200 hover:text-blue-600">Blog</a>
-                    <a href="#" class="text-gray-600 dark:text-gray-200 hover:text-blue-600">Contact</a>
-                </div>
-
-                <!-- Dark Mode Toggle -->
-                <div class="flex items-center space-x-4">
-                    <button id="theme-toggle" class="text-gray-600 dark:text-gray-200 focus:outline-none">
-                        <svg id="theme-icon" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 3v3m0 12v3m9-9h-3M3 12H0m16.24 6.364l-2.12-2.121M7.879 7.879l-2.121-2.121m10.242 10.243l-2.12 2.12M7.879 16.243l-2.121 2.121M12 1.5A10.5 10.5 0 0112 22.5 10.5 10.5 0 0112 1.5z"></path>
-                        </svg>
-                    </button>
-
-                    <div><a href="{{route("public.apply")}}" class="bg-blue-600 text-slate-100 px-3 py-2 text-xl font-semibold rounded">Login/Signup</a></div>
-                    
-                    <!-- Mobile Menu Button -->
-                    <button id="menu-toggle" class="md:hidden text-gray-600 dark:text-gray-200 focus:outline-none">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M4 6h16M4 12h16m-7 6h7"></path>
-                        </svg>
-                    </button>
-                </div>
+                  </li>
+                  <li class="block p-1 font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
+                    <a href="#" class="flex items-center">
+                      Account
+                    </a>
+                  </li>
+                  <li class="block p-1 font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
+                    <a href="#" class="flex items-center">
+                      Blocks
+                    </a>
+                  </li>
+                  <li class="block p-1 font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
+                    <a href="#" class="flex items-center">
+                      Docs
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div class="flex items-center gap-x-1">
+                <button
+                  class="hidden px-4 py-2 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-lg select-none hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none lg:inline-block"
+                  type="button">
+                  <span>Log In</span>
+                </button>
+                <button
+                  class="hidden select-none rounded-lg bg-gradient-to-tr from-gray-900 to-gray-800 py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none lg:inline-block"
+                  type="button">
+                  <span>Sign in</span>
+                </button>
+              </div>
+              <button
+                class="relative ml-auto h-6 max-h-[40px] w-6 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-inherit transition-all hover:bg-transparent focus:bg-transparent active:bg-transparent disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none lg:hidden"
+                type="button"  data-ripple-light="true"
+                data-collapse-target="collapse">
+                <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" stroke="currentColor"
+                    stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
+                  </svg>
+                </span>
+              </button>
             </div>
+
+            
+          </div>
+        </nav>
+        <div class="block lg:hidden h-0 w-full basis-full overflow-hidden" data-collapse="collapse">
+          <ul class="flex flex-col gap-2 mt-2 mb-4 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
+            <li class="block px-3 py-2 font-sans hover:bg-slate-100 text-sm antialiased font-normal leading-normal text-blue-gray-900">
+              <a href="#" class="flex items-center">
+                Pages
+              </a>
+            </li>
+            <li class="block px-3 py-2 font-sans hover:bg-slate-100 text-sm antialiased font-normal leading-normal text-blue-gray-900">
+              <a href="#" class="flex items-center">
+                Account
+              </a>
+            </li>
+            <li class="block px-3 py-2 font-sans hover:bg-slate-100 text-sm antialiased font-normal leading-normal text-blue-gray-900">
+              <a href="#" class="flex items-center">
+                Blocks
+              </a>
+            </li>
+            <li class="block px-3 py-2 font-sans hover:bg-slate-100 text-sm antialiased font-normal leading-normal text-blue-gray-900">
+              <a href="#" class="flex items-center">
+                Docs
+              </a>
+            </li>
+          </ul>
         </div>
-
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-gray-800">
-            <a href="#" class="block px-4 py-2 text-gray-600 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700">Home</a>
-            <a href="#" class="block px-4 py-2 text-gray-600 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700">Courses</a>
-            <a href="#" class="block px-4 py-2 text-gray-600 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700">Blog</a>
-            <a href="#" class="block px-4 py-2 text-gray-600 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700">Contact</a>
-        </div>
-    </nav>
-
-    <script>
-        // Dark Mode Toggle
-        const themeToggle = document.getElementById('theme-toggle');
-        const themeIcon = document.getElementById('theme-icon');
-        const body = document.body;
-
-        themeToggle.addEventListener('click', () => {
-            body.classList.toggle('dark');
-            themeIcon.classList.toggle('hidden');
-        });
-
-        // Mobile Menu Toggle
-        const menuToggle = document.getElementById('menu-toggle');
-        const mobileMenu = document.getElementById('mobile-menu');
-
-        menuToggle.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-    </script>
-</body>
-</html>
+      
