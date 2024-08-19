@@ -65,10 +65,10 @@
                     <select id="course" name="course" value="{{ old('course') }}"
                         class="mt-1 block w-full px-4 py-2 border border-teal-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
                         <option value="" disabled selected>Select a course</option>
-                        <option value="math">Php webDev</option>
-                        <option value="science">Nexts</option>
-                        <option value="english">React.Dev</option>
-                        <option value="computer">Laravel</option>
+                        <option value="Php webDev">Php webDev</option>
+                        <option value="Next.js">Next.js</option>
+                        <option value="React.Dev">React.Dev</option>
+                        <option value="Laravel">Laravel</option>
                     </select>
                     @error('course')
                         <p class="text-red-600 text-xs">{{ $message }}</p>
@@ -85,9 +85,9 @@
                 <div class="mb-4">
                     <label for="confirm-password" class="block text-sm font-medium text-teal-600">Confirm
                         Password</label>
-                    <input type="password" id="confirm-password" name="confirm-password"
+                    <input type="password" id="confirm-password" name="password_confirmation"
                         class="mt-1 block w-full px-4 py-2 border border-teal-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
-                    @error('confirm-password')
+                    @error('password_confirmation')
                         <p class="text-red-600 text-xs">{{ $message }}</p>
                     @enderror
                 </div>

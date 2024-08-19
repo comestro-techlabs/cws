@@ -25,7 +25,7 @@ class User extends Authenticatable
         'course',
         'password',
         'referral',
-        'education',
+        'education_qualification',
     ];
 
     /**

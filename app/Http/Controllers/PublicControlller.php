@@ -38,6 +38,7 @@ class PublicControlller extends Controller
             'password' => 'required|confirmed|min:8',
             'referral' => 'nullable|string|max:255',
             'education' => 'required|string|max:255',
+            'course' => 'required|in:Php webDev,Nexts,React.Dev,Laravel',
         ]);
 
         $user = User::create([
@@ -48,7 +49,8 @@ class PublicControlller extends Controller
             'gender' => $validatedData['gender'],
             'course' => $validatedData['course'],
             'referral' => $validatedData['referral'],
-            'education' => $validatedData['education'],
+            'education_qualification' => $validatedData['education'],
+            'course' => $validatedData['course'],
             'password' => Hash::make($validatedData['password']),
 
         ]);
