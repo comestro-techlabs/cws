@@ -9,11 +9,11 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Symfony\Contracts\Service\Attribute\Required;
 
-class PublicControlller extends Controller
+class PublicController extends Controller
 {
     public function index()
     {
-        $courses = Course::all();
+        $courses = Course::where("published", true)->get();;
         return view("public.homepage")->with('courses', $courses);
     }
 
@@ -59,9 +59,7 @@ class PublicControlller extends Controller
     }
 
     // to visit the signup page (testing)
-    public function signup(){
-        return view('public.signup');
-    }
+    
 
     public function viewCourse() {}
 }

@@ -21,7 +21,6 @@ return new class extends Migration
             $table->boolean("isAdmin")->default(false);
             $table->timestamp('email_verified_at')->nullable();
             $table->date('dob');
-            $table->string('referral')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

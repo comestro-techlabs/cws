@@ -6,10 +6,10 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChapterController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\LessonController;
-use App\Http\Controllers\PublicControlller;
+use App\Http\Controllers\PublicController;
 use Illuminate\Support\Facades\Route;
 
-Route::controller(PublicControlller::class)->group(function(){
+Route::controller(PublicController::class)->group(function(){
     Route::get("/","index")->name('public.index');
     Route::get("/register","apply")->name('public.apply');
     Route::post("/register","register")->name('public.register');
