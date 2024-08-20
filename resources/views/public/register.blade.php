@@ -20,7 +20,7 @@
     <!-- Second Section: Form -->
     <div class="w-full lg:w-1/2 bg-white p-8 shadow-2xl">
         <h2 class="text-3xl font-bold mb-4 text-gray-800">Apply Now</h2>
-        <form id="applyForm" action="" method="POST" class="space-y-3 bg-slate-50 rounded-lg border p-4" autocomplete="off">
+        <form id="applyForm" action="{{route('public.register')}}" method="POST" class="space-y-3 bg-slate-50 rounded-lg border p-4" autocomplete="off">
             @csrf
             <!-- Name -->
             <div>

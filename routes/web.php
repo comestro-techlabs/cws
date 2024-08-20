@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 Route::controller(PublicController::class)->group(function(){
     Route::get("/","index")->name('public.index');
     Route::get("/register","apply")->name('public.apply');
+    Route::get("/register/success","success")->name('public.success');
     Route::post("/register","register")->name('public.register');
     Route::get('/courses/{id}', 'courseDetails')->name('public.courseDetails');
 });
