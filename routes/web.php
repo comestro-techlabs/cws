@@ -13,8 +13,7 @@ Route::controller(PublicController::class)->group(function(){
     Route::get("/","index")->name('public.index');
     Route::get("/register","apply")->name('public.apply');
     Route::post("/register","register")->name('public.register');
-    
-    Route::get("/signup","signup"); //testing mode
+    Route::get('/courses/{id}', 'courseDetails')->name('public.courseDetails');
 });
 
 

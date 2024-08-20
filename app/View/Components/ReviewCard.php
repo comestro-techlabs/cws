@@ -11,7 +11,12 @@ class ReviewCard extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct()
+    public function __construct(
+        public string $img,
+        public string $fullname,
+        public string $star,
+        public string $review
+    )
     {
         //
     }

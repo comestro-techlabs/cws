@@ -25,7 +25,7 @@
               <p class="mb-3 text-sm font-normal capitalize">
                   By: {{$course->instructor}}
               </p>
-              <p class="text-base text-gray-700 leading-relaxed mb-4">
+              <p class="text-base text-gray-700 leading-relaxed mb-4 line-clamp-3">
                 {{$course->description}}
               </p>
               <div class="mb-4">
@@ -46,9 +46,9 @@
               </div>
 
               <div class="flex flex-1 justify-center">
-                <button class="w-full py-3.5 px-7 bg-gray-900 text-white rounded-lg text-sm font-bold uppercase shadow-md hover:shadow-lg transition-all">
+                <a href="{{route('public.courseDetails', $course->id)}}" class="w-full py-3.5 px-7 bg-gray-900 text-white rounded-lg text-sm font-bold uppercase shadow-md hover:shadow-lg transition-all">
                   Enroll Now
-                </button>
+                </a>
               </div>
              
           </div>

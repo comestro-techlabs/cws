@@ -7,7 +7,6 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
-use Symfony\Contracts\Service\Attribute\Required;
 
 class PublicController extends Controller
 {
@@ -25,41 +24,48 @@ class PublicController extends Controller
         return view("public.register");
     }
 
+    public function register(Request $request){
     // to actually sign up
-    public function register(Request $request)
-    {
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'contact' => 'required|unique:users,contact',
-            'dob' => 'required|date',
-            'gender' => 'required|in:male,female,other',
-            'course' => 'required|in:php,nextjs,react,laravel',
-            'password' => 'required|confirmed|min:8',
-            'referral' => 'nullable|string|max:255',
-            'education' => 'required|string|max:255',
-            'course' => 'required|in:Php webDev,Nexts,React.Dev,Laravel',
-        ]);
+    $validator = Validator::make($request->all(), [
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users',
+        'contact' => 'required|string|max:255|unique:users',
+        'gender' => 'required|in:male,female,other',
+        'education_qualification' => 'required|string|max:255',
+        'dob' => 'required|date',
+        'password' => 'required|string|min:8',
+    ]);
 
-        $user = User::create([
-            'name' => $validatedData['name'],
-            'email' => $validatedData['email'],
-            'contact' => $validatedData['contact'],
-            'dob' => $validatedData['dob'],
-            'gender' => $validatedData['gender'],
-            'course' => $validatedData['course'],
-            'referral' => $validatedData['referral'],
-            'education_qualification' => $validatedData['education'],
-            'course' => $validatedData['course'],
-            'password' => Hash::make($validatedData['password']),
-
-        ]);
-
-        return redirect()->route('public.index');
+    if ($validator->fails()) {
+        return back()->withErrors($validator)->withInput();
     }
+
+    $user = User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'contact' => $request->contact,
+        'gender' => $request->gender,
+        'education_qualification' => $request->education_qualification,
+        'dob' => $request->dob,
+        'password' => Hash::make($request->password),
+    ]);
+
+
+    return redirect()->route('public.success');
+}
 
     // to visit the signup page (testing)
     
+    public function success(){
+        return view("public.success");
+    }
+
+    // to view a course details
+    public function courseDetails($id) {
+        $course = Course::find($id); // replace 1 with course id
+        return view("public.course", compact('course'));
+    }
+
 
     public function viewCourse() {}
 }
