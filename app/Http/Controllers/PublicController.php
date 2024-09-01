@@ -13,8 +13,7 @@ class PublicController extends Controller
 {
     public function index()
     {
-        $courses = Course::where("published", true)->get();;
-        return view("public.homepage")->with('courses', $courses);
+        return view("public.homepage");
     }
 
 
@@ -106,5 +105,10 @@ class PublicController extends Controller
 
     public function servicePage(){
         return view("public.services");
+    }
+
+    public function training(){
+        $courses = Course::where("published", true)->get();
+        return view("public.training")->with('courses', $courses);
     }
 }

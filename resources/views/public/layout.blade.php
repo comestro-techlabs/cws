@@ -23,7 +23,7 @@
             <div>
                 <h3 class="text-lg font-semibold text-white mb-4">About Us</h3>
                 <p class="text-gray-400">
-                    At Code with Sadiq, we are committed to providing high-quality programming education that empowers students to excel in the IT industry. Our hands-on approach and real-world projects ensure that our students are job-ready.
+                    At Comestro, we are committed to providing high-quality programming education that empowers students to excel in the IT industry. Our hands-on approach and real-world projects ensure that our students are job-ready.
                 </p>
             </div>
 
