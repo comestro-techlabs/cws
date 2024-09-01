@@ -107,4 +107,8 @@ class PublicController extends Controller
     public function servicePage(){
         return view("public.services");
     }
+
+    public function aboutPage(){
+        return view("public.about-us");
+    }
 }

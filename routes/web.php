@@ -23,6 +23,7 @@
     Route::get('/logout', [PublicController::class, 'logout'])->name('logout');
 
     Route::get('/services', [PublicController::class, 'servicePage'])->name('services');
+    Route::get('/about', [PublicController::class, 'aboutPage'])->name('about');
 
 
     Route::prefix("student")->group(function(){
