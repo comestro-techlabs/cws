@@ -22,6 +22,8 @@
     Route::post('/login', [PublicController::class, 'login'])->name('login');
     Route::get('/logout', [PublicController::class, 'logout'])->name('logout');
 
+    Route::get('/services', [PublicController::class, 'servicePage'])->name('services');
+
 
     Route::prefix("student")->group(function(){
         Route::controller(StudentController::class)->group(function(){

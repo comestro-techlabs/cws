@@ -102,4 +102,9 @@ class PublicController extends Controller
         Auth::logout();
         return redirect('/login');
     }
+
+
+    public function servicePage(){
+        return view("public.services");
+    }
 }
