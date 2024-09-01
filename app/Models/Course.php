@@ -12,6 +12,15 @@ class Course extends Model
 
     protected $guarded = [];
 
+    public function payments()
+{
+    return $this->hasMany(Payment::class);
+}
+
+    public function students()
+    {
+        return $this->belongsToMany(User::class);
+    }
     /**
      * Get the user associated with the Course
      *

@@ -16,7 +16,7 @@
        
    @show
 
-   <footer class="bg-gray-800 text-gray-200 py-10">
+   <footer class="bg-gray-900 text-gray-200 py-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <!-- About Section -->
@@ -52,7 +52,7 @@
             <!-- Contact Information -->
             <div>
                 <h3 class="text-lg font-semibold text-white mb-4">Contact Us</h3>
-                <p class="text-gray-400">Code with Sadiq</p>
+                <p class="text-gray-400">{{env('APP_NAME')}} TechLabs Pvt Ltd.</p>
                 <p class="text-gray-400">Purnea, Bihar, India</p>
                 <p class="text-gray-400">Email: info@codewithsadiq.com</p>
                 <p class="text-gray-400">Phone: +91-9876543210</p>
@@ -61,7 +61,7 @@
 
         <div class="mt-8 border-t border-gray-700 pt-8 text-center">
             <p class="text-gray-500 text-sm">
-                &copy; 2024 Code with Sadiq. All rights reserved.
+                &copy; 2024 {{env('APP_NAME')}}. All rights reserved.
             </p>
         </div>
     </div>
