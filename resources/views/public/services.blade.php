@@ -4,22 +4,22 @@
     <div class="bg-white py-12 ">
 
         <!-- Header Section -->
-        <section class="bg-blue-900 text-white py-12" style="padding-top: 6rem;">
+        <section class="bg-blue-900 text-white py-12" style="padding-top: 6.5rem;">
             <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
                 <!-- Text Content -->
                 <div class="text-start md:text-left mb-8 md:mb-0 w-1/2">
-                    <h1 class="text-4xl font-bold mb-4">TechLab Service</h1>
+                    <h1 class="text-4xl font-bold mb-4">Comestro TechLab Services</h1>
                     <p class="mb-6">
                         Our TechLab services in India enhance your brand’s online presence, attract new customers,
                         and drive conversions, providing a competitive edge and securing new revenue sources for your
                         business.
                     </p>
-                    <div class="flex justify-center md:justify-start">
+                    <div class="flex">
                         <a href="#"
                             class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-5 rounded-full mr-4">
                             GET FREE TUTORIAL
                         </a>
-                        <a href="tel:+918080772299"
+                        <a href="tel:+919546805580"
                             class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-5 rounded-full">
                             Call: +91-9546-8055-80
                         </a>

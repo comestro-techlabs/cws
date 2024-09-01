@@ -111,4 +111,7 @@ class PublicController extends Controller
         $courses = Course::where("published", true)->get();
         return view("public.training")->with('courses', $courses);
     }
+    public function aboutPage(){
+        return view("public.about-us");
+    }
 }
