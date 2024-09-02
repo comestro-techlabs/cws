@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\User;
+use App\Models\Enquiry;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -121,4 +122,24 @@ class PublicController extends Controller
     public function webDesignPage(){
         return view("public.web-design");
     }
+
+
+    public function storeEnquiry(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'mobile' => 'required|digits:10|regex:/^[0-9]{10}$/',
+        ]);
+
+        $data = new Enquiry();
+        $data->name = $request->name;
+        $data->mobile = $request->mobile;
+        $data->message = $request->message;
+        $data->email = $request->email;
+        $data->save();
+
+        return redirect('/')->with('success', 'Request added successfully.');
+    }
+
+    
 }

@@ -2,7 +2,7 @@
 
 @section('content')
 <!-- Hero Section -->
-<section class="bg-blue-900 h-[430px] text-white py-12" style="padding-top: 6.5rem; clip-path: polygon(0 0, 100% 0%, 100% 81%, 0 100%);">
+<section class="bg-blue-900 h-[430px] text-white py-12" style="padding-top: 6.5rem;">
     <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
         <!-- Text Content -->
         <div class="text-start md:text-left mb-8 md:mb-0 w-1/2">
@@ -29,6 +29,8 @@
         </div>
     </div>
 </section>
+<div class="bend-bottom bottom-0 left-0 w-full h-16 bg-blue-900" style="clip-path: polygon(0 0, 100% 0, 100% 100%, 100% 100%);"></div>
+
 
 <!-- Services Section -->
 <section class="py-16">

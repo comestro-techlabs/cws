@@ -32,6 +32,7 @@
     Route::get('/about', [PublicController::class, 'aboutPage'])->name('public.about');
     Route::get('/contact', [PublicController::class, 'contactUsPage'])->name('public.contact');
     Route::get('/web-design', [PublicController::class, 'webDesignPage'])->name('public.web-design');
+    Route::post('/enquiry-store', [PublicController::class, 'storeEnquiry'])->name('enquiry.store');
 
 
     Route::prefix("student")->group(function () {
@@ -73,6 +74,10 @@
         Route::delete('batches/{batch}/disable', [BatchController::class, 'destroy'])->name('batches.destroy');
 
         Route::get("/search", [AdminController::class, "searchCourse"])->name('course.search');
+
+        Route::get("/search-enq", [AdminController::class, "searchEnquiry"])->name('enquiry.search');
+        Route::get('/enquiry', [AdminController::class, 'indexEnquiry'])->name('admin.manage.enquiry');
+
     });
 
     // admin search Route
