@@ -169,13 +169,13 @@
                                   </a>
                               </li>
                               <li>
-                                  <a href="#"
+                                  <a href="{{route('public.ecommerce')}}"
                                       class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500">
                                       E-Commerce Website Development
                                   </a>
                               </li>
                               <li>
-                                  <a href="#"
+                                  <a href="{{route('public.coaching')}}"
                                       class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500">
                                       Coaching Manangement System
                                   </a>
