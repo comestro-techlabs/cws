@@ -31,6 +31,7 @@
     Route::get('/services', [PublicController::class, 'servicePage'])->name('public.services');
     Route::get('/about', [PublicController::class, 'aboutPage'])->name('public.about');
     Route::get('/contact', [PublicController::class, 'contactUsPage'])->name('public.contact');
+    Route::get('/web-design', [PublicController::class, 'webDesignPage'])->name('public.web-design');
 
 
     Route::prefix("student")->group(function () {
