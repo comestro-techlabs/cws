@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\HireUs;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -117,5 +118,21 @@ class PublicController extends Controller
 
     public function contactUsPage(){
         return view("public.contact-us");
+    }
+    public function ecommercePage(){
+        return view("public.ecommerce");
+    }
+    public function coachingPage(){
+        return view("public.coaching");
+    }
+    public function hireUs(Request $request)
+    {
+        $data=$request->validate([
+            'name'=>'required|',
+            'contact'=>'required|min:10|max:10',
+        ]);
+        HireUs::create($data);
+     
+        return redirect()->route('public.index')->with('success',"sucessfully added");
     }
 }
