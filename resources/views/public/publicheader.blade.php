@@ -107,7 +107,7 @@
                         aria-current="page">Home</a>
                 </li>
                 <li>
-                    <a href="/about"
+                    <a href="{{route('public.about')}}"
                         class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">About
                         Us</a>
                 </li>
@@ -116,7 +116,7 @@
                         class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Training</a>
                 </li>
                 <li>
-                  <button data-dropdown-trigger="hover" id="mega-menu-dropdown-button" data-dropdown-toggle="mega-menu-dropdown"
+                  <button id="mega-menu-dropdown-button" data-dropdown-toggle="mega-menu-dropdown"
                       class="flex items-center justify-between w-full py-2 px-3 text-gray-900 border-b border-gray-100 md:w-auto hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent dark:border-gray-700">
                       Services <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                           fill="none" viewBox="0 0 10 6">
@@ -125,11 +125,11 @@
                       </svg>
                   </button>
                   <div id="mega-menu-dropdown"
-                      class="absolute z-10 grid hidden w-auto grid-cols-1 text-sm bg-white border border-gray-100 rounded-lg shadow-md dark:border-gray-700 md:grid-cols-2 dark:bg-gray-700">
+                      class="absolute z-10 grid hidden w-auto grid-cols-2 text-sm bg-white border border-gray-100 rounded-lg shadow-md dark:border-gray-700 md:grid-cols-3 dark:bg-gray-700">
                       <div class="p-4 pb-0 text-gray-900 md:pb-4 dark:text-white">
                           <ul class="space-y-4" aria-labelledby="mega-menu-dropdown-button">
                               <li>
-                                  <a href="#"
+                                  <a href="/web-design"
                                       class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500">
                                       Web Design
                                   </a>
@@ -169,13 +169,13 @@
                                   </a>
                               </li>
                               <li>
-                                  <a href="#"
+                                  <a href="{{route('public.ecommerce')}}"
                                       class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500">
                                       E-Commerce Website Development
                                   </a>
                               </li>
                               <li>
-                                  <a href="#"
+                                  <a href="{{route('public.coaching')}}"
                                       class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500">
                                       Coaching Manangement System
                                   </a>
@@ -188,7 +188,16 @@
                               </li>
                           </ul>
                       </div>
-                    
+                      <div class="p-4 w-48 pb-0 text-gray-900 md:pb-4 dark:text-white">
+                        <h2 class="mb-2 font-semibold text-gray-900 dark:text-white">Our Serices</h2>
+                        <p class="mb-2 text-gray-500 dark:text-gray-400">At Flowbite, we have a portfolio of brands that cater to a variety of preferences.</p>
+                        <a href="{{route('public.services')}}" class="inline-flex items-center text-sm font-medium text-blue-600 hover:underline hover:text-blue-600 dark:text-blue-500 dark:hover:text-blue-700">
+                            Explore our Services
+                            <svg class="w-3 h-3 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                            </svg>
+                        </a>
+                    </div>
                   </div>
               </li>
               

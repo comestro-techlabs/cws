@@ -29,8 +29,15 @@
         // Route::get('/logout', [PublicController::class, 'logout'])->name('logout');
     });
 
-    Route::get('/services', [PublicController::class, 'servicePage'])->name('services');
-    Route::get('/about', [PublicController::class, 'aboutPage'])->name('about');
+    Route::get('/services', [PublicController::class, 'servicePage'])->name('public.services');
+    Route::get('/about', [PublicController::class, 'aboutPage'])->name('public.about');
+    Route::get('/contact', [PublicController::class, 'contactUsPage'])->name('public.contact');
+    Route::get('/web-design', [PublicController::class, 'webDesignPage'])->name('public.web-design');
+    Route::get('/ecommerce',[PublicController::class, 'ecommercePage'])->name('public.ecommerce');
+    Route::get('/coaching',[PublicController::class, 'coachingPage'])->name('public.coaching');
+    Route::post('/',[PublicController::class, 'hireUs'])->name('public.hireUs');
+   
+    Route::post('/enquiry-store', [PublicController::class, 'storeEnquiry'])->name('enquiry.store');
 
 
     Route::prefix("student")->group(function () {
@@ -73,6 +80,10 @@
         Route::delete('batches/{batch}/disable', [BatchController::class, 'destroy'])->name('batches.destroy');
 
         Route::get("/search", [AdminController::class, "searchCourse"])->name('course.search');
+
+        Route::get("/search-enq", [AdminController::class, "searchEnquiry"])->name('enquiry.search');
+        Route::get('/enquiry', [AdminController::class, 'indexEnquiry'])->name('admin.manage.enquiry');
+
     });
 
 
