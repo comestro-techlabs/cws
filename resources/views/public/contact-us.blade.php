@@ -41,7 +41,7 @@
 
                 <span class="elementor-divider-separator"></span>
 
-                <div class="grid grid-cols-2 sm:grid-cols-1 gap-4">
+                <div class="grid grid-cols-2 sm:grid-cols-2 gap-4">
                     <div >
                         <img src="/assets/location.png" alt="Location Image" >
                         <div class="mt-4">
@@ -77,7 +77,7 @@
             </div>
 
             <div class="flex items-center justify-center">
-                <iframe class="rounded-xl w-full md:w-96  md:h-64" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3592.629023335638!2d87.46747347465347!3d25.782814277338673!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eff97801471a9f%3A0xf8f622c46e9afaa9!2sComestro%20(Code%20with%20SadiQ)!5e0!3m2!1sen!2sin!4v1725219952931!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <iframe class="rounded-xl" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3592.629023335638!2d87.46747347465347!3d25.782814277338673!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eff97801471a9f%3A0xf8f622c46e9afaa9!2sComestro%20(Code%20with%20SadiQ)!5e0!3m2!1sen!2sin!4v1725219952931!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
         </div>
     </section>
@@ -96,7 +96,7 @@
         </div>
 
         <form action="" method="post" class="mt-5">
-            <div class="grid grid-cols-2 sm:grid-cols-1 gap-5 p-4 sm:p-8">
+            <div class="grid grid-cols-2 sm:grid-cols-2 gap-5 p-4 sm:p-8">
                 <div class="flex flex-col">
                     <input type="text" id="name" name="name" placeholder="Name" class="mt-1 block w-full p-2 border border-gray-300 rounded-xl py-3 shadow-sm focus:ring-blue-500 focus:border-blue-500">
                 </div>
