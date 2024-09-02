@@ -119,6 +119,9 @@ class PublicController extends Controller
     public function contactUsPage(){
         return view("public.contact-us");
     }
+    public function webDesignPage(){
+        return view("public.web-design");
+    }
     public function ecommercePage(){
         return view("public.ecommerce");
     }
