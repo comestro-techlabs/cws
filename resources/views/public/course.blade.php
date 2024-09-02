@@ -1,7 +1,7 @@
 @extends('public.layout')
 
 @section('content')
-    <div class="flex justify-center bg-gray-900 py-8">
+    <div class="flex justify-center bg-gray-900 py-8 mt-5">
         <div class="w-10/12 flex items-center flex-col-reverse md:flex-row">
             <!-- Left Section (Course Details) -->
             <div class="w-8/12 text-white p-8">
@@ -16,12 +16,12 @@
                             <a href="#" class="hover:text-white">{{ $course->category->cat_title }}</a>
                         </li>
                         <li><span class="mx-2">/</span></li>
-                        <li class="text-gray-100">{{ $course->title }}</li>
+                        <li class="text-gray-100 ">{{ $course->title }}</li>
                     </ol>
                 </nav>
 
                 <!-- Course Title and Description -->
-                <h1 class="text-4xl font-bold text-gray-100 mb-4">{{ $course->title }}</h1>
+                <h1 class="text-4xl font-bold text-gray-100 mb-4 capitalize">{{ $course->title }}</h1>
                 <p class="text-lg text-gray-300 mb-4">{{ $course->description }}</p>
 
                 <!-- Instructor and Ratings -->

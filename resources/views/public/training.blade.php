@@ -1,4 +1,7 @@
-<div class="grid md:grid-cols-4 px-3 md:px-10 gap-5 grid-cols-1 py-5 bg-white flex-1">
+@extends('public.layout')
+
+@section('content')
+<div class="grid md:grid-cols-4 px-3 md:px-10 gap-5 grid-cols-1 py-5 mt-9 bg-white flex-1">
     @foreach ($courses as $course)
         <x-course-card :course="$course" />
     @endforeach
@@ -20,3 +23,4 @@ star="5.0"/>
     <x-review-card img="https://lh3.googleusercontent.com/a/ACg8ocLbsLNIpUeRJQjVX1_ebOgQS8mpUYFZtyWth080et-FABAzKA=s45-c-rp-mo-br100" fullname="Neeraj Kumar" review="Really talented teacher praises students and work hard along with them, motivating to be next level Software Engineer/Developer. Purnia has never such practical teacher on field of computer education, we need more teachers like Sadique Sir 💥"
 star="5.0"/>
 </div>
+@endsection
