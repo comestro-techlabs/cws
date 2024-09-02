@@ -114,4 +114,8 @@ class PublicController extends Controller
     public function aboutPage(){
         return view("public.about-us");
     }
+
+    public function contactUsPage(){
+        return view("public.contact-us");
+    }
 }

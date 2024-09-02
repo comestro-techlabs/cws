@@ -9,7 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
     @vite('resources/css/app.css')
 
-</head>
+</head> 
 
 <body class="dark:bg-slate-700">
 
