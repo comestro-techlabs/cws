@@ -1,6 +1,7 @@
     <?php
 
     use App\Http\Controllers\AdminController;
+    use App\Http\Controllers\AuthController;
     use App\Http\Controllers\BatchController;
     use App\Http\Controllers\CategoryController;
     use App\Http\Controllers\ChapterController;
@@ -17,15 +18,15 @@
         Route::prefix('training')->group(function () {
 
             Route::get("/", "training")->name('public.training');
-            Route::get("/register", "apply")->name('public.apply');
+            // Route::get("/register", "apply")->name('public.apply');
             Route::get("/register/success", "success")->name('public.success');
-            Route::post("/register", "register")->name('public.register');
+            // Route::post("/register", "register")->name('public.register');
             Route::get('/courses/{id}', 'courseDetails')->name('public.courseDetails');
         });
 
-        Route::get('/login', [PublicController::class, 'showLoginForm'])->name('login.form');
-        Route::post('/login', [PublicController::class, 'login'])->name('login');
-        Route::get('/logout', [PublicController::class, 'logout'])->name('logout');
+        // Route::get('/login', [PublicController::class, 'showLoginForm'])->name('login.form');
+        // Route::post('/login', [PublicController::class, 'login'])->name('login');
+        // Route::get('/logout', [PublicController::class, 'logout'])->name('logout');
     });
 
     Route::get('/services', [PublicController::class, 'servicePage'])->name('services');
@@ -37,6 +38,7 @@
             Route::get('/dashboard', 'dashboard')->name('student.dashboard');
         });
     });
+
     // admin Routes  
     Route::prefix('admin')->group(function () {
         Route::get("/", [AdminController::class, "dashboard"])->name('admin.dashboard');
@@ -73,4 +75,14 @@
         Route::get("/search", [AdminController::class, "searchCourse"])->name('course.search');
     });
 
-    // admin search Route
+
+    // Authentication route's group here
+    Route::prefix('auth')->controller(AuthController::class)->group(function(){
+        Route::get('/login','showLoginForm')->name('auth.login');
+        Route::post('/login','login')->name('auth.login.post');
+        Route::get('/register','showRegistrationForm')->name('auth.register');
+        Route::post('/register','register')->name('auth.register.post');
+        Route::get('/logout','logout')->name('auth.logout');
+    });
+
+
