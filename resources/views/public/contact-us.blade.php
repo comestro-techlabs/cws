@@ -150,12 +150,12 @@
                         placeholder="Email (optional)"
                         class="mt-1 block w-full p-2 border border-gray-300 rounded-full px-4 py-3 shadow-sm focus:ring-blue-500 focus:border-blue-500">
                 </div>
-                <div class="flex flex-col">
-                    <input type="tel" id="mobile" name="mobile" value="{{ old('mobile') }}" placeholder="Mobile No."
-                        class="mt-1 block w-full p-2 border border-gray-300 rounded-full px-4 py-3 shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                </div>
-            </div>
 
+            </div>
+            <div class="flex flex-col px-8 py-3">
+                <input type="tel" id="mobile" name="mobile" value="{{ old('mobile') }}" placeholder="Mobile No."
+                    class="mt-1 block w-full p-2 border border-gray-300 rounded-full px-4 py-3 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+            </div>
             <div class="px-4 sm:px-8">
                 <textarea id="message" name="message" value="{{ old('message') }}" placeholder="Message (optional) " rows="4"
                     class="mt-1 block w-full p-2 border border-gray-300 rounded-xl py-3 shadow-sm focus:ring-blue-500 focus:border-blue-500"></textarea>
