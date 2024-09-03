@@ -149,14 +149,17 @@ class PublicController extends Controller
     public function coachingPage(){
         return view("public.coaching");
     }
+    
     public function hireUs(Request $request)
     {
-        $data=$request->validate([
-            'name'=>'required|',
-            'contact'=>'required|min:10|max:10',
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'contact' => 'required|digits:10|unique:hire_us,contact',
         ]);
+
         HireUs::create($data);
-     
-        return redirect()->route('public.index')->with('success',"sucessfully added");
+
+        return redirect()->route('public.index')->with('success', 'Successfully added.');
     }
+    
 }
