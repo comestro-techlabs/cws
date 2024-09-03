@@ -37,7 +37,9 @@ use Illuminate\Support\Facades\Route;
     Route::get('/web-design', [PublicController::class, 'webDesignPage'])->name('public.web-design');
     Route::get('/ecommerce',[PublicController::class, 'ecommercePage'])->name('public.ecommerce');
     Route::get('/coaching',[PublicController::class, 'coachingPage'])->name('public.coaching');
-    Route::post('/',[PublicController::class, 'hireUs'])->name('public.hireUs');
+    Route::get('/web-dev',[PublicController::class, 'webDevPage'])->name('public.web-devlopment');
+    Route::get('/mobile-app',[PublicController::class, 'mobileAppPage'])->name('public.mobile-app');
+   
    
     Route::post('/enquiry-store', [EnquiryController::class, 'storeEnquiry'])->name('enquiry.store');
 

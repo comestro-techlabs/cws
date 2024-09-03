@@ -135,13 +135,13 @@
                                   </a>
                               </li>
                               <li>
-                                  <a href="#"
+                                  <a href="{{route('public.web-devlopment')}}"
                                       class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500">
                                       Web Development
                                   </a>
                               </li>
                               <li>
-                                  <a href="#"
+                                  <a href="{{route('public.mobile-app')}}"
                                       class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500">
                                       Mobile App Development
                                   </a>

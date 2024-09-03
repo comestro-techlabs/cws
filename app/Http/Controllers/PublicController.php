@@ -132,6 +132,13 @@ class PublicController extends Controller
     public function coachingPage(){
         return view("public.coaching");
     }
+    public function webDevPage(){
+        return view("public.web-devlopment");
+    }
+    public function mobileAppPage()
+    {
+        return view("public.mobile-app");
+    }
     // public function hireUs(Request $request)
     // {
     //     $data=$request->validate([

@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="py-16">
-    <div class="flex bg-white rounded-lg mb-6 shadow-xl border overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
+    <div class="flex bg-white rounded-lg mb-12 shadow-xl border overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
         <div class="hidden lg:block lg:w-1/2 bg-cover"
             style="background-image:url('https://images.unsplash.com/photo-1566888596782-c7f41cc184c5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2134&q=80')">
         </div>
