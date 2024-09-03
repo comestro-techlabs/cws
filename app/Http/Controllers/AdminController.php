@@ -58,5 +58,25 @@ class AdminController extends Controller
         $search_enquiry = Enquiry::whereLike('name', "%$search%")->paginate(10);
         return view("admin.manageEnquiry",['enquiry' => $search_enquiry]);
     }
+
+    public function editEnquiry(Enquiry $enquiry)
+    {
+        return view('admin.edit_enquiry', compact('enquiry'));
+    }
+
+    public function updateEnquiry(Request $request, Enquiry $enquiry)
+    {
+        // Validate the incoming request data
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'mobile' => 'required|digits:10|regex:/^[0-9]{10}$/',
+            'status' => 'required|string',  // Adjust as needed for valid statuses
+        ]);
     
+        // Update the enquiry with validated data
+        $enquiry->update($validatedData);
+    
+        // Redirect with a success message
+        return redirect()->route('admin.manage.enquiry', $enquiry)->with('success', 'Enquiry updated successfully');
+    }
 }
