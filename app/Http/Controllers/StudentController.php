@@ -38,71 +38,16 @@ class StudentController extends Controller
     // Attach the course to the student
     $student->courses()->attach($request->input('course_id'));
 
-    return redirect()->back()->with('success', 'Course assigned successfully!');
-}
-public function processPayment(Request $request, $studentId)
-{
-    $student = User::findOrFail($studentId);
-
-    // Validate the request
-    $request->validate([
-        'course_id' => 'required|exists:courses,id',
-        'payment_option' => 'required|in:full,installments,monthly',
-    ]);
-
-    // Check if the student is assigned to the selected course
-    if (!$student->courses->contains($request->input('course_id'))) {
-        return redirect()->back()->withErrors('The selected course is not assigned to the student.');
-    }
-
-    $course = Course::findOrFail($request->input('course_id'));
-    $paymentOption = $request->input('payment_option');
-    $amount = 0;
-    $status = 'paid';
-    $dueDate = null;
-
-    if ($paymentOption === 'full') {
-        // Full payment with 5% discount
-        $amount = $course->price * 0.95;
-    } elseif ($paymentOption === 'installments') {
-        // First 50% payment now, second 50% due later
-        $amount = $course->price * 0.50;
-        // Generate due payment for the remaining amount
-        Payment::create([
-            'student_id' => $studentId,
-            'course_id' => $course->id,
-            'amount' => $course->price * 0.50,
-            'payment_option' => 'installments',
-            'status' => 'due',
-            'payment_date' => date("Y-m-d"),
-        ]);
-    } elseif ($paymentOption === 'monthly') {
-        // Generate 12 monthly payment records
-        for ($i = 1; $i <= 12; $i++) {
-            $dueDate = now()->addMonths($i);
-            Payment::create([
-                'student_id' => $studentId,
-                'course_id' => $course->id,
-                'amount' => 700,
-                'payment_option' => 'monthly',
-                'status' => $i === 1 ? 'paid' : 'due',
-                'due_date' => $dueDate,
-            ]);
-        }
-        $amount = 700;
-    }
-
-    // Store the initial payment record
     Payment::create([
         'student_id' => $studentId,
-        'course_id' => $course->id,
-        'amount' => $amount,
-        'payment_option' => $paymentOption,
-        'status' => $status,
+        'course_id' => $request->input('course_id'),
+        'amount' => 0,
+        'status' => 'pending',
     ]);
 
-    return redirect()->back()->with('success', 'Payment processed successfully!');
+    return redirect()->back()->with('success', 'Course assigned successfully! & Payment Generated Success');
 }
+
 
 
 
