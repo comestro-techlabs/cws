@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('contact')->unique();
+            $table->string('contact')->nullable()->unique();
             $table->enum("gender",["male","female","other"]);
             $table->string('education_qualification')->nullable();
             $table->boolean("isAdmin")->default(false);

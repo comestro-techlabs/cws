@@ -21,7 +21,7 @@
             <h2 class="text-2xl font-semibold text-center"> <span class="text-orange-500 font-bold">Com</span><span
                     class="text-blue-600 font-bold">estro</span></h2>
             <p class="text-xl text-gray-600 text-center">Welcome Students</p>
-            <a href="#" class="flex items-center justify-center mt-4 text-white rounded-lg shadow-md hover:bg-gray-100">
+            <a href="{{ route('auth.google') }}" class="flex items-center justify-center mt-4 text-white rounded-lg shadow-md hover:bg-gray-100">
                 <div class="px-4 py-3">
                     <svg class="h-6 w-6" viewBox="0 0 40 40">
                         <path
