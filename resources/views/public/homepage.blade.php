@@ -86,10 +86,12 @@
     </div>
 
 {{-- who we are --}}
-    <div class="flex-1 flex">
-        <div class="flex-1 min-w-[50%]"></div>
-        <div class="flex-1">
-            <h2>Who we are</h2>
+    <div class="flex-1 flex md:px-[10%] gap-5 ">
+        <div class="flex-1 p-10">
+            <img src="{{asset('assets/first_image.png')}}" class="w-full" alt="">
+        </div>
+        <div class="flex-1 p-5">
+            <h2 class="text-3xl font-sans">Who we are</h2>
             <h1>Est 2011 Top Web Designing Company</h1>
             <p>More than 15 years of expertise in the field has established us as an upgrading Digital Marketing Agency. Over the years we have diversified according to the needs of the market. We optimize ranking of websites, increase performance of campaigns, enhance brand name, create quality content, popularize brand on social media… 
             </p>

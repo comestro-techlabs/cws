@@ -13,7 +13,7 @@
         </a>
     </div>
     <div class="flex items-center space-x-6 rtl:space-x-reverse">
-        <a href="{{route('logout')}}" class="text-sm  text-white rounded dark:text-blue-500 bg-black dark:bg-slate-700 px-3 py-2 hover:bg-red-600">Logout</a>
+        <a href="" class="text-sm  text-white rounded dark:text-blue-500 bg-black dark:bg-slate-700 px-3 py-2 hover:bg-red-600">Logout</a>
     </div>
 </nav>
 <br>

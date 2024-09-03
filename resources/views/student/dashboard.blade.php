@@ -27,7 +27,7 @@
                 @foreach($courses as $course)
                 <div class="mb-6 bg-white shadow-lg rounded-lg overflow-hidden">
                     <div class="flex flex-col md:flex-row">
-                        <img src="{{ asset('images/courses/' . $course->feature_image) }}" class="w-full md:w-1/3 h-48 md:h-auto object-cover" alt="{{ $course->title }}">
+                        <img src="{{ asset('storage/course_images/' . $course->course_image) }}" class="w-full md:w-1/3 h-48 md:h-auto object-cover" alt="{{ $course->title }}">
                         <div class="p-6 flex-1">
                             <h2 class="text-lg font-semibold text-gray-800">{{ $course->title }}</h2>
                             <p class="text-gray-600 mt-2">{{ Str::limit($course->description, 100) }}</p>
