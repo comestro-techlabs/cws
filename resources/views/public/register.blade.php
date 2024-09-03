@@ -110,13 +110,13 @@
                 <!-- Terms and Conditions -->
                 <div class="flex items-center">
                     <input type="checkbox" name="terms" id="terms"
-                        class="mr-2 h-4 w-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500">
+                        class="mr-2 h-4 w-4 text-gray-700 border-gray-300 rounded focus:bg-gray-teal-500">
                     <label for="terms" class="text-sm text-gray-700">I agree to the terms and conditions</label>
                 </div>
 
                 <!-- Submit Button -->
                 <button type="submit"
-                    class="w-full py-2 px-4 bg-teal-600 text-white font-bold rounded-md hover:bg-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-opacity-50">Submit</button>
+                    class="w-full py-2 px-4 bg-gray-700 text-white font-bold rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-opacity-50">Submit</button>
             </form>
         </div>
     </div>

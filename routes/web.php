@@ -6,10 +6,12 @@
     use App\Http\Controllers\CategoryController;
     use App\Http\Controllers\ChapterController;
     use App\Http\Controllers\CourseController;
-    use App\Http\Controllers\LessonController;
+use App\Http\Controllers\EnquiryController;
+use App\Http\Controllers\LessonController;
     use App\Http\Controllers\PublicController;
     use App\Http\Controllers\StudentController;
-    use Illuminate\Support\Facades\Route;
+use App\Models\Enquiry;
+use Illuminate\Support\Facades\Route;
 
     Route::controller(PublicController::class)->group(function () {
 
@@ -37,7 +39,7 @@
     Route::get('/coaching',[PublicController::class, 'coachingPage'])->name('public.coaching');
     Route::post('/',[PublicController::class, 'hireUs'])->name('public.hireUs');
    
-    Route::post('/enquiry-store', [PublicController::class, 'storeEnquiry'])->name('enquiry.store');
+    Route::post('/enquiry-store', [EnquiryController::class, 'storeEnquiry'])->name('enquiry.store');
 
 
     Route::prefix("student")->group(function () {

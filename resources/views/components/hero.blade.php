@@ -77,7 +77,7 @@
                             </button>
                         </div>
                         <div class="p-2 md:p-3">
-                            <form class="space-y-2" action="{{ route('public.hireUs') }}" method="post">
+                            <form class="space-y-2" action="{{ route('enquiry.store') }}" method="post">
                                 @csrf
                                 <div>
                                     <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Name</label>
@@ -88,15 +88,25 @@
                                     @enderror
                                 </div>
                                 <div>
-                                    <label for="contact" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Contact</label>
-                                    <input type="number" name="contact" id="contact" placeholder="E.g 99999-99999" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required />
+                                    <label for="mobile" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Contact</label>
+                                    <input type="number" name="mobile" id="mobile" placeholder="E.g 99999-99999" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required />
 
-                                    @error('contact')
+                                    @error('mobile')
+                                    <p class="text-red-500 text-xs font-semibold">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <div>
+                                    <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Message</label>
+                                    <textarea type="text" name="message" id="message" placeholder="E.g 99999-99999" class="bg-gray-50 border resize-none border-gray-300  text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
+
+                                    </textarea>
+
+                                    @error('message')
                                     <p class="text-red-500 text-xs font-semibold">{{ $message }}</p>
                                     @enderror
                                 </div>
 
-                                <button type="submit" class="w-full text-white bg-orange-700 hover:bg-orange-800 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800">Send Information</button>
+                                <button type="submit" class="w-full text-white bg-orange-700  hover:bg-orange-800 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800">Send Information</button>
                                 
                             </form>
                         </div>
