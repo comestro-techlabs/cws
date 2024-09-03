@@ -107,25 +107,51 @@
     </div>
 
 {{-- {{static info}} --}}
-<div class="flex flex-1 flex-col gap-4">
-    <h2>Results that speak for themselves: See why we’re a top digital marketing company in India</h2>
+{{-- <body class="flex flex-col items-center justify-center min-h-screen bg-gray-100"> --}}
 
-    <div class="flex w-full divide-x-2">
-        <div class="flex-1">
-            <h3 class="text-4xl">51,485,985</h3>
-            <p>Qualified Lead Generated</p>
-        </div>
-        <div class="flex-1">
-            <h3 class="text-4xl">51,485,985</h3>
-            <p>Qualified Lead Generated</p>
-        </div>
-        <div class="flex-1">
-            <h3 class="text-4xl">51,485,985</h3>
-            <p>Qualified Lead Generated</p>
+    <div class="flex flex-1 flex-col gap-4 p-6 bg-white shadow-md rounded-lg">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Results that speak for themselves: See why we’re a top digital marketing company in India</h2>
+        
+        <div class="flex w-full divide-x-2">
+            <div class="flex-1 p-4 text-center">
+                <h3 class="count-number" data-target="51485985">0</h3>
+                <p class="stat-title">Qualified Lead Generated</p>
+            </div>
+            <div class="flex-1 p-4 text-center">
+                <h3 class="count-number" data-target="78901234">0</h3>
+                <p class="stat-title">Website Visitors</p>
+            </div>
+            <div class="flex-1 p-4 text-center">
+                <h3 class="count-number" data-target="67890234">0</h3>
+                <p class="stat-title">Conversions Achieved</p>
+            </div>
         </div>
     </div>
-</div>
 
+    <script>
+        // JavaScript for the counting animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const counters = document.querySelectorAll('.count-number');
+            const speed = 100; // Adjust speed as needed
+
+            counters.forEach(counter => {
+                const updateCount = () => {
+                    const target = +counter.getAttribute('data-target');
+                    const count = +counter.innerText;
+                    const increment = target / speed;
+
+                    if (count < target) {
+                        counter.innerText = Math.ceil(count + increment);
+                        setTimeout(updateCount, 50);
+                    } else {
+                        counter.innerText = target.toLocaleString(); // Add commas to number
+                    }
+                };
+
+                updateCount();
+            });
+        });
+    </script>
    
 @endsection
 

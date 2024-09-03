@@ -82,8 +82,10 @@
         Route::get("/search", [AdminController::class, "searchCourse"])->name('course.search');
 
         Route::get("/search-enq", [AdminController::class, "searchEnquiry"])->name('enquiry.search');
-        Route::get('/enquiry', [AdminController::class, 'indexEnquiry'])->name('admin.manage.enquiry');
 
+        Route::get('/enquiry', [AdminController::class, 'indexEnquiry'])->name('admin.manage.enquiry');
+        Route::get('/enquiry-view/{enquiry}', [AdminController::class, 'editEnquiry'])->name('admin.enquiry.show');
+        Route::put('/enquiry-view/{enquiry}', [AdminController::class, 'updateEnquiry'])->name('admin.enquiry.update');
     });
 
 
