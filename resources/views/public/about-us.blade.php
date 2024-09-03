@@ -20,6 +20,10 @@
     .shake {
         animation: shake 2s infinite;
     }
+
+    .bend-bottom {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 100% 100%);
+    }
 </style>
 @section('content')
     <div class="bg-white py-12 ">
@@ -51,6 +55,8 @@
                 </div>
             </div>
         </section>
+        <div class="bend-bottom bottom-0 left-0 w-full h-16 bg-blue-900"></div>
+
 
         <!-- Content Section -->
         <section class="py-10 flex">

@@ -1,11 +1,17 @@
 @extends('public.layout')
 
+<style>
+    .bend-bottom {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 100% 100%);
+    }
+</style>
+
 @section('content')
     <div class="bg-white py-12 ">
 
         <!-- Header Section -->
-        <section class="bg-blue-900 text-white py-12" style="padding-top: 6.5rem;">
-            <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
+        <section class="bg-blue-900 h-[430px] text-white py-12" style="padding-top: 6.5rem;">
+            <div class="container mx-auto px-4 flex flex-col md:flex-row items-center" >
                 <!-- Text Content -->
                 <div class="text-start md:text-left mb-8 md:mb-0 w-1/2">
                     <h1 class="text-4xl font-bold mb-4">Comestro TechLab Services</h1>
@@ -26,11 +32,14 @@
                     </div>
                 </div>
                 <!-- Image -->
-                <div class="flex justify-center md:w-1/2 px-8">
-                    <img src="/assets/service-header.png" alt="TechLab Illustration" class="max-w-full h-auto">
+                <div class="flex justify-center md:w-1/2 px-8" >
+                    <img src="/assets/service-header.png" alt="TechLab Illustration" class="max-w-full h-full" >
                 </div>
+                
             </div>
         </section>
+        <div class="bend-bottom bottom-0 left-0 w-full h-16 bg-blue-900"></div>
+
 
         <!-- Content Section -->
         <section class="py-16">

@@ -13,19 +13,25 @@
                 </ul>
             </div>
         @endif
-        <form action="{{ route('login') }}" method="POST">
+        <form action="{{ route('auth.login.post') }}" method="POST">
             @csrf
             <div class="mb-6">
                 <label for="email" class="block text-lg font-semibold text-gray-700">Email:</label>
-                <input type="email" name="email" id="email" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none" required>
+                <input type="email" value="{{ old('email') }}" name="email" id="email" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none" required>
+                @error('email')
+                    <p class="text-xs text-red-500">{{ $message }}</p>
+                @enderror
             </div>
             <div class="mb-8">
                 <label for="password" class="block text-lg font-semibold text-gray-700">Password:</label>
                 <input type="password" name="password" id="password" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none" required>
+                @error('password')
+                <p class="text-xs text-red-500">{{ $message }}</p>
+            @enderror
             </div>
             <button type="submit" class="w-full bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700 transition duration-300 ease-in-out transform hover:scale-105 mb-4">Login</button>
         </form>
-        <a href="{{ route('public.register') }}" class="block text-center text-purple-600 font-semibold mt-4 hover:underline">Apply to Join Us</a>
+        <a href="{{ route('auth.register') }}" class="block text-center text-purple-600 font-semibold mt-4 hover:underline">Apply to Join Us</a>
     </div>
 </div>
 @endsection
