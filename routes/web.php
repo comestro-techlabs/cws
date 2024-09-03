@@ -28,9 +28,9 @@
         Route::get('/logout', [PublicController::class, 'logout'])->name('logout');
     });
 
-    Route::get('/services', [PublicController::class, 'servicePage'])->name('services');
-    Route::get('/about', [PublicController::class, 'aboutPage'])->name('about');
-    Route::get('/contact', [PublicController::class, 'contactUsPage'])->name('contact');
+    Route::get('/services', [PublicController::class, 'servicePage'])->name('public.services');
+    Route::get('/about', [PublicController::class, 'aboutPage'])->name('public.about');
+    Route::get('/contact', [PublicController::class, 'contactUsPage'])->name('public.contact');
 
 
     Route::prefix("student")->group(function () {
