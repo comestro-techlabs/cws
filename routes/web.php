@@ -91,7 +91,7 @@ Route::post('save-course-payment', [PaymentController::class, 'saveCoursePayment
                 Route::get('/coaching', 'coachingPage')->name('public.services.coaching');
                 Route::get('/ecommerce', 'ecommercePage')->name('public.services.ecommerce');
                 Route::get('/seo-services', 'seoServices')->name('public.services.seo-services');
-                Route::get('/web-developlent', 'webDevPage')->name('public.services.web-dev');
+                Route::get('/web-development', 'webDevPage')->name('public.services.web-dev');
                 Route::get('/mobile-app', 'mobileAppPage')->name('public.services.mobile-app');
                 Route::get('/web-design', 'webDesignPage')->name('public.services.web-design');
                 Route::get('/software-development', 'softwareDev')->name('public.services.software-dev');
