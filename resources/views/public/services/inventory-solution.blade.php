@@ -6,6 +6,7 @@
 @endsection
 
 @section('content')
+<div class="bg-white py-12 overflow-x-hidden">
 <livewire:page-heading title="Upgrade Your Business" description="Streamline your inventory management with our tailored solutions." image="about-header.png"/>
  <!-- Services Section -->
  <section class="py-12">
@@ -89,3 +90,4 @@
     </div>
 </section>
 @endsection
+</div>
