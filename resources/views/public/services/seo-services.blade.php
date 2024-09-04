@@ -59,7 +59,7 @@
     <div class="container mx-auto text-center">
         <h3 class="text-3xl font-bold mb-4">Start Optimizing Your Website Today</h3>
         <p class="mb-6">Get in touch with our SEO experts and see how we can help you improve your online visibility and achieve your business goals.</p>
-        <a href="#" class="bg-white text-blue-900 px-6 py-3 rounded-full font-bold hover:bg-gray-200">Contact Us</a>
+        <a href="{{route('public.contact')}}" class="bg-white text-blue-900 px-6 py-3 rounded-full font-bold hover:bg-gray-200">Contact Us</a>
     </div>
 </section>
 
