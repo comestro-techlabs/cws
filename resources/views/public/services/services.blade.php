@@ -1,20 +1,24 @@
 @extends('public.layout')
-@section('content')
-    <div class="bg-white py-12 ">
 
-        <!-- Header Section -->
-        <livewire:page-heading title="Comestro TechLab Services"
-        description="Our TechLab services in India enhance your brand’s online presence, attract new customers,
-                        and drive conversions, providing a competitive edge and securing new revenue sources for your
-                        business."
-        image="about-header.png" />
+@section('title')
+    Explore our Services
+@endsection
+
+
+@section('content')
+<br>
+<livewire:page-heading title="Comestro TechLab Services" description="Our TechLab services in India enhance your brand’s online presence, attract new customers,
+                        and drive conversions." image="about-header.png"/>
+
 
         <!-- Content Section -->
-        <section class="py-16">
-            <div class="container mx-auto px-4 md:px-10">
-                <h2 class="text-2xl md:text-3xl font-bold mb-4 text-blue-900 text-center md:text-left">Grow your company the digital way!</h2>
-                <h2 class="text-2xl md:text-3xl font-bold mb-4 text-blue-900 text-center md:text-left">Market your company digitally.</h2>
-                <p class="text-sm md:text-md text-gray-700 leading-relaxed">
+        <section class="py-10">
+            <div class="container mx-auto px-10">
+                <h2 class="text-3xl font-bold mb-4 text-blue-900 md:text-start w-1/2">Grow your company the digital way!
+                </h2>
+                <h2 class="text-3xl font-bold mb-4 text-blue-900 md:text-start w-1/2">Market your company digitally.</h2>
+                <span></span>
+                <p class="text-md text-gray-700 leading-relaxed">
                     Business is sales. Period! No company can ever survive in the long-run without a considerable amount of
                     sales. The sales target is always increasing and businesses often find it difficult to cope with the
                     industry pace. Businesses are always on a hunt for new sources of revenue. Well, your hunt is over. Look
@@ -107,54 +111,8 @@
                 </button>
             </div>
         </div>
-    </div>
 
     </div>
 
 
 
-@section('js')
-    <script>
-        const carousel = document.getElementById('carousel');
-        const indicators = document.querySelectorAll('.indicator');
-        let index = 0;
-
-
-
-        function slide() {
-            const cards = document.querySelectorAll('#carousel > div');
-            const totalCards = cards.length;
-
-            index++;
-
-            if (index >= totalCards) {
-                index = 0;
-                carousel.style.transition = 'none';
-                carousel.style.transform = `translateX(0)`;
-            } else {
-                carousel.style.transition = 'transform 0.7s ease-in-out';
-                const offset = -index * (cards[0].offsetWidth + 16);
-                carousel.style.transform = `translateX(${offset}px)`;
-            }
-
-        }
-
-        document.getElementById('next').addEventListener('click', () => {
-            slide();
-            clearInterval(autoSlide); // Stops auto slide when clicking next/prev
-        });
-
-        document.getElementById('prev').addEventListener('click', () => {
-            index = index <= 0 ? document.querySelectorAll('#carousel > div').length - 1 : index - 2;
-            slide();
-            clearInterval(autoSlide); // Stops auto slide when clicking next/prev
-        });
-
-        // Auto slide every 3 seconds
-        let autoSlide = setInterval(slide, 3000);
-
-        // Set initial indicator
-        updateIndicators();
-    </script>
-
-@endsection

@@ -27,34 +27,7 @@
         }
 </style>
 @section('content')
-    <div class="bg-gray-900 w-full ">
-        <div class="px-[15%] pt-10">
-            <h2 class="text-3xl text-white font-bold">My Learning</h2>
-            <div class="mb-4 border-b mt-5">
-                <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-tab"
-                    data-tabs-toggle="#default-tab-content" role="tablist">
-                    <li class="me-2" role="presentation">
-                        <button
-                            class="inline-block text-slate-100 p-4 border-b-2 hover:text-gray-100 hover:border-gray-100 dark:hover:text-gray-300 border-white rounded-t-lg"
-                            id="profile-tab" data-tabs-target="#profile" type="button" role="tab"
-                            aria-controls="profile" aria-selected="false">My Course</button>
-                    </li>
-                    <li class="me-2" role="presentation">
-                        <button
-                            class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-100 hover:border-gray-100 dark:hover:text-gray-300"
-                            id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab"
-                            aria-controls="dashboard" aria-selected="false">My Payment</button>
-                    </li>
-                    <li class="me-2" role="presentation">
-                        <button
-                            class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-100 hover:border-gray-300 dark:hover:text-gray-300"
-                            id="settings-tab" data-tabs-target="#settings" type="button" role="tab"
-                            aria-controls="settings" aria-selected="false">Settings</button>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
+    
     <div class="bg-gray-900 w-full ">
         <div class="px-[15%] pt-10">
             <h2 class="text-3xl text-white font-bold">My Learning</h2>
