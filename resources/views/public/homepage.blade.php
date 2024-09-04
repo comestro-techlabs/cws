@@ -14,7 +14,7 @@
     <x-hero />
 
 
-    <!-- Heading Section -->
+    {{-- <!-- Heading Section -->
     <div class="bg-white py-12 px-4 text-center">
         <h2 class="text-xl font-semibold uppercase text-purple-600 mb-2">
             Our Services
@@ -25,34 +25,83 @@
         <p class="text-lg font-light text-gray-600 mt-4">
             Partner with us to transform your vision into reality. Your journey to innovation starts here!
         </p>
-    </div>
+    </div> --}}
 
     <div class="flex flex-1 justify-center my-5">
         <div class="relative overflow-hidden w-full md:w-10/12">
-            <!-- Carousel Container -->
-            <div id="carousel"
-                class="flex my-3 justify-center items-stretch transition-transform duration-700 ease-in-out h-[300px]">
-                
-                    {{-- service card area --}}
-                    <livewire:service-card title="Web Designing" description="This is web design service"/>
-                    <livewire:service-card title="Web Designing" description="This is web design service"/>
-                    <livewire:service-card title="Web Designing" description="This is web design service"/>
-                    <livewire:service-card title="Web Designing" description="This is web design service"/>
-                    <livewire:service-card title="Web Designing" description="This is web design service"/>
-            </div>
-
-
-
-            <!-- Arrows -->
-            <button id="prev"
-                class="absolute top-1/2 left-0 transform -translate-y-1/2 bg-white/45 text-gray-700 px-5 py-2 text-xl">
-                &lt;
-            </button>
-            <button id="next"
-                class="absolute top-1/2 right-0 transform -translate-y-1/2 bg-white/45 text-gray-700 px-5 py-2 text-xl">
-                &gt;
-            </button>
-
+            <section class="py-16">
+                <div class="container mx-auto px-4">
+                    <div class="text-center mb-12">
+                        <h2 class="text-3xl font-bold text-blue-600 mb-2">What We Offer</h2>
+                        <p class="text-3xl font-bold text-gray-800">
+                            Comestro TechLabs offer end to end 'Digital Solutions'
+                        </p>
+                        <p class="text-gray-600 mt-4">Our comprehensive services are designed to meet your business needs.</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <a href="" class="bg-white p-6 rounded-lg shadow-lg text-center">
+                            <div class="flex justify-center mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-16 w-16 text-[#090446]">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-2.25-2.25l3.276-3.276a4.5 4.5 0 0 0-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437 1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008Z" />
+                                  </svg>
+                                  
+                            </div>
+                            <h3 class="text-2xl font-semibold text-[#090446] mb-4">Consulting</h3>
+                            <p class="text-gray-600">Expert advice to help you navigate complex business challenges.</p>
+                        </a>
+                        <a href="{{ route('public.services.web-dev') }}" class="bg-white p-6 rounded-lg shadow-lg text-center">
+                            <div class="flex justify-center mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-16 w-16 text-orange-500">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0V12a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 12V5.25" />
+                                  </svg>
+                                  
+                            </div>
+                            <h3 class="text-2xl font-semibold text-orange-500 mb-4">Web Development</h3>
+                            <p class="text-gray-600">Custom software solutions that drive efficiency and growth.</p>
+                        </a>
+                        <a href="{{ route('public.services.mobile-app') }}" class="bg-white p-6 rounded-lg shadow-lg text-center">
+                            <div class="flex justify-center mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-16 w-16 text-[#ff1d15]">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
+                                  </svg>
+                                  
+                            </div>
+                            <h3 class="text-2xl font-semibold text-[#ff1d15] mb-4">App Development</h3>
+                            <p class="text-gray-600">Strategic marketing campaigns that deliver measurable results.</p>
+                        </a>
+                        <a href="{{ route('public.services.seo-services') }}" class="bg-white p-6 rounded-lg shadow-lg text-center">
+                            <div class="flex justify-center mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-16 w-16 text-green-600">
+                                    <path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z" clip-rule="evenodd" />
+                                  </svg>
+                                  
+                            </div>
+                            <h3 class="text-2xl font-semibold text-green-600 mb-4">SEO Optimization</h3>
+                            <p class="text-gray-600">Enhance your online presence with our expert SEO services.</p>
+                        </a>
+                        <a href="{{ route('public.services.web-design') }}" class="bg-white p-6 rounded-lg shadow-lg text-center">
+                            <div class="flex justify-center mb-4">
+                                <svg class="w-16 h-16 text-[#2a9d8f]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M8.737 8.737a21.49 21.49 0 0 1 3.308-2.724m0 0c3.063-2.026 5.99-2.641 7.331-1.3 1.827 1.828.026 6.591-4.023 10.64-4.049 4.049-8.812 5.85-10.64 4.023-1.33-1.33-.736-4.218 1.249-7.253m6.083-6.11c-3.063-2.026-5.99-2.641-7.331-1.3-1.827 1.828-.026 6.591 4.023 10.64m3.308-9.34a21.497 21.497 0 0 1 3.308 2.724m2.775 3.386c1.985 3.035 2.579 5.923 1.248 7.253-1.336 1.337-4.245.732-7.295-1.275M14 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z"/>
+                                  </svg>
+                                  
+                            </div>
+                            <h3 class="text-2xl font-semibold text-[#2a9d8f] mb-4">Web Design</h3>
+                            <p class="text-gray-600">High-quality content that engages and converts your audience.</p>
+                        </a>
+                        <a href="{{ route('public.services.invent-sol') }}" class="bg-white p-6 rounded-lg shadow-lg text-center">
+                            <div class="flex justify-center mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-16 w-16 text-[#033e63e8]">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
+                                  </svg>
+                                  
+                            </div>
+                            <h3 class="text-2xl font-semibold text-[#033e63e8] mb-4">Inventry Solutions</h3>
+                            <p class="text-gray-600">Data-driven insights to help you make informed business decisions.</p>
+                        </a>
+                    </div>
+                </div>
+            </section>
 
         </div>
     </div>
@@ -89,9 +138,9 @@
 
     {{-- {{static info}} --}}
     <div class="flex flex-col gap-2 p-8 bg-white rounded-2xl mb-12 items-center md:px-[10%]">
-        <h2 class="text-lg md:text-xl font-normal max-w-2xl text-gray-900  text-center mb-2 flex flex-col">
-            <span>Results that Speak for Themselves:</span>
-            <span class="text-3xl"> We’re a Top Digital Marketing Company in India</span>
+        <h2 class="text-lg md:text-xl font-normal max-w-2xl text-gray-900  text-center mb-4 flex flex-col">
+            <span class="font-semibold mb-1">Results that Speak for Themselves:</span>
+            <span class="text-3xl font-semibold"> We’re a Top Digital Marketing Company in India</span>
         </h2>
 
         <div class="flex flex-col md:flex-row w-full gap-8">
