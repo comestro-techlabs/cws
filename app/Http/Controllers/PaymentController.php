@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Course;
 use App\Models\User;
 use App\Models\Payment;
+use Exception;
 use Razorpay\Api\Api;
 use Illuminate\Support\Facades\Auth;
 
@@ -30,11 +31,7 @@ class PaymentController extends Controller
 
         $student = User::findOrFail(Auth::id());
 
-        // if ($student->courses()->where('course_id', $request->input('course_id'))->exists()) {
-        //     return redirect()->back()->with('error', 'This course is already assigned to the student.');
-        // }
-     
-        // $student->courses()->attach($request->input('course_id'));
+
 
         $payment = Payment::create([
             'course_id' =>$request->input('course_id'),
@@ -61,11 +58,7 @@ class PaymentController extends Controller
             return redirect('/student/dashboard')->with('success', 'Payment Successfull');
         }  
 
-        // $tempPayment = Course::where('token_no',  $request->token_no)->first();
-        // $tempPayment->update([
-        //     'isPayment'=>1
-        // ]);
-                            
+               
         else{
             return redirect()->back()->with('error', 'Something Went Wrong.');
         }
