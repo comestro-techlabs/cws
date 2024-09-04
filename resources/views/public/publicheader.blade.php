@@ -190,7 +190,7 @@
                       </div>
                       <div class="p-4 w-48 pb-0 text-gray-900 md:pb-4 dark:text-white">
                         <h2 class="mb-2 font-semibold text-gray-900 dark:text-white">Our Serices</h2>
-                        <p class="mb-2 text-gray-500 dark:text-gray-400">At Flowbite, we have a portfolio of brands that cater to a variety of preferences.</p>
+                        <p class="mb-2 text-gray-500 dark:text-gray-400">At Comestro, we have a portfolio of brands that cater to a variety of preferences.</p>
                         <a href="{{route('public.services.services')}}" class="inline-flex items-center text-sm font-medium text-blue-600 hover:underline hover:text-blue-600 dark:text-blue-500 dark:hover:text-blue-700">
                             Explore our Services
                             <svg class="w-3 h-3 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">

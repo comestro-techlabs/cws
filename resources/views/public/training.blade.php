@@ -1,5 +1,9 @@
 @extends('public.layout')
 
+@section('title')
+    Training
+@endsection
+
 @section('content')
 
 <livewire:page-heading title="Comestro Traning Program" description="Our Comestro TechLab services is one of top techLab services agency in India. We provide 360º techLab Solutions to businesses across the globe" image="about-header.png"/>

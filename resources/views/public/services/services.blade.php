@@ -1,5 +1,9 @@
 @extends('public.layout')
 
+@section('title')
+    Explore our Services
+@endsection
+
 <style>
     .bend-bottom {
         clip-path: polygon(0 0, 100% 0, 100% 100%, 100% 100%);
@@ -11,7 +15,7 @@
 
         <!-- Header Section -->
         <section class="bg-blue-900 h-[430px] text-white py-12" style="padding-top: 6.5rem;">
-            <div class="container mx-auto px-4 flex flex-col md:flex-row items-center" >
+            <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
                 <!-- Text Content -->
                 <div class="text-start md:text-left mb-8 md:mb-0 w-1/2">
                     <h1 class="text-4xl font-bold mb-4">Comestro TechLab Services</h1>
@@ -32,10 +36,10 @@
                     </div>
                 </div>
                 <!-- Image -->
-                <div class="flex justify-center md:w-1/2 px-8" >
-                    <img src="/assets/service-header.png" alt="TechLab Illustration" class="max-w-full h-full" >
+                <div class="flex justify-center md:w-1/2 px-8">
+                    <img src="/assets/service-header.png" alt="TechLab Illustration" class="max-w-full h-full">
                 </div>
-                
+
             </div>
         </section>
         <div class="bend-bottom bottom-0 left-0 w-full h-16 bg-blue-900"></div>
@@ -67,35 +71,47 @@
                 </p>
                 <h2 class="text-3xl font-bold text-gray-800 mb-3 mt-4">Businesses are investing intensely towards</h2>
                 <!-- Subheading -->
-                <h3 class="text-sm font-semibold text-gray-800 mb-2">TechLab Services in India to stay the front-runner in their industry.</h3>
+                <h3 class="text-sm font-semibold text-gray-800 mb-2">TechLab Services in India to stay the front-runner in
+                    their industry.</h3>
                 <!-- Intro Text -->
                 <p class="text-sm font-medium text-gray-700 mb-8">
                     Let us comprehend the ways Comestro assists company’s like yours to achieve their
                 </p>
-    
+
                 <!-- Feature List -->
                 <div class="space-y-8">
                     <!-- Feature Item -->
                     <div>
                         <h4 class="text-xl font-bold text-gray-800 mb-2">Measurable results</h4>
                         <p class="text-gray-700">
-                            All activities performed by Comestro on various digital platforms are recorded in real-time and is always available at the tips of your finger. Data like customer interaction, conversion rate, impressions, etc are saved automatically and are available on the various accounts created by our <a href="#" class="text-blue-600 hover:text-blue-800">TechLab Agency</a> for your reference and analysis.
+                            All activities performed by Comestro on various digital platforms are recorded in real-time and
+                            is always available at the tips of your finger. Data like customer interaction, conversion rate,
+                            impressions, etc are saved automatically and are available on the various accounts created by
+                            our <a href="#" class="text-blue-600 hover:text-blue-800">TechLab Agency</a> for your
+                            reference and analysis.
                         </p>
                     </div>
-                    
+
                     <!-- Feature Item -->
                     <div>
                         <h4 class="text-xl font-bold text-gray-800 mb-2">Low cost</h4>
                         <p class="text-gray-700">
-                            Small businesses predominantly find it difficult to compete with the industry giants in marketing due to the latter’s enormous marketing budget. At Comestro, we believe that every rupee saved is a rupee earned. Our TechLab Agency specializes in smart-spending, so that you can achieve the maximum out of any size of budget.
+                            Small businesses predominantly find it difficult to compete with the industry giants in
+                            marketing due to the latter’s enormous marketing budget. At Comestro, we believe that every
+                            rupee saved is a rupee earned. Our TechLab Agency specializes in smart-spending, so that you can
+                            achieve the maximum out of any size of budget.
                         </p>
                     </div>
-                    
+
                     <!-- Feature Item -->
                     <div>
                         <h4 class="text-xl font-bold text-gray-800 mb-2">Target Marketing</h4>
                         <p class="text-gray-700">
-                            An ad in an esteemed newspaper agency will be viewed by millions. But how many of them will be your target audience? Probably a petite fraction of it. It means that lakhs of rupees are down the drain. Comestro will not allow you to make the same mistake. We scrutinize the target audience for you from the vast range of demographics options available and ensure that only relevant people view your ads.
+                            An ad in an esteemed newspaper agency will be viewed by millions. But how many of them will be
+                            your target audience? Probably a petite fraction of it. It means that lakhs of rupees are down
+                            the drain. Comestro will not allow you to make the same mistake. We scrutinize the target
+                            audience for you from the vast range of demographics options available and ensure that only
+                            relevant people view your ads.
                         </p>
                     </div>
                 </div>

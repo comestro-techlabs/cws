@@ -1,5 +1,9 @@
 @extends('student.base')
 
+@section('title')
+    Student dashboard
+@endsection
+
 <style>
      @media print {
             body * {
