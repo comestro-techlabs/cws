@@ -1,14 +1,5 @@
 @extends('public.layout')
-<style>
-    .elementor-divider-separator {
-        display: block;
-        height: 3px;
-        margin: 20px 0;
-        width: 110px;
-        background: linear-gradient(to right, #feb47b, #570250);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-</style>
+
 @section('content')
 <!-- Hero Section -->
 <section class="bg-blue-900 h-[430px] text-white py-12" style="padding-top: 6.5rem;">
