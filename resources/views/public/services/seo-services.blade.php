@@ -17,42 +17,44 @@
 </section>
 
 <!-- SEO Services Details Section -->
-<section class="py-12 bg-gray-200">
+<section class="py-12 bg-gray-100">
     <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
         <!-- Keyword Research -->
-        <div class="bg-white p-6 rounded-lg shadow-lg">
-            <h4 class="text-2xl font-bold mb-4">Keyword Research</h4>
-            <p class="mb-4">
-                We conduct thorough keyword research to identify the most relevant and high-performing keywords for your business. This helps us create a targeted strategy that attracts the right audience to your website.
+        <div class="bg-white p-8 rounded-xl shadow-md border-l-4 border-blue-500">
+            <h4 class="text-3xl font-bold text-blue-500 mb-4">Keyword Research</h4>
+            <p class="text-gray-600 mb-6 leading-relaxed">
+                Discover the power of precise keyword research. We dive deep to find high-impact keywords that connect your business with the right audience, boosting your online visibility and engagement.
             </p>
-            <img src="https://via.placeholder.com/400x300" alt="Keyword Research" class="rounded-lg">
+            <img src="/assets/key-seo.webp" alt="Keyword Research" class="rounded-lg">
         </div>
         <!-- On-Page SEO -->
-        <div class="bg-white p-6 rounded-lg shadow-lg">
-            <h4 class="text-2xl font-bold mb-4">On-Page SEO</h4>
-            <p class="mb-4">
-                Our on-page SEO services focus on optimizing individual pages on your website to improve their search engine rankings. This includes optimizing content, meta tags, images, and internal links to ensure your site is search engine-friendly.
+        <div class="bg-white p-8 rounded-xl shadow-md border-l-4 border-blue-500">
+            <h4 class="text-3xl font-bold text-blue-500 mb-4">On-Page SEO</h4>
+            <p class="text-gray-600 mb-6 leading-relaxed">
+                Elevate your content with our on-page SEO expertise. We optimize every aspect of your webpages, from content to meta tags, ensuring your site ranks higher and attracts more visitors.
             </p>
-            <img src="https://via.placeholder.com/400x300" alt="On-Page SEO" class="rounded-lg">
+            <img src="/assets/page-seo.webp" alt="On-Page SEO" class="rounded-lg">
         </div>
         <!-- Off-Page SEO -->
-        <div class="bg-white p-6 rounded-lg shadow-lg">
-            <h4 class="text-2xl font-bold mb-4">Off-Page SEO</h4>
-            <p class="mb-4">
-                Off-page SEO is essential for building your website's authority and reputation. We employ strategies like link building, social media marketing, and influencer outreach to enhance your online presence and drive more traffic to your site.
+        <div class="bg-white p-8 rounded-xl shadow-md border-l-4 border-blue-500">
+            <h4 class="text-3xl font-bold text-blue-500 mb-4">Off-Page SEO</h4>
+            <p class="text-gray-600 mb-6 leading-relaxed">
+                Strengthen your online presence with strategic off-page SEO. Through link building, social media, and influencer partnerships, we boost your website's authority and drive meaningful traffic.
             </p>
-            <img src="https://via.placeholder.com/400x300" alt="Off-Page SEO" class="rounded-lg">
+            <img src="/assets/offpage1-seo.webp" alt="Off-Page SEO" class="rounded-lg">
         </div>
         <!-- Technical SEO -->
-        <div class="bg-white p-6 rounded-lg shadow-lg">
-            <h4 class="text-2xl font-bold mb-4">Technical SEO</h4>
-            <p class="mb-4">
-                Technical SEO ensures that your website meets the technical requirements of modern search engines. We optimize your site's structure, speed, mobile-friendliness, and security to provide a better user experience and improve search rankings.
+        <div class="bg-white p-8 rounded-xl shadow-md border-l-4 border-blue-500">
+            <h4 class="text-3xl font-bold text-blue-500 mb-4">Technical SEO</h4>
+            <p class="text-gray-600 mb-6 leading-relaxed">
+                Optimize your website’s infrastructure with our technical SEO services. We enhance site speed, mobile compatibility, and security, creating a seamless user experience and better search rankings.
             </p>
-            <img src="https://via.placeholder.com/400x300" alt="Technical SEO" class="rounded-lg">
+            <img src="/assets/seo-technical.webp" alt="Technical SEO" class="rounded-lg">
         </div>
     </div>
 </section>
+
+
 
 <!-- Call to Action -->
 <section class="bg-blue-900 text-white py-12">

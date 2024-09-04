@@ -1,4 +1,8 @@
 @extends('public.layout')
+@section('title')
+    Ecommerce Web App Service 
+@endsection
+
 @section('content')
 <div class="bg-white py-12 overflow-x-hidden">
     <livewire:page-heading title="Ecommerce Website Development"
