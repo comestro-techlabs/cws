@@ -48,37 +48,37 @@
         <div class=" mx-20 px-16">
             <div class="grid grid-cols-2 py-5 gap-1">
                 <div class="flex flex-col items-center justify-center mb-6 py-4 bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
-                    <img class="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-32 md:rounded-none md:rounded-s-lg" src="assets/icons/school1.png" alt="">
+                    <img class="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-32 md:rounded-none md:rounded-s-lg" src="{{asset('assets/icons/school1.png')}}" alt="">
                     <div class="flex flex-col  items-center p-4 leading-normal">
                         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-700 mt-8 dark:text-white">Manage Your Whole System </h5> 
                     </div>
                 </div>
                 <div class="flex flex-col items-center justify-center mb-6 py-4 bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
-                    <img class="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-28 md:rounded-none md:rounded-s-lg" src="assets/icons/graduated.png" alt="">
+                    <img class="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-28 md:rounded-none md:rounded-s-lg" src="{{asset('assets/icons/graduated.png')}}"" alt="">
                     <div class="flex flex-col  items-center p-4 leading-normal">
                         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-700 mt-8 dark:text-white">You Can Manage Your Student </h5> 
                     </div>
                 </div>
                 <div class="flex flex-col items-center justify-center mb-6 py-4 bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
-                    <img class="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-28 md:rounded-none md:rounded-s-lg" src="assets/icons/tablet.png" alt="">
+                    <img class="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-28 md:rounded-none md:rounded-s-lg" src="{{asset('assets/icons/tablet.png')}}" alt="">
                     <div class="flex flex-col  items-center p-4 leading-normal">
                         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-700 mt-8 dark:text-white">We provide you Admin Panel</h5> 
                     </div>
                 </div>
                 <div class="flex flex-col items-center justify-center mb-6 py-4 bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
-                    <img class="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-28 md:rounded-none md:rounded-s-lg" src="assets/icons/webinar.png" alt="">
+                    <img class="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-28 md:rounded-none md:rounded-s-lg" src="{{asset('assets/icons/webinar.png')}}" alt="">
                     <div class="flex flex-col  items-center p-4 leading-normal">
                         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-700 mt-8 dark:text-white">You Can Mangage Your Courses.</h5> 
                     </div>
                 </div>
                 <div class="flex flex-col items-center mb-6 py-4 bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
-                    <img class="object-cover w-full ml-16 rounded-t-lg h-96 md:h-auto md:w-28 md:rounded-none md:rounded-s-lg" src="assets/icons/shield.png" alt="">
+                    <img class="object-cover w-full ml-16 rounded-t-lg h-96 md:h-auto md:w-28 md:rounded-none md:rounded-s-lg" src="{{asset('assets/icons/shield.png')}}" alt="">
                     <div class="flex flex-col  items-center p-4 leading-normal">
                         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-700 mt-8 dark:text-white">Full Secure System</h5> 
                     </div>
                 </div>
                 <div class="flex flex-col items-center justify-center mb-6 py-4 bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
-                    <img class="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-28 md:rounded-none md:rounded-s-lg" src="assets/icons/payment-method.png" alt="">
+                    <img class="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-28 md:rounded-none md:rounded-s-lg" src="{{asset('assets/icons/payment-method.png')}}" alt="">
                     <div class="flex flex-col  items-center p-4 leading-normal">
                         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-700 mt-8 dark:text-white">Payment Gatway Integration</h5> 
                     </div>
