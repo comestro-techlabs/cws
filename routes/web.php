@@ -85,11 +85,11 @@ Route::post('save-course-payment', [PaymentController::class, 'saveCoursePayment
             });
             Route::get('/about', 'aboutPage')->name('public.about');
             Route::get('/contact', 'contactUsPage')->name('public.contact');
-            Route::get('/ecommerce', 'ecommercePage')->name('public.ecommerce');
-            Route::get('/coaching', 'coachingPage')->name('public.coaching');
-
-        
+            
+            
             Route::prefix("services")->group(function(){
+                Route::get('/coaching', 'coachingPage')->name('public.services.coaching');
+                Route::get('/ecommerce', 'ecommercePage')->name('public.services.ecommerce');
                 Route::get('/seo-services', 'seoServices')->name('public.services.seo-services');
                 Route::get('/web-dev', 'webDevPage')->name('public.services.web-dev');
                 Route::get('/mobile-app', 'mobileAppPage')->name('public.services.mobile-app');
