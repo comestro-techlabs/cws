@@ -44,6 +44,16 @@
     Route::get('/web-dev', [PublicController::class, 'webDevPage'])->name('public.web-devlopment');
     Route::get('/mobile-app', [PublicController::class, 'mobileAppPage'])->name('public.mobile-app');
 
+    // services route's group:
+    Route::prefix("services")->group(function(){
+        Route::controller(PublicController::class)->group(function(){
+            Route::get('/seo-services', 'seoServices')->name('public.services.seo-services');
+        });
+    });
+
+
+    Route::get('/seo-services', [PublicController::class, 'seoServices'])->name('public.seo_services');
+
 
     Route::post('/enquiry-store', [EnquiryController::class, 'storeEnquiry'])->name('enquiry.store');
 

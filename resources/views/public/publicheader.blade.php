@@ -147,7 +147,7 @@
                                   </a>
                               </li>
                               <li>
-                                  <a href="#"
+                                  <a href="{{ route('public.services.seo-services') }}"
                                       class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500">
                                       SEO Services
                                   </a>

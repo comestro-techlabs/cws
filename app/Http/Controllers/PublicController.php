@@ -149,4 +149,18 @@ class PublicController extends Controller
      
     //     return redirect()->route('public.index')->with('success',"sucessfully added");
     // }
+
+    public function seoServices(){
+        return view('public.services.seo');
+    }
+
+
+
+
+
+
+
+
+
+
 }
