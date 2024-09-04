@@ -119,26 +119,11 @@ class PublicController extends Controller
     public function contactUsPage(){
         return view("public.contact-us");
     }
-    public function webDesignPage(){
-        return view("public.web-design");
-    }
 
-
- 
-    
-    public function ecommercePage(){
-        return view("public.ecommerce");
-    }
     public function coachingPage(){
         return view("public.coaching");
     }
-    public function webDevPage(){
-        return view("public.web-devlopment");
-    }
-    public function mobileAppPage()
-    {
-        return view("public.mobile-app");
-    }
+    
     // public function hireUs(Request $request)
     // {
     //     $data=$request->validate([
@@ -149,4 +134,45 @@ class PublicController extends Controller
      
     //     return redirect()->route('public.index')->with('success',"sucessfully added");
     // }
+
+    public function seoServices(){
+        return view('public.services.seo-services');
+    }
+
+    public function webDevPage(){
+        return view('public.services.web-devlopment');
+    }
+
+    public function mobileAppPage(){
+        return view('public.services.mobile-app');
+    }
+
+    public function ecommercePage(){
+        return view('public.services.ecommerce');
+    }
+
+    public function webDesignPage(){
+        return view("public.web-design");
+    }
+
+    public function softwareDev(){
+        return view('public.services.software-dev');
+    }
+
+    public function nativeApp(){
+        return view('public.services.native-app');
+    }
+
+    public function inventorySolution(){
+        return view('public.services.inventory-solution');
+    }
+
+
+
+
+
+
+
+
+
 }

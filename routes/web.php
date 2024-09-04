@@ -10,6 +10,7 @@
     use App\Http\Controllers\LessonController;
     use App\Http\Controllers\PublicController;
     use App\Http\Controllers\StudentController;
+    use App\Http\Controllers\PaymentController;
     use App\Models\Enquiry;
     use Illuminate\Support\Facades\Route;
     use App\Http\Controllers\Auth\SocialiteController;
@@ -24,7 +25,6 @@
         Route::prefix('training')->group(function () {
 
             Route::get("/", "training")->name('public.training');
-            // Route::get("/register", "apply")->name('public.apply');
             Route::get("/register/success", "success")->name('public.success');
             // Route::post("/register", "register")->name('public.register');
             Route::get('/courses/{category_slug}/{slug}', 'courseDetails')->name('public.courseDetails');
@@ -35,14 +35,27 @@
         // Route::get('/logout', [PublicController::class, 'logout'])->name('logout');
     });
 
-    Route::get('/services', [PublicController::class, 'servicePage'])->name('public.services');
     Route::get('/about', [PublicController::class, 'aboutPage'])->name('public.about');
     Route::get('/contact', [PublicController::class, 'contactUsPage'])->name('public.contact');
-    Route::get('/web-design', [PublicController::class, 'webDesignPage'])->name('public.web-design');
     Route::get('/ecommerce', [PublicController::class, 'ecommercePage'])->name('public.ecommerce');
     Route::get('/coaching', [PublicController::class, 'coachingPage'])->name('public.coaching');
-    Route::get('/web-dev', [PublicController::class, 'webDevPage'])->name('public.web-devlopment');
-    Route::get('/mobile-app', [PublicController::class, 'mobileAppPage'])->name('public.mobile-app');
+
+    // services route's group:
+    Route::prefix("services")->group(function(){
+        Route::controller(PublicController::class)->group(function(){
+            Route::get('/seo-services', 'seoServices')->name('public.services.seo-services');
+            Route::get('/web-dev', 'webDevPage')->name('public.services.web-dev');
+            Route::get('/mobile-app', 'mobileAppPage')->name('public.services.mobile-app');
+            Route::get('/web-design', 'webDesignPage')->name('public.services.web-design');
+            Route::get('/software-dev', 'softwareDev')->name('public.services.software-dev');
+            Route::get('/native-app', 'nativeApp')->name('public.services.native-app');
+            Route::get('/inventory-solution', 'inventorySolution')->name('public.services.invent-sol');
+            Route::get('/services', 'servicePage')->name('public.services.services');
+        });
+    });
+
+
+    Route::get('/seo-services', [PublicController::class, 'seoServices'])->name('public.seo_services');
 
 
     Route::post('/enquiry-store', [EnquiryController::class, 'storeEnquiry'])->name('enquiry.store');
@@ -105,3 +118,9 @@
         Route::post('/register', 'register')->name('auth.register.post');
         Route::get('/logout', 'logout')->name('auth.logout');
     });
+
+
+
+Route::post('save-course-payment', [PaymentController::class, 'saveCoursePayment'])->name('save.course.payment');
+Route::get('course-payment-success/{token_no}', [PaymentController::class, 'coursePaymentSuccess'])->name('course.payment.success');
+
