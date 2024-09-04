@@ -1,16 +1,18 @@
-<div>
-    <div class="relative flex flex-1 md:flex-row flex-col bg-slate-100 h-auto md:h-[500px] my-0 py-7 md:py-2 items-center px-5 md:px-[10%] overflow-hidden">
+
+<div class="bg-white  overflow-x-hidden">
+    <div class="relative flex py-12 flex-col md:flex-row bg-slate-100 h-auto md:h-[500px] my-0 py-7 md:py-2 items-center px-5 md:px-[10%] overflow-hidden ">
         <!-- Background Image and Gradient Overlay -->
-        <div class="absolute inset-0 bg-gradient-to-r z-10 from-slate-100 via-slate-500 to-black opacity-50"></div>
         <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{{ asset('assets/banner.png') }}');"></div>
+        <div class="absolute inset-0 bg-gradient-to-r z-10 from-slate-100 via-slate-500 to-black opacity-50"></div>
 
         <div class="relative flex-1 flex-col max-w-lg ml-5 gap-1 z-50">
             <h1 class="md:text-5xl roboto-bold text-3xl font-semibold leading-normal text-gray-900">
                 Purnea's <span class="text-orange-500">Most Trusted</span> Software Company
             </h1>
-            <p class="text-lg md:text-xl font-normal text-gray-900 mt-4">
+            <p class="text-lg md:text-xl font-normal text-gray-900 mt-4 md:text-slate-800 text-white font-semibold">
                 Empowering you with the skills to achieve your dreams. Start your journey towards success today!
-            </p>
+            </p>            
+
             <br>
 
             <!-- Error Handling -->
@@ -90,7 +92,7 @@
                                 @csrf
                                 <div>
                                     <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Name</label>
-                                    <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="E.g Rajesh Kumar" required />
+                                    <input type="text" name="name" id="name" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="E.g Rajesh Kumar" required />
 
                                     @error('name')
                                     <p class="text-red-500 text-xs font-semibold">{{ $message }}</p>
@@ -98,7 +100,7 @@
                                 </div>
                                 <div>
                                     <label for="mobile" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Contact</label>
-                                    <input type="number" name="mobile" id="mobile" placeholder="E.g 99999-99999" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required />
+                                    <input type="number" name="mobile" id="mobile" placeholder="E.g 99999-99999" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required />
 
                                     @error('mobile')
                                     <p class="text-red-500 text-xs font-semibold">{{ $message }}</p>
@@ -106,16 +108,14 @@
                                 </div>
                                 <div>
                                     <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Message</label>
-                                    <textarea type="text" name="message" id="message" placeholder="E.g 99999-99999" class="bg-gray-50 border resize-none border-gray-300  text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
-
-                                    </textarea>
+                                    <textarea name="message" id="message" placeholder="E.g 99999-99999" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"></textarea>
 
                                     @error('message')
                                     <p class="text-red-500 text-xs font-semibold">{{ $message }}</p>
                                     @enderror
                                 </div>
 
-                                <button type="submit" class="w-full text-white bg-orange-700  hover:bg-orange-800 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800">Send Information</button>
+                                <button type="submit" class="w-full text-white bg-orange-700 hover:bg-orange-800 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800">Send Information</button>
                                 
                             </form>
                         </div>
@@ -124,9 +124,7 @@
             </div>
         </div>
     </div>
-</div>
-
-
+ </div>
 <script>
 function toggleModal() {
     const modal = document.getElementById('authentication-modal');
