@@ -98,7 +98,7 @@
     </div>
 
     {{-- who we are --}}
-    <div class="flex-1 flex flex-col md:flex-row md:px-[8%] gap-10 mb-10 mt-">
+    <div class="flex-1 flex flex-col md:flex-row md:px-[8%] gap-10 mb-10">
         <div class="flex-1 p-5">
             <img src="{{ asset('assets/first_image.png') }}" class="w-full rounded-lg shadow-sm ring-slate-600 " alt="">
         </div>
