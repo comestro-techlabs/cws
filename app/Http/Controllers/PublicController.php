@@ -148,7 +148,7 @@ class PublicController extends Controller
     }
 
     public function webDesignPage(){
-        return view("public.web-design");
+        return view("public.services.web-design");
     }
 
     public function softwareDev(){
