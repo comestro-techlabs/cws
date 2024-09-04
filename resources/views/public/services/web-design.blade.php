@@ -14,36 +14,14 @@
     }
 </style>
 @section('content')
-    <!-- Hero Section -->
-    <section class="bg-blue-900 h-[430px] text-white py-12" style="padding-top: 6.5rem;">
-        <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
-            <!-- Text Content -->
-            <div class="text-start md:text-left mb-8 md:mb-0 w-1/2">
-                <h1 class="text-4xl font-bold mb-4">Comestro TechLab Web Design (Services)</h1>
-                <p class="mb-6">
-                    Our TechLab services in India enhance your brand’s online presence, attract new customers,
+
+    <livewire:page-heading title="Web Designing"
+        description="Our TechLab services in India enhance your brand’s online presence, attract new customers,
                     and drive conversions, providing a competitive edge and securing new revenue sources for your
-                    business.
-                </p>
-                <div class="flex">
-                    <a href="#"
-                        class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-5 rounded-full mr-4">
-                        GET FREE TUTORIAL
-                    </a>
-                    <a href="tel:+919546805580"
-                        class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-5 rounded-full">
-                        Call: +91-9546-8055-80
-                    </a>
-                </div>
-            </div>
-            <!-- Image -->
-            <div class="flex justify-center md:w-1/2 px-8">
-                <img src="/assets/service-header.png" alt="TechLab Illustration" class="max-w-full h-full">
-            </div>
-        </div>
-    </section>
-    <div class="bend-bottom bottom-0 left-0 w-full h-16 bg-blue-900"
-        style="clip-path: polygon(0 0, 100% 0, 100% 100%, 100% 100%);"></div>
+                    business."
+        image="about-header.png" />
+
+
 
 
     <!-- Services Section -->
