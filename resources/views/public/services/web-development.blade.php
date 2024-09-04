@@ -4,20 +4,6 @@
     Web Development
 @endsection
 
-<style>
-    .faq-item {
-        cursor: pointer;
-        color: blue;
-    }
-
-    .faq-answer {
-        display: none;
-    }
-
-    .faq-item.active .faq-answer {
-        display: block;
-    }
-</style>
 @section('content')
 
     <!-- Header Section -->
