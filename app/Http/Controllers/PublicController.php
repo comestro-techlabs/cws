@@ -104,9 +104,7 @@ class PublicController extends Controller
     // }
 
 
-    public function servicePage(){
-        return view("public.services");
-    }
+    
 
     public function training(){
         $courses = Course::where("published", true)->get();
@@ -167,6 +165,9 @@ class PublicController extends Controller
         return view('public.services.inventory-solution');
     }
 
+    public function servicePage(){
+        return view('public.services.services');
+    }
 
 
 

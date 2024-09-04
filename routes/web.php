@@ -36,7 +36,6 @@
 
     Route::get('/about', [PublicController::class, 'aboutPage'])->name('public.about');
     Route::get('/contact', [PublicController::class, 'contactUsPage'])->name('public.contact');
-    Route::get('/ecommerce', [PublicController::class, 'ecommercePage'])->name('public.ecommerce');
     Route::get('/coaching', [PublicController::class, 'coachingPage'])->name('public.coaching');
 
     // services route's group:
@@ -50,6 +49,7 @@
             Route::get('/native-app', 'nativeApp')->name('public.services.native-app');
             Route::get('/inventory-solution', 'inventorySolution')->name('public.services.invent-sol');
             Route::get('/services', 'servicePage')->name('public.services.services');
+            Route::get('/ecommerce', 'ecommercePage')->name('public.services.ecommerce');
         });
     });
 
