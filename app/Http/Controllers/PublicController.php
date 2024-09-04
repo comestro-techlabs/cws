@@ -136,7 +136,7 @@ class PublicController extends Controller
     }
 
     public function webDevPage(){
-        return view('public.services.web-development');
+        return view('public.services.web-devlopment');
     }
 
     public function mobileAppPage(){

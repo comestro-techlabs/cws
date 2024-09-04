@@ -33,7 +33,8 @@ class AuthController extends Controller
             if (Auth::user()->isAdmin) {
                 return redirect()->route('admin.dashboard');
             } else {
-                return redirect()->route('student.dashboard');
+                return redirect()->intended('/student/dashboard');
+                // return redirect()->route('student.dashboard');
             }
         }
 
