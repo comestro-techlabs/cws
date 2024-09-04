@@ -1,34 +1,39 @@
 @extends('public.layout')
 
-@section('content')
-    <div class="flex flex-wrap">
-        <!-- First Section: Motivation and Coaching Ads -->
-        <div class="w-full lg:w-1/2 bg-gradient-to-r from-blue-500 to-purple-500 p-8 text-white">
-            <div class="flex flex-col p-5 justify-center h-full">
-                <h2 class="text-3xl font-bold mb-4">Join Us and Achieve Your Goals!</h2>
-                <p class="text-lg mb-6">
-                    At our coaching center, we provide top-notch education and training to help you excel in your career.
-                    Start your journey with us today and unlock endless opportunities!
-                </p>
-                <div class="flex items-center gap-4">
-                    {{-- <img src="path_to_ad_image.jpg" alt="Coaching Ad" class="rounded-lg shadow-lg w-1/3"> --}}
-                    <p class="text-sm italic">"Success is not final, failure is not fatal: It is the courage to continue that
-                        counts."</p>
-                </div>
-            </div>
-        </div>
 
-        <!-- Second Section: Form -->
-        <div class="w-full lg:w-1/2 bg-white p-8 shadow-2xl">
-            <h2 class="text-3xl font-bold mb-4 text-gray-800">Apply Now</h2>
-            <form id="applyForm" action="{{ route('auth.register.post') }}" method="POST"
-                class="space-y-3 bg-slate-50 rounded-lg border p-4" autocomplete="off">
+@section('title')
+    Sign up
+@endsection
+@section('content')
+
+<div class="font-[sans-serif]  bg-white max-w-4xl flex w-full h-screen items-center mx-auto md:h-screen p-4">
+        <div class=" grid md:grid-cols-3 items-center shadow-xl border rounded-xl  overflow-hidden">
+          <div class="max-md:order-1  hidden md:block flex flex-col justify-center space-y-16 max-md:mt-16 min-h-full bg-gradient-to-r from-gray-900 to-gray-700 lg:px-8 px-4 py-4">
+            <div class="mt-24">
+              <h4 class="text-white text-lg font-semibold">Create Your Account</h4>
+              <p class="text-[13px] text-gray-300 mt-3 leading-relaxed">Welcome to  <span class="text-orange-500 font-bold">Com</span><span
+              class="text-blue-600 font-bold">estro</span> Get started by creating your account.</p>
+            </div>
+            <div>
+              <h4 class="text-white text-lg font-semibold">Afforable | Quality</h4>
+              <p class="text-[13px] text-gray-300 mt-3 leading-relaxed">  At our coaching center, we provide top-notch education and training to help you excel in your career.
+              Start your journey with us today and unlock endless opportunities!</p>
+            </div>
+          </div>
+    
+          <div class="md:col-span-2 w-full py-6 px-6 sm:px-16" >
+          <div class="mb-6">
+              <h3 class="text-gray-800 text-2xl font-bold">Create an account</h3>
+            </div>
+    
+          <form id="applyForm" action="{{ route('auth.register.post') }}" method="POST"
+                class="space-y-3  rounded-lg  p-2" autocomplete="off">
                 @csrf
                 <!-- Name -->
                 <div>
                     <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
                     <input type="text" name="name" id="name"
-                        class="form-input mt-1 block w-full rounded-md border-gray-300 focus:border-teal-500 focus:ring focus:ring-teal-200 focus:ring-opacity-50">
+                        class="form-input mt-1 block w-full rounded-md border-gray-300 focus:border-gray-500 focus:ring focus:ring-gray-200 focus:ring-opacity-50">
                     @error('name')
                         <p class="text-xs text-red-500">{{ $message }}</p>
                     @enderror
@@ -39,7 +44,7 @@
                     <div class="flex-1">
                         <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
                         <input type="email" name="email" id="email"
-                            class="form-input mt-1 block w-full rounded-md border-gray-300 focus:border-teal-500 focus:ring focus:ring-teal-200 focus:ring-opacity-50">
+                            class="form-input mt-1 block w-full rounded-md border-gray-300 focus:border-gray-500 focus:ring focus:ring-gray-200 focus:ring-opacity-50">
                         @error('email')
                             <p class="text-xs text-red-500">{{ $message }}</p>
                         @enderror
@@ -50,7 +55,7 @@
                     <div class="flex-1">
                         <label for="contact" class="block text-sm font-medium text-gray-700">Contact</label>
                         <input type="text" name="contact" id="contact"
-                            class="form-input mt-1 block w-full rounded-md border-gray-300 focus:border-teal-500 focus:ring focus:ring-teal-200 focus:ring-opacity-50">
+                            class="form-input mt-1 block w-full rounded-md border-gray-300 focus:border-gray-500 focus:ring focus:ring-gray-200 focus:ring-opacity-50">
                         @error('contact')
                             <p class="text-xs text-red-500">{{ $message }}</p>
                         @enderror
@@ -63,7 +68,7 @@
                 <div>
                     <label for="gender" class="block text-sm font-medium text-gray-700">Gender</label>
                     <select name="gender" id="gender"
-                        class="mt-1 block px-3 py-2 w-full rounded-md border-gray-300 focus:border-teal-500 focus:ring focus:ring-teal-200 focus:ring-opacity-50">
+                        class="mt-1 block px-3 py-2 w-full rounded-md border-gray-300 focus:border-gray-500 focus:ring focus:ring-gray-200 focus:ring-opacity-50">
                         <option value="">Select Gender</option>
                         <option value="male">Male</option>
                         <option value="female">Female</option>
@@ -80,7 +85,7 @@
                         <label for="education_qualification" class="block text-sm font-medium text-gray-700">Education
                             Qualification</label>
                         <input type="text" name="education_qualification" id="education_qualification"
-                            class="form-input mt-1 block w-full rounded-md border-gray-300 focus:border-teal-500 focus:ring focus:ring-teal-200 focus:ring-opacity-50">
+                            class="form-input mt-1 block w-full rounded-md border-gray-300 focus:border-gray-500 focus:ring focus:ring-ray-200 focus:ring-opacity-50">
                         @error('education_qualification')
                             <p class="text-xs text-red-500">{{ $message }}</p>
                         @enderror
@@ -90,7 +95,7 @@
                     <div class="flex-1">
                         <label for="dob" class="block text-sm font-medium text-gray-700">Date of Birth</label>
                         <input type="date" name="dob" id="dob"
-                            class="form-input mt-1 block w-full rounded-md border-gray-300 focus:border-teal-500 focus:ring focus:ring-teal-200 focus:ring-opacity-50">
+                            class="form-input mt-1 block w-full rounded-md border-gray-300 focus:border-gray-500 focus:ring focus:ring-gray-200 focus:ring-opacity-50">
                         @error('dob')
                             <p class="text-xs text-red-500">{{ $message }}</p>
                         @enderror
@@ -101,7 +106,7 @@
                 <div>
                     <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
                     <input type="password" name="password" id="password"
-                        class="form-input mt-1 block w-full rounded-md border-gray-300 focus:border-teal-500 focus:ring focus:ring-teal-200 focus:ring-opacity-50">
+                        class="form-input mt-1 block w-full rounded-md border-gray-300 focus:border-gray-500 focus:ring focus:ring-gray-200 focus:ring-opacity-50">
                     @error('password')
                         <p class="text-xs text-red-500">{{ $message }}</p>
                     @enderror
@@ -116,11 +121,11 @@
 
                 <!-- Submit Button -->
                 <button type="submit"
-                    class="w-full py-2 px-4 bg-gray-700 text-white font-bold rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-opacity-50">Submit</button>
+                    class="w-full py-2 px-4 bg-gray-700 text-white font-bold rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50">Create Your Account</button>
             </form>
+          </div>
         </div>
-    </div>
-
+      </div>
     <script>
         document.getElementById('applyForm').addEventListener('submit', function(event) {
             event.preventDefault();
@@ -158,7 +163,7 @@
                 // If all validations pass, submit the form
                 this.submit();
             } else {
-                alert('Please correct the highlighted errors before submitting the form.');
+              
             }
         });
     </script>

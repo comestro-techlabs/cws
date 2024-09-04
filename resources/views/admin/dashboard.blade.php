@@ -3,7 +3,7 @@
 @section('title', 'Dashboard | ')
 
 @section('content')
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6">
     <!-- Admissions Card -->
     <div class="bg-gradient-to-r bg-slate-100 border-l-4 border-orange-600 text-orange shadow-xl rounded-lg p-6">
         <p class="text-4xl font-bold">{{ $admissionsCount }}</p>
@@ -61,11 +61,7 @@
     </div>
 
     <!-- Due Payments Card -->
-    <div class="bg-gradient-to-r bg-slate-100 border-l-4 border-orange-600 text-orange-600 shadow-xl rounded-lg p-6">
-        <p class="text-4xl font-bold">{{ $duePaymentsCount }}</p>
-        <h3 class="text-2xl text-orange-600 font-semibold mb-3">Due Payments</h3>
-        <a href="#" class="mt-4 inline-block text-orange-600 hover:text-white">View Details</a>
-    </div>
+   
 </div>
 
 @endsection

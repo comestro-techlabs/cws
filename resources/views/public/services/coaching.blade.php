@@ -1,4 +1,9 @@
 @extends('public.layout')
+
+@section('title')
+    Coaching Management System    
+@endsection
+
 @section('content')
 
 <livewire:page-heading title="Coaching Management System" description="Our Comestro TechLab services is one of top techLab services agency in India. We provide 360º

@@ -1,5 +1,9 @@
 @extends('public.layout')
 
+@section('title')
+    About us
+@endsection
+
 @section('content')
     <div class="bg-white py-12 ">
 

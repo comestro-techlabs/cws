@@ -1,20 +1,16 @@
 @extends('public.layout')
 
+@section('title')
+    Login
+@endsection
+
 @section('content')
 
     <div class="flex bg-white rounded-lg mb-12 mt-20 py-12 shadow-xl border overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
         <div class="hidden lg:block lg:w-1/2 bg-cover"
-            style="background-image:url('https://images.unsplash.com/photo-1566888596782-c7f41cc184c5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2134&q=80')">
+            style="background-image:url('{{asset('assets/icons/loginimage.png')}}')">
         </div>
-        @if ($errors->any())
-        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-lg mb-6">
-            <ul class="list-disc pl-5 space-y-2">
-                @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-        @endif
+       
         <form action="{{ route('auth.login.post') }}" method="POST" class="w-full  p-8 lg:w-1/2">
             @csrf
             <h2 class="text-2xl font-semibold text-center"> <span class="text-orange-500 font-bold">Com</span><span
@@ -63,7 +59,15 @@
             </div>
             <div class="mt-8">
                 <button type="submit" class="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600">Login</button>
-            </div>
+            </div> @if ($errors->any())
+        <div class="bg-red-100 border-l-4 mt-2 border-red-500 text-red-700 p-4 rounded-lg mb-6">
+            <ul class="list-disc pl-5 space-y-2">
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
             <div class="mt-4 flex items-center justify-between">
                 <span class="border-b w-1/5 md:w-1/4"></span>
                 <a href="{{ route('auth.register') }}" class="text-xs text-gray-500 uppercase">Apply TO Join Us</a>
