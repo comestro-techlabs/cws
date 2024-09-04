@@ -12,12 +12,16 @@ class AuthController extends Controller
     // displaying login form 
     public function showLoginForm()
     {
+        if(Auth::id()){
+            return redirect()->route('student.dashboard');
+        }
         return view('auth.login');
     }
 
     // login logics
     public function login(Request $request)
     {
+        
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
