@@ -2,7 +2,7 @@
 
 
 @section('content')
-    <div class="bg-white py-12 overflow-x-hidden">
+    <div class="bg-white overflow-x-hidden">
         <livewire:page-heading title="Get in Touch"
             description="We’re here to help with your digital marketing needs. Whether you have questions or need support, our
                     team is ready to assist you."
