@@ -8,42 +8,8 @@
         <x-hero />
     </div>
 
-    <!-- Heading Section -->
-    <div class="bg-white py-12 px-4 text-center overflow-x-hidden">
-        <h2 class="text-xl font-semibold uppercase text-purple-600 mb-2">Our Services</h2>
-        <p class="text-3xl font-bold text-gray-800">
-            Comestro TechLabs offers end-to-end 'Digital Solutions'
-        </p>
-        <p class="text-lg font-light text-gray-600 mt-4">
-            Partner with us to transform your vision into reality. Your journey to innovation starts here!
-        </p>
-    </div> --}}
-
-    <div class="relative overflow-hidden w-full md:w-10/12 mx-auto my-5">
-        <!-- Carousel Container -->
-        <div id="carousel"
-            class="flex my-3 justify-center items-stretch transition-transform duration-700 ease-in-out h-[300px]">
-            <!-- Service Cards -->
-            <livewire:service-card title="Web Designing" description="This is web design service"
-                iconClass="fas fa-laptop-code" />
-            <livewire:service-card title="Web Development" description="This is web development service"
-                iconClass="fas fa-laptop-code" />
-            <livewire:service-card title="Digital Marketing" description="This is digital marketing service"
-                iconClass="fas fa-laptop-code" />
-        </div>
-        <!-- Arrows -->
-        <button id="prev"
-            class="absolute top-1/2 left-0 transform -translate-y-1/2 bg-white/45 text-gray-700 px-3 py-2 text-lg md:px-5 md:py-2 md:text-xl">
-            &lt;
-        </button>
-        <button id="next"
-            class="absolute top-1/2 right-0 transform -translate-y-1/2 bg-white/45 text-gray-700 px-3 py-2 text-lg md:px-5 md:py-2 md:text-xl">
-            &gt;
-        </button>
-    </div>
-
-    <!-- Who We Are -->
-    <div class="flex flex-col md:flex-row md:px-[8%] gap-10 mb-10 mt-5">
+    {{-- who we are --}}
+    <div class="flex-1 flex flex-col md:flex-row md:px-[8%] gap-10 mb-10">
         <div class="flex-1 p-5">
             <img src="{{ asset('assets/first_image.png') }}" class="w-full rounded-lg shadow-sm ring-slate-600 " alt="">
         </div>
