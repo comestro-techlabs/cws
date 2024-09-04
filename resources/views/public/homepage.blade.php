@@ -14,7 +14,7 @@
 
     <div class="flex flex-1 justify-center my-5">
         <div class="relative overflow-hidden w-full md:w-10/12">
-            <section class="py-16">
+            <section class="py-5">
                 <div class="container mx-auto px-4">
                     <div class="text-center mb-12">
                         <h2 class="text-3xl font-bold text-blue-600 mb-2">What We Offer</h2>

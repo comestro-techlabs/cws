@@ -97,7 +97,7 @@ Route::post('save-course-payment', [PaymentController::class, 'saveCoursePayment
                 Route::get('/software-development', 'softwareDev')->name('public.services.software-dev');
                 Route::get('/native-app', 'nativeApp')->name('public.services.native-app');
                 Route::get('/inventory-solution', 'inventorySolution')->name('public.services.invent-sol');
-                Route::get('/services', 'servicePage')->name('public.services.services');
+                Route::get('/', 'servicePage')->name('public.services.services');
         });
     });
 
