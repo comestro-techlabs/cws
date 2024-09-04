@@ -59,7 +59,11 @@
                     <div>
                         <h4 class="text-lg md:text-xl font-bold text-gray-800 mb-2">Target Marketing</h4>
                         <p class="text-gray-700">
-                            An ad in an esteemed newspaper agency will be viewed by millions. But how many of them will be your target audience? Probably a petite fraction of it. It means that lakhs of rupees are down the drain. Comestro will not allow you to make the same mistake. We scrutinize the target audience for you from the vast range of demographics options available and ensure that only relevant people view your ads.
+                            An ad in an esteemed newspaper agency will be viewed by millions. But how many of them will be
+                            your target audience? Probably a petite fraction of it. It means that lakhs of rupees are down
+                            the drain. Comestro will not allow you to make the same mistake. We scrutinize the target
+                            audience for you from the vast range of demographics options available and ensure that only
+                            relevant people view your ads.
                         </p>
                     </div>
                 </div>

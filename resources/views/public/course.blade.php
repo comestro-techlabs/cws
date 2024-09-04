@@ -256,11 +256,9 @@
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <form action="{{route('save.course.payment')}}" method="post" role="form">
         @csrf
-        <input type="hidden" name="token_no" value="{{ $course->token_no }}">
         <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id" value="">
-        {{-- <div class="col-md-12 d-grid text-center mb-5">
-            <button class="btn btn-dark m-0 d-block mx-auto px-2" type="button" id="pay-button">PayNow</button>
-        </div> --}}
+        <input type="hidden" value="{{ $course->id }}" name="course_id" id="course_id">
+        <input type="hidden" value="{{ $course->discounted_fees }}" name="amount" id="amount">
         <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
         <script>
             document.getElementById('pay-button').onclick = function(e) {

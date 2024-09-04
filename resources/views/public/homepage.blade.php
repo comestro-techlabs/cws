@@ -17,7 +17,7 @@
         <p class="text-lg font-light text-gray-600 mt-4">
             Partner with us to transform your vision into reality. Your journey to innovation starts here!
         </p>
-    </div>
+    </div> --}}
 
     <div class="relative overflow-hidden w-full md:w-10/12 mx-auto my-5">
         <!-- Carousel Container -->
@@ -45,7 +45,7 @@
     <!-- Who We Are -->
     <div class="flex flex-col md:flex-row md:px-[8%] gap-10 mb-10 mt-5">
         <div class="flex-1 p-5">
-            <img src="{{ asset('assets/first_image.png') }}" class="w-full rounded-lg shadow-sm" alt="">
+            <img src="{{ asset('assets/first_image.png') }}" class="w-full rounded-lg shadow-sm ring-slate-600 " alt="">
         </div>
         <div class="flex-1 p-5 md:p-10 bg-gray-100 rounded-lg shadow-md">
             <h2 class="text-3xl font-sans mb-4">Who We Are</h2>
@@ -68,26 +68,28 @@
         </div>
     </div>
 
-    <!-- Static Info -->
-    <div class="flex flex-col gap-10 p-8 bg-white rounded-2xl mb-12">
-        <h2 class="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-10">
-            Results that Speak for Themselves: Why We’re a Top Digital Marketing Company in India
+
+    {{-- {{static info}} --}}
+    <div class="flex flex-col gap-2 p-8 bg-white rounded-2xl mb-12 items-center md:px-[10%]">
+        <h2 class="text-lg md:text-xl font-normal max-w-2xl text-gray-900  text-center mb-4 flex flex-col">
+            <span class="font-semibold mb-1">Results that Speak for Themselves:</span>
+            <span class="text-3xl font-semibold"> We’re a Top Digital Marketing Company in India</span>
         </h2>
         <div class="flex flex-col md:flex-row w-full gap-8">
             <div
-                class="flex-1 p-6 bg-gradient-to-r from-slate-600 to-slate-800 text-white rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300">
-                <h3 class="count-number text-5xl md:text-6xl font-extrabold" data-target="51485985">0</h3>
-                <p class="stat-title text-lg mt-4">Qualified Leads Generated</p>
+                class="flex-1 p-6 text-orange-600 rounded-lg shadow-sm ring ring-slate-600  transform  transition-transform duration-300">
+                <h3 class="count-number text-3xl md:text-5xl font-bold" data-target="600">0</h3>
+                <p class="stat-title text-lg mt-4 text-gray-900">Total Projects</p>
             </div>
             <div
-                class="flex-1 p-6 bg-gradient-to-r from-slate-600 to-slate-800 text-white rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300">
-                <h3 class="count-number text-5xl md:text-6xl font-extrabold" data-target="78901234">0</h3>
-                <p class="stat-title text-lg mt-4">Website Visitors</p>
+                class="flex-1 p-6  text-pink-700 rounded-lg shadow-sm ring ring-slate-600  transform  transition-transform duration-300">
+                <h3 class="count-number text-3xl md:text-5xl font-bold" data-target="200000">0</h3>
+                <p class="stat-title text-lg mt-4 text-gray-900">Web Pages</p>
             </div>
             <div
-                class="flex-1 p-6 bg-gradient-to-r from-slate-600 to-slate-800 text-white rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300">
-                <h3 class="count-number text-5xl md:text-6xl font-extrabold" data-target="67890234">0</h3>
-                <p class="stat-title text-lg mt-4">Conversions Achieved</p>
+                class="flex-1 p-6 text-green-700 rounded-lg shadow-sm ring ring-slate-600  transform  transition-transform duration-300">
+                <h3 class="count-number text-3xl md:text-5xl font-bold" data-target="100">0</h3>
+                <p class="stat-title text-lg mt-4 text-gray-900">Technologies We Use</p>
             </div>
         </div>
     </div>
@@ -122,7 +124,7 @@
             <div class="grid grid-cols-2 sm:grid-cols-2 gap-5 p-4 sm:p-8">
                 <div class="flex flex-col">
                     <input type="text" id="name" name="name" value="{{ old('name') }}" placeholder="Name"
-                        class="mt-1 block w-full p-2 border border-gray-300 rounded-full px-4 py-3 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        class="mt-1 block w-full p-2 border border-gray-300 rounded-full px-4 py-3 shadow-sm ring-slate-600  focus:ring-blue-500 focus:border-blue-500">
                 </div>
                 <div class="flex flex-col">
                     <input type="email" id="email" name="email" value="{{ old('email') }}"
@@ -157,7 +159,7 @@
         const counters = document.querySelectorAll('.count-number');
         const speed = 60; // Adjust speed as needed
 
-        counters.forEach(counter => {
+        const startCounting = (counter) => {
             const updateCount = () => {
                 const target = +counter.getAttribute('data-target');
                 const count = +counter.innerText;
@@ -172,10 +174,25 @@
             };
 
             updateCount();
+        };
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counter = entry.target;
+                    startCounting(counter);
+                    observer.unobserve(counter); // Stop observing after counting starts
+                }
+            });
+        }, { threshold: 0.5 }); // Adjust threshold as needed
+
+        counters.forEach(counter => {
+            observer.observe(counter);
         });
     });
 
     const carousel = document.getElementById('carousel');
+    const indicators = document.querySelectorAll('.indicator');
     let index = 0;
 
     function slide() {
@@ -208,5 +225,17 @@
 
     // Auto slide every 3 seconds
     let autoSlide = setInterval(slide, 3000);
+
+    // Update indicators
+    function updateIndicators() {
+        indicators.forEach((indicator, i) => {
+            if (i === index) {
+                indicator.classList.add('active');
+            } else {
+                indicator.classList.remove('active');
+            }
+        });
+    }
 </script>
+
 @endsection

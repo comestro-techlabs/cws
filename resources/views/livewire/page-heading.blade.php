@@ -11,10 +11,14 @@
                     <a href="#"
                         class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-5 rounded-full">
                         GET FREE TUTORIAL
+                <div class="flex ">
+                    <a href="{{route('public.contact')}}"
+                        class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-5 rounded-full mr-4">
+                        GET FREE Consultations
                     </a>
                     <a href="tel:+919546805580"
                         class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-5 rounded-full">
-                        Call: +91-9546-8055-80
+                        Call: {{env('PHONE_NO')}}
                     </a>
                 </div>
             </div>
