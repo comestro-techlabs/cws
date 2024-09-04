@@ -12,7 +12,7 @@
                     d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
             </svg>
 
-            <h2 class="text-green-700 font-semibold">(+91) 9546805580</h2>
+            <h2 class="text-green-700 font-semibold"><a href="tel:{{env('PHONE_NO')}}">{{env('PHONE_NO')}}</a></h2>
         </div>
         @auth
 
@@ -129,31 +129,31 @@
                       <div class="p-4 pb-0 text-gray-900 md:pb-4 dark:text-white">
                           <ul class="space-y-4" aria-labelledby="mega-menu-dropdown-button">
                               <li>
-                                  <a href="/web-design"
+                                  <a href="{{ route('public.services.web-design') }}"
                                       class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500">
                                       Web Design
                                   </a>
                               </li>
                               <li>
-                                  <a href="{{route('public.web-devlopment')}}"
+                                  <a href="{{route('public.services.web-dev')}}"
                                       class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500">
                                       Web Development
                                   </a>
                               </li>
                               <li>
-                                  <a href="{{route('public.mobile-app')}}"
+                                  <a href="{{route('public.services.mobile-app')}}"
                                       class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500">
                                       Mobile App Development
                                   </a>
                               </li>
                               <li>
-                                  <a href="#"
+                                  <a href="{{ route('public.services.seo-services') }}"
                                       class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500">
                                       SEO Services
                                   </a>
                               </li>
                               <li>
-                                  <a href="#"
+                                  <a href="{{ route('public.services.software-dev') }}"
                                       class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500">
                                       Software Development
                                   </a>
@@ -163,27 +163,27 @@
                       <div class="p-4 pb-0 text-gray-900 md:pb-4 dark:text-white">
                           <ul class="space-y-4">
                               <li>
-                                  <a href="#"
+                                  <a href="{{ route('public.services.native-app') }}"
                                       class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500">
                                       Native App Development
                                   </a>
                               </li>
                               <li>
-                                  <a href="{{route('public.ecommerce')}}"
+                                  <a href="{{route('public.services.ecommerce')}}"
                                       class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500">
                                       E-Commerce Website Development
                                   </a>
                               </li>
                               <li>
-                                  <a href="{{route('public.coaching')}}"
+                                  <a href="{{route('public.services.coaching')}}"
                                       class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500">
                                       Coaching Manangement System
                                   </a>
                               </li>
                               <li>
-                                  <a href="#"
+                                  <a href="{{ route('public.services.invent-sol') }}"
                                       class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500">
-                                      Inventery Solutions 
+                                      Inventory Solutions 
                                   </a>
                               </li>
                           </ul>
@@ -191,7 +191,7 @@
                       <div class="p-4 w-48 pb-0 text-gray-900 md:pb-4 dark:text-white">
                         <h2 class="mb-2 font-semibold text-gray-900 dark:text-white">Our Serices</h2>
                         <p class="mb-2 text-gray-500 dark:text-gray-400">At Flowbite, we have a portfolio of brands that cater to a variety of preferences.</p>
-                        <a href="{{route('public.services')}}" class="inline-flex items-center text-sm font-medium text-blue-600 hover:underline hover:text-blue-600 dark:text-blue-500 dark:hover:text-blue-700">
+                        <a href="{{route('public.services.services')}}" class="inline-flex items-center text-sm font-medium text-blue-600 hover:underline hover:text-blue-600 dark:text-blue-500 dark:hover:text-blue-700">
                             Explore our Services
                             <svg class="w-3 h-3 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>

@@ -5,7 +5,7 @@
         <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{{ asset('assets/banner.png') }}');"></div>
 
         <div class="relative flex-1 flex-col max-w-lg ml-5 gap-1 z-50">
-            <h1 class="md:text-5xl text-3xl font-semibold leading-normal text-gray-900">
+            <h1 class="md:text-5xl roboto-bold text-3xl font-semibold leading-normal text-gray-900">
                 Purnea's <span class="text-orange-500">Most Trusted</span> Software Company
             </h1>
             <p class="text-lg md:text-xl font-normal text-gray-900 mt-4">

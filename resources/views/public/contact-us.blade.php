@@ -46,16 +46,18 @@
                     <div>
                         <img src="/assets/location.png" alt="Location Image">
                         <div class="mt-4">
-                            <p>Visit our headquarters <br> around the world.</p><br>
-                            <h1 class="text-md font-bold text-black">305, Saurabh Building, J B Nagar, Andheri East, Mumbai,
-                                400093</h1>
+                            <p>Visit our headquarters
+                                <br>
+                                Reg Office:         
+                            </p><br>
+                            <h1 class="text-md font-bold text-black">Ramavtar Market, GandhiNagar, Madhubani, Purnea (Bihar) - 854301</h1>
                         </div>
                     </div>
                     <div>
                         <img src="/assets/email.png" alt="Email Image">
                         <div class="mt-4">
                             <p>Have a project in mind?<br>Send a message.</p><br>
-                            <h1 class="text-md font-bold text-black">enquiry@comestrotechlab.com</h1>
+                            <h1 class="text-md font-bold text-black">comestrotechlabs@gmail.com</h1>
                         </div>
                     </div>
                     <div>
@@ -63,15 +65,15 @@
                         <div class="mt-4">
                             <p>Have a project in <br> mind? Send a message.</p>
                             <br>
-                            <h1 class="text-md font-bold text-black">+91-8080-7722-99</h1>
-                        </div>
+                            <h1 class="text-md font-bold text-black"><a href="tel:{{env('PHONE_NO')}}">{{env('PHONE_NO')}}</a></h1>
+                        </div>  
                     </div>
                     <div>
                         <img src="/assets/whatapp.png" alt="WhatsApp Image">
                         <div class="mt-4">
                             <p>Would you like to <br> join our growing team?</p>
                             <br>
-                            <h1 class="text-md font-bold text-black">+91-8097-6011-77</h1>
+                            <h1 class="text-md font-bold text-black"><a href="tel:{{env('PHONE_NO')}}">{{env('PHONE_NO')}}</a></h1>
                         </div>
                     </div>
                 </div>
