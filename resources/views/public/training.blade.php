@@ -2,7 +2,12 @@
 
 @section('content')
 
+<livewire:page-heading title="Comestro Traning Program" description="Our Comestro TechLab services is one of top techLab services agency in India. We provide 360º techLab Solutions to businesses across the globe" image="about-header.png"/>
+
     <div class="px-10">
+        <!-- Header Section -->
+      
+
         <div class="grid md:grid-cols-4 px-3 md:px-10 gap-2 grid-cols-1 py-5 mt-9 bg-white flex-1">
             @foreach ($courses as $course)
                 <x-course-card :course="$course" />
