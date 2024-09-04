@@ -8,7 +8,7 @@
          </button>
         <a href="{{env('APP_URL')}}" class="flex items-center space-x-3 rtl:space-x-reverse">
             <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
-                <img src="{{asset('assets/logosmall.png')}}" width="100px"/>
+                <img src="{{asset('assets/comestro.png')}}" width="150px"/>
             </span>
         </a>
     </div>
