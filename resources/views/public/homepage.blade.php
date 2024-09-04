@@ -6,7 +6,10 @@
 
 
 @section('content')
+
+<div class="bg-white py-6 overflow-x-hidden">
     <x-hero />
+</div>
 
 
     <div class="flex flex-1 justify-center my-5">
@@ -105,17 +108,15 @@
             <a href="#" class="text-gray-800 text-lg hover:underline font-bold mb-4 inline-block">
                 Consider these steps for brand popularity in the Digital World...
             </a>
-            <ul class="flex flex-col gap-2 list-disc list-inside text-gray-700">
-                <li><a href="#" class="text-gray-800 font-semibold hover:text-orange-500">Define your goals</a></li>
-                <li><a href="#" class="text-gray-800 font-semibold hover:text-orange-500">Identify your target
-                        audience</a></li>
-                <li><a href="#" class="text-gray-800 font-semibold hover:text-orange-500">Choose the right
-                        channels</a></li>
-                <li><a href="#" class="text-gray-800 font-semibold hover:text-orange-500">Create and implement your
-                        campaigns</a></li>
+            <ul class="flex flex-col gap-2 text-gray-700">
+                <li><i class="fas fa-check text-orange-500 mr-2"></i><a href="#" class="text-gray-800 font-semibold hover:text-orange-500">Define your goals</a></li>
+                <li><i class="fas fa-check text-orange-500 mr-2"></i><a href="#" class="text-gray-800 font-semibold hover:text-orange-500">Identify your target audience</a></li>
+                <li><i class="fas fa-check text-orange-500 mr-2"></i><a href="#" class="text-gray-800 font-semibold hover:text-orange-500">Choose the right channels</a></li>
+                <li><i class="fas fa-check text-orange-500 mr-2"></i><a href="#" class="text-gray-800 font-semibold hover:text-orange-500">Create and implement your campaigns</a></li>
             </ul>
         </div>
     </div>
+    
 
 
     {{-- {{static info}} --}}
@@ -244,51 +245,7 @@
         });
     });
 
-    const carousel = document.getElementById('carousel');
-    const indicators = document.querySelectorAll('.indicator');
-    let index = 0;
-
-    function slide() {
-        const cards = document.querySelectorAll('#carousel > div');
-        const totalCards = cards.length;
-
-        index++;
-
-        if (index >= totalCards) {
-            index = 0;
-            carousel.style.transition = 'none';
-            carousel.style.transform = `translateX(0)`;
-        } else {
-            carousel.style.transition = 'transform 0.7s ease-in-out';
-            const offset = -index * (cards[0].offsetWidth + 16);
-            carousel.style.transform = `translateX(${offset}px)`;
-        }
-    }
-
-    document.getElementById('next').addEventListener('click', () => {
-        slide();
-        clearInterval(autoSlide); // Stops auto slide when clicking next/prev
-    });
-
-    document.getElementById('prev').addEventListener('click', () => {
-        index = index <= 0 ? document.querySelectorAll('#carousel > div').length - 1 : index - 2;
-        slide();
-        clearInterval(autoSlide); // Stops auto slide when clicking next/prev
-    });
-
-    // Auto slide every 3 seconds
-    let autoSlide = setInterval(slide, 3000);
-
-    // Update indicators
-    function updateIndicators() {
-        indicators.forEach((indicator, i) => {
-            if (i === index) {
-                indicator.classList.add('active');
-            } else {
-                indicator.classList.remove('active');
-            }
-        });
-    }
+  
 </script>
 
 @endsection
