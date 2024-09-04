@@ -1,5 +1,9 @@
 @extends('student.base')
 
+@section('title')
+    Student dashboard
+@endsection
+
 @section('content')
     <div class="bg-gray-900 w-full ">
         <div class="px-[15%] pt-10">

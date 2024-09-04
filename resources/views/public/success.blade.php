@@ -1,5 +1,9 @@
 @extends('public.layout')
 
+@section('title')
+    registration seccessfull
+@endsection
+
 @section('content')
 <div class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
     <div class="bg-white p-8 rounded-lg shadow-md w-full flex flex-col">

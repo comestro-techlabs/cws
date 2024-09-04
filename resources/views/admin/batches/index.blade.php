@@ -1,5 +1,9 @@
 @extends('admin.base')
 
+@section('title')
+    Admin home page
+@endsection
+
 @section('content')
     <div class="max-w-7xl mx-auto mt-4 p-2 sm:px-6 lg:px-8">
 

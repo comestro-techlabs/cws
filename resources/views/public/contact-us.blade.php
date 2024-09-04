@@ -1,5 +1,9 @@
 @extends('public.layout')
 
+@section('title')
+    Contact us
+@endsection
+
 <style>
     .elementor-divider-separator {
         display: block;

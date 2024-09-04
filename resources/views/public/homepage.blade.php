@@ -1,4 +1,8 @@
 @extends('public.layout')
+
+@section('title')
+    Home page
+@endsection
 <style>
     .elementor-divider-separator {
         display: block;

@@ -1,5 +1,9 @@
 @extends('public.layout')
 
+@section('title')
+    Login
+@endsection
+
 @section('content')
 
     <div class="flex bg-white rounded-lg mb-12 mt-20 py-12 shadow-xl border overflow-hidden mx-auto max-w-sm lg:max-w-4xl">

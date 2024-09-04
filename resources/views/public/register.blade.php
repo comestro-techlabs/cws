@@ -1,5 +1,9 @@
 @extends('public.layout')
 
+
+@section('title')
+    Sign up
+@endsection
 @section('content')
     <div class="flex flex-wrap">
         <!-- First Section: Motivation and Coaching Ads -->

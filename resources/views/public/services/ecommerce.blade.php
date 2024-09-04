@@ -1,5 +1,8 @@
     @extends('public.layout')
 
+    @section('title')
+        E-Commerce Website Developement
+    @endsection
 <style>
     .faq-item {
         cursor: pointer;

@@ -1,5 +1,9 @@
 @extends('public.layout')
 
+@section('title')
+    Training
+@endsection
+
 @section('content')
 
     <div class="px-10">
