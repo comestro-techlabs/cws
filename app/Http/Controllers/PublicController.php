@@ -118,9 +118,7 @@ class PublicController extends Controller
         return view("public.contact-us");
     }
 
-    public function coachingPage(){
-        return view("public.coaching");
-    }
+    
     
     // public function hireUs(Request $request)
     // {
@@ -167,6 +165,10 @@ class PublicController extends Controller
 
     public function servicePage(){
         return view('public.services.services');
+    }
+
+    public function coachingPage(){
+        return view('public.services.coaching');
     }
 
 

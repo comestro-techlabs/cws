@@ -37,7 +37,6 @@
 
     Route::get('/about', [PublicController::class, 'aboutPage'])->name('public.about');
     Route::get('/contact', [PublicController::class, 'contactUsPage'])->name('public.contact');
-    Route::get('/coaching', [PublicController::class, 'coachingPage'])->name('public.coaching');
 
     // services route's group:
     Route::prefix("services")->group(function(){
@@ -51,6 +50,7 @@
             Route::get('/inventory-solution', 'inventorySolution')->name('public.services.invent-sol');
             Route::get('/services', 'servicePage')->name('public.services.services');
             Route::get('/ecommerce', 'ecommercePage')->name('public.services.ecommerce');
+            Route::get('/coaching', 'coachingPage')->name('public.services.coaching');
         });
     });
 

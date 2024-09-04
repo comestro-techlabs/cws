@@ -175,7 +175,7 @@
                                   </a>
                               </li>
                               <li>
-                                  <a href="{{route('public.coaching')}}"
+                                  <a href="{{route('public.services.coaching')}}"
                                       class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500">
                                       Coaching Manangement System
                                   </a>
