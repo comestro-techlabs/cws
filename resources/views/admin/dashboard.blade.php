@@ -7,10 +7,10 @@
     <!-- Admissions Card -->
     <div class="bg-gradient-to-r bg-slate-100 border-l-4 border-orange-600 text-orange shadow-xl rounded-lg p-4 flex flex-col justify-between" style="height: 130px;">
         <div>
-            <p class="text-3xl font-bold">{{ $admissionsCount }}</p>
+            <p class="text-3xl text-orange-600 font-bold">{{ $admissionsCount }}</p>
             <h3 class="text-lg text-orange-600 font-semibold">Admissions</h3>
         </div>
-        <a href="#" class="text-sm text-blue-600 hover:text-white">View Details</a>
+        <a href="#" class="text-sm text-blue-600 hover:underline">View Details</a>
     </div>
 
     <!-- Students Card -->
@@ -19,7 +19,7 @@
             <p class="text-3xl font-bold">{{ $studentsCount }}</p>
             <h3 class="text-lg text-green-600 font-semibold">Students</h3>
         </div>
-        <a href="#" class="text-sm text-green-600 hover:text-white">View Details</a>
+        <a href="#" class="text-sm text-green-600 hover:underline">View Details</a>
     </div>
 
     <!-- Categories Card -->
@@ -28,7 +28,7 @@
             <p class="text-3xl font-bold">{{ $categoriesCount }}</p>
             <h3 class="text-lg text-pink-600 font-semibold">Categories</h3>
         </div>
-        <a href="#" class="text-sm text-pink-600 hover:text-white">View Details</a>
+        <a href="#" class="text-sm text-pink-600 hover:underline">View Details</a>
     </div>
 
     <!-- Courses Card -->
@@ -37,7 +37,7 @@
             <p class="text-3xl font-bold">{{ $coursesCount }}</p>
             <h3 class="text-lg text-yellow-600 font-semibold">Courses</h3>
         </div>
-        <a href="#" class="text-sm text-yellow-600 hover:text-white">View Details</a>
+        <a href="#" class="text-sm text-yellow-600 hover:underline">View Details</a>
     </div>
 
     <!-- Batches Card -->
@@ -46,7 +46,7 @@
             <p class="text-3xl font-bold">{{ $batchesCount }}</p>
             <h3 class="text-lg text-blue-600 font-semibold">Batches</h3>
         </div>
-        <a href="#" class="text-sm text-blue-600 hover:text-white">View Details</a>
+        <a href="#" class="text-sm text-blue-600 hover:underline">View Details</a>
     </div>
 
     <!-- Lessons Card -->
@@ -55,7 +55,7 @@
             <p class="text-3xl font-bold">{{ $lessonsCount }}</p>
             <h3 class="text-lg text-purple-600 font-semibold">Lessons</h3>
         </div>
-        <a href="#" class="text-sm text-purple-600 hover:text-white">View Details</a>
+        <a href="#" class="text-sm text-purple-600 hover:underline">View Details</a>
     </div>
 
     <!-- Chapters Card -->
@@ -64,7 +64,7 @@
             <p class="text-3xl font-bold">{{ $chaptersCount }}</p>
             <h3 class="text-lg text-teal-600 font-semibold">Chapters</h3>
         </div>
-        <a href="#" class="text-sm text-teal-600 hover:text-white">View Details</a>
+        <a href="#" class="text-sm text-teal-600 hover:underline">View Details</a>
     </div>
 
     <!-- Payments Card -->
@@ -73,7 +73,7 @@
             <p class="text-3xl font-bold">{{ $paymentsCount }}</p>
             <h3 class="text-lg text-red-600 font-semibold">Payments</h3>
         </div>
-        <a href="#" class="text-sm text-red-600 hover:text-white">View Details</a>
+        <a href="#" class="text-sm text-red-600 hover:underline">View Details</a>
     </div>
 
     <!-- Due Payments Card -->
@@ -82,7 +82,7 @@
             <p class="text-3xl font-bold">{{ $duePaymentsCount }}</p>
             <h3 class="text-lg text-indigo-600 font-semibold">Due Payments</h3>
         </div>
-        <a href="#" class="text-sm text-indigo-600 hover:text-white">View Details</a>
+        <a href="#" class="text-sm text-indigo-600 hover:underline">View Details</a>
     </div>
 </div>
 

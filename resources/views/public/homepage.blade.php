@@ -18,19 +18,6 @@
     <x-hero />
 
 
-    {{-- <!-- Heading Section -->
-    <div class="bg-white py-12 px-4 text-center">
-        <h2 class="text-xl font-semibold uppercase text-purple-600 mb-2">
-            Our Services
-        </h2>
-        <p class="text-3xl font-bold text-gray-800">
-            Comestro TechLabs offer end to end 'Digital Solutions'
-        </p>
-        <p class="text-lg font-light text-gray-600 mt-4">
-            Partner with us to transform your vision into reality. Your journey to innovation starts here!
-        </p>
-    </div> --}}
-
     <div class="flex flex-1 justify-center my-5">
         <div class="relative overflow-hidden w-full md:w-10/12">
             <section class="py-16">
@@ -100,7 +87,7 @@
                                   </svg>
                                   
                             </div>
-                            <h3 class="text-2xl font-semibold text-[#033e63e8] mb-4">Inventry Solutions</h3>
+                            <h3 class="text-2xl font-semibold text-[#033e63e8] mb-4">Inventory Solutions</h3>
                             <p class="text-gray-600">Data-driven insights to help you make informed business decisions.</p>
                         </a>
                     </div>
