@@ -53,6 +53,7 @@ class PaymentController extends Controller
             'error_reason' => $response->error_reason,
             'status' => 1,
         ]);
+        $student->courses()->attach($request->input('course_id'));
 
         if($payment){
             return redirect('/student/dashboard')->with('success', 'Payment Successfull');

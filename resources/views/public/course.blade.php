@@ -59,12 +59,24 @@
                             off)</span>
                     </div>
 
-
-                    <!-- Add to Cart Button -->
+                    @auth
                     <a href="" id="pay-button"
                         class="block bg-purple-600 text-white text-center py-2 rounded-full hover:bg-purple-700">
-                        Proceed To Payment
+                        Proceed Now
                     </a>
+                @endauth
+                
+                @guest
+                    <a href="{{ route('auth.login')}}"
+                        class="block bg-purple-600 text-white text-center py-2 rounded-full hover:bg-purple-700">
+                        Proceed Now
+                    </a>
+                 @endguest
+            
+                
+                
+                
+
 
                     <!-- 30-Day Money-Back Guarantee -->
                     <p class="text-gray-600 text-sm text-center mt-4">30-Day Money-Back Guarantee</p>
@@ -185,8 +197,7 @@
                 <!-- Instructor Header -->
                 <div class="flex items-center mb-6">
                     <a href="/user/4b4368a3-b5c8-4529-aa65-2056ec31f37e/" class="flex-shrink-0">
-                        <img src="{{asset('assets/sadique.jpg')}}"
-                            alt="Syed Sadique Hussain"
+                        <img src="{{ asset('assets/sadique.jpg') }}" alt="Syed Sadique Hussain"
                             class="w-16 h-16 rounded-full shadow-md" loading="lazy">
                     </a>
                     <div class="ml-4">
@@ -209,7 +220,7 @@
 
                         <span>4.9 Instructor Rating</span>
                     </li>
-                   
+
                     <li class="flex items-center text-purple-800 gap-1">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="size-4">
@@ -234,16 +245,19 @@
                 <div class="text-gray-700">
                     <p class="mb-4">I'm Sadique Sir, a developer with a passion for teaching. I'm the <strong>lead
                             instructor</strong> at the Purnea (Bihar), Purnea's leading <strong>Programming
-                            Training Center</strong>. I've helped hundreds of thousands of students learn to code and change their
+                            Training Center</strong>. I've helped hundreds of thousands of students learn to code and change
+                        their
                         lives by becoming developers.</p>
                     <p class="mb-4">My first foray into programming was when I was just 16 years old, wanting to build my
                         own HTML based Webpages. Since then, I've made <strong>hundreds of websites, apps, and
-                            Softwares</strong>. But most importantly, I realized that my <strong>greatest passion</strong> is
+                            Softwares</strong>. But most importantly, I realized that my <strong>greatest passion</strong>
+                        is
                         teaching.</p>
                     <p class="mb-4">I spend most of my time researching how to make <strong>learning to code fun</strong>
                         and make <strong>hard concepts easy to understand</strong>. I apply everything I discover into my
                         bootcamp courses. In my courses, you'll find lots of geeky humor but also lots of
-                        <strong>explanations and fun</strong> to make sure everything is easy to understand.</p>
+                        <strong>explanations and fun</strong> to make sure everything is easy to understand.
+                    </p>
                     <p><strong>I'll be there for you every step of the way.</strong></p>
                 </div>
             </div>
@@ -254,7 +268,7 @@
 
 
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-    <form action="{{route('save.course.payment')}}" method="post" role="form">
+    <form action="{{ route('save.course.payment') }}" method="post" role="form">
         @csrf
         <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id" value="">
         <input type="hidden" value="{{ $course->id }}" name="course_id" id="course_id">
