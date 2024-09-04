@@ -7,6 +7,32 @@
     <title>{{env('APP_NAME')}}</title>
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
     @vite("resources/css/app.css")
+    <style>
+        /* Keyframes for shaking animation */
+        @keyframes shake {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            25% {
+                transform: translateY(-8px);
+            }
+            50% {
+                transform: translateY(8px);
+            }
+            75% {
+                transform: translateY(-8px);
+            }
+        }
+    
+        .shake {
+            animation: shake 2s infinite;
+        }
+    
+        .bend-bottom {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 100% 100%);
+        }
+    </style>
 </head>
 <body>
    @include('public.publicheader')
