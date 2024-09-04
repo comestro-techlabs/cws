@@ -104,9 +104,7 @@ class PublicController extends Controller
     // }
 
 
-    public function servicePage(){
-        return view("public.services");
-    }
+    
 
     public function training(){
         $courses = Course::where("published", true)->get();
@@ -120,9 +118,7 @@ class PublicController extends Controller
         return view("public.contact-us");
     }
 
-    public function coachingPage(){
-        return view("public.coaching");
-    }
+    
     
     // public function hireUs(Request $request)
     // {
@@ -152,7 +148,7 @@ class PublicController extends Controller
     }
 
     public function webDesignPage(){
-        return view("public.web-design");
+        return view("public.services.web-design");
     }
 
     public function softwareDev(){
@@ -167,6 +163,13 @@ class PublicController extends Controller
         return view('public.services.inventory-solution');
     }
 
+    public function servicePage(){
+        return view('public.services.services');
+    }
+
+    public function coachingPage(){
+        return view('public.services.coaching');
+    }
 
 
 
