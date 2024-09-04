@@ -17,7 +17,7 @@ class AdminMiddleware
     public function handle($request, Closure $next)
     {
         if (!Auth::check() || !Auth::user()->isAdmin) {
-            return redirect('/login')->withErrors('You do not have admin access.');
+            return redirect('/auth/login')->withErrors('You do not have admin access.');
         }
 
         return $next($request);
