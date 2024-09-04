@@ -98,9 +98,13 @@ public function removeCourse(User $student, Course $course)
     
 
     public function dashboard(){
-        $data['courses'] = User::find(Auth::id())->courses()->get();
 
-        // dd(User::find(Auth::id())->courses()->get());
-        return view('student.dashboard', $data);
+        $studentId = User::findOrFail(Auth::id())->id;
+        $datas = [
+            'courses' => User::find(Auth::id())->courses()->get(),
+            'payments' => Payment::where('student_id',$studentId)->orderBy('created_at', 'ASC')->get(),
+        ];
+        return view('student.dashboard', $datas);
     }
+   
 }
