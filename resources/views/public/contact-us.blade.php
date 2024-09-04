@@ -1,6 +1,8 @@
 @extends('public.layout')
 
-
+@section('title')
+    Contact us
+@endsection
 @section('content')
     <div class="bg-white overflow-x-hidden">
         <livewire:page-heading title="Get in Touch"
