@@ -2,8 +2,7 @@
 
 @section('content')
 
-<div class="py-16">
-    <div class="flex bg-white rounded-lg mb-12 shadow-xl border overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
+    <div class="flex bg-white rounded-lg mb-12 mt-20 py-12 shadow-xl border overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
         <div class="hidden lg:block lg:w-1/2 bg-cover"
             style="background-image:url('https://images.unsplash.com/photo-1566888596782-c7f41cc184c5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2134&q=80')">
         </div>
@@ -21,7 +20,7 @@
             <h2 class="text-2xl font-semibold text-center"> <span class="text-orange-500 font-bold">Com</span><span
                     class="text-blue-600 font-bold">estro</span></h2>
             <p class="text-xl text-gray-600 text-center">Welcome Students</p>
-            <a href="#" class="flex items-center justify-center mt-4 text-white rounded-lg shadow-md hover:bg-gray-100">
+            <a href="{{ route('auth.google') }}" class="flex items-center justify-center mt-4 text-white rounded-lg shadow-md hover:bg-gray-100">
                 <div class="px-4 py-3">
                     <svg class="h-6 w-6" viewBox="0 0 40 40">
                         <path
@@ -71,6 +70,6 @@
                 <span class="border-b w-1/5 md:w-1/4"></span>
             </div>
         </form>
-        </form>
+       
     </div>
     @endsection

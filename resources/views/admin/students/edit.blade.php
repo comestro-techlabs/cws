@@ -44,7 +44,7 @@
         </div>
 
         <div class="flex flex-1 md:flex-row flex-col md:items-start gap-5">
-            <div class="flex flex-1 gap-5 flex-col">
+            <div class="flex flex-[0.7] gap-5 flex-col">
                 @foreach ($fields as $field)
                     <div class="flex flex-1 bg-slate-100 p-3 rounded border">
                         <div class="flex flex-1 flex-col gap-2">
@@ -154,33 +154,9 @@
                     </div>
                 </div>
     
-               <!-- Payment Options Section -->
-<div class="flex flex-1 flex-col bg-slate-100 p-4 rounded border">
-    <h3 class="text-lg font-semibold text-slate-600 mb-4">Payment Options</h3>
-
-    <form action="{{ route('students.processPayment', ['student' => $student->id]) }}" method="POST">
-        @csrf
-        <div class="mb-3">
-            <label for="course_id" class="form-label">Select Course</label>
-            <select name="course_id" id="course_id" class="border w-full px-3 py-2">
-                @foreach ($student->courses as $course)
-                    <option value="{{ $course->id }}">{{ $course->title }}</option>
-                @endforeach
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label for="payment_option" class="form-label">Select Payment Option</label>
-            <select name="payment_option" id="payment_option" class="border w-full px-3 py-2">
-                <option value="full">Full Payment (5% Discount)</option>
-                <option value="installments">50% Now, 50% Later</option>
-                <option value="monthly">Monthly Payment (₹700/month)</option>
-            </select>
-        </div>
-
-        <button type="submit" class="bg-teal-600 text-white px-3 py-2 rounded">Process Payment</button>
-    </form>
-</div>
+               
+       
+      
 
     
 <div class="flex flex-1 flex-col bg-slate-100 p-4 rounded border shadow-sm">

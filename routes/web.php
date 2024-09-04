@@ -6,12 +6,16 @@
     use App\Http\Controllers\CategoryController;
     use App\Http\Controllers\ChapterController;
     use App\Http\Controllers\CourseController;
-use App\Http\Controllers\EnquiryController;
-use App\Http\Controllers\LessonController;
+    use App\Http\Controllers\EnquiryController;
+    use App\Http\Controllers\LessonController;
     use App\Http\Controllers\PublicController;
     use App\Http\Controllers\StudentController;
-use App\Models\Enquiry;
-use Illuminate\Support\Facades\Route;
+    use App\Models\Enquiry;
+    use Illuminate\Support\Facades\Route;
+    use App\Http\Controllers\Auth\SocialiteController;
+
+    Route::get('auth/google', [SocialiteController::class, 'redirectToGoogle'])->name('auth.google');
+    Route::get('auth/google/callback', [SocialiteController::class, 'handleGoogleCallback']);
 
     Route::controller(PublicController::class)->group(function () {
 
@@ -35,12 +39,12 @@ use Illuminate\Support\Facades\Route;
     Route::get('/about', [PublicController::class, 'aboutPage'])->name('public.about');
     Route::get('/contact', [PublicController::class, 'contactUsPage'])->name('public.contact');
     Route::get('/web-design', [PublicController::class, 'webDesignPage'])->name('public.web-design');
-    Route::get('/ecommerce',[PublicController::class, 'ecommercePage'])->name('public.ecommerce');
-    Route::get('/coaching',[PublicController::class, 'coachingPage'])->name('public.coaching');
-    Route::get('/web-dev',[PublicController::class, 'webDevPage'])->name('public.web-devlopment');
-    Route::get('/mobile-app',[PublicController::class, 'mobileAppPage'])->name('public.mobile-app');
-   
-   
+    Route::get('/ecommerce', [PublicController::class, 'ecommercePage'])->name('public.ecommerce');
+    Route::get('/coaching', [PublicController::class, 'coachingPage'])->name('public.coaching');
+    Route::get('/web-dev', [PublicController::class, 'webDevPage'])->name('public.web-devlopment');
+    Route::get('/mobile-app', [PublicController::class, 'mobileAppPage'])->name('public.mobile-app');
+
+
     Route::post('/enquiry-store', [EnquiryController::class, 'storeEnquiry'])->name('enquiry.store');
 
 
@@ -94,12 +98,10 @@ use Illuminate\Support\Facades\Route;
 
 
     // Authentication route's group here
-    Route::prefix('auth')->controller(AuthController::class)->group(function(){
-        Route::get('/login','showLoginForm')->name('auth.login');
-        Route::post('/login','login')->name('auth.login.post');
-        Route::get('/register','showRegistrationForm')->name('auth.register');
-        Route::post('/register','register')->name('auth.register.post');
-        Route::get('/logout','logout')->name('auth.logout');
+    Route::prefix('auth')->controller(AuthController::class)->group(function () {
+        Route::get('/login', 'showLoginForm')->name('auth.login');
+        Route::post('/login', 'login')->name('auth.login.post');
+        Route::get('/register', 'showRegistrationForm')->name('auth.register');
+        Route::post('/register', 'register')->name('auth.register.post');
+        Route::get('/logout', 'logout')->name('auth.logout');
     });
-
-
