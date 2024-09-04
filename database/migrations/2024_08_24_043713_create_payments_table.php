@@ -16,8 +16,21 @@ return new class extends Migration
             $table->foreignId('student_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('course_id')->constrained()->onDelete('cascade');
             $table->decimal('amount', 8, 2);
-            $table->date('payment_date'); // Date of payment
-            $table->string('status')->default('pending'); // 'pending', 'paid'
+            $table->string('receipt_no')->nullable();
+            $table->string('payment_id')->nullable();
+            $table->string('transaction_fee')->nullable();
+            $table->string('transaction_id')->nullable();
+            $table->string('transaction_date')->nullable();
+            $table->string('payment_card_id')->nullable();
+            $table->string('method')->nullable();
+            $table->string('wallet')->nullable();
+            $table->string('payment_date')->nullable();
+            $table->string('payment_vpa')->nullable();
+            $table->string('ip_address')->nullable();
+            $table->string('international_payment')->nullable();
+            $table->string('error_reason')->nullable();
+            $table->string('payment_status')->nullable();
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }
