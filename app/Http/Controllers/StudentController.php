@@ -98,7 +98,9 @@ public function removeCourse(User $student, Course $course)
     
 
     public function dashboard(){
-        $data['courses'] = Course::all();
+        $data['courses'] = User::find(Auth::id())->courses()->get();
+
+        // dd(User::find(Auth::id())->courses()->get());
         return view('student.dashboard', $data);
     }
 }

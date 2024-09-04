@@ -1,5 +1,5 @@
   <div data-popover-target="popover-course-details{{$course->id}}" data-popover-placement="right" class="flex border border-slate-300 rounded-t-xl rounded-b-xl w-full max-w-xs flex-col bg-white text-gray-700">
-    <a href="{{route('public.courseDetails', $course->id)}}" class="flex flex-1 flex-col">
+    <a href="{{route('public.courseDetails',['category_slug' => $course->category->cat_slug, 'slug' =>  $course->slug])}}" class="flex flex-1 flex-col">
       <div class="overflow-hidden bg-blue-gray-500 shadow-lg">
       <img src="storage/course_images/{{$course->course_image}}" alt="{{$course->title}}" class="w-full rounded-t-xl object-cover h-auto" />
     </div>
@@ -17,7 +17,7 @@
       </div>
     </div>
     </a>
-    <div data-popover id="popover-course-details{{$course->id}}" role="tooltip" class="absolute z-10 invisible inline-block text-sm text-gray-500 transition-opacity duration-300 bg-white border border-slate-300 shadow-xl rounded-lg opacity-0 w-80 dark:text-gray-400 dark:bg-gray-800 dark:border-gray-600">
+    <div data-popover id="popover-course-details{{$course->id}}" role="tooltip" class="absolute z-[999] invisible inline-block text-sm text-gray-500 transition-opacity duration-300 bg-white border border-slate-300 shadow-xl rounded-lg opacity-0 w-80 dark:text-gray-400 dark:bg-gray-800 dark:border-gray-600">
       <div class="p-3">
         <div class="flex">
           <div>
@@ -51,7 +51,7 @@
             
 
             <div class="flex flex-1 justify-center">
-              <a href="{{route('public.courseDetails', $course->id)}}" class="w-full py-3.5 px-7 text-center bg-gray-900 text-white rounded-lg text-sm font-bold uppercase shadow-md hover:shadow-lg transition-all">
+              <a href="{{route('public.courseDetails',['category_slug' => $course->category->cat_slug, 'slug' =>  $course->slug])}}" class="w-full py-3.5 px-7 text-center bg-gray-900 text-white rounded-lg text-sm font-bold uppercase shadow-md hover:shadow-lg transition-all">
                 Enroll Now
               </a>
             </div>

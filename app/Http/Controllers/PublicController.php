@@ -62,11 +62,11 @@ class PublicController extends Controller
     // {
     //     return view("public.success");
     // }
-
+ 
     // to view a course details
-    public function courseDetails($id)
+    public function courseDetails($category_slug, $slug)
     {
-        $course = Course::find($id); // replace 1 with course id
+        $course = Course::where('slug',$slug)->first(); // replace 1 with course id
         return view("public.course", compact('course'));
     }
 

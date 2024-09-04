@@ -27,7 +27,7 @@
             // Route::get("/register", "apply")->name('public.apply');
             Route::get("/register/success", "success")->name('public.success');
             // Route::post("/register", "register")->name('public.register');
-            Route::get('/courses/{id}', 'courseDetails')->name('public.courseDetails');
+            Route::get('/courses/{category_slug}/{slug}', 'courseDetails')->name('public.courseDetails');
         });
 
         // Route::get('/login', [PublicController::class, 'showLoginForm'])->name('login.form');
