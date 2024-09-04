@@ -4,41 +4,50 @@
     Explore our Services
 @endsection
 
-
 @section('content')
-<br>
-<livewire:page-heading title="Comestro TechLab Services" description="Our TechLab services in India enhance your brand’s online presence, attract new customers,
-                        and drive conversions." image="about-header.png"/>
-
+    <div class="bg-white py-6 overflow-x-hidden">
+        <livewire:page-heading title="Comestro TechLab Services"
+            description="Our TechLab services in India enhance your brand’s online presence, attract new customers, and drive conversions."
+            image="about-header.png" />
 
         <!-- Content Section -->
         <section class="py-10">
-            <div class="container mx-auto px-10">
-                <h2 class="text-3xl font-bold mb-4 text-blue-900 md:text-start w-1/2">Grow your company the digital way!
+            <div class="container mx-auto px-5 md:px-10">
+                <h2 class="text-3xl font-bold mb-4 text-blue-900 text-center md:text-left md:w-1/2">
+                    Grow your company the digital way!
                 </h2>
-                <h2 class="text-3xl font-bold mb-4 text-blue-900 md:text-start w-1/2">Market your company digitally.</h2>
-                <span></span>
+                <h2 class="text-3xl font-bold mb-4 text-blue-900 text-center md:text-left md:w-1/2">
+                    Market your company digitally.
+                </h2>
                 <p class="text-md text-gray-700 leading-relaxed">
-                    Business is sales. Period! No company can ever survive in the long-run without a considerable amount of
-                    sales. The sales target is always increasing and businesses often find it difficult to cope with the
+                    Business is sales. Period! No company can ever survive in the long run without a considerable amount of
+                    sales. The sales target is always increasing, and businesses often find it difficult to cope with the
                     industry pace. Businesses are always on a hunt for new sources of revenue. Well, your hunt is over. Look
-                    around and you will find yourself in just the perfect spot. Our <strong>TechLab Services</strong> are here to aid you to grow your business exponentially by exposing you to
-                    diverse, untapped sources of revenue and improve your sales multifold, while helping your company retain
-                    customers and find new customers.
+                    around, and you will find yourself in just the perfect spot. Our <strong>TechLab Services</strong> are
+                    here to help you grow your business exponentially by exposing you to diverse, untapped sources of
+                    revenue and improving your sales multifold while helping your company retain customers and find new
+                    ones.
                 </p>
                 <p class="text-sm md:text-md text-gray-700 leading-relaxed mt-3">
-                    <a href="/" class="">
-                        <span class="text-orange-500 font-bold">Com</span><span class="text-blue-600 font-bold">estro</span></a> believes that every business has infinite
-                    potential and all they need is the right partner to unleash their potential. Our TechLab Agency is a one-stop solution for all your web marketing needs. 82% of the population tends to search
-                    for a product online before making an actual purchase. No company, irrespective of its size, can afford
-                    to miss out on such a gigantic opportunity.
+                    <a href="/" class="font-bold text-orange-500 hover:text-orange-600">
+                        Com
+                    </a>
+                    <a href="/" class="font-bold text-blue-600 hover:text-blue-700">
+                        estro
+                    </a>
+                    believes that every business has infinite potential, and all they need is the right partner to unleash
+                    it. Our TechLab Agency is a one-stop solution for all your web marketing needs. 82% of the population
+                    tends to search for a product online before making an actual purchase. No company, irrespective of its
+                    size, can afford to miss out on such a gigantic opportunity.
                 </p>
-                <h2 class="text-xl md:text-3xl font-bold text-gray-800 mb-3 mt-4 text-center md:text-left">Businesses are investing intensely towards</h2>
-                <!-- Subheading -->
-                <h3 class="text-xs md:text-sm font-semibold text-gray-800 mb-2 text-center md:text-left">TechLab Services in India to stay the front-runner in their industry.</h3>
-                <!-- Intro Text -->
+                <h2 class="text-xl md:text-3xl font-bold text-gray-800 mb-3 mt-4 text-center md:text-left">
+                    Businesses are investing intensely towards
+                </h2>
+                <h3 class="text-xs md:text-sm font-semibold text-gray-800 mb-2 text-center md:text-left">
+                    TechLab Services in India to stay the front-runner in their industry.
+                </h3>
                 <p class="text-xs md:text-sm font-medium text-gray-700 mb-8 text-center md:text-left">
-                    Let us comprehend the ways Comestro assists companies like yours to achieve their
+                    Let us comprehend the ways Comestro assists companies like yours to achieve their goals.
                 </p>
 
                 <!-- Feature List -->
@@ -47,7 +56,11 @@
                     <div>
                         <h4 class="text-lg md:text-xl font-bold text-gray-800 mb-2">Measurable results</h4>
                         <p class="text-gray-700">
-                            All activities performed by Comestro on various digital platforms are recorded in real-time and are always available at the tips of your fingers. Data like customer interaction, conversion rate, impressions, etc. are saved automatically and are available on the various accounts created by our <a href="#" class="text-blue-600 hover:text-blue-800">TechLab Agency</a> for your reference and analysis.
+                            All activities performed by Comestro on various digital platforms are recorded in real-time and
+                            are always available at the tips of your fingers. Data like customer interaction, conversion
+                            rate, impressions, etc., are saved automatically and are available on the various accounts
+                            created by our <a href="#" class="text-blue-600 hover:text-blue-800">TechLab Agency</a>
+                            for your reference and analysis.
                         </p>
                     </div>
 
@@ -55,7 +68,10 @@
                     <div>
                         <h4 class="text-lg md:text-xl font-bold text-gray-800 mb-2">Low cost</h4>
                         <p class="text-gray-700">
-                            Small businesses predominantly find it difficult to compete with the industry giants in marketing due to the latter’s enormous marketing budget. At Comestro, we believe that every rupee saved is a rupee earned. Our TechLab Agency specializes in smart-spending so that you can achieve the maximum out of any size of budget.
+                            Small businesses predominantly find it difficult to compete with industry giants in marketing
+                            due to the latter’s enormous marketing budget. At Comestro, we believe that every rupee saved is
+                            a rupee earned. Our TechLab Agency specializes in smart spending so that you can achieve the
+                            maximum out of any budget size.
                         </p>
                     </div>
 
@@ -64,9 +80,9 @@
                         <h4 class="text-lg md:text-xl font-bold text-gray-800 mb-2">Target Marketing</h4>
                         <p class="text-gray-700">
                             An ad in an esteemed newspaper agency will be viewed by millions. But how many of them will be
-                            your target audience? Probably a petite fraction of it. It means that lakhs of rupees are down
+                            your target audience? Probably a petite fraction of it. This means that lakhs of rupees are down
                             the drain. Comestro will not allow you to make the same mistake. We scrutinize the target
-                            audience for you from the vast range of demographics options available and ensure that only
+                            audience for you from the vast range of demographic options available and ensure that only
                             relevant people view your ads.
                         </p>
                     </div>
@@ -91,7 +107,7 @@
                 <!-- Carousel Container -->
                 <div id="carousel"
                     class="flex my-3 justify-center items-stretch transition-transform duration-700 ease-in-out h-[300px]">
-    
+
                     {{-- service card area --}}
                     <livewire:service-card title="Web Designing" description="This is web design service"
                         iconClass="fas fa-laptop-code" />
@@ -115,4 +131,50 @@
     </div>
 
 
+    </div>
 
+    <script>
+        const carousel = document.getElementById('carousel');
+        let index = 0;
+
+        function slide() {
+            const cards = document.querySelectorAll('#carousel > div');
+            const totalCards = cards.length;
+
+            index++;
+
+            if (index >= totalCards) {
+                index = 0;
+                carousel.style.transition = 'none';
+                carousel.style.transform = 'translateX(0)';
+            } else {
+                carousel.style.transition = 'transform 0.7s ease-in-out';
+                const offset = -index * (cards[0].offsetWidth + 16); // Adjust offset
+                carousel.style.transform = `translateX(${offset}px)`;
+            }
+
+            updateIndicators();
+        }
+
+        function updateIndicators() {
+            const indicators = document.querySelectorAll('.indicator');
+            indicators.forEach((indicator, i) => {
+                indicator.classList.toggle('active', i === index);
+            });
+        }
+
+        document.getElementById('next').addEventListener('click', () => {
+            slide();
+            clearInterval(autoSlide);
+        });
+
+        document.getElementById('prev').addEventListener('click', () => {
+            index = index <= 0 ? document.querySelectorAll('#carousel > div').length - 1 : index - 2;
+            slide();
+            clearInterval(autoSlide);
+        });
+
+        // Auto slide every 3 seconds
+        let autoSlide = setInterval(slide, 3000);
+    </script>
+@endsection
