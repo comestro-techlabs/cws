@@ -106,6 +106,7 @@ class PublicController extends Controller
 
     
 
+    // following files resides inside the public folder:
     public function training(){
         $courses = Course::where("published", true)->get();
         return view("public.training")->with('courses', $courses);
@@ -118,6 +119,9 @@ class PublicController extends Controller
         return view("public.contact-us");
     }
 
+    public function privacyAndPolicy(){
+        return view('public.privacy-policy'); 
+    }
     
     
     // public function hireUs(Request $request)

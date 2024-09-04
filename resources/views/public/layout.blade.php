@@ -223,6 +223,9 @@
                         <li>
                             <a href="/faq" class="hover:text-gray-400">FAQ</a>
                         </li>
+                        <li>
+                            <a href="{{ route('public.privacy') }}" class="hover:text-gray-400">Privacy & Policy</a>
+                        </li>
                     </ul>
                 </div>
 
