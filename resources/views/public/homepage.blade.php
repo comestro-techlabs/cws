@@ -87,7 +87,7 @@
                                   </svg>
                                   
                             </div>
-                            <h3 class="text-2xl font-semibold text-[#033e63e8] mb-4">Inventry Solutions</h3>
+                            <h3 class="text-2xl font-semibold text-[#033e63e8] mb-4">Inventory Solutions</h3>
                             <p class="text-gray-600">Data-driven insights to help you make informed business decisions.</p>
                         </a>
                     </div>
