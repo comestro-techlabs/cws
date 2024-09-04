@@ -1,31 +1,9 @@
 @extends('public.layout')
 @section('content')
-<section class="bg-blue-900 text-white py-12" style="padding-top: 6.5rem;">
-    <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
-        <!-- Text Content -->
-        <div class="text-start md:text-left mb-8 px-[4%] md:mb-0 w-1/2">
-            <h1 class="text-4xl font-bold mb-4 ">Coaching Management System</h1>
-            <p class="mb-6">
-                Our Comestro TechLab services is one of top techLab services agency in India. We provide 360º
-                techLab Solutions to businesses across the globe.
-            </p>
-            <div class="flex flex-1 ">
-                <a href="#"
-                    class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-5 rounded-full mr-4">
-                    Contact US
-                </a>
-                <a href="tel:+919546805580"
-                    class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-5 rounded-full">
-                    Call: +91-9546-8055-80
-                </a>
-            </div>
-        </div>
-        <!-- Image -->
-        <div class="flex justify-center md:w-1/2 px-8">
-            <img src="/assets/about-header.png" alt="TechLab Illustration" class="max-w-full h-auto">
-        </div>
-    </div>
-</section>
+
+<livewire:page-heading title="Coaching Management System" description="Our Comestro TechLab services is one of top techLab services agency in India. We provide 360º
+                techLab Solutions to businesses across the globe." image="about-header.png"/>
+
 <!-- body section -->
 <div class="flex flex-1">
     <section class="py-10 flex w-full flex-col">

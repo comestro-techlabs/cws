@@ -34,7 +34,7 @@ class SocialiteController extends Controller
             Auth::login($newUser);
         }
 
-        return redirect()->intended('dashboard'); // Adjust the redirect as per your application's need
+        return redirect()->intended('/student/dashboard'); // Adjust the redirect as per your application's need
     }
 
 }

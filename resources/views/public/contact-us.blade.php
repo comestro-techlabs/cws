@@ -29,31 +29,11 @@
 </style>
 
 @section('content')
-    <section class="bg-blue-900 text-white py-16 px-4 sm:px-8 lg:px-16" style="padding-top: 6.5rem;">
-        <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-            <!-- Text Content -->
-            <div class="text-center md:text-left">
-                <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-6">Get in Touch</h1>
-                <p class="text-base sm:text-lg leading-relaxed mb-8">
-                    We’re here to help with your digital marketing needs. Whether you have questions or need support, our
-                    team is ready to assist you.
-                </p>
-                <a href="#contact-form"
-                    class="bg-white text-blue-900 px-6 py-3 rounded-full shadow-md font-medium hover:bg-gray-200 transition duration-300">Contact
-                    Us</a>
-            </div>
-            <!-- Image -->
-            <div class="flex justify-center md:justify-end">
-                <img src="/assets/about-header.png" alt="Contact Us Illustration" class="w-full max-w-xs md:max-w-md h-auto">
-            </div>
-        </div>
-    </section>
-    <div class="bend-bottom bottom-0 left-0 w-full h-16 bg-blue-900"
-        style="clip-path: polygon(0 0, 100% 0, 100% 100%, 100% 100%);"></div>
+ 
+        <livewire:page-heading title="Get in Touch" description="We’re here to help with your digital marketing needs. Whether you have questions or need support, our
+                    team is ready to assist you." image="about-header.png"/>
 
-
-
-    <section class="py-16 px-16 sm:px-8 lg:px-16" id="contact-form">
+        <section class="py-16 px-16 sm:px-8 lg:px-16" id="contact-form">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="space-y-6">
                 <h1 class="text-lg font-semibold text-slate-600">Contact Us for Web Designing Services</h1>
