@@ -3,16 +3,6 @@
 @section('title')
     Web Design
 @endsection
-<style>
-    .elementor-divider-separator {
-        display: block;
-        height: 3px;
-        margin: 20px 0;
-        width: 110px;
-        background: linear-gradient(to right, #feb47b, #570250);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-</style>
 @section('content')
 
     <livewire:page-heading title="Web Designing"
