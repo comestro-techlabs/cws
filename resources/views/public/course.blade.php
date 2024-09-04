@@ -61,9 +61,9 @@
 
 
                     <!-- Add to Cart Button -->
-                    <a href=""
+                    <a href="" id="pay-button"
                         class="block bg-purple-600 text-white text-center py-2 rounded-full hover:bg-purple-700">
-                        Add to cart
+                        Proceed To Payment
                     </a>
 
                     <!-- 30-Day Money-Back Guarantee -->
@@ -248,14 +248,46 @@
                 </div>
             </div>
 
-
-
-
-
-            <!-- Add JavaScript to handle the accordion functionality -->
-
-
         </div>
 
     </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <form action="{{route('save.course.payment')}}" method="post" role="form">
+        @csrf
+        <input type="hidden" name="token_no" value="{{ $course->token_no }}">
+        <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id" value="">
+        {{-- <div class="col-md-12 d-grid text-center mb-5">
+            <button class="btn btn-dark m-0 d-block mx-auto px-2" type="button" id="pay-button">PayNow</button>
+        </div> --}}
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+        <script>
+            document.getElementById('pay-button').onclick = function(e) {
+                e.preventDefault();
+                var options = {
+                    "key": "{{ env('RAZORPAY_KEY') }}",
+                    "amount": "{{ $course->discounted_fees }}" * 100,
+                    "currency": "INR",
+                    "name": "Comestro",
+                    "description": "Processing Fee",
+                    "image": "{{ asset('front_assets/img/logo/logo.png') }}",
+                    "handler": function(response) {
+                        document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
+                        document.forms[0].submit();
+                    },
+                    "prefill": {
+                        "name": "{{ $course->name }}",
+                        "email": "{{ $course->email }}",
+                        "contact": "{{ $course->contact }}"
+                    },
+                    "theme": {
+                        "color": "#0a64a3"
+                    }
+                };
+                var rzp1 = new Razorpay(options);
+                rzp1.open();
+            }
+        </script>
+    </form>
 @endsection

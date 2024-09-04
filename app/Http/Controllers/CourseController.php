@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Course;
+use App\Models\Payment;
 use App\Models\Feature;
+use Razorpay\Api\Api;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -177,6 +179,8 @@ class CourseController extends Controller
         Course::find($course->id)->delete();
         return redirect()->route('course.index');
     }
+
+
 
     
 }

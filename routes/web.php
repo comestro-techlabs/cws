@@ -10,6 +10,7 @@
     use App\Http\Controllers\LessonController;
     use App\Http\Controllers\PublicController;
     use App\Http\Controllers\StudentController;
+    use App\Http\Controllers\PaymentController;
     use App\Models\Enquiry;
     use Illuminate\Support\Facades\Route;
     use App\Http\Controllers\Auth\SocialiteController;
@@ -105,3 +106,9 @@
         Route::post('/register', 'register')->name('auth.register.post');
         Route::get('/logout', 'logout')->name('auth.logout');
     });
+
+
+
+Route::post('save-course-payment', [PaymentController::class, 'saveCoursePayment'])->name('save.course.payment');
+Route::get('course-payment-success/{token_no}', [PaymentController::class, 'coursePaymentSuccess'])->name('course.payment.success');
+
