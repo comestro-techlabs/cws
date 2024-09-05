@@ -117,6 +117,9 @@ Route::post('save-course-payment', [PaymentController::class, 'saveCoursePayment
         Route::get('/logout', 'logout')->name('auth.logout');
     });
 
+    
 
-
+    Route::get('/launch', function () {
+        return view('public.launch');
+    });
 
