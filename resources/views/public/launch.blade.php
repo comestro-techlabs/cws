@@ -124,7 +124,10 @@
     <audio id="congratulations-sound" src="{{ asset('assets/congrats.wav') }}"></audio>
 
     <script>
-        var launchDate = new Date("Sep 05, 2024 08:06:00").getTime();
+    var launchDate  = new Date();
+
+    // Add 2 minutes (120,000 milliseconds) to the current time
+    launchDate.setTime(launchDate.getTime() + 1 * 60 * 1000);
 
         var countdownfunction = setInterval(function() {
             var now = new Date().getTime();
