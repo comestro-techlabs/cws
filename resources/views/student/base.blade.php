@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title') | {{env('APP_NAME')}}</title>
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
-    @vite("resources/css/app.css")
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
    @include('public.publicheader')
