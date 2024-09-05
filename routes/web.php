@@ -104,7 +104,10 @@ Route::post('save-course-payment', [PaymentController::class, 'saveCoursePayment
 
     Route::post('/enquiry-store', [EnquiryController::class, 'storeEnquiry'])->name('enquiry.store');
 
-
+    Route::get('generate', function (){
+        \Illuminate\Support\Facades\Artisan::call('storage:link');
+        echo 'ok';
+        });
    
 
 
