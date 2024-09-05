@@ -7,7 +7,7 @@
 
 @section('content')
 
-<div class="bg-white py-6 overflow-x-hidden">
+<div class="bg-white py-20 md:py-12 lg:py-16 overflow-x-hidden">
     <x-hero />
 </div>
 

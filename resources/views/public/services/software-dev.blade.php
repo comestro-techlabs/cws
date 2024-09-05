@@ -6,6 +6,7 @@
 
 @section('content')
     <!-- Page Heading -->
+    <div class="bg-white py-16 overflow-x-hidden">
     <livewire:page-heading 
         title="Software Development"
         description="We craft custom software solutions tailored to your business needs, ensuring innovation, efficiency, and scalability at every step."
@@ -52,3 +53,4 @@
 
     
 @endsection
+    </div>

@@ -5,6 +5,7 @@
 @endsection
 
 @section('content')
+<div class="bg-white py-16 overflow-x-hidden">
     <livewire:page-heading title="Mobile App Development" description="Empower your business with cutting-edge mobile applications tailored to your needs." image="about-header.png"/>
 
     <section class="py-12">
@@ -54,3 +55,4 @@
     </section>
 
 @endsection
+</div>
