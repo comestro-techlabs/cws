@@ -1,10 +1,10 @@
 @extends('public.layout')
 
 @section('content')
-    <div class="flex justify-center bg-gray-900 py-8 mt-5">
-        <div class="w-10/12 flex items-center flex-col-reverse md:flex-row">
+    <div class="flex justify-center bg-gray-900 px-3 py-8 mt-24">
+        <div class="md:w-10/12 w-full flex items-center flex-col-reverse md:flex-row">
             <!-- Left Section (Course Details) -->
-            <div class="w-8/12 text-white p-8">
+            <div class="md:w-8/12 w-full text-white p-8">
                 <!-- Breadcrumb -->
                 <nav class="text-sm mb-4">
                     <ol class="list-reset flex text-gray-100">
@@ -42,7 +42,7 @@
             </div>
 
             <!-- Right Section (Course Sidebar) -->
-            <div class="w-3/12 ml-8">
+            <div class="flex-1 md:w-3/12 md:ml-8">
                 <div class="bg-white rounded-lg shadow-lg p-4 sticky top-20">
                     <!-- Course Preview Image -->
                     <div class="overflow-hidden rounded-lg mb-4">
@@ -84,8 +84,8 @@
             </div>
         </div>
     </div>
-    <div class="flex px-[10%] bg-white">
-        <div class="w-8/12 p-4 flex  flex-col gap-6">
+    <div class="flex  md:px-[10%] bg-white">
+        <div class="md:w-8/12 p-4 flex  flex-col gap-6">
             <!-- Features Card -->
             <div class="bg-white  rounded-lg p-6 border-l-4 border-t border-b border-r border-slate-300">
                 <h2 class="text-2xl font-bold text-purple-600 mb-4">This Course include:</h2>
