@@ -255,7 +255,7 @@
                         <li>
                             <a href="{{route('public.training')}}" class="hover:text-gray-400">Courses</a>
                         </li>
-                       
+
                         <li>
                             <a href="{{route('public.contact')}}" class="hover:text-gray-400">Contact Us</a>
                         </li>
@@ -265,7 +265,6 @@
                         </li>
                     </ul>
                 </div>
-
                 <!-- Contact Information -->
                 <div>
                     <h3 class="text-lg font-semibold text-white mb-4">Contact Us</h3>
