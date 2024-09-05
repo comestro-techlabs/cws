@@ -250,20 +250,16 @@
                     <h3 class="text-lg font-semibold text-white mb-4">Quick Links</h3>
                     <ul class="space-y-2">
                         <li>
-                            <a href="/about" class="hover:text-gray-400">About</a>
+                            <a href="{{route('public.about')}}" class="hover:text-gray-400">About</a>
                         </li>
                         <li>
-                            <a href="/courses" class="hover:text-gray-400">Courses</a>
+                            <a href="{{route('public.training')}}" class="hover:text-gray-400">Courses</a>
                         </li>
+                       
                         <li>
-                            <a href="/admission" class="hover:text-gray-400">Admission</a>
+                            <a href="{{route('public.contact')}}" class="hover:text-gray-400">Contact Us</a>
                         </li>
-                        <li>
-                            <a href="/contact" class="hover:text-gray-400">Contact Us</a>
-                        </li>
-                        <li>
-                            <a href="/faq" class="hover:text-gray-400">FAQ</a>
-                        </li>
+                      
                         <li>
                             <a href="{{ route('public.privacy') }}" class="hover:text-gray-400">Privacy & Policy</a>
                         </li>
@@ -275,8 +271,8 @@
                     <h3 class="text-lg font-semibold text-white mb-4">Contact Us</h3>
                     <p class="text-gray-400">{{ env('APP_NAME') }} TechLabs Pvt Ltd.</p>
                     <p class="text-gray-400">Purnea, Bihar, India</p>
-                    <p class="text-gray-400">Email: info@codewithsadiq.com</p>
-                    <p class="text-gray-400">Phone: +91-9876543210</p>
+                    <p class="text-gray-400">Email: info@comestro.com</p>
+                    <p class="text-gray-400">Phone: +91-9546805580</p>
                 </div>
             </div>
 
