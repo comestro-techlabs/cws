@@ -6,12 +6,15 @@
 
 
 @section('content')
+
+<div class="bg-white py-6 overflow-x-hidden">
     <x-hero />
+</div>
 
 
     <div class="flex flex-1 justify-center my-5">
         <div class="relative overflow-hidden w-full md:w-10/12">
-            <section class="py-16">
+            <section class="py-5">
                 <div class="container mx-auto px-4">
                     <div class="text-center mb-12">
                         <h2 class="text-3xl font-bold text-blue-600 mb-2">What We Offer</h2>
@@ -105,17 +108,15 @@
             <a href="#" class="text-gray-800 text-lg hover:underline font-bold mb-4 inline-block">
                 Consider these steps for brand popularity in the Digital World...
             </a>
-            <ul class="flex flex-col gap-2 list-disc list-inside text-gray-700">
-                <li><a href="#" class="text-gray-800 font-semibold hover:text-orange-500">Define your goals</a></li>
-                <li><a href="#" class="text-gray-800 font-semibold hover:text-orange-500">Identify your target
-                        audience</a></li>
-                <li><a href="#" class="text-gray-800 font-semibold hover:text-orange-500">Choose the right
-                        channels</a></li>
-                <li><a href="#" class="text-gray-800 font-semibold hover:text-orange-500">Create and implement your
-                        campaigns</a></li>
+            <ul class="flex flex-col gap-2 text-gray-700">
+                <li><i class="fas fa-check text-orange-500 mr-2"></i><a href="#" class="text-gray-800 font-semibold hover:text-orange-500">Define your goals</a></li>
+                <li><i class="fas fa-check text-orange-500 mr-2"></i><a href="#" class="text-gray-800 font-semibold hover:text-orange-500">Identify your target audience</a></li>
+                <li><i class="fas fa-check text-orange-500 mr-2"></i><a href="#" class="text-gray-800 font-semibold hover:text-orange-500">Choose the right channels</a></li>
+                <li><i class="fas fa-check text-orange-500 mr-2"></i><a href="#" class="text-gray-800 font-semibold hover:text-orange-500">Create and implement your campaigns</a></li>
             </ul>
         </div>
     </div>
+    
 
 
     {{-- {{static info}} --}}
@@ -244,7 +245,7 @@
         });
     });
 
-    
+  
 </script>
 
 @endsection

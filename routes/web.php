@@ -74,7 +74,7 @@ Route::post('save-course-payment', [PaymentController::class, 'saveCoursePayment
 
 
 
-    // services route's group:
+    // public routes here:
     Route::controller(PublicController::class)->group(function(){
 
             Route::get("/", "index")->name('public.index');
@@ -85,8 +85,9 @@ Route::post('save-course-payment', [PaymentController::class, 'saveCoursePayment
             });
             Route::get('/about', 'aboutPage')->name('public.about');
             Route::get('/contact', 'contactUsPage')->name('public.contact');
+            Route::get('/privacy-policy', 'privacyAndPolicy')->name('public.privacy'); 
             
-            
+            // service's routes here:
             Route::prefix("services")->group(function(){
                 Route::get('/coaching', 'coachingPage')->name('public.services.coaching');
                 Route::get('/ecommerce', 'ecommercePage')->name('public.services.ecommerce');

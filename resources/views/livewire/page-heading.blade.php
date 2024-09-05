@@ -19,10 +19,10 @@
                 </div>
             </div>
             <!-- Image -->
-            <div class="flex justify-center md:justify-end md:w-1/2 px-4">
+            <div class="md:flex justify-center hidden md:justify-end md:w-1/2 px-4">
                 <img src="{{asset('assets/'.$image)}}" alt="{{$title}}" class="max-w-full h-auto rounded-lg">
             </div>
         </div>
     </section>
-    <div class="bend-bottom bg-blue-900 h-16"></div>
+    <div class="bend-bottom bg-blue-900 h-16 hidden md:flex"></div>
 </div>
