@@ -1,4 +1,4 @@
-@extends('home.homeBase')
+@extends('public.layout')
 @section('content')
 
     <div class="flex items-center justify-center min-h-screen">
