@@ -11,11 +11,11 @@
             description="Our Comestro TechLab services is one of top techLab services agency in India. We provide 360º techLab Solutions to businesses across the globe"
             image="about-header.png" />
 
-        <div class="px-10">
+        <div class="md:px-10">
             <!-- Header Section -->
 
 
-            <div class="grid md:grid-cols-4 px-3 md:px-10 gap-2 grid-cols-1 py-5 mt-9 bg-white flex-1">
+            <div class="grid md:grid-cols-4 px-2 md:px-10 gap-2 grid-cols-2 md:py-5 mt-9 bg-white flex-1">
                 @foreach ($courses as $course)
                     <x-course-card :course="$course" />
                 @endforeach
@@ -28,7 +28,7 @@
                 </h2>
             </div>`
 
-            <div class="grid flex-1 grid-cols-3 gap-3">
+            <div class="grid flex-1 grid-cols-1 md:grid-cols-3 gap-3">
                 <x-review-card
                     img="https://lh3.googleusercontent.com/a-/ALV-UjWWABThjAM4ufxXV8z7hgfDkQd28z74Gq3kmZZuuPPdugJmveCv=s45-c-rp-mo-br100"
                     fullname="Md Faiyyaj Alam (Faizi)"

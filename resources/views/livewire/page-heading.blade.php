@@ -7,9 +7,9 @@
                 <p class="text-md md:text-lg mb-6">
                     {{$description}}
                 </p>
-                <div class="flex ">
+                <div class="flex md:flex-row flex-col gap-2">
                     <a href="{{route('public.contact')}}"
-                        class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-5 rounded-full mr-4">
+                        class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-5 rounded-full">
                         GET FREE Consultations
                     </a>
                     <a href="tel:+919546805580"
