@@ -263,6 +263,9 @@
                         <li>
                             <a href="{{ route('public.privacy') }}" class="hover:text-gray-400">Privacy & Policy</a>
                         </li>
+                        <li>
+                            <a href="{{ route('public.terms-conditions') }}" class="hover:text-gray-400">Terms & Conditions</a>
+                        </li>
                     </ul>
                 </div>
                 <!-- Contact Information -->

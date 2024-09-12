@@ -175,6 +175,9 @@ class PublicController extends Controller
         return view('public.services.coaching');
     }
 
+    public function termsAndConditions(){
+        return view('public.terms-and-conditions');
+    }
 
 
 

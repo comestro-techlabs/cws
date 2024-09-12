@@ -86,6 +86,7 @@ Route::post('save-course-payment', [PaymentController::class, 'saveCoursePayment
             Route::get('/about', 'aboutPage')->name('public.about');
             Route::get('/contact', 'contactUsPage')->name('public.contact');
             Route::get('/privacy-policy', 'privacyAndPolicy')->name('public.privacy'); 
+            Route::get('/terms-conditions', 'termsAndConditions')->name('public.terms-conditions'); 
             
             // service's routes here:
             Route::prefix("services")->group(function(){
