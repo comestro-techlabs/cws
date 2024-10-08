@@ -88,7 +88,7 @@
     <section class="py-16 px-4 sm:px-8 md:px-20 bg-gray-100 mt-10">
         <div class="flex flex-col items-center justify-center">
             <h1 class="text-2xl sm:text-3xl font-bold mb-5">Get in touch with us!</h1>
-            <p class="text-sm sm:text-base text-slate-700 text-center">Our digital marketing team is always keen to help.
+            <p class="text-sm sm:text-base text-slate-700 text-center">Our Software Devlopment team is always keen to help.
                 For any queries/suggestions, kindly give us a call, send <br> us an email, or fill out the form below.</p>
 
             <span class="elementor-divider-separator"></span>

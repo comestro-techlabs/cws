@@ -5,7 +5,7 @@
 @endsection
 
 @section('meta')
-    <meta name="description" content="Discover Comestro, a leading digital marketing agency based in Purnea Bihar, delivering 360º Digital Solutions globally since 2009. With over 110 experts across Bihar, we help businesses thrive through innovative, data-driven marketing strategies."/>
+    <meta name="description" content="Discover Comestro, a leading Software Company based in Purnea Bihar, delivering 360º Software Solutions globally since 2009. With over 110 experts across Bihar, we help businesses thrive through innovative, data-driven marketing strategies."/>
 @endsection
 
 @section('content')
@@ -13,7 +13,7 @@
 
         <!-- Header Section -->
         <livewire:page-heading title="About Comestro"
-            description="Our Comestro TechLab services is one of top techLab services agency in India. We provide 360º
+            description="Our Comestro TechLab services is one of top Software Devlopment Company in India. We provide 360º
                     techLab Solutions to businesses across the globe."
             image="about-header.png" />
 
@@ -23,7 +23,7 @@
         <div class="mx-4 md:mx-10 px-4 md:px-6 w-full md:w-1/2">
             <h2 class="text-lg font-semibold mb-4 text-gray-700 text-center md:text-left">About Us</h2>
             <h2 class="text-2xl md:text-3xl font-bold mb-6 text-blue-900 text-center md:text-left">
-                We’re Leaders In Innovative Digital Marketing Solutions
+                We’re Leaders In Innovative Software Solutions
             </h2>
             <p class="text-md text-gray-700 leading-relaxed mb-4">
                 <a href="/">At <span class="font-bold text-orange-500">Com</span></a><span class="font-bold text-blue-600">estro</span>, we believe in the power of innovation and technology to transform businesses. Based in Purnea, Bihar, we specialize in developing high-quality web applications, mobile apps, and custom websites that help our clients achieve their digital goals. Our passion for building innovative solutions drives us to deliver projects that are not only functional but also scalable and user-friendly.
@@ -65,20 +65,20 @@
         <div class="w-full md:w-1/2 flex flex-col gap-6 md:gap-10 px-4 md:px-10 mt-10 md:mt-0 shake">
             <!-- Card 1 -->
             <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center">
-                <div class="text-3xl md:text-4xl font-bold text-orange-600">1500+</div>
-                <div class="text-gray-600 mt-2">Happy Clients</div>
+                <div class="text-3xl md:text-4xl font-bold text-orange-600">500+</div>
+                <div class="text-gray-600 mt-2 mr-2">Happy Clients</div>
             </div>
 
             <!-- Card 2 -->
             <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center shake">
                 <div class="text-3xl md:text-4xl font-bold text-green-600">2500+</div>
-                <div class="text-gray-600 mt-2">SEO Managed Websites</div>
+                <div class="text-gray-600 mt-2 mr-4">Software</div>
             </div>
 
             <!-- Card 3 -->
             <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center shake">
-                <div class="text-3xl md:text-4xl font-bold text-orange-600">345M</div>
-                <div class="text-gray-600 mt-2">Leads Delivered</div>
+                <div class="text-3xl md:text-4xl font-bold text-orange-600">345+</div>
+                <div class="text-gray-600 mt-2 mr-2">Leads Delivered</div>
             </div>
         </div>
     </section>
@@ -122,7 +122,7 @@
                         <div class="flex flex-col items-center">
                             <div class="bg-white shadow-lg border rounded-lg p-6 text-center mb-4">
                                 <p class="text-gray-700">
-                                    Expanded our services to include new digital marketing strategies.
+                                    Expanded our services to include new Software technology services.
                                 </p>
                             </div>
                             <hr class="border-t border-gray-300 w-full mb-4">

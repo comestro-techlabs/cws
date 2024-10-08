@@ -7,7 +7,7 @@
 <div class="bg-white 
  overflow-x-hidden">
     <livewire:page-heading title="Ecommerce Website Development"
-        description="Our Comestro TechLab services is one of top techLab services agency in India. We provide 360º
+        description="Our Comestro TechLab services is one of top Software Devlopment Company in India. We provide 360º
                     techLab Solutions to businesses across the globe."
         image="about-header.png" />
     
@@ -156,7 +156,7 @@
         <div class="max-w-4xl mx-auto px-4 md:px-10">
             <h1 class="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-6">Get in Touch With Us!</h1>
             <p class="text-base md:text-lg text-center text-gray-700 mb-8">
-                Our digital marketing team is always keen to help. For any queries or suggestions, kindly give us a call, send us an email,
+                Our Software Devlopment team is always keen to help. For any queries or suggestions, kindly give us a call, send us an email,
                 or fill out the form below.
             </p>
 
