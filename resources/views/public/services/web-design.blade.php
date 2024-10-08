@@ -4,7 +4,8 @@
     Web Design
 @endsection
 @section('content')
-<div class="bg-white py-16 overflow-x-hidden">
+<div class="bg-white 
+ overflow-x-hidden">
     <livewire:page-heading title="Web Designing"
         description="Our TechLab services in India enhance your brand’s online presence, attract new customers,
                     and drive conversions, providing a competitive edge and securing new revenue sources for your

@@ -5,7 +5,8 @@
     Native App Development
 @endsection
 @section('content')
-<div class="bg-white py-16 overflow-x-hidden">
+<div class="bg-white 
+ overflow-x-hidden">
 <livewire:page-heading title="Native & Hybrid App Development" description="Tailored mobile app solutions for every business need." image="about-header.png"/>
 
 <section class="py-12 bg-gray-100">

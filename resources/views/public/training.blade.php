@@ -9,7 +9,7 @@
 @endsection
 
 @section('content')
-    <div class="bg-white py-12 overflow-x-hidden">
+    <div class="bg-white overflow-x-hidden">
 
         <livewire:page-heading title="Comestro TechLabs Training"
             description="Comestro offers comprehensive training in Full-Stack Web Development, C Programming, Laravel, SQL Database Management, and JavaScript & React. Our hands-on courses are designed to equip you with practical skills for real-world software and web development projects." image="about-header.png" />

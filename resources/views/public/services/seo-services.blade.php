@@ -4,7 +4,8 @@
     SEO Services
 @endsection
 @section('content')
-<div class="bg-white py-16 overflow-x-hidden">
+<div class="bg-white 
+ overflow-x-hidden">
 <livewire:page-heading title="SEO Services" description="Boost your online presence and drive more traffic to your website." image="about-header.png"/>
 
 <section class="py-12">

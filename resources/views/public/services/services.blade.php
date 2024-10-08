@@ -5,7 +5,8 @@
 @endsection
 
 @section('content')
-    <div class="bg-white py-16 overflow-x-hidden">
+    <div class="bg-white 
+ overflow-x-hidden">
         <livewire:page-heading title="Comestro TechLab Services"
             description="Our TechLab services in India enhance your brand’s online presence, attract new customers, and drive conversions."
             image="about-header.png" />

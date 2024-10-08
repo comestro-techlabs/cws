@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-<div class="bg-white py-16 overflow-x-hidden">
+<div class="bg-white overflow-x-hidden">
     <livewire:page-heading title="Coaching Management System"
         description="Our Comestro TechLab services is one of the top techLab services agencies in India. We provide 360º techLab Solutions to businesses across the globe."
         image="about-header.png" />
