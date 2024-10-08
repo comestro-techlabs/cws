@@ -4,6 +4,10 @@
     About us
 @endsection
 
+@section('meta')
+    <meta name="description" content="Discover Comestro, a leading digital marketing agency based in Purnea Bihar, delivering 360º Digital Solutions globally since 2009. With over 110 experts across Bihar, we help businesses thrive through innovative, data-driven marketing strategies."/>
+@endsection
+
 @section('content')
     <div class="bg-white py-12 overflow-x-hidden">
 
@@ -22,7 +26,7 @@
                     We’re Leaders In Innovative Digital Marketing Solutions
                 </h2>
                 <p class="text-md text-gray-700 leading-relaxed mb-4">
-                    <a href="/" class="font-bold text-orange-500">Com</a><span class="font-bold text-blue-600">estro</span>, a top-tier digital marketing agency headquartered in Mumbai, has been a beacon of innovative digital solutions since its inception in 2009. Over the last 15 years, we have carved out a significant niche in the digital marketing landscape, offering a comprehensive suite of 360º Digital Solutions to a diverse range of businesses globally. Our journey from a humble one-person office to a robust team of over 110 digital experts, spread across three global locations, underscores our relentless pursuit of excellence and growth.
+                    <a href="/" class="font-bold text-orange-500">Com</a><span class="font-bold text-blue-600">estro</span>, a top-tier digital marketing agency headquartered in Punea (Bihar), has been a beacon of innovative digital solutions since its inception in 2009. Over the last 15 years, we have carved out a significant niche in the digital marketing landscape, offering a comprehensive suite of 360º Digital Solutions to a diverse range of businesses globally. Our journey from a humble one-person office to a robust team of over 110 digital experts, spread across three global locations, underscores our relentless pursuit of excellence and growth.
                 </p>
                 <p class="text-md text-gray-700 leading-relaxed mb-4">
                     In our commitment to delivering exceptional value to our clients, we focus on driving performance-based outcomes that bolster revenue and enhance brand presence. Our expansive service offerings encompass Web Designing, Web Development, Search Engine Optimization (SEO), Pay per Click (PPC) Advertising, Social Media Optimization and Management (SMO/SMM), and Online Reputation Management (ORM). Each service is tailored to meet the unique needs of our clients, ensuring that we act as true growth partners in their digital journey.

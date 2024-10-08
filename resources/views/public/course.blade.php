@@ -1,5 +1,14 @@
 @extends('public.layout')
 
+@section('title')
+    {{$course->title }} |
+@endsection
+
+@section('meta')
+   <meta name="description" content="{{$course->description}}"/>
+   <meta name="author" content="{{$course->instructor}}">
+@endsection
+
 @section('content')
     <div class="flex justify-center bg-gray-900 px-3 py-8 mt-24">
         <div class="md:w-10/12 w-full flex items-center flex-col-reverse md:flex-row">

@@ -1,6 +1,10 @@
 @extends('public.layout')
 
 
+@section('meta')
+    <meta name="description" content="Join Comestro Programming Classes and master coding with expert-led training in C, DBMS, Laravel, and Web Development. Learn hands-on programming techniques from beginner to advanced levels. Enroll now to enhance your coding skills and build a successful career in tech!"/>
+@endsection
+
 @section('content')
 
     <div class="bg-white py-24 md:py-12 lg:py-16 overflow-x-hidden">
