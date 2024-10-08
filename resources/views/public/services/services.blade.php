@@ -96,7 +96,7 @@
                 Our Services
             </h2>
             <p class="text-2xl md:text-3xl font-bold text-gray-800">
-                Comestro TechLabs offer end-to-end 'Digital Solutions'
+                Comestro TechLabs offer end-to-end 'Software solutions'
             </p>
             <p class="text-base md:text-lg font-light text-gray-600 mt-4">
                 Partner with us to transform your vision into reality. Your journey to innovation starts here!

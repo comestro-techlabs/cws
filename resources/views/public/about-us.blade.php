@@ -57,7 +57,7 @@
 
                 Comestro is located at Thana Chowk, a bustling part of Purnea, Bihar, near the well-known Dog Hospital. Our office is easily accessible, making it convenient for local businesses and clients to collaborate with us. Purnea, with its blend of history and modernization, is quickly becoming a hub for tech startups and innovation in Eastern India.
 
-                Our presence in Purnea allows us to tap into local talent while delivering digital solutions that compete on a global scale. We are proud to contribute to the local economy, providing job opportunities and empowering businesses in the region with our state-of-the-art technology services.
+                Our presence in Purnea allows us to tap into local talent while delivering Software solutions that compete on a global scale. We are proud to contribute to the local economy, providing job opportunities and empowering businesses in the region with our state-of-the-art technology services.
             </p>
         </div>
 
@@ -89,7 +89,7 @@
                 Our Development Journey
             </h2>
             <p class="text-3xl font-bold text-gray-800">
-                Comestro TechLabs offer end-to-end 'Digital Solutions'
+                Comestro TechLabs offer end-to-end 'Software solutions'
             </p>
             <p class="text-lg font-light text-gray-600 mt-4">
                 Partner with us to transform your vision into reality. Your journey to innovation starts here!
