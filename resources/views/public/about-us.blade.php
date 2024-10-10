@@ -9,7 +9,7 @@
 @endsection
 
 @section('content')
-    <div class="bg-white py-12 overflow-x-hidden">
+    <div class="bg-white pB-12 overflow-x-hidden">
 
         <!-- Header Section -->
         <livewire:page-heading title="About Comestro"
