@@ -10,7 +10,7 @@
 @endsection
 
 @section('content')
-    <div class="flex justify-center bg-gray-900 px-3 py-8 mt-24">
+    <div class="flex justify-center bg-gray-900 px-3 py-8 mt-0">
         <div class="md:w-10/12 w-full flex items-center flex-col-reverse md:flex-row">
             <!-- Left Section (Course Details) -->
             <div class="md:w-8/12 w-full text-white p-8">
