@@ -298,9 +298,9 @@
                         document.forms[0].submit();
                     },
                     "prefill": {
-                        "name": "{{ $course->name }}",
-                        "email": "{{ $course->email }}",
-                        "contact": "{{ $course->contact }}"
+                        "name": "{{ Auth::user()->name }}",
+                        "email": "{{ Auth::user()->email }}",
+                        "contact": {{ Auth::user()->contact }}
                     },
                     "theme": {
                         "color": "#0a64a3"
