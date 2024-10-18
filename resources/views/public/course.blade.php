@@ -283,6 +283,8 @@
         <input type="hidden" value="{{ $course->id }}" name="course_id" id="course_id">
         <input type="hidden" value="{{ $course->discounted_fees }}" name="amount" id="amount">
         <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+        @auth
+        
         <script>
             document.getElementById('pay-button').onclick = function(e) {
                 e.preventDefault();
@@ -300,7 +302,7 @@
                     "prefill": {
                         "name": "{{ Auth::user()->name }}",
                         "email": "{{ Auth::user()->email }}",
-                        "contact": {{ Auth::user()->contact }}
+                        "contact": 9546805580
                     },
                     "theme": {
                         "color": "#0a64a3"
@@ -310,5 +312,6 @@
                 rzp1.open();
             }
         </script>
+        @endauth
     </form>
 @endsection
