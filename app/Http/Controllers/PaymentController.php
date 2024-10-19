@@ -30,13 +30,13 @@ class PaymentController extends Controller
             }
 
         $student = User::findOrFail(Auth::id());
-
-
+        $order = time() . $student->id. $request->input('amount');
 
         $payment = Payment::create([
             'course_id' =>$request->input('course_id'),
             'student_id' => $student->id,
             'receipt_no' => time() . $student->id,
+            'order_id' => $order,
             'payment_id' => $request->razorpay_payment_id,
             'transaction_fee' => $request->input('amount'),
             'amount' => $request->input('amount'),
