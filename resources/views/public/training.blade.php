@@ -1,15 +1,18 @@
 @extends('public.layout')
 
 @section('title')
-    Training
+    Programming Training 
+@endsection
+
+@section('meta')
+    <meta name="description" content="Comestro offers comprehensive training in Full-Stack Web Development, C Programming, Laravel, SQL Database Management, and JavaScript & React. Our hands-on courses are designed to equip you with practical skills for real-world software and web development projects."/>
 @endsection
 
 @section('content')
-    <div class="bg-white py-12 overflow-x-hidden">
+    <div class="bg-white overflow-x-hidden">
 
-        <livewire:page-heading title="Comestro Traning Program"
-            description="Our Comestro TechLab services is one of top techLab services agency in India. We provide 360º techLab Solutions to businesses across the globe"
-            image="about-header.png" />
+        <livewire:page-heading title="Comestro TechLabs Training"
+            description="Comestro offers comprehensive training in Full-Stack Web Development, C Programming, Laravel, SQL Database Management, and JavaScript & React. Our hands-on courses are designed to equip you with practical skills for real-world software and web development projects." image="about-header.png" />
 
         <div class="md:px-10">
             <!-- Header Section -->

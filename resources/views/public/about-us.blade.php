@@ -4,61 +4,84 @@
     About us
 @endsection
 
+@section('meta')
+    <meta name="description" content="Discover Comestro, a leading Software Company based in Purnea Bihar, delivering 360º Software Solutions globally since 2009. With over 110 experts across Bihar, we help businesses thrive through innovative, data-driven marketing strategies."/>
+@endsection
+
 @section('content')
-    <div class="bg-white py-12 overflow-x-hidden">
+    <div class="bg-white pB-12 overflow-x-hidden">
 
         <!-- Header Section -->
         <livewire:page-heading title="About Comestro"
-            description="Our Comestro TechLab services is one of top techLab services agency in India. We provide 360º
+            description="Our Comestro TechLab services is one of top Software Devlopment Company in India. We provide 360º
                     techLab Solutions to businesses across the globe."
             image="about-header.png" />
 
         <!-- Content Section -->
         <section class="py-10 flex flex-col md:flex-row">
-            <!-- Text Content Section -->
-            <div class="mx-4 md:mx-10 px-4 md:px-6 w-full md:w-1/2">
-                <h2 class="text-lg font-semibold mb-4 text-gray-700 text-center md:text-left">About Us</h2>
-                <h2 class="text-2xl md:text-3xl font-bold mb-6 text-blue-900 text-center md:text-left">
-                    We’re Leaders In Innovative Digital Marketing Solutions
-                </h2>
-                <p class="text-md text-gray-700 leading-relaxed mb-4">
-                    <a href="/" class="font-bold text-orange-500">Com</a><span class="font-bold text-blue-600">estro</span>, a top-tier digital marketing agency headquartered in Mumbai, has been a beacon of innovative digital solutions since its inception in 2009. Over the last 15 years, we have carved out a significant niche in the digital marketing landscape, offering a comprehensive suite of 360º Digital Solutions to a diverse range of businesses globally. Our journey from a humble one-person office to a robust team of over 110 digital experts, spread across three global locations, underscores our relentless pursuit of excellence and growth.
-                </p>
-                <p class="text-md text-gray-700 leading-relaxed mb-4">
-                    In our commitment to delivering exceptional value to our clients, we focus on driving performance-based outcomes that bolster revenue and enhance brand presence. Our expansive service offerings encompass Web Designing, Web Development, Search Engine Optimization (SEO), Pay per Click (PPC) Advertising, Social Media Optimization and Management (SMO/SMM), and Online Reputation Management (ORM). Each service is tailored to meet the unique needs of our clients, ensuring that we act as true growth partners in their digital journey.
-                </p>
-                <p class="text-md text-gray-700 leading-relaxed mb-4">
-                    With a rich history of innovation and adaptation, we have consistently evolved to meet the dynamic demands of the digital marketing ecosystem. This adaptability is reflected in our diverse SEO strategies, which include Voice SEO, YouTube SEO, Local SEO, On-page SEO, Off-page SEO, and Technical SEO. These strategies have been honed over years of expertise to offer foolproof solutions that enhance a website’s ranking and drive significant traffic.
-                </p>
-                <p class="text-md text-gray-700 leading-relaxed mb-4">
-                    Our efforts have yielded impressive results, with over 3,000 businesses benefiting from our services. We have managed over 2,500 SEO projects, delivered 345 million leads, and garnered the satisfaction of 1,500+ happy customers. These metrics are a testament to our effectiveness and dedication to helping our clients succeed.
-                </p>
-                <p class="text-md text-gray-700 leading-relaxed">
-                    At the core of our services is a profound understanding of the digital sphere and an unwavering focus on leveraging this knowledge to benefit our clients. We have spent billions on Google ads, achieving a remarkable improvement in campaign performance, typically boosting existing performance by 30 to 40%. Moreover, our expertise extends to monitoring online conversations about brands, ensuring their reputation remains stellar across digital platforms.
-                </p>
+        <!-- Text Content Section -->
+        <div class="mx-4 md:mx-10 px-4 md:px-6 w-full md:w-1/2">
+            <h2 class="text-lg font-semibold mb-4 text-gray-700 text-center md:text-left">About Us</h2>
+            <h2 class="text-2xl md:text-3xl font-bold mb-6 text-blue-900 text-center md:text-left">
+                We’re Leaders In Innovative Software Solutions
+            </h2>
+            <p class="text-md text-gray-700 leading-relaxed mb-4">
+                <a href="/">At <span class="font-bold text-orange-500">Com</span></a><span class="font-bold text-blue-600">estro</span>, we believe in the power of innovation and technology to transform businesses. Based in Purnea, Bihar, we specialize in developing high-quality web applications, mobile apps, and custom websites that help our clients achieve their digital goals. Our passion for building innovative solutions drives us to deliver projects that are not only functional but also scalable and user-friendly.
+            </p>
+            <p class="text-md text-gray-700 leading-relaxed mb-4">
+                Our mission is to empower businesses by providing them with cutting-edge digital products that enhance efficiency, drive growth, and create meaningful user experiences. Whether you're a startup or an established company, we partner with you to build software solutions tailored to your unique needs and goals.
+            </p>
+            <p class="font-bold text-lg text-gray-700 mb-2">
+                What We Do:
+            </p>
+            <p class="text-md text-gray-700 leading-relaxed mb-4">
+                1. Web Application Development:
+                Our web applications are designed to meet your specific business needs, ensuring scalability, reliability, and seamless user experience. From complex enterprise-level systems to SaaS platforms, we deliver robust web apps that are both user-friendly and efficient.
+
+
+            </p>
+            <p class="text-md text-gray-700 leading-relaxed mb-4">
+                2. Mobile App Development:
+                We create high-performance mobile apps for both iOS and Android platforms. Our apps are built with a focus on usability, performance, and sleek design to ensure users love interacting with your brand on the go.
+
+            </p>
+            <p class="text-md text-gray-700 leading-relaxed">
+
+                3. Custom Website Development:
+                Your website is the digital face of your business. We design and develop custom websites that are visually stunning, optimized for performance, security, and SEO. Whether it's a corporate website, e-commerce platform, or portfolio, we ensure your site is built to succeed.
+            </p>
+            <p class="font-bold text-lg text-gray-700 mt-4 mb-2">
+          Our Location:
+            </p>
+            <p class="text-md text-gray-700 leading-relaxed">
+
+                Comestro is located at Thana Chowk, a bustling part of Purnea, Bihar, near the well-known Dog Hospital. Our office is easily accessible, making it convenient for local businesses and clients to collaborate with us. Purnea, with its blend of history and modernization, is quickly becoming a hub for tech startups and innovation in Eastern India.
+
+                Our presence in Purnea allows us to tap into local talent while delivering Software solutions that compete on a global scale. We are proud to contribute to the local economy, providing job opportunities and empowering businesses in the region with our state-of-the-art technology services.
+            </p>
+        </div>
+
+        <!-- Stats Cards Section -->
+        <div class="w-full md:w-1/2 flex flex-col gap-6 md:gap-10 px-4 md:px-10 mt-10 md:mt-0 shake">
+            <!-- Card 1 -->
+            <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center">
+                <div class="text-3xl md:text-4xl font-bold text-orange-600">500+</div>
+                <div class="text-gray-600 mt-2 mr-2">Happy Clients</div>
             </div>
-        
-            <!-- Stats Cards Section -->
-            <div class="w-full md:w-1/2 flex flex-col gap-6 md:gap-10 px-4 md:px-10 mt-10 md:mt-0 shake">
-                <!-- Card 1 -->
-                <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center">
-                    <div class="text-3xl md:text-4xl font-bold text-orange-600">1500+</div>
-                    <div class="text-gray-600 mt-2">Happy Clients</div>
-                </div>
-        
-                <!-- Card 2 -->
-                <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center shake">
-                    <div class="text-3xl md:text-4xl font-bold text-green-600">2500+</div>
-                    <div class="text-gray-600 mt-2">SEO Managed Websites</div>
-                </div>
-        
-                <!-- Card 3 -->
-                <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center shake">
-                    <div class="text-3xl md:text-4xl font-bold text-orange-600">345M</div>
-                    <div class="text-gray-600 mt-2">Leads Delivered</div>
-                </div>
+
+            <!-- Card 2 -->
+            <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center shake">
+                <div class="text-3xl md:text-4xl font-bold text-green-600">2500+</div>
+                <div class="text-gray-600 mt-2 mr-4">Software</div>
             </div>
-        </section>
+
+            <!-- Card 3 -->
+            <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center shake">
+                <div class="text-3xl md:text-4xl font-bold text-orange-600">345+</div>
+                <div class="text-gray-600 mt-2 mr-2">Leads Delivered</div>
+            </div>
+        </div>
+    </section>
         
         <!-- Development Journey Section -->
         <div class="bg-white py-12 px-4 text-center">
@@ -66,7 +89,7 @@
                 Our Development Journey
             </h2>
             <p class="text-3xl font-bold text-gray-800">
-                Comestro TechLabs offer end-to-end 'Digital Solutions'
+                Comestro TechLabs offer end-to-end 'Software solutions'
             </p>
             <p class="text-lg font-light text-gray-600 mt-4">
                 Partner with us to transform your vision into reality. Your journey to innovation starts here!
@@ -99,7 +122,7 @@
                         <div class="flex flex-col items-center">
                             <div class="bg-white shadow-lg border rounded-lg p-6 text-center mb-4">
                                 <p class="text-gray-700">
-                                    Expanded our services to include new digital marketing strategies.
+                                    Expanded our services to include new Software technology services.
                                 </p>
                             </div>
                             <hr class="border-t border-gray-300 w-full mb-4">
@@ -124,6 +147,7 @@
         </div>
         
     </div>
+@endsection
 
 @section('js')
     <script>

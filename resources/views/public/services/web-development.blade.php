@@ -7,7 +7,8 @@
 @section('content')
 
     <!-- Header Section -->
-    <div class="bg-white py-16 overflow-x-hidden">
+    <div class="bg-white 
+ overflow-x-hidden">
         <livewire:page-heading title="Web Development"
             description="At Comestro TechLab, we pride ourselves on being one of India's leading tech lab service agencies. Our comprehensive 360º tech lab solutions are designed to support businesses worldwide, delivering cutting-edge technology and expert solutions to meet all your needs."
             image="about-header.png" />
@@ -149,7 +150,7 @@
         <section class="py-16 px-4 sm:px-8 md:px-20 bg-gray-100">
             <div class="flex flex-col items-center justify-center text-center">
                 <h1 class="text-2xl sm:text-3xl font-bold mb-5">Get in touch with us!</h1>
-                <p class="text-sm sm:text-base text-slate-700">Our digital marketing team is always keen to help. For any
+                <p class="text-sm sm:text-base text-slate-700">Our Software Devlopment team is always keen to help. For any
                     queries/suggestions, kindly give us a call, send us an email, or fill out the form below.</p>
                 <span class="elementor-divider-separator"></span>
             </div>

@@ -1,9 +1,13 @@
 @extends('public.layout')
 
 
+@section('meta')
+    <meta name="description" content="Join Comestro Programming Classes and master coding with expert-led training in C, DBMS, Laravel, and Web Development. Learn hands-on programming techniques from beginner to advanced levels. Enroll now to enhance your coding skills and build a successful career in tech!"/>
+@endsection
+
 @section('content')
 
-    <div class="bg-white py-24 md:py-12 lg:py-16 overflow-x-hidden">
+    <div class="bg-white overflow-x-hidden">
         <x-hero />
     </div>
 
@@ -15,7 +19,7 @@
                     <div class="text-center mb-12">
                         <h2 class="text-3xl font-bold text-blue-600 mb-2">What We Offer</h2>
                         <p class="text-3xl font-bold text-gray-800">
-                            Comestro TechLabs offer end to end 'Digital Solutions'
+                            Comestro TechLabs offer end to end 'Software Solutions'
                         </p>
                         <p class="text-gray-600 mt-4">Our comprehensive services are designed to meet your business needs.
                         </p>
@@ -116,8 +120,7 @@
             <h2 class="text-3xl font-sans mb-4">Who We Are</h2>
             <h1 class="text-xl font-bold mb-4">Est. 2011 - Top Web Designing Company</h1>
             <p class="text-base text-gray-700 mb-6">
-                With more than 15 years of expertise in the field, we've established ourselves as an evolving Digital
-                Marketing Agency. Over the years, we have diversified according to market needs. We optimize website
+                With more than 15 years of expertise in the field, we've established ourselves as an evolving Software Company. Over the years, we have diversified according to market needs. We optimize website
                 rankings, boost campaign performance, enhance brand names, create quality content, and popularize brands on
                 social media...
             </p>
@@ -144,7 +147,7 @@
     <div class="flex flex-col gap-2 p-8 bg-white rounded-2xl mb-12 items-center md:px-[10%]">
         <h2 class="text-lg md:text-xl font-normal max-w-2xl text-gray-900  text-center mb-4 flex flex-col">
             <span class="font-semibold mb-1">Results that Speak for Themselves:</span>
-            <span class="text-3xl font-semibold"> We’re a Top Digital Marketing Company in India</span>
+            <span class="text-3xl font-semibold"> We’re a Top Software Devlopment Company in India</span>
         </h2>
 
         <div class="flex flex-col md:flex-row w-full gap-8">
@@ -169,7 +172,7 @@
     <section class="py-16 px-4 sm:px-8 md:px-20 bg-gray-100">
         <div class="flex flex-col items-center justify-center">
             <h1 class="text-2xl text-orange-600 sm:text-3xl font-bold mb-5">Please Feedback!</h1>
-            <p class="text-sm sm:text-base text-slate-700 text-center">Our digital marketing team is eager to assist you!
+            <p class="text-sm sm:text-base text-slate-700 text-center">Our Software Devlopment team is eager to assist you!
                 For any suggestions, feel free to give us a Feedback.</p>
 
             <span class="elementor-divider-separator"></span>

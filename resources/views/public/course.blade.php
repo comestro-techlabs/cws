@@ -1,7 +1,16 @@
 @extends('public.layout')
 
+@section('title')
+    {{ $course->title }} |
+@endsection
+
+@section('meta')
+    <meta name="description" content="{{ $course->description }}" />
+    <meta name="author" content="{{ $course->instructor }}">
+@endsection
+
 @section('content')
-    <div class="flex justify-center bg-gray-900 px-3 py-8 mt-24">
+    <div class="flex justify-center bg-gray-900 px-3 py-8 mt-0">
         <div class="md:w-10/12 w-full flex items-center flex-col-reverse md:flex-row">
             <!-- Left Section (Course Details) -->
             <div class="md:w-8/12 w-full text-white p-8">
@@ -46,8 +55,8 @@
                 <div class="bg-white rounded-lg shadow-lg p-4 sticky top-20">
                     <!-- Course Preview Image -->
                     <div class="overflow-hidden rounded-lg mb-4">
-                        <img src="{{ asset('storage/course_images/' . $course->course_image) }}" alt="{{ $course->title }}"
-                            class="w-full h-auto object-cover">
+                        <img src="{{ asset('storage/course_images/' . $course->course_image) }}"
+                            alt="{{ $course->title }}" class="w-full h-auto object-cover">
                     </div>
 
                     <!-- Course Price -->
@@ -60,22 +69,22 @@
                     </div>
 
                     @auth
-                    <a href="" id="pay-button"
-                        class="block bg-purple-600 text-white text-center py-2 rounded-full hover:bg-purple-700">
-                        Proceed Now
-                    </a>
-                @endauth
-                
-                @guest
-                    <a href="{{ route('auth.login')}}"
-                        class="block bg-purple-600 text-white text-center py-2 rounded-full hover:bg-purple-700">
-                        Proceed Now
-                    </a>
-                 @endguest
-            
-                
-                
-                
+                        <a href="" id="pay-button"
+                            class="block bg-purple-600 text-white text-center py-2 rounded-full hover:bg-purple-700">
+                            Proceed Now
+                        </a>
+                    @endauth
+
+                    @guest
+                        <a href="{{ route('auth.login') }}"
+                            class="block bg-purple-600 text-white text-center py-2 rounded-full hover:bg-purple-700">
+                            Proceed Now
+                        </a>
+                    @endguest
+
+
+
+
 
 
                     <!-- 30-Day Money-Back Guarantee -->
@@ -186,7 +195,8 @@
                         </li>
                         <li class="">A computer with access to the internet</li>
                         <li class="">No paid software required</li>
-                        <li class="">I'll walk you through, step-by-step how to get all the software installed and set
+                        <li class="">I'll walk you through, step-by-step how to get all the software installed and
+                            set
                             up</li>
 
                     </ul>
@@ -274,32 +284,80 @@
         <input type="hidden" value="{{ $course->id }}" name="course_id" id="course_id">
         <input type="hidden" value="{{ $course->discounted_fees }}" name="amount" id="amount">
         <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-        <script>
-            document.getElementById('pay-button').onclick = function(e) {
-                e.preventDefault();
-                var options = {
-                    "key": "{{ env('RAZORPAY_KEY') }}",
-                    "amount": "{{ $course->discounted_fees }}" * 100,
-                    "currency": "INR",
-                    "name": "Comestro",
-                    "description": "Processing Fee",
-                    "image": "{{ asset('front_assets/img/logo/logo.png') }}",
-                    "handler": function(response) {
-                        document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
-                        document.forms[0].submit();
-                    },
-                    "prefill": {
-                        "name": "{{ $course->name }}",
-                        "email": "{{ $course->email }}",
-                        "contact": "{{ $course->contact }}"
-                    },
-                    "theme": {
-                        "color": "#0a64a3"
-                    }
-                };
-                var rzp1 = new Razorpay(options);
-                rzp1.open();
-            }
-        </script>
+        @auth
+
+            <script>
+                document.getElementById('pay-button').onclick = function(e) {
+                    e.preventDefault();
+                    var options = {
+                        "key": "{{ env('RAZORPAY_KEY') }}",
+                        "amount": "{{ $course->discounted_fees }}" * 100,
+                        "currency": "INR",
+                        "name": "Comestro",
+                        "description": "Processing Fee",
+                        "image": "{{ asset('front_assets/img/logo/logo.png') }}",
+                        "handler": function(response) {
+                            document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
+                            document.forms[0].submit();
+                        },
+                        "prefill": {
+                            "name": "{{ Auth::user()->name }}",
+                            "email": "{{ Auth::user()->email }}",
+                            // "contact": {{ Auth::user()->contact }}
+                        },
+                        "theme": {
+                            "color": "#0a64a3"
+                        }
+                    };
+                    var rzp1 = new Razorpay(options);
+                    rzp1.open();
+                }
+            </script>
+        @endauth
     </form>
 @endsection
+
+
+{{-- <button id="rzp-button1">Pay</button>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    var options = {
+        "key": "YOUR_KEY_ID", // Enter the Key ID generated from the Dashboard
+        "amount": "50000", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        "currency": "INR",
+        "name": "Acme Corp", //your business name
+        "description": "Test Transaction",
+        "image": "https://example.com/your_logo",
+        "order_id": "order_9A33XWu170gUtm", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+        "handler": function(response) {
+            alert(response.razorpay_payment_id);
+            alert(response.razorpay_order_id);
+            alert(response.razorpay_signature)
+        },
+        "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information, especially their phone number
+            "name": "Gaurav Kumar", //your customer's name
+            "email": "gaurav.kumar@example.com",
+            "contact": "9000090000" //Provide the customer's phone number for better conversion rates 
+        },
+        "notes": {
+            "address": "Razorpay Corporate Office"
+        },
+        "theme": {
+            "color": "#3399cc"
+        }
+    };
+    var rzp1 = new Razorpay(options);
+    rzp1.on('payment.failed', function(response) {
+        alert(response.error.code);
+        alert(response.error.description);
+        alert(response.error.source);
+        alert(response.error.step);
+        alert(response.error.reason);
+        alert(response.error.metadata.order_id);
+        alert(response.error.metadata.payment_id);
+    });
+    document.getElementById('rzp-button1').onclick = function(e) {
+        rzp1.open();
+        e.preventDefault();
+    }
+</script> --}}

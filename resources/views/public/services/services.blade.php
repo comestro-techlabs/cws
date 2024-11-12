@@ -5,7 +5,8 @@
 @endsection
 
 @section('content')
-    <div class="bg-white py-16 overflow-x-hidden">
+    <div class="bg-white 
+ overflow-x-hidden">
         <livewire:page-heading title="Comestro TechLab Services"
             description="Our TechLab services in India enhance your brand’s online presence, attract new customers, and drive conversions."
             image="about-header.png" />
@@ -36,7 +37,7 @@
                         estro
                     </a>
                     believes that every business has infinite potential, and all they need is the right partner to unleash
-                    it. Our TechLab Agency is a one-stop solution for all your web marketing needs. 82% of the population
+                    it. Our Software Company is a one-stop solution for all your web marketing needs. 82% of the population
                     tends to search for a product online before making an actual purchase. No company, irrespective of its
                     size, can afford to miss out on such a gigantic opportunity.
                 </p>
@@ -59,7 +60,7 @@
                             All activities performed by Comestro on various digital platforms are recorded in real-time and
                             are always available at the tips of your fingers. Data like customer interaction, conversion
                             rate, impressions, etc., are saved automatically and are available on the various accounts
-                            created by our <a href="#" class="text-blue-600 hover:text-blue-800">TechLab Agency</a>
+                            created by our <a href="#" class="text-blue-600 hover:text-blue-800">Software Company</a>
                             for your reference and analysis.
                         </p>
                     </div>
@@ -70,7 +71,7 @@
                         <p class="text-gray-700">
                             Small businesses predominantly find it difficult to compete with industry giants in marketing
                             due to the latter’s enormous marketing budget. At Comestro, we believe that every rupee saved is
-                            a rupee earned. Our TechLab Agency specializes in smart spending so that you can achieve the
+                            a rupee earned. Our Software Company specializes in smart spending so that you can achieve the
                             maximum out of any budget size.
                         </p>
                     </div>
@@ -95,7 +96,7 @@
                 Our Services
             </h2>
             <p class="text-2xl md:text-3xl font-bold text-gray-800">
-                Comestro TechLabs offer end-to-end 'Digital Solutions'
+                Comestro TechLabs offer end-to-end 'Software solutions'
             </p>
             <p class="text-base md:text-lg font-light text-gray-600 mt-4">
                 Partner with us to transform your vision into reality. Your journey to innovation starts here!

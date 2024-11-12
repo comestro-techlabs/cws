@@ -1,4 +1,15 @@
-<nav class="bg-white  fixed w-full z-[999] top-0 left-0 border-b border-gray-200  roboto-bold">
+<div id="alert-2" class=" justify-center flex-1 flex items-center p-4 mb-4 text-white bg-green-700" role="alert">
+    <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+      <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+    </svg>
+    <span class="sr-only">Info</span>   
+    <div class="ms-3  text-xs md:text-sm font-medium">
+        Code with SadiQ Now become Comestro Techlabs!
+    </div>
+
+  </div>
+
+<nav class="bg-white  sticky w-full z-[999] top-0 left-0 border-b border-gray-200  roboto-bold">
     <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-4 py-5">
         <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
             <span class="self-center text-2xl font-semibold whitespace-nowrap ">
@@ -34,7 +45,7 @@
                 </li>
                 <li>
                     <a href="{{ route('public.training') }}"
-                        class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 ">Training</a>
+                        class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 ">Training Courses</a>
                 </li>
                 <li>
                     <button id="mega-menu-dropdown-button" data-dropdown-toggle="mega-menu-dropdown"
