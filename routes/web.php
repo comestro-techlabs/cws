@@ -132,5 +132,5 @@
     Route::post('/phonepe/initiate', [PhonepeController::class, 'initiatePayment'])->name('phonepe.initiate');
     Route::post('/phonepe/callback', [PhonePeController::class, 'callback'])->name('phonepe.callback');
     Route::get('/phonepe/status/{transactionId}', [PhonePeController::class, 'checkStatus'])->name('phonepe.status');
-    Route::post('/phonepe/refund', [PhonePeController::class, 'refund'])->name('phonepe.refund');
+    // Route::post('/phonepe/refund', [PhonePeController::class, 'refund'])->name('phonepe.refund');
     Route::get('/phonepe/redirect', [PhonePeController::class, 'redirect'])->name('phonepe.redirect');

@@ -76,12 +76,19 @@ class PhonepeController extends Controller
         $status = $request->query('status');
         $merchantTransactionId = $request->query('merchantTransactionId');
         $amount = $request->query('amount');
+        
+
+        dd($request->all());
+
+        // dd($status);
+        // dd($merchantTransactionId);
+        // dd($amount);
 
         // Process the status of the transaction (success or failure)
-        if ($status == 'SUCCESS') {
-            return view('phonepe.success', compact('merchantTransactionId'));
-        } else {
-            return view('phonepe.failure', compact('merchantTransactionId'));
-        }
+        // if ($status == 'SUCCESS') {
+        //     return view('phonepe.success', compact('merchantTransactionId'));
+        // } else {
+        //     return view('phonepe.failure', compact('merchantTransactionId'));
+        // }
     }
 }
