@@ -21,6 +21,7 @@
       <div class="p-3">
         <div class="flex">
           <div>
+            
             <p class="mb-1 text-base font-semibold leading-none text-gray-900 dark:text-white">
               <a href="#" class="hover:underline text-lg uppercase text-teal-800 font-bold">{{$course->title}}</a>
             </p>
