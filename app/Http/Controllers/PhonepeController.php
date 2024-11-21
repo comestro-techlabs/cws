@@ -33,8 +33,8 @@ class PhonepeController extends Controller
         $payment = $this->phonePeService->initiatePayment(
             $validated['mobile_number'],
             $validated['amount'],
-            $callbackUrl,
-            $redirectUrl
+            'https://comestro.com/test/status',
+            'https://comestro.com/test/redirect',
         );
 
         return redirect($payment['redirect_url']);
@@ -76,14 +76,8 @@ class PhonepeController extends Controller
         $status = $request->query('status');
         $merchantTransactionId = $request->query('merchantTransactionId');
         $amount = $request->query('amount');
-        
 
-        dd($request->all());
-
-        // dd($status);
-        // dd($merchantTransactionId);
-        // dd($amount);
-
+       
         // Process the status of the transaction (success or failure)
         // if ($status == 'SUCCESS') {
         //     return view('phonepe.success', compact('merchantTransactionId'));
