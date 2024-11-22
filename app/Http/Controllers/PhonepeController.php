@@ -34,7 +34,7 @@ class PhonepeController extends Controller
             $validated['mobile_number'],
             $validated['amount'],
             'https://comestro.com/student/dashboard',
-            'https://comestro.com/test/redirect',
+            'https://comestro.com/student/dashboard',
         );
 
         return redirect($payment['redirect_url']);
