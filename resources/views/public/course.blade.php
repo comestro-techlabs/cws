@@ -75,7 +75,7 @@
                     <input type="hidden" name="email" id="" value="{{Auth::user()->email}}">
                     <input type="hidden" value="{{ $course->id }}" name="course_id" id="course_id">
                     <input type="hidden" value="{{Auth::user()->contact}}" name="mobile_number" id="mobile_number">
-                    <input type="hidden" value="{{ 2}}" name="amount" id="amount">
+                    <input type="hidden" value="{{$course->discounted_fees}}" name="amount" id="amount">
                     <button type="submit" target="_blank"
                         class="flex items-center justify-center  text-black  rounded-full mt-2 shadow-xl px-6 py-3 w-full transition duration-300 ease-in-out transform hover:scale-105 space-x-3">
                         <img src="https://img.icons8.com/?size=100&id=OYtBxIlJwMGA&format=png&color=000000"
