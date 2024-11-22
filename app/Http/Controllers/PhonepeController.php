@@ -33,7 +33,7 @@ class PhonepeController extends Controller
         $payment = $this->phonePeService->initiatePayment(
             $validated['mobile_number'],
             $validated['amount'],
-            'https://comestro.com/test/status',
+            'https://comestro.com/student/dashboard',
             'https://comestro.com/test/redirect',
         );
 
