@@ -28,6 +28,9 @@
 
         Route::prefix('admin')->group(function () {
             Route::get("/", [AdminController::class, "dashboard"])->name('admin.dashboard');
+            Route::get('/manage-payment', [AdminController::class, "managePayment"])->name('admin.manage-payment');
+            Route::get('/payment/{id}', [AdminController::class, "viewPayment"])->name('admin.payment.view');
+
 
             Route::prefix('student')->group(function () {
                 Route::get('/', [StudentController::class, 'index'])->name('student.manage');

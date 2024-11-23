@@ -20,6 +20,14 @@ class Payment extends Model
 
     protected $guarded = [];
 
+    // protected $casts = [
+    //     'payment_date' => 'datetime',
+    // ];
+
+    public function getFormattedDateAttribute()
+    {
+        return \Carbon\Carbon::parse($this->payment_date)->format('Y-m-d');
+    }
 
     public function student()
     {
@@ -28,6 +36,7 @@ class Payment extends Model
 
     public function course()
     {
-        return $this->belongsTo(Course::class);
+        return $this->belongsTo(Course::class, 'course_id');
     }
+
 }

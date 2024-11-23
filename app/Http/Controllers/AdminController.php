@@ -8,12 +8,14 @@ use App\Models\Chapter;
 use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\Enquiry;
+use App\Models\Payment;
 use App\Models\User;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    public function dashboard(){
+    public function dashboard()
+    {
         $admissionsCount = User::count();
         $studentsCount = User::count();
         $categoriesCount = Category::count();
@@ -41,22 +43,24 @@ class AdminController extends Controller
     }
 
     // search Course
-    public function searchCourse(Request $request){
+    public function searchCourse(Request $request)
+    {
         $search = $request->search;
         $search_course = Course::whereLike('title', "%$search%")->paginate(10);
-        return view("admin.manageCourse",['courses' => $search_course]);
+        return view("admin.manageCourse", ['courses' => $search_course]);
     }
 
     public function indexEnquiry()
     {
         $data['enquiry'] = Enquiry::paginate(20);
-        return view("admin.manageEnquiry",$data);
+        return view("admin.manageEnquiry", $data);
     }
 
-    public function searchEnquiry(Request $request){
+    public function searchEnquiry(Request $request)
+    {
         $search = $request->search;
         $search_enquiry = Enquiry::whereLike('name', "%$search%")->paginate(10);
-        return view("admin.manageEnquiry",['enquiry' => $search_enquiry]);
+        return view("admin.manageEnquiry", ['enquiry' => $search_enquiry]);
     }
 
     public function editEnquiry(Enquiry $enquiry)
@@ -72,11 +76,34 @@ class AdminController extends Controller
             'mobile' => 'required|digits:10|regex:/^[0-9]{10}$/',
             'status' => 'required|string',  // Adjust as needed for valid statuses
         ]);
-    
+
         // Update the enquiry with validated data
         $enquiry->update($validatedData);
-    
+
         // Redirect with a success message
         return redirect()->route('admin.manage.enquiry', $enquiry)->with('success', 'Enquiry updated successfully');
+    }
+
+    // showing students who have paid:
+    public function managePayment()
+    {
+        // Fetch all payments with related student and course data
+        $payments = Payment::with(['student', 'course'])
+            ->where('payment_status', 'captured') // Assuming 'captured' means fully paid
+            ->get();
+
+        // Pass the payments data to the view
+        return view('admin.managePayment', compact('payments'));
+    }
+
+
+    // function to view the payment:
+    public function viewPayment($id)
+    {
+        // Fetch payment with related student and course data
+        $payment = Payment::with(['student', 'course'])->findOrFail($id);
+
+        // Return a view to display payment details
+        return view('admin.viewPayment', compact('payment'));
     }
 }
