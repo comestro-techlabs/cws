@@ -25,7 +25,11 @@
     </aside>
 
     <div class="p-4 sm:ml-64">
+        <br>
+        <br>
+        <br>
         @section('content')
+            
         @show()
     </div>
 
