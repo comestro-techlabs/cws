@@ -17,7 +17,13 @@ class AdminController extends Controller
     public function dashboard()
     {
         $admissionsCount = User::count();
-        $studentsCount = User::count();
+
+        // counting students here on the basis of purchased courses as well as made a payment:
+        $studentsCount = Payment::whereNotNull('course_id')
+            ->where('payment_status', 'captured')
+            ->distinct('student_id')
+            ->count('student_id');
+
         $categoriesCount = Category::count();
         $coursesCount = Course::count();
         $batchesCount = Batch::count();

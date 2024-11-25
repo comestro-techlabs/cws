@@ -24,9 +24,9 @@ class CategoryController extends Controller
         ]);
 
         
-        $data['cat_slug']  = Str::slug($data['cat_title']);
+        $data['cat_slug']  = Str::slug($data['cat_title']); 
         // dd($data);
-        
+         
 
         Category::create($data);
         return redirect()->route('category.index')->with('success', 'Category created successfully.');
