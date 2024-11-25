@@ -112,4 +112,15 @@ class AdminController extends Controller
         // Return a view to display payment details
         return view('admin.viewPayment', compact('payment'));
     }
+
+
+    // public function showPurchasedCourses($userId)
+    // {
+    //     // Fetch the user along with their payments and related courses
+    //     $user = User::with(['payments.course' => function ($query) {
+    //         $query->where('payment_status', 'captured'); // Only successful payments
+    //     }])->findOrFail($userId);
+
+    //     return view('purchased-courses', compact('user'));
+    // }
 }

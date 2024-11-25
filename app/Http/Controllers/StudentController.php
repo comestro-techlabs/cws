@@ -11,65 +11,83 @@ use Illuminate\Support\Facades\Auth;
 class StudentController extends Controller
 {
 
-    public function index(){
-        $data['students'] = User::where('isAdmin',false)->paginate(10);
-        return view('admin.students.manage',$data);
+    public function index()
+    {
+        $data['students'] = User::where('isAdmin', false)->paginate(10);
+        return view('admin.students.manage', $data);
     }
-    public function searchCourse(Request $request){
+    public function searchCourse(Request $request)
+    {
         $search = $request->search;
         $students = User::whereLike('title', "%$search%")->paginate(10);
-        return view("admin.students.manage",['students' => $students]);
-    }  
-    
+        return view("admin.students.manage", ['students' => $students]);
+    }
+
     public function assignCourse(Request $request, $studentId)
-{
-    $student = User::findOrFail($studentId);
+    {
+        $student = User::findOrFail($studentId);
 
-    // Validate the request
-    $request->validate([
-        'course_id' => 'required|exists:courses,id',
-    ]);
+        // Validate the request
+        $request->validate([
+            'course_id' => 'required|exists:courses,id',
+        ]);
 
-    // Check if the course is already assigned to the student
-    if ($student->courses()->where('course_id', $request->input('course_id'))->exists()) {
-        return redirect()->back()->with('error', 'This course is already assigned to the student.');
+        // Check if the course is already assigned to the student
+        if ($student->courses()->where('course_id', $request->input('course_id'))->exists()) {
+            return redirect()->back()->with('error', 'This course is already assigned to the student.');
+        }
+
+        // Attach the course to the student
+        $student->courses()->attach($request->input('course_id'));
+
+        Payment::create([
+            'student_id' => $studentId,
+            'course_id' => $request->input('course_id'),
+            'amount' => 0,
+            'status' => 'pending',
+        ]);
+
+        return redirect()->back()->with('success', 'Course assigned successfully! & Payment Generated Success');
     }
 
-    // Attach the course to the student
-    $student->courses()->attach($request->input('course_id'));
-
-    Payment::create([
-        'student_id' => $studentId,
-        'course_id' => $request->input('course_id'),
-        'amount' => 0,
-        'status' => 'pending',
-    ]);
-
-    return redirect()->back()->with('success', 'Course assigned successfully! & Payment Generated Success');
-}
 
 
 
+    public function removeCourse(User $student, Course $course)
+    {
+        $student->courses()->detach($course->id);
 
-public function removeCourse(User $student, Course $course)
-{
-    $student->courses()->detach($course->id);
-
-    return redirect()->back()->with('success', 'Course removed successfully!');
-}
-
-    public function edit($id){
-        $student = User::find($id);
-        $courses = Course::where('published',true)->get();
-        $paymentsGroupedByCourse = $student->payments->groupBy('course_id');
-
-        return view('admin.students.edit',compact('student','courses','paymentsGroupedByCourse'));
+        return redirect()->back()->with('success', 'Course removed successfully!');
     }
+
+    public function edit($id)
+    {
+        // Retrieve the student by ID
+        $student = User::findOrFail($id);
+
+        // Retrieve only successful payments and load related course data
+        // Assuming 'completed' means successful payment
+        $purchasedCourses = Payment::with('course') // Eager load the course details
+            ->where('student_id', $id)
+            ->where('payment_status', 'captured') // Filter for successful payments
+            ->get();
+
+        // Group payments by course if needed
+        $paymentsGroupedByCourse = Payment::where('student_id', $id)
+            ->where('payment_status', 'captured') // Filter for successful payments
+            // ->groupBy('course_id')
+            ->get();
+
+        // Pass the data to the view
+        return view('admin.students.edit', compact('student', 'purchasedCourses', 'paymentsGroupedByCourse'));
+    }
+
+
 
     public function update(Request $request, $id, $field)
     {
         $student = User::findOrFail($id);
-    
+
         // Define validation rules
         $rules = [
             'name' => 'required|string|max:255',
@@ -78,33 +96,33 @@ public function removeCourse(User $student, Course $course)
             'address' => 'nullable|string|max:255',
             'dob' => 'nullable|date',
         ];
-    
+
         // Validate the specific field being updated
         $validatedData = $request->validate([
             $field => $rules[$field]
         ]);
-    
+
         // Handle file upload if updating the profile_image
-        
+
         $student->$field = $request->input($field);
-    
-    
+
+
         // Save the student with the updated field
         $student->save();
-    
-    
+
+
         return redirect()->route('student.edit', $student->id)->with('success', ucfirst($field) . ' updated successfully!');
     }
-    
 
-    public function dashboard(){
+
+    public function dashboard()
+    {
 
         $studentId = User::findOrFail(Auth::id())->id;
         $datas = [
             'courses' => User::find(Auth::id())->courses()->get(),
-            'payments' => Payment::where('student_id',$studentId)->orderBy('created_at', 'ASC')->get(),
+            'payments' => Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->get(),
         ];
         return view('student.dashboard', $datas);
     }
-   
 }

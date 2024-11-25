@@ -22,7 +22,6 @@ class User extends Authenticatable
         'contact',
         'dob',
         'gender',
-        'course',
         'password',
         'referral',
         'education_qualification',

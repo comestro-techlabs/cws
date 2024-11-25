@@ -130,6 +130,10 @@
     Route::get('/launch', function () {
         return view('public.launch');
     });
+    
+
+    // Route::get('/user/{id}/courses', [AdminController::class, 'showPurchasedCourses'])->name('user.courses');
+
 
     Route::get('/phonepe/payment', [PhonepeController::class, 'index'])->name('phonepe.payment');
     Route::post('/phonepe/initiate', [PhonepeController::class, 'initiatePayment'])->name('phonepe.initiate');
