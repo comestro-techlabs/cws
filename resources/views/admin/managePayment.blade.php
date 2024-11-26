@@ -5,6 +5,16 @@
 @section('content')
     <div class="flex flex-1 flex-col p-6 bg-gray-100">
         <h1 class="text-2xl font-bold mb-4">Manage Fully Paid Students</h1>
+        <!-- Search Form -->
+        <form action="{{ route('admin.manage-payment') }}" method="GET" class="mb-4">
+            <div class="flex items-center">
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by student name..."
+                    class="border border-gray-300 rounded-l px-4 py-2 focus:outline-none w-full" />
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-r hover:bg-blue-600">
+                    Search
+                </button>
+            </div>
+        </form>
         <div class="overflow-x-auto">
             <table class="min-w-full bg-white border border-gray-200 rounded-lg">
                 <thead>

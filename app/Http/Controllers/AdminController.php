@@ -91,16 +91,31 @@ class AdminController extends Controller
     }
 
     // showing students who have paid:
-    public function managePayment()
+    public function managePayment(Request $request)
     {
         // Fetch all payments with related student and course data
-        $payments = Payment::with(['student', 'course'])
-            ->where('payment_status', 'captured') // Assuming 'captured' means fully paid
-            ->orderBy('payment_date','desc') //sorting by date in descending order here;
-            ->paginate(10);
+        $query = Payment::with(['student', 'course'])
+            ->where('payment_status', 'captured'); // Assuming 'captured' means fully paid
 
-        // Pass the payments data to the view
+        // here checking if the search term is provided:
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+
+            // filter by student name:
+            $query->whereHas('student', function ($studentQuery) use ($search) {
+                $studentQuery->where('name', 'LIKE', '%' . $search . '%');
+            });
+        }
+
+        // fetch results and sort them:
+        $payments = $query->orderBy('payment_date', 'desc')->paginate(10);
+ 
+        // pass payments and search term to the view
         return view('admin.managePayment', compact('payments'));
+
+        // ->orderBy('payment_date','desc') //sorting by date in descending order here;
+        // ->paginate(10);
+
     }
 
 
