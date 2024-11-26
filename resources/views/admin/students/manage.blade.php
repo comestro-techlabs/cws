@@ -122,10 +122,10 @@
 
                     </tbody>
                 </table>
+                
             </div>
             <div class="flex flex-1 space-x-2 justify-center mt-2 pagination">
                 {{$students->links()}}
             </div>
-
         </div>
     @endsection
