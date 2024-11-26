@@ -108,7 +108,8 @@
             </div>
 
             <div>
-                <h2 class="border-s-4 border-s-orange-400 pl-3 text-teal-500 font-semibold text-xl py-2 mb-2">Purchased Courses</h2>
+                <h2 class="border-s-4 border-s-orange-400 pl-3 text-teal-500 font-semibold text-xl py-2 mb-2">Purchased
+                    Courses</h2>
                 {{-- {{ dd($purchasedCourses) }} --}}
                 @if ($purchasedCourses->isNotEmpty())
                     <ul>
@@ -118,7 +119,13 @@
                                 <strong>Fees:</strong> {{ $purchased->course->fees }} <br>
                                 <strong>Payment Amount:</strong> {{ $purchased->amount }} <br>
                                 <strong>Payment Date:</strong> {{ $purchased->payment_date }} <br>
-                                <strong>Status:</strong> {{ $purchased->payment_status }} <br>
+                                <strong>Payment Status:</strong>
+                                @if ($purchased->payment_status === 'captured')
+                                    Successful
+                                @else
+                                    {{ $purchased->payment_status }}
+                                @endif
+                                <br>
                             </li>
                         @endforeach
                     </ul>
