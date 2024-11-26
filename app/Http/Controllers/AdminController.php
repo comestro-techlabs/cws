@@ -96,6 +96,7 @@ class AdminController extends Controller
         // Fetch all payments with related student and course data
         $payments = Payment::with(['student', 'course'])
             ->where('payment_status', 'captured') // Assuming 'captured' means fully paid
+            ->orderBy('payment_date','desc') //sorting by date in descending order here;
             ->paginate(10);
 
         // Pass the payments data to the view
