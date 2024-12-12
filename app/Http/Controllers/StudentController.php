@@ -150,4 +150,13 @@ class StudentController extends Controller
         return view('studentDashboard.course.course',$data);
     }
     
+
+    public function billing(){
+        $studentId = User::findOrFail(Auth::id())->id;
+        $datas = [
+            'courses' => User::find(Auth::id())->courses()->get(),
+            'payments' => Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->get(),
+        ];
+        return view("studentDashboard.billing",$datas);
+    }
 }

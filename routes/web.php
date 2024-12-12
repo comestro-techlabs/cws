@@ -19,6 +19,7 @@
     Route::prefix("student")->group(function () {
         Route::controller(StudentController::class)->group(function () {
             Route::get('/dashboard', 'dashboard')->name('student.dashboard');
+            Route::get('/billing', 'billing')->name('student.billing');
             Route::get('/coursePurchase', 'coursePurchase')->name('student.coursePurchase');
             Route::get('/course', 'course')->name('student.course');
         });
