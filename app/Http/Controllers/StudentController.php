@@ -134,6 +134,6 @@ class StudentController extends Controller
             'courses' => User::find(Auth::id())->courses()->get(),
             'payments' => Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->get(),
         ];
-        return view('studentdashboard.dashboard');
+        return view('studentDashboard.dashboard');
     }
 }
