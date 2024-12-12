@@ -19,6 +19,7 @@
     Route::prefix("student")->group(function () {
         Route::controller(StudentController::class)->group(function () {
             Route::get('/dashboard', 'dashboard')->name('student.dashboard');
+            Route::get('/billing', 'billing')->name('student.billing');
         });
     });
     Route::post('save-course-payment', [PaymentController::class, 'saveCoursePayment'])->name('save.course.payment');
