@@ -63,6 +63,7 @@
                 aria-labelledby="profile-tab">
                 <div class="container mx-auto mt-8 px-4">
                     @foreach ($courses as $course)
+                    
                         <div class="mb-6 bg-white shadow-lg rounded-lg overflow-hidden">
                             <div class="flex flex-col md:flex-row">
                                 <img src="{{ asset('storage/course_images/' . $course->course_image) }}"

@@ -41,13 +41,13 @@
                         </a>
                     </li>
                     <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button" href="student-courses.html">
+                        <a class="sidebar-menu-button" href="{{route('student.course')}}">
                             <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">queue_play_next</i>
                             <span class="sidebar-menu-text">Courses</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button" href="student-course-purchase.html">
+                        <a class="sidebar-menu-button" href="{{route('student.coursePurchase')}}">
                             <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">shopping_cart</i>
                             <span class="sidebar-menu-text">Purchase Course</span>
                         </a>

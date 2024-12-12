@@ -525,7 +525,7 @@
             </div>
         </div>
     </div>
-
+{{-- 
     <!-- App Settings FAB -->
     <div id="app-settings">
         <app-settings layout-active="default" :layout-location="{
@@ -534,7 +534,7 @@
       'fluid': 'fluid-index.html',
       'mini': 'mini-index.html'
     }"></app-settings>
-    </div>
+    </div> --}}
 
     <!-- jQuery -->
     <script src="{{ asset('assets/vendor/jquery.min.js')}}"></script>
