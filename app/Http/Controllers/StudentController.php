@@ -115,6 +115,17 @@ class StudentController extends Controller
     }
 
 
+    // public function dashboard()
+    // {
+
+    //     $studentId = User::findOrFail(Auth::id())->id;
+    //     $datas = [
+    //         'courses' => User::find(Auth::id())->courses()->get(),
+    //         'payments' => Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->get(),
+    //     ];
+    //     return view('student.dashboard');
+    // }
+
     public function dashboard()
     {
 
@@ -123,6 +134,6 @@ class StudentController extends Controller
             'courses' => User::find(Auth::id())->courses()->get(),
             'payments' => Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->get(),
         ];
-        return view('student.dashboard', $datas);
+        return view('studentdashboard.dashboard');
     }
 }
