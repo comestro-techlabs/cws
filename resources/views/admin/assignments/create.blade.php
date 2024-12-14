@@ -4,25 +4,26 @@
 
 @section('content')
     <div class="bg-gray-100 h-screen">
-        <div class="flex flex-1">
-            <div class="w-9/12  p-6 bg-white mx-12 shadow-md rounded-lg">
+        <div class="flex">
+            <div class="w-9/12  mt-12 p-6 bg-white mx-12 shadow-md rounded-lg">
                 <!-- Title Section -->
-                <div class="mb-4">
-                    <label for="title" class="block text-gray-700">Title</label>
+                <div class="mb-4 ">
+                    {{-- <label for="title" class="block text-gray-700">Assignement title</label> --}}
                     <input type="text" id="title"
-                        class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-                        placeholder="Enter title">
+                        class="w-full mt-1 bg-gray-50 h-14 border-gray-100 p-2 border-0 border-b-2"
+                        placeholder="Enter Assignment name">
                 </div>
 
                 <!-- Instructions Section -->
                 <div class="mb-4">
-                    <label for="instructions" class="block text-gray-700">Instructions (optional)</label>
-                    <textarea id="editor" class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-                        placeholder="Enter instructions"></textarea>
+                    {{-- <label for="instructions" class="block text-gray-700">Instructions (optional)</label> --}}
+                    <textarea id="editor" 
+              class="w-96 h-32 mt-1 p-2 border-0 border-b-2 border-gray-300 rounded-md" 
+              placeholder="Enter instructions"></textarea>
                 </div>
-                <div class="mb-4">
-                    <label for="attach" class="block text-gray-700">attach</label>
-                    <div class="flex flex-1">
+                <div class="mb-4 border-2 px-5 rounded-lg py-5">
+                    <label for="attach" class="block text-gray-700">Attach</label>
+                    <div class="flex flex-1 justify-center items-center gap-7 ">
                         <div>
                             <div class="flex items-center space-x-2">
                                 <input type="file" id="file-upload" class="hidden" />
@@ -45,11 +46,14 @@
                                 <label for="file-upload"
                                     class="flex items-center space-x-2 cursor-pointer border-2 border-gray-300 rounded-full px-2 py-2 hover:bg-gray-100">
                                     
-
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-link" viewBox="0 0 16 16">
+                                        <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
+                                        <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4 4 0 0 1-.82 1H12a3 3 0 1 0 0-6z"/>
+                                      </svg>
                                 </label>
 
                             </div>
-                            <span class="text-gray-600 ml-2">Upload</span>
+                            <span class="text-gray-600 ml-2">Link</span>
                         </div>
                         <div>
                             <div class="flex items-center space-x-2">
@@ -66,7 +70,7 @@
                                 </label>
 
                             </div>
-                            <span class="text-gray-600 ml-2">Upload</span>
+                            <span class="text-gray-600 ml-2">Drive</span>
                         </div>
                     </div>
                 </div>
