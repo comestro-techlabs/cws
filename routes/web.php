@@ -21,6 +21,8 @@
         Route::controller(StudentController::class)->group(function () {
             Route::get('/dashboard', 'dashboard')->name('student.dashboard');
             Route::get('/billing', 'billing')->name('student.billing');
+            Route::get('/edit-profile',  'editProfile')->name('student.editProfile');
+            Route::post('/update-profile', 'updateProfile')->name('student.updateProfile');
             Route::get('/coursePurchase', 'coursePurchase')->name('student.coursePurchase');
             Route::get('/course', 'course')->name('student.course');
             

@@ -10,22 +10,22 @@
     </div>
 
     <div class="container-fluid page__container">
-        <div class="alert alert-soft-warning d-flex align-items-center card-margin" role="alert">
+        {{-- <div class="alert alert-soft-warning d-flex align-items-center card-margin" role="alert">
             <i class="material-icons mr-3">error_outline</i>
             <div class="text-body">
                 You have an invoice <a href="#">#21387</a> due for
                 <strong class="text-danger">$49.00</strong>
             </div>
             <a href="#" class="btn btn-warning ml-auto">Pay Now!</a>
-        </div>
+        </div> --}}
 
         <div class="card card-form">
             <div class="row no-gutters">
-                <div class="col-lg-4 card-body">
+                {{-- <div class="col-lg-4 card-body">
                     <p><strong class="headings-color">Basic Information</strong></p>
                     <p class="text-muted mb-0">This account is billed to:</p>
-                </div>
-                <div class="col-lg-8 card-form__body card-body">
+                </div> --}}
+                <div class="col-lg-12 card-form__body card-body">
 
                     <div class="d-flex align-items-center flex-wrap">
                         <div class="mr-3">
@@ -66,11 +66,11 @@
 
         <div class="card card-form">
             <div class="row no-gutters">
-                <div class="col-lg-4 card-body">
+                {{-- <div class="col-lg-4 card-body">
                     <p><strong class="headings-color">Invoices</strong></p>
                     <p class="text-muted mb-0">Your past payments</p>
-                </div>
-                <div class="col-lg-8 card-form__body">
+                </div> --}}
+                <div class="col-lg-12 card-form__body">
 
                     <div class="table-responsive">
                         <table class="table mb-0">
