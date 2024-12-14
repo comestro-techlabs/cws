@@ -157,6 +157,39 @@ class StudentController extends Controller
             'courses' => User::find(Auth::id())->courses()->get(),
             'payments' => Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->get(),
         ];
-        return view("studentDashboard.billing",$datas);
+        return view("studentdashboard.billing",$datas);
     }
+
+    public function editProfile()
+{
+    $student = Auth::user(); // Get the authenticated student
+    return view('studentdashboard.edit_profile', compact('student'));
+}
+
+
+public function updateProfile(Request $request)
+{
+    $student = Auth::user(); 
+    $data = [
+        'name' => 'required|string|max:255',       
+        'contact' => 'nullable|string|max:20',
+        'dob' => 'nullable|date',
+        'gender' => 'required|in:male,female,other',
+        'password' => 'required|string|min:8',
+        'education_qualification' => 'nullable|string|max:255',
+    ];
+
+
+
+    // Validate the input
+    $validatedData = $request->validate($data);
+
+    // Update the student's profile
+    $student->update($validatedData);
+
+    return redirect()->route('student.editProfile')->with('success', 'Profile updated successfully!');
+}
+
+
+
 }

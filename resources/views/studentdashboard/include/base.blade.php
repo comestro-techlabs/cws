@@ -526,21 +526,12 @@
     <!-- App Settings FAB -->
     <div id="app-settings">
         <app-settings layout-active="default" :layout-location="{
-<<<<<<< HEAD
       'default': 'index.html',
       'fixed': 'fixed-index.html',
       'fluid': 'fluid-index.html',
       'mini': 'mini-index.html'
     }"></app-settings>
     </div> --}}
-=======
-                'default': 'index.html',
-                'fixed': 'fixed-index.html',
-                'fluid': 'fluid-index.html',
-                'mini': 'mini-index.html'
-            }"></app-settings>
-    </div>
->>>>>>> bc6eaa1f76be063ec58a26f61bacf707bde05a11
 
     <!-- jQuery -->
     <script src="{{ asset('assets/vendor/jquery.min.js') }}"></script>

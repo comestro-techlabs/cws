@@ -71,7 +71,7 @@
                         </a>
                     </li>
                     <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button" href="edit-account.html">
+                        <a class="sidebar-menu-button" href="{{route('student.editProfile'  )}}">
                             <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">settings</i>
                             <span class="sidebar-menu-text">Edit Account</span>
                         </a>
