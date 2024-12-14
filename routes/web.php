@@ -1,6 +1,7 @@
     <?php
 
     use App\Http\Controllers\AdminController;
+    use App\Http\Controllers\AssignmentsController;
     use App\Http\Controllers\AuthController;
     use App\Http\Controllers\BatchController;
     use App\Http\Controllers\CategoryController;
@@ -76,6 +77,8 @@
             Route::get('/enquiry', [AdminController::class, 'indexEnquiry'])->name('admin.manage.enquiry');
             Route::get('/enquiry-view/{enquiry}', [AdminController::class, 'editEnquiry'])->name('admin.enquiry.show');
             Route::put('/enquiry-view/{enquiry}', [AdminController::class, 'updateEnquiry'])->name('admin.enquiry.update');
+            Route::resource('assignment', AssignmentsController::class);
+
         });
     });
 
