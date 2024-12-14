@@ -78,15 +78,15 @@
                                         <div class="d-flex align-items-end">
                                             <div class="d-flex flex flex-column mr-3">
                                                 <div class="d-flex align-items-center py-2 border-bottom">
-                                                    <span class="mr-2">{{ $course->fee }}</span>
+                                                    {{-- <span class="mr-2 bg-secondary">Rs. {{ $course->discounted_fees }}</span> --}}
                                                     <small class="text-muted ml-auto"> <a
                                                             href="{{ route('course.show', $course->id) }}"> Start Course
                                                         </a></small>
                                                 </div>
                                                 <div class="d-flex align-items-center py-2">
                                                     <span class="badge badge-vuejs mr-2"> {{ $course->instructor }}</span>
-                                                    <span class="badge badge-soft-secondary">{{ $course->duration }}
-                                                        months</span>
+                                                    <span class="badge badge-soft-secondary">₹ {{ $course->discounted_fees }}
+                                                        </span>
                                                 </div>
                                             </div>
                                         </div>
