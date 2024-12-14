@@ -31,6 +31,7 @@
     <!-- ion Range Slider -->
     <link type="text/css" href="{{ asset('assets/css/vendor-ion-rangeslider.css') }}" rel="stylesheet">
     <link type="text/css" href="{{ asset('assets/css/vendor-ion-rangeslider.rtl.css') }}" rel="stylesheet">
+    
 
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -98,7 +99,7 @@
         <div class="mdk-drawer-layout__content">
 
             <!-- Header Layout -->
-            <div class="mdk-header-layout js-mdk-header-layout" data-has-scrolling-region>
+            <div class="mdk-header-layout js-mdk-header-layout " >
 
                 <!-- Header -->
 

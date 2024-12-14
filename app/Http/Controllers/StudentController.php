@@ -138,7 +138,9 @@ class StudentController extends Controller
     }
 
     public function coursePurchase(){
+        $studentId = User::findOrFail(Auth::id())->id;
         $data = [
+            
             'courses' => User::find(Auth::id())->courses()->get(),
         ];
         return view('studentDashboard.course.purchaseCourse',$data);
@@ -157,6 +159,14 @@ class StudentController extends Controller
             'courses' => User::find(Auth::id())->courses()->get(),
             'payments' => Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->get(),
         ];
+        return view("studentDashboard.billing",$datas);
+    } 
+    public function buyCourse($id){
+        $data['course']= Course::findOrFail($id);
+        
+        return view("studentDashboard.course.viewCourse",$data);
+    }
+    
         return view("studentdashboard.billing",$datas);
     }
 
@@ -179,12 +189,8 @@ public function updateProfile(Request $request)
         'education_qualification' => 'nullable|string|max:255',
     ];
 
-
-
-    // Validate the input
     $validatedData = $request->validate($data);
 
-    // Update the student's profile
     $student->update($validatedData);
 
     return redirect()->route('student.editProfile')->with('success', 'Profile updated successfully!');

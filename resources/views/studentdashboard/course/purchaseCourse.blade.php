@@ -1,7 +1,8 @@
 @extends('studentDashboard.include.base')
 @section('content')
     <!-- Header Layout Content -->
-    <div class="mdk-header-layout__content mdk-header-layout__content--fullbleed mdk-header-layout__content--scrollable page" style="padding-top: 60px;">
+    <div class="mdk-header-layout__content mdk-header-layout__content--fullbleed mdk-header-layout__content--scrollable page"
+        style="padding-top: 60px;">
 
 
         <div class="page__heading border-bottom">
@@ -46,23 +47,23 @@
 
             <div class="row">
                 @foreach ($courses as $course)
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
 
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-body">
-
-                            <div class="d-flex flex-column flex-sm-row">
-                                <a href="#" class="avatar mb-3 w-xs-plus-down-100 mr-sm-3">
-                                    <img src="{{ asset('storage/course_images/' . $course->course_image) }}" alt="{{ $course->title }}" class="avatar-course-img">
-                                </a>
-                                <div class="flex" style="min-width: 200px;">
-                                    <div class="d-flex">
-                                        <div>
-                                            <h4 class="card-title mb-1"><a href="#">{{ $course->title }}</a></h4>
-                                            <p class="text-muted">{{ Str::limit($course->description, 70) }}</p>
-                                            {{-- <p class="text-sm text-gray-500 mt-4">Instructor: {{ $course->instructor }}</p> --}}
-                                        </div>
-                                        {{-- <div class="dropdown ml-auto">
+                                <div class="d-flex flex-column flex-sm-row">
+                                    <a href="#" class="avatar mb-3 w-xs-plus-down-100 mr-sm-3">
+                                        <img src="{{ asset('storage/course_images/' . $course->course_image) }}"
+                                            alt="{{ $course->title }}" class="avatar-course-img">
+                                    </a>
+                                    <div class="flex" style="min-width: 200px;">
+                                        <div class="d-flex">
+                                            <div>
+                                                <h4 class="card-title mb-1"><a href="#">{{ $course->title }}</a></h4>
+                                                <p class="text-muted">{{ Str::limit($course->description, 100) }}</p>
+                                                {{-- <p class="text-sm text-gray-500 mt-4">Instructor: {{ $course->instructor }}</p> --}}
+                                            </div>
+                                            {{-- <div class="dropdown ml-auto">
                                             <a href="#" class="dropdown-toggle text-muted" data-caret="false" data-toggle="dropdown">
                                                 <i class="material-icons">more_vert</i>
                                             </a>
@@ -73,28 +74,28 @@
                                                 <a class="dropdown-item text-danger" href="#">Archive</a>
                                             </div>
                                         </div> --}}
-                                    </div>
-                                    <div class="d-flex align-items-end">
-                                        <div class="d-flex flex flex-column mr-3">
-                                            <div class="d-flex align-items-center py-2 border-bottom">
-                                                <span class="mr-2">{{$course->fee}}</span>
-                                                <small class="text-muted ml-auto"> <a href="{{ route('course.show', $course->id) }}"
->                                                    Start Course
-                                                </a></small>
-                                            </div>
-                                            <div class="d-flex align-items-center py-2">
-                                                <span class="badge badge-vuejs mr-2"> {{ $course->instructor }}</span>
-                                                <span class="badge badge-soft-secondary">{{$course->duration}} months</span>
+                                        </div>
+                                        <div class="d-flex align-items-end">
+                                            <div class="d-flex flex flex-column mr-3">
+                                                <div class="d-flex align-items-center py-2 border-bottom">
+                                                    {{-- <span class="mr-2 bg-secondary">Rs. {{ $course->discounted_fees }}</span> --}}
+                                                    <small class="text-muted ml-auto"> <a
+                                                            href="{{ route('course.show', $course->id) }}"> Start Course
+                                                        </a></small>
+                                                </div>
+                                                <div class="d-flex align-items-center py-2">
+                                                    <span class="badge badge-vuejs mr-2"> {{ $course->instructor }}</span>
+                                                    <span class="badge badge-soft-secondary">₹ {{ $course->discounted_fees }}
+                                                        </span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
+                            </div>
                         </div>
                     </div>
-                </div>
-
                 @endforeach
 
 
