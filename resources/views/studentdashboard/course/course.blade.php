@@ -66,8 +66,9 @@
                         </div>
                         <div class="d-flex align-items-center">
                             <strong class="h6 m-0">₹{{$course->fees}}</strong>
-                            <a href="#" class="btn btn-primary ml-auto"><i class="material-icons">add_shopping_cart</i></a>
-                        </div>
+                            <a href="{{ route('student.buyCourse', ['id' => $course->id]) }}" class="btn btn-primary ml-auto">
+                                <i class="material-icons">add_shopping_cart</i>
+                            </a>                        </div>
                     </div>
                 </div>
             </div>

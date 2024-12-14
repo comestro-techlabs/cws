@@ -22,6 +22,9 @@
             Route::get('/billing', 'billing')->name('student.billing');
             Route::get('/coursePurchase', 'coursePurchase')->name('student.coursePurchase');
             Route::get('/course', 'course')->name('student.course');
+            
+            Route::get('/buyCourse/{id}', 'buyCourse')->name('student.buyCourse');
+            
         });
     });
     Route::post('save-course-payment', [PaymentController::class, 'saveCoursePayment'])->name('save.course.payment');

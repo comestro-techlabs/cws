@@ -138,7 +138,9 @@ class StudentController extends Controller
     }
 
     public function coursePurchase(){
+        $studentId = User::findOrFail(Auth::id())->id;
         $data = [
+            
             'courses' => User::find(Auth::id())->courses()->get(),
         ];
         return view('studentDashboard.course.purchaseCourse',$data);
@@ -158,5 +160,11 @@ class StudentController extends Controller
             'payments' => Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->get(),
         ];
         return view("studentDashboard.billing",$datas);
+    } 
+    public function buyCourse($id){
+        $data['course']= Course::findOrFail($id);
+        
+        return view("studentDashboard.course.viewCourse",$data);
     }
+    
 }

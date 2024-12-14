@@ -31,6 +31,7 @@
     <!-- ion Range Slider -->
     <link type="text/css" href="{{ asset('assets/css/vendor-ion-rangeslider.css') }}" rel="stylesheet">
     <link type="text/css" href="{{ asset('assets/css/vendor-ion-rangeslider.rtl.css') }}" rel="stylesheet">
+    
 
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -98,7 +99,7 @@
         <div class="mdk-drawer-layout__content">
 
             <!-- Header Layout -->
-            <div class="mdk-header-layout js-mdk-header-layout" data-has-scrolling-region>
+            <div class="mdk-header-layout js-mdk-header-layout " >
 
                 <!-- Header -->
 
@@ -526,21 +527,12 @@
     <!-- App Settings FAB -->
     <div id="app-settings">
         <app-settings layout-active="default" :layout-location="{
-<<<<<<< HEAD
       'default': 'index.html',
       'fixed': 'fixed-index.html',
       'fluid': 'fluid-index.html',
       'mini': 'mini-index.html'
     }"></app-settings>
     </div> --}}
-=======
-                'default': 'index.html',
-                'fixed': 'fixed-index.html',
-                'fluid': 'fluid-index.html',
-                'mini': 'mini-index.html'
-            }"></app-settings>
-    </div>
->>>>>>> bc6eaa1f76be063ec58a26f61bacf707bde05a11
 
     <!-- jQuery -->
     <script src="{{ asset('assets/vendor/jquery.min.js') }}"></script>
