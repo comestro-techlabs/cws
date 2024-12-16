@@ -9,6 +9,7 @@
     use App\Http\Controllers\CourseController;
     use App\Http\Controllers\EnquiryController;
     use App\Http\Controllers\LessonController;
+    use App\Http\Controllers\OptionController;
     use App\Http\Controllers\PhonepeController;
     use App\Http\Controllers\PublicController;
     use App\Http\Controllers\StudentController;
@@ -16,6 +17,8 @@
     use Illuminate\Support\Facades\Route;
     use App\Http\Controllers\Auth\SocialiteController;
     use App\Http\Middleware\AdminMiddleware;
+    use App\Http\Controllers\QuizController;
+
 
     Route::prefix("student")->group(function () {
         Route::controller(StudentController::class)->group(function () {
@@ -78,6 +81,19 @@
             Route::get('/enquiry-view/{enquiry}', [AdminController::class, 'editEnquiry'])->name('admin.enquiry.show');
             Route::put('/enquiry-view/{enquiry}', [AdminController::class, 'updateEnquiry'])->name('admin.enquiry.update');
             Route::resource('assignment', AssignmentsController::class);
+
+            //quiz
+            // Route::resource('quiz', QuizController::class);
+
+            Route::get('/quiz/create', [QuizController::class, 'create'])->name('quiz.create');
+            Route::post('/quiz/store', [QuizController::class, 'store'])->name('quiz.store');
+            Route::get('/quiz/show', [QuizController::class, 'show'])->name('quiz.show');
+            Route::get('/quiz/{quiz}/edit', [QuizController::class, 'edit'])->name('quiz.edit');
+            Route::put('/quiz/{quiz}/update', [QuizController::class, 'update'])->name('quiz.update');
+            Route::delete('/quiz/{quiz}', [QuizController::class, 'destroy'])->name('quiz.destroy');
+           
+
+           
 
         });
     });
