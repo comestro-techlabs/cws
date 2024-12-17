@@ -88,9 +88,13 @@
             Route::get('/quiz/create', [QuizController::class, 'create'])->name('quiz.create');
             Route::post('/quiz/store', [QuizController::class, 'store'])->name('quiz.store');
             Route::get('/quiz/show', [QuizController::class, 'show'])->name('quiz.show');
+            Route::get('/quiz/view/{quiz}', [QuizController::class, 'view'])->name('quiz.view');
+            Route::patch('/quiz/{quiz}/toggle-status', [QuizController::class, 'toggleStatus'])->name('quiz.toggleStatus');
             Route::get('/quiz/{quiz}/edit', [QuizController::class, 'edit'])->name('quiz.edit');
             Route::put('/quiz/{quiz}/update', [QuizController::class, 'update'])->name('quiz.update');
             Route::delete('/quiz/{quiz}', [QuizController::class, 'destroy'])->name('quiz.destroy');
+            
+
            
 
            

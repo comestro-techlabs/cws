@@ -9,7 +9,7 @@ class Quiz extends Model
     protected $guarded = [];
 
     public function course()
-{
-    return $this->belongsTo(Course::class);
-}
+    {
+        return $this->belongsTo(Course::class);
+    }
 }

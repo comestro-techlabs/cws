@@ -15,7 +15,12 @@ return new class extends Migration
             $table->id();
             $table->foreignId('course_id')->constrained()->onDelete('cascade');
             $table->string('question');
-            
+            $table->string('option1');
+            $table->string('option2');
+            $table->string('option3');
+            $table->string('option4');
+            $table->enum('correct_answer', ['option1', 'option2', 'option3', 'option4']);
+            $table->boolean('status')->default(false);
             $table->timestamps();
         });
     }
