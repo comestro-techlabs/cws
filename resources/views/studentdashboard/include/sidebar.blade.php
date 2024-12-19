@@ -53,6 +53,12 @@
                         </a>
                     </li>
                     <li class="sidebar-menu-item">
+                        <a class="sidebar-menu-button" href="{{route('student.assignment-upload')}}">
+                            <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">live_help</i>
+                            <span class="sidebar-menu-text">Take Assignment</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
                         <a class="sidebar-menu-button" href="student-quiz.html">
                             <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">live_help</i>
                             <span class="sidebar-menu-text">Take Quiz</span>

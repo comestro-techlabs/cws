@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Assignment_upload;
+use App\Models\Assignments;
 use App\Models\Course;
 use App\Models\Payment;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class StudentController extends Controller
 {
@@ -137,34 +140,43 @@ class StudentController extends Controller
         return view('studentDashboard.dashboard');
     }
 
-    public function coursePurchase(){
+    public function coursePurchase()
+    {
         $studentId = User::findOrFail(Auth::id())->id;
         $data = [
-            
+
             'courses' => User::find(Auth::id())->courses()->get(),
         ];
-        return view('studentDashboard.course.purchaseCourse',$data);
+        return view('studentDashboard.course.purchaseCourse', $data);
     }
-    public function course(){
+    public function course()
+    {
+        $studentId = User::findOrFail(Auth::id())->id;
+
         $data = [
             'courses' => Course::paginate(4),
         ];
-        return view('studentDashboard.course.course',$data);
+        return view('studentDashboard.course.course', $data);
     }
-    
 
-    public function billing(){
+
+    public function billing()
+    {
+
         $studentId = User::findOrFail(Auth::id())->id;
         $datas = [
             'courses' => User::find(Auth::id())->courses()->get(),
             'payments' => Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->get(),
         ];
-        return view("studentdashboard.billing",$datas);
-    } 
-    public function buyCourse($id){
-        $data['course']= Course::findOrFail($id);
-        
-        return view("studentDashboard.course.viewCourse",$data);
+        return view("studentdashboard.billing", $datas);
+    }
+    public function buyCourse($id)
+    {
+        $studentId = User::findOrFail(Auth::id())->id;
+
+        $data['course'] = Course::findOrFail($id);
+
+        return view("studentDashboard.course.viewCourse", $data);
     }
     public function editProfile()
     {
@@ -175,9 +187,9 @@ class StudentController extends Controller
 
     public function updateProfile(Request $request)
     {
-        $student = Auth::user(); 
+        $student = Auth::user();
         $data = [
-            'name' => 'required|string|max:255',       
+            'name' => 'required|string|max:255',
             'contact' => 'nullable|string|max:20',
             'dob' => 'nullable|date',
             'gender' => 'required|in:male,female,other',
@@ -191,7 +203,151 @@ class StudentController extends Controller
 
         return redirect()->route('student.editProfile')->with('success', 'Profile updated successfully!');
     }
+    public function assignmentupload()
+    {
+        $studentId = Auth::id(); // Logged-in user's ID
 
+        $assignments = Assignments::whereHas('course', function ($query) use ($studentId) {
+            $query->whereHas('students', function ($q) use ($studentId) {
+                $q->where('user_id', $studentId);
+            });
+        })->get();
 
+        // Return assignments to the view
+        return view('studentDashboard.assignments.studentAssignment', ['assignments' => $assignments]);
+    }
+    // private function token()
+    // {
+    //     $client_id = \config('services.google.client_id');
+    //     $client_secret = \config('services.google.client_secret');
+    //     $refresh_token = \config('services.google.refresh_token');
+    //     $response = Http::post('https://oauth2.googleapis.com/token', [
+    //         'client_id' => $client_id,
+    //         'client_secret' => $client_secret,
+    //         'refresh_token' => $refresh_token,
+    //         'grant_type' => 'refresh_token',
 
+    //     ]);
+    //     // dd($response);
+
+    //     $accessToken = json_decode((string)$response->getBody(), true)['access_token'];
+    //     return $accessToken;
+    // }
+    // public function store(Request $request)
+    // {
+    //     $validation = $request->validate([
+    //         'file_path' => 'file|required',
+    //     ]);
+    //     $accessToken = $this->token();
+    //     // dd($accessToken);
+
+    //     $mime = $request->file_path->getClientMimeType();
+    //     // $path = $request->file_path->getRealPath();
+    //     // dd($path);
+
+    //     // $response=Http::withToken($accessToken)
+    //     // ->attach('data',file_get_contents($path))
+    //     // ->post('https://www.googleapis.com/upload/drive/v3/files',
+    //     // [
+    //     //     'content-Type'=>'application/octet-stream',
+    //     // ]
+    //     // );
+    //     $response = Http::withHeaders([
+    //         'authorization' => 'Bearer ' . $accessToken,
+    //         'Content-Type' => 'Application/json',
+    //     ])->post('https://www.googleapis.com/drive/v3/files', [
+
+    //         'mimeType' => $mime,
+    //         'uploadType' => 'resumable',
+    //         'parents' => [\config('services.google.folder_id')],
+    //     ]);
+
+    //     if ($response->successful()) {
+    //         $file_id = json_decode($response->body())->id;
+
+    //         $uploadedFile = new Assignment_upload();
+    //         $uploadedFile->student_id = auth()->id();
+    //         // $uploadedFile->assignment_id = $assignmentId; 
+    //         $uploadedFile->file_path = $file_id;
+    //         $uploadedFile->submitted_at = now();
+    //         $uploadedFile->status = 'submitted';
+    //         $uploadedFile->save();
+    //         return response('file uploaded to google drive');
+    //     } else {
+    //         return response('failed to  uploaded to google drive ');
+    //     }
+    // }
+    private function token()
+{
+    $client_id = config('services.google.client_id');
+    $client_secret = config('services.google.client_secret');
+    $refresh_token = config('services.google.refresh_token');
+ 
+    $response = Http::post('https://oauth2.googleapis.com/token', [
+        'client_id' => $client_id,
+        'client_secret' => $client_secret,
+        'refresh_token' => $refresh_token,
+        'grant_type' => 'refresh_token',
+    ]);
+ 
+    if ($response->successful()) {
+        return json_decode($response->body(), true)['access_token'];
+    }
+ 
+    throw new \Exception('Failed to fetch access token');
+}
+ 
+public function store(Request $request)
+{
+    $validation = $request->validate([
+        'file_path' => 'file|required',
+        'assignment_id' => 'required',
+
+    ]);
+ 
+    $accessToken = $this->token();
+ 
+    $file = $request->file('file_path');
+    $mimeType = $file->getMimeType();
+    $fileName = $file->getClientOriginalName();
+    $fileContent = file_get_contents($file->getRealPath());
+ 
+    // Step 1: Metadata request
+    $metadataResponse = Http::withHeaders([
+        'Authorization' => 'Bearer ' . $accessToken,
+        'Content-Type' => 'application/json',
+    ])->post('https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable', [
+        'name' => $fileName,
+        'mimeType' => $mimeType,
+        'parents' => [config('services.google.folder_id')],
+    ]);
+ 
+    if (!$metadataResponse->successful()) {
+        return response('Failed to initialize upload', 500);
+    }
+ 
+    $uploadUrl = $metadataResponse->header('Location');
+ 
+    // Step 2: Upload file content
+    $uploadResponse = Http::withHeaders([
+        'Authorization' => 'Bearer ' . $accessToken,
+        'Content-Type' => $mimeType,
+    ])->withBody($fileContent, $mimeType)->put($uploadUrl);
+ 
+    if ($uploadResponse->successful()) {
+        $fileId = json_decode($uploadResponse->body())->id;
+ 
+        $uploadedFile = new Assignment_upload();
+        $uploadedFile->student_id = auth()->id();
+        $uploadedFile->file_path = $fileId;
+        $uploadedFile->assignment_id = $request->assignment_id;
+        $uploadedFile->submitted_at = now();
+        $uploadedFile->status = 'submitted';
+        $uploadedFile->save();
+ 
+        return response('File uploaded to Google Drive', 200);
+    } else {
+        return response('Failed to upload file to Google Drive', 500);
+    }
+}
 }
