@@ -174,22 +174,22 @@ class StudentController extends Controller
     
     public function quiz(){
         
-    $studentId = Auth::id(); // Get the logged-in student's ID
+    // $studentId = Auth::id(); // Get the logged-in student's ID
     
-    // Fetch the courses the student is enrolled in
-    $courses = User::findOrFail($studentId)->courses()->get();
+    // // Fetch the courses the student is enrolled in
+    // $courses = User::findOrFail($studentId)->courses()->get();
     
-    // Fetch quizzes related to the student's courses
-    $quizzes = Quiz::whereIn('course_id', $courses->pluck('id'))->get();
+    // // Fetch quizzes related to the student's courses
+    // $quizzes = Quiz::whereIn('course_id', $courses->pluck('id'))->get();
 
-    // Pass the data to the view
-    $data = [
-        'courses' => $courses,
-        'quizzes' => $quizzes,
-        'payments' => Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->get(),
-    ];
+    // // Pass the data to the view
+    // $data = [
+    //     'courses' => $courses,
+    //     'quizzes' => $quizzes,
+    //     'payments' => Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->get(),
+    // ];
 
-    return view("studentdashboard.quiz", $data);
+    return view("studentdashboard.quiz");
 
     }
     // public function buyCourse($id){

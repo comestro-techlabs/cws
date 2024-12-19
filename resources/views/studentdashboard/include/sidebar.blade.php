@@ -53,17 +53,14 @@
                         </a>
                     </li>
                     <li class="sidebar-menu-item">
-<<<<<<< HEAD
                         <a class="sidebar-menu-button" href="{{route('student.assignment-upload')}}">
                             <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">live_help</i>
                             <span class="sidebar-menu-text">Take Assignment</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button" href="student-quiz.html">
-=======
+                        {{-- <a class="sidebar-menu-button" href="student-quiz.html"> --}}
                         <a class="sidebar-menu-button" href="{{route('student.quiz')}}">
->>>>>>> c65282a9d81a07d1f4e85a57806860b9bbe7a8d9
                             <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">live_help</i>
                             <span class="sidebar-menu-text">Take Quiz</span>
                         </a>
