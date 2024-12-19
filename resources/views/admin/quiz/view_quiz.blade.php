@@ -7,9 +7,9 @@
         <h1 class="text-2xl font-bold mb-6">Quiz Question Details</h1>
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="course">
-                Course:
+                Exam Name:
             </label>
-            <p class="text-gray-900">{{ $quiz->course->title }}</p>
+            <p class="text-gray-900">{{ $quiz->exam->exam_name }}</p>
         </div>
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="question">
@@ -33,6 +33,12 @@
                 Correct Answer:
             </label>
             <p class="text-gray-900">{{ $quiz->{$quiz->correct_answer} }}</p>
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="time">
+               Time
+            </label>
+            <p class="text-gray-900">{{ $quiz->{$quiz->time} }}</p>
         </div>
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="options">

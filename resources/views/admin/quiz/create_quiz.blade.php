@@ -12,23 +12,41 @@
     <form action="{{ route('quiz.store') }}" method="POST">
         @csrf
         <div>
-            <label class="block text-gray-700 mb-2">Course</label>
-            <select name="course_id" class="w-full border px-3 py-2 rounded" required>
-                <option value="" disabled selected>Select a course</option>
-                @foreach ($courses as $course)
-                    <option value="{{ $course->id }}">{{ $course->title }}</option>
+            <label class="block text-gray-700 mb-2">Exam</label>
+            <select name="exam_id" class="w-full border px-3 py-2 rounded" required>
+                <option value="" disabled selected>Select a Exam</option>
+                @foreach ($exams as $exam)
+                    <option value="{{ $exam->id }}">{{ $exam->exam_name }}</option>
                 @endforeach
             </select>
+            @error('exam_id')
+                <p class="text-xs text-red-500">{{ $message }}</p>
+            @enderror
         </div>
         <div class="mt-4">
             <label class="block text-gray-700 mb-2">Question</label>
             <textarea name="question" class="w-full border px-3 py-2 rounded" rows="4" required></textarea>
+            @error('question')
+                <p class="text-xs text-red-500">{{ $message }}</p>
+            @enderror
         </div>
         <div class="mt-4 grid grid-cols-2 gap-4">
             <input type="text" name="option1" placeholder="Option 1" class="w-full border px-3 py-2 rounded" required>
+            @error('option1')
+                <p class="text-xs text-red-500">{{ $message }}</p>
+            @enderror
             <input type="text" name="option2" placeholder="Option 2" class="w-full border px-3 py-2 rounded" required>
+            @error('option2')
+                <p class="text-xs text-red-500">{{ $message }}</p>
+            @enderror
             <input type="text" name="option3" placeholder="Option 3" class="w-full border px-3 py-2 rounded" required>
+            @error('option3')
+                <p class="text-xs text-red-500">{{ $message }}</p>
+            @enderror
             <input type="text" name="option4" placeholder="Option 4" class="w-full border px-3 py-2 rounded" required>
+            @error('option4')
+                <p class="text-xs text-red-500">{{ $message }}</p>
+            @enderror
         </div>
         <div class="mt-4">
             <label class="block text-gray-700 mb-2">Correct Answer</label>
@@ -38,10 +56,23 @@
                 <option value="option3">Option 3</option>
                 <option value="option4">Option 4</option>
             </select>
+            @error('correct_answer')
+                <p class="text-xs text-red-500">{{ $message }}</p>
+            @enderror
+        </div>
+        <div class="mt-4">
+            <label for="" class="block text-gray-700 mb-2">Time</label>
+            <input type="time" name="time" class="w-full border px-3 py-2 rounded">
+            @error('time')
+            <p class="text-xs text-red-500">{{ $message }}</p>
+        @enderror
         </div>
         <div class="mt-4">
             <label class="block text-gray-700 mb-2">Status</label>
             <input type="checkbox" name="status" value="1" class="mr-2"> Active
+            @error('status')
+            <p class="text-xs text-red-500">{{ $message }}</p>
+        @enderror
         </div>
         <button class="mt-6 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">Save Quiz</button>
     </form>

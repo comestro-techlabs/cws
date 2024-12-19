@@ -11,11 +11,11 @@
         @method('PUT')
         
         <div>
-            <label for="course_id" class="block text-gray-700 font-medium mb-2">Select Course</label>
-            <select name="course_id" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500" required>
-                @foreach ($courses as $course)
-                    <option value="{{ $course->id }}" {{ $quiz->course_id == $course->id ? 'selected' : '' }}>
-                        {{ $course->title }}
+            <label for="exam_id" class="block text-gray-700 font-medium mb-2">Select Course</label>
+            <select name="exam_id" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500" required>
+                @foreach ($exams as $exam)
+                    <option value="{{ $exam->id }}" {{ $quiz->exam_id == $exam->id ? 'selected' : '' }}>
+                        {{ $exam->exam_name }}
                     </option>
                 @endforeach
             </select>
@@ -44,6 +44,10 @@
             </select>
         </div>
 
+        <div>
+            <label for="time" class="block text-gray-700 font-medium mb-2">Time</label>
+            <input type="time" name="time" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required value="{{$quiz->time }}"/> 
+        </div>
         <div class="mt-4">
             <label class="inline-flex items-center">
                 <input type="checkbox" name="status" value="1" {{ $quiz->status ? 'checked' : '' }} class="rounded">

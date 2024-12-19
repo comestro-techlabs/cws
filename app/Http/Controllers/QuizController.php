@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\Exam;
 use App\Models\Quiz;
 use Illuminate\Http\Request;
 
@@ -21,8 +22,8 @@ class QuizController extends Controller
      */
     public function create()
     {
-        $courses = Course::all();
-        return view('admin.quiz.create_quiz', compact('courses'));
+        $exams = Exam::all();
+        return view('admin.quiz.create_quiz',compact('exams'));
     }
 
     /**
@@ -32,7 +33,7 @@ class QuizController extends Controller
     {
         $request->validate([
 
-            'course_id' =>'required|exists:courses,id',
+            'exam_id' =>'required|exists:exams,id',
             'question' => 'required|string',
             'option1' => 'required|string',
             'option2' => 'required|string',
@@ -40,6 +41,7 @@ class QuizController extends Controller
             'option4' => 'required|string',
             'correct_answer' => 'required|in:option1,option2,option3,option4',
             'status' => 'nullable|boolean',
+            'time' => 'required|date_format:H:i',
         ]);
 
         Quiz::create($request->all());
@@ -51,7 +53,7 @@ class QuizController extends Controller
      */
     public function show(Request $request )
     {
-        $query = Quiz::with('course');
+        $query = Quiz::with('exam');
 
         // Search functionality
         if ($request->has('search')) {
@@ -84,8 +86,8 @@ class QuizController extends Controller
      */
     public function edit(Quiz $quiz)
     {
-        $courses = Course::all();
-        return view('admin.quiz.edit_quiz', compact('quiz', 'courses'));
+        $exams = Exam::all();
+        return view('admin.quiz.edit_quiz', compact('quiz', 'exams'));
     }
 
     /**
@@ -94,7 +96,7 @@ class QuizController extends Controller
     public function update(Request $request, Quiz $quiz)
     {
         $request->validate([
-           'course_id' =>'required|exists:courses,id',
+         'exam_id' =>'required|exists:exams,id',
             'question' => 'required|string',
             'option1' => 'required|string',
             'option2' => 'required|string',
@@ -102,6 +104,7 @@ class QuizController extends Controller
             'option4' => 'required|string',
             'correct_answer' => 'required|in:option1,option2,option3,option4',
             'status' => 'nullable|boolean',
+            'time' => 'required|date_format:H:i',
         ]);
 
         $quiz->update($request->all());

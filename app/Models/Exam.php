@@ -2,16 +2,13 @@
 
 namespace App\Models;
 
+use Dotenv\Repository\Adapter\GuardedWriter;
 use Illuminate\Database\Eloquent\Model;
 
-class Quiz extends Model
+class Exam extends Model
 {
     protected $guarded = [];
 
-    public function exam()
-    {
-        return $this->belongsTo(Exam::class);
-    }
     public function course()
     {
         return $this->belongsTo(Course::class);

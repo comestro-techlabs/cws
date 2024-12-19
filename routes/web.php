@@ -16,7 +16,8 @@
     use App\Http\Controllers\PaymentController;
     use Illuminate\Support\Facades\Route;
     use App\Http\Controllers\Auth\SocialiteController;
-    use App\Http\Middleware\AdminMiddleware;
+use App\Http\Controllers\ExamController;
+use App\Http\Middleware\AdminMiddleware;
     use App\Http\Controllers\QuizController;
 
 
@@ -24,6 +25,7 @@
         Route::controller(StudentController::class)->group(function () {
             Route::get('/dashboard', 'dashboard')->name('student.dashboard');
             Route::get('/billing', 'billing')->name('student.billing');
+            Route::get('/quiz', 'quiz')->name('student.quiz');
             Route::get('/edit-profile',  'editProfile')->name('student.editProfile');
             Route::post('/update-profile', 'updateProfile')->name('student.updateProfile');
             Route::get('/coursePurchase', 'coursePurchase')->name('student.coursePurchase');
@@ -82,6 +84,16 @@
             Route::put('/enquiry-view/{enquiry}', [AdminController::class, 'updateEnquiry'])->name('admin.enquiry.update');
             Route::resource('assignment', AssignmentsController::class);
 
+
+            //exam
+            Route::get('/exam/create', [ExamController::class, 'create'])->name('exam.create');
+            Route::post('/exam/store', [ExamController::class, 'store'])->name('exam.store');
+            Route::get('/exam/show', [ExamController::class, 'show'])->name('exam.show');
+            Route::get('/exam/view/{exam}', [ExamController::class, 'view'])->name('exam.view');
+            Route::patch('/exam/{exam}/toggle-status', [ExamController::class, 'toggleStatus'])->name('exam.toggleStatus');
+            Route::get('/exam/{exam}/edit', [ExamController::class, 'edit'])->name('exam.edit');
+            Route::put('/exam/{exam}/update', [ExamController::class, 'update'])->name('exam.update');
+            Route::delete('/exam/{exam}', [ExamController::class, 'destroy'])->name('exam.destroy');
             //quiz
             // Route::resource('quiz', QuizController::class);
 
