@@ -7,6 +7,7 @@ use App\Models\Assignments;
 use App\Models\Course;
 use App\Models\Payment;
 use App\Models\User;
+use App\Models\Quiz;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -168,6 +169,33 @@ class StudentController extends Controller
             'courses' => User::find(Auth::id())->courses()->get(),
             'payments' => Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->get(),
         ];
+        return view("studentdashboard.billing",$datas);
+    }
+    
+    public function quiz(){
+        
+    $studentId = Auth::id(); // Get the logged-in student's ID
+    
+    // Fetch the courses the student is enrolled in
+    $courses = User::findOrFail($studentId)->courses()->get();
+    
+    // Fetch quizzes related to the student's courses
+    $quizzes = Quiz::whereIn('course_id', $courses->pluck('id'))->get();
+
+    // Pass the data to the view
+    $data = [
+        'courses' => $courses,
+        'quizzes' => $quizzes,
+        'payments' => Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->get(),
+    ];
+
+    return view("studentdashboard.quiz", $data);
+
+    }
+    public function buyCourse($id){
+        $data['course']= Course::findOrFail($id);
+        
+        return view("studentDashboard.course.viewCourse",$data);
         return view("studentdashboard.billing", $datas);
     }
     public function buyCourse($id)

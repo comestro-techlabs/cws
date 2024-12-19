@@ -13,9 +13,15 @@ return new class extends Migration
     {
         Schema::create('quizzes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('course_id')->constrained()->onDelete('cascade');
+            $table->foreignId('exam_id')->constrained()->onDelete('cascade');
             $table->string('question');
-            
+            $table->string('option1');
+            $table->string('option2');
+            $table->string('option3');
+            $table->string('option4');
+            $table->enum('correct_answer', ['option1', 'option2', 'option3', 'option4']);
+            $table->time('time');
+            $table->boolean('status')->default(false);
             $table->timestamps();
         });
     }
