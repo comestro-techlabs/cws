@@ -192,12 +192,12 @@ class StudentController extends Controller
     return view("studentdashboard.quiz", $data);
 
     }
-    public function buyCourse($id){
-        $data['course']= Course::findOrFail($id);
+    // public function buyCourse($id){
+    //     $data['course']= Course::findOrFail($id);
         
-        return view("studentDashboard.course.viewCourse",$data);
-        return view("studentdashboard.billing", $datas);
-    }
+    //     return view("studentDashboard.course.viewCourse",$data);
+    //     return view("studentdashboard.billing", $datas);
+    // }
     public function buyCourse($id)
     {
         $studentId = User::findOrFail(Auth::id())->id;
