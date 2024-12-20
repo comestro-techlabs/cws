@@ -1,123 +1,64 @@
-@extends('studentDashboard.include.base')
+@extends('studentdashboard.include.base')
+
 @section('content')
+<div class="container-fluid page__container">
+    <div class="row">
 
+        <div class="col-md-8 mt-20">
+            <div class="card">
+               
+                <form action="{{ route('student.storeAnswer') }}" method="POST">
+                    @csrf
+                    @foreach ($courses as $course)
+                        @foreach ($course->exams as $exam)
+                            @if ($exam->status)
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ $exam->exam_name }}</h5>
+                                    <p><strong>Course:</strong> {{ $course->title }}</p>
 
+                                    @foreach ($exam->quizzes as $quiz)
+                                        @if ($quiz->status)
+                                            <div class="form-group">
+                                                <label for="question-{{ $quiz->id }}"><strong>{{ $loop->iteration }}. {{ $quiz->question }}</strong></label>
+                                                <div class="custom-control custom-radio">
+                                                    <input type="radio" id="option1-{{ $quiz->id }}" name="answer[{{ $quiz->id }}]" value="option1" class="custom-control-input">
+                                                    <label class="custom-control-label" for="option1-{{ $quiz->id }}">{{ $quiz->option1 }}</label>
+                                                </div>
+                                                <div class="custom-control custom-radio">
+                                                    <input type="radio" id="option2-{{ $quiz->id }}" name="answer[{{ $quiz->id }}]" value="option2" class="custom-control-input">
+                                                    <label class="custom-control-label" for="option2-{{ $quiz->id }}">{{ $quiz->option2 }}</label>
+                                                </div>
+                                                <div class="custom-control custom-radio">
+                                                    <input type="radio" id="option3-{{ $quiz->id }}" name="answer[{{ $quiz->id }}]" value="option3" class="custom-control-input">
+                                                    <label class="custom-control-label" for="option3-{{ $quiz->id }}">{{ $quiz->option3 }}</label>
+                                                </div>
+                                                <div class="custom-control custom-radio">
+                                                    <input type="radio" id="option4-{{ $quiz->id }}" name="answer[{{ $quiz->id }}]" value="option4" class="custom-control-input">
+                                                    <label class="custom-control-label" for="option4-{{ $quiz->id }}">{{ $quiz->option4 }}</label>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                </div>
+                            @endif
+                        @endforeach
+                    @endforeach
 
-
-<div class="mdk-header-layout__content mdk-header-layout__content--fullbleed mdk-header-layout__content--scrollable page" style="padding-top: 60px;">
-
-
-    <div class="page__heading border-bottom">
-        <div class="container-fluid page__container d-flex align-items-center">
-            <h1 class="mb-0">Quiz</h1>
-            <div class="ml-auto d-flex align-items-center">
-                
-                <div class="countdown" data-value="4" data-unit="hour"></div>
-                <!-- <span class="badge badge-primary ml-2"><div class="material-icons icon-16pt">access_time</div></span> -->
-            </div>
-        </div>
-    </div>
-
-    <div class="container-fluid page__container">
-        <div class="row">
-
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="media align-items-center">
-                            <div class="media-left">
-                                <h4 class="m-0 text-primary mr-2"><strong>#9</strong></h4>
-                            </div>
-                            <div class="media-body">
-                                <h4 class="card-title m-0">
-                                    Github command to deploy comits?
-                                </h4>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="form-group">
-                            <div class="custom-control custom-checkbox">
-                                <input id="customCheck01" type="checkbox" class="custom-control-input">
-                                <label for="customCheck01" class="custom-control-label">git push</label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="custom-control custom-checkbox">
-                                <input id="customCheck02" type="checkbox" class="custom-control-input">
-                                <label for="customCheck02" class="custom-control-label">git commit -m "message"</label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="custom-control custom-checkbox">
-                                <input id="customCheck03" type="checkbox" class="custom-control-input">
-                                <label for="customCheck03" class="custom-control-label">git pull</label>
-                            </div>
-                        </div>
-                    </div>
                     <div class="card-footer">
-                        <a href="#" class="btn btn-light">Skip</a>
-                        <a href="#" class="btn btn-success float-right">Submit <i class="material-icons btn__icon--right">arrow_forward</i></a>
+                        <button type="submit" class="btn btn-success float-right">Submit <i class="material-icons btn__icon--right">arrow_forward</i></button>
                     </div>
-                </div>
-            </div>
-            <div class="col-md-4 ">
-                <div class="list-group">
-
-                    <a href="#" class="list-group-item active">
-                        <span class="media align-items-center">
-                            <span class="media-left mr-2">
-                                <span class="btn btn-light btn-sm">#9</span>
-                            </span>
-                            <span class="media-body">
-                                Github command to deploy comits?
-                            </span>
-                        </span>
-                    </a>
-
-
-                    <a href="#" class="list-group-item">
-                        <span class="media align-items-center">
-                            <span class="media-left mr-2">
-                                <span class="btn btn-light btn-sm">#10</span>
-                            </span>
-                            <span class="media-body">
-                                What's the difference between private and public repos?
-                            </span>
-                        </span>
-                    </a>
-
-
-                    <a href="#" class="list-group-item">
-                        <span class="media align-items-center">
-                            <span class="media-left mr-2">
-                                <span class="btn btn-light btn-sm">#11</span>
-                            </span>
-                            <span class="media-body">
-                                What is the purpose of a branch?
-                            </span>
-                        </span>
-                    </a>
-
-
-                    <a href="#" class="list-group-item">
-                        <span class="media align-items-center">
-                            <span class="media-left mr-2">
-                                <span class="btn btn-light btn-sm">#12</span>
-                            </span>
-                            <span class="media-body">
-                                Final Question?
-                            </span>
-                        </span>
-                    </a>
-
-                </div>
+                </form>
             </div>
         </div>
 
+        
     </div>
 
-
+    <!-- Display obtained marks after quiz submission -->
+    @if(session('obtained_marks'))
+        <div class="alert alert-success mt-4">
+            <strong>Congratulations!</strong> You have scored {{ session('obtained_marks') }} marks.
+        </div>
+    @endif
 </div>
-
 @endsection

@@ -61,11 +61,12 @@
             @enderror
         </div>
         <div class="mt-4">
-            <label for="" class="block text-gray-700 mb-2">Time</label>
-            <input type="time" name="time" class="w-full border px-3 py-2 rounded">
+            <label for="time" class="block text-gray-700 mb-2">Time (HH:mm:ss)</label>
+            <input type="text" name="time"id="time" placeholder="HH:mm:ss" class="w-full border px-3 py-2 rounded" >
+                
             @error('time')
-            <p class="text-xs text-red-500">{{ $message }}</p>
-        @enderror
+                <p class="text-xs text-red-500">{{ $message }}</p>
+            @enderror
         </div>
         <div class="mt-4">
             <label class="block text-gray-700 mb-2">Status</label>

@@ -19,25 +19,29 @@
 use App\Http\Controllers\ExamController;
 use App\Http\Middleware\AdminMiddleware;
     use App\Http\Controllers\QuizController;
+    use App\Http\Livewire\Quiz;
 
 
     Route::prefix("student")->group(function () {
         Route::controller(StudentController::class)->group(function () {
             Route::get('/dashboard', 'dashboard')->name('student.dashboard');
             Route::get('/billing', 'billing')->name('student.billing');
-            Route::get('/quiz', 'quiz')->name('student.quiz');
+            Route::get('/quiz', 'showquiz')->name('student.quiz');
+            Route::post('/store-answer',  'storeAnswer')->name('student.storeAnswer');
+
             Route::get('/edit-profile',  'editProfile')->name('student.editProfile');
             Route::post('/update-profile', 'updateProfile')->name('student.updateProfile');
             Route::get('/coursePurchase', 'coursePurchase')->name('student.coursePurchase');
             Route::get('/course', 'course')->name('student.course');
-            Route::get('/assignments/upload', 'assignmentupload')->name('student.assignment-upload');
+            Route::get('/assignments/view', 'assignmentList')->name('student.assignments-view');
+            Route::get('/assignments/upload/{id}', 'viewAssignments')->name('student.assignment-upload');
             
-            Route::get('/buyCourse/{id}', 'buyCourse')->name('student.buyCourse');
+            Route::get('/purchesCourse', 'purchesCourse')->name('student.purchesCourse');
 
         });
     });
     Route::get('/get-access-token', [StudentController::class, 'store']);
-    Route::post('/student/assignments/upload', [StudentController::class, 'store'])->name('assignments.store');
+    Route::post('/student/assignments/upload/{assignment_id}', [StudentController::class, 'store'])->name('assignments.store');
 
 
     Route::post('save-course-payment', [PaymentController::class, 'saveCoursePayment'])->name('save.course.payment');
@@ -110,6 +114,10 @@ use App\Http\Middleware\AdminMiddleware;
             Route::get('/quiz/{quiz}/edit', [QuizController::class, 'edit'])->name('quiz.edit');
             Route::put('/quiz/{quiz}/update', [QuizController::class, 'update'])->name('quiz.update');
             Route::delete('/quiz/{quiz}', [QuizController::class, 'destroy'])->name('quiz.destroy');
+           
+            //result
+            Route::get('/quiz/{quiz}/results', [QuizController::class, 'results'])->name('quiz.results');
+
             
 
            

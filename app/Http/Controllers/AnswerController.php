@@ -2,17 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Assignment_upload;
-use App\Models\Assignments;
+use App\Models\Answer;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 
-class AssignmentUploadController extends Controller
+class AnswerController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    
     public function index()
     {
         //
@@ -23,8 +20,7 @@ class AssignmentUploadController extends Controller
      */
     public function create()
     {
-        $data['assignment']=Assignments::all();
-        return view('studentDashboard.course.assignments.studentAssignment',$data);
+        //
     }
 
     /**
@@ -32,13 +28,13 @@ class AssignmentUploadController extends Controller
      */
     public function store(Request $request)
     {
-       
+        //
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Assignment_upload $assignment_upload)
+    public function show(Answer $answer)
     {
         //
     }
@@ -46,7 +42,7 @@ class AssignmentUploadController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Assignment_upload $assignment_upload)
+    public function edit(Answer $answer)
     {
         //
     }
@@ -54,7 +50,7 @@ class AssignmentUploadController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Assignment_upload $assignment_upload)
+    public function update(Request $request, Answer $answer)
     {
         //
     }
@@ -62,7 +58,7 @@ class AssignmentUploadController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Assignment_upload $assignment_upload)
+    public function destroy(Answer $answer)
     {
         //
     }

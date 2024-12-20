@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Answer;
 use App\Models\Course;
 use App\Models\Exam;
 use App\Models\Quiz;
@@ -41,7 +42,7 @@ class QuizController extends Controller
             'option4' => 'required|string',
             'correct_answer' => 'required|in:option1,option2,option3,option4',
             'status' => 'nullable|boolean',
-            'time' => 'required|date_format:H:i',
+            'time' => 'required|date_format:H:i:s',
         ]);
 
         Quiz::create($request->all());
@@ -104,7 +105,7 @@ class QuizController extends Controller
             'option4' => 'required|string',
             'correct_answer' => 'required|in:option1,option2,option3,option4',
             'status' => 'nullable|boolean',
-            'time' => 'required|date_format:H:i',
+            'time' => 'required|date_format:H:i:s',
         ]);
 
         $quiz->update($request->all());
@@ -120,4 +121,18 @@ class QuizController extends Controller
         $quiz->delete();
         return redirect()->route('quiz.show')->with('success','Quiz deleted successfully');
     }
+
+
+    
+
+    public function results(Quiz $quiz)
+    {
+        dd($quiz);
+        $answers = Answer::with('user')
+        ->where('quiz_id', $quiz->id)
+        ->get();
+
+        return view('admin.quiz.result', compact('quiz', 'answers'));
+    }
+
 }
