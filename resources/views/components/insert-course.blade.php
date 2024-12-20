@@ -2,7 +2,7 @@
 method="post" enctype="multipart/form-data">
 @csrf
 <div class="mx-auto mb-5 group">
-    <label for="title" class="block text-sm text-gray-500">Course Title</label>
+    <label for="title" class="block text-sm text-gray-500 mb-2">Course Title</label>
     <input type="text" name="title" size="60" id="title" value="{{ old('title') }}" placeholder="e.g Learn python with tkinter etc"
         class="block py-2.5 px-2 w-full text-sm text-gray-900 bg-transparent border border-gray-300 rounded appearance-none dark:text-white dark:border-gray-600 focus:outline-none focus:ring-0 focus:border-blue-600" />
     @error('title')
