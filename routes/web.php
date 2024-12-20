@@ -19,13 +19,16 @@
 use App\Http\Controllers\ExamController;
 use App\Http\Middleware\AdminMiddleware;
     use App\Http\Controllers\QuizController;
+    use App\Http\Livewire\Quiz;
 
 
     Route::prefix("student")->group(function () {
         Route::controller(StudentController::class)->group(function () {
             Route::get('/dashboard', 'dashboard')->name('student.dashboard');
             Route::get('/billing', 'billing')->name('student.billing');
-            Route::get('/quiz', 'quiz')->name('student.quiz');
+            Route::get('/quiz', 'showquiz')->name('student.quiz');
+            Route::post('/store-answer',  'storeAnswer')->name('student.storeAnswer');
+
             Route::get('/edit-profile',  'editProfile')->name('student.editProfile');
             Route::post('/update-profile', 'updateProfile')->name('student.updateProfile');
             Route::get('/coursePurchase', 'coursePurchase')->name('student.coursePurchase');
@@ -105,6 +108,10 @@ use App\Http\Middleware\AdminMiddleware;
             Route::get('/quiz/{quiz}/edit', [QuizController::class, 'edit'])->name('quiz.edit');
             Route::put('/quiz/{quiz}/update', [QuizController::class, 'update'])->name('quiz.update');
             Route::delete('/quiz/{quiz}', [QuizController::class, 'destroy'])->name('quiz.destroy');
+           
+            //result
+            Route::get('/quiz/{quiz}/results', [QuizController::class, 'results'])->name('quiz.results');
+
             
 
            

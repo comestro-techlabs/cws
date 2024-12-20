@@ -46,7 +46,7 @@
 
         <div>
             <label for="time" class="block text-gray-700 font-medium mb-2">Time</label>
-            <input type="time" name="time" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required value="{{$quiz->time }}"/> 
+            <input  type="text" name="time"id="time"  class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required value="{{$quiz->time }}"/> 
         </div>
         <div class="mt-4">
             <label class="inline-flex items-center">

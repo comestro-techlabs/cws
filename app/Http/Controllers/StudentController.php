@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Answer;
 use App\Models\Course;
 use App\Models\Payment;
 use App\Models\User;
@@ -163,26 +164,58 @@ class StudentController extends Controller
         return view("studentdashboard.billing",$datas);
     }
     
-    public function quiz(){
-        
-    $studentId = Auth::id(); // Get the logged-in student's ID
+    public function showquiz()
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
     
-    // Fetch the courses the student is enrolled in
-    $courses = User::findOrFail($studentId)->courses()->get();
+        $user = Auth::user();
     
-    // Fetch quizzes related to the student's courses
-    $quizzes = Quiz::whereIn('course_id', $courses->pluck('id'))->get();
+        $courses = $user->courses()->with([
+            'exams' => function ($query) {
+                $query->where('status', true);
+            },
+            'exams.quizzes' => function ($query) {
+                $query->where('status', true);
+            }
+        ])->get();
+    
+    // dd($courses);
 
-    // Pass the data to the view
-    $data = [
-        'courses' => $courses,
-        'quizzes' => $quizzes,
-        'payments' => Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->get(),
-    ];
-
-    return view("studentdashboard.quiz", $data);
-
+    return view("studentdashboard.quiz", compact('courses'));
     }
+
+    public function storeAnswer(Request $request)
+    {
+        $total_marks = 0;
+        $obtained_marks = 0;
+    
+        // Loop through each answer to calculate marks
+        foreach ($request->answer as $quiz_id => $answer) {
+            $quiz = Quiz::find($quiz_id);
+            
+            if ($quiz) {
+                // Check if the answer is correct
+                if ($answer == $quiz->correct_answer) {
+                    $obtained_marks += $quiz->marks;
+                }
+                // Optionally store the student's answer in the database (Answer table)
+                $answerRecord = new Answer();
+                $answerRecord->user_id = Auth::id();
+                $answerRecord->quiz_id = $quiz_id;
+                $answerRecord->answer = $answer;
+                $answerRecord->obtained_marks = ($answer == $quiz->correct_answer) ? $quiz->marks : 0;
+                $answerRecord->save();
+            }
+        }
+    
+        // Store the total obtained marks in the session
+        session()->flash('obtained_marks', $obtained_marks);
+
+        return redirect()->route('student.quiz')->with('success', 'Answer submitted successfully!');
+    }
+
     public function buyCourse($id){
         $data['course']= Course::findOrFail($id);
         
