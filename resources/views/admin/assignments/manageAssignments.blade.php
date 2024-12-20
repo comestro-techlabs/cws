@@ -21,13 +21,16 @@
                     <!-- Form for Course Dropdown -->
                     <form method="GET" action="{{ route('assignment.index') }}" id="courseFilterForm">
                         <select name="course_id" onchange="this.form.submit()"
-                            class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                            <option value="" disabled selected>Select a course</option>
+                            class="w-full mt-1 p-2 border border-gray-300 rounded-md ">
+                            <option value="" {{ request('course_id') ? '' : 'selected' }}>Select a course</option>
                             @foreach ($courses as $course)
-                                <option value="{{ $course->id }}">{{ $course->title }}</option>
+                                <option value="{{ $course->id }}" {{ request('course_id') == $course->id ? 'selected' : '' }}>
+                                    {{ $course->title }}
+                                </option>
                             @endforeach
                         </select>
                     </form>
+                    
 
                 </div>
             </div> 

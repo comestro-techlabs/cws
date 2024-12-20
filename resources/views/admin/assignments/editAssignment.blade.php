@@ -36,7 +36,7 @@
 
         <div class="mb-4">
             <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
-            <textarea name="description" id="description" rows="4"
+            <textarea name="description" id="editor" rows="4"
                       class="w-full border-gray-300 rounded-lg shadow-sm">{{ old('description', $assignment->description) }}</textarea>
             @error('description')
                 <p class="text-red-500 text-sm">{{ $message }}</p>
@@ -50,4 +50,11 @@
         </div>
     </form>
 </div>
+<script>
+    ClassicEditor
+        .create(document.querySelector('#editor'))
+        .catch(error => {
+            console.error(error);
+        });
+</script>
 @endsection
