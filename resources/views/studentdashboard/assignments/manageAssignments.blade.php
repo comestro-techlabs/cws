@@ -24,7 +24,7 @@
                                     <th class="px-4 py-2 border text-left">ID</th>
                                     <th class="px-4 py-2 border text-left">Title</th>
                                     <th class="px-4 py-2 border text-left">Description</th>
-                                    <th class="px-4 py-2 border text-center">Status</th>
+                                    {{-- <th class="px-4 py-2 border text-center">Status</th> --}}
                                     <th class="px-4 py-2 border text-center">Actions</th>
                                 </tr>
                             </thead>
@@ -34,12 +34,12 @@
                                     <td class="px-4 py-2 border">{{ $assignment->id }}</td>
                                     <td class="px-4 py-2 border">{{ $assignment->title }}</td>
                                     <td class="px-4 py-2 border">{!! Str::limit($assignment->description, 50) !!}</td>
-                                    <td class="px-4 py-2 border text-center">
+                                    {{-- <td class="px-4 py-2 border text-center">
                                         <span class="px-2 py-1 text-sm rounded-full 
                                             {{ $assignment->status ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' }}">
                                             {{ $assignment->status ? 'Active' : 'Inactive' }}
                                         </span>
-                                    </td>
+                                    </td> --}}
                                     <td class="px-4 py-2 border text-center">
                                         <a href="{{ route('student.assignment-upload', $assignment->id) }}" 
                                            class="text-blue-500 hover:underline">
