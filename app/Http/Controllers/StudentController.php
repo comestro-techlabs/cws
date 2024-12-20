@@ -169,42 +169,42 @@ class StudentController extends Controller
             'courses' => User::find(Auth::id())->courses()->get(),
             'payments' => Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->get(),
         ];
-        return view("studentdashboard.billing",$datas);
+        return view("studentdashboard.billing", $datas);
     }
-    
-    public function quiz(){
-        
-    // $studentId = Auth::id(); // Get the logged-in student's ID
-    
-    // // Fetch the courses the student is enrolled in
-    // $courses = User::findOrFail($studentId)->courses()->get();
-    
-    // // Fetch quizzes related to the student's courses
-    // $quizzes = Quiz::whereIn('course_id', $courses->pluck('id'))->get();
 
-    // // Pass the data to the view
-    // $data = [
-    //     'courses' => $courses,
-    //     'quizzes' => $quizzes,
-    //     'payments' => Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->get(),
-    // ];
+    public function quiz()
+    {
 
-    return view("studentdashboard.quiz");
+        // $studentId = Auth::id(); // Get the logged-in student's ID
 
+        // // Fetch the courses the student is enrolled in
+        // $courses = User::findOrFail($studentId)->courses()->get();
+
+        // // Fetch quizzes related to the student's courses
+        // $quizzes = Quiz::whereIn('course_id', $courses->pluck('id'))->get();
+
+        // // Pass the data to the view
+        // $data = [
+        //     'courses' => $courses,
+        //     'quizzes' => $quizzes,
+        //     'payments' => Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->get(),
+        // ];
+
+        return view("studentdashboard.quiz");
     }
     // public function buyCourse($id){
     //     $data['course']= Course::findOrFail($id);
-        
+
     //     return view("studentDashboard.course.viewCourse",$data);
     //     return view("studentdashboard.billing", $datas);
     // }
-    public function buyCourse($id)
+    public function purchesCourse()
     {
         $studentId = User::findOrFail(Auth::id())->id;
 
-        $data['course'] = Course::findOrFail($id);
+        $data['courses'] = User::find(Auth::id())->courses()->get();
 
-        return view("studentDashboard.course.viewCourse", $data);
+        return view("studentDashboard.course.purchaseCourse", $data);
     }
     public function editProfile()
     {
@@ -231,18 +231,30 @@ class StudentController extends Controller
 
         return redirect()->route('student.editProfile')->with('success', 'Profile updated successfully!');
     }
-    public function assignmentupload()
+    public function assignmentList()
     {
         $studentId = Auth::id(); // Logged-in user's ID
 
-        $assignments = Assignments::whereHas('course', function ($query) use ($studentId) {
-            $query->whereHas('students', function ($q) use ($studentId) {
-                $q->where('user_id', $studentId);
-            });
-        })->get();
+        $data['courses'] = Course::whereHas('students', function ($query) use ($studentId) {
+            $query->where('user_id', $studentId);
+        })->with('assignments')->get();
+
+        return view('studentDashboard.assignments.manageAssignments', $data);
+    }
+
+    public function viewAssignments($id)
+    {
+        $studentId = Auth::id(); // Logged-in user's ID
+
+        $assignment = Assignments::where('id', $id)
+            ->whereHas('course', function ($query) use ($studentId) {
+                $query->whereHas('students', function ($q) use ($studentId) {
+                    $q->where('user_id', $studentId);
+                });
+            })->first();
 
         // Return assignments to the view
-        return view('studentDashboard.assignments.studentAssignment', ['assignments' => $assignments]);
+        return view('studentDashboard.assignments.studentAssignment', ['assignment' => $assignment]);
     }
     // private function token()
     // {
@@ -306,76 +318,81 @@ class StudentController extends Controller
     //     }
     // }
     private function token()
-{
-    $client_id = config('services.google.client_id');
-    $client_secret = config('services.google.client_secret');
-    $refresh_token = config('services.google.refresh_token');
- 
-    $response = Http::post('https://oauth2.googleapis.com/token', [
-        'client_id' => $client_id,
-        'client_secret' => $client_secret,
-        'refresh_token' => $refresh_token,
-        'grant_type' => 'refresh_token',
-    ]);
- 
-    if ($response->successful()) {
-        return json_decode($response->body(), true)['access_token'];
-    }
- 
-    throw new \Exception('Failed to fetch access token');
-}
- 
-public function store(Request $request)
-{
-    $validation = $request->validate([
-        'file_path' => 'file|required',
-        'assignment_id' => 'required',
+    {
+        $client_id = config('services.google.client_id');
+        $client_secret = config('services.google.client_secret');
+        $refresh_token = config('services.google.refresh_token');
 
-    ]);
- 
-    $accessToken = $this->token();
- 
-    $file = $request->file('file_path');
-    $mimeType = $file->getMimeType();
-    $fileName = $file->getClientOriginalName();
-    $fileContent = file_get_contents($file->getRealPath());
- 
-    // Step 1: Metadata request
-    $metadataResponse = Http::withHeaders([
-        'Authorization' => 'Bearer ' . $accessToken,
-        'Content-Type' => 'application/json',
-    ])->post('https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable', [
-        'name' => $fileName,
-        'mimeType' => $mimeType,
-        'parents' => [config('services.google.folder_id')],
-    ]);
- 
-    if (!$metadataResponse->successful()) {
-        return response('Failed to initialize upload', 500);
+        $response = Http::post('https://oauth2.googleapis.com/token', [
+            'client_id' => $client_id,
+            'client_secret' => $client_secret,
+            'refresh_token' => $refresh_token,
+            'grant_type' => 'refresh_token',
+        ]);
+
+        if ($response->successful()) {
+            return json_decode($response->body(), true)['access_token'];
+        }
+
+        throw new \Exception('Failed to fetch access token');
     }
- 
-    $uploadUrl = $metadataResponse->header('Location');
- 
-    // Step 2: Upload file content
-    $uploadResponse = Http::withHeaders([
-        'Authorization' => 'Bearer ' . $accessToken,
-        'Content-Type' => $mimeType,
-    ])->withBody($fileContent, $mimeType)->put($uploadUrl);
- 
-    if ($uploadResponse->successful()) {
-        $fileId = json_decode($uploadResponse->body())->id;
- 
-        $uploadedFile = new Assignment_upload();
-        $uploadedFile->student_id = auth()->id();
-        $uploadedFile->file_path = $fileId;
-        $uploadedFile->assignment_id = $request->assignment_id;
-        $uploadedFile->submitted_at = now();
-        $uploadedFile->status = 'submitted';
-        $uploadedFile->save();
- 
-        return response('File uploaded to Google Drive', 200);
-    } else {
-        return response('Failed to upload file to Google Drive', 500);
+
+    public function store(Request $request,$assignment_id)
+    {
+        $validation = $request->validate([
+            'file_path' => 'file|required',
+            'assignment_id' => 'required|exists:assignments,id', 
+
+        ]);
+
+        $accessToken = $this->token();
+
+        $file = $request->file('file_path');
+        $mimeType = $file->getMimeType();
+        $fileName = $file->getClientOriginalName();
+        $fileContent = file_get_contents($file->getRealPath());
+
+        // Step 1: Metadata request
+        $metadataResponse = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $accessToken,
+            'Content-Type' => 'application/json',
+        ])->post('https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable', [
+            'name' => $fileName,
+            'mimeType' => $mimeType,
+            'parents' => [config('services.google.folder_id')],
+        ]);
+
+        if (!$metadataResponse->successful()) {
+            return response('Failed to initialize upload', 500);
+        }
+
+        $uploadUrl = $metadataResponse->header('Location');
+
+        // Step 2: Upload file content
+        $uploadResponse = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $accessToken,
+            'Content-Type' => $mimeType,
+        ])->withBody($fileContent, $mimeType)->put($uploadUrl);
+
+        if ($uploadResponse->successful()) {
+            $fileId = json_decode($uploadResponse->body())->id;
+
+            $uploadedFile = new Assignment_upload();
+            $uploadedFile->student_id = auth()->id();
+            $uploadedFile->file_path = $fileId;
+            $uploadedFile->assignment_id = $request->assignment_id;
+            $uploadedFile->submitted_at = now();
+            $uploadedFile->status = 'submitted';
+            $uploadedFile->save();
+
+            return response('File uploaded to Google Drive', 200);
+        } else {
+            return response('Failed to upload file to Google Drive', 500);
+        }
     }
-}
+    // public function viewAssignments(){
+    //     $data['assignments']=Assignments::all();
+    //     return view('studentDashboard.assignments.studentAssignment',$data);
+    // }
+
 }

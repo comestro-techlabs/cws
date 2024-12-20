@@ -30,14 +30,15 @@ use App\Http\Middleware\AdminMiddleware;
             Route::post('/update-profile', 'updateProfile')->name('student.updateProfile');
             Route::get('/coursePurchase', 'coursePurchase')->name('student.coursePurchase');
             Route::get('/course', 'course')->name('student.course');
-            Route::get('/assignments/upload', 'assignmentupload')->name('student.assignment-upload');
+            Route::get('/assignments/view', 'assignmentList')->name('student.assignments-view');
+            Route::get('/assignments/upload/{id}', 'viewAssignments')->name('student.assignment-upload');
             
-            Route::get('/buyCourse/{id}', 'buyCourse')->name('student.buyCourse');
+            Route::get('/purchesCourse', 'purchesCourse')->name('student.purchesCourse');
 
         });
     });
     Route::get('/get-access-token', [StudentController::class, 'store']);
-    Route::post('/student/assignments/upload', [StudentController::class, 'store'])->name('assignments.store');
+    Route::post('/student/assignments/upload/{assignment_id}', [StudentController::class, 'store'])->name('assignments.store');
 
 
     Route::post('save-course-payment', [PaymentController::class, 'saveCoursePayment'])->name('save.course.payment');
