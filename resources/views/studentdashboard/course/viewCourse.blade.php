@@ -12,7 +12,7 @@
             <div class="col-lg-8">
                 <div class="page__heading mb-6 border-bottom">
                     <div class="container page__container d-flex align-items-center">
-                        <h1 class="mb-0">{{$course->title}}flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group</h1>
+                        <h1 class="mb-0">{{$course->title}}</h1>
                     </div>
                 </div>
                 <a href="#" class="dp-preview card">

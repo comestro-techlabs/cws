@@ -41,7 +41,7 @@
                         </a>
                     </li>
                     <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button" href="{{route('student.coursePurchase')}}">
+                        <a class="sidebar-menu-button" href="{{route('student.purchesCourse')}}">
                             <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">shopping_cart</i>
                             <span class="sidebar-menu-text">Purchase Course</span>
                         </a>
@@ -53,6 +53,13 @@
                         </a>
                     </li>
                     <li class="sidebar-menu-item">
+                        <a class="sidebar-menu-button" href="{{route('student.assignments-view')}}">
+                            <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">live_help</i>
+                            <span class="sidebar-menu-text">Manage Assignment</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        {{-- <a class="sidebar-menu-button" href="student-quiz.html"> --}}
                         <a class="sidebar-menu-button" href="{{route('student.quiz')}}">
                             <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">live_help</i>
                             <span class="sidebar-menu-text">Take Quiz</span>

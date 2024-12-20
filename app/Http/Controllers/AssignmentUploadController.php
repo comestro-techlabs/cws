@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Assignment_upload;
+use App\Models\Assignments;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class AssignmentUploadController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    
     public function index()
     {
         //
@@ -20,7 +23,8 @@ class AssignmentUploadController extends Controller
      */
     public function create()
     {
-        //
+        $data['assignment']=Assignments::all();
+        return view('studentDashboard.course.assignments.studentAssignment',$data);
     }
 
     /**
@@ -28,7 +32,7 @@ class AssignmentUploadController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       
     }
 
     /**

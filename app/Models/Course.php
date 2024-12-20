@@ -60,4 +60,8 @@ class Course extends Model
     {
         return $this->hasMany(Exam::class);
     }
+    public function assignments()
+    {
+        return $this->hasMany(Assignments::class); // Replace Assignment with the actual model name if it's different
+    }
 }
