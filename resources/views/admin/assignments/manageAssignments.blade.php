@@ -21,13 +21,16 @@
                     <!-- Form for Course Dropdown -->
                     <form method="GET" action="{{ route('assignment.index') }}" id="courseFilterForm">
                         <select name="course_id" onchange="this.form.submit()"
-                            class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                            <option value="" disabled selected>Select a course</option>
+                            class="w-full mt-1 p-2 border border-gray-300 rounded-md ">
+                            <option value="" {{ request('course_id') ? '' : 'selected' }}>Select a course</option>
                             @foreach ($courses as $course)
-                                <option value="{{ $course->id }}">{{ $course->title }}</option>
+                                <option value="{{ $course->id }}" {{ request('course_id') == $course->id ? 'selected' : '' }}>
+                                    {{ $course->title }}
+                                </option>
                             @endforeach
                         </select>
                     </form>
+                    
 
                 </div>
             </div> 
@@ -40,7 +43,9 @@
                         <tr>
                             <th class="px-4 py-2 text-left border">Title</th>
                             <th class="px-4 py-2 text-left  border">Description</th>
+                            <th class="px-4 py-2 text-left  border">isPublished</th>
                             <th class="px-4 py-2 text-left  border">Status</th>
+                            <th class="px-4 py-2 text-left  border">course</th>
                             <th class="px-4 py-2 text-left  border">Date</th>
                             <th class="px-4 py-2 text-left  border">Actions</th>
                         </tr>
@@ -51,6 +56,18 @@
                                 <td class="px-4 py-2 truncate max-w-20 border">{{ $assignment->title }}</td>
                                 <td class="px-4 py-2 truncate max-w-80 border">{!! $assignment->description !!}</td>
                                 <td class="px-4 py-2 border">{{ $assignment->status ? 'Published' : 'Unpublished' }}</td>
+                                <td class="border px-4 py-2">
+                                    <form action="{{ route('assignment.toggleStatus', ['assignment' => $assignment->id]) }}" method="POST" class="inline-block">
+                                        @csrf
+                                        @method('PATCH')
+                                        <label class="relative inline-flex items-center cursor-pointer">
+                                            <input type="checkbox" name="status" class="sr-only peer" onchange="this.form.submit()" {{ $assignment->status ? 'checked' : '' }}>
+                                            <div class="w-11 h-6 bg-gray-200 rounded-full peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
+                                        </label>
+                                    </form>
+                                    </td>   
+                                    <td class="px-4 py-2 truncate max-w-80 border">{!! $assignment->course->title !!}</td>
+
                                 <td class="px-4 py-2 border">{{ $assignment->created_at->format('Y-m-d') }}</td>
 
                                 {{-- <td class="px-4 py-2 flex space-x-2 border"> --}}

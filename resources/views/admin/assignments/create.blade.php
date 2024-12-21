@@ -24,7 +24,7 @@
                         <!-- Instructions -->
                         <div class="mb-4">
                             <textarea name="description" id="editor"
-                                class="w-full h-32 mt-1 p-2 border-0 border-b-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                                class="w-full h-32 mt-1 p-2 border-0 border-b-2 border-gray-300 rounded-md"
                                 placeholder="Enter instructions (optional)"></textarea>
                             @error('description')
                             <span class="text-sm text-red-500">{{ $message }}</span>
@@ -34,7 +34,7 @@
                         <!-- Course Dropdown -->
                         <div class="mb-4">
                             <select name="course_id" id="course_id"
-                                class="w-full h-14 bg-gray-50 p-2 border-0 border-b-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                                class="w-full h-14 bg-gray-50 p-2 border-0 border-b-2 border-gray-300 "
                                 required>
                                 <option value="" disabled selected>Select a course</option>
                                 @foreach ($courses as $course)

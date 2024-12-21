@@ -68,17 +68,34 @@ class AssignmentsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Assignments $assignments)
-    {
-        //
-    }
+    public function edit(Assignments $assignment)
+{
+    $courses = Course::all(); 
+    return view('admin.assignments.editAssignment', compact('assignment', 'courses'));
+}
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Assignments $assignments)
+    public function update(Request $request, Assignments $assignment)
     {
-        //
+        $validated = $request->validate([
+            'course_id' => 'required|exists:courses,id',
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+
+        $assignment->update($validated);
+
+        // Redirect with a success message
+        return redirect()->route('assignment.index')->with('success', 'Assignment created successfully!');
+    }
+    public function toggleStatus(Request $request, Assignments $assignment)
+    {
+        $assignment->status = !$assignment->status;
+        $assignment->save();
+
+        return redirect()->back()->with('success', 'assignment status updated successfully!');
     }
 
 
