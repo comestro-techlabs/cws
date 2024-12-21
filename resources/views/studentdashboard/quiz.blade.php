@@ -53,8 +53,6 @@
 
         
     </div>
-
-    <!-- Display obtained marks after quiz submission -->
     @if(session('obtained_marks'))
         <div class="alert alert-success mt-4">
             <strong>Congratulations!</strong> You have scored {{ session('obtained_marks') }} marks.
