@@ -192,20 +192,20 @@ class StudentController extends Controller
         $obtained_marks = 0;
     
         // Loop through each answer to calculate marks
-        foreach ($request->answer as $quiz_id => $answer) {
+        foreach ($request->selected_option as $quiz_id => $selected_option) {
             $quiz = Quiz::find($quiz_id);
             
             if ($quiz) {
                 // Check if the answer is correct
-                if ($answer == $quiz->correct_answer) {
+                if ($selected_option == $quiz->correct_answer) {
                     $obtained_marks += $quiz->marks;
                 }
                 // Optionally store the student's answer in the database (Answer table)
                 $answerRecord = new Answer();
                 $answerRecord->user_id = Auth::id();
                 $answerRecord->quiz_id = $quiz_id;
-                $answerRecord->answer = $answer;
-                $answerRecord->obtained_marks = ($answer == $quiz->correct_answer) ? $quiz->marks : 0;
+                $answerRecord->selected_option = $selected_option;
+                $answerRecord->obtained_marks = ($selected_option == $quiz->correct_answer) ? $quiz->marks : 0;
                 $answerRecord->save();
             }
         }

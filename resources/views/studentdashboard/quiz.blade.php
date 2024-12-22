@@ -7,7 +7,7 @@
         <div class="col-md-8 mt-20">
             <div class="card">
                
-                <form action="{{ route('student.storeAnswer') }}" method="POST">
+                <form action="{{ route('student.store') }}" method="POST">
                     @csrf
                     @foreach ($courses as $course)
                         @foreach ($course->exams as $exam)
@@ -21,19 +21,19 @@
                                             <div class="form-group">
                                                 <label for="question-{{ $quiz->id }}"><strong>{{ $loop->iteration }}. {{ $quiz->question }}</strong></label>
                                                 <div class="custom-control custom-radio">
-                                                    <input type="radio" id="option1-{{ $quiz->id }}" name="answer[{{ $quiz->id }}]" value="option1" class="custom-control-input">
+                                                    <input type="radio" id="option1-{{ $quiz->id }}" name="selected_option[{{ $quiz->id }}]" value="option1" class="custom-control-input">
                                                     <label class="custom-control-label" for="option1-{{ $quiz->id }}">{{ $quiz->option1 }}</label>
                                                 </div>
                                                 <div class="custom-control custom-radio">
-                                                    <input type="radio" id="option2-{{ $quiz->id }}" name="answer[{{ $quiz->id }}]" value="option2" class="custom-control-input">
+                                                    <input type="radio" id="option2-{{ $quiz->id }}" name="selected_option[{{ $quiz->id }}]" value="option2" class="custom-control-input">
                                                     <label class="custom-control-label" for="option2-{{ $quiz->id }}">{{ $quiz->option2 }}</label>
                                                 </div>
                                                 <div class="custom-control custom-radio">
-                                                    <input type="radio" id="option3-{{ $quiz->id }}" name="answer[{{ $quiz->id }}]" value="option3" class="custom-control-input">
+                                                    <input type="radio" id="option3-{{ $quiz->id }}" name="selected_option[{{ $quiz->id }}]" value="option3" class="custom-control-input">
                                                     <label class="custom-control-label" for="option3-{{ $quiz->id }}">{{ $quiz->option3 }}</label>
                                                 </div>
                                                 <div class="custom-control custom-radio">
-                                                    <input type="radio" id="option4-{{ $quiz->id }}" name="answer[{{ $quiz->id }}]" value="option4" class="custom-control-input">
+                                                    <input type="radio" id="option4-{{ $quiz->id }}" name="selected_option[{{ $quiz->id }}]" value="option4" class="custom-control-input">
                                                     <label class="custom-control-label" for="option4-{{ $quiz->id }}">{{ $quiz->option4 }}</label>
                                                 </div>
                                             </div>
