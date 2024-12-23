@@ -62,6 +62,6 @@ class Course extends Model
     }
     public function assignments()
     {
-        return $this->hasMany(Assignments::class); // Replace Assignment with the actual model name if it's different
+        return $this->hasMany(Assignments::class); 
     }
 }

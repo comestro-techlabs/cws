@@ -16,4 +16,9 @@ class Assignments extends Model
     {
         return $this->belongsTo(Course::class, 'course_id', 'id');
     }
+    public function uploads()
+    {
+        return $this->hasMany(Assignment_upload::class, 'assignment_id', 'id');
+    }
+
 }

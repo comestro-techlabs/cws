@@ -141,15 +141,15 @@ class StudentController extends Controller
         return view('studentDashboard.dashboard');
     }
 
-    public function coursePurchase()
-    {
-        $studentId = User::findOrFail(Auth::id())->id;
-        $data = [
+    // public function coursePurchase()
+    // {
+    //     $studentId = User::findOrFail(Auth::id())->id;
+    //     $data = [
 
-            'courses' => User::find(Auth::id())->courses()->get(),
-        ];
-        return view('studentDashboard.course.purchaseCourse', $data);
-    }
+    //         'courses' => User::find(Auth::id())->courses()->get(),
+    //     ];
+    //     return view('studentDashboard.course.purchaseCourse', $data);
+    // }
     public function course()
     {
         $studentId = User::findOrFail(Auth::id())->id;
