@@ -3,9 +3,9 @@
 @section('title', 'Add assigment | ')
 
 @section('content')
-    <div class="bg-gray-100 h-screen">
-        <div class="flex">
-            <div class="w-9/12  mt-12 p-6 bg-white mx-12 shadow-md rounded-lg">
+    <div class="bg-gray-100  min-h-screen">
+        <div class="flex flex-wrap justify-center">
+            <div class="w-full lg:w-9/12 mt-12 p-6 bg-white mx-4 md:mx-6 shadow-md rounded-lg">
                 <div class="max-w-xl mx-auto p-6 bg-white shadow-md rounded-lg">
                     <h2 class="text-2xl font-bold mb-6 text-gray-800">Create Assignment</h2>
                     <form action="{{ route('assignment.store') }}" method="POST">
@@ -47,7 +47,8 @@
                         </div>
                 
                         <!-- Submit Button -->
-                        <div class="flex justify-end">
+                        
+                        <div class="flex">
                             <button type="submit"
                                 class="bg-blue-500 text-white px-6 py-2 rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300">
                                 Create Assignment
