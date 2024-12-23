@@ -1,6 +1,7 @@
     <?php
 
     use App\Http\Controllers\AdminController;
+    use App\Http\Controllers\AnswerController;
     use App\Http\Controllers\AssignmentsController;
 use App\Http\Controllers\AssignmentUploadController;
 use App\Http\Controllers\AuthController;
@@ -121,8 +122,8 @@ use App\Http\Middleware\AdminMiddleware;
             Route::delete('/quiz/{quiz}', [QuizController::class, 'destroy'])->name('quiz.destroy');
            
             //result
-            Route::get('/quiz/{quiz}/results', [QuizController::class, 'results'])->name('quiz.results');
-
+            // Route::get('/quiz/{quiz}/results', [QuizController::class, 'results'])->name('quiz.results');
+            Route::get('/answer',[AnswerController::class,'show'])->name('answer.results');
             
 
            

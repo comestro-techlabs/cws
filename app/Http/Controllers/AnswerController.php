@@ -36,7 +36,9 @@ class AnswerController extends Controller
      */
     public function show(Answer $answer)
     {
-        //
+        $answers = Answer::with('user','quiz')->get();
+
+        return view('admin.result.result',compact('answers'));
     }
 
     /**

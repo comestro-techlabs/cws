@@ -523,6 +523,10 @@
             </div>
         </div>
     </div>
+
+
+
+    @yield('scripts')
 {{-- 
     <!-- App Settings FAB -->
     <div id="app-settings">
