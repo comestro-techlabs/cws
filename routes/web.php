@@ -3,7 +3,8 @@
     use App\Http\Controllers\AdminController;
     use App\Http\Controllers\AnswerController;
     use App\Http\Controllers\AssignmentsController;
-    use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AssignmentUploadController;
+use App\Http\Controllers\AuthController;
     use App\Http\Controllers\BatchController;
     use App\Http\Controllers\CategoryController;
     use App\Http\Controllers\ChapterController;
@@ -33,11 +34,11 @@ use App\Http\Middleware\AdminMiddleware;
             Route::get('/edit-profile',  'editProfile')->name('student.editProfile');
             Route::post('/update-profile', 'updateProfile')->name('student.updateProfile');
             Route::get('/coursePurchase', 'coursePurchase')->name('student.coursePurchase');
+            Route::get('/course/{id}', 'buyCourse')->name('student.buyCourse');
             Route::get('/course', 'course')->name('student.course');
             Route::get('/assignments/view', 'assignmentList')->name('student.assignments-view');
             Route::get('/assignments/upload/{id}', 'viewAssignments')->name('student.assignment-upload');
             
-            Route::get('/purchesCourse', 'purchesCourse')->name('student.purchesCourse');
 
         });
     });
@@ -93,6 +94,9 @@ use App\Http\Middleware\AdminMiddleware;
             Route::get('/enquiry-view/{enquiry}', [AdminController::class, 'editEnquiry'])->name('admin.enquiry.show');
             Route::put('/enquiry-view/{enquiry}', [AdminController::class, 'updateEnquiry'])->name('admin.enquiry.update');
             Route::resource('assignment', AssignmentsController::class);
+            Route::resource('assignment-submit', AssignmentUploadController::class);
+            Route::get('/assignments/download/{fileId}', [AssignmentUploadController::class, 'downloadFile'])->name('assignments.download');
+
             Route::patch('/assignment/{assignment}/toggle-status', [AssignmentsController::class, 'toggleStatus'])->name('assignment.toggleStatus');
 
 
