@@ -38,9 +38,15 @@ use App\Http\Middleware\AdminMiddleware;
             Route::get('/course', 'course')->name('student.course');
             Route::get('/assignments/view', 'assignmentList')->name('student.assignments-view');
             Route::get('/assignments/upload/{id}', 'viewAssignments')->name('student.assignment-upload');
+
+
             
 
         });
+        Route::get('/quiz_instruction', function () {
+            return view('studentdashboard.quiz_instruction');
+        })->name('quiz_instruction');
+        
     });
     Route::get('/get-access-token', [StudentController::class, 'store']);
     Route::post('/student/assignments/upload/{assignment_id}', [StudentController::class, 'store'])->name('assignments.store');

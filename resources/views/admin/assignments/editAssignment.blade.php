@@ -8,7 +8,7 @@
         <h2 class="text-2xl font-bold text-gray-800 mb-2  ">
              Edit Assignment <i class="bi bi-arrow-down-circle-fill"></i>
         </h2>
-        <a href=""
+        <a href="{{ route('assignment.index') }}"
             class="bg-blue-500 text-white px-2 py-2 rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 sm:mb-0">Back to Assignments List</a>
     </div>
 
