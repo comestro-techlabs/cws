@@ -85,7 +85,7 @@
                     </li>
                 
                     <li class="sidebar-menu-item">
-                     <a class="sidebar-menu-button" href="login.html">
+                        <a href="{{ route('auth.logout') }}"class="sidebar-menu-button" >
                             <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">exit_to_app</i>
                             <span class="sidebar-menu-text">Logout</span>
                         </a> 
