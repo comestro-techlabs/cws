@@ -53,6 +53,7 @@
                 <p class="text-red-500 text-sm">{{ $message }}</p>
             @enderror
         </div>
+        <button type="submit"> submit</button>
     </form>
         </div>
         </div>

@@ -96,6 +96,10 @@ use App\Http\Middleware\AdminMiddleware;
             Route::resource('assignment', AssignmentsController::class);
             Route::resource('assignment-submit', AssignmentUploadController::class);
             Route::get('/assignments/download/{fileId}', [AssignmentUploadController::class, 'downloadFile'])->name('assignments.download');
+            Route::get('/assignments/course', [AssignmentUploadController::class, 'assignmentCourse'])->name('assignments.course');
+            Route::get('/assignments/course/assignment-review/{slug}', [AssignmentUploadController::class, 'assignmentReview'])->name('assignments.review');
+            Route::get('/assignments/single-student/{id}', [AssignmentUploadController::class, 'manageSingleStudentAssignment'])->name('assignments.singleStudent.assignment');
+            Route::get('/assignments/reviewWork', [AssignmentUploadController::class, 'assignmentReviewWork'])->name('assignments.reviewWork');
 
             Route::patch('/assignment/{assignment}/toggle-status', [AssignmentsController::class, 'toggleStatus'])->name('assignment.toggleStatus');
 
