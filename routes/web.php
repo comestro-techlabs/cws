@@ -16,6 +16,7 @@ use App\Http\Controllers\AuthController;
     use App\Http\Controllers\PublicController;
     use App\Http\Controllers\StudentController;
     use App\Http\Controllers\PaymentController;
+    use App\Http\Controllers\PortfolioController;
     use Illuminate\Support\Facades\Route;
     use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\ExamController;
@@ -36,18 +37,26 @@ use App\Http\Middleware\AdminMiddleware;
             Route::get('/coursePurchase', 'coursePurchase')->name('student.coursePurchase');
             Route::get('/course/{id}', 'buyCourse')->name('student.buyCourse');
             Route::get('/course', 'course')->name('student.course');
-            Route::get('/assignments/view', 'assignmentList')->name('student.assignments-view');
+             Route::get('/assignments/view', 'assignmentList')->name('student.assignments-view');
             Route::get('/assignments/upload/{id}', 'viewAssignments')->name('student.assignment-upload');
 
 
             
 
         });
+
+        
         Route::get('/quiz_instruction', function () {
             return view('studentdashboard.quiz_instruction');
         })->name('quiz_instruction');
+          
+    //  Route::get('/portfolio', function () {
+    //         return view('public.portfolio');
+    //      })->name('public.portfolio');
+      
         
     });
+   
     Route::get('/get-access-token', [StudentController::class, 'store']);
     Route::post('/student/assignments/upload/{assignment_id}', [StudentController::class, 'store'])->name('assignments.store');
 
@@ -131,8 +140,13 @@ use App\Http\Middleware\AdminMiddleware;
             // Route::get('/quiz/{quiz}/results', [QuizController::class, 'results'])->name('quiz.results');
             Route::get('/answer',[AnswerController::class,'show'])->name('answer.results');
             
-
-           
+            
+    Route::get('/portfolio/create', [PortfolioController::class, 'create'])->name('portfolio.create');
+    Route::post('/portfolio/store', [PortfolioController::class, 'store'])->name('portfolio.store');
+    Route::get('/admin/portfolio', [PortfolioController::class, 'show'])->name('portfolio.admin.index');
+    Route::get('/portfolio/{id}/edit', [PortfolioController::class, 'edit'])->name('portfolio.admin.edit');
+    Route::put('/portfolio/{id}', [PortfolioController::class, 'update'])->name('portfolio.admin.update');
+    Route::delete('/portfolio/{id}', [PortfolioController::class, 'destroy'])->name('portfolio.admin.destroy');
 
            
 
@@ -209,3 +223,9 @@ use App\Http\Middleware\AdminMiddleware;
     Route::get('/phonepe/status/{transactionId}', [PhonePeController::class, 'checkStatus'])->name('phonepe.status');
     // Route::post('/phonepe/refund', [PhonePeController::class, 'refund'])->name('phonepe.refund');
     Route::get('/phonepe/redirect', [PhonePeController::class, 'redirect'])->name('phonepe.redirect');
+
+
+  
+    Route::get('/portfolio', [PortfolioController::class, 'index'])->name('public.portfolio');
+    
+   
