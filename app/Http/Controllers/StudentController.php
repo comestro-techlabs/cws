@@ -14,7 +14,10 @@ use Illuminate\Support\Facades\Http;
 
 class StudentController extends Controller
 {
-
+   
+   
+    
+    
     public function index()
     {
         $data['students'] = User::where('isAdmin', false)->paginate(10);

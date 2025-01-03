@@ -20,7 +20,5 @@ class Assignments extends Model
     {
         return $this->hasMany(Assignment_upload::class, 'assignment_id', 'id');
     }
-    
-    
 
 }
