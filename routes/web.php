@@ -55,6 +55,8 @@ use App\Http\Middleware\AdminMiddleware;
             Route::get("/", [AdminController::class, "dashboard"])->name('admin.dashboard');
             Route::get('/manage-payment', [AdminController::class, "managePayment"])->name('admin.manage-payment');
             Route::get('/payment/{id}', [AdminController::class, "viewPayment"])->name('admin.payment.view');
+            Route::get('/assignments/review/{id}', [AssignmentUploadController::class, 'assignmentReviewWork'])->name('assignment.reviewWork');
+            Route::post('/assignments/{assignmentId}/students/{studentId}/grade', [AssignmentUploadController::class, 'insertGrade'])->name('assignments.insertGrade');
 
 
             Route::prefix('student')->group(function () {
@@ -66,6 +68,7 @@ use App\Http\Middleware\AdminMiddleware;
                 Route::delete('/{student}/remove-course/{course}', [StudentController::class, 'removeCourse'])->name('students.removeCourse');
                 Route::post('/students/{student}/process-payment', [StudentController::class, 'processPayment'])->name('students.processPayment');
             });
+            
             Route::resource('course', CourseController::class);
             Route::get('/courses/{course_id}/chapters/create', [ChapterController::class, 'create'])->name('chapter.create');
             Route::post('/courses/{course_id}/chapters', [ChapterController::class, 'store'])->name('chapter.store');
@@ -99,7 +102,6 @@ use App\Http\Middleware\AdminMiddleware;
             Route::get('/assignments/course', [AssignmentUploadController::class, 'assignmentCourse'])->name('assignments.course');
             Route::get('/assignments/course/assignment-review/{slug}', [AssignmentUploadController::class, 'assignmentReview'])->name('assignments.review');
             Route::get('/assignments/single-student/{id}', [AssignmentUploadController::class, 'manageSingleStudentAssignment'])->name('assignments.singleStudent.assignment');
-            Route::get('/assignments/reviewWork', [AssignmentUploadController::class, 'assignmentReviewWork'])->name('assignments.reviewWork');
 
             Route::patch('/assignment/{assignment}/toggle-status', [AssignmentsController::class, 'toggleStatus'])->name('assignment.toggleStatus');
 
@@ -135,6 +137,7 @@ use App\Http\Middleware\AdminMiddleware;
            
 
         });
+
     });
 
 

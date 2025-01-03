@@ -219,8 +219,55 @@ class AssignmentUploadController extends Controller
         return view('admin.assignments.singleStudentAssignment',$data);
     }
     
-    public function assignmentReviewWork(){
-        return view('admin.assignments.reviewWork');
+    public function assignmentReviewWork($id)
+    {
+        $data['assignment'] = Assignments::with('uploads')->findOrFail($id);
+    
+        $data['students'] = Assignment_upload::where('assignment_id', $id)
+            ->with('user') 
+            ->get()
+            ->groupBy('student_id') 
+            ->map(function ($uploads) {
+                return [
+                    'name' => $uploads->first()->user->name,
+                    'uploads' => $uploads, 
+                    
+
+                ];
+            });
+    
+        // Pass the data to the view
+        return view('admin.assignments.reviewWork', $data);
     }
+
+    public function insertGrade(Request $request, $assignmentId, $studentId)
+    {
+        $validated = $request->validate([
+            'grade' => 'required|string|max:2',  
+        ]);
+    
+        $upload = Assignment_upload::where('assignment_id', $assignmentId)
+            ->where('student_id', $studentId)
+            ->first();
+    
+        if ($upload) {
+            $upload->grade = $request->grade;
+            $upload->status = 'graded';  
+            $upload->save();
+        } else {
+            Assignment_upload::create([
+                'assignment_id' => $assignmentId,
+                'student_id' => $studentId,
+                'grade' => $request->grade,
+                'status' => 'graded',  
+                'submitted_at' => now(),  
+            ]);
+        }
+    
+        return redirect()->route('assignment.reviewWork', $assignmentId)
+            ->with('success', 'Grade inserted successfully!');
+    }
+    
+    
     
 }

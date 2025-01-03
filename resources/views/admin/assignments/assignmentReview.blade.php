@@ -104,8 +104,11 @@
                         <div id="description-{{ $assignment->id }}" class="text-sm bg-gray-100 w-full border shadow text-gray-500 mt-2 hidden">
                             <p>{!! $assignment->description !!}</p>
 
-                            <button class="bg bg-teal-300 text-white px-2 py-2"><a href="{{ route('assignments.reviewWork') }}">Review work</a></button>
-                        </div>
+                            <a href="{{ route('assignment.reviewWork', $assignment->id) }}" 
+                                class="bg-teal-300 text-white px-2 py-2 inline-block text-center rounded">
+                                Review Work
+                             </a> 
+                            </div>
                     </div>
                 @endforeach
             </div>
