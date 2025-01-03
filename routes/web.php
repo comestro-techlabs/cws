@@ -50,9 +50,7 @@ use App\Http\Middleware\AdminMiddleware;
             return view('studentdashboard.quiz_instruction');
         })->name('quiz_instruction');
           
-    //  Route::get('/portfolio', function () {
-    //         return view('public.portfolio');
-    //      })->name('public.portfolio');
+   
       
         
     });
@@ -228,4 +226,6 @@ use App\Http\Middleware\AdminMiddleware;
   
     Route::get('/portfolio', [PortfolioController::class, 'index'])->name('public.portfolio');
     
-   
+    Route::get('/workshop', function () {
+        return view('public.workshop');
+         })->name('public.workshop');
