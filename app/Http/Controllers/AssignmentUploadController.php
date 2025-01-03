@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Assignment_upload;
 use App\Models\Assignments;
+use App\Models\Course;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Google\Client;
@@ -174,4 +176,98 @@ class AssignmentUploadController extends Controller
     {
         //
     }
+    public function assignmentCourse() {
+        $data['courses'] = Course::with('assignments', 'users') 
+            ->has('assignments') 
+            ->get();
+    
+        foreach ($data['courses'] as $course) {
+            $course->unique_user_count = Assignment_upload::whereIn('assignment_id', $course->assignments->pluck('id'))
+                ->distinct('student_id')
+                ->count('student_id');
+            
+            $course->total_users = $course->users->count(); 
+        }
+    
+        return view('admin.assignments.assignmentCourse', $data);
+    }
+    public function assignmentReview($slug) {
+        $course = Course::with(['assignments', 'assignments.uploads.user'])
+            ->where('slug', $slug)
+            ->firstOrFail();
+
+            $students = Assignment_upload::whereIn('assignment_id', $course->assignments->pluck('id'))
+            ->with('user') 
+            ->get()
+            ->groupBy('student_id') 
+            ->map(function ($uploads) {
+                return [
+                    'user' => $uploads->first()->user, 
+                    'upload_count' => $uploads->count(), 
+                ];
+            });
+    
+        $data['course'] = $course;
+        $data['students']=$students;
+        $data['assignments'] = $course->assignments; 
+
+        return view('admin.assignments.assignmentReview', $data);
+    }
+    public function manageSingleStudentAssignment($id){
+        $data['student']=User::findOrFail($id);
+
+        return view('admin.assignments.singleStudentAssignment',$data);
+    }
+    
+    public function assignmentReviewWork($id)
+    {
+        $data['assignment'] = Assignments::with('uploads')->findOrFail($id);
+    
+        $data['students'] = Assignment_upload::where('assignment_id', $id)
+            ->with('user') 
+            ->get()
+            ->groupBy('student_id') 
+            ->map(function ($uploads) {
+                return [
+                    'name' => $uploads->first()->user->name,
+                    'uploads' => $uploads, 
+                    
+
+                ];
+            });
+    
+        // Pass the data to the view
+        return view('admin.assignments.reviewWork', $data);
+    }
+
+    public function insertGrade(Request $request, $assignmentId, $studentId)
+    {
+        $validated = $request->validate([
+            'grade' => 'required|string|max:2',  
+        ]);
+    
+        $upload = Assignment_upload::where('assignment_id', $assignmentId)
+            ->where('student_id', $studentId)
+            ->first();
+    
+        if ($upload) {
+            $upload->grade = $request->grade;
+            $upload->status = 'graded';  
+            $upload->save();
+        } else {
+            Assignment_upload::create([
+                'assignment_id' => $assignmentId,
+                'student_id' => $studentId,
+                'grade' => $request->grade,
+                'status' => 'graded',  
+                'submitted_at' => now(),  
+            ]);
+        }
+    
+        return redirect()->route('assignment.reviewWork', $assignmentId)
+            ->with('success', 'Grade inserted successfully!');
+    }
+    
+    
+    
 }

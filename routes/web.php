@@ -55,6 +55,10 @@ use App\Http\Middleware\AdminMiddleware;
         
     });
    
+            
+
+        });
+    });
     Route::get('/get-access-token', [StudentController::class, 'store']);
     Route::post('/student/assignments/upload/{assignment_id}', [StudentController::class, 'store'])->name('assignments.store');
 
@@ -68,6 +72,8 @@ use App\Http\Middleware\AdminMiddleware;
             Route::get("/", [AdminController::class, "dashboard"])->name('admin.dashboard');
             Route::get('/manage-payment', [AdminController::class, "managePayment"])->name('admin.manage-payment');
             Route::get('/payment/{id}', [AdminController::class, "viewPayment"])->name('admin.payment.view');
+            Route::get('/assignments/review/{id}', [AssignmentUploadController::class, 'assignmentReviewWork'])->name('assignment.reviewWork');
+            Route::post('/assignments/{assignmentId}/students/{studentId}/grade', [AssignmentUploadController::class, 'insertGrade'])->name('assignments.insertGrade');
 
 
             Route::prefix('student')->group(function () {
@@ -79,6 +85,7 @@ use App\Http\Middleware\AdminMiddleware;
                 Route::delete('/{student}/remove-course/{course}', [StudentController::class, 'removeCourse'])->name('students.removeCourse');
                 Route::post('/students/{student}/process-payment', [StudentController::class, 'processPayment'])->name('students.processPayment');
             });
+            
             Route::resource('course', CourseController::class);
             Route::get('/courses/{course_id}/chapters/create', [ChapterController::class, 'create'])->name('chapter.create');
             Route::post('/courses/{course_id}/chapters', [ChapterController::class, 'store'])->name('chapter.store');
@@ -110,6 +117,12 @@ use App\Http\Middleware\AdminMiddleware;
             Route::resource('assignment-submit', AssignmentUploadController::class);
             Route::get('/assignments/download/{fileId}', [AssignmentUploadController::class, 'downloadFile'])->name('assignments.download');
 
+            Route::resource('assignment-submit', AssignmentUploadController::class);
+            Route::get('/assignments/download/{fileId}', [AssignmentUploadController::class, 'downloadFile'])->name('assignments.download');
+            Route::get('/assignments/course', [AssignmentUploadController::class, 'assignmentCourse'])->name('assignments.course');
+            Route::get('/assignments/course/assignment-review/{slug}', [AssignmentUploadController::class, 'assignmentReview'])->name('assignments.review');
+            Route::get('/assignments/single-student/{id}', [AssignmentUploadController::class, 'manageSingleStudentAssignment'])->name('assignments.singleStudent.assignment');
+
             Route::patch('/assignment/{assignment}/toggle-status', [AssignmentsController::class, 'toggleStatus'])->name('assignment.toggleStatus');
 
 
@@ -138,17 +151,13 @@ use App\Http\Middleware\AdminMiddleware;
             // Route::get('/quiz/{quiz}/results', [QuizController::class, 'results'])->name('quiz.results');
             Route::get('/answer',[AnswerController::class,'show'])->name('answer.results');
             
-            
-    Route::get('/portfolio/create', [PortfolioController::class, 'create'])->name('portfolio.create');
-    Route::post('/portfolio/store', [PortfolioController::class, 'store'])->name('portfolio.store');
-    Route::get('/admin/portfolio', [PortfolioController::class, 'show'])->name('portfolio.admin.index');
-    Route::get('/portfolio/{id}/edit', [PortfolioController::class, 'edit'])->name('portfolio.admin.edit');
-    Route::put('/portfolio/{id}', [PortfolioController::class, 'update'])->name('portfolio.admin.update');
-    Route::delete('/portfolio/{id}', [PortfolioController::class, 'destroy'])->name('portfolio.admin.destroy');
+
+           
 
            
 
         });
+
     });
 
 
