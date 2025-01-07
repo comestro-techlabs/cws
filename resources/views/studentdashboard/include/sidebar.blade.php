@@ -29,7 +29,7 @@
             <div class="sidebar-block p-0">
                 <ul class="sidebar-menu mt-0">
                     <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button" href="student-dashboard.html">
+                        <a class="sidebar-menu-button" href="{{route('student.dashboard')}}">
                             <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">star_half</i>
                             <span class="sidebar-menu-text">Dashboard</span>
                         </a>
@@ -46,12 +46,7 @@
                             <span class="sidebar-menu-text">Purchase Course</span>
                         </a>
                     </li>
-                    <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button" href="student-lessons.html">
-                            <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">dns</i>
-                            <span class="sidebar-menu-text">Browse Lessons</span>
-                        </a>
-                    </li>
+                    
                     <li class="sidebar-menu-item">
                         <a class="sidebar-menu-button" href="{{route('student.assignments-view')}}">
                             <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">live_help</i>
@@ -60,17 +55,19 @@
                     </li>
                     <li class="sidebar-menu-item">
                         {{-- <a class="sidebar-menu-button" href="student-quiz.html"> --}}
-                        <a class="sidebar-menu-button" href="{{route('student.quiz')}}">
+                            {{-- {{dd($courses)}} --}}
+                        <a class="sidebar-menu-button" href="{{route('student.course.quiz')}}">
                             <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">live_help</i>
                             <span class="sidebar-menu-text">Take Quiz</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button" href="student-discussions.html">
-                            <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">forum</i>
-                            <span class="sidebar-menu-text">Discussions</span>
+                        <a class="sidebar-menu-button" href="{{ route('student.course.result') }}">
+                            <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">dns</i>
+                            <span class="sidebar-menu-text">View Result</span>
                         </a>
                     </li>
+                    
                     <li class="sidebar-menu-item">
                         <a class="sidebar-menu-button" href="{{route('student.editProfile'  )}}">
                             <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">settings</i>

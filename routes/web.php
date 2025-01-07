@@ -27,8 +27,16 @@ use App\Http\Middleware\AdminMiddleware;
         Route::controller(StudentController::class)->group(function () {
             Route::get('/dashboard', 'dashboard')->name('student.dashboard');
             Route::get('/billing', 'billing')->name('student.billing');
-            Route::get('/quiz', 'showquiz')->name('student.quiz');
-            Route::post('/store-answer',  'storeAnswer')->name('student.storeAnswer');
+            Route::get('course/quiz','courseQuiz')->name('student.course.quiz');
+            Route::get('/quiz/{courseId}', 'showquiz')->name('student.quiz');
+            Route::post('/quiz/submit',  'storeAnswer')->name('student.storeAnswer');
+            Route::get('quiz/result/{exam_id}',  'showResults')->name('student.examResult');
+            Route::get('course/result','courseResult')->name('student.course.result');
+            Route::get('quiz/all_attempts/{course_id}',  'showAllAttempts')->name('student.allAttempts');
+
+
+           
+
 
             Route::get('/edit-profile',  'editProfile')->name('student.editProfile');
             Route::post('/update-profile', 'updateProfile')->name('student.updateProfile');

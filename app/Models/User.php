@@ -55,14 +55,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Payment::class, 'student_id');
     }
+
     public function courses(): BelongsToMany
     {
         return $this->belongsToMany(Course::class, 'course_user', 'user_id', 'course_id');
     }
 
-        public function answers()
+    public function answers()
     {
         return $this->hasMany(Answer::class);
     }
-    
 }

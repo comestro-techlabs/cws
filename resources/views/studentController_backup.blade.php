@@ -15,6 +15,10 @@ use Illuminate\Support\Facades\Auth;
 
 class StudentController extends Controller
 {
+
+
+   
+
     public function index()
     {
         $data['students'] = User::where('isAdmin', false)->paginate(10);
@@ -139,7 +143,7 @@ class StudentController extends Controller
             'courses' => User::find(Auth::id())->courses()->get(),
             'payments' => Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->get(),
         ];
-        return view('studentDashboard.dashboard',$datas);
+        return view('studentDashboard.dashboard');
     }
 
     public function coursePurchase()
@@ -170,47 +174,6 @@ class StudentController extends Controller
         return view("studentdashboard.billing", $datas);
     }
 
-    
-    // public function courseQuiz($courseId){
-    //     $user = Auth::user();
-    //     // dd($user);
-    //     // $course = $user->courses()->where('id',$courseId)->first();
-    //     $courses = $user->courses()->with('exams') // Load the related exams
-    //     ->where('courses.id', $courseId)
-    //     ->first();       
-    //      if (!$courses){
-    //         return redirect()->route('student.dashboard')->with('error', 'Course not found');
-
-    //      }
-
-    //       // Check if the course has exams
-    // if ($courses->exams->isEmpty()) {
-    //     return redirect()->route('student.dashboard')->with('error', 'No exams available for this course');
-    // }
-          
-    //      // Check if the user has already taken the exam for this course
-    //      $exam =$courses->exams()->where('status',true)->first();
-    //      $examUser = $exam ?ExamUser::where('user_id',$user->id)->where('exam_id',$exam->id)->first() : null;
-
-    //      if($examUser && $examUser->attempts >=3){
-    //          return redirect()->route('student.examResult', $exam->id)->with('error', 'You have already attempted this exam 3 times');
-    //      }
-
-    //      //get active quiz for that course 
-
-    //      $quizzes = $exam ?$exam->quizzes()->where('status',true)->get() : collect();
-        
-    //      return view('studentdashboard.quiz.course',compact('courses','quizzes','exam','courseTitle'));
-
-    // }
-
-    public function courseQuiz()
-{
-    $user = Auth::user();
-    $courses = $user->courses()->with('users')->get();
-
-    return view('studentDashboard.quiz.course', compact('courses'));
-}
     // public function showquiz()
     // {
     //     if (!Auth::check()) {
@@ -218,6 +181,7 @@ class StudentController extends Controller
     //     }
 
     //     $user = Auth::user();
+
     //     $courses = $user->courses()->with([
     //         'exams' => function ($query) {
     //             $query->where('status', true);
@@ -227,56 +191,266 @@ class StudentController extends Controller
     //         }
     //     ])->get();
 
-    //     $attempt = ExamUser::where('user_id', $user->id)->first();
-    //     $value = $attempt ? $attempt->attempts : 0;
+    //     // dd($courses);
 
-    //     if ($value <= 3) {
-    //         return view("studentdashboard.quiz.quiz", compact('courses'));
-    //     } else {
-    //         return redirect()->route('student.examResult');
+    //     $attempt = ExamUser::where('user_id',$user->id)->first();
+    //     $value = $attempt->attempts;
+    //     if( $value <=  3){
+    //         return view("studentdashboard.quiz", compact('courses'));
+    //     }else{
+    //         $obtainedMarks = session('obtained_marks', 0);
+    //         return view('studentdashboard.exam_result', compact('obtainedMarks'));
     //     }
 
-       
+    
+
 
     // }
 
 
-    public function showquiz($courseId)
+
+// public function showquiz()
+// {
+//     if (!Auth::check()) {
+//         return redirect()->route('login');
+//     }
+
+//     $user = Auth::user();
+
+//     $courses = $user->courses()->with([
+//         'exams' => function ($query) {
+//             $query->where('status', true);
+//         },
+//         'exams.quizzes' => function ($query) {
+//             $query->where('status', true);
+//         }
+//     ])->get();
+
+//     $attempt = ExamUser::where('user_id', $user->id)->first();
+//     $value = $attempt ? $attempt->attempts : 0;
+
+//     if ($value <= 3) {
+//         return view("studentdashboard.quiz", compact('courses'));
+//     } else {
+//         $obtainedMarks = Answer::where('user_id', $user->id)
+//             ->sum('obtained_marks');
+
+//         $selectedAnswers = Answer::where('user_id', $user->id)->get();
+
+//         return view('studentdashboard.exam_result', compact('obtainedMarks', 'selectedAnswers'));
+//     }
+// }
+
+    // public function storeAnswer(Request $request)
+    // {
+    //     $total_marks = 0;
+    //     $obtained_marks = 0;
+
+    //     $exam_user = ExamUser::where('user_id', Auth::id())->where('exam_id',$request->exam_id)->first();
+
+    //     if($exam_user){
+    //         // dd($exam_user);
+    //         $exam_user->attempts += 1;
+    //         $exam_user->save();
+    //     }else{
+    //         ExamUser::create([
+    //             "user_id" => Auth::id(),
+    //             "exam_id" => $request->exam_id,
+    //             "attempts" => 1
+    //         ]);
+    //     }
+
+    //     if ($request->selected_option) {
+
+
+    //         // Loop through each answer to calculate marks
+    //         foreach ($request->selected_option as $quiz_id => $selected_option) {
+    //             $quiz = Quiz::find($quiz_id);
+
+    //             if ($quiz) {
+    //                 // Check if the answer is correct
+    //                 if ($selected_option == $quiz->correct_answer) {
+    //                     $obtained_marks += $quiz->marks;
+    //                 }
+    //                 // Optionally store the student's answer in the database (Answer table)
+    //                 $answerRecord = new Answer();
+    //                 $answerRecord->user_id = Auth::id();
+    //                 $answerRecord->quiz_id = $quiz_id;
+                    
+    //                 $answerRecord->selected_option = $selected_option;
+    //                 $answerRecord->obtained_marks = ($selected_option == $quiz->correct_answer) ? $quiz->marks : 0;
+    //                 $answerRecord->save();
+    //             }
+    //         }
+    //         session()->flash('obtained_marks', $obtained_marks);
+    //                 return redirect()->route('student.quiz')->with('success', 'Answer submitted successfully!');
+
+    //     }
+
+    //     else{
+    //         return redirect()->route('student.examResult')->with('success', 'Answer submitted successfully!');
+    //     }
+    //     // Store the total obtained marks in the session
+       
+
+    // }
+
+    // public function storeAnswer(Request $request)
+    // {
+    //     $total_marks = 0;  // Total marks for the exam
+    //     $obtained_marks = 0; // Marks obtained by the student
+    
+    //     // Find or create the ExamUser record
+    //     $exam_user = ExamUser::where('user_id', Auth::id())
+    //                          ->where('exam_id', $request->exam_id)
+    //                          ->first();
+    
+    //     if ($exam_user) {
+    //         $exam_user->attempts += 1;
+    //     } else {
+    //         $exam_user = ExamUser::create([
+    //             "user_id" => Auth::id(),
+    //             "exam_id" => $request->exam_id,
+    //             "attempts" => 1,
+    //         ]);
+    //     }
+    
+    //     if ($request->selected_option) {
+    //         // Loop through each answer to calculate marks
+    //         foreach ($request->selected_option as $quiz_id => $selected_option) {
+    //             $quiz = Quiz::find($quiz_id);
+    
+    //             if ($quiz) {
+    //                 $total_marks += $quiz->marks; // Add the quiz's marks to the total
+    
+    //                 // Check if the answer is correct
+    //                 if ($selected_option == $quiz->correct_answer) {
+    //                     $obtained_marks += $quiz->marks;
+    //                 }
+    
+    //                 // Store the student's answer in the Answer table
+    //                 Answer::create([
+    //                     'user_id' => Auth::id(),
+    //                     'quiz_id' => $quiz_id,
+    //                     'exam_id' => $request->exam_id,
+    //                     'selected_option' => $selected_option,
+    //                     'obtained_marks' => ($selected_option == $quiz->correct_answer) ? $quiz->marks : 0,
+    //                 ]);
+    //             }
+    //         }
+    
+    //         // Update total and obtained marks in ExamUser record
+    //         $exam_user->total_marks = $total_marks;
+    //         $exam_user->save();
+    
+    //         // Flash obtained marks and exam ID to the session
+    //         session()->flash('obtained_marks', $obtained_marks);
+    //         session()->flash('exam_id', $request->exam_id);
+    
+    //         return redirect()->route('student.quiz')->with([
+    //             'success' => 'Answer submitted successfully!',
+    //             'exam_id' => $request->exam_id,
+    //         ]);
+    //     } else {
+    //         // Handle the case where no answers are selected
+    //         return redirect()->route('student.examResult')->with([
+    //             'success' => 'Answer submitted successfully!',
+    //             'exam_id' => $request->exam_id,
+    //         ]);
+    //     }
+    // }
+    
+
+// ======================================// 
+
+
+
+
+    // Existing methods...
+
+    public function showquiz()
     {
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-    
+
         $user = Auth::user();
-        $courses = $user->courses()->where('courses.id', $courseId)->with([
+        $courses = $user->courses()->with([
             'exams' => function ($query) {
                 $query->where('status', true);
             },
             'exams.quizzes' => function ($query) {
                 $query->where('status', true);
             }
-        ])->first();
-        
+        ])->get();
 
-        if (!$courses) {
-            return redirect()->route('student.courseQuiz')->with('error', 'Course not found or you do not have access to it.');
-        }
-    
-        $attempt = ExamUser::where('user_id', $user->id)
-            ->whereHas('exam', function ($query) use ($courseId) {
-                $query->where('course_id', $courseId);
-            })
-            ->first();
-    
+        $attempt = ExamUser::where('user_id', $user->id)->first();
         $value = $attempt ? $attempt->attempts : 0;
-    
+
         if ($value <= 3) {
-            return view("studentdashboard.quiz.quiz", compact('courses'));
+            return view("studentdashboard.quiz", compact('courses'));
         } else {
             return redirect()->route('student.examResult');
         }
     }
-    
+
+    // public function storeAnswer(Request $request)
+    // {
+    //     $total_marks = 0;
+    //     $obtained_marks = 0;
+
+    //     $exam_user = ExamUser::where('user_id', Auth::id())
+    //                          ->where('exam_id', $request->exam_id)
+    //                          ->first();
+
+    //     if ($exam_user) {
+    //         $exam_user->attempts += 1;
+    //     } else {
+    //         $exam_user = ExamUser::create([
+    //             "user_id" => Auth::id(),
+    //             "exam_id" => $request->exam_id,
+    //             "attempts" => 1,
+    //         ]);
+    //     }
+
+    //     if ($request->selected_option) {
+    //         foreach ($request->selected_option as $quiz_id => $selected_option) {
+    //             $quiz = Quiz::find($quiz_id);
+
+    //             if ($quiz) {
+    //                 $total_marks += $quiz->marks;
+
+    //                 if ($selected_option == $quiz->correct_answer) {
+    //                     $obtained_marks += $quiz->marks;
+    //                 }
+
+    //                 Answer::create([
+    //                     'user_id' => Auth::id(),
+    //                     'quiz_id' => $quiz_id,
+    //                     'exam_id' => $request->exam_id,
+    //                     'selected_option' => $selected_option,
+    //                     'obtained_marks' => ($selected_option == $quiz->correct_answer) ? $quiz->marks : 0,
+    //                 ]);
+    //             }
+    //         }
+
+    //         $exam_user->total_marks = $obtained_marks;
+    //         $exam_user->save();
+
+    //         session()->flash('obtained_marks', $obtained_marks);
+    //         session()->flash('exam_id', $request->exam_id);
+
+    //         return redirect()->route('student.examResult', $request->exam_id)->with([
+    //             'success' => 'Answer submitted successfully!',
+    //             'exam_id' => $request->exam_id,
+    //         ]);
+    //     } else {
+    //         return redirect()->route('student.examResult', $request->exam_id)->with([
+    //             'success' => 'Answer submitted successfully!',
+    //             'exam_id' => $request->exam_id,
+    //         ]);
+    //     }
+    // }
 
     public function storeAnswer(Request $request)
 {
@@ -361,50 +535,17 @@ class StudentController extends Controller
         $totalMarks = $exam_user->total_marks;
         $attempt = $exam_user->attempts;
     
-        return view('studentdashboard.quiz.results', compact('results', 'totalMarks', 'attempt'));
+        return view('studentdashboard.results', compact('results', 'totalMarks', 'attempt'));
     }
     
-    public function courseResult()
-    {
-        $user = Auth::user();
-        $courses = $user->courses()->with('users')->get();
-    
-        return view('studentDashboard.quiz.course', compact('courses'));
-    }
-//     public function showAllAttempts($exam_id)
-// {
-//     $user_id = Auth::id();
 
-//     // Retrieve all answers for the user and exam, grouped by attempts
-//     $attempts = Answer::where('user_id', $user_id)
-//                       ->where('exam_id', $exam_id)
-//                       ->orderBy('attempt')
-//                       ->get()
-//                       ->groupBy('attempt');
-
-//     // Calculate total marks for each attempt
-//     $attempts_data = [];
-//     foreach ($attempts as $attempt => $answers) {
-//         $total_marks = $answers->sum('obtained_marks');
-//         $attempts_data[] = [
-//             'attempt' => $attempt,
-//             'total_marks' => $total_marks,
-//         ];
-//     }
-
-//     return view('studentdashboard.quiz.all_attempts', compact('attempts_data', 'exam_id'));
-// }
-public function showAllAttempts($course_id)
+    public function showAllAttempts($exam_id)
 {
     $user_id = Auth::id();
 
-    // Get all exams related to the selected course
-    $course = Course::with('exams')->findOrFail($course_id);
-    $exam_ids = $course->exams->pluck('id');
-
-    // Retrieve all answers for the user and exams in the selected course, grouped by attempts
+    // Retrieve all answers for the user and exam, grouped by attempts
     $attempts = Answer::where('user_id', $user_id)
-                      ->whereIn('exam_id', $exam_ids)
+                      ->where('exam_id', $exam_id)
                       ->orderBy('attempt')
                       ->get()
                       ->groupBy('attempt');
@@ -419,8 +560,23 @@ public function showAllAttempts($course_id)
         ];
     }
 
-    return view('studentdashboard.quiz.all_attempts', compact('attempts_data', 'course'));
+    return view('studentdashboard.all_attempts', compact('attempts_data', 'exam_id'));
 }
+
+    
+
+    
+
+
+
+    
+    
+
+
+
+
+
+
 
 
     public function buyCourse($id)
