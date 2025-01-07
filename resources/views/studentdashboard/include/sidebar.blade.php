@@ -41,13 +41,13 @@
                         </a>
                     </li>
                     {{-- <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button" href="{{ route('student.buyCourse', ['id' => $course->id]) }}">
+                        <a class="sidebar-menu-button" href="{{ route('student.buyCourse', ['id' => $course->id]) }}"> --}}
                     <li class="sidebar-menu-item">
                         <a class="sidebar-menu-button" href="{{route('student.coursePurchase')}}">
                             <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">shopping_cart</i>
-                            <span class="sidebar-menu-text">Purchase Course</span>
+                            <span class="sidebar-menu-text">My Course</span>
                         </a>
-                    </li> --}}
+                    </li>
                     <li class="sidebar-menu-item">
                         <a class="sidebar-menu-button" href="student-lessons.html">
                             <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">dns</i>
