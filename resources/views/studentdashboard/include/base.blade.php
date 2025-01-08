@@ -290,13 +290,28 @@
                                     </li>
                                 
                                 </ul>
+                                
 
-                                <div class="dropdown">
-                                    <a href="#" data-toggle="dropdown" data-caret="false"
-                                        class="dropdown-toggle navbar-toggler navbar-toggler-dashboard border-left d-flex align-items-center ml-navbar">
-                                        <span class="material-icons">laptop</span> My Dashboard
-                                    </a>
-                                    <div id="company_menu"
+                                <div class="">
+                                     
+                                    @auth
+                                                @if (Auth::user()->isAdmin)
+                                                    <a href="{{ route('admin.dashboard') }}"
+                                                        class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 text-center ">Admin
+                                                        Panel</a>
+                                                @else
+                                                <a href="#"
+                                                class="text-white mr-2">
+                                                
+                                                <span class="sr-only text-white">Open user menu</span>
+                                                {{ Auth::user()->name }}
+                                                
+                                            </a> 
+                
+                               
+                                                @endif
+                                            @endauth
+                                    {{-- <div id="company_menu"
                                         class="dropdown-menu dropdown-menu-right navbar-company-menu">
                                         <div
                                             class="dropdown-item d-flex align-items-center py-2 navbar-company-info py-3">
@@ -305,10 +320,12 @@
                                                 <img src="{{ asset('assets/images/frontted-logo-blue.svg') }}"
                                                     width="43" height="43" alt="avatar">
                                             </span>
-                                            <span class="flex d-flex flex-column">
+                                             <span class="flex d-flex flex-column">
                                                 <strong class="h5 m-0">Adrian D.</strong>
                                                 <small class="text-muted text-uppercase">STUDENT</small>
+                                                
                                             </span>
+                                            
 
                                         </div>
                                         <div class="dropdown-divider"></div>
@@ -322,7 +339,7 @@
                                         <a class="dropdown-item d-flex align-items-center py-2" href="login.html">
                                             <span class="material-icons mr-2">exit_to_app</span> Logout
                                         </a>
-                                    </div>
+                                    </div> --}}
                                 </div>
 
                             </div>
@@ -598,3 +615,5 @@
 <!-- Mirrored from educate.frontted.com/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 12 Dec 2024 09:02:00 GMT -->
 
 </html>
+
+   

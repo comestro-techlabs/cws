@@ -14,14 +14,15 @@ class Course extends Model
     protected $guarded = [];
 
     public function payments()
-{
-    return $this->hasMany(Payment::class);
-}
+    {
+        return $this->hasMany(Payment::class);
+    }
 
     public function students()
     {
         return $this->belongsToMany(User::class);
     }
+
     /**
      * Get the user associated with the Course
      *
@@ -48,17 +49,21 @@ class Course extends Model
         return $this->hasMany(Batch::class);
     }
 
-    public function quizzes(){
+    public function quizzes()
+    {
         return $this->hasMany(Quiz::class);
     }
+
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'course_user', 'course_id', 'user_id');
     }
+
     public function exams()
     {
         return $this->hasMany(Exam::class);
     }
+
     public function assignments()
     {
         return $this->hasMany(Assignments::class); 

@@ -16,6 +16,7 @@ use App\Http\Controllers\AuthController;
     use App\Http\Controllers\PublicController;
     use App\Http\Controllers\StudentController;
     use App\Http\Controllers\PaymentController;
+    use App\Http\Controllers\PortfolioController;
     use Illuminate\Support\Facades\Route;
     use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\ExamController;
@@ -28,20 +29,44 @@ use App\Http\Middleware\AdminMiddleware;
         Route::controller(StudentController::class)->group(function () {
             Route::get('/dashboard', 'dashboard')->name('student.dashboard');
             Route::get('/billing', 'billing')->name('student.billing');
-            Route::get('/quiz', 'showquiz')->name('student.quiz');
-            Route::post('/store-answer',  'storeAnswer')->name('student.storeAnswer');
+            Route::get('course/quiz','courseQuiz')->name('student.course.quiz');
+            Route::get('/quiz/{courseId}', 'showquiz')->name('student.quiz');
+            Route::post('/quiz/submit',  'storeAnswer')->name('student.storeAnswer');
+            Route::get('quiz/result/{exam_id}',  'showResults')->name('student.examResult');
+            Route::get('course/result','courseResult')->name('student.course.result');
+            Route::get('quiz/all_attempts/{course_id}',  'showAllAttempts')->name('student.allAttempts');
+
+
+           
+
 
             Route::get('/edit-profile',  'editProfile')->name('student.editProfile');
             Route::post('/update-profile', 'updateProfile')->name('student.updateProfile');
             Route::get('/coursePurchase', 'coursePurchase')->name('student.coursePurchase');
             Route::get('/course/{id}', 'buyCourse')->name('student.buyCourse');
             Route::get('/course', 'course')->name('student.course');
-            Route::get('/assignments/view', 'assignmentList')->name('student.assignments-view');
+             Route::get('/assignments/view', 'assignmentList')->name('student.assignments-view');
             Route::get('/assignments/upload/{id}', 'viewAssignments')->name('student.assignment-upload');
+
+
             
 
         });
+
+        
+        Route::get('/quiz_instruction', function () {
+            return view('studentdashboard.quiz_instruction');
+        })->name('quiz_instruction');
+          
+   
+      
+        
     });
+   
+            
+
+      //  });
+   // });
     Route::get('/get-access-token', [StudentController::class, 'store']);
     Route::post('/student/assignments/upload/{assignment_id}', [StudentController::class, 'store'])->name('assignments.store');
 
@@ -97,6 +122,9 @@ use App\Http\Middleware\AdminMiddleware;
             Route::get('/enquiry-view/{enquiry}', [AdminController::class, 'editEnquiry'])->name('admin.enquiry.show');
             Route::put('/enquiry-view/{enquiry}', [AdminController::class, 'updateEnquiry'])->name('admin.enquiry.update');
             Route::resource('assignment', AssignmentsController::class);
+            Route::resource('assignment-submit', AssignmentUploadController::class);
+            Route::get('/assignments/download/{fileId}', [AssignmentUploadController::class, 'downloadFile'])->name('assignments.download');
+
             Route::resource('assignment-submit', AssignmentUploadController::class);
             Route::get('/assignments/download/{fileId}', [AssignmentUploadController::class, 'downloadFile'])->name('assignments.download');
             Route::get('/assignments/course', [AssignmentUploadController::class, 'assignmentCourse'])->name('assignments.course');
@@ -210,3 +238,11 @@ use App\Http\Middleware\AdminMiddleware;
     Route::get('/phonepe/status/{transactionId}', [PhonePeController::class, 'checkStatus'])->name('phonepe.status');
     // Route::post('/phonepe/refund', [PhonePeController::class, 'refund'])->name('phonepe.refund');
     Route::get('/phonepe/redirect', [PhonePeController::class, 'redirect'])->name('phonepe.redirect');
+
+
+  
+    Route::get('/portfolio', [PortfolioController::class, 'index'])->name('public.portfolio');
+    
+    Route::get('/workshop', function () {
+        return view('public.workshop');
+         })->name('public.workshop');

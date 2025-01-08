@@ -15,8 +15,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('quiz_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('exam_id')->constrained()->cascadeOnDelete();
             $table->enum('selected_option',['option1', 'option2', 'option3', 'option4']);
             $table->integer('obtained_marks')->default(0);
+            $table->integer('attempt')->default(1);
+
             $table->timestamps();
         });
     }
