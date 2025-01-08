@@ -1,6 +1,7 @@
 @extends('studentdashboard.include.base')
 
 @section('content')
+
           <div class="container mt-24 px-4">
             <h2 class="text-2xl font-semibold mb-6">All Attempts for Course : {{ $course->title }}</h2>
             

@@ -171,38 +171,7 @@ class StudentController extends Controller
     }
 
     
-    // public function courseQuiz($courseId){
-    //     $user = Auth::user();
-    //     // dd($user);
-    //     // $course = $user->courses()->where('id',$courseId)->first();
-    //     $courses = $user->courses()->with('exams') // Load the related exams
-    //     ->where('courses.id', $courseId)
-    //     ->first();       
-    //      if (!$courses){
-    //         return redirect()->route('student.dashboard')->with('error', 'Course not found');
-
-    //      }
-
-    //       // Check if the course has exams
-    // if ($courses->exams->isEmpty()) {
-    //     return redirect()->route('student.dashboard')->with('error', 'No exams available for this course');
-    // }
-          
-    //      // Check if the user has already taken the exam for this course
-    //      $exam =$courses->exams()->where('status',true)->first();
-    //      $examUser = $exam ?ExamUser::where('user_id',$user->id)->where('exam_id',$exam->id)->first() : null;
-
-    //      if($examUser && $examUser->attempts >=3){
-    //          return redirect()->route('student.examResult', $exam->id)->with('error', 'You have already attempted this exam 3 times');
-    //      }
-
-    //      //get active quiz for that course 
-
-    //      $quizzes = $exam ?$exam->quizzes()->where('status',true)->get() : collect();
-        
-    //      return view('studentdashboard.quiz.course',compact('courses','quizzes','exam','courseTitle'));
-
-    // }
+   
 
     public function courseQuiz()
 {
@@ -273,7 +242,10 @@ class StudentController extends Controller
         if ($value <= 3) {
             return view("studentdashboard.quiz.quiz", compact('courses'));
         } else {
-            return redirect()->route('student.examResult');
+            $lastExamId = $attempt ? $attempt->exam_id : null;
+            return redirect()->route('student.examResult', ['exam_id' => $lastExamId])
+                             ->with('message', 'You have reached the maximum number of attempts. Please contact the admin for further assistance.');
+            // return redirect()->route('student.examResult');
         }
     }
     
@@ -418,7 +390,7 @@ public function showAllAttempts($course_id)
             'total_marks' => $total_marks,
         ];
     }
-
+     
     return view('studentdashboard.quiz.all_attempts', compact('attempts_data', 'course'));
 }
 
