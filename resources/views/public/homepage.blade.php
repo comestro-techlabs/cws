@@ -109,9 +109,171 @@
 
         </div>
     </div>
+       <div class="max-w-6xl mx-auto p-6">
+        <h2 class="text-3xl text-center font-bold text-blue-600 mb-4"> Admission to Certification</h2>
+        <p class="text-3xl font-bold text-center text-gray-800">
+            Explore available courses, check your eligibility
+        </p>
+        <p class="text-gray-600  text-center mt-2">prepare for a certificate that makes you stand out in the professional world.
+        </p>
 
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8">
+           
+             <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow duration-300">
+                <p class="text-blue-500 font-bold text-xl mb-4">Step-1</p>
+                <div class="flex items-center space-x-4 mb-4">
+                    <svg class="w-10 h-10 text-indigo-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16 7c1.657 0 3 1.343 3 3v4c0 1.657-1.343 3-3 3H8c-1.657 0-3-1.343-3-3v-4c0-1.657 1.343-3 3-3h8zM12 5V3M16.5 9.5h-9m3.75-6h1.5" />
+                    </svg>
+                    <h3 class="text-2xl font-bold text-gray-800">Admission Start Date</h3>
+                </div>
+            
+               
+                 <p class="text-gray-600  mb-6">
+                    Mark your calendar! Admissions begin soon, so make sure to your register on time.
+                </p> 
+            
+                <div class="flex justify-between items-center">
+                    <p class="text-gray-700 font-medium text-lg">January 10, 2025</p>
+                    <svg class="w-6 h-6 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                </div>
+            </div> 
+            
+            <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow duration-300">
+                <p class="text-blue-500 font-bold text-xl mb-4">Step-2</p>
+                <div class="flex items-center space-x-4 mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-orange-500">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c3.866 0 7 2.686 7 6s-3.134 6-7 6-7-2.686-7-6 3.134-6 7-6zm0 12v6m-4 0h8" />
+                      </svg>
+                      
+                    <h3 class="text-2xl font-bold text-gray-800">Courses Available</h3>
+                </div>
+            
+               
+                <p class="text-gray-600  mb-6">
+                    Empower your future with practical, expertly designed courses tailored to  goals.
+                </p>
+            
+                <div class="flex justify-between items-center">
+                    <p class="text-gray-700 font-medium text-lg">January 10, 2025</p>
+                    <svg class="w-6 h-6 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                </div>
+            </div>
+            
+    
+         
+            
+            <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow duration-300">
+                <p class="text-blue-500 font-bold text-xl mb-4">Step-3</p>
+                <div class="flex items-center space-x-4 mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-green-600">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12l5 5L19 7" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z" />
+                      </svg>
+                      
+                      
+                    <h3 class="text-2xl font-bold text-gray-800">Eligibility Criteria</h3>
+                </div>
+            
+               
+                <p class="text-gray-600  mb-6">
+                    Candidates must meet minimum educational qualifications, and relevent skill.
+                </p>
+            
+                <div class="flex justify-between items-center">
+                    <p class="text-gray-700 font-medium text-lg">January 10, 2025</p>
+                    <svg class="w-6 h-6 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                </div>
+            </div>
+            <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow duration-300">
+                <p class="text-blue-500 font-bold text-xl mb-4">Step-4</p>
+                <div class="flex items-center space-x-4 mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-red-700">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m6-6h-3m-6 0H6m12-5h-9m0 0V6M9 12V6" />
+                      </svg>
+                      
+                      
+                      
+                    <h3 class="text-2xl font-bold text-gray-800">Application Fee</h3>
+                </div>
+            
+               
+                <p class="text-gray-600  mb-6">
+                    A non-refundable application fee is required to complete your registration the course.
+                </p>
+            
+                <div class="flex justify-between items-center">
+                    <p class="text-gray-700 font-medium text-lg">January 10, 2025</p>
+                    <svg class="w-6 h-6 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                </div>
+            </div>
+          <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow duration-300">
+                <p class="text-blue-500 font-bold text-xl mb-4">Step-5</p>
+                <div class="flex items-center space-x-4 mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-yellow-600">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 4h8M12 4v16m4-4l2 2 2-2m-6 0l-2 2-2-2" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" />
+                      </svg>
+                      
+                      
+                    <h3 class="text-2xl font-bold text-gray-800">Certificate Provided</h3>
+                </div>
+            
+               
+                <p class="text-gray-600  mb-6">
+                    Upon successful completion, a certificate will be awarded to recognize your achievements.
+                </p>
+            
+                <div class="flex justify-between items-center">
+                    <p class="text-gray-700 font-medium text-lg">January 10, 2025</p>
+                    <svg class="w-6 h-6 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                </div>
+            </div>
+            
+             
+            
+           
+            
+            <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow duration-300">
+                <p class="text-blue-500 font-bold text-xl mb-4">Step-6</p>
+                <div class="flex items-center space-x-4 mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-purple-700">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 5h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zm16 0V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M7 9h10M7 13h8" />
+                    </svg>
+                    
+                    <h3 class="text-2xl font-bold text-gray-800">Mode of Study</h3>
+                </div>
+                <p class="text-gray-600  mb-6">
+                    Choose between online, on-campus, or hybrid  with learning options to suit your needs.
+                </p>
+                <div class="flex justify-between items-center">
+                    <p class="text-gray-700 font-medium text-lg">Online / On-Campus / Hybrid</p>
+                    <svg class="w-6 h-6 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                </div>
+            </div>
+            
+            
+            
+            
+        </div>
+    </div>  
+     
+    
     {{-- who we are --}}
-    <div class="flex-1 flex flex-col md:flex-row md:px-[8%] gap-10 mb-10">
+    <div class="flex-1 flex flex-col md:flex-row md:px-[8%] gap-10 mt-10">
         <div class="flex-1 p-5">
             <img src="{{ asset('assets/first_image.png') }}" class="w-full rounded-lg shadow-sm ring-slate-600 "
                 alt="">

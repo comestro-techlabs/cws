@@ -48,6 +48,10 @@
                         class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 ">Training Courses</a>
                 </li>
                 <li>
+                    <a href="{{route('public.portfolio')}}"
+                        class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 ">Portfolio</a>
+                </li>
+                <li>
                     <button id="mega-menu-dropdown-button" data-dropdown-toggle="mega-menu-dropdown"
                         class="flex items-center justify-between w-full py-2 px-3 text-gray-900 border-b border-gray-100 md:w-auto hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0 ">
                         Services <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
