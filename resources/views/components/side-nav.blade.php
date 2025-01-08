@@ -70,7 +70,7 @@
 
             </ul>
         </li>
-        <li>
+        {{-- <li>
             <button type="button"
             class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
             aria-controls="portfolio-dropdown" data-collapse-toggle="portfolio-dropdown">
@@ -86,7 +86,7 @@
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="m1 1 4 4 4-4" />
             </svg>
-        </button>
+            </button>
             <ul id="portfolio-dropdown" class="hidden py-2 space-y-2">
                 <li>
                     <a href="{{ route('portfolio.create') }}"
@@ -101,7 +101,7 @@
                     </a>
                 </li>
             </ul>
-        </li>
+        </li> --}}
         
         
 
