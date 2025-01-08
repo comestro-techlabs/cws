@@ -40,10 +40,12 @@
                             <span class="sidebar-menu-text">Courses</span>
                         </a>
                     </li>
+                    {{-- <li class="sidebar-menu-item">
+                        <a class="sidebar-menu-button" href="{{ route('student.buyCourse', ['id' => $course->id]) }}"> --}}
                     <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button" href="{{route('student.purchesCourse')}}">
+                        <a class="sidebar-menu-button" href="{{route('student.coursePurchase')}}">
                             <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">shopping_cart</i>
-                            <span class="sidebar-menu-text">Purchase Course</span>
+                            <span class="sidebar-menu-text">My Course</span>
                         </a>
                     </li>
                     
@@ -80,11 +82,13 @@
                             <span class="sidebar-menu-text">Billing</span>
                         </a>
                     </li>
+                
                     <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button" href="login.html">
+                        <a href="{{ route('auth.logout') }}"class="sidebar-menu-button" >
                             <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">exit_to_app</i>
                             <span class="sidebar-menu-text">Logout</span>
-                        </a>
+                        </a> 
+                        
                     </li>
                 </ul>
             </div>

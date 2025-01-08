@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('assignment_uploads', function (Blueprint $table) {
             $table->id();
-            $table->string('student_id')->nullable()->constrained()->onDelete('cascade');
-            $table->string('assignment_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('student_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('assignment_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('file_path');  
-            $table->timestamp('submitted_at')->nullable();  
+            $table->timestamp('submitted_at')->nullable(); 
+            $table->integer('grade')->nullable(); 
+ 
             $table->enum('status', ['submitted', 'graded', 'pending'])->default('pending'); 
             $table->timestamps();
         });

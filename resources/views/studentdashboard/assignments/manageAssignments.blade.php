@@ -33,6 +33,7 @@
                                 <tr class="hover:bg-gray-50">
                                     <td class="px-4 py-2 border">{{ $assignment->id }}</td>
                                     <td class="px-4 py-2 border">{{ $assignment->title }}</td>
+                                    
                                     <td class="px-4 py-2 border">{!! Str::limit($assignment->description, 50) !!}</td>
                                     {{-- <td class="px-4 py-2 border text-center">
                                         <span class="px-2 py-1 text-sm rounded-full 

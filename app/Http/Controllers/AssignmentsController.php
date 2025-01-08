@@ -54,8 +54,6 @@ class AssignmentsController extends Controller
         return redirect()->route('assignment.create')->with('success', 'Assignment created successfully!');
     }
 
-
-
     /**
      * Display the specified resource.
      */
