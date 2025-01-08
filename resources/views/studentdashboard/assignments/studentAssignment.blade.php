@@ -34,26 +34,22 @@
                      View Assignment
                  </a> --}}
                 <p class="text-gray-600 mt-2">Submitted on: {{ $uploadedFile->submitted_at }}</p>
-                @php
-                $upload = $assignment->uploads->first();
-                $status = $upload ? $upload->status : 'pending';
-                $grade = $upload ? $upload->grade : null; // Set to null if grade is not available
-            @endphp
+              
             
             <p class="text-gray-600 mt-1">Status: 
                 <span class="
-                    @if($status == 'submitted') text-green-500
-                    @elseif($status == 'graded') text-blue-500 
+                    @if($uploadedFile->status == 'submitted') text-green-500
+                    @elseif($uploadedFile->status == 'graded') text-blue-500 
                     @else text-red-500 
                     @endif
                 ">
-                    {{ ucfirst($status) }}
+                    {{ ucfirst($uploadedFile->status) }}
                 </span>
             </p>
             
             <p class="text-gray-600 mt-1">Grade: 
-                @if($grade)
-                    <span class="text-yellow-500">{{ $grade }}</span>
+                @if($uploadedFile->grade)
+                    <span class="text-yellow-500">{{ $uploadedFile->grade }}</span>
                 @else
                     <span class="text-gray-500">Your grade is being processed. Please check back later.</span>
                 @endif
