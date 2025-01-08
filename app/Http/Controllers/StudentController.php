@@ -457,4 +457,190 @@ public function showAllAttempts($course_id)
 
         return redirect()->route('student.editProfile')->with('success', 'Profile updated successfully!');
     }
+
+    public function assignmentList()
+    {
+        $studentId = Auth::id(); 
+    
+        $data['courses'] = Course::whereHas('students', function ($query) use ($studentId) {
+            $query->where('user_id', $studentId);
+        })
+        ->with(['assignments' => function ($query) {
+            $query->where('status', 1); 
+        }])
+        ->get();
+    
+        return view('studentDashboard.assignments.manageAssignments', $data);
+    }
+    
+
+    public function viewAssignments($id)
+    {
+        $studentId = Auth::id(); // Logged-in user's ID
+    
+        // Find the assignment with a relationship check for the student's course
+        $assignment = Assignments::where('id', $id)
+            ->whereHas('course', function ($query) use ($studentId) {
+                $query->whereHas('students', function ($q) use ($studentId) {
+                    $q->where('user_id', $studentId);
+                });
+            })->first();
+    
+        // Check if the assignment exists
+        if (!$assignment) {
+            return redirect()->back()->with('error', 'Assignment not found or access denied.');
+        }
+    
+        // Check if the file has already been uploaded
+        $uploadedFile = Assignment_upload::where('student_id', $studentId)
+            ->where('assignment_id', $id)
+            ->first();
+    
+        // Return assignment and uploaded file details to the view
+        return view('studentDashboard.assignments.studentAssignment', [
+            'assignment' => $assignment,
+            'uploadedFile' => $uploadedFile,
+        ]);
+    }
+    
+    // private function token()
+    // {
+    //     $client_id = \config('services.google.client_id');
+    //     $client_secret = \config('services.google.client_secret');
+    //     $refresh_token = \config('services.google.refresh_token');
+    //     $response = Http::post('https://oauth2.googleapis.com/token', [
+    //         'client_id' => $client_id,
+    //         'client_secret' => $client_secret,
+    //         'refresh_token' => $refresh_token,
+    //         'grant_type' => 'refresh_token',
+
+    //     ]);
+    //     // dd($response);
+
+    //     $accessToken = json_decode((string)$response->getBody(), true)['access_token'];
+    //     return $accessToken;
+    // }
+    // public function store(Request $request)
+    // {
+    //     $validation = $request->validate([
+    //         'file_path' => 'file|required',
+    //     ]);
+    //     $accessToken = $this->token();
+    //     // dd($accessToken);
+
+    //     $mime = $request->file_path->getClientMimeType();
+    //     // $path = $request->file_path->getRealPath();
+    //     // dd($path);
+
+    //     // $response=Http::withToken($accessToken)
+    //     // ->attach('data',file_get_contents($path))
+    //     // ->post('https://www.googleapis.com/upload/drive/v3/files',
+    //     // [
+    //     //     'content-Type'=>'application/octet-stream',
+    //     // ]
+    //     // );
+    //     $response = Http::withHeaders([
+    //         'authorization' => 'Bearer ' . $accessToken,
+    //         'Content-Type' => 'Application/json',
+    //     ])->post('https://www.googleapis.com/drive/v3/files', [
+
+    //         'mimeType' => $mime,
+    //         'uploadType' => 'resumable',
+    //         'parents' => [\config('services.google.folder_id')],
+    //     ]);
+
+    //     if ($response->successful()) {
+    //         $file_id = json_decode($response->body())->id;
+
+    //         $uploadedFile = new Assignment_upload();
+    //         $uploadedFile->student_id = auth()->id();
+    //         // $uploadedFile->assignment_id = $assignmentId; 
+    //         $uploadedFile->file_path = $file_id;
+    //         $uploadedFile->submitted_at = now();
+    //         $uploadedFile->status = 'submitted';
+    //         $uploadedFile->save();
+    //         return response('file uploaded to google drive');
+    //     } else {
+    //         return response('failed to  uploaded to google drive ');
+    //     }
+    // }
+    private function token()
+    {
+        $client_id = config('services.google.client_id');
+        $client_secret = config('services.google.client_secret');
+        $refresh_token = config('services.google.refresh_token');
+
+        $response = Http::post('https://oauth2.googleapis.com/token', [
+            'client_id' => $client_id,
+            'client_secret' => $client_secret,
+            'refresh_token' => $refresh_token,
+            'grant_type' => 'refresh_token',
+        ]);
+
+        if ($response->successful()) {
+            return json_decode($response->body(), true)['access_token'];
+        }
+
+        throw new \Exception('Failed to fetch access token');
+    }
+
+    public function store(Request $request,$assignment_id)
+    {
+        $validation = $request->validate([
+            'file_path' => 'file|required',
+            'assignment_id' => 'required|exists:assignments,id', 
+
+        ]);
+
+        $accessToken = $this->token();
+
+        $file = $request->file('file_path');
+        $mimeType = $file->getMimeType();
+        $fileName = $file->getClientOriginalName();
+        $fileContent = file_get_contents($file->getRealPath());
+
+        // Step 1: Metadata request
+        $metadataResponse = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $accessToken,
+            'Content-Type' => 'application/json',
+        ])->post('https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable', [
+            'name' => $fileName,
+            'mimeType' => $mimeType,
+            'parents' => [config('services.google.folder_id')],
+        ]);
+
+        if (!$metadataResponse->successful()) {
+            return response('Failed to initialize upload', 500);
+        }
+
+        $uploadUrl = $metadataResponse->header('Location');
+
+        // Step 2: Upload file content
+        $uploadResponse = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $accessToken,
+            'Content-Type' => $mimeType,
+        ])->withBody($fileContent, $mimeType)->put($uploadUrl);
+
+        if ($uploadResponse->successful()) {
+            $fileId = json_decode($uploadResponse->body())->id;
+
+            $uploadedFile = new Assignment_upload();
+            $uploadedFile->student_id = auth()->id();
+            $uploadedFile->file_path = $fileId;
+            $uploadedFile->assignment_id = $request->assignment_id;
+            $uploadedFile->submitted_at = now();
+            $uploadedFile->status = 'submitted';
+            $uploadedFile->save();
+
+            return redirect()->back()->with('msg','upload file to Google Drive successfully');
+        } else {
+            return response('Failed to upload file to Google Drive', 500);
+        }
+    }
+    // public function viewAssignments(){
+    //     $data['assignments']=Assignments::all();
+    //     return view('studentDashboard.assignments.studentAssignment',$data);
+    // }
+
 }
+
