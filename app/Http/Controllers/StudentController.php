@@ -231,6 +231,8 @@ class StudentController extends Controller
         })
         ->with(['assignments' => function ($query) {
             $query->where('status', 1); 
+        }, 'assignments.uploads' => function ($query) use ($studentId) {
+            $query->where('student_id', $studentId); 
         }])
         ->get();
     
