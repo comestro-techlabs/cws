@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Answer;
+use App\Models\Assignment_upload;
+use App\Models\Assignments;
 use App\Models\Course;
 use App\Models\Exam;
 use App\Models\Payment;
@@ -12,6 +14,7 @@ use App\Models\ExamUser;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class StudentController extends Controller
 {
