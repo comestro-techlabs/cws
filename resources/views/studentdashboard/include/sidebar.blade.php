@@ -17,10 +17,10 @@
 
             <ul class="sidebar-menu">
                 <li class="sidebar-menu-item active">
-                    <a class="sidebar-menu-button" href="index.html">
+                    <a class="sidebar-menu-button" href="{{route('student.dashboard')}}">
 
                         <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">photo_filter</i>
-                        <span class="sidebar-menu-text">Overview</span>
+                        <span class="sidebar-menu-text">Dashboard</span>
                     </a>
                 </li>
             </ul>
@@ -28,12 +28,12 @@
             <div class="sidebar-heading">Student</div>
             <div class="sidebar-block p-0">
                 <ul class="sidebar-menu mt-0">
-                    <li class="sidebar-menu-item">
+                    {{-- <li class="sidebar-menu-item">
                         <a class="sidebar-menu-button" href="student-dashboard.html">
                             <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">star_half</i>
                             <span class="sidebar-menu-text">Dashboard</span>
                         </a>
-                    </li>
+                    </li> --}}
                     <li class="sidebar-menu-item">
                         <a class="sidebar-menu-button" href="{{route('student.course')}}">
                             <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">queue_play_next</i>

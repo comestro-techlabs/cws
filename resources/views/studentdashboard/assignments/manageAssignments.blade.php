@@ -3,18 +3,18 @@
 @section('title', 'Upload Assignment File')
 
 @section('content')
-    <div class="container mx-auto py-6">
+    <div class="container mx-auto py-6 mt-20">
         <h1 class="text-2xl font-bold mb-4">Manage Assignments</h1>
 
         <!-- Add Assignment Button -->
 
-
+        @if($courses->isNotEmpty())
         <!-- Assignments Tble -->
         <div class="bg-gray-50 p-6 shadow-lg rounded-lg">
-            @if($courses->isNotEmpty())
+           
                 @foreach($courses as $course)
                 <div class="mb-6">
-                    <div class="bg-blue-500 text-white px-4 py-3 rounded-t-lg">
+                    <div class="bg-orange-500 text-white px-4 py-3 rounded-t-lg">
                         <h2 class="text-lg font-semibold">{{ $course->title }}</h2>
                     </div>
                     <div class="overflow-x-auto bg-white shadow-md rounded-b-lg">
@@ -25,6 +25,7 @@
                                     <th class="px-4 py-2 border text-left">Title</th>
                                     <th class="px-4 py-2 border text-left">Description</th>
                                     {{-- <th class="px-4 py-2 border text-center">Status</th> --}}
+                                    <th class="px-4 py-2 border text-center">Status</th>
                                     <th class="px-4 py-2 border text-center">Actions</th>
                                 </tr>
                             </thead>
@@ -41,12 +42,15 @@
                                             {{ $assignment->status ? 'Active' : 'Inactive' }}
                                         </span>
                                     </td> --}}
+                                    {{-- <td class="px-4 py-2 border">{{ $assignment->uploads }}</td> --}}
                                     <td class="px-4 py-2 border text-center">
                                         <a href="{{ route('student.assignment-upload', $assignment->id) }}" 
-                                           class="text-blue-500 hover:underline">
+                                           class="text-orange-500 hover:underline">
                                             View
                                         </a>
                                     </td>
+
+                                
                                 </tr>
                                 @empty
                                 <tr>

@@ -224,29 +224,49 @@ class StudentController extends Controller
     }
     public function assignmentList()
     {
-        $studentId = Auth::id(); // Logged-in user's ID
-
+        $studentId = Auth::id(); 
+    
         $data['courses'] = Course::whereHas('students', function ($query) use ($studentId) {
             $query->where('user_id', $studentId);
-        })->with('assignments')->get();
-
+        })
+        ->with(['assignments' => function ($query) {
+            $query->where('status', 1); 
+        }])
+        ->get();
+    
         return view('studentDashboard.assignments.manageAssignments', $data);
     }
+    
 
     public function viewAssignments($id)
     {
         $studentId = Auth::id(); // Logged-in user's ID
-
+    
+        // Find the assignment with a relationship check for the student's course
         $assignment = Assignments::where('id', $id)
             ->whereHas('course', function ($query) use ($studentId) {
                 $query->whereHas('students', function ($q) use ($studentId) {
                     $q->where('user_id', $studentId);
                 });
             })->first();
-
-        // Return assignments to the view
-        return view('studentDashboard.assignments.studentAssignment', ['assignment' => $assignment]);
+    
+        // Check if the assignment exists
+        if (!$assignment) {
+            return redirect()->back()->with('error', 'Assignment not found or access denied.');
+        }
+    
+        // Check if the file has already been uploaded
+        $uploadedFile = Assignment_upload::where('student_id', $studentId)
+            ->where('assignment_id', $id)
+            ->first();
+    
+        // Return assignment and uploaded file details to the view
+        return view('studentDashboard.assignments.studentAssignment', [
+            'assignment' => $assignment,
+            'uploadedFile' => $uploadedFile,
+        ]);
     }
+    
     // private function token()
     // {
     //     $client_id = \config('services.google.client_id');
@@ -376,7 +396,7 @@ class StudentController extends Controller
             $uploadedFile->status = 'submitted';
             $uploadedFile->save();
 
-            return response('File uploaded to Google Drive', 200);
+            return redirect()->back()->with('msg','upload file to Google Drive successfully');
         } else {
             return response('Failed to upload file to Google Drive', 500);
         }
