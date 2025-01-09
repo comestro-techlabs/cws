@@ -42,8 +42,7 @@
                             <span class="sidebar-menu-text">Courses</span>
                         </a>
                     </li>
-                     <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button" href="{{ route('student.buyCourse', ['id' => $course->id]) }}"> 
+                     
                     <li class="sidebar-menu-item">
                         <a class="sidebar-menu-button" href="{{route('student.coursePurchase')}}">
                             <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">shopping_cart</i>
