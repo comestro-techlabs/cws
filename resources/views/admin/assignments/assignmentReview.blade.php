@@ -113,6 +113,83 @@
                 @endforeach
             </div>
         </div>
+
+
+      {{-- Grades --}}
+
+      <div class="max-w-7xl mx-auto my-8 px-4 sm:px-6 lg:px-8 hidden" id="grades">
+        <!-- Teachers Section -->
+        <div class="mb-8">
+            <h2 class="text-lg font-bold mb-4">Teachers</h2>
+            <div class="flex items-center space-x-4 p-4 border rounded-lg shadow-sm bg-white">
+                <div
+                    class="w-10 h-10 bg-teal-500 rounded-full flex items-center justify-center text-white font-bold uppercase">
+                    S
+                </div>
+                <p class="font-medium">{{$course->instructor}}</p>
+            </div>
+        </div>
+
+        <!-- Students Section -->
+        <div>
+            
+            <h2 class="text-lg font-bold mb-4">Students</h2>
+            {{-- <div class="flex justify-between items-center mb-4">
+                <p class="text-sm text-gray-600">{{ $students->count() }} student</p>
+                <button class="text-teal-600 flex items-center hover:underline">
+                   
+                    pending Student
+                </button>
+            </div> --}}
+            
+
+           <div class="overflow-x-auto">
+    <table class="min-w-full border-collapse border border-gray-300 bg-white rounded-lg">
+        <thead>
+            <tr class="bg-teal-600 text-white">
+                <th class="px-6 py-3 border border-gray-300 text-left text-sm font-medium uppercase">Select</th>
+                <th class="px-6 py-3 border border-gray-300 text-left text-sm font-medium uppercase">Student</th>
+                <th class="px-6 py-3 border border-gray-300 text-center text-sm font-medium uppercase">Assignments Uploaded</th>
+                <th class="px-6 py-3 border border-gray-300 text-center text-sm font-medium uppercase">Total Marks</th>
+                <th class="px-6 py-3 border border-gray-300 text-center text-sm font-medium uppercase">Out of 100</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Example Student Row -->
+            @foreach ($students as $student)
+            <tr class="border border-gray-300 hover:bg-gray-50">
+                <td class="px-6 py-4 border border-gray-300 text-left">
+                    <input type="checkbox" class="h-5 w-5 text-teal-600 border-gray-300">
+                </td>
+                <td class="px-6 py-4 border border-gray-300 text-left flex items-center space-x-4">
+                    <div class="w-10 h-10">
+                        <img src="https://via.placeholder.com/40" alt="Student" class="rounded-full">
+                    </div>
+                    <p class="font-medium">
+                        <a href="{{ route('assignments.singleStudent.assignment', $student['user']->id) }}" class="text-teal-600 hover:underline">
+                            {{ $student['user']->name }}
+                        </a>
+                    </p>
+                </td>
+                <td class="px-6 py-4 border border-gray-300 text-center">
+                    {{ $student['upload_count'] }}
+                </td>
+                <td class="px-6 py-4 border border-gray-300 text-center">
+                    {{-- {{ $student['total_marks'] }} --}}
+                    100
+                </td>
+                <td class="px-6 py-4 border border-gray-300 text-center">
+                                      
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+
+        </div>
+    </div>
+
     </div>
     <script>
         function showContent(sectionId) {

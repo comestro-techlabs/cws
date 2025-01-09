@@ -15,7 +15,7 @@
             </div>
 
 
-            <ul class="sidebar-menu">
+            {{-- <ul class="sidebar-menu">
                 <li class="sidebar-menu-item active">
                     <a class="sidebar-menu-button" href="{{route('student.dashboard')}}">
 
@@ -23,13 +23,13 @@
                         <span class="sidebar-menu-text">Dashboard</span>
                     </a>
                 </li>
-            </ul>
+            </ul> --}}
 
             <div class="sidebar-heading">Student</div>
             <div class="sidebar-block p-0">
                 <ul class="sidebar-menu mt-0">
 
-                    {{-- <li class="sidebar-menu-item">
+                     <li class="sidebar-menu-item">
                         <a class="sidebar-menu-button" href="{{route('student.dashboard')}}">
 
                             <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">star_half</i>
@@ -42,8 +42,8 @@
                             <span class="sidebar-menu-text">Courses</span>
                         </a>
                     </li>
-                    {{-- <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button" href="{{ route('student.buyCourse', ['id' => $course->id]) }}"> --}}
+                     <li class="sidebar-menu-item">
+                        <a class="sidebar-menu-button" href="{{ route('student.buyCourse', ['id' => $course->id]) }}"> 
                     <li class="sidebar-menu-item">
                         <a class="sidebar-menu-button" href="{{route('student.coursePurchase')}}">
                             <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">shopping_cart</i>
