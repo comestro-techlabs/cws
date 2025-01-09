@@ -149,9 +149,9 @@
                             @foreach ($students as $student)
                                 <tr class="border border-gray-300 hover:bg-gray-50">
                                     <td class="px-6 py-4 border border-gray-300 text-left flex items-center space-x-4">
-                                        <div class="w-10 h-10">
+                                        {{-- <div class="w-10 h-10">
                                             <img src="https://via.placeholder.com/40" alt="Student" class="rounded-full">
-                                        </div>
+                                        </div> --}}
                                         <p class="font-medium">
                                             <a href="{{ route('assignments.singleStudent.assignment', $student['user']->id) }}"
                                                class="text-teal-600 hover:underline">
