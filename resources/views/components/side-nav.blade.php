@@ -273,26 +273,27 @@
             </button>
             <ul id="assignment" class="hidden py-2 space-y-2">
                 <li>
-                    <a href="{{ route('assignment.index') }}"
-                        class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Manage
-                        Assignments</a>
-                </li>
-                <li>
                     <a href="{{ route('assignment.create') }}"
                         class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">create
                         Assignments</a>
                 </li>
+                <li>
+                    <a href="{{ route('assignment.index') }}"
+                        class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Manage
+                        Assignments</a>
+                </li>
+                
                 <li>
                     <a href="{{ route('assignments.course') }}"
                         class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">show
                         course
                     </a>
                 </li>
-                <li>
+                {{-- <li>
                     <a href="{{ route('assignment-submit.index') }}"
                         class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">upload
                         Assignments</a>
-                </li>
+                </li> --}}
             </ul>
         </li>
 

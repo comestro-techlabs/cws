@@ -135,49 +135,50 @@
                 <div class="overflow-x-auto">
                     <table class="min-w-full border-collapse border border-gray-300 bg-white rounded-lg">
                         <thead>
-                            <tr class="bg-teal-600 text-white">
-
-                                <th class="px-6 py-3 border border-gray-300 text-left text-sm font-medium uppercase">Student
-                                </th>
-                                <th class="px-6 py-3 border border-gray-300 text-center text-sm font-medium uppercase">
-                                    Assignments Uploaded</th>
-                                <th class="px-6 py-3 border border-gray-300 text-center text-sm font-medium uppercase">Total
-                                    Marks</th>
-                                <th class="px-6 py-3 border border-gray-300 text-center text-sm font-medium uppercase">Out
-                                    of 100</th>
+                            <tr class="text-black">
+                                <th class="px-6 py-3 border border-gray-300 text-left text-sm font-medium uppercase">Student</th>
+                                @foreach ($assignments as $assignment)
+                                    <th class="px-6 py-3 border border-gray-300 text-center text-sm font-medium uppercase">
+                                        {{ \Illuminate\Support\Str::words($assignment->title, 5) }}
+                                    </th>
+                                @endforeach
                             </tr>
                         </thead>
                         <tbody>
                             <!-- Example Student Row -->
                             @foreach ($students as $student)
                                 <tr class="border border-gray-300 hover:bg-gray-50">
-
                                     <td class="px-6 py-4 border border-gray-300 text-left flex items-center space-x-4">
                                         <div class="w-10 h-10">
                                             <img src="https://via.placeholder.com/40" alt="Student" class="rounded-full">
                                         </div>
                                         <p class="font-medium">
                                             <a href="{{ route('assignments.singleStudent.assignment', $student['user']->id) }}"
-                                                class="text-teal-600 hover:underline">
+                                               class="text-teal-600 hover:underline">
                                                 {{ $student['user']->name }}
                                             </a>
                                         </p>
                                     </td>
-                                    <td class="px-6 py-4 border border-gray-300 text-center">
-                                        {{ $student['upload_count'] }}
-                                    </td>
-                                    <td class="px-6 py-4 border border-gray-300 text-center">
-
-                                        100
-                                    </td>
-                                    <td class="px-6 py-4 border border-gray-300 text-center">
-                                        {{ $student['grade'] }}
-                                    </td>
+                
+                                    <!-- Loop through assignments and show grade -->
+                                    @foreach ($assignments as $assignment)
+                                        <td class="px-6 py-4 border border-gray-300 text-center">
+                                            @php
+                                                $upload = $student['user']->uploads->firstWhere('assignment_id', $assignment->id);
+                                            @endphp
+                                            @if ($upload)
+                                                <span class="text-sm font-medium">{{ $upload->grade ?? 'No Grade' }}</span>
+                                            @else
+                                                <span class="text-sm text-gray-500">Not Submitted</span>
+                                            @endif
+                                        </td>
+                                    @endforeach
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
+                
 
             </div>
         </div>
