@@ -69,24 +69,7 @@
 
             </ul>
         </li>
-        <li>
-            <button type="button"
-                class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                aria-controls="portfolio-dropdown" data-collapse-toggle="portfolio-dropdown">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M4.5 3h15a1.5 1.5 0 011.5 1.5v15a1.5 1.5 0 01-1.5 1.5h-15a1.5 1.5 0 01-1.5-1.5v-15A1.5 1.5 0 014.5 3z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 8.25h6M9 12h6M9 15.75h3" />
-                </svg>
-                <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Manage Portfolio</span>
-                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                    viewBox="0 0 10 6">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="m1 1 4 4 4-4" />
-                </svg>
-            </button>
-            {{-- <ul id="portfolio-dropdown" class="hidden py-2 space-y-2">
+        
                 <li>
                     <a href="{{ route('portfolio.create') }}"
                         class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
@@ -99,8 +82,7 @@
                         Manage Portfolio
                     </a>
                 </li>
-            </ul> --}}
-        </li>
+
 
         <li>
             <button type="button"
