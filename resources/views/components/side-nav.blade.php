@@ -103,6 +103,39 @@
             </ul>
         </li>
         
+        <li>
+            <button type="button"
+    class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+    aria-controls="workshop-dropdown" data-collapse-toggle="workshop-dropdown">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+        stroke="currentColor" class="size-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M19 4h-4V2h-6v2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2zM12 2h4v2h-4V2zM5 6h14v12H5V6z" />
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l4 4m0 0l4-4m-4 4V10" />
+    </svg>
+    <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Manage Workshop</span>
+    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+        viewBox="0 0 10 6">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="m1 1 4 4 4-4" />
+    </svg>
+</button>
+
+            <ul id="workshop-dropdown" class="hidden py-2 space-y-2">
+                <li>
+                    <a href="{{ route('workshops.create') }}"
+                        class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                        Create Workshop
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('workshops.admin.index') }}"
+                        class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                        Manage Workshop
+                    </a>
+                </li>
+            </ul>
+        </li>
+        
         
 
         <li>
