@@ -204,6 +204,7 @@ class AssignmentUploadController extends Controller
                 return [
                     'user' => $uploads->first()->user, 
                     'upload_count' => $uploads->count(), 
+                    'grade' => $uploads->first()->grade, 
                 ];
             });
     
