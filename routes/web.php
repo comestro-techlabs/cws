@@ -3,8 +3,8 @@
     use App\Http\Controllers\AdminController;
     use App\Http\Controllers\AnswerController;
     use App\Http\Controllers\AssignmentsController;
-use App\Http\Controllers\AssignmentUploadController;
-use App\Http\Controllers\AuthController;
+    use App\Http\Controllers\AssignmentUploadController;
+    use App\Http\Controllers\AuthController;
     use App\Http\Controllers\BatchController;
     use App\Http\Controllers\CategoryController;
     use App\Http\Controllers\ChapterController;
@@ -17,54 +17,48 @@ use App\Http\Controllers\AuthController;
     use App\Http\Controllers\StudentController;
     use App\Http\Controllers\PaymentController;
     use App\Http\Controllers\PortfolioController;
+    use App\Http\Controllers\WorkshopController;
     use Illuminate\Support\Facades\Route;
     use App\Http\Controllers\Auth\SocialiteController;
-use App\Http\Controllers\ExamController;
-use App\Http\Middleware\AdminMiddleware;
+    use App\Http\Controllers\ExamController;
+    use App\Http\Middleware\AdminMiddleware;
     use App\Http\Controllers\QuizController;
-    use App\Http\Livewire\Quiz;
+
+use App\Models\Workshop;
 
 
     Route::prefix("student")->group(function () {
         Route::controller(StudentController::class)->group(function () {
             Route::get('/dashboard', 'dashboard')->name('student.dashboard');
             Route::get('/billing', 'billing')->name('student.billing');
-            Route::get('/quiz', 'showquiz')->name('student.quiz');
-            Route::post('/store-answer',  'storeAnswer')->name('student.storeAnswer');
-
+            Route::get('course/quiz', 'courseQuiz')->name('student.course.quiz');
+            Route::get('/quiz/{courseId}', 'showquiz')->name('student.quiz');
+            Route::post('/quiz/submit',  'storeAnswer')->name('student.storeAnswer');
+            Route::get('quiz/result/{exam_id}',  'showResults')->name('student.examResult');
+            Route::get('course/result', 'courseResult')->name('student.course.result');
+            Route::get('quiz/all_attempts/{course_id}',  'showAllAttempts')->name('student.allAttempts');
             Route::get('/edit-profile',  'editProfile')->name('student.editProfile');
             Route::post('/update-profile', 'updateProfile')->name('student.updateProfile');
             Route::get('/coursePurchase', 'coursePurchase')->name('student.coursePurchase');
             Route::get('/course/{id}', 'buyCourse')->name('student.buyCourse');
             Route::get('/course', 'course')->name('student.course');
-             Route::get('/assignments/view', 'assignmentList')->name('student.assignments-view');
+            Route::get('/assignments/view', 'assignmentList')->name('student.assignments-view');
             Route::get('/assignments/upload/{id}', 'viewAssignments')->name('student.assignment-upload');
-
-
-            
-
         });
 
-        
+
         Route::get('/quiz_instruction', function () {
             return view('studentdashboard.quiz_instruction');
         })->name('quiz_instruction');
-          
-   
-      
-        
     });
-   
-            
-
-    
 
     Route::get('/get-access-token', [StudentController::class, 'store']);
     Route::post('/student/assignments/upload/{assignment_id}', [StudentController::class, 'store'])->name('assignments.store');
 
 
     Route::post('save-course-payment', [PaymentController::class, 'saveCoursePayment'])->name('save.course.payment');
-
+     Route::post('save-workshop-payment', [PaymentController::class, 'saveWorkshopPayment'])->name('save.workshop.payment');
+  
 
     Route::middleware([AdminMiddleware::class, "auth"])->group(function () {
 
@@ -85,7 +79,7 @@ use App\Http\Middleware\AdminMiddleware;
                 Route::delete('/{student}/remove-course/{course}', [StudentController::class, 'removeCourse'])->name('students.removeCourse');
                 Route::post('/students/{student}/process-payment', [StudentController::class, 'processPayment'])->name('students.processPayment');
             });
-            
+
             Route::resource('course', CourseController::class);
             Route::get('/courses/{course_id}/chapters/create', [ChapterController::class, 'create'])->name('chapter.create');
             Route::post('/courses/{course_id}/chapters', [ChapterController::class, 'store'])->name('chapter.store');
@@ -146,18 +140,35 @@ use App\Http\Middleware\AdminMiddleware;
             Route::get('/quiz/{quiz}/edit', [QuizController::class, 'edit'])->name('quiz.edit');
             Route::put('/quiz/{quiz}/update', [QuizController::class, 'update'])->name('quiz.update');
             Route::delete('/quiz/{quiz}', [QuizController::class, 'destroy'])->name('quiz.destroy');
-           
+
             //result
             // Route::get('/quiz/{quiz}/results', [QuizController::class, 'results'])->name('quiz.results');
+
             Route::get('/answer',[AnswerController::class,'show'])->name('answer.results');
+            
+
+                   
+    Route::get('/portfolio/create', [PortfolioController::class, 'create'])->name('portfolio.create');
+    Route::post('/portfolio/store', [PortfolioController::class, 'store'])->name('portfolio.store');
+    Route::get('/admin/portfolio', [PortfolioController::class, 'show'])->name('portfolio.admin.index');
+    Route::get('/portfolio/{id}/edit', [PortfolioController::class, 'edit'])->name('portfolio.admin.edit');
+    Route::put('/portfolio/{id}', [PortfolioController::class, 'update'])->name('portfolio.admin.update');
+    Route::delete('/portfolio/{id}', [PortfolioController::class, 'destroy'])->name('portfolio.admin.destroy');
+
+    Route::get('/workshops/create', [WorkshopController::class, 'create'])->name('workshops.create');
+    Route::post('/workshops/store', [WorkshopController::class, 'store'])->name('workshops.store');
+    Route::get('/admin/workshops', [WorkshopController::class, 'show'])->name('workshops.admin.index');
+    Route::patch('/workshops/{id}/toggle-status', [WorkshopController::class, 'toggleStatus'])->name('workshops.toggleStatus');
+    Route::get('/admin/workshops/{id}/edit', [WorkshopController::class, 'edit'])->name('admin.workshops.edit');
+    Route::put('/admin/workshop/{id}', [WorkshopController::class, 'update'])->name('admin.workshops.update');
+    Route::delete('admin/workshop/{id}', [WorkshopController::class, 'destroy'])->name('admin.workshops.destroy');
+
             
 
            
 
-           
 
         });
-
     });
 
 
@@ -219,7 +230,7 @@ use App\Http\Middleware\AdminMiddleware;
     Route::get('/launch', function () {
         return view('public.launch');
     });
-    
+
 
     // Route::get('/user/{id}/courses', [AdminController::class, 'showPurchasedCourses'])->name('user.courses');
 
@@ -232,9 +243,13 @@ use App\Http\Middleware\AdminMiddleware;
     Route::get('/phonepe/redirect', [PhonePeController::class, 'redirect'])->name('phonepe.redirect');
 
 
+             
+   
   
     Route::get('/portfolio', [PortfolioController::class, 'index'])->name('public.portfolio');
+    Route::get('/workshops', [WorkshopController::class, 'index'])->name('public.workshops');
     
-    Route::get('/workshop', function () {
-        return view('public.workshop');
-         })->name('public.workshop');
+
+
+
+  

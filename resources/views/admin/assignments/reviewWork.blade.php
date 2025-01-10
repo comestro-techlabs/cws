@@ -147,32 +147,28 @@
         <div class="w-3/12  mt-7">
             <div class="h-screen bg-white shadow-md rounded-lg p-4">
                 <!-- File Section -->
-                <div class="border-b pb-4">
+                <div id="image-container" class="border-b pb-4">
                     <h2 class="text-gray-700 text-lg font-medium">Files</h2>
                     <p class="text-sm text-gray-500 mt-1">Turned in on Dec 24, 1:19 PM</p>
-                    <div class="mt-4 flex items-center">
-                        {{-- <img src="pdf-icon.png" alt="PDF" class="w-8 h-8 mr-3"> --}}
-                        @foreach ($assignment->uploads as $index => $item)
-                        <div>
-                            <p class="text-sm font-medium text-gray-700">
-                              <a href="https://drive.google.com/file/d/{{ $item->file_path }}/view" 
-                                target="_blank" class="text-blue-500 hover:underline">
+                
+                    @foreach ($assignment->uploads as $index => $item)
+                    <div id="image-{{ $index }}" class="mt-4 flex items-center" style="{{ $index === 0 ? 'display: flex;' : 'display: none;' }}">
+                        <p class="text-sm font-medium text-gray-700">
+                            <a href="https://drive.google.com/file/d/{{ $item->file_path }}/view" target="_blank" class="text-blue-500 hover:underline">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-image" viewBox="0 0 16 16">
-                                  <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
-                                  <path d="M1.5 2A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2zm13 1a.5.5 0 0 1 .5.5v6l-3.775-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12v.54L1 12.5v-9a.5.5 0 0 1 .5-.5z"/>
+                                    <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
+                                    <path d="M1.5 2A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2zm13 1a.5.5 0 0 1 .5.5v6l-3.775-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12v.54L1 12.5v-9a.5.5 0 0 1 .5-.5z" />
                                 </svg>
-                          </a>
-                          {{ $item->file_name }}                        </p>
-                        </div>
-                        @endforeach
-                        <button class="ml-auto text-gray-500 hover:text-gray-700">
-                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 5l7 7-7 7" />
+                            </a>
+                            {{ $item->file_name }}
+                        </p>
+                        {{-- <button class="ml-auto text-gray-500 hover:text-gray-700" id="next-btn">
+                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                             </svg>
-                        </button>
+                        </button> --}}
                     </div>
+                    @endforeach
                 </div>
 
                 <!-- Grade Section -->
@@ -239,6 +235,7 @@
     const uploads = document.querySelectorAll('#upload-container iframe');
     const students = document.querySelectorAll('#upload-container p');
     const gradeForms = document.querySelectorAll('.grade-form');
+    const uploadContainers = document.querySelectorAll('#image-container > div.mt-4');
 
     const prevButton = document.getElementById('prev-btn');
     const nextButton = document.getElementById('next-btn');
@@ -248,6 +245,7 @@
         uploads[currentIndex].style.display = 'block';
         students[currentIndex].style.display = 'block';
         gradeForms[currentIndex].style.display = 'block';
+        uploadContainers[currentIndex].style.display = 'block';
 
     }
 
@@ -257,11 +255,14 @@
             uploads[currentIndex].style.display = 'none';
             students[currentIndex].style.display = 'none';
             gradeForms[currentIndex].style.display = 'none';
+            uploadContainers[currentIndex].style.display = 'none';
+            
 
             currentIndex--;
             uploads[currentIndex].style.display = 'block';
             students[currentIndex].style.display = 'block';
             gradeForms[currentIndex].style.display = 'block';
+            uploadContainers[currentIndex].style.display = 'block';
 
         }
     });
@@ -272,12 +273,15 @@
             uploads[currentIndex].style.display = 'none';
             students[currentIndex].style.display = 'none';
             gradeForms[currentIndex].style.display = 'none';
+            uploadContainers[currentIndex].style.display = 'none';
 
             currentIndex++;
             uploads[currentIndex].style.display = 'block';
             students[currentIndex].style.display = 'block';
             gradeForms[currentIndex].style.display = 'block';
+            uploadContainers[currentIndex].style.display = 'block';
 
         }
     });
+    //   
 </script>
