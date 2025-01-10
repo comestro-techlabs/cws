@@ -14,7 +14,7 @@
 
                 @foreach ($courses as $course)
                     <div class="mb-6">
-                        <div class="bg-orange-500 text-white px-4 py-3 rounded-t-lg">
+                        <div class="bg-teal-500 text-white px-4 py-3 rounded-t-lg">
                             <h2 class="text-lg font-semibold">{{ $course->title }}</h2>
                         </div>
                         <div class="overflow-x-auto bg-white shadow-md rounded-b-lg">
@@ -30,9 +30,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse($course->assignments as $assignment)
+                                    @forelse($course->assignments as $key=>$assignment)
                                         <tr class="hover:bg-gray-50">
-                                            <td class="px-4 py-2 border">{{ $assignment->id }}</td>
+                                            <td class="px-4 py-2 border">{{ $key+1 }}</td>
                                             <td class="px-4 py-2 border">{{ $assignment->title }}</td>
 
                                             <td class="px-4 py-2 border">{!! Str::limit($assignment->description, 50) !!}</td>
@@ -43,8 +43,8 @@
                                                     @foreach ($assignment->uploads as $upload)
                                                         <span
                                                             class="
-                                                            @if ($upload->status == 'submitted') text-green-500
-                                                            @elseif($upload->status == 'graded') text-red-900
+                                                            @if ($upload->status == 'submitted') bg-green-500 text-white rounded-lg px-2 py-1
+                                                            @elseif($upload->status == 'graded') bg-red-500 text-white rounded-lg px-2 py-1 
                                                             @else text-red-500 @endif
                                                         ">
                                                             {{ ucfirst($upload->status) }}
