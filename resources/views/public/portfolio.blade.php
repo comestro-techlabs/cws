@@ -27,34 +27,31 @@
 
     
    
-     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-8">
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-8">
         @foreach($portfolios as $portfolio)
-            <a href="{{ $portfolio->url }}" target="_blank" class="relative">
+            <div class="relative group rounded-lg overflow-hidden shadow-lg hover:shadow-xl transform transition duration-300 hover:scale-105">
                 <img src="{{ asset('storage/' . $portfolio->image) }}" 
                      alt="{{ $portfolio->title }}" 
-                     class="w-full h-90 object-cover">
-                <div class="text-overlay">
-                    <h2 class="text-lg font-bold uppercase">{{ $portfolio->title }}</h2>
-                     <p class="text-sm text-gray-300 text-center">{{ $portfolio->description }}</p>
+                     class="w-full h-60 object-cover">
+                <div class="absolute inset-0 bg-black bg-opacity-60 flex flex-col justify-center items-center opacity-0 group-hover:opacity-100 transition duration-300">
+                    <div class="flex items-center space-x-2">
+                        <h2 class="text-white text-lg font-bold uppercase">{{ $portfolio->title }}</h2>
+                        <a href="{{ $portfolio->url }}" target="_blank" 
+                           class="text-white text-xl hover:text-gray-300 transition duration-200">
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                    <p class="text-gray-300 text-center text-sm px-4 mt-2">{{ $portfolio->description }}</p>
                 </div>
-            </a>
+            </div>
         @endforeach
     </div>
+    
+    
     
     
     
 </div>
 
 @endsection
-
-<style>
-    .text-overlay {
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        color: white;
-        padding: 1rem;
-        text-align: center;
-    }
-</style>
