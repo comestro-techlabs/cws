@@ -18,8 +18,13 @@
                                 @if ($exam->status)
                                     <h5 class="card-title">{{ $exam->exam_name }}</h5>
                                     {{-- <p><strong>Course:</strong> {{ $course->title }}</p> --}}
-
-                                    @foreach ($exam->quizzes as $quiz)
+                                    @php
+                                    $quizzes = $exam->quizzes->where('status', 1)->shuffle()->take(4);
+                                @endphp
+                                
+                                {{-- Loop through shuffled quizzes and display only 4 --}}
+                                @foreach ($quizzes as $quiz)
+                                    {{-- @foreach ($exam->quizzes as $quiz) --}}
                                         @if ($quiz->status)
                                             <div class="quiz-question" id="question-{{ $quiz->id }}" style="display: none;">
                                                 <div class="mb-3">
@@ -70,7 +75,13 @@
                     <div class="quiz-navigation">
                             @foreach ($courses->exams as $exam)
                                 @if ($exam->status)
-                                    @foreach ($exam->quizzes as $quiz)
+                                    {{-- @foreach ($exam->quizzes as $quiz) --}}
+                                    @php
+                                    $quizzes = $exam->quizzes->where('status', 1)->shuffle()->take(4);
+                                @endphp
+                                
+                                {{-- Loop through shuffled quizzes and display only 4 --}}
+                                @foreach ($quizzes as $quiz)
                                         @if ($quiz->status)
                                             <button type="button" 
                                                     class="btn btn-light btn-block mb-1 quiz-nav-button" 
@@ -107,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const navButtons = document.querySelectorAll('.quiz-nav-button');
     const options = document.querySelectorAll('.quiz-option');
     const quizForm = document.getElementById('quiz-form');
-    const maxAttempts = 3;
+    const maxAttempts = 2;
     let currentQuestionIndex = 0;
     let tabSwitchCount = 0; // Track the number of tab switches
     let examCompleted = false; // To track if the exam is completed

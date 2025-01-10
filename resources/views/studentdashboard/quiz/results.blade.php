@@ -76,16 +76,22 @@
     <h4 class="text-xl font-semibold mt-4">Detailed Feedback:</h4>
     <div class="result-details mb-6 p-4 border-l-4">
         @if ($attempt == 1)
-            <p class="text-lg"><strong>Your first attempt was evaluated. </strong> <span class="text-gray-600">Good luck on your second attempt!</span></p>
+            <p class="text-lg"><strong>Your first attempt was evaluated.</strong> <span class="text-gray-600">Good luck on your second attempt!</span></p>
+            <p class="text-lg mt-2">You scored {{ $totalMarks }} marks on your first attempt. Keep up the effort!</p>
         @elseif ($attempt == 2)
             <p class="text-lg"><strong>Congratulations! Your second attempt went well.</strong> You scored higher on this attempt.</p>
+            <p class="text-lg mt-2">You scored {{ $totalMarks }} marks on your second attempt, which is an improvement over the first. Well done!</p>
+            <form action="{{ route('contactAdmin') }}" method="POST">
+                @csrf
+                <button type="submit" class="btn btn-warning mt-4">Contact Admin</button>
+            </form>
         @else
             <p class="text-lg"><strong>We recommend reviewing your results and trying again.</strong> Please check for any improvement areas.</p>
+            <p class="text-lg mt-2">You have completed all attempts. Please contact your instructor or admin for further assistance.</p>
         @endif
     </div>
-
-    
 </div>
 @endsection
+
 
 
