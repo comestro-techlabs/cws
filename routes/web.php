@@ -145,9 +145,7 @@ use App\Models\Workshop;
             // Route::get('/quiz/{quiz}/results', [QuizController::class, 'results'])->name('quiz.results');
 
             Route::get('/answer',[AnswerController::class,'show'])->name('answer.results');
-            
-
-                   
+                  
     Route::get('/portfolio/create', [PortfolioController::class, 'create'])->name('portfolio.create');
     Route::post('/portfolio/store', [PortfolioController::class, 'store'])->name('portfolio.store');
     Route::get('/admin/portfolio', [PortfolioController::class, 'show'])->name('portfolio.admin.index');
@@ -163,11 +161,6 @@ use App\Models\Workshop;
     Route::put('/admin/workshop/{id}', [WorkshopController::class, 'update'])->name('admin.workshops.update');
     Route::delete('admin/workshop/{id}', [WorkshopController::class, 'destroy'])->name('admin.workshops.destroy');
 
-            
-
-           
-
-
         });
     });
 
@@ -175,8 +168,6 @@ use App\Models\Workshop;
 
     Route::get('auth/google', [SocialiteController::class, 'redirectToGoogle'])->name('auth.google');
     Route::get('auth/google/callback', [SocialiteController::class, 'handleGoogleCallback']);
-
-
 
     // public routes here:
     Route::controller(PublicController::class)->group(function () {
@@ -214,8 +205,6 @@ use App\Models\Workshop;
         echo 'ok';
     });
 
-
-
     // Authentication route's group here
     Route::prefix('auth')->controller(AuthController::class)->group(function () {
         Route::get('/login', 'showLoginForm')->name('auth.login');
@@ -225,15 +214,9 @@ use App\Models\Workshop;
         Route::get('/logout', 'logout')->name('auth.logout');
     });
 
-
-
     Route::get('/launch', function () {
         return view('public.launch');
     });
-
-
-    // Route::get('/user/{id}/courses', [AdminController::class, 'showPurchasedCourses'])->name('user.courses');
-
 
     Route::get('/phonepe/payment', [PhonepeController::class, 'index'])->name('phonepe.payment');
     Route::post('/phonepe/initiate', [PhonepeController::class, 'initiatePayment'])->name('phonepe.initiate');
@@ -242,10 +225,6 @@ use App\Models\Workshop;
     // Route::post('/phonepe/refund', [PhonePeController::class, 'refund'])->name('phonepe.refund');
     Route::get('/phonepe/redirect', [PhonePeController::class, 'redirect'])->name('phonepe.redirect');
 
-
-             
-   
-  
     Route::get('/portfolio', [PortfolioController::class, 'index'])->name('public.portfolio');
     Route::get('/workshops', [WorkshopController::class, 'index'])->name('public.workshops');
     

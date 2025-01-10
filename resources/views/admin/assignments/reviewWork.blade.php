@@ -60,21 +60,7 @@
         <!-- Center Section -->
         <div class="text-gray-500">
 
-            {{-- <button class="p-2 bg-gray-200 rounded-full hover:bg-gray-300">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                    class="bi bi-arrow-left-short" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd"
-                        d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5" />
-                </svg>
-            </button>
-
-            <button class="p-2 bg-gray-200 rounded-full hover:bg-gray-300">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                    class="bi bi-arrow-right-short" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd"
-                        d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8" />
-                </svg>
-            </button> --}}
+        
             <button class="p-2 bg-gray-200 rounded-full hover:bg-gray-300" id="prev-btn">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                     class="bi bi-arrow-left-short" viewBox="0 0 16 16">
@@ -112,19 +98,7 @@
 
 
     <div class="flex w-full">
-        {{-- <div class="w-9/12 bg-yellow-100 h-screen">
-            <div class="w-full h-full border rounded-lg mt-4">
-                @if ($assignment->uploads->isNotEmpty())
-                    @foreach ($assignment->uploads as $item)
-                        <iframe src="https://drive.google.com/file/d/{{ $item->file_path }}/preview"
-                            class="w-full h-[500px] border rounded-lg">
-                        </iframe>
-                    @endforeach
-                @else
-                    <p>No uploads found for this assignment.</p>
-                @endif
-            </div>
-        </div> --}}
+      
         <div class="w-9/12 bg-yellow-100 h-screen">
             <div class="w-full h-full border rounded-lg mt-4">
                 <div id="upload-container">
@@ -162,11 +136,7 @@
                             </a>
                             {{ $item->file_name }}
                         </p>
-                        {{-- <button class="ml-auto text-gray-500 hover:text-gray-700" id="next-btn">
-                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                            </svg>
-                        </button> --}}
+                      
                     </div>
                     @endforeach
                 </div>
@@ -199,17 +169,6 @@
 
 
 
-                <!-- Private Comments Section -->
-                {{-- <div class="mt-4">
-              <h3 class="text-gray-700 text-sm font-medium">Private comments</h3>
-              <textarea
-                class="w-full mt-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-200 focus:outline-none px-2 py-1 text-sm text-gray-700"
-                placeholder="Add private comment..."
-              ></textarea>
-              <button class="mt-2 bg-blue-500 text-white text-sm font-medium rounded-md px-4 py-2 hover:bg-blue-600">
-                Post
-              </button>
-            </div> --}}
             </div>
 
         </div>
