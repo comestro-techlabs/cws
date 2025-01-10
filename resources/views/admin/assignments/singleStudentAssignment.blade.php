@@ -25,22 +25,23 @@
     <div class="space-y-4">
     
         <!-- Single Assignment with Upload Count -->
+        @foreach($assignments as $assignment)
         <div class="flex items-center justify-between border-b py-4">
             <div>
                 <p class="text-lg font-medium flex items-center">
-                    gfdsg
-                    <span class="ml-2 text-gray-500 flex items-center">
-                        {{-- <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M8 9a3 3 0 106 0 3 3 0 00-6 0z" />
-                            <path fill-rule="evenodd" d="M4 9a5 5 0 1110 0 5 5 0 01-10 0zm12 0a7 7 0 11-14 0 7 7 0 0114 0z" clip-rule="evenodd" />
-                        </svg> --}}
-                        1
-                    </span>
+                    {{ $assignment->assignment->title }}
+                  
                 </p>
                 <p class="text-sm text-gray-500">No due date</p>
             </div>
-            <p class="text-gray-500 font-medium">25/100</p>
+            @if($assignment->grade)
+            <p class="text-gray-500 font-medium">{{ $assignment->grade }}</p>
+        @else
+        <p class="text-gray-500 font-medium">Not graded yet</p> 
+        @endif
+            
         </div>
+        @endforeach
     </div>
 </div>
 

@@ -215,9 +215,13 @@ class AssignmentUploadController extends Controller
         return view('admin.assignments.assignmentReview', $data);
     }
     public function manageSingleStudentAssignment($id){
-        $data['student']=User::findOrFail($id);
+        $student=User::findOrFail($id);
+        $assignments = $student->uploads()->with('assignment')->get();
 
-        return view('admin.assignments.singleStudentAssignment',$data);
+        return view('admin.assignments.singleStudentAssignment', [
+            'student' => $student,
+            'assignments' => $assignments
+        ]);
     }
     
     public function assignmentReviewWork($id)
