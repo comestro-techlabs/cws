@@ -57,8 +57,8 @@ use App\Http\Middleware\AdminMiddleware;
    
             
 
-        });
-    });
+    
+
     Route::get('/get-access-token', [StudentController::class, 'store']);
     Route::post('/student/assignments/upload/{assignment_id}', [StudentController::class, 'store'])->name('assignments.store');
 
