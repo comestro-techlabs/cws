@@ -13,13 +13,13 @@
     </div>
 
     <!-- Filter Dropdown -->
-    {{-- <div class="mb-6">
+    <div class="mb-6">
         <select class="border border-gray-300 rounded-lg py-2 px-4 w-full sm:w-1/3">
             <option value="all">All</option>
             <option value="completed">Completed</option>
             <option value="pending">Pending</option>
         </select>
-    </div> --}}
+    </div>
 
     <!-- Assignments Section -->
     <div class="space-y-4">

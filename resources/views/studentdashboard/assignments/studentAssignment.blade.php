@@ -13,9 +13,9 @@
             <p class="text-lg p-3 rounded-md">{{ $assignment->title }}</p>
         </div>
 
-        <div class="mb-6">
+        <div class="">
             <label class="block bg-gray-100 w-full py-2 px-3 rounded-sm font-medium">Assignment Description</label>
-            <p class="p-3 rounded-md">{!! $assignment->description !!}</p>
+            <p class="px-3 rounded-md">{!! $assignment->description !!}</p>
         </div>
 
         <!-- Check if file is already uploaded -->
