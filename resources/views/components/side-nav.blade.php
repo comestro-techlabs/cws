@@ -22,14 +22,14 @@
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
                 </svg>
-                <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Manage Students</span>
-                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                    viewBox="0 0 10 6">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="m1 1 4 4 4-4" />
-                </svg>
+                <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">
+                    <a href="{{ route('student.manage') }}"
+                    class=" ">Manage
+                    Students</a>
+                </span>
+               
             </button>
-            <ul id="student" class="hidden py-2 space-y-2">
+            {{-- <ul id="student" class="hidden py-2 space-y-2">
 
                 <li>
                     <a href="{{ route('student.manage') }}"
@@ -37,7 +37,7 @@
                         Students</a>
                 </li>
 
-            </ul>
+            </ul> --}}
         </li>
         <li>
             <button type="button"
@@ -102,10 +102,7 @@
             </ul>
         </li>
 
-    
-
-        
-        <li>
+      <li>
             <button type="button"
     class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
     aria-controls="workshop-dropdown" data-collapse-toggle="workshop-dropdown">

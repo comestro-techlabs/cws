@@ -25,7 +25,7 @@
                     <div id="upload-container">
                         @if ($assignment->uploads->isNotEmpty())
                             @foreach ($assignment->uploads as $index => $item)
-                                <p onclick="showStudentData({{ $index }}) class="text-sm font-medium text-black"
+                                <p onclick="showStudentData({{ $index }})" class="text-sm font-medium text-black"
                                     id="student-{{ $index }}" style="display: none;">
                                     {{ $item->user->name }}
                                 </p>
@@ -49,7 +49,9 @@
             </div>
             <div id="toggle-content" class="hidden absolute bg-gray-50 border w-80 border-gray-300 rounded-lg p-4 z-10">
                 @foreach ($students as $studentData)
-                    <p class="text-sm text-gray-700">{{ $studentData['name'] }}</p>
+                    <a href="">
+                        <p class="text-sm text-gray-700 cursor-pointer">{{ $studentData['name'] }}</p>
+                    </a>
                 @endforeach
             </div>
 
@@ -60,7 +62,7 @@
         <!-- Center Section -->
         <div class="text-gray-500">
 
-        
+
             <button class="p-2 bg-gray-200 rounded-full hover:bg-gray-300" id="prev-btn">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                     class="bi bi-arrow-left-short" viewBox="0 0 16 16">
@@ -98,7 +100,7 @@
 
 
     <div class="flex w-full">
-      
+
         <div class="w-9/12 bg-yellow-100 h-screen">
             <div class="w-full h-full border rounded-lg mt-4">
                 <div id="upload-container">
@@ -124,20 +126,24 @@
                 <div id="image-container" class="border-b pb-4">
                     <h2 class="text-gray-700 text-lg font-medium">Files</h2>
                     <p class="text-sm text-gray-500 mt-1">Turned in on Dec 24, 1:19 PM</p>
-                
+
                     @foreach ($assignment->uploads as $index => $item)
-                    <div id="image-{{ $index }}" class="mt-4 flex items-center" style="{{ $index === 0 ? 'display: flex;' : 'display: none;' }}">
-                        <p class="text-sm font-medium text-gray-700">
-                            <a href="https://drive.google.com/file/d/{{ $item->file_path }}/view" target="_blank" class="text-blue-500 hover:underline">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-image" viewBox="0 0 16 16">
-                                    <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
-                                    <path d="M1.5 2A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2zm13 1a.5.5 0 0 1 .5.5v6l-3.775-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12v.54L1 12.5v-9a.5.5 0 0 1 .5-.5z" />
-                                </svg>
-                            </a>
-                            {{ $item->file_name }}
-                        </p>
-                      
-                    </div>
+                        <div id="image-{{ $index }}" class="mt-4 flex items-center"
+                            style="{{ $index === 0 ? 'display: flex;' : 'display: none;' }}">
+                            <p class="text-sm font-medium text-gray-700">
+                                <a href="https://drive.google.com/file/d/{{ $item->file_path }}/view" target="_blank"
+                                    class="text-blue-500 hover:underline">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                        fill="currentColor" class="bi bi-card-image" viewBox="0 0 16 16">
+                                        <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
+                                        <path
+                                            d="M1.5 2A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2zm13 1a.5.5 0 0 1 .5.5v6l-3.775-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12v.54L1 12.5v-9a.5.5 0 0 1 .5-.5z" />
+                                    </svg>
+                                </a>
+                                {{ $item->file_name }}
+                            </p>
+
+                        </div>
                     @endforeach
                 </div>
 
@@ -145,7 +151,9 @@
                 <div id="grade-container">
                     @foreach ($students as $index => $student)
                         <div class="mt-4 grade-form" id="grade-{{ $index }}" style="display: none;">
-                            <form action="{{ route('assignments.insertGrade', ['assignmentId' => $assignment->id, 'studentId' => $student['uploads']->first()->student_id]) }}" method="POST">
+                            <form
+                                action="{{ route('assignments.insertGrade', ['assignmentId' => $assignment->id, 'studentId' => $student['uploads']->first()->student_id]) }}"
+                                method="POST">
                                 @csrf
                                 <h3 class="text-gray-700 text-sm font-medium">Grade</h3>
                                 <div class="flex items-center mt-2">
@@ -153,8 +161,10 @@
                                         class="w-16 text-gray-700 border border-gray-300 rounded-md focus:ring focus:ring-blue-200 focus:outline-none px-2 py-1 text-center"
                                         value="{{ $student['uploads']->first()->grade ?? '' }}" />
                                     <button type="submit" class="ml-auto text-gray-500 hover:text-gray-700">
-                                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7-7v14" />
+                                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 12h14m-7-7v14" />
                                         </svg>
                                     </button>
                                 </div>
@@ -162,7 +172,7 @@
                         </div>
                     @endforeach
                 </div>
-                
+
 
 
 
@@ -196,6 +206,18 @@
     const prevButton = document.getElementById('prev-btn');
     const nextButton = document.getElementById('next-btn');
 
+    // Function to update the URL without reloading the page
+    function updateURL(index) {
+        const currentStudentName = students[index]?.textContent.trim();
+        const currentFilePath = uploads[index]?.getAttribute('src');
+        if (currentStudentName && currentFilePath) {
+            const newURL = new URL(window.location.href);
+            newURL.searchParams.set('student', encodeURIComponent(currentStudentName));
+            newURL.searchParams.set('file', encodeURIComponent(currentFilePath));
+            history.pushState(null, '', newURL); // Update the URL
+        }
+    }
+
     // Display the first iframe
     if (uploads.length > 0) {
         uploads[currentIndex].style.display = 'block';
@@ -203,6 +225,7 @@
         gradeForms[currentIndex].style.display = 'block';
         uploadContainers[currentIndex].style.display = 'block';
 
+        updateURL(currentIndex); // Update URL for the initial student
     }
 
     // Show previous file
@@ -212,7 +235,6 @@
             students[currentIndex].style.display = 'none';
             gradeForms[currentIndex].style.display = 'none';
             uploadContainers[currentIndex].style.display = 'none';
-            
 
             currentIndex--;
             uploads[currentIndex].style.display = 'block';
@@ -220,6 +242,7 @@
             gradeForms[currentIndex].style.display = 'block';
             uploadContainers[currentIndex].style.display = 'block';
 
+            updateURL(currentIndex); // Update URL when navigating to the previous student
         }
     });
 
@@ -237,7 +260,10 @@
             gradeForms[currentIndex].style.display = 'block';
             uploadContainers[currentIndex].style.display = 'block';
 
+            updateURL(currentIndex); // Update URL when navigating to the next student
         }
     });
+
+
     //   
 </script>
