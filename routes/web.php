@@ -14,6 +14,7 @@
     use App\Http\Controllers\OptionController;
     use App\Http\Controllers\PhonepeController;
     use App\Http\Controllers\PublicController;
+    use App\Http\Controllers\ResultController;
     use App\Http\Controllers\StudentController;
     use App\Http\Controllers\PaymentController;
     use App\Http\Controllers\PortfolioController;
@@ -30,7 +31,7 @@ use App\Http\Middleware\AdminMiddleware;
             Route::get('/dashboard', 'dashboard')->name('student.dashboard');
             Route::get('/billing', 'billing')->name('student.billing');
             Route::get('course/quiz','courseQuiz')->name('student.course.quiz');
-            Route::get('/quiz/{courseId}', 'showquiz')->name('student.showquiz');
+            Route::get('/quiz/{courseId}', 'showquiz')->name('student.quiz');
             Route::post('/quiz/submit',  'storeAnswer')->name('student.storeAnswer');
             Route::get('quiz/result/{exam_id}',  'showResults')->name('student.examResult');
             Route::get('course/result','courseResult')->name('student.course.result');
@@ -47,23 +48,13 @@ use App\Http\Middleware\AdminMiddleware;
             Route::get('/course', 'course')->name('student.course');
              Route::get('/assignments/view', 'assignmentList')->name('student.assignments-view');
             Route::get('/assignments/upload/{id}', 'viewAssignments')->name('student.assignment-upload');
-
-
-            
-
-        });
-
-        
-        Route::get('/quiz_instruction', function () {
-            return view('studentdashboard.quiz_instruction');
-        })->name('quiz_instruction');
-          
-   
-      
-        
+         });    
     });
    
-            
+          
+        // Route::get('/quiz_instruction', function () {
+        //     return view('studentdashboard.quiz_instruction');
+        // })->name('quiz_instruction');  
 
       //  });
    // });
@@ -158,7 +149,16 @@ use App\Http\Middleware\AdminMiddleware;
             //result
             // Route::get('/quiz/{quiz}/results', [QuizController::class, 'results'])->name('quiz.results');
             Route::get('/answer',[AnswerController::class,'show'])->name('answer.results');
-            
+            Route::get('/exam/result',[ResultController::class,'showExam'])->name('exam.results');
+            Route::get('/exam/{exam}/users',[ResultController::class,'showExamUser'])->name('exam.user.results');
+            // Fetch all attempts for a user in an exam
+            // Route::get('/results/{examId}/{userId}/attempts', [ResultController::class, 'getResultsByAttempts'])->name('attempt.results');
+            Route::get('/exams/{examId}/user/{userId}/attempts', [ResultController::class, 'getResultsByAttempts'])
+    ->name('attempt.results');
+
+            // Fetch detailed answers for a specific attempt
+            Route::get('/results/{examId}/{userId}/attempt/{attempt}', [ResultController::class, 'getAttemptDetails'])->name('attempt.details');
+
 
            
 

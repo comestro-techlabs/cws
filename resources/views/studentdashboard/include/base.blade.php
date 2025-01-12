@@ -31,7 +31,8 @@
     <!-- ion Range Slider -->
     <link type="text/css" href="{{ asset('assets/css/vendor-ion-rangeslider.css') }}" rel="stylesheet">
     <link type="text/css" href="{{ asset('assets/css/vendor-ion-rangeslider.rtl.css') }}" rel="stylesheet">
-    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -554,6 +555,7 @@
       'mini': 'mini-index.html'
     }"></app-settings>
     </div> --}}
+    {{-- sweetalert --}}
 
     <!-- jQuery -->
     <script src="{{ asset('assets/vendor/jquery.min.js') }}"></script>

@@ -19,12 +19,12 @@
             <a href="#" class="btn btn-warning ml-auto">Pay Now!</a>
         </div> --}}
 
-        <div class="card card-form">
+        {{-- <div class="card card-form">
             <div class="row no-gutters">
-                {{-- <div class="col-lg-4 card-body">
+                <div class="col-lg-4 card-body">
                     <p><strong class="headings-color">Basic Information</strong></p>
                     <p class="text-muted mb-0">This account is billed to:</p>
-                </div> --}}
+                </div>
                 <div class="col-lg-12 card-form__body card-body">
 
                     <div class="d-flex align-items-center flex-wrap">
@@ -60,7 +60,7 @@
                 </div>
 
             </div>
-        </div>
+        </div> --}}
 
 
 

@@ -12,6 +12,7 @@ use App\Models\ExamUser;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class StudentController extends Controller
 {
@@ -171,7 +172,38 @@ class StudentController extends Controller
     }
 
     
-    
+    // public function courseQuiz($courseId){
+    //     $user = Auth::user();
+    //     // dd($user);
+    //     // $course = $user->courses()->where('id',$courseId)->first();
+    //     $courses = $user->courses()->with('exams') // Load the related exams
+    //     ->where('courses.id', $courseId)
+    //     ->first();       
+    //      if (!$courses){
+    //         return redirect()->route('student.dashboard')->with('error', 'Course not found');
+
+    //      }
+
+    //       // Check if the course has exams
+    // if ($courses->exams->isEmpty()) {
+    //     return redirect()->route('student.dashboard')->with('error', 'No exams available for this course');
+    // }
+          
+    //      // Check if the user has already taken the exam for this course
+    //      $exam =$courses->exams()->where('status',true)->first();
+    //      $examUser = $exam ?ExamUser::where('user_id',$user->id)->where('exam_id',$exam->id)->first() : null;
+
+    //      if($examUser && $examUser->attempts >=3){
+    //          return redirect()->route('student.examResult', $exam->id)->with('error', 'You have already attempted this exam 3 times');
+    //      }
+
+    //      //get active quiz for that course 
+
+    //      $quizzes = $exam ?$exam->quizzes()->where('status',true)->get() : collect();
+        
+    //      return view('studentdashboard.quiz.course',compact('courses','quizzes','exam','courseTitle'));
+
+    // }
 
     public function courseQuiz()
 {
@@ -210,70 +242,92 @@ class StudentController extends Controller
     // }
 
 
+    // public function showquiz($courseId)
+    // {
+    //     if (!Auth::check()) {
+    //         return redirect()->route('login');
+    //     }
+    
+    //     $user = Auth::user();
+    //     $courses = $user->courses()->where('courses.id', $courseId)->with([
+    //         'exams' => function ($query) {
+    //             $query->where('status', true);
+    //         },
+    //         'exams.quizzes' => function ($query) {
+    //             $query->where('status', true);
+    //         }
+    //     ])->first();
+        
+
+    //     if (!$courses) {
+    //         return redirect()->route('student.course.quiz')->with('error', 'Course not found or you do not have access to it.');
+    //     }
+    
+    //     $attempt = ExamUser::where('user_id', $user->id)
+    //         ->whereHas('exam', function ($query) use ($courseId) {
+    //             $query->where('course_id', $courseId);
+    //         })
+    //         ->first();
+    
+    //     $value = $attempt ? $attempt->attempts : 0;
+    
+    //     if ($value <= 3) {
+    //         return view("studentdashboard.quiz.quiz", compact('courses'));
+    //     } else {
+    //         return redirect()->route('student.course.quiz')->with('error', 'You had reached the max.');
+    //     }
+    // }
+    
     public function showquiz($courseId)
-    {
-        if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'Please login to access the quiz.');
-        }
-    
-        $user = Auth::user();
-        $courses = $user->courses()->where('courses.id', $courseId)->with([
-            'exams' => function ($query) {
-                $query->where('status', true);
-            },
-            'exams.quizzes' => function ($query) {
-                $query->where('status', true);
-            }
-        ])->first();
-        
-
-        if (!$courses) {
-            return redirect()->route('student.course.quiz')->with('error', 'Course not found or you do not have access to it.');
-        }
-        
-        // Check if the course has any exams
-        if ($courses->exams->isEmpty()) {
-            return redirect()->route('student.course.quiz')->with('error', 'No exams available for this course.');
-        }
-
-        // Check if the exams have quizzes
-        foreach ($courses->exams as $exam) {
-            if ($exam->quizzes->isEmpty()) {
-                return redirect()->route('student.course.quiz')->with('error', 'No quizzes available in the exams for this course.');
-            }
-        }
-        $attempt = ExamUser::where('user_id', $user->id)
-            ->whereHas('exam', function ($query) use ($courseId) {
-                $query->where('course_id', $courseId);
-            })
-            ->first();
-    
-        //$value = $attempt ? $attempt->attempts : 0;    
-        // if ($value <= 3) {
-        //     return view("studentdashboard.quiz.quiz", compact('courses'));
-        // } else {
-        //     $lastExamId = $attempt ? $attempt->exam_id : null;
-        //     return redirect()->route('student.examResult', ['exam_id' => $lastExamId])
-        //                      ->with('message', 'You have reached the maximum number of attempts. Please contact the admin for further assistance.');
-        //     // return redirect()->route('student.examResult');
-        // }
-
-        $attempts = $attempt ? $attempt->attempts :0;
-        $lastAttemptDate = $attempt ? $attempt->updated_at :null;
-        if($attempts >=2){
-            return redirect()->route('student.examResult',['exam_id' => $attempt->exam_id])->with('message','You have reached the maximum number of attempts. Please contact the admin for further assistance.');
-        } elseif($lastAttemptDate && now()->diffInDays($lastAttemptDate) <1){
-            return redirect()->route('student.course.quiz')->with('error','You can only attempt the quiz after 10 days of your last attempt.');
-        }
-
-        $quizzes = $courses->exams->flatMap(function($exam){
-            return $exam->quizzes;
-        })->shuffle()->take(4);
-        if($quizzes->isEmpty()){
-            return redirect()->route('student.course.quiz')->with('error','No quizzes available for this course.');
-        }
-        return view('studentdashboard.quiz.quiz',compact('courses','quizzes','attempts'));
+{
+    if (!Auth::check()) {
+        return redirect()->route('login');
     }
+
+    $user = Auth::user();
+    $courses = $user->courses()->where('courses.id', $courseId)->with([
+        'exams' => function ($query) {
+            $query->where('status', true);
+        },
+        'exams.quizzes' => function ($query) {
+            $query->where('status', true);
+        }
+    ])->first();
+
+    if (!$courses) {
+        return redirect()->route('student.course.quiz')->with('error', 'Course not found or you do not have access to it.');
+    }
+
+    // Check if the user has already attempted the exam more than 2 times
+    $attempt = ExamUser::where('user_id', $user->id)
+        ->whereHas('exam', function ($query) use ($courseId) {
+            $query->where('course_id', $courseId);
+        })
+        ->first();
+
+    $value = $attempt ? $attempt->attempts : 0;
+
+    // Allow a maximum of 2 attempts
+    if ($value >= 2) {
+        return redirect()->route('student.course.quiz')->with('error', 'You have reached the maximum number of attempts.');
+    }
+
+    // Fetch quizzes and check if there are enough questions
+    $quizzes = $courses->exams->flatMap(function ($exam) {
+        return $exam->quizzes->where('status', true);
+    })->shuffle()->take(3);
+
+    if ($quizzes->count() < 3) {
+        abort(500, 'Not enough quiz questions available (minimum 3 required).');
+    }
+
+    return view("studentdashboard.quiz.quiz", compact('courses', 'quizzes'));
+}
+
+    
+
+
+
     
 
     public function storeAnswer(Request $request)
@@ -353,22 +407,13 @@ class StudentController extends Controller
                              ->first();
     
         if (!$exam_user) {
-            return redirect()->route('student.course.quiz')->with('error', 'No attempt found for this exam.');
+            return redirect()->route('student.showquiz')->with('error', 'No attempt found for this exam.');
         }
     
         $totalMarks = $exam_user->total_marks;
         $attempt = $exam_user->attempts;
-        $exam = $exam_user->exam;
-        $message ='';
-        $contactAdminButton = false;
-        if($attempt == 1){
-            $message = 'You have completed your first attempt. You can reattempt after 10 days.';
-        } elseif ($attempt == 2){
-            $message = 'You have reached the maximum number of attempts. Please contact the admin for further assistance.';
-            $contactAdminButton = true;
-        }
     
-        return view('studentdashboard.quiz.results', compact('results', 'totalMarks', 'attempt', 'exam', 'message', 'contactAdminButton'));
+        return view('studentdashboard.quiz.results', compact('results', 'totalMarks', 'attempt'));
     }
     
     public function courseResult()
@@ -378,34 +423,56 @@ class StudentController extends Controller
     
         return view('studentDashboard.quiz.course', compact('courses'));
     }
+//     public function showAllAttempts($exam_id)
+// {
+//     $user_id = Auth::id();
 
-    public function showAllAttempts($course_id)
-        {
-            $user_id = Auth::id();
+//     // Retrieve all answers for the user and exam, grouped by attempts
+//     $attempts = Answer::where('user_id', $user_id)
+//                       ->where('exam_id', $exam_id)
+//                       ->orderBy('attempt')
+//                       ->get()
+//                       ->groupBy('attempt');
 
-            // Get all exams related to the selected course
-            $course = Course::with('exams')->findOrFail($course_id);
-            $exam_ids = $course->exams->pluck('id');
+//     // Calculate total marks for each attempt
+//     $attempts_data = [];
+//     foreach ($attempts as $attempt => $answers) {
+//         $total_marks = $answers->sum('obtained_marks');
+//         $attempts_data[] = [
+//             'attempt' => $attempt,
+//             'total_marks' => $total_marks,
+//         ];
+//     }
 
-            // Retrieve all answers for the user and exams in the selected course, grouped by attempts
-            $attempts = Answer::where('user_id', $user_id)
-                            ->whereIn('exam_id', $exam_ids)
-                            ->orderBy('attempt')
-                            ->get()
-                            ->groupBy('attempt');
+//     return view('studentdashboard.quiz.all_attempts', compact('attempts_data', 'exam_id'));
+// }
+public function showAllAttempts($course_id)
+{
+    $user_id = Auth::id();
 
-            // Calculate total marks for each attempt
-            $attempts_data = [];
-            foreach ($attempts as $attempt => $answers) {
-                $total_marks = $answers->sum('obtained_marks');
-                $attempts_data[] = [
-                    'attempt' => $attempt,
-                    'total_marks' => $total_marks,
-                ];
-            }
-            
-            return view('studentdashboard.quiz.all_attempts', compact('attempts_data', 'course'));
-        }
+    // Get all exams related to the selected course
+    $course = Course::with('exams')->findOrFail($course_id);
+    $exam_ids = $course->exams->pluck('id');
+
+    // Retrieve all answers for the user and exams in the selected course, grouped by attempts
+    $attempts = Answer::where('user_id', $user_id)
+                      ->whereIn('exam_id', $exam_ids)
+                      ->orderBy('attempt')
+                      ->get()
+                      ->groupBy('attempt');
+
+    // Calculate total marks for each attempt
+    $attempts_data = [];
+    foreach ($attempts as $attempt => $answers) {
+        $total_marks = $answers->sum('obtained_marks');
+        $attempts_data[] = [
+            'attempt' => $attempt,
+            'total_marks' => $total_marks,
+        ];
+    }
+
+    return view('studentdashboard.quiz.all_attempts', compact('attempts_data', 'course'));
+}
 
 
     public function buyCourse($id)
