@@ -1,4 +1,4 @@
-@extends('studentDashboard.include.base')
+@extends('studentdashboard.include.base')
 @section('content')
     <!-- Header Layout Content -->
     <div class="mdk-header-layout__content mdk-header-layout__content--fullbleed mdk-header-layout__content--scrollable page" style="padding-top: 60px;">
