@@ -202,7 +202,7 @@
         </div>
         <!-- // END drawer-layout__content -->
 
-        @include('studentDashboard.include.sidebar')
+        @include('studentdashboard.include.sidebar')
     </div>
     <!-- // END drawer-layout -->
 

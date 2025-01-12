@@ -156,7 +156,7 @@ class StudentController extends Controller
             'courses' => User::find(Auth::id())->courses()->get(),
             'payments' => Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->get(),
         ];
-        return view('studentDashboard.dashboard',$datas);
+        return view('studentdashboard.dashboard',$datas);
     }
 
     public function coursePurchase()
@@ -169,7 +169,7 @@ class StudentController extends Controller
 
             'courses' => User::find(Auth::id())->courses()->get(),
         ];
-        return view('studentDashboard.course.purchaseCourse', $data);
+        return view('studentdashboard.course.purchaseCourse', $data);
     }
     public function course()
     {
@@ -177,7 +177,7 @@ class StudentController extends Controller
         $data = [
             'courses' => Course::paginate(4),
         ];
-        return view('studentDashboard.course.course', $data);
+        return view('studentdashboard.course.course', $data);
     }
 
 
@@ -236,7 +236,7 @@ class StudentController extends Controller
     $user = Auth::user();
     $courses = $user->courses()->with('users')->get();
 
-    return view('studentDashboard.quiz.course', compact('courses'));
+    return view('studentdashboard.quiz.course', compact('courses'));
 }
     // public function showquiz()
     // {
@@ -409,7 +409,7 @@ class StudentController extends Controller
         $user = Auth::user();
         $courses = $user->courses()->with('users')->get();
     
-        return view('studentDashboard.quiz.course', compact('courses'));
+        return view('studentdashboard.quiz.course', compact('courses'));
     }
 //     public function showAllAttempts($exam_id)
 // {
@@ -473,7 +473,7 @@ public function showAllAttempts($course_id)
         }
         $data['course'] = Course::findOrFail($id);
 
-        return view("studentDashboard.course.viewCourse", $data);
+        return view("studentdashboard.course.viewCourse", $data);
     }
     public function editProfile()
     {
@@ -522,7 +522,7 @@ public function showAllAttempts($course_id)
         }])
         ->get();
     
-        return view('studentDashboard.assignments.manageAssignments', $data);
+        return view('studentdashboard.assignments.manageAssignments', $data);
     }
     
 
@@ -552,7 +552,7 @@ public function showAllAttempts($course_id)
             ->first();
     
         // Return assignment and uploaded file details to the view
-        return view('studentDashboard.assignments.studentAssignment', [
+        return view('studentdashboard.assignments.studentAssignment', [
             'assignment' => $assignment,
             'uploadedFile' => $uploadedFile,
         ]);
@@ -634,7 +634,7 @@ public function showAllAttempts($course_id)
     }
     // public function viewAssignments(){
     //     $data['assignments']=Assignments::all();
-    //     return view('studentDashboard.assignments.studentAssignment',$data);
+    //     return view('studentdashboard.assignments.studentAssignment',$data);
     // }
 
 }
