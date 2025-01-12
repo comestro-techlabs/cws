@@ -1,4 +1,4 @@
-@extends('studentDashboard.include.base')
+@extends('studentdashboard.include.base')
 @section('content')
     <!-- Header Layout Content -->
     <div class="mdk-header-layout__content mdk-header-layout__content--fullbleed mdk-header-layout__content--scrollable page" style="padding-top: 60px;">
@@ -34,7 +34,7 @@
                             <li class="list-group-item" style="z-index: initial;">
                                 <div class="d-flex align-items-center">
                                     <a href="#" class="mr-3">
-                                        <img src="assets/images/logos/vuejs.svg" alt="course" class="">
+                                        <img src="{{ asset('assets/images/logos/vuejs.svg')}}" alt="course" class="">
 
                                     </a>
                                     <div class="flex">
@@ -62,7 +62,7 @@
                             <li class="list-group-item" style="z-index: initial;">
                                 <div class="d-flex align-items-center">
                                     <a href="#" class="mr-3">
-                                        <img src="assets/images/logos/angular.svg" alt="course" class="">
+                                        <img src="{{ asset('assets/images/logos/angular.svg')}}" alt="course" class="">
 
                                     </a>
                                     <div class="flex">
@@ -90,7 +90,7 @@
                             <li class="list-group-item" style="z-index: initial;">
                                 <div class="d-flex align-items-center">
                                     <a href="#" class="mr-3">
-                                        <img src="assets/images/logos/javascript.svg" alt="course" class="">
+                                        <img src="{{ asset('assets/images/logos/javascript.svg')}}" alt="course" class="">
 
                                     </a>
                                     <div class="flex">
@@ -212,7 +212,7 @@
                                 <div class="list-group-item list-group-item-action d-flex align-items-center ">
                                     <div class="avatar avatar-xs mr-3">
                                         <span class="avatar-title rounded-circle bg-primary">
-                                            <img src="assets/images/logo.svg" width="20" alt="avatar">
+                                            <img src="{{ asset('assets/images/logo.svg')}}" width="20" alt="avatar">
                                         </span>
                                     </div>
 
@@ -220,7 +220,7 @@
                                     <div class="flex">
                                         <div class="d-flex align-items-middle">
                                             <div class="avatar avatar-xxs mr-1">
-                                                <img src="assets/images/256_rsz_1andy-lee-642320-unsplash.jpg" alt="Avatar" class="avatar-img rounded-circle">
+                                                <img src="{{ asset('assets/images/256_rsz_1andy-lee-642320-unsplash.jpg')}}" alt="Avatar" class="avatar-img rounded-circle">
                                             </div>
 
 
@@ -237,7 +237,7 @@
                                 <div class="list-group-item list-group-item-action d-flex align-items-center ">
                                     <div class="avatar avatar-xs mr-3">
                                         <span class="avatar-title rounded-circle bg-primary">
-                                            <img src="assets/images/logo.svg" width="20" alt="avatar">
+                                            <img src="{{ asset('assets/images/logo.svg')}}" width="20" alt="avatar">
                                         </span>
                                     </div>
 
@@ -245,7 +245,7 @@
                                     <div class="flex">
                                         <div class="d-flex align-items-middle">
                                             <div class="avatar avatar-xxs mr-1">
-                                                <img src="assets/images/256_daniel-gaffey-1060698-unsplash.jpg" alt="Avatar" class="avatar-img rounded-circle">
+                                                <img src="{{ asset('assets/images/256_daniel-gaffey-1060698-unsplash.jpg')}}" alt="Avatar" class="avatar-img rounded-circle">
                                             </div>
 
 
@@ -262,7 +262,7 @@
                                 <div class="list-group-item list-group-item-action d-flex align-items-center  bg-light ">
                                     <div class="avatar avatar-xs mr-3">
                                         <span class="avatar-title rounded-circle bg-primary">
-                                            <img src="assets/images/logo.svg" width="20" alt="avatar">
+                                            <img src="{{ asset('assets/images/logo.svg')}}" width="20" alt="avatar">
                                         </span>
                                     </div>
 
@@ -270,7 +270,7 @@
                                     <div class="flex">
                                         <div class="d-flex align-items-middle">
                                             <div class="avatar avatar-xxs mr-1">
-                                                <img src="assets/images/256_jeremy-banks-798787-unsplash.jpg" alt="Avatar" class="avatar-img rounded-circle">
+                                                <img src="{{ asset('assets/images/256_jeremy-banks-798787-unsplash.jpg')}}" alt="Avatar" class="avatar-img rounded-circle">
                                             </div>
 
 
@@ -287,7 +287,7 @@
                                 <div class="list-group-item list-group-item-action d-flex align-items-center  bg-light ">
                                     <div class="avatar avatar-xs mr-3">
                                         <span class="avatar-title rounded-circle bg-primary">
-                                            <img src="assets/images/logo.svg" width="20" alt="avatar">
+                                            <img src="{{ asset('assets/images/logo.svg')}}" width="20" alt="avatar">
                                         </span>
                                     </div>
 
@@ -295,7 +295,7 @@
                                     <div class="flex">
                                         <div class="d-flex align-items-middle">
                                             <div class="avatar avatar-xxs mr-1">
-                                                <img src="assets/images/256_joao-silas-636453-unsplash.jpg" alt="Avatar" class="avatar-img rounded-circle">
+                                                <img src="{{ asset('assets/images/256_joao-silas-636453-unsplash.jpg')}}" alt="Avatar" class="avatar-img rounded-circle">
                                             </div>
 
 
@@ -312,7 +312,7 @@
                                 <div class="list-group-item list-group-item-action d-flex align-items-center  bg-light ">
                                     <div class="avatar avatar-xs mr-3">
                                         <span class="avatar-title rounded-circle bg-primary">
-                                            <img src="assets/images/logo.svg" width="20" alt="avatar">
+                                            <img src="{{ asset('assets/images/logo.svg')}}" width="20" alt="avatar">
                                         </span>
                                     </div>
 
@@ -320,7 +320,7 @@
                                     <div class="flex">
                                         <div class="d-flex align-items-middle">
                                             <div class="avatar avatar-xxs mr-1">
-                                                <img src="assets/images/256_michael-dam-258165-unsplash.jpg" alt="Avatar" class="avatar-img rounded-circle">
+                                                <img src="{{ asset('assets/images/256_michael-dam-258165-unsplash.jpg')}}" alt="Avatar" class="avatar-img rounded-circle">
                                             </div>
 
 
@@ -350,7 +350,7 @@
                                     <div class="flex">
                                         <div class="d-flex align-items-middle">
                                             <div class="avatar avatar-xxs mr-1">
-                                                <img src="assets/images/256_rsz_1andy-lee-642320-unsplash.jpg" alt="Avatar" class="avatar-img rounded-circle">
+                                                <img src="{{ asset('assets/images/256_rsz_1andy-lee-642320-unsplash.jpg')}}" alt="Avatar" class="avatar-img rounded-circle">
                                             </div>
                                             <strong class="text-15pt mr-1">Sherri J. Cardenas</strong>
 
@@ -371,7 +371,7 @@
                                     <div class="flex">
                                         <div class="d-flex align-items-middle">
                                             <div class="avatar avatar-xxs mr-1">
-                                                <img src="assets/images/256_daniel-gaffey-1060698-unsplash.jpg" alt="Avatar" class="avatar-img rounded-circle">
+                                                <img src="{{ asset('assets/images/256_daniel-gaffey-1060698-unsplash.jpg')}}" alt="Avatar" class="avatar-img rounded-circle">
                                             </div>
                                             <strong class="text-15pt mr-1">Joseph S. Ferland</strong>
 
@@ -392,7 +392,7 @@
                                     <div class="flex">
                                         <div class="d-flex align-items-middle">
                                             <div class="avatar avatar-xxs mr-1">
-                                                <img src="assets/images/256_jeremy-banks-798787-unsplash.jpg" alt="Avatar" class="avatar-img rounded-circle">
+                                                <img src="{{ asset('assets/images/256_jeremy-banks-798787-unsplash.jpg')}}" alt="Avatar" class="avatar-img rounded-circle">
                                             </div>
                                             <strong class="text-15pt mr-1">Bryan K. Davis</strong>
 
@@ -413,7 +413,7 @@
                                     <div class="flex">
                                         <div class="d-flex align-items-middle">
                                             <div class="avatar avatar-xxs mr-1">
-                                                <img src="assets/images/256_joao-silas-636453-unsplash.jpg" alt="Avatar" class="avatar-img rounded-circle">
+                                                <img src="{{ asset('assets/images/256_joao-silas-636453-unsplash.jpg')}}" alt="Avatar" class="avatar-img rounded-circle">
                                             </div>
                                             <strong class="text-15pt mr-1">Kaci M. Langston</strong>
 
@@ -434,7 +434,7 @@
                                     <div class="flex">
                                         <div class="d-flex align-items-middle">
                                             <div class="avatar avatar-xxs mr-1">
-                                                <img src="assets/images/256_michael-dam-258165-unsplash.jpg" alt="Avatar" class="avatar-img rounded-circle">
+                                                <img src="{{ asset('assets/images/256_michael-dam-258165-unsplash.jpg')}}" alt="Avatar" class="avatar-img rounded-circle">
                                             </div>
                                             <strong class="text-15pt mr-1"></strong>
 
@@ -458,7 +458,7 @@
                                     <div class="flex">
                                         <div class="d-flex align-items-middle">
                                             <div class="avatar avatar-xxs mr-1">
-                                                <img src="assets/images/256_rsz_1andy-lee-642320-unsplash.jpg" alt="Avatar" class="avatar-img rounded-circle">
+                                                <img src="{{ asset('assets/images/256_rsz_1andy-lee-642320-unsplash.jpg')}}" alt="Avatar" class="avatar-img rounded-circle">
                                             </div>
                                             <strong class="text-15pt mr-1">Jenell D. Matney</strong>
 
@@ -479,7 +479,7 @@
                                     <div class="flex">
                                         <div class="d-flex align-items-middle">
                                             <div class="avatar avatar-xxs mr-1">
-                                                <img src="assets/images/256_daniel-gaffey-1060698-unsplash.jpg" alt="Avatar" class="avatar-img rounded-circle">
+                                                <img src="{{ asset('assets/images/256_daniel-gaffey-1060698-unsplash.jpg')}}" alt="Avatar" class="avatar-img rounded-circle">
                                             </div>
                                             <strong class="text-15pt mr-1">Sherri J. Cardenas</strong>
 
@@ -500,7 +500,7 @@
                                     <div class="flex">
                                         <div class="d-flex align-items-middle">
                                             <div class="avatar avatar-xxs mr-1">
-                                                <img src="assets/images/256_jeremy-banks-798787-unsplash.jpg" alt="Avatar" class="avatar-img rounded-circle">
+                                                <img src="{{ asset('assets/images/256_jeremy-banks-798787-unsplash.jpg')}}" alt="Avatar" class="avatar-img rounded-circle">
                                             </div>
                                             <strong class="text-15pt mr-1">Joseph S. Ferland</strong>
 

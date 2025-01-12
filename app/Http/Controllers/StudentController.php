@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Answer;
+use App\Models\Assignment_upload;
+use App\Models\Assignments;
 use App\Models\Course;
 use App\Models\Exam;
 use App\Models\Payment;
@@ -12,7 +14,11 @@ use App\Models\ExamUser;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Support\Facades\Log;
+
+use Illuminate\Support\Facades\Http;
+
 
 class StudentController extends Controller
 {
@@ -30,6 +36,9 @@ class StudentController extends Controller
 
     public function assignCourse(Request $request, $studentId)
     {
+        if(!Auth::check()){
+            return redirect()->route('auth.login')->with('error','you must be logged in to access this page');
+        }
         $student = User::findOrFail($studentId);
 
         // Validate the request
@@ -60,6 +69,9 @@ class StudentController extends Controller
 
     public function removeCourse(User $student, Course $course)
     {
+        if(!Auth::check()){
+            return redirect()->route('auth.login')->with('error','you must be logged in to access this page');
+        }
         $student->courses()->detach($course->id);
 
         return redirect()->back()->with('success', 'Course removed successfully!');
@@ -67,6 +79,9 @@ class StudentController extends Controller
 
     public function edit($id)
     {
+        if(!Auth::check()){
+            return redirect()->route('auth.login')->with('error','you must be logged in to access this page');
+        }
         // Retrieve the student by ID
         $student = User::findOrFail($id);
 
@@ -91,6 +106,9 @@ class StudentController extends Controller
 
     public function update(Request $request, $id, $field)
     {
+        if(!Auth::check()){
+            return redirect()->route('auth.login')->with('error','you must be logged in to access this page');
+        }
         $student = User::findOrFail($id);
 
         // Define validation rules
@@ -133,36 +151,45 @@ class StudentController extends Controller
 
     public function dashboard()
     {
-
+        if(!Auth::check()){
+            return redirect()->route('auth.login')->with('error','you must be logged in to access this page');
+        }
         $studentId = User::findOrFail(Auth::id())->id;
      
         $datas = [
             'courses' => User::find(Auth::id())->courses()->get(),
             'payments' => Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->get(),
         ];
-        return view('studentDashboard.dashboard',$datas);
+        return view('studentdashboard.dashboard',$datas);
     }
 
     public function coursePurchase()
     {
+        if(!Auth::check()){
+            return redirect()->route('auth.login')->with('error','you must be logged in to access this page');
+        }
         $studentId = User::findOrFail(Auth::id())->id;
         $data = [
 
             'courses' => User::find(Auth::id())->courses()->get(),
         ];
-        return view('studentDashboard.course.purchaseCourse', $data);
+        return view('studentdashboard.course.purchaseCourse', $data);
     }
     public function course()
     {
+
         $data = [
             'courses' => Course::paginate(4),
         ];
-        return view('studentDashboard.course.course', $data);
+        return view('studentdashboard.course.course', $data);
     }
 
 
     public function billing()
     {
+        if(!Auth::check()){
+            return redirect()->route('auth.login')->with('error','you must be logged in to access this page');
+        }
         $studentId = User::findOrFail(Auth::id())->id;
         $datas = [
             'courses' => User::find(Auth::id())->courses()->get(),
@@ -207,10 +234,13 @@ class StudentController extends Controller
 
     public function courseQuiz()
 {
+    if(!Auth::check()){
+        return redirect()->route('auth.login')->with('error','you must be logged in to access this page');
+    }
     $user = Auth::user();
     $courses = $user->courses()->with('users')->get();
 
-    return view('studentDashboard.quiz.course', compact('courses'));
+    return view('studentdashboard.quiz.course', compact('courses'));
 }
     // public function showquiz()
     // {
@@ -242,11 +272,14 @@ class StudentController extends Controller
     // }
 
 
+
     // public function showquiz($courseId)
     // {
     //     if (!Auth::check()) {
     //         return redirect()->route('login');
     //     }
+
+   
     
     //     $user = Auth::user();
     //     $courses = $user->courses()->where('courses.id', $courseId)->with([
@@ -281,7 +314,7 @@ class StudentController extends Controller
     public function showquiz($courseId)
 {
     if (!Auth::check()) {
-        return redirect()->route('login');
+         return redirect()->route('auth.login');
     }
 
     $user = Auth::user();
@@ -332,6 +365,9 @@ class StudentController extends Controller
 
     public function storeAnswer(Request $request)
 {
+    if(!Auth::check()){
+        return redirect()->route('auth.login')->with('error','you must be logged in to access this page');
+    }
     $total_marks = 0;
     $obtained_marks = 0;
 
@@ -396,6 +432,9 @@ class StudentController extends Controller
 
     public function showResults($exam_id)
     {
+        if(!Auth::check()){
+            return redirect()->route('auth.login')->with('error','you must be logged in to access this page');
+        }
         $user = Auth::user();
     
         $results = Answer::where('user_id', $user->id)
@@ -418,10 +457,13 @@ class StudentController extends Controller
     
     public function courseResult()
     {
+        if(!Auth::check()){
+            return redirect()->route('auth.login')->with('error','you must be logged in to access this page');
+        }
         $user = Auth::user();
         $courses = $user->courses()->with('users')->get();
     
-        return view('studentDashboard.quiz.course', compact('courses'));
+        return view('studentdashboard.quiz.course', compact('courses'));
     }
 //     public function showAllAttempts($exam_id)
 // {
@@ -448,6 +490,9 @@ class StudentController extends Controller
 // }
 public function showAllAttempts($course_id)
 {
+    if(!Auth::check()){
+        return redirect()->route('auth.login')->with('error','you must be logged in to access this page');
+    }
     $user_id = Auth::id();
 
     // Get all exams related to the selected course
@@ -477,9 +522,12 @@ public function showAllAttempts($course_id)
 
     public function buyCourse($id)
     {
+        if(!Auth::check()){
+            return redirect()->route('auth.login')->with('error','you must be logged in to access this page');
+        }
         $data['course'] = Course::findOrFail($id);
 
-        return view("studentDashboard.course.viewCourse", $data);
+        return view("studentdashboard.course.viewCourse", $data);
     }
     public function editProfile()
     {
@@ -490,6 +538,9 @@ public function showAllAttempts($course_id)
 
     public function updateProfile(Request $request)
     {
+        if(!Auth::check()){
+            return redirect()->route('auth.login')->with('error','you must be logged in to access this page');
+        }
         $student = Auth::user();
         $data = [
             'name' => 'required|string|max:255',
@@ -506,4 +557,139 @@ public function showAllAttempts($course_id)
 
         return redirect()->route('student.editProfile')->with('success', 'Profile updated successfully!');
     }
+
+    public function assignmentList()
+    {
+        if(!Auth::check()){
+            return redirect()->route('auth.login')->with('error','you must be logged in to access this page');
+        }
+        
+        $studentId = Auth::id(); 
+    
+        $data['courses'] = Course::whereHas('students', function ($query) use ($studentId) {
+            $query->where('user_id', $studentId);
+        })
+        ->with(['assignments' => function ($query) {
+            $query->where('status', 1); 
+        }, 'assignments.uploads' => function ($query) use ($studentId) {
+            $query->where('student_id', $studentId); 
+        }])
+        ->get();
+    
+        return view('studentdashboard.assignments.manageAssignments', $data);
+    }
+    
+
+    public function viewAssignments($id)
+    {
+        if(!Auth::check()){
+            return redirect()->route('auth.login')->with('error','you must be logged in to access this page');
+        }
+        $studentId = Auth::id(); // Logged-in user's ID
+    
+        // Find the assignment with a relationship check for the student's course
+        $assignment = Assignments::where('id', $id)
+            ->whereHas('course', function ($query) use ($studentId) {
+                $query->whereHas('students', function ($q) use ($studentId) {
+                    $q->where('user_id', $studentId);
+                });
+            })->first();
+    
+        // Check if the assignment exists
+        if (!$assignment) {
+            return redirect()->back()->with('error', 'Assignment not found or access denied.');
+        }
+    
+        // Check if the file has already been uploaded
+        $uploadedFile = Assignment_upload::where('student_id', $studentId)
+            ->where('assignment_id', $id)
+            ->first();
+    
+        // Return assignment and uploaded file details to the view
+        return view('studentdashboard.assignments.studentAssignment', [
+            'assignment' => $assignment,
+            'uploadedFile' => $uploadedFile,
+        ]);
+    }
+    
+   
+    private function token()
+    {
+        $client_id = config('services.google.client_id');
+        $client_secret = config('services.google.client_secret');
+        $refresh_token = config('services.google.refresh_token');
+
+        $response = Http::post('https://oauth2.googleapis.com/token', [
+            'client_id' => $client_id,
+            'client_secret' => $client_secret,
+            'refresh_token' => $refresh_token,
+            'grant_type' => 'refresh_token',
+        ]);
+
+        if ($response->successful()) {
+            return json_decode($response->body(), true)['access_token'];
+        }
+
+        throw new \Exception('Failed to fetch access token');
+    }
+
+    public function store(Request $request,$assignment_id)
+    {
+        $validation = $request->validate([
+            'file_path' => 'file|required',
+            'assignment_id' => 'required|exists:assignments,id', 
+
+        ]);
+
+        $accessToken = $this->token();
+
+        $file = $request->file('file_path');
+        $mimeType = $file->getMimeType();
+        $fileName = $file->getClientOriginalName();
+        $fileContent = file_get_contents($file->getRealPath());
+
+        // Step 1: Metadata request
+        $metadataResponse = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $accessToken,
+            'Content-Type' => 'application/json',
+        ])->post('https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable', [
+            'name' => $fileName,
+            'mimeType' => $mimeType,
+            'parents' => [config('services.google.folder_id')],
+        ]);
+
+        if (!$metadataResponse->successful()) {
+            return response('Failed to initialize upload', 500);
+        }
+
+        $uploadUrl = $metadataResponse->header('Location');
+
+        // Step 2: Upload file content
+        $uploadResponse = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $accessToken,
+            'Content-Type' => $mimeType,
+        ])->withBody($fileContent, $mimeType)->put($uploadUrl);
+
+        if ($uploadResponse->successful()) {
+            $fileId = json_decode($uploadResponse->body())->id;
+
+            $uploadedFile = new Assignment_upload();
+            $uploadedFile->student_id = auth()->id();
+            $uploadedFile->file_path = $fileId;
+            $uploadedFile->assignment_id = $request->assignment_id;
+            $uploadedFile->submitted_at = now();
+            $uploadedFile->status = 'submitted';
+            $uploadedFile->save();
+
+            return redirect()->back()->with('msg','upload file to Google Drive successfully');
+        } else {
+            return response('Failed to upload file to Google Drive', 500);
+        }
+    }
+    // public function viewAssignments(){
+    //     $data['assignments']=Assignments::all();
+    //     return view('studentdashboard.assignments.studentAssignment',$data);
+    // }
+
 }
+

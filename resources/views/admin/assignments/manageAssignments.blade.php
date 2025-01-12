@@ -42,7 +42,7 @@
                     <thead>
                         <tr>
                             <th class="px-4 py-2 text-left border">Title</th>
-                            <th class="px-4 py-2 text-left  border">Description</th>
+                            {{-- <th class="px-4 py-2 text-left  border">Description</th> --}}
                             <th class="px-4 py-2 text-left  border">isPublished</th>
                             <th class="px-4 py-2 text-left  border">Status</th>
                             <th class="px-4 py-2 text-left  border">course</th>
@@ -53,8 +53,8 @@
                     <tbody>
                         @foreach ($assignments as $assignment)
                             <tr>
-                                <td class="px-4 py-2 truncate max-w-20 border">{{ $assignment->title }}</td>
-                                <td class="px-4 py-2 truncate max-w-80 border">{!! $assignment->description !!}</td>
+                                <td class="px-4 py-2 truncate max-w-64 border">{{ $assignment->title }}</td>
+                                {{-- <td class="px-4 py-2 truncate max-w-80 border">{!! $assignment->description !!}</td> --}}
                                 <td class="px-4 py-2 border">{{ $assignment->status ? 'Published' : 'Unpublished' }}</td>
                                 <td class="border px-4 py-2">
                                     <form action="{{ route('assignment.toggleStatus', ['assignment' => $assignment->id]) }}" method="POST" class="inline-block">
