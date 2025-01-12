@@ -8,27 +8,28 @@ use Carbon\Carbon;
 
 class WorkshopController extends Controller
 {
-   public function index()
- {
-//      $workshops = Workshop::where('active', 1)->get(); 
-//      return view('public.workshop', compact('workshops')); 
 
-     $currentDateTime =now();
-     $startTime = Carbon::createFromTime(8,0);
-     $endTime = Carbon::createFromTime(13,0);
-     $workshops = Workshop::where('date','>=',$currentDateTime->toDateString())
-     ->where(function($query) use ($currentDateTime){
-      $query->where('time', '>=',$currentDateTime->format('H:i'))
-      ->orWhere('date','>',$currentDateTime->toDateString());
-     })
-    //  ->whereBetween('time',['08:00:00','10:00:00'])
-    ->whereTime('time','>=',$startTime->format('H:i'))
-    ->whereTime('time','<=',$endTime->format('H:i'))
-      ->get();
-
-      return view('public.workshop',compact('workshops'));
+public function index()
+{
   
+    $currentDateTime = now();
+    $startTime = Carbon::createFromTime(8, 0);
+    $endTime = Carbon::createFromTime(13, 0);
+
+   
+    $workshops = Workshop::with('payment') 
+        ->where('date', '>=', $currentDateTime->toDateString())
+        ->where(function ($query) use ($currentDateTime) {
+            $query->where('time', '>=', $currentDateTime->format('H:i'))
+                  ->orWhere('date', '>', $currentDateTime->toDateString());
+        })
+        ->whereTime('time', '>=', $startTime->format('H:i'))
+        ->whereTime('time', '<=', $endTime->format('H:i'))
+        ->get();
+
+    return view('public.workshop', compact('workshops'));
 }
+
 
 public function toggleStatus($id)
 {
@@ -44,11 +45,6 @@ public function toggleStatus($id)
   }
 
   public function store(Request $request){
-    $currentTime = now()->format('H:i');
-    $cutoffTime = '10:00';
-    if ($request->time > $cutoffTime){
-      return redirect()->back()->with('error','you can\'t enter,time is up');
-    }
     $request->validate([
      'title' => 'required|string|max:255',
             'date' => 'required|date',
@@ -59,6 +55,7 @@ public function toggleStatus($id)
 
             
     ]);
+   
 
     $imagePath = $request->file('image')->store('workshops', 'public');
 
@@ -71,6 +68,9 @@ public function toggleStatus($id)
         'fees'=>$request->fees,
        
     ]);
+   
+
+    
     return redirect()->route('workshops.admin.index')->with('success', 'Portfolio created successfully!');
   }
   public function show()
@@ -97,15 +97,7 @@ public function toggleStatus($id)
       $workshop->delete();
       return redirect()->route('workshops.admin.index')->with('success', 'Workshop deleted successfully.');
   }
-  public function processPayment(Request $request,$workshopId){
-   $workshop = Workshop::findOrFail($workshopId);
-   $workshop->update([
-    'payment_status' =>'completed',
-    // 'transction_id' => $transaction,
-   ]);
-  
-  return redirect()->route('workshops.index')->with('sucess','Payment Successful!');
-  }
+ 
 
 
   

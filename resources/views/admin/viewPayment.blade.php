@@ -38,6 +38,8 @@
                     <p><strong>Course Fee:</strong> ₹{{ number_format($payment->course->fee, 2) }}</p>
                 </div>
             </div>
+           
+            
 
             {{-- payment information goes here --}}
             <div class="p-6 bg-gray-50 border-l-4 border-yellow-400 rounded-md">

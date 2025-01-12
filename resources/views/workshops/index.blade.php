@@ -30,6 +30,7 @@
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Fees
                             </th>
+                          
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                              Status
                             </th>
@@ -60,7 +61,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                     {{ $workshop->fees }}
                                 </td>
-
+                               
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                     @if ($workshop->active)
                                         <form action="{{ route('workshops.toggleStatus', $workshop->id) }}" method="POST">
@@ -82,9 +83,30 @@
                                         </form>
                                     @endif
                                 </td>
+                               
+                                {{-- <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    {{ $workshop->payment ? $workshop->payment->payment_status : 'Pending' }}
+                                </td> --}}
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ $workshop->payment->payment_status ?? 'Pending' }}
+                                    @if ($workshop->payment)
+                                        @if ($workshop->payment->payment_status == 'captured')
+                                            <span class="text-green-500">Successful</span>
+                                        @elseif ($workshop->payment->payment_status == 'pending')
+                                            <span class="text-yellow-500">Pending</span>
+                                        @elseif ($workshop->payment->payment_status == 'failed')
+                                            <span class="text-red-500">Failed</span>
+                                        @else
+                                            <span class="text-gray-500">Unknown</span>
+                                        @endif
+                                    @else
+                                        <span class="text-yellow-500">Pending</span>
+                                    @endif
                                 </td>
+                                
+                                
+                                
+                              
+                                
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                     <a href="{{route('admin.workshops.edit', $workshop->id)}}" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">Edit</a>
                                 

@@ -157,8 +157,9 @@ class StudentController extends Controller
         $studentId = User::findOrFail(Auth::id())->id;
      
         $datas = [
-            'courses' => User::find(Auth::id())->courses()->get(),
+            'courses' => User::find(Auth::id())->courses()->take(2)->get(),
             'payments' => Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->get(),
+            'exams' => Exam::whereIn('course_id', User::find(Auth::id())->courses->pluck('id'))->get(),
         ];
         return view('studentdashboard.dashboard',$datas);
     }
@@ -547,7 +548,7 @@ public function showAllAttempts($course_id)
             'contact' => 'nullable|string|max:20',
             'dob' => 'nullable|date',
             'gender' => 'required|in:male,female,other',
-            'password' => 'required|string|min:8',
+            'password' => 'required|string|min:8|confirmed',
             'education_qualification' => 'nullable|string|max:255',
         ];
 

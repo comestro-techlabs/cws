@@ -69,4 +69,8 @@ class User extends Authenticatable
 {
     return $this->hasMany(Assignment_upload::class, 'student_id');
 }
+
+
+
+
 }
