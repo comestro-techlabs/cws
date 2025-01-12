@@ -1,4 +1,4 @@
-@extends('studentDashboard.include.base')
+@extends('studentdashboard.include.base')
 
 @section('title', 'Upload Assignment File')
 
