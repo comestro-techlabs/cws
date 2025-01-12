@@ -61,12 +61,20 @@
 
    
     <div class="mt-8 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
-      <a href="{{route('quiz.show')}}"><button class="bg-gray-300 text-gray-800 px-4 py-2 rounded shadow-md hover:bg-gray-400 w-full sm:w-auto">
+      {{-- <a href="{{route('quiz.show')}}"><button class="bg-gray-300 text-gray-800 px-4 py-2 rounded shadow-md hover:bg-gray-400 w-full sm:w-auto">
+        Go Back
+      </button></a> --}}
+      {{-- <button class="bg-blue-600 text-white px-4 py-2 rounded shadow-md hover:bg-blue-700 w-full sm:w-auto">
+        Attempt Exam Now
+      </button> --}}
+      <a href="{{route('student.course.quiz')}}"><button class="bg-gray-300 text-gray-800 px-4 py-2 rounded shadow-md hover:bg-gray-400 w-full sm:w-auto">
         Go Back
       </button></a>
-      <button class="bg-blue-600 text-white px-4 py-2 rounded shadow-md hover:bg-blue-700 w-full sm:w-auto">
+      
+      <a href="{{ route('student.showquiz', $exam->id) }}" ><button class="bg-blue-600 text-white px-4 py-2 rounded shadow-md hover:bg-blue-700 w-full sm:w-auto">
         Attempt Exam Now
-      </button>
+      </button></a>
+    
     </div>
   </div>
   </div>

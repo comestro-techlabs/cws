@@ -17,9 +17,11 @@
                             @foreach ($courses->exams as $exam)
                                 @if ($exam->status)
                                     <h5 class="card-title">{{ $exam->exam_name }}</h5>
-                                    {{-- <p><strong>Course:</strong> {{ $course->title }}</p> --}}
-
-                                    @foreach ($exam->quizzes as $quiz)
+                                    
+                                    @php
+                                    $quizzes = $exam->quizzes->where('status', 1)->shuffle()->take(3);
+                                    @endphp
+                                    @foreach ($quizzes as $quiz)
                                         @if ($quiz->status)
                                             <div class="quiz-question" id="question-{{ $quiz->id }}" style="display: none;">
                                                 <div class="mb-3">
@@ -45,7 +47,7 @@
                                     @endforeach
                                 @endif
                             @endforeach
-                            <input type="text" name="exam_id" value="{{ $exam->id }}">
+                            <input type="hidden" name="exam_id" value="{{ $exam->id }}">
 
                         {{-- @endforeach --}}
                     </div>
@@ -70,7 +72,10 @@
                     <div class="quiz-navigation">
                             @foreach ($courses->exams as $exam)
                                 @if ($exam->status)
-                                    @foreach ($exam->quizzes as $quiz)
+                                @php
+                                    $quizzes = $exam->quizzes->where('status', 1)->shuffle()->take(3);
+                                    @endphp
+                                    @foreach ($quizzes as $quiz)
                                         @if ($quiz->status)
                                             <button type="button" 
                                                     class="btn btn-light btn-block mb-1 quiz-nav-button" 
@@ -87,12 +92,6 @@
         </div>
     </div>
    
-    {{-- @if(session('obtained_marks'))
-        <div class="alert alert-success mt-4">
-            <strong>Congratulations!</strong> You have scored {{ session('obtained_marks') }} marks.
-        </div>
-    @endif --}}
-  
 </div>
 
 @endsection
@@ -189,7 +188,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.addEventListener('visibilitychange', function () {
         if (document.hidden && !examCompleted) {
             tabSwitchCount++;
-            if (tabSwitchCount < 1) {
+            if (tabSwitchCount < 2) {
                 alert(`Warning: You are not allowed to switch tabs during the exam. If you switch tabs again, the exam will be automatically submitted.`);
             } else {
                 alert(`You have switched tabs too many times. The exam will be submitted now.`);

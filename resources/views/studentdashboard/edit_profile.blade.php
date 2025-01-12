@@ -7,12 +7,14 @@
     <div class="page__heading border-bottom mb-4">
         <div class="container-fluid page__container d-flex align-items-center">
             <h1 class="mb-0">Edit Account</h1>
+           
+
         </div>
     </div>
     @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
     @endif
     <form action="{{route('student.updateProfile')}}" method="post">
         @csrf
@@ -24,15 +26,20 @@
                         <p class="text-muted mb-0">Edit your account details and settings.</p>
                     </div>
                     <div class="col-lg-8 card-form__body card-body">
+                    <div class="mb-4 font-semibold"> {{ Auth::user()->email }}</div>
                         <div class="row">
+                           
+                       
                             <div class="col">
+                          
                                 <div class="form-group">
                                     <label for="name">Name</label>
-                                    <input name="name" id="name" value="{{ old('name', $student->name) }}"  type="text" class="form-control py-4"  >
+                                    <input name="name" id="name" value="{{ old('name', $student->name) }}" type="text" class="form-control py-4">
                                     @error('name')
-                                        <span class="text-danger">{{ $message }}</span>
+                                    <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
+                                
                             </div>
                         </div>
                         <div class="form-group">
@@ -46,7 +53,7 @@
                         </div>
                         <div class="form-group">
                             <label for="dob">Date Of Birth</label><br>
-                            <input type="date" id="dob" name="dob" class="form-control py-4" value="{{ old('dob', Auth::user()->dob) }}">
+                            <input type="date" id="dob" name="dob" class="form-control py-4" value="{{ old('dob', Auth::user()->dob) }}" max="{{ date('Y-m-d') }}">
 
                         </div>
                         <div class="form-group">
@@ -59,15 +66,25 @@
                         </div>
                         <div class="form-group">
                             <label for="password" class="form-label">Password</label>
-                            <input type="password" id="password" name="password" class="form-control py-4" value={{ old('password',Auth::user()->password)}}  required>
+                            <input type="password" id="password" name="password" class="form-control py-4" value={{ old('password',Auth::user()->password)}} required>
                         </div>
+                        <div class="form-group">
+                            <label for="password_confirmation" class="form-label">Confirm Password</label>
+                            <input type="password" id="password_confirmation" name="password_confirmation" class="form-control py-4" required>
+                        </div>
+                        @error('password')
+                        <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                        @error('password_confirmation')
+                        <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
             </div>
 
-           
 
-            
+
+
             <div class="text-right mb-5">
                 <button type="submit" class="btn btn-success">Update Profile</button>
                 <a href="{{ route('student.dashboard') }}" class="btn btn-secondary">Cancel</a>
@@ -77,5 +94,5 @@
     </form>
 
 </div>
-    
+
 @endsection
