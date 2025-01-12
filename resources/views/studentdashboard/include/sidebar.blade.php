@@ -25,7 +25,7 @@
                 </li>
             </ul> --}}
 
-            <div class="sidebar-heading">Student</div>
+            {{-- <div class="sidebar-heading">Student</div> --}}
             <div class="sidebar-block p-0">
                 <ul class="sidebar-menu mt-0">
 
