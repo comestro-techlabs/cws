@@ -9,4 +9,11 @@ class Workshop extends Model
     //
 
     protected $guarded = [];
+
+    public function payment()
+    {
+        return $this->hasOne(Payment::class);
+    }
+    
+
 }
