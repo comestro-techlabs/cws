@@ -71,7 +71,7 @@ class PaymentController extends Controller
     public function saveWorkshopPayment(Request $request)
     {
         $input = $request->all();
-
+        
         $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
         $payment = $api->payment->fetch($input['razorpay_payment_id']);
         if (!empty($input['razorpay_payment_id'])) {
@@ -112,6 +112,7 @@ class PaymentController extends Controller
             return redirect()->back()->with('error', 'Something Went Wrong.');
         }
     }
-
+    
+    
 
 }
