@@ -53,13 +53,17 @@ class AuthController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|unique:users',
-            'contact' => 'required|min:10|max:10',
+            'email' => 'required|string|email|unique:users,email|unique:users,email,'.$request->id.',id',
+            'contact' => 'required|digits:10',
             'gender' => 'required|in:male,female,other',
             // 'education_qualification' => 'required|string|max:255',
             'dob' => 'required|date',
             'password' => 'required|string|min:8',
+        ], [
+            'email.unique' => 'The email address is already taken. Please use a different one.',
+            'contact.digits' => 'The contact number must be exactly 10 digits.',
         ]);
+        
 
         $user = new User();
         $user->name = $request->name;
