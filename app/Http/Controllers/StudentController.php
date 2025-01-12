@@ -27,6 +27,14 @@ class StudentController extends Controller
         $data['students'] = User::where('isAdmin', false)->paginate(10);
         return view('admin.students.manage', $data);
     }
+    public function search(Request $request)
+    {
+        $search = $request->search;
+        $students = User::whereLike('name', "%$search%")
+        ->orWhere('email', 'LIKE', "%$search%")
+        ->paginate(10);
+        return view("admin.students.manage", ['students' => $students]);
+    }
     public function searchCourse(Request $request)
     {
         $search = $request->search;
