@@ -12,7 +12,7 @@ class AuthController extends Controller
     // displaying login form 
     public function showLoginForm()
     {
-        if(Auth::id()){
+        if (Auth::id()) {
             return redirect()->route('student.dashboard');
         }
         return view('auth.login');
@@ -21,7 +21,7 @@ class AuthController extends Controller
     // login logics
     public function login(Request $request)
     {
-        
+
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
@@ -53,13 +53,20 @@ class AuthController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|unique:users',
-            'contact' => 'required|min:10|max:10',
+            'email' => 'required|string|email|unique:users,email,' . $request->id . ',id',
+            'contact' => 'required|digits:10|unique:users,contact',
             'gender' => 'required|in:male,female,other',
-            // 'education_qualification' => 'required|string|max:255',
+            'education_qualification' => 'required|string|max:255',
             'dob' => 'required|date',
             'password' => 'required|string|min:8',
+        ], [
+            'email.unique' => 'The email address is already taken.',
+            'contact.unique' => 'The contact number is already in use.',
+            'contact.digits' => 'The contact number must be exactly 10 digits.',
+            'dob.date' => 'The date of birth must be a valid date.',
         ]);
+
+
 
         $user = new User();
         $user->name = $request->name;
@@ -76,8 +83,9 @@ class AuthController extends Controller
 
 
     // logout method
-    public function logout(){
+    public function logout()
+    {
         Auth::logout();
-        return redirect()->route('auth.login')->with('success','You have been logged out.');
+        return redirect()->route('auth.login')->with('success', 'You have been logged out.');
     }
 }

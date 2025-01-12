@@ -25,7 +25,7 @@
                 </li>
             </ul> --}}
 
-            <div class="sidebar-heading">Student</div>
+            {{-- <div class="sidebar-heading">Student</div> --}}
             <div class="sidebar-block p-0">
                 <ul class="sidebar-menu mt-0">
 
@@ -56,7 +56,7 @@
                             <span class="sidebar-menu-text">Manage Assignment</span>
                         </a>
                     </li>
-                    <li class="sidebar-menu-item">
+                    <li class="sidebar-menu-item" >
                         {{-- <a class="sidebar-menu-button" href="student-quiz.html"> --}}
                             {{-- {{dd($courses)}} --}}
                         <a class="sidebar-menu-button" href="{{route('student.course.quiz')}}">
@@ -64,7 +64,7 @@
                             <span class="sidebar-menu-text">Take Quiz</span>
                         </a>
                     </li>
-                    <li class="sidebar-menu-item">
+                    <li class="sidebar-menu-item" >
                         <a class="sidebar-menu-button" href="{{ route('student.course.result') }}">
                             <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">dns</i>
                             <span class="sidebar-menu-text">View Result</span>
