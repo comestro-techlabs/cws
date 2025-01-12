@@ -493,7 +493,7 @@ public function showAllAttempts($course_id)
             'contact' => 'nullable|string|max:20',
             'dob' => 'nullable|date',
             'gender' => 'required|in:male,female,other',
-            'password' => 'required|string|min:8',
+            'password' => 'required|string|min:8|confirmed',
             'education_qualification' => 'nullable|string|max:255',
         ];
 
