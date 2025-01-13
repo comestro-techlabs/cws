@@ -7,8 +7,9 @@
                     
                     <span class="flex d-flex flex-column">
                         <span class="sidebar-brand"> <span class="self-center text-2xl font-semibold whitespace-nowrap ">
-                            <img src="{{ asset('assets/comestro.png') }}" class="md:h-14 h-12 " alt="">
-                        </span></span>
+                           Learn Syntax
+                        </span>
+                    </span>
                         {{-- <small>Next Generation</small> --}}
                     </span>
                 </a>
