@@ -10,7 +10,7 @@
         </h2>
         <a href="{{ route('assignment.index') }}"
             class="bg-blue-500 text-white px-2 py-2 rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 sm:mb-0">Back
-            to Assignments List</a>
+            to Assignments List <i class="bi bi-arrow-right"></i></a>
     </div>
 
     <!-- Edit Form -->
@@ -57,18 +57,18 @@
                 </div>
                 <div class="mb-4">
                     <button
-                        class="bg-blue-500 text-white px-2 py-2 rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 sm:mb-0">Submit</button>
+                        class="bg-blue-500 w-full text-white px-2 py-2 rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 sm:mb-0">Submit</button>
                 </div>
             </form>
-        <div class="mb-4">
+        {{-- <div class="mb-4">
             <label for="description" class="block text-sm font-medium text-gray-700 mb-2">Description</label>
             <textarea name="description" id="editor" rows="4"
                       class="w-full border-gray-300 rounded-lg shadow-sm">{{ old('description', $assignment->description) }}</textarea>
             @error('description')
                 <p class="text-red-500 text-sm">{{ $message }}</p>
             @enderror
-        </div>
-        <button type="submit"> submit</button>
+        </div> --}}
+        {{-- <button type="submit"> submit</button> --}}
     </form>
         </div>
     </div>

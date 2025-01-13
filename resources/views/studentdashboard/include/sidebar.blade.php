@@ -15,33 +15,34 @@
             </div>
 
 
-            <ul class="sidebar-menu">
+            {{-- <ul class="sidebar-menu">
                 <li class="sidebar-menu-item active">
-                    <a class="sidebar-menu-button" href="index.html">
+                    <a class="sidebar-menu-button" href="{{route('student.dashboard')}}">
 
                         <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">photo_filter</i>
-                        <span class="sidebar-menu-text">Overview</span>
+                        <span class="sidebar-menu-text">Dashboard</span>
                     </a>
                 </li>
-            </ul>
+            </ul> --}}
 
-            <div class="sidebar-heading">Student</div>
+            {{-- <div class="sidebar-heading">Student</div> --}}
             <div class="sidebar-block p-0">
                 <ul class="sidebar-menu mt-0">
-                    <li class="sidebar-menu-item">
+
+                     <li class="sidebar-menu-item">
                         <a class="sidebar-menu-button" href="{{route('student.dashboard')}}">
+
                             <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">star_half</i>
                             <span class="sidebar-menu-text">Dashboard</span>
                         </a>
-                    </li>
+
                     <li class="sidebar-menu-item">
                         <a class="sidebar-menu-button" href="{{route('student.course')}}">
                             <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">queue_play_next</i>
                             <span class="sidebar-menu-text">Courses</span>
                         </a>
                     </li>
-                    {{-- <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button" href="{{ route('student.buyCourse', ['id' => $course->id]) }}"> --}}
+                     
                     <li class="sidebar-menu-item">
                         <a class="sidebar-menu-button" href="{{route('student.coursePurchase')}}">
                             <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">shopping_cart</i>
@@ -94,91 +95,7 @@
             </div>
 
 
-            {{-- <div class="sidebar-heading">Author</div>
-            <div class="sidebar-block p-0">
-                <ul class="sidebar-menu mt-0">
-                    <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button" href="author-dashboard.html">
-                            <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">dvr</i>
-                            <span class="sidebar-menu-text">Dashboard</span>
-                            <span class="badge badge-warning rounded-circle badge-notifications ml-auto">8</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button" href="author-courses.html">
-                            <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">layers</i>
-                            <span class="sidebar-menu-text">Courses</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button" href="author-quiz-manager.html">
-                            <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">assignment</i>
-                            <span class="sidebar-menu-text">Quiz Manager</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button" href="author-earnings.html">
-                            <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">local_atm</i>
-                            <span class="sidebar-menu-text">Earnings</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button" href="author-reports.html">
-                            <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">pie_chart</i>
-                            <span class="sidebar-menu-text">Reports</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button" href="author-payout.html">
-                            <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">credit_card</i>
-                            <span class="sidebar-menu-text">Payout</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button" href="login.html">
-                            <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">exit_to_app</i>
-                            <span class="sidebar-menu-text">Logout</span>
-                        </a>
-                    </li>
-                </ul>
-            </div> --}}
-
-            {{-- <div class="sidebar-heading">Admin</div>
-            <div class="sidebar-block p-0">
-                <ul class="sidebar-menu mt-0">
-                    <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button" href="admin-dashboard.html">
-                            <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">dvr</i>
-                            <span class="sidebar-menu-text">Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button" href="admin-emails.html">
-                            <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">email</i>
-                            <span class="sidebar-menu-text">Emails</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button" href="admin-chat.html">
-                            <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">comment</i>
-                            <span class="sidebar-menu-text">Chat</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button" href="admin-tickets.html">
-                            <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">local_offer</i>
-                            <span class="sidebar-menu-text">Tickets</span>
-                            <span class="badge badge-warning badge-notifications ml-auto">NEW</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-menu-item">
-                        <a class="sidebar-menu-button" href="admin-trello.html">
-                            <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">touch_app</i>
-                            <span class="sidebar-menu-text">Trello</span>
-                        </a>
-                    </li>
-                </ul>
-            </div> --}}
+         
         </div>
     </div>
 </div>

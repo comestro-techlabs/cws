@@ -65,4 +65,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Answer::class);
     }
+    public function uploads()
+{
+    return $this->hasMany(Assignment_upload::class, 'student_id');
+}
 }
