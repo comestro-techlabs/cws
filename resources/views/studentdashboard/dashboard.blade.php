@@ -1,4 +1,4 @@
-@extends('studentDashboard.include.base')
+@extends('studentdashboard.include.base')
 @section('content')
     <!-- Header Layout Content -->
     <div class="mdk-header-layout__content mdk-header-layout__content--fullbleed mdk-header-layout__content--scrollable page" style="padding-top: 60px;">
@@ -22,7 +22,7 @@
                                 <div class="card-subtitle text-muted">Your recent courses</div>
                             </div>
                             <div class="ml-auto">
-                                <a href="student-courses.html" class="btn btn-light">Browse All</a>
+                                <a href="{{route('student.coursePurchase')}}" class="btn btn-light">Browse All</a>
                             </div>
                         </div>
 
@@ -30,23 +30,25 @@
 
 
                         <ul class="list-group list-group-flush mb-0" style="z-index: initial;">
-
+                            @foreach ($courses as $course)
                             <li class="list-group-item" style="z-index: initial;">
                                 <div class="d-flex align-items-center">
                                     <a href="#" class="mr-3">
-                                        <img src="{{ asset('assets/images/logos/vuejs.svg')}}" alt="course" class="">
+                                         {{-- <img src="{{ asset('assets/images/logos/vuejs.svg')}}" alt="course" class=""> --}}
+                                         <img src="{{ asset('storage/course_images/' . $course->course_image) }}" alt="course" class=""> 
 
                                     </a>
                                     <div class="flex">
-                                        <a href="#" class="text-body"><strong>Learn Vue.js Fundamentals</strong></a>
-                                        <div class="d-flex align-items-center">
+                                        {{-- <a href="#" class="text-body"><strong>Learn Vue.js Fundamentals</strong></a> --}}
+                                        <a href="#" class="text-body"><strong>{{ $course->title }}</strong></a>
+                                        {{-- <div class="d-flex align-items-center">
                                             <div class="progress" style="width: 100px; height:4px;">
                                                 <div class="progress-bar bg-vuejs" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                             </div>
                                             <small class="text-muted ml-2">25%</small>
-                                        </div>
+                                        </div> --}}
                                     </div>
-                                    <div class="dropdown ml-3">
+                                    {{-- <div class="dropdown ml-3">
                                         <a href="#" class="dropdown-toggle text-muted" data-caret="false" data-toggle="dropdown">
                                             <i class="material-icons">more_vert</i>
                                         </a>
@@ -55,18 +57,19 @@
                                             <a class="dropdown-item" href="#">Proceed</a>
                                             <a class="dropdown-item" href="#">Close</a>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </li>
 
-                            <li class="list-group-item" style="z-index: initial;">
+                             {{-- <li class="list-group-item" style="z-index: initial;">
                                 <div class="d-flex align-items-center">
                                     <a href="#" class="mr-3">
                                         <img src="{{ asset('assets/images/logos/angular.svg')}}" alt="course" class="">
 
                                     </a>
                                     <div class="flex">
-                                        <a href="#" class="text-body"><strong>Angular in Steps</strong></a>
+                                         <a href="#" class="text-body"><strong>Angular in Steps</strong></a>
+                                       
                                         <div class="d-flex align-items-center">
                                             <div class="progress" style="width: 100px; height:4px;">
                                                 <div class="progress-bar bg-angular" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
@@ -85,9 +88,9 @@
                                         </div>
                                     </div>
                                 </div>
-                            </li>
+                            </li> 
 
-                            <li class="list-group-item" style="z-index: initial;">
+                             <li class="list-group-item" style="z-index: initial;">
                                 <div class="d-flex align-items-center">
                                     <a href="#" class="mr-3">
                                         <img src="{{ asset('assets/images/logos/javascript.svg')}}" alt="course" class="">
@@ -113,8 +116,8 @@
                                         </div>
                                     </div>
                                 </div>
-                            </li>
-
+                            </li>  --}}
+                           @endforeach
                         </ul>
                     </div>
 
@@ -132,25 +135,27 @@
 
 
                         <ul class="list-group list-group-flush mb-0">
-
+                          @foreach($exams as $exam)
                             <li class="list-group-item">
                                 <div class="media align-items-center">
                                     <div class="media-body">
-                                        <a class="text-body mb-1" href="#"><strong>Level 1 HTML</strong></a><br>
+        
+                                        <a class="text-body mb-1" href="#"><strong> {{$exam->exam_name}}</strong></a><br> 
                                         <div class="d-flex align-items-center">
-                                            <i class="material-icons icon-16pt text-muted mr-1">queue_play_next</i> <a href="take-course.html" class="small text-muted">Basics of HTML</a>
+                                             <i class="material-icons icon-16pt text-muted mr-1">queue_play_next</i> <a href="take-course.html" class="small text-muted">Basics of HTML</a> 
+                                          
                                         </div>
                                     </div>
                                     <div class="media-right text-center d-flex align-items-center">
                                         <span class="badge badge-warning mr-2">
                                             Good
                                         </span>
-                                        <h4 class="mb-0 text-warning">5.8</h4>
+                                        <h4 class="mb-0 text-warning">5.8</h4> 
                                     </div>
                                 </div>
                             </li>
 
-                            <li class="list-group-item">
+                            {{-- <li class="list-group-item">
                                 <div class="media align-items-center">
                                     <div class="media-body">
                                         <a class="text-body mb-1" href="#"><strong>Level 2 Angular</strong></a><br>
@@ -182,8 +187,8 @@
                                         <h4 class="mb-0 text-danger">2.8</h4>
                                     </div>
                                 </div>
-                            </li>
-
+                            </li> --}}
+                       @endforeach
                         </ul>
                     </div>
                 </div>
@@ -519,7 +524,7 @@
 
                     <!-- START SKILLS -->
 
-                    <div class="card">
+                    {{-- <div class="card">
                         <div class="card-header">
                             <h4 class="card-header__title">Skills</h4>
                         </div>
@@ -577,7 +582,7 @@
                                 <span class="text-muted">View All</span>
                             </a>
                         </div>
-                    </div>
+                    </div> --}}
                     <!-- END SKILLS -->
                 </div>
             </div>

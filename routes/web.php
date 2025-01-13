@@ -14,6 +14,7 @@
     use App\Http\Controllers\OptionController;
     use App\Http\Controllers\PhonepeController;
     use App\Http\Controllers\PublicController;
+    use App\Http\Controllers\ResultController;
     use App\Http\Controllers\StudentController;
     use App\Http\Controllers\PaymentController;
     use App\Http\Controllers\PortfolioController;
@@ -44,13 +45,19 @@ use App\Models\Workshop;
             Route::get('/course', 'course')->name('student.course');
             Route::get('/assignments/view', 'assignmentList')->name('student.assignments-view');
             Route::get('/assignments/upload/{id}', 'viewAssignments')->name('student.assignment-upload');
-        });
 
-
-        Route::get('/quiz_instruction', function () {
-            return view('studentdashboard.quiz_instruction');
-        })->name('quiz_instruction');
+         });    
     });
+   
+          
+        // Route::get('/quiz_instruction', function () {
+        //     return view('studentdashboard.quiz_instruction');
+        // })->name('quiz_instruction');  
+
+       // });
+
+
+        
 
     Route::get('/get-access-token', [StudentController::class, 'store']);
     Route::post('/student/assignments/upload/{assignment_id}', [StudentController::class, 'store'])->name('assignments.store');
@@ -145,6 +152,17 @@ use App\Models\Workshop;
             // Route::get('/quiz/{quiz}/results', [QuizController::class, 'results'])->name('quiz.results');
 
             Route::get('/answer',[AnswerController::class,'show'])->name('answer.results');
+            Route::get('/exam/result',[ResultController::class,'showExam'])->name('exam.results');
+            Route::get('/exam/{exam}/users',[ResultController::class,'showExamUser'])->name('exam.user.results');
+            
+            // Route::get('/results/{examId}/{userId}/attempts', [ResultController::class, 'getResultsByAttempts'])->name('attempt.results');
+            Route::get('/exams/{examId}/user/{userId}/attempts', [ResultController::class, 'getResultsByAttempts'])
+    ->name('attempt.results');
+            Route::get('/results/{examId}/{userId}/attempt/{attempt}', [ResultController::class, 'getAttemptDetails'])->name('attempt.details');
+
+
+
+            Route::get('/answer',[AnswerController::class,'show'])->name('answer.results');
                   
     Route::get('/portfolio/create', [PortfolioController::class, 'create'])->name('portfolio.create');
     Route::post('/portfolio/store', [PortfolioController::class, 'store'])->name('portfolio.store');
@@ -209,6 +227,12 @@ use App\Models\Workshop;
     Route::prefix('auth')->controller(AuthController::class)->group(function () {
         Route::get('/login', 'showLoginForm')->name('auth.login');
         Route::post('/login', 'login')->name('auth.login.post');
+        Route::get('verify-otp',  'showOtpForm')->name('show.otp.form');
+
+// OTP verification handling route (POST request to verify OTP)
+Route::post('verify-otp',  'verifyOtp')->name('verify.otp');
+Route::post('send-otp', 'sendOtp')->name('auth.sendOtp');
+
         Route::get('/register', 'showRegistrationForm')->name('auth.register');
         Route::post('/register', 'register')->name('auth.register.post');
         Route::get('/logout', 'logout')->name('auth.logout');

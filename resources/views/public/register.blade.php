@@ -8,7 +8,7 @@ Sign up
 
 <div class="font-[sans-serif]  bg-white max-w-4xl flex w-full h-screen items-center mx-auto md:h-screen p-4">
     <div class=" grid md:grid-cols-3 items-center shadow-xl border rounded-xl  overflow-hidden">
-        <div class="max-md:order-1  hidden md:block flex flex-col justify-center space-y-16 max-md:mt-16 min-h-full bg-gradient-to-r from-gray-900 to-gray-700 lg:px-8 px-4 py-4">
+        <div class="max-md:order-1  hidden md:block  flex-col justify-center space-y-16 max-md:mt-16 min-h-full bg-gradient-to-r from-gray-900 to-gray-700 lg:px-8 px-4 py-4">
             <div class="mt-24">
                 <h4 class="text-white text-lg font-semibold">Create Your Account</h4>
                 <p class="text-[13px] text-gray-300 mt-3 leading-relaxed">Welcome to <span class="text-orange-500 font-bold">Com</span><span
@@ -31,8 +31,8 @@ Sign up
                 @csrf
                 <!-- Name -->
                 <div>
-                    <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-                    <input type="text" name="name" id="name"
+                    <label for="name"  class="block text-sm font-medium text-gray-700">Name</label>
+                    <input type="text" value="{{old('name')}}" name="name" id="name"
                         class="form-input mt-1 block w-full rounded-md border-gray-300 focus:border-gray-500 focus:ring focus:ring-gray-200 focus:ring-opacity-50">
                     @error('name')
                     <p class="text-xs text-red-500">{{ $message }}</p>
@@ -42,8 +42,8 @@ Sign up
                 <!-- Email -->
                 <div class="flex flex-1 gap-2">
                     <div class="flex-1">
-                        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                        <input type="email" name="email" id="email"
+                        <label for="email"  class="block text-sm font-medium text-gray-700">Email</label>
+                        <input type="email" value="{{old('email')}}" name="email" id="email"
                             class="form-input mt-1 block w-full rounded-md border-gray-300 focus:border-gray-500 focus:ring focus:ring-gray-200 focus:ring-opacity-50">
                         @error('email')
                         <p class="text-xs text-red-500">{{ $message }}</p>
@@ -54,7 +54,7 @@ Sign up
                     <!-- Contact -->
                     <div class="flex-1">
                         <label for="contact" class="block text-sm font-medium text-gray-700">Contact</label>
-                        <input type="text" name="contact" id="contact"
+                        <input type="text" value="{{old('contact')}}" name="contact" id="contact"
                             class="form-input mt-1 block w-full rounded-md border-gray-300 focus:border-gray-500 focus:ring focus:ring-gray-200 focus:ring-opacity-50">
                         @error('contact')
                         <p class="text-xs text-red-500">{{ $message }}</p>
@@ -67,7 +67,7 @@ Sign up
                 <!-- Gender -->
                 <div>
                     <label for="gender" class="block text-sm font-medium text-gray-700">Gender</label>
-                    <select name="gender" id="gender"
+                    <select name="gender" value="{{old('gender')}}"  id="gender"
                         class="mt-1 block px-3 py-2 w-full rounded-md border-gray-300 focus:border-gray-500 focus:ring focus:ring-gray-200 focus:ring-opacity-50">
                         <option value="">Select Gender</option>
                         <option value="male">Male</option>
@@ -82,18 +82,10 @@ Sign up
                 <!-- Education Qualification -->
                 <div class="flex flex-1 gap-2">
                     <div class="flex-1">
-                        <label for="education_qualification" class="block text-sm font-medium text-gray-700">
-                            Education Qualification
-                        </label>
-                        <select name="education_qualification" id="education_qualification"
-                            class="mt-1 block px-3 py-2 w-full rounded-md border-gray-300 focus:border-gray-500 focus:ring focus:ring-gray-200 focus:ring-opacity-50">
-                            <option value="" disabled selected>Select your qualification</option>
-                            <option value="High School">BCA</option>
-                            <option value="Bachelor's Degree">MCA</option>
-                            <option value="Master's Degree">BCOM</option>
-                            <option value="PhD">BSC</option>
-                            <option value="Other">Other</option>
-                        </select>
+                        <label for="education_qualification" class="block text-sm font-medium text-gray-700">Education
+                            Qualification</label>
+                        <input value="{{old('education_qualification')}}" type="text" name="education_qualification" id="education_qualification"
+                            class="form-input mt-1 block w-full rounded-md border-gray-300 focus:border-gray-500 focus:ring focus:ring-ray-200 focus:ring-opacity-50">
                         @error('education_qualification')
                         <p class="text-xs text-red-500">{{ $message }}</p>
                         @enderror
@@ -103,8 +95,8 @@ Sign up
                     <!-- Date of Birth -->
                     <div class="flex-1">
                         <label for="dob" class="block text-sm font-medium text-gray-700">Date of Birth</label>
-                        <input type="date" name="dob" id="dob"
-                            class="form-input mt-1 block w-full rounded-md border-gray-300 focus:border-gray-500 focus:ring focus:ring-gray-200 focus:ring-opacity-50" max="{{ date('Y-m-d') }}">
+                        <input value="{{old('dob')}}" type="date" name="dob" id="dob"
+                            class="form-input mt-1 block w-full rounded-md border-gray-300 focus:border-gray-500 focus:ring focus:ring-gray-200 focus:ring-opacity-50">
                         @error('dob')
                         <p class="text-xs text-red-500">{{ $message }}</p>
                         @enderror
@@ -114,7 +106,7 @@ Sign up
                 <!-- Password -->
                 <div>
                     <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                    <input type="password" name="password" id="password"
+                    <input  type="password" name="password" id="password"
                         class="form-input mt-1 block w-full rounded-md border-gray-300 focus:border-gray-500 focus:ring focus:ring-gray-200 focus:ring-opacity-50">
                    
                 </div>

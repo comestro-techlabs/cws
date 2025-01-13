@@ -71,6 +71,7 @@
         </li>
         <li>
             <button type="button"
+
                 class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                 aria-controls="portfolio-dropdown" data-collapse-toggle="portfolio-dropdown">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -88,6 +89,7 @@
             </button>
 
             <ul id="portfolio-dropdown" class="hidden py-2 space-y-2">
+
                 <li>
                     <a href="{{ route('portfolio.create') }}"
                         class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Create
@@ -95,14 +97,16 @@
                 </li>
                 <li>
                     <a href="{{ route('portfolio.admin.index') }}"
-                        class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Manage Portfolio
-                        
+
+                        class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Manage
+                        Portfolio
+
                     </a>
                 </li>
             </ul>
         </li>
+        <li>
 
-      <li>
             <button type="button"
     class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
     aria-controls="workshop-dropdown" data-collapse-toggle="workshop-dropdown">
@@ -132,14 +136,8 @@
                         Manage Workshop
                     </a>
                 </li>
-            </ul>
+            </ul> 
         </li>
-        
-        
-
-      
-
-
         <li>
             <button type="button"
                 class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
@@ -246,12 +244,12 @@
             <ul id="exam" class="hidden py-2 space-y-2">
                 <li>
                     <a href="{{ route('exam.create') }}"
-                        class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Manage
+                        class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Insert
                         Exam</a>
                 </li>
                 <li>
                     <a href="{{ route('exam.show') }}"
-                        class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Insert
+                        class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Manage
                         Exam
                     </a>
                 </li>
@@ -289,7 +287,7 @@
         </li>
 
         <li>
-            <a href="{{ route('answer.results') }}"
+            <a href="{{ route('exam.results') }}"
                 class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="size-6">

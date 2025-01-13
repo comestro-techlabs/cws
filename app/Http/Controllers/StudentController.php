@@ -14,7 +14,11 @@ use App\Models\ExamUser;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
+use Illuminate\Support\Facades\Log;
+
 use Illuminate\Support\Facades\Http;
+
 
 class StudentController extends Controller
 {
@@ -22,6 +26,14 @@ class StudentController extends Controller
     {
         $data['students'] = User::where('isAdmin', false)->paginate(10);
         return view('admin.students.manage', $data);
+    }
+    public function search(Request $request)
+    {
+        $search = $request->search;
+        $students = User::whereLike('name', "%$search%")
+        ->orWhere('email', 'LIKE', "%$search%")
+        ->paginate(10);
+        return view("admin.students.manage", ['students' => $students]);
     }
     public function searchCourse(Request $request)
     {
@@ -153,10 +165,11 @@ class StudentController extends Controller
         $studentId = User::findOrFail(Auth::id())->id;
      
         $datas = [
-            'courses' => User::find(Auth::id())->courses()->get(),
+            'courses' => User::find(Auth::id())->courses()->take(2)->get(),
             'payments' => Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->get(),
+            'exams' => Exam::whereIn('course_id', User::find(Auth::id())->courses->pluck('id'))->get(),
         ];
-        return view('studentDashboard.dashboard',$datas);
+        return view('studentdashboard.dashboard',$datas);
     }
 
     public function coursePurchase()
@@ -169,7 +182,7 @@ class StudentController extends Controller
 
             'courses' => User::find(Auth::id())->courses()->get(),
         ];
-        return view('studentDashboard.course.purchaseCourse', $data);
+        return view('studentdashboard.course.purchaseCourse', $data);
     }
     public function course()
     {
@@ -177,7 +190,7 @@ class StudentController extends Controller
         $data = [
             'courses' => Course::paginate(4),
         ];
-        return view('studentDashboard.course.course', $data);
+        return view('studentdashboard.course.course', $data);
     }
 
 
@@ -236,7 +249,7 @@ class StudentController extends Controller
     $user = Auth::user();
     $courses = $user->courses()->with('users')->get();
 
-    return view('studentDashboard.quiz.course', compact('courses'));
+    return view('studentdashboard.quiz.course', compact('courses'));
 }
     // public function showquiz()
     // {
@@ -268,45 +281,95 @@ class StudentController extends Controller
     // }
 
 
-    public function showquiz($courseId)
-    {
 
-        if (!Auth::check()) {
-            return redirect()->route('auth.login');
-        }
+    // public function showquiz($courseId)
+    // {
+    //     if (!Auth::check()) {
+    //         return redirect()->route('login');
+    //     }
+
+   
     
-        $user = Auth::user();
-        $courses = $user->courses()->where('courses.id', $courseId)->with([
-            'exams' => function ($query) {
-                $query->where('status', true);
-            },
-            'exams.quizzes' => function ($query) {
-                $query->where('status', true);
-            }
-        ])->first();
+    //     $user = Auth::user();
+    //     $courses = $user->courses()->where('courses.id', $courseId)->with([
+    //         'exams' => function ($query) {
+    //             $query->where('status', true);
+    //         },
+    //         'exams.quizzes' => function ($query) {
+    //             $query->where('status', true);
+    //         }
+    //     ])->first();
         
 
-        if (!$courses) {
-            return redirect()->route('student.courseQuiz')->with('error', 'Course not found or you do not have access to it.');
-        }
+    //     if (!$courses) {
+    //         return redirect()->route('student.course.quiz')->with('error', 'Course not found or you do not have access to it.');
+    //     }
     
-        $attempt = ExamUser::where('user_id', $user->id)
-            ->whereHas('exam', function ($query) use ($courseId) {
-                $query->where('course_id', $courseId);
-            })
-            ->first();
+    //     $attempt = ExamUser::where('user_id', $user->id)
+    //         ->whereHas('exam', function ($query) use ($courseId) {
+    //             $query->where('course_id', $courseId);
+    //         })
+    //         ->first();
     
-        $value = $attempt ? $attempt->attempts : 0;
+    //     $value = $attempt ? $attempt->attempts : 0;
     
-        if ($value <= 3) {
-            return view("studentdashboard.quiz.quiz", compact('courses'));
-        } else {
-            $lastExamId = $attempt ? $attempt->exam_id : null;
-            return redirect()->route('student.examResult', ['exam_id' => $lastExamId])
-                             ->with('message', 'You have reached the maximum number of attempts. Please contact the admin for further assistance.');
-            // return redirect()->route('student.examResult');
-        }
+    //     if ($value <= 3) {
+    //         return view("studentdashboard.quiz.quiz", compact('courses'));
+    //     } else {
+    //         return redirect()->route('student.course.quiz')->with('error', 'You had reached the max.');
+    //     }
+    // }
+    
+    public function showquiz($courseId)
+{
+    if (!Auth::check()) {
+         return redirect()->route('auth.login');
     }
+
+    $user = Auth::user();
+    $courses = $user->courses()->where('courses.id', $courseId)->with([
+        'exams' => function ($query) {
+            $query->where('status', true);
+        },
+        'exams.quizzes' => function ($query) {
+            $query->where('status', true);
+        }
+    ])->first();
+
+    if (!$courses) {
+        return redirect()->route('student.course.quiz')->with('error', 'Course not found or you do not have access to it.');
+    }
+
+    // Check if the user has already attempted the exam more than 2 times
+    $attempt = ExamUser::where('user_id', $user->id)
+        ->whereHas('exam', function ($query) use ($courseId) {
+            $query->where('course_id', $courseId);
+        })
+        ->first();
+
+    $value = $attempt ? $attempt->attempts : 0;
+
+    // Allow a maximum of 2 attempts
+    if ($value >= 2) {
+        return redirect()->route('student.course.quiz')->with('error', 'You have reached the maximum number of attempts.');
+    }
+
+    // Fetch quizzes and check if there are enough questions
+    $quizzes = $courses->exams->flatMap(function ($exam) {
+        return $exam->quizzes->where('status', true);
+    })->shuffle()->take(3);
+
+    if ($quizzes->count() < 3) {
+        abort(500, 'Not enough quiz questions available (minimum 3 required).');
+    }
+
+    return view("studentdashboard.quiz.quiz", compact('courses', 'quizzes'));
+}
+
+    
+
+
+
     
 
     public function storeAnswer(Request $request)
@@ -409,7 +472,7 @@ class StudentController extends Controller
         $user = Auth::user();
         $courses = $user->courses()->with('users')->get();
     
-        return view('studentDashboard.quiz.course', compact('courses'));
+        return view('studentdashboard.quiz.course', compact('courses'));
     }
 //     public function showAllAttempts($exam_id)
 // {
@@ -461,7 +524,7 @@ public function showAllAttempts($course_id)
             'total_marks' => $total_marks,
         ];
     }
-     
+
     return view('studentdashboard.quiz.all_attempts', compact('attempts_data', 'course'));
 }
 
@@ -473,7 +536,7 @@ public function showAllAttempts($course_id)
         }
         $data['course'] = Course::findOrFail($id);
 
-        return view("studentDashboard.course.viewCourse", $data);
+        return view("studentdashboard.course.viewCourse", $data);
     }
     public function editProfile()
     {
@@ -522,7 +585,7 @@ public function showAllAttempts($course_id)
         }])
         ->get();
     
-        return view('studentDashboard.assignments.manageAssignments', $data);
+        return view('studentdashboard.assignments.manageAssignments', $data);
     }
     
 
@@ -552,7 +615,7 @@ public function showAllAttempts($course_id)
             ->first();
     
         // Return assignment and uploaded file details to the view
-        return view('studentDashboard.assignments.studentAssignment', [
+        return view('studentdashboard.assignments.studentAssignment', [
             'assignment' => $assignment,
             'uploadedFile' => $uploadedFile,
         ]);
@@ -634,7 +697,7 @@ public function showAllAttempts($course_id)
     }
     // public function viewAssignments(){
     //     $data['assignments']=Assignments::all();
-    //     return view('studentDashboard.assignments.studentAssignment',$data);
+    //     return view('studentdashboard.assignments.studentAssignment',$data);
     // }
 
 }

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->decimal('amount', 8, 2);
             $table->string('receipt_no')->nullable();
             $table->string('payment_id')->nullable();
+            $table->string('order_id')->nullable();
             $table->string('transaction_fee')->nullable();
             $table->string('transaction_id')->nullable();
             $table->string('transaction_date')->nullable();
