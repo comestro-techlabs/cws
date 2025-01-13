@@ -1,0 +1,100 @@
+<div class="max-w-lg mx-auto p-6 border rounded-md shadow-md">
+        <h2 class="text-2xl font-semibold text-center mb-4">Login</h2>
+
+        <!-- Password-based login form (Initially shown) -->
+        <div id="password-form">
+            <form action="{{ route('auth.login') }}" method="POST" class="space-y-4">
+                @csrf
+                <div class="mb-4">
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                    <input type="email" name="email" id="email" class="w-full mt-1 p-2 border rounded-md" required value="{{ old('email') }}">
+                    @error('email')
+                        <span class="text-red-500 text-xs">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="mb-4">
+                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                    <input type="password" name="password" id="password" class="w-full mt-1 p-2 border rounded-md" placeholder="Enter your password">
+                    @error('password')
+                        <span class="text-red-500 text-xs">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <button type="submit" class="w-full p-2 bg-blue-500 text-white rounded-md mt-4">Login with Password</button>
+            </form>
+        </div>
+
+        <hr class="my-6">
+
+        <!-- Button to show OTP login form -->
+        <button id="show-otp-form" class="w-full p-2 text-center bg-green-500 text-white rounded-md mt-4" onclick="toggleForm('otp')">
+            Login with OTP
+        </button>
+
+        <!-- OTP-based login form (Initially hidden) -->
+        <div id="otp-form" class="hidden space-y-4 mt-4">
+            <form action="{{ route('auth.sendOtp') }}" method="POST">
+                @csrf
+                <div class="mb-4">
+                    <label for="otp_email" class="block text-sm font-medium text-gray-700">Enter your email for OTP</label>
+                    <input type="email" name="email" id="otp_email" class="w-full mt-1 p-2 border rounded-md" required value="{{ old('email') }}">
+                    @error('email')
+                        <span class="text-red-500 text-xs">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <button type="submit" class="w-full p-2 bg-green-500 text-white rounded-md mt-4">Send OTP</button>
+            </form>
+        </div>
+
+        <!-- OTP Verification Form (Initially hidden) -->
+        <div id="otp-verification-form" class="hidden space-y-4 mt-4">
+            <form action="{{ route('verify.otp') }}" method="POST">
+                @csrf
+                <input type="hidden" name="email" id="otp_email_hidden" value="{{ old('email') }}">
+
+                <div class="mb-4">
+                    <label for="otp" class="block text-sm font-medium text-gray-700">Enter OTP</label>
+                    <input type="text" name="otp" id="otp" class="w-full mt-1 p-2 border rounded-md" required>
+                    @error('otp')
+                        <span class="text-red-500 text-xs">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <button type="submit" class="w-full p-2 bg-green-500 text-white rounded-md mt-4">Verify OTP</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Function to toggle between password and OTP forms
+        function toggleForm(formType) {
+            const passwordForm = document.getElementById('password-form');
+            const otpForm = document.getElementById('otp-form');
+            const otpVerificationForm = document.getElementById('otp-verification-form');
+
+            if (formType === 'otp') {
+                otpForm.classList.remove('hidden');
+                passwordForm.classList.add('hidden');
+                otpVerificationForm.classList.add('hidden'); // Hide OTP verification form initially
+            } else {
+                passwordForm.classList.remove('hidden');
+                otpForm.classList.add('hidden');
+                otpVerificationForm.classList.add('hidden'); // Hide OTP verification form
+            }
+        }
+
+        // Function to show the OTP verification form after OTP is sent
+        function showOtpVerificationForm() {
+            const otpVerificationForm = document.getElementById('otp-verification-form');
+            otpVerificationForm.classList.remove('hidden'); // Show the OTP form
+        }
+
+        // Ensure OTP verification form is shown on page load if OTP is sent
+        document.addEventListener('DOMContentLoaded', function () {
+            if ({{ session('otp_sent') ? 'true' : 'false' }}) {
+                showOtpVerificationForm(); // Show OTP verification form after OTP is sent
+            }
+        });
+    </script>
