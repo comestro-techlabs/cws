@@ -33,8 +33,16 @@
                         <p class="text-gray-600 text-center">Time: <span
                                 class="font-medium">{{ \Carbon\Carbon::parse($workshop->time)->format('h:i, A') }}</span>
                         </p>
-                        <p class="text-gray-600 text-center">Fees: {{ $workshop->fees }}</p>
-
+                        
+                        <p class="text-gray-600 text-center">Fees: 
+                            @if ($workshop->fees > 0)
+                                ₹{{ $workshop->fees }}
+                            @else
+                                Free
+                            @endif
+                        </p>
+                        
+                        @if ($workshop->fees > 0)
                         <form action="{{ route('save.workshop.payment') }}" method="post" role="form">
                             @csrf
                             <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id"
@@ -42,9 +50,7 @@
                             <input type="hidden" name="workshop_id" value="{{ $workshop->id }}">
 
                             <input type="hidden" name="amount" value="{{ $workshop->fees }}">
-                            {{-- <button type="submit" id="pay-button" class="mt-4 w-full bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-indigo-700 transition duration-300">
-                        Buy Now
-                    </button> --}}
+                         
                             <button type="submit" id="pay-button-{{ $workshop->id }}"
                                 class="mt-4 w-full bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-indigo-700 transition duration-300">
                                 Buy Now
@@ -54,36 +60,6 @@
 
                             <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
-                            {{-- <script>
-                       document.getElementById('pay-button').onclick = function(e) {
-                           e.preventDefault();
-                           var options = {
-                            //    "key": "{ env('RAZORPAY_KEY') } ",
-                            "key": "{{ env('RAZORPAY_KEY') }}",
-                               "amount": {{ $workshop->fees }} * 100,
-                               "currency": "INR",
-                               "name": "Comestro",
-                               "description": "Workshop Fee Payment",
-                               "image": "{{ asset('front_assets/img/logo/logo.png') }}",
-                               "handler": function(response) {
-                                   document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
-                                   document.forms[0].submit();
-                               },
-                               "prefill": {
-                                   "name": "",
-                                   "email": "",
-                                   "contact": ""
-                               },
-                               "theme": {
-                                   "color": "#0a64a3"
-                               }
-                           };
-                           var rzp1 = new Razorpay(options);
-                           rzp1.open();
-                       }
-                      
-               
-                   </script>  --}}
                             <script>
                                 document.getElementById('pay-button-{{ $workshop->id }}').onclick = function(e) {
                                     e.preventDefault();
@@ -115,6 +91,9 @@
 
 
                         </form>
+                        @else
+                        <p class="mt-4 text-green-600 font-medium">This workshop is free to join!</p>
+                    @endif
 
                     </div>
                 @endforeach

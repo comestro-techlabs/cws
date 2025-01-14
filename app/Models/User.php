@@ -10,6 +10,7 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
+    
     use HasFactory, Notifiable;
 
     /**
@@ -69,4 +70,8 @@ class User extends Authenticatable
 {
     return $this->hasMany(Assignment_upload::class, 'student_id');
 }
+
+
+
+
 }
