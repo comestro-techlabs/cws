@@ -18,10 +18,10 @@
 
         <div class="p-4 sm:p-8 bg-gray-100">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                @foreach ($workshops as $workshop)
+                @forelse ($workshops as $workshop)
                     <div
                         class="flex flex-col items-center transform transition duration-300 hover:scale-105 hover:bg-gray-50 rounded-lg p-5 shadow-lg bg-white relative">
-                        <img src="{{ asset('storage/' . $workshop->image) }}" alt="{{ $workshop->title }}"
+                        <img src="{{ asset('storage/' . $workshop->image) }}" alt=""
                             class="w-full h-64 object-cover object-top rounded mb-4">
 
                         <h3 class="text-xl sm:text-2xl font-semibold text-black mb-2 text-center">{{ $workshop->title }}
@@ -96,7 +96,20 @@
                     @endif
 
                     </div>
-                @endforeach
+
+                @empty
+                <div class="flex flex-col items-center justify-center col-span-1 md:col-span-3 p-8 bg-white rounded-lg shadow-lg">
+                    <img src="https://th.bing.com/th/id/OIP.eULh_sPmb08501utaJYVfQHaFc?w=220&h=180&c=7&r=0&o=5&pid=1.7" alt="No workshops available" class="w-32 h-32 mb-4">
+                    <h2 class="text-gray-800 text-2xl font-bold mb-2">No Workshops Available</h2>
+                    <p class="text-gray-600 text-lg">We're constantly adding new workshops. Please check back soon!</p>
+                    <a href="/" 
+                       class="mt-6 px-6 py-2 bg-indigo-600 text-white text-lg font-medium rounded-lg hover:bg-indigo-700 transition">
+                        Go to Homepage
+                    </a>
+                </div>
+                
+            @endforelse
+        </div>
             </div>
         </div>
     </div>

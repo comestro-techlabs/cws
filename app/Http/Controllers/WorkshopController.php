@@ -84,12 +84,42 @@ public function toggleStatus($id)
     // return $workshops;
      return view('workshops.edit', compact('workshops'));
   }
-  public function update(Request $request, $id)
-  {
-      $workshop = Workshop::findOrFail($id);
-      $workshop->update($request->all());
-      return redirect()->route('workshops.admin.index')->with('success', 'Workshop updated successfully.');
-  }
+
+public function update(Request $request, $id)
+{
+    $workshop = Workshop::findOrFail($id);
+
+   
+    $request->validate([
+        'title' => 'required',
+        'date' => 'required|date',
+        'time' => 'required|date_format:H:i',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'active' => 'required|boolean',
+        'fees' => 'required|numeric|min:0',
+    ]);
+
+  
+
+    if ($request->hasFile('image')) {
+        $imagePath = $request->file('image')->store('workshops_images', 'public');
+        $workshop->image = $imagePath;
+    }
+  
+    $workshop->title = $request->title;
+    $workshop->date = $request->date;
+    $workshop->time = $request->time;
+    $workshop->active = $request->active;
+    $workshop->fees = $request->fees;
+
+   
+    $workshop->save();
+
+    
+    return redirect()->route('workshops.admin.index')->with('success', 'Workshop updated successfully.');
+}
+
+
 
   public function destroy($id)
   {

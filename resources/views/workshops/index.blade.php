@@ -4,6 +4,12 @@
 
 @section('content')
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold  dark:text-gray-200">Workshops List</h1>
+            <a href="{{ route('workshops.create') }}" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                Add New Workshop 
+            </a>
+        </div>
         <div class="overflow-hidden bg-white shadow sm:rounded-lg">
            
             <div class="overflow-x-auto">
@@ -55,7 +61,7 @@
                                     {{ \Carbon\Carbon::parse($workshop->time)->format('h:i A') }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    <img src="{{ asset('storage/' . $workshop->image) }}" alt="{{ $workshop->title }}"
+                                    <img src="{{ asset('storage/' . $workshop->image) }}" alt=""
                                         class="w-16 h-16 object-cover rounded-lg">
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -90,16 +96,16 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                     @if ($workshop->payment)
                                         @if ($workshop->payment->payment_status == 'captured')
-                                            <span class="text-green-500">Successful</span>
+                                            <span class="px-2 py-1 text-white bg-green-500 rounded-md hover:bg-green-600">Successful</span>
                                         @elseif ($workshop->payment->payment_status == 'pending')
-                                            <span class="text-yellow-500">Pending</span>
+                                            <span class="px-2 py-1 text-white bg-yellow-500 rounded-md hover:bg-yellow-600">Pending</span>
                                         @elseif ($workshop->payment->payment_status == 'failed')
                                             <span class="text-red-500">Failed</span>
                                         @else
                                             <span class="text-gray-500">Unknown</span>
                                         @endif
                                     @else
-                                        <span class="text-yellow-500">Pending</span>
+                                    <span class="px-2 py-1 text-white bg-yellow-500 rounded-md hover:bg-yellow-600">Pending</span>
                                     @endif
                                 </td>
                                 

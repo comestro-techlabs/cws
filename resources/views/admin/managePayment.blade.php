@@ -36,7 +36,7 @@
                              <td class="py-3 px-4 border-b">
                                 {{ $payment->course->title ?? 'N/A' }}
                             </td> 
-                           
+                             
                             <td class="py-3 px-4 text-right border-b">
                                 ₹{{ number_format($payment->amount, 2) }}
                             </td>
