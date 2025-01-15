@@ -35,7 +35,6 @@
                         <div class="card-header card-header-large bg-light d-flex align-items-center">
                             <div class="flex">
                                 <h4 class="card-header__title">My Courses</h4>
-                                <div class="card-subtitle text-muted">Your recent courses</div>
                             </div>
                             <div class="ml-auto">
                                 <a href="{{route('student.coursePurchase')}}" class="btn btn-light">Browse All</a>
@@ -50,13 +49,13 @@
                             <li class="list-group-item" style="z-index: initial;">
                                 <div class="d-flex align-items-center">
                                     <a href="#" class="mr-3">
-                                         {{-- <img src="{{ asset('assets/images/logos/vuejs.svg')}}" alt="course" class=""> --}}
-                                         <img src="{{ asset('storage/course_images/' . $course->course_image) }}" alt="course" class=""> 
+                                         {{-- <img src="{{ asset('storage/course_images/' . $course->course_image) }}" alt="course" class="">  --}}
+                                         <img src="{{ asset('assets/images/student-dashboard/icons8-web-development-48.png') }}" alt="Not attempted yet" class=" mx-auto">
 
                                     </a>
                                     <div class="flex">
                                         {{-- <a href="#" class="text-body"><strong>Learn Vue.js Fundamentals</strong></a> --}}
-                                        <a href="#" class="text-body"><strong>{{ $course->title }}</strong></a>
+                                        <strong>{{ $course->title }}</strong>
                                         {{-- <div class="d-flex align-items-center">
                                             <div class="progress" style="width: 100px; height:4px;">
                                                 <div class="progress-bar bg-vuejs" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
@@ -85,15 +84,17 @@
                         <div class="card-header card-header-large bg-light d-flex align-items-center">
                             <div class="flex">
                                 <h4 class="card-header__title">My Assignments</h4>
-                                <div class="card-subtitle text-muted">Skill tests</div>
                             </div>
+                            @if(!$assignments->isEmpty())
                             <div class="dropdown ml-auto">
                                 <a class="btn btn-sm btn-light" href="{{route('student.assignments-view')}}">View all</a>
                             </div>
+                            @endif
                         </div>
                         @if($assignments->isEmpty())
+
                         <div class="flex flex-col items-center justify-center mt-4 text-center ">
-                            <img src="{{ asset('assets/images/no-data/No data-cuate.png') }}" alt="No assignments" class="w-32 mx-auto">
+                            <img src="{{ asset('assets/images/student-dashboard/No data-cuate.png') }}" alt="No assignments" class="w-32 mx-auto">
                             <p class="text-gray-500">No assignments available</p>
                         </div>
 
@@ -164,7 +165,7 @@
                             <div class="tab-pane active show fade" id="activity_all">
                                 @if($exams->isEmpty())
                                     <div class="flex flex-col items-center justify-center mt-4 text-center ">
-                                        <img src="{{ asset('assets/images/no-data/No data-pana.png') }}" alt="No assignments" class="w-32 mx-auto">
+                                        <img src="{{ asset('assets/images/student-dashboard/No data-pana.png') }}" alt="No assignments" class="w-32 mx-auto">
                                         <p class="text-gray-500">No Quiz available</p>
                                     </div>
 
@@ -207,7 +208,7 @@
                             <div class="tab-pane" id="activity_purchases">
                                 @if($first_attempts->isEmpty())
                                     <div class="flex flex-col items-center justify-center mt-4 text-center ">
-                                        <img src="{{ asset('assets/images/no-data/No data-amico.png') }}" alt="No assignments" class="w-32 mx-auto">
+                                        <img src="{{ asset('assets/images/student-dashboard/No data-amico.png') }}" alt="No assignments" class="w-32 mx-auto">
                                         <p class="text-gray-500">Not Attempted Yet</p>
                                     </div>
 
@@ -241,7 +242,7 @@
                             <div class="tab-pane" id="activity_emails">
                                 @if($second_attempts->isEmpty())
                                     <div class="flex flex-col items-center justify-center mt-4 text-center ">
-                                        <img src="{{ asset('assets/images/no-data/No data-amico.png') }}" alt="Not attempted yet" class="w-32 mx-auto">
+                                        <img src="{{ asset('assets/images/student-dashboard/No data-amico.png') }}" alt="Not attempted yet" class="w-32 mx-auto">
                                         <p class="text-gray-500">Not Attempted Yet</p>
                                     </div>
 
