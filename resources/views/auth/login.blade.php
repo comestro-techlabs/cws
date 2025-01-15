@@ -73,33 +73,34 @@ Login
             </div>
         </form>
     </div>
-    <!-- OTP Modal -->
-    <div id="otp-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50  items-center justify-center">
-        <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-            <h3 class="text-lg font-semibold text-gray-800">Enter OTP</h3>
-            <p class="text-sm text-gray-600 mb-4">An OTP has been sent to your email. Please enter it below:</p>
+  
+<!-- OTP Modal -->
+<div id="otp-modal" class="hidden fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+        <h3 class="text-lg font-semibold text-gray-800">Enter OTP</h3>
+        <p class="text-sm text-gray-600 mb-4">An OTP has been sent to your email. Please enter it below:</p>
 
-            <form action="{{ route('verify.otp') }}" method="POST" class="space-y-4">
-                @csrf
-                <input type="hidden" name="email" id="otp_email_hidden" value="{{ session('email') }}">
+        <form action="{{ route('verify.otp') }}" method="POST" class="space-y-4">
+            @csrf
+            <input type="hidden" name="email" id="otp_email_hidden" value="{{ session('email') }}">
 
-                <div>
-                    <label for="otp" class="block text-gray-700 text-sm font-bold mb-2">OTP</label>
-                    <input type="text" name="otp" id="otp" class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
-                        placeholder="Enter OTP" required>
-                    @error('otp')
-                    <span class="text-red-500 text-xs">{{ $message }}</span>
-                    @enderror
-                </div>
+            <div>
+                <label for="otp" class="block text-gray-700 text-sm font-bold mb-2">OTP</label>
+                <input type="text" name="otp" id="otp" class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
+                    placeholder="Enter OTP" required>
+                @error('otp')
+                <span class="text-red-500 text-xs">{{ $message }}</span>
+                @enderror
+            </div>
 
-                <div class="flex justify-end space-x-2">
-                    <button type="button" id="close-modal"
-                        class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md">Cancel</button>
-                    <button type="submit" class="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600">Verify OTP</button>
-                </div>
-            </form>
-        </div>
+            <div class="flex justify-end space-x-2">
+                <button type="button" id="close-modal" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md">Cancel</button>
+                <button type="submit" class="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600">Verify OTP</button>
+            </div>
+        </form>
     </div>
+</div>
+
 </div>
 <script>
    document.addEventListener("DOMContentLoaded", function () {

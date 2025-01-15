@@ -31,7 +31,7 @@ Sign up
                 @csrf
                 <!-- Name -->
                 <div>
-                    <label for="name"  class="block text-sm font-medium text-gray-700">Name</label>
+                    <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
                     <input type="text" value="{{old('name')}}" name="name" id="name"
                         class="form-input mt-1 block w-full rounded-md border-gray-300 focus:border-gray-500 focus:ring focus:ring-gray-200 focus:ring-opacity-50">
                     @error('name')
@@ -42,7 +42,7 @@ Sign up
                 <!-- Email -->
                 <div class="flex flex-1 gap-2">
                     <div class="flex-1">
-                        <label for="email"  class="block text-sm font-medium text-gray-700">Email</label>
+                        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
                         <input type="email" value="{{old('email')}}" name="email" id="email"
                             class="form-input mt-1 block w-full rounded-md border-gray-300 focus:border-gray-500 focus:ring focus:ring-gray-200 focus:ring-opacity-50">
                         @error('email')
@@ -67,7 +67,7 @@ Sign up
                 <!-- Gender -->
                 <div>
                     <label for="gender" class="block text-sm font-medium text-gray-700">Gender</label>
-                    <select name="gender" value="{{old('gender')}}"  id="gender"
+                    <select name="gender" value="{{old('gender')}}" id="gender"
                         class="mt-1 block px-3 py-2 w-full rounded-md border-gray-300 focus:border-gray-500 focus:ring focus:ring-gray-200 focus:ring-opacity-50">
                         <option value="">Select Gender</option>
                         <option value="male">Male</option>
@@ -82,10 +82,16 @@ Sign up
                 <!-- Education Qualification -->
                 <div class="flex flex-1 gap-2">
                     <div class="flex-1">
-                        <label for="education_qualification" class="block text-sm font-medium text-gray-700">Education
-                            Qualification</label>
-                        <input value="{{old('education_qualification')}}" type="text" name="education_qualification" id="education_qualification"
-                            class="form-input mt-1 block w-full rounded-md border-gray-300 focus:border-gray-500 focus:ring focus:ring-ray-200 focus:ring-opacity-50">
+                        <label for="education_qualification" class="block text-sm font-medium text-gray-700">Education Qualification</label>
+                        <select name="education_qualification" id="education_qualification"
+                        class="mt-1 block px-3 py-2 w-full rounded-md border-gray-300 focus:border-gray-500 focus:ring focus:ring-gray-200 focus:ring-opacity-50">
+                            <option value="" disabled {{ old('education_qualification') ? '' : 'selected' }}>Select your qualification</option>
+                            <option value="BCA" {{ old('education_qualification') == 'BCA' ? 'selected' : '' }}>BCA</option>
+                            <option value="BBA" {{ old('education_qualification') == 'BBA' ? 'selected' : '' }}>BBA</option>
+                            <option value="MCA" {{ old('education_qualification') == 'MCA' ? 'selected' : '' }}>MCA</option>
+                            <option value="B.COM" {{ old('education_qualification') == 'B.COM' ? 'selected' : '' }}>B.COM</option>
+                            <option value="Others" {{ old('education_qualification') == 'others' ? 'selected' : '' }}>Civil Engineering</option>
+                        </select>
                         @error('education_qualification')
                         <p class="text-xs text-red-500">{{ $message }}</p>
                         @enderror
@@ -96,7 +102,7 @@ Sign up
                     <div class="flex-1">
                         <label for="dob" class="block text-sm font-medium text-gray-700">Date of Birth</label>
                         <input value="{{old('dob')}}" type="date" name="dob" id="dob"
-                            class="form-input mt-1 block w-full rounded-md border-gray-300 focus:border-gray-500 focus:ring focus:ring-gray-200 focus:ring-opacity-50">
+                            class="form-input mt-1 block w-full rounded-md border-gray-300 focus:border-gray-500 focus:ring focus:ring-gray-200 focus:ring-opacity-50" max="{{ date('Y-m-d') }}">
                         @error('dob')
                         <p class="text-xs text-red-500">{{ $message }}</p>
                         @enderror
@@ -106,18 +112,18 @@ Sign up
                 <!-- Password -->
                 <div>
                     <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                    <input  type="password" name="password" id="password"
+                    <input type="password" name="password" id="password"
                         class="form-input mt-1 block w-full rounded-md border-gray-300 focus:border-gray-500 focus:ring focus:ring-gray-200 focus:ring-opacity-50">
-                   
+
                 </div>
                 <div>
                     <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirm Password</label>
                     <input type="password" id="password_confirmation" name="password_confirmation" class="form-input mt-1 block w-full rounded-md border-gray-300 focus:border-gray-500 focus:ring focus:ring-gray-200 focus:ring-opacity-50" required>
-                   
+
                     @error('password')
                     <p class="text-xs text-red-500">{{ $message }}</p>
                     @enderror
-                     @error('password_confirmation')
+                    @error('password_confirmation')
                     <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>

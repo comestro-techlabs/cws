@@ -163,7 +163,7 @@ class AuthController extends Controller
             'contact' => 'required|digits:10|unique:users,contact',
             'gender' => 'required|in:male,female,other',
             'education_qualification' => 'required|string|max:255',
-            'dob' => 'required|date',
+            'dob' => 'required|date|before_or_equal:today',
             'password' => 'required|string|min:8|confirmed',
             
         ], [
@@ -176,7 +176,7 @@ class AuthController extends Controller
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->password = bcrypt($request->password); // Use bcrypt for password hashing
+       $user->password = bcrypt($request->password); // Use bcrypt for password hashing
         $user->contact = $request->contact;
         $user->dob = $request->dob;
         $user->gender = $request->gender;
