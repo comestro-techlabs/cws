@@ -15,4 +15,8 @@ class Answer extends Model
     public function quiz(){
         return $this->belongsTo(Quiz::class);
     }
+    public function exam()
+{
+    return $this->belongsTo(Exam::class);
+}
 }

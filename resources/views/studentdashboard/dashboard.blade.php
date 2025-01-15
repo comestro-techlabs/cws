@@ -6,11 +6,11 @@
 
         <div class="container-fluid page__container">
 
-            <div class="alert alert-soft-warning d-flex align-items-center card-margin" role="alert">
+            {{-- <div class="alert alert-soft-warning d-flex align-items-center card-margin" role="alert">
                 <i class="material-icons mr-3">error_outline</i>
                 <div class="text-body">You have <strong>5 days left</strong> on your subscription</div>
                 <a href="#" class="btn btn-warning ml-auto">Upgrade</a>
-            </div>
+            </div> --}}
 
             <div class="row">
                 <div class="col-lg-7">
@@ -18,7 +18,7 @@
                     <div class="card">
                         <div class="card-header card-header-large bg-light d-flex align-items-center">
                             <div class="flex">
-                                <h4 class="card-header__title">In Progress</h4>
+                                <h4 class="card-header__title">My Courses</h4>
                                 <div class="card-subtitle text-muted">Your recent courses</div>
                             </div>
                             <div class="ml-auto">
@@ -61,62 +61,6 @@
                                 </div>
                             </li>
 
-                             {{-- <li class="list-group-item" style="z-index: initial;">
-                                <div class="d-flex align-items-center">
-                                    <a href="#" class="mr-3">
-                                        <img src="{{ asset('assets/images/logos/angular.svg')}}" alt="course" class="">
-
-                                    </a>
-                                    <div class="flex">
-                                         <a href="#" class="text-body"><strong>Angular in Steps</strong></a>
-                                       
-                                        <div class="d-flex align-items-center">
-                                            <div class="progress" style="width: 100px; height:4px;">
-                                                <div class="progress-bar bg-angular" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                            <small class="text-muted ml-2">100%</small>
-                                        </div>
-                                    </div>
-                                    <div class="dropdown ml-3">
-                                        <a href="#" class="dropdown-toggle text-muted" data-caret="false" data-toggle="dropdown">
-                                            <i class="material-icons">more_vert</i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" href="#">View Stats</a>
-                                            <a class="dropdown-item" href="#">Proceed</a>
-                                            <a class="dropdown-item" href="#">Close</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li> 
-
-                             <li class="list-group-item" style="z-index: initial;">
-                                <div class="d-flex align-items-center">
-                                    <a href="#" class="mr-3">
-                                        <img src="{{ asset('assets/images/logos/javascript.svg')}}" alt="course" class="">
-
-                                    </a>
-                                    <div class="flex">
-                                        <a href="#" class="text-body"><strong>ES6 Foundations</strong></a>
-                                        <div class="d-flex align-items-center">
-                                            <div class="progress" style="width: 100px; height:4px;">
-                                                <div class="progress-bar bg-warning" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                            <small class="text-muted ml-2">80%</small>
-                                        </div>
-                                    </div>
-                                    <div class="dropdown ml-3">
-                                        <a href="#" class="dropdown-toggle text-muted" data-caret="false" data-toggle="dropdown">
-                                            <i class="material-icons">more_vert</i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" href="#">View Stats</a>
-                                            <a class="dropdown-item" href="#">Proceed</a>
-                                            <a class="dropdown-item" href="#">Close</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>  --}}
                            @endforeach
                         </ul>
                     </div>
@@ -124,357 +68,194 @@
                     <div class="card">
                         <div class="card-header card-header-large bg-light d-flex align-items-center">
                             <div class="flex">
-                                <h4 class="card-header__title">My Quizes</h4>
+                                <h4 class="card-header__title">My Assignments</h4>
                                 <div class="card-subtitle text-muted">Skill tests</div>
                             </div>
                             <div class="dropdown ml-auto">
-                                <a class="btn btn-sm btn-light" href="#">View all</a>
+                                <a class="btn btn-sm btn-light" href="{{route('student.assignments-view')}}">View all</a>
                             </div>
                         </div>
+                        @if($assignments->isEmpty())
+                        <div class="flex flex-col items-center justify-center mt-4 text-center ">
+                            <img src="{{ asset('assets/images/no-data/No data-cuate.png') }}" alt="No assignments" class="w-32 mx-auto">
+                            <p class="text-gray-500">No assignments available</p>
+                        </div>
 
-
-
+                        @else
                         <ul class="list-group list-group-flush mb-0">
-                          @foreach($exams as $exam)
+                          @foreach($assignments as $assignment)
                             <li class="list-group-item">
                                 <div class="media align-items-center">
                                     <div class="media-body">
         
-                                        <a class="text-body mb-1" href="#"><strong> {{$exam->exam_name}}</strong></a><br> 
+                                        <i class="material-icons icon-16pt text-muted mr-1">queue_play_next</i>
+                                        <strong> {{ $assignment->title }}</strong><br> 
                                         <div class="d-flex align-items-center">
-                                             <i class="material-icons icon-16pt text-muted mr-1">queue_play_next</i> <a href="take-course.html" class="small text-muted">Basics of HTML</a> 
+                                        {{-- <a href="take-course.html" class="small text-muted"></a>  --}}
                                           
                                         </div>
                                     </div>
                                     <div class="media-right text-center d-flex align-items-center">
-                                        <span class="badge badge-warning mr-2">
+                                        {{-- <span class="badge badge-warning mr-2">
                                             Good
                                         </span>
-                                        <h4 class="mb-0 text-warning">5.8</h4> 
+                                        <h4 class="mb-0 text-warning">5.8</h4>  --}}
+                                        @if ($assignment->uploads->isNotEmpty())
+                                                    @foreach ($assignment->uploads as $upload)
+                                                        <span
+                                                            class="
+                                                            @if ($upload->status == 'submitted') bg-green-500 text-white rounded-lg px-2 py-1
+                                                            @elseif($upload->status == 'graded') bg-red-500 text-white rounded-lg px-2 py-1 
+                                                            @else text-red-500 @endif
+                                                        ">
+                                                            {{ ucfirst($upload->status) }}
+                                                        </span><br>
+                                                    @endforeach
+                                                @else
+                                                    <span class="bg-gray-500 text-white rounded-lg px-2 py-1">No uploads</span>
+                                                @endif
                                     </div>
                                 </div>
                             </li>
 
-                            {{-- <li class="list-group-item">
-                                <div class="media align-items-center">
-                                    <div class="media-body">
-                                        <a class="text-body mb-1" href="#"><strong>Level 2 Angular</strong></a><br>
-                                        <div class="d-flex align-items-center">
-                                            <i class="material-icons icon-16pt text-muted mr-1">queue_play_next</i> <a href="take-course.html" class="small text-muted">Angular in Steps</a>
-                                        </div>
-                                    </div>
-                                    <div class="media-right text-center d-flex align-items-center">
-                                        <span class="badge badge-success mr-2">
-                                            Great
-                                        </span>
-                                        <h4 class="mb-0 text-success">9.8</h4>
-                                    </div>
-                                </div>
-                            </li>
-
-                            <li class="list-group-item">
-                                <div class="media align-items-center">
-                                    <div class="media-body">
-                                        <a class="text-body mb-1" href="#"><strong>Graduation</strong></a><br>
-                                        <div class="d-flex align-items-center">
-                                            <i class="material-icons icon-16pt text-muted mr-1">queue_play_next</i> <a href="take-course.html" class="small text-muted">Bootstrap Foundations</a>
-                                        </div>
-                                    </div>
-                                    <div class="media-right text-center d-flex align-items-center">
-                                        <span class="badge badge-danger mr-2">
-                                            Failed
-                                        </span>
-                                        <h4 class="mb-0 text-danger">2.8</h4>
-                                    </div>
-                                </div>
-                            </li> --}}
-                       @endforeach
+                            @endforeach
                         </ul>
+                        @endif
                     </div>
                 </div>
                 <div class="col-lg-5">
                     <!-- START ACTIVITY -->
                     <div class="card">
                         <div class="card-header card-header-large bg-white d-flex align-items-center">
-                            <h4 class="card-header__title flex m-0">Recent Activity</h4>
-                            <div class=" flatpickr-wrapper flatpickr-calendar-right d-flex ml-auto">
+                            <h4 class="card-header__title flex m-0">Quizzes</h4>
+                            {{-- <div class=" flatpickr-wrapper flatpickr-calendar-right d-flex ml-auto">
                                 <div data-toggle="flatpickr" data-flatpickr-wrap="true" data-flatpickr-static="true" data-flatpickr-mode="range" data-flatpickr-alt-format="d/m/Y" data-flatpickr-date-format="d/m/Y">
                                     <a href="javascript:void(0)" class="link-date" data-toggle>13/03/2018 <span class="text-muted mx-1">to</span> 20/03/2018</a>
                                     <input class="d-none" type="hidden" value="13/03/2018 to 20/03/2018" data-input>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                         <div class="card-header card-header-tabs-basic nav" role="tablist">
-                            <a href="#activity_all" class="active" data-toggle="tab" role="tab" aria-controls="activity_all" aria-selected="true">All</a>
-                            <a href="#activity_purchases" data-toggle="tab" role="tab" aria-controls="activity_purchases" aria-selected="false">Purchases</a>
-                            <a href="#activity_emails" data-toggle="tab" role="tab" aria-controls="activity_emails" aria-selected="false">Emails</a>
-                            <a href="#activity_quotes" data-toggle="tab" role="tab" aria-controls="activity_quotes" aria-selected="false">Quotes</a>
+                            @if(!$exams->isEmpty())
+                            <a href="#activity_all" class="active" data-toggle="tab" role="tab" aria-controls="activity_all" aria-selected="true">My Quiz</a>
+                           
+                            <a href="#activity_purchases" data-toggle="tab" role="tab" aria-controls="activity_purchases" aria-selected="false">First Attempt</a>
+                            <a href="#activity_emails" data-toggle="tab" role="tab" aria-controls="activity_emails" aria-selected="false">Second Attempt</a>
+                            @endif
+                            {{-- <a href="#activity_quotes" data-toggle="tab" role="tab" aria-controls="activity_quotes" aria-selected="false">Quotes</a> --}}
                         </div>
                         <div class="list-group tab-content list-group-flush">
                             <div class="tab-pane active show fade" id="activity_all">
-
-
-                                <div class="list-group-item list-group-item-action d-flex align-items-center ">
-                                    <div class="avatar avatar-xs mr-3">
-                                        <span class="avatar-title rounded-circle bg-primary">
-                                            <img src="{{ asset('assets/images/logo.svg')}}" width="20" alt="avatar">
-                                        </span>
+                                @if($exams->isEmpty())
+                                    <div class="flex flex-col items-center justify-center mt-4 text-center ">
+                                        <img src="{{ asset('assets/images/no-data/No data-pana.png') }}" alt="No assignments" class="w-32 mx-auto">
+                                        <p class="text-gray-500">No Quiz available</p>
                                     </div>
 
+                                @else
 
-                                    <div class="flex">
-                                        <div class="d-flex align-items-middle">
-                                            <div class="avatar avatar-xxs mr-1">
-                                                <img src="{{ asset('assets/images/256_rsz_1andy-lee-642320-unsplash.jpg')}}" alt="Avatar" class="avatar-img rounded-circle">
+                                    @foreach($exams as $exam)
+                                    <div class="list-group-item list-group-item-action d-flex align-items-center ">
+                                        {{-- <div class="avatar avatar-xs mr-3">
+                                            <span class="avatar-title rounded-circle bg-primary">
+                                                <img src="{{ asset('assets/images/logo.svg')}}" width="20" alt="avatar">
+                                            </span>
+                                        </div> --}}
+
+
+                                        <div class="flex">
+                                            <div class="d-flex align-items-middle">
+                                                {{-- <div class="avatar avatar-xxs mr-1">
+                                                    <img src="{{ asset('assets/images/256_rsz_1andy-lee-642320-unsplash.jpg')}}" alt="Avatar" class="avatar-img rounded-circle">
+                                                </div> --}}
+                                                
+                                                <i class="material-icons icon-16pt text-muted mr-1">queue_play_next</i>
+
+                                                <strong class="text-15pt mr-1">Exam: {{$exam->exam_name}}</strong>
                                             </div>
-
-
-                                            <strong class="text-15pt mr-1">Jenell D. Matney</strong>
+                                            {{-- <small class="text-muted">4 days ago</small> --}}
                                         </div>
-                                        <small class="text-muted">4 days ago</small>
+                                        {{-- <div>$573</div> --}}
+
+
+                                        <i class="material-icons icon-muted ml-3">arrow_forward</i>
                                     </div>
-                                    <div>$573</div>
-
-
-                                    <i class="material-icons icon-muted ml-3">arrow_forward</i>
-                                </div>
-
-                                <div class="list-group-item list-group-item-action d-flex align-items-center ">
-                                    <div class="avatar avatar-xs mr-3">
-                                        <span class="avatar-title rounded-circle bg-primary">
-                                            <img src="{{ asset('assets/images/logo.svg')}}" width="20" alt="avatar">
-                                        </span>
-                                    </div>
-
-
-                                    <div class="flex">
-                                        <div class="d-flex align-items-middle">
-                                            <div class="avatar avatar-xxs mr-1">
-                                                <img src="{{ asset('assets/images/256_daniel-gaffey-1060698-unsplash.jpg')}}" alt="Avatar" class="avatar-img rounded-circle">
-                                            </div>
-
-
-                                            <strong class="text-15pt mr-1">Sherri J. Cardenas</strong>
-                                        </div>
-                                        <small>Improve spacings on Projects page</small>
-                                    </div>
-                                    <small class="text-muted">3 days ago</small>
-
-
-                                    <i class="material-icons icon-muted ml-3">arrow_forward</i>
-                                </div>
-
-                                <div class="list-group-item list-group-item-action d-flex align-items-center  bg-light ">
-                                    <div class="avatar avatar-xs mr-3">
-                                        <span class="avatar-title rounded-circle bg-primary">
-                                            <img src="{{ asset('assets/images/logo.svg')}}" width="20" alt="avatar">
-                                        </span>
-                                    </div>
-
-
-                                    <div class="flex">
-                                        <div class="d-flex align-items-middle">
-                                            <div class="avatar avatar-xxs mr-1">
-                                                <img src="{{ asset('assets/images/256_jeremy-banks-798787-unsplash.jpg')}}" alt="Avatar" class="avatar-img rounded-circle">
-                                            </div>
-
-
-                                            <strong class="text-15pt mr-1">Joseph S. Ferland</strong>
-                                        </div>
-                                        <small class="text-muted">2 days ago</small>
-                                    </div>
-                                    <div>$244</div>
-
-
-                                    <i class="material-icons icon-muted ml-3">arrow_forward</i>
-                                </div>
-
-                                <div class="list-group-item list-group-item-action d-flex align-items-center  bg-light ">
-                                    <div class="avatar avatar-xs mr-3">
-                                        <span class="avatar-title rounded-circle bg-primary">
-                                            <img src="{{ asset('assets/images/logo.svg')}}" width="20" alt="avatar">
-                                        </span>
-                                    </div>
-
-
-                                    <div class="flex">
-                                        <div class="d-flex align-items-middle">
-                                            <div class="avatar avatar-xxs mr-1">
-                                                <img src="{{ asset('assets/images/256_joao-silas-636453-unsplash.jpg')}}" alt="Avatar" class="avatar-img rounded-circle">
-                                            </div>
-
-
-                                            <strong class="text-15pt mr-1">Bryan K. Davis</strong>
-                                        </div>
-                                        <small class="text-muted">1 day ago</small>
-                                    </div>
-                                    <div>$664</div>
-
-
-                                    <i class="material-icons icon-muted ml-3">arrow_forward</i>
-                                </div>
-
-                                <div class="list-group-item list-group-item-action d-flex align-items-center  bg-light ">
-                                    <div class="avatar avatar-xs mr-3">
-                                        <span class="avatar-title rounded-circle bg-primary">
-                                            <img src="{{ asset('assets/images/logo.svg')}}" width="20" alt="avatar">
-                                        </span>
-                                    </div>
-
-
-                                    <div class="flex">
-                                        <div class="d-flex align-items-middle">
-                                            <div class="avatar avatar-xxs mr-1">
-                                                <img src="{{ asset('assets/images/256_michael-dam-258165-unsplash.jpg')}}" alt="Avatar" class="avatar-img rounded-circle">
-                                            </div>
-
-
-                                            <strong class="text-15pt mr-1">Kaci M. Langston</strong>
-                                        </div>
-                                        <small class="text-muted">just now</small>
-                                    </div>
-                                    <div>$631</div>
-
-
-                                    <i class="material-icons icon-muted ml-3">arrow_forward</i>
-                                </div>
+                                    @endforeach
+                               
 
                                 <div class="card-footer text-center border-0">
-                                    <a class="text-muted" href="#">View All (54)</a>
+                                    <a class="text-muted" href="{{route('student.course.quiz')}}">View All</a>
                                 </div>
+                                @endif
                             </div>
                             <div class="tab-pane" id="activity_purchases">
-
-                                <div class="list-group-item list-group-item-action d-flex align-items-center ">
-                                    <div class="avatar avatar-xs mr-3">
-                                        <span class="avatar-title rounded-circle bg-success">
-                                            <i class="material-icons">monetization_on</i>
-                                        </span>
+                                @if($first_attempts->isEmpty())
+                                    <div class="flex flex-col items-center justify-center mt-4 text-center ">
+                                        <img src="{{ asset('assets/images/no-data/No data-amico.png') }}" alt="No assignments" class="w-32 mx-auto">
+                                        <p class="text-gray-500">Not Attempted Yet</p>
                                     </div>
 
-                                    <div class="flex">
-                                        <div class="d-flex align-items-middle">
-                                            <div class="avatar avatar-xxs mr-1">
-                                                <img src="{{ asset('assets/images/256_rsz_1andy-lee-642320-unsplash.jpg')}}" alt="Avatar" class="avatar-img rounded-circle">
+                                @else
+                                @foreach($first_attempts as $attempt)
+                                    <div class="list-group-item list-group-item-action d-flex align-items-center ">
+                                        {{-- <div class="avatar avatar-xs mr-3">
+                                            <span class="avatar-title rounded-circle bg-success">
+                                                <i class="material-icons">monetization_on</i>
+                                            </span>
+                                        </div> --}}
+
+                                        <div class="flex">
+                                            <div class="d-flex align-items-middle">
+                                                {{-- <div class="avatar avatar-xxs mr-1">
+                                                    <img src="{{ asset('assets/images/256_rsz_1andy-lee-642320-unsplash.jpg')}}" alt="Avatar" class="avatar-img rounded-circle">
+                                                </div> --}}
+                                                <i class="material-icons icon-16pt text-muted mr-1">queue_play_next</i>
+
+                                                <strong class="text-15pt mr-1">Exam: {{$attempt['exam_name']}}</strong>
+
                                             </div>
-                                            <strong class="text-15pt mr-1">Sherri J. Cardenas</strong>
-
+                                            {{-- <small class="text-muted">4 days ago</small> --}}
                                         </div>
-                                        <small class="text-muted">4 days ago</small>
+                                        <div>Marks: {{$attempt['total_marks']}}</div>
+                                        <i class="material-icons icon-muted ml-3">arrow_forward</i>
                                     </div>
-                                    <div>$573</div>
-                                    <i class="material-icons icon-muted ml-3">arrow_forward</i>
-                                </div>
-
-                                <div class="list-group-item list-group-item-action d-flex align-items-center ">
-                                    <div class="avatar avatar-xs mr-3">
-                                        <span class="avatar-title rounded-circle bg-success">
-                                            <i class="material-icons">monetization_on</i>
-                                        </span>
-                                    </div>
-
-                                    <div class="flex">
-                                        <div class="d-flex align-items-middle">
-                                            <div class="avatar avatar-xxs mr-1">
-                                                <img src="{{ asset('assets/images/256_daniel-gaffey-1060698-unsplash.jpg')}}" alt="Avatar" class="avatar-img rounded-circle">
-                                            </div>
-                                            <strong class="text-15pt mr-1">Joseph S. Ferland</strong>
-
-                                        </div>
-                                        <small class="text-muted">3 days ago</small>
-                                    </div>
-                                    <div>$612</div>
-                                    <i class="material-icons icon-muted ml-3">arrow_forward</i>
-                                </div>
-
-                                <div class="list-group-item list-group-item-action d-flex align-items-center ">
-                                    <div class="avatar avatar-xs mr-3">
-                                        <span class="avatar-title rounded-circle bg-success">
-                                            <i class="material-icons">monetization_on</i>
-                                        </span>
-                                    </div>
-
-                                    <div class="flex">
-                                        <div class="d-flex align-items-middle">
-                                            <div class="avatar avatar-xxs mr-1">
-                                                <img src="{{ asset('assets/images/256_jeremy-banks-798787-unsplash.jpg')}}" alt="Avatar" class="avatar-img rounded-circle">
-                                            </div>
-                                            <strong class="text-15pt mr-1">Bryan K. Davis</strong>
-
-                                        </div>
-                                        <small class="text-muted">2 days ago</small>
-                                    </div>
-                                    <div>$244</div>
-                                    <i class="material-icons icon-muted ml-3">arrow_forward</i>
-                                </div>
-
-                                <div class="list-group-item list-group-item-action d-flex align-items-center  bg-light ">
-                                    <div class="avatar avatar-xs mr-3">
-                                        <span class="avatar-title rounded-circle bg-success">
-                                            <i class="material-icons">monetization_on</i>
-                                        </span>
-                                    </div>
-
-                                    <div class="flex">
-                                        <div class="d-flex align-items-middle">
-                                            <div class="avatar avatar-xxs mr-1">
-                                                <img src="{{ asset('assets/images/256_joao-silas-636453-unsplash.jpg')}}" alt="Avatar" class="avatar-img rounded-circle">
-                                            </div>
-                                            <strong class="text-15pt mr-1">Kaci M. Langston</strong>
-
-                                        </div>
-                                        <small class="text-muted">1 day ago</small>
-                                    </div>
-                                    <div>$664</div>
-                                    <i class="material-icons icon-muted ml-3">arrow_forward</i>
-                                </div>
-
-                                <div class="list-group-item list-group-item-action d-flex align-items-center  bg-light ">
-                                    <div class="avatar avatar-xs mr-3">
-                                        <span class="avatar-title rounded-circle bg-success">
-                                            <i class="material-icons">monetization_on</i>
-                                        </span>
-                                    </div>
-
-                                    <div class="flex">
-                                        <div class="d-flex align-items-middle">
-                                            <div class="avatar avatar-xxs mr-1">
-                                                <img src="{{ asset('assets/images/256_michael-dam-258165-unsplash.jpg')}}" alt="Avatar" class="avatar-img rounded-circle">
-                                            </div>
-                                            <strong class="text-15pt mr-1"></strong>
-
-                                        </div>
-                                        <small class="text-muted">just now</small>
-                                    </div>
-                                    <div>$631</div>
-                                    <i class="material-icons icon-muted ml-3">arrow_forward</i>
-                                </div>
-
+                                @endforeach
+                                @endif
                             </div>
                             <div class="tab-pane" id="activity_emails">
-
-                                <div class="list-group-item list-group-item-action d-flex align-items-center ">
-                                    <div class="avatar avatar-xs mr-3">
-                                        <span class="avatar-title rounded-circle bg-secondary">
-                                            <i class="material-icons">email</i>
-                                        </span>
+                                @if($second_attempts->isEmpty())
+                                    <div class="flex flex-col items-center justify-center mt-4 text-center ">
+                                        <img src="{{ asset('assets/images/no-data/No data-amico.png') }}" alt="Not attempted yet" class="w-32 mx-auto">
+                                        <p class="text-gray-500">Not Attempted Yet</p>
                                     </div>
 
-                                    <div class="flex">
-                                        <div class="d-flex align-items-middle">
-                                            <div class="avatar avatar-xxs mr-1">
-                                                <img src="{{ asset('assets/images/256_rsz_1andy-lee-642320-unsplash.jpg')}}" alt="Avatar" class="avatar-img rounded-circle">
+                                @else
+                                    @foreach ($second_attempts as $attempt)
+                                        <div class="list-group-item list-group-item-action d-flex align-items-center ">
+                                            {{-- <div class="avatar avatar-xs mr-3">
+                                                <span class="avatar-title rounded-circle bg-secondary">
+                                                    <i class="material-icons">email</i>
+                                                </span>
+                                            </div> --}}
+
+                                            <div class="flex">
+                                                <div class="d-flex align-items-middle">
+                                                    {{-- <div class="avatar avatar-xxs mr-1">
+                                                        <img src="{{ asset('assets/images/256_rsz_1andy-lee-642320-unsplash.jpg')}}" alt="Avatar" class="avatar-img rounded-circle">
+                                                    </div> --}}
+                                                    <i class="material-icons icon-16pt text-muted mr-1">queue_play_next</i>
+
+                                                    <strong class="text-15pt mr-1">Exam: {{ $attempt['exam_name'] }}</strong>
+
+                                                </div>
+                                                {{-- <small>Confirmation required for design</small> --}}
                                             </div>
-                                            <strong class="text-15pt mr-1">Jenell D. Matney</strong>
-
+                                            <small class="text-muted">Marks: {{ $attempt['total_marks'] }}</small>
+                                            <i class="material-icons icon-muted ml-3">arrow_forward</i>
                                         </div>
-                                        <small>Confirmation required for design</small>
-                                    </div>
-                                    <small class="text-muted">4 days ago</small>
-                                    <i class="material-icons icon-muted ml-3">arrow_forward</i>
-                                </div>
-
-                                <div class="list-group-item list-group-item-action d-flex align-items-center ">
+                                    @endforeach
+                                @endif    
+                                {{-- <div class="list-group-item list-group-item-action d-flex align-items-center ">
                                     <div class="avatar avatar-xs mr-3">
                                         <span class="avatar-title rounded-circle bg-secondary">
                                             <i class="material-icons">email</i>
@@ -514,10 +295,10 @@
                                     </div>
                                     <small class="text-muted">2 days ago</small>
                                     <i class="material-icons icon-muted ml-3">arrow_forward</i>
-                                </div>
+                                </div> --}}
 
                             </div>
-                            <div class="tab-pane" id="activity_quotes"></div>
+                            {{-- <div class="tab-pane" id="activity_quotes"></div> --}}
                         </div>
                     </div>
                     <!-- END ACTIVITY -->
