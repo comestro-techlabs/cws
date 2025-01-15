@@ -1,93 +1,108 @@
 @extends('public.layout')
 
 @section('title')
-    Login
+Login
 @endsection
 
 @section('content')
-<div class="max-w-lg mx-auto p-6 border rounded-md shadow-md">
-    <h2 class="text-2xl font-semibold text-center mb-4">Login</h2>
 
-    <!-- Password-based login form -->
-    <div id="password-form">
-        <form action="{{ route('auth.login') }}" method="POST" class="space-y-4">
-            @csrf
-            <div class="mb-4">
-                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                <input type="email" name="email" id="email" class="w-full mt-1 p-2 border rounded-md" required value="{{ old('email') }}">
-                @error('email')
-                    <span class="text-red-500 text-xs">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <div class="mb-4">
-                <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                <input type="password" name="password" id="password" class="w-full mt-1 p-2 border rounded-md" placeholder="Enter your password">
-                @error('password')
-                    <span class="text-red-500 text-xs">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <button type="submit" class="w-full p-2 bg-blue-500 text-white rounded-md mt-4">Login with Password</button>
-        </form>
+<div class="flex bg-white rounded-lg mb-12 mt-20 py-12 shadow-xl border overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
+    <div class="hidden lg:block lg:w-1/2 bg-cover"
+        style="background-image:url('{{ asset('assets/icons/loginimage.png') }}')">
     </div>
 
-    <hr class="my-6">
-
-    <!-- OTP-based login form -->
-    <div id="otp-form" class="mt-4">
-        <form action="{{ route('auth.sendOtp') }}" method="POST" id="send-otp-form">
+    <div id="otp-form" class="w-full p-12 lg:w-1/2">
+        <form action="{{route('auth.sendOtp')}}" method="POST" id="send-otp-form">
             @csrf
-            <div class="mb-4">
-                <label for="otp_email" class="block text-sm font-medium text-gray-700">Enter your email for OTP</label>
-                <input type="email" name="email" id="otp_email" class="w-full mt-1 p-2 border rounded-md" required value="{{ old('email') }}">
+            <h2 class="text-2xl font-semibold text-center"> <span class="text-orange-500 font-bold">Com</span><span
+                    class="text-blue-600 font-bold">estro</span></h2>
+
+            <p class="text-xl text-gray-600 text-center">Welcome Students</p>
+            <a href="{{ route('auth.google') }}"
+                class="flex  items-center justify-center mt-4 text-white rounded-lg shadow-md hover:bg-gray-100  pl-20">
+                <div class="px-2 ">
+                    <svg class="h-6 w-6" viewBox="0 0 40 40">
+                        <path
+                            d="M36.3425 16.7358H35V16.6667H20V23.3333H29.4192C28.045 27.2142 24.3525 30 20 30C14.4775 30 10 25.5225 10 20C10 14.4775 14.4775 9.99999 20 9.99999C22.5492 9.99999 24.8683 10.9617 26.6342 12.5325L31.3483 7.81833C28.3717 5.04416 24.39 3.33333 20 3.33333C10.7958 3.33333 3.33335 10.7958 3.33335 20C3.33335 29.2042 10.7958 36.6667 20 36.6667C29.2042 36.6667 36.6667 29.2042 36.6667 20C36.6667 18.8825 36.5517 17.7917 36.3425 16.7358Z"
+                            fill="#FFC107" />
+                        <path
+                            d="M5.25497 12.2425L10.7308 16.2583C12.2125 12.59 15.8008 9.99999 20 9.99999C22.5491 9.99999 24.8683 10.9617 26.6341 12.5325L31.3483 7.81833C28.3716 5.04416 24.39 3.33333 20 3.33333C13.5983 3.33333 8.04663 6.94749 5.25497 12.2425Z"
+                            fill="#FF3D00" />
+                        <path
+                            d="M20 36.6667C24.305 36.6667 28.2167 35.0192 31.1742 32.34L26.0159 27.975C24.3425 29.2425 22.2625 30 20 30C15.665 30 11.9842 27.2359 10.5975 23.3784L5.16254 27.5659C7.92087 32.9634 13.5225 36.6667 20 36.6667Z"
+                            fill="#4CAF50" />
+                        <path
+                            d="M36.3425 16.7358H35V16.6667H20V23.3333H29.4192C28.7592 25.1975 27.56 26.805 26.0133 27.9758C26.0142 27.975 26.015 27.975 26.0158 27.9742L31.1742 32.3392C30.8092 32.6708 36.6667 28.3333 36.6667 20C36.6667 18.8825 36.5517 17.7917 36.3425 16.7358Z"
+                            fill="#1976D2" />
+                    </svg>
+                </div>
+                <h1 class="py-3 w-5/6  text-gray-600 font-bold">Sign in with Google</h1>
+            </a>
+            <div class="mt-4 flex items-center justify-between">
+                <span class="border-b w-1/5 lg:w-1/4"></span>
+                <a href="#" class="text-xs text-center text-gray-500 uppercase">or login with email</a>
+                <span class="border-b w-1/5 lg:w-1/4"></span>
+            </div>
+            <div class="mt-4">
+                <label for="otp_email" class="block text-gray-700 text-sm font-bold mb-2">Enter your email for OTP</label>
+                <input type="email" name="email" id="otp_email"
+                    class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
+                    required value="{{ old('email') }}">
                 @error('email')
-                    <span class="text-red-500 text-xs">{{ $message }}</span>
+                <span class="text-red-500 text-xs">{{ $message }}</span>
                 @enderror
             </div>
-
-            <button type="submit" class="w-full p-2 bg-green-500 text-white rounded-md mt-4">Send OTP</button>
+            <div class="mt-4">
+                <button type="submit"
+                    class="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600">Send
+                    OTP</button>
+            </div>
+            @if ($errors->any())
+            <div class="bg-red-100 border-l-4 mt-2 border-red-500 text-red-700 p-4 rounded-lg mb-6">
+                <ul class="list-disc pl-5 space-y-2">
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+            <div class="mt-4 flex items-center justify-between">
+                <span class="border-b w-1/5 md:w-1/4"></span>
+                <a href="{{ route('auth.register') }}" class="text-xs text-gray-500 uppercase">Apply TO Join Us</a>
+                <span class="border-b w-1/5 md:w-1/4"></span>
+            </div>
         </form>
     </div>
-
     <!-- OTP Modal -->
-    <div id="otp-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
+    <div id="otp-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50  items-center justify-center">
         <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
             <h3 class="text-lg font-semibold text-gray-800">Enter OTP</h3>
             <p class="text-sm text-gray-600 mb-4">An OTP has been sent to your email. Please enter it below:</p>
 
             <form action="{{ route('verify.otp') }}" method="POST" class="space-y-4">
                 @csrf
-                <input type="hidden" name="email" id="otp_email_hidden" value="{{ old('email') }}">
+                <input type="hidden" name="email" id="otp_email_hidden" value="{{ session('email') }}">
 
                 <div>
-                    <label for="otp" class="block text-sm font-medium text-gray-700">OTP</label>
-                    <input
-                        type="text"
-                        name="otp"
-                        id="otp"
-                        class="w-full mt-1 p-2 border rounded-md"
-                        placeholder="Enter OTP"
-                        required
-                    >
+                    <label for="otp" class="block text-gray-700 text-sm font-bold mb-2">OTP</label>
+                    <input type="text" name="otp" id="otp" class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
+                        placeholder="Enter OTP" required>
                     @error('otp')
-                        <span class="text-red-500 text-xs">{{ $message }}</span>
+                    <span class="text-red-500 text-xs">{{ $message }}</span>
                     @enderror
                 </div>
 
                 <div class="flex justify-end space-x-2">
-                    <button type="button" id="close-modal" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md">
-                        Cancel
-                    </button>
-                    <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-md">Verify OTP</button>
+                    <button type="button" id="close-modal"
+                        class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md">Cancel</button>
+                    <button type="submit" class="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600">Verify OTP</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-
 <script>
-document.addEventListener("DOMContentLoaded", function () {
+   document.addEventListener("DOMContentLoaded", function () {
     const otpModal = document.getElementById('otp-modal');
     const closeModalButton = document.getElementById('close-modal');
     const otpEmailField = document.getElementById('otp_email');
@@ -110,6 +125,6 @@ document.addEventListener("DOMContentLoaded", function () {
         otpHiddenField.value = email;
     });
 });
-
 </script>
+
 @endsection
