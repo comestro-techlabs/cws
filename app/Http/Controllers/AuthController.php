@@ -133,8 +133,10 @@ class AuthController extends Controller
     
         // Send OTP email
         try {
-            Mail::raw("Your OTP code is: $otp", function ($message) use ($email) {
-                $message->to($email)
+          
+
+            Mail::send('emails.otp', ['otp' => $otp], function ($message) use ($user) {
+                $message->to($user->email)
                         ->subject('Your OTP Code');
             });
     
