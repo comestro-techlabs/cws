@@ -41,4 +41,5 @@ class Payment extends Model
      public function workshops(){
         return $this->belongsToMany(workshop::class);
      }
+  
 }

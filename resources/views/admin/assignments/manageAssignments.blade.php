@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="flex flex-wrap justify-between items-center p-4">
-        <h2 class="text-2xl font-bold text-gray-800 mb-2 ">
+        <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-2 ">
             Manage Assignments
         </h2>
         <a href="{{ route('assignment.create') }}"
