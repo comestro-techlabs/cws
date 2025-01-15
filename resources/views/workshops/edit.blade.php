@@ -28,7 +28,7 @@
                 type="text"
                 name="title"
                 id="title"
-                value="{{ old('title', $workshops->title) }}"
+                value="{{ ( $workshops->title) }}"
                 required
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 placeholder="Enter workshop title"
@@ -41,7 +41,7 @@
                 type="date"
                 name="date"
                 id="date"
-                value="{{ old('date', $workshops->date) }}"
+                value="{{ ( $workshops->date) }}"
                 required
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             >
@@ -53,13 +53,13 @@
                 type="time"
                 name="time"
                 id="time"
-                value="{{ old('time', $workshops->time) }}"
+                value="{{ ( $workshops->time) }}"
                 required
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             >
         </div>
 
-        <div>
+         {{-- <div>
             <label for="image" class="block text-sm font-medium text-gray-700 mb-1">Workshop Image</label>
             <input
                 type="file"
@@ -70,14 +70,43 @@
             @if ($workshops->image)
             <img src="{{ asset('storage/' . $workshops->image) }}" alt="Workshop Image" class="w-24 h-24 mt-4 rounded-md shadow-md">
             @endif
+        </div> 
+          --}}
+          <div>
+            <label for="image" class="block text-sm font-medium text-gray-700 mb-1">Image</label>
+            <input 
+                type="file" 
+                name="image" 
+                id="image" 
+                class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                accept="image/*"
+                onchange="previewImage(event)"
+            >
+          
+            @if ($workshops->image)
+                <div class="mt-4">
+                    <p class="text-sm text-gray-500">Current Image:</p>
+                    <img src="{{ asset('storage/' . $workshops->image) }}" alt="Portfolio Image" class="w-24 h-24 mt-2 rounded-md shadow-md">
+                </div>
+            @endif
+        
+           
+            <div id="imagePreview" class="mt-4 hidden">
+                <p class="text-sm text-gray-500">Preview New Image:</p>
+                <img src="" alt="New Portfolio Image" class="w-24 h-24 mt-2 rounded-md shadow-md">
+            </div>
         </div>
+        
+         
+        
+        
         <div>
             <label for="fees" class="block text-sm font-medium text-gray-700">Workshop Fees</label>
             <input
                 type="number"
                 name="fees"
                 id="fees"
-                value="{{ old('fees', $workshops->fees) }}"
+                value="{{ ( $workshops->fees) }}"
                 required
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 placeholder="Enter workshop fees"
@@ -93,8 +122,8 @@
                 required
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             >
-                <option value="1" {{ old('active', $workshops->active) == 1 ? 'selected' : '' }}>Yes</option>
-                <option value="0" {{ old('active', $workshops->active) == 0 ? 'selected' : '' }}>No</option>
+                <option value="1" {{ ( $workshops->active) == 1 ? 'selected' : '' }}>Yes</option>
+                <option value="0" {{ ( $workshops->active) == 0 ? 'selected' : '' }}>No</option>
             </select>
         </div>
 
@@ -106,4 +135,24 @@
         </button>
     </form>
 </div>
+
+<script>
+    function previewImage(event) {
+        const fileInput = event.target;
+        const previewContainer = document.getElementById('imagePreview');
+        const previewImage = previewContainer.querySelector('img');
+
+        if (fileInput.files && fileInput.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                previewImage.src = e.target.result; 
+                previewContainer.classList.remove('hidden'); 
+            };
+            reader.readAsDataURL(fileInput.files[0]); 
+        } else {
+            previewImage.src = '';
+            previewContainer.classList.add('hidden'); 
+        }
+    }
+</script>
 @endsection

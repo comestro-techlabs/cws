@@ -164,7 +164,8 @@ class AuthController extends Controller
             'gender' => 'required|in:male,female,other',
             'education_qualification' => 'required|string|max:255',
             'dob' => 'required|date',
-            'password' => 'required|string|min:8',
+            'password' => 'required|string|min:8|confirmed',
+            
         ], [
             'email.unique' => 'The email address is already taken.',
             'contact.unique' => 'The contact number is already in use.',

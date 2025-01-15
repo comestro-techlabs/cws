@@ -1,16 +1,32 @@
 @extends('studentdashboard.include.base')
 @section('content')
+
+
     <!-- Header Layout Content -->
     <div class="mdk-header-layout__content mdk-header-layout__content--fullbleed mdk-header-layout__content--scrollable page" style="padding-top: 60px;">
-
-
+        @if ($courses->isEmpty())
+        
+        <div class="flex flex-col items-center justify-center mt-12 md:mt-16 lg:mt-20 text-center px-6 md:px-4 space-y-2">
+            <img src="{{ asset('assets/welcome.png') }}" class="w-56 md:w-64 lg:w-72 ">
+            <h4 class="text-xl md:text-2xl font-semibold text-gray-800 mb-2">
+                Welcome! Please purchase a course to access your dashboard.
+            </h4>
+            <a href="{{route('student.course')}}" >
+                <button class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 text-sm md:text-lg">
+                    Browse Courses
+                </button>
+             
+            </a>
+        </div>
+        
+    @else
         <div class="container-fluid page__container">
 
-            <div class="alert alert-soft-warning d-flex align-items-center card-margin" role="alert">
+            {{-- <div class="alert alert-soft-warning d-flex align-items-center card-margin" role="alert">
                 <i class="material-icons mr-3">error_outline</i>
                 <div class="text-body">You have <strong>5 days left</strong> on your subscription</div>
                 <a href="#" class="btn btn-warning ml-auto">Upgrade</a>
-            </div>
+            </div> --}}
 
             <div class="row">
                 <div class="col-lg-7">
@@ -524,7 +540,9 @@
 
                     <!-- START SKILLS -->
 
+
                     {{-- <div class="card">
+
                         <div class="card-header">
                             <h4 class="card-header__title">Skills</h4>
                         </div>
@@ -588,7 +606,7 @@
             </div>
         </div>
 
-
+@endif
     </div>
     <!-- // END header-layout__content -->
 @endsection
