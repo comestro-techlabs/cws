@@ -15,7 +15,7 @@
                 Here’s your One-Time Password (OTP) to securely log in:
             </p>
             <div style="margin: 20px 0; font-size: 20px; font-weight: bold; color: #4CAF50;">
-                🔒 <span style="font-size: 24px;">{{ $otp }}</span> 🔒
+                🔒 <span style="font-size: 24px;">{{ $user->name }}</span> 🔒
             </div>
             <p style="font-size: 16px; line-height: 1.5; color: #555555;">
                 ⏳ This OTP is valid for <strong>5 minutes</strong>.

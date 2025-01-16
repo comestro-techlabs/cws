@@ -235,6 +235,7 @@ Route::post('send-otp', 'sendOtp')->name('auth.sendOtp');
 
         Route::get('/register', 'showRegistrationForm')->name('auth.register');
         Route::post('/register', 'register')->name('auth.register.post');
+Route::get('verify-otp', [AuthController::class, 'verifyOtpRegister'])->name('auth.verifyOtp');
         Route::get('/logout', 'logout')->name('auth.logout');
     });
 

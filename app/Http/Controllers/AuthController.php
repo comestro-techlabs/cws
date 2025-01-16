@@ -155,19 +155,17 @@ class AuthController extends Controller
         return view('public.register');
     }
 
-   
 
+    
     public function register(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|unique:users,email,' . $request->id . ',id',
+            'email' => 'required|string|email|unique:users,email',
             'contact' => 'required|digits:10|unique:users,contact',
             'gender' => 'required|in:male,female,other',
             'education_qualification' => 'required|string|max:255',
             'dob' => 'required|date|before_or_equal:today',
-            // 'password' => 'required|string|min:8|confirmed',
-            
         ], [
             'email.unique' => 'The email address is already taken.',
             'contact.unique' => 'The contact number is already in use.',
@@ -175,27 +173,71 @@ class AuthController extends Controller
             'dob.date' => 'The date of birth must be a valid date.',
         ]);
     
+        // Create new user
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
-    //    $user->password = bcrypt($request->password); // Use bcrypt for password hashing
         $user->contact = $request->contact;
         $user->dob = $request->dob;
         $user->gender = $request->gender;
         $user->education_qualification = $request->education_qualification;
         $user->save();
     
-        // Send confirmation email
-        Mail::send('emails.registration', ['user' => $user], function ($message) use ($user) {
-            $message->to($user->email)
-                    ->subject('Registration Successful');
-        });
+        // Generate OTP
+        $otp = rand(100000, 999999); // 6-digit OTP
+        
+        // Store OTP and expiration in the user record
+        $user->otp = $otp;
+        $user->otp_expires_at = Carbon::now()->addMinutes(10); // OTP expires in 10 minutes
+        $user->save();
     
-        return redirect()->route('auth.login')->with('success', 'Registration successful. A confirmation email has been sent to your email address.');
+        // Send OTP via email
+        try {
+            Mail::raw("Your OTP for registration is: $otp", function ($message) use ($user) {
+                $message->to($user->email)
+                        ->subject('Your OTP for Registration');
+            });
+    
+            // Redirect to OTP verification page
+            return view('auth.verify-otp', ['email' => $user->email])
+                ->with('success', 'OTP sent successfully. Please check your email.');
+        } catch (\Exception $e) {
+            // In case of an error sending the OTP
+            return back()->with('error', 'Failed to send OTP. Please try again.');
+        }
     }
     
-
-
+    // OTP verification for registration
+    public function verifyOtpRegister(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'otp' => 'required|digits:6',
+        ]);
+    
+        $email = $request->input('email');
+        $otp = $request->input('otp');
+    
+        // Retrieve the user by email
+        $user = User::where('email', $email)->first();
+    
+        // Check if the OTP is valid and not expired
+        if ($user && $user->otp === $otp && Carbon::now()->lessThan($user->otp_expires_at)) {
+            // OTP verified, mark the user as verified and complete registration
+            $user->email_verified_at = Carbon::now();
+            $user->save();
+    
+            // Clear OTP after successful verification
+            $user->otp = null;
+            $user->otp_expires_at = null;
+            $user->save();
+    
+            return redirect()->route('auth.login')->with('success', 'Registration successful. Your account is now verified.');
+        }
+    
+        return redirect()->back()->withErrors(['otp' => 'Invalid OTP or OTP has expired.']);
+    }
+    
     // logout method
     public function logout()
     {
