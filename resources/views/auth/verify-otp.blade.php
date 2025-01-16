@@ -1,12 +1,12 @@
 @extends('public.layout')
 
 @section('title')
-Login
+register
 @endsection
 
 @section('content')
     <div class="max-w-lg mx-auto mt-8">
-        <form method="POST" action="{{ route('auth.verifyOtp') }}">
+        <form method="POST" action="{{ route('auth.verifyOtp.register') }}">
             @csrf
 
             <div class="mb-4">
