@@ -18,7 +18,7 @@ Login
                     class="text-blue-600 font-bold">estro</span></h2>
 
             <p class="text-xl text-gray-600 text-center">Welcome Students</p>
-            <a href="{{ route('auth.google') }}"
+            {{-- <a href="{{ route('auth.google') }}"
                 class="flex  items-center justify-center mt-4 text-white rounded-lg shadow-md hover:bg-gray-100  pl-20">
                 <div class="px-2 ">
                     <svg class="h-6 w-6" viewBox="0 0 40 40">
@@ -37,7 +37,7 @@ Login
                     </svg>
                 </div>
                 <h1 class="py-3 w-5/6  text-gray-600 font-bold">Sign in with Google</h1>
-            </a>
+            </a> --}}
             <div class="mt-4 flex items-center justify-between">
                 <span class="border-b w-1/5 lg:w-1/4"></span>
                 <a href="#" class="text-xs text-center text-gray-500 uppercase">or login with email</a>

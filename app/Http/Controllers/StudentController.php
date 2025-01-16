@@ -163,11 +163,37 @@ class StudentController extends Controller
             return redirect()->route('auth.login')->with('error','you must be logged in to access this page');
         }
         $studentId = User::findOrFail(Auth::id())->id;
-     
+        $firstAttempts = Answer::where('user_id', $studentId)
+            ->where('attempt', 1)
+            ->with('exam')
+            ->get()
+            ->groupBy('exam_id')
+            ->map(function ($answers){
+                return [
+                    'exam_name' => $answers->first()->exam->exam_name,
+                    'total_marks'=> $answers->sum('obtained_marks'),
+                ];
+            });
+            $secondAttempts = Answer::where('user_id', $studentId)
+            ->where('attempt', 2)
+            ->with('exam')
+            ->get()
+            ->groupBy('exam_id')
+            ->map(function ($answers) {
+                return [
+                    'exam_name' => $answers->first()->exam->name,
+                    'total_marks' => $answers->sum('obtained_marks'),
+                ];
+            });    
+             
         $datas = [
             'courses' => User::find(Auth::id())->courses()->take(2)->get(),
             'payments' => Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->get(),
-            'exams' => Exam::whereIn('course_id', User::find(Auth::id())->courses->pluck('id'))->get(),
+            'assignments' => Assignments::whereIn('course_id', User::find(Auth::id())->courses->pluck('id'))->take(2)->get(),
+            'exams' => Exam::whereIn('course_id', User::find(Auth::id())->courses->pluck('id'))->where('status', 1)->take(2)->get(),
+            'first_attempts'=>$firstAttempts,
+            'second_attempts'=>$secondAttempts,
+
         ];
         return view('studentdashboard.dashboard',$datas);
     }
