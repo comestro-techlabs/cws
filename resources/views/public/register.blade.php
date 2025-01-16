@@ -110,13 +110,13 @@ Sign up
                 </div>
 
                 <!-- Password -->
-                <div>
+                <!-- <div>
                     <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
                     <input type="password" name="password" id="password"
                         class="form-input mt-1 block w-full rounded-md border-gray-300 focus:border-gray-500 focus:ring focus:ring-gray-200 focus:ring-opacity-50">
 
-                </div>
-                <div>
+                </div> -->
+                <!-- <div>
                     <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirm Password</label>
                     <input type="password" id="password_confirmation" name="password_confirmation" class="form-input mt-1 block w-full rounded-md border-gray-300 focus:border-gray-500 focus:ring focus:ring-gray-200 focus:ring-opacity-50" required>
 
@@ -126,7 +126,7 @@ Sign up
                     @error('password_confirmation')
                     <span class="text-danger">{{ $message }}</span>
                     @enderror
-                </div>
+                </div> -->
 
                 <!-- Terms and Conditions -->
                 <div class="flex items-center">
@@ -152,7 +152,7 @@ Sign up
         const gender = document.getElementById('gender').value.trim();
         const educationQualification = document.getElementById('education_qualification').value.trim();
         const dob = document.getElementById('dob').value.trim();
-        const password = document.getElementById('password').value.trim();
+        //const password = document.getElementById('password').value.trim();
         const terms = document.getElementById('terms').checked;
 
         let valid = true;
