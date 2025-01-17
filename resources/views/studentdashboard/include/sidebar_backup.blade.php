@@ -6,9 +6,11 @@
                 <a href="index.html" class="flex d-flex align-items-center text-underline-0">
                     
                     <span class="flex d-flex flex-column">
-                        <span class="sidebar-brand"> <span class="self-center text-2xl font-semibold whitespace-nowrap ">
-                           Learn Syntax
-                        </span>
+                        <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
+                            <span class="self-center text-2xl font-semibold whitespace-nowrap ">
+                                <img src="{{ asset('assets/comestro.png') }}" class="md:h-8" alt="">
+                            </span>
+                        </a>
                     </span>
                         {{-- <small>Next Generation</small> --}}
                     </span>

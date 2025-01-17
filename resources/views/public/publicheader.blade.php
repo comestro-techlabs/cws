@@ -13,7 +13,7 @@
     <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-4 py-5">
         <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
             <span class="self-center text-2xl font-semibold whitespace-nowrap ">
-                <img src="{{ asset('assets/comestro.png') }}" class="md:h-14 h-12 " alt="">
+                <img src="{{ asset('assets/comestro.png') }}" class="md:h-8" alt="">
             </span>
         </a>
 
