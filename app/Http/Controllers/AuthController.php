@@ -302,7 +302,7 @@ class AuthController extends Controller
             'email' => $userData['email'],
         ])->with('success', 'OTP sent successfully. Please check your email.');
     } catch (\Exception $e) {
-        // In case of an error sending the OTP
+        // In case of an error sending the OTP 
         return back()->with('error', 'Failed to send OTP. Please try again.');
     }
 }
@@ -346,7 +346,7 @@ class AuthController extends Controller
         } else {
             // Clear session data on failure
             $request->session()->forget('user_data');
-            dd('rtyuio');
+            // dd('rtyuio');
     
             return redirect()->back()->with('error', 'Invalid OTP or OTP expired. Registration failed.');
         }
