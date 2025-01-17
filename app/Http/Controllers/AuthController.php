@@ -347,9 +347,9 @@ class AuthController extends Controller
             // Clear session data on failure
             $request->session()->forget('user_data');
             // dd('rtyuio');
-    
-            return redirect()->back()->with('error', 'Invalid OTP or OTP expired. Registration failed.');
-        }
+           return redirect()->back()->withErrors(['otp' => 'Invalid OTP or OTP expired. Registration failed.']);      
+          }
+        
     }
     
 
