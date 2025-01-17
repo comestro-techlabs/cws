@@ -153,12 +153,14 @@ Sign up
                 </div>
 
                 <!-- Submit Button -->
+                <div class="flex justify-end space-x-2">
+
                 <button type="submit" 
                     class="w-full bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                     Verify OTP
                 </button>
                 <button type="button" id="close-modal" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md">Cancel</button>
-
+                </div>
             </form>
         </div>
     </div>
@@ -169,6 +171,9 @@ Sign up
     @if($errors->has('otp'))
         document.getElementById('otpModal').classList.remove('hidden');
     @endif
+    document.getElementById('close-modal').addEventListener('click', function () {
+        document.getElementById('otpModal').classList.add('hidden');
+    });
 </script>
 {{-- <script>
     // Show modal if session contains 'showModal'
