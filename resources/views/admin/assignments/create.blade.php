@@ -62,6 +62,10 @@
                     <span class="text-sm text-red-500">{{ $message }}</span>
                     @enderror
                 </div>
+                <div class="mt-4">
+                    <label class="block text-gray-700 mb-2">Status</label>
+                    <input type="checkbox" name="status" value="1" class="mr-2"> Active
+                </div>
 
                 <!-- Submit Button -->
                 <div class="text-center">

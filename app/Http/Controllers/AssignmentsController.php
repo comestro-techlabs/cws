@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Assignments;
 use App\Models\Course;
+use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 
 class AssignmentsController extends Controller
@@ -46,11 +48,24 @@ class AssignmentsController extends Controller
             'course_id' => 'required|exists:courses,id',
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'status' => 'nullable|boolean',
         ]);
 
-        Assignments::create($validated);
+       $assignment = Assignments::create($validated);
+    //    dd($assignment);
 
-        // Redirect with a success message
+        if($assignment->status == 1){
+            $users = User::whereHas('courses', function ($query) use ($assignment) {
+                $query->where('course_id', $assignment->course_id); 
+            })->get();
+            foreach($users as $user){
+                Mail::send('emails.assignment_notification', ['user'=> $user,'assignment'=> $assignment], function($message) use ($user){
+                    $message->to($user->email, $user->name)->subject('New Assignment Available');
+                    
+            });
+        }
+    }
+
         return redirect()->route('assignment.create')->with('success', 'Assignment created successfully!');
     }
 
