@@ -13,15 +13,15 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->string('email')->unique();
             $table->string('contact')->nullable()->unique();
-            $table->enum("gender",["male","female","other"]);
+            $table->enum("gender",["male","female","other"])->nullable();
             $table->string('education_qualification')->nullable();
             $table->boolean("isAdmin")->default(false);
             $table->timestamp('email_verified_at')->nullable();
-            $table->date('dob');
-            $table->string('password');
+            $table->date('dob')->nullable();
+            $table->string('password')->nullable();
             $table->integer('status')->default(0); //0 = new admission, 1 = new student, 2 = old student
             $table->rememberToken();
             $table->timestamps();

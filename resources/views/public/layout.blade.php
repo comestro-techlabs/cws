@@ -240,7 +240,7 @@
                 <div>
                     <h3 class="text-lg font-semibold text-white mb-4">About Us</h3>
                     <p class="text-gray-400">
-                        At Comestro, we are committed to providing high-quality programming education that empowers
+                        At Learn Syntax, we are committed to providing high-quality programming education that empowers
                         students to excel in the IT industry. Our hands-on approach and real-world projects ensure that
                         our students are job-ready.
                     </p>
@@ -274,7 +274,7 @@
                     <h3 class="text-lg font-semibold text-white mb-4">Contact Us</h3>
                     <p class="text-gray-400">{{ env('APP_NAME') }} TechLabs Pvt Ltd.</p>
                     <p class="text-gray-400">Purnea, Bihar, India</p>
-                    <p class="text-gray-400">Email: info@comestro.com</p>
+                    <p class="text-gray-400">Email: info@learnSyntax.com</p>
                     <p class="text-gray-400">Phone: +91-9546805580</p>
                 </div>
             </div>

@@ -93,7 +93,7 @@
                         <!-- Student Row -->
                         <div class="flex items-center justify-between p-4">
                             <div class="flex items-center space-x-4">
-                                <input type="checkbox" class="h-5 w-5 text-teal-600 border-gray-300 ">
+                                {{-- <input type="checkbox" class="h-5 w-5 text-teal-600 border-gray-300 "> --}}
                                 {{-- <div class="w-10 h-10">
                                     <img src="https://via.placeholder.com/40" alt="Student" class="rounded-full">
                                 </div> --}}

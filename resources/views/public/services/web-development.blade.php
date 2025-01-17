@@ -10,7 +10,7 @@
     <div class="bg-white 
  overflow-x-hidden">
         <livewire:page-heading title="Web Development"
-            description="At Comestro TechLab, we pride ourselves on being one of India's leading tech lab service agencies. Our comprehensive 360º tech lab solutions are designed to support businesses worldwide, delivering cutting-edge technology and expert solutions to meet all your needs."
+            description="At Learn Syntax, we pride ourselves on being one of India's leading tech lab service agencies. Our comprehensive 360º tech lab solutions are designed to support businesses worldwide, delivering cutting-edge technology and expert solutions to meet all your needs."
             image="about-header.png" />
 
         <!-- Body Section -->
@@ -24,7 +24,7 @@
 
                     <p class="text-md text-gray-700 leading-relaxed mt-3">
                         <a href="/" class="">
-                            <span class="text-orange-500 font-bold">Com</span><span class="text-blue-600 font-bold">estro</span></a> is a leading web development company specializing in the creation of high-performance e-commerce websites designed to elevate your online retail business. With a steadfast commitment to innovation and quality, we craft e-commerce platforms that are visually compelling, user-friendly, and optimized for conversion, ensuring that your online store not only stands out but also drives sales and customer engagement.
+                            <span class="text-orange-500 font-bold">Learn</span><span class="text-blue-600 font-bold">syntax</span></a> is a leading web development company specializing in the creation of high-performance e-commerce websites designed to elevate your online retail business. With a steadfast commitment to innovation and quality, we craft e-commerce platforms that are visually compelling, user-friendly, and optimized for conversion, ensuring that your online store not only stands out but also drives sales and customer engagement.
                     </p>
                     <p class="text-md text-gray-700 leading-relaxed mt-3">
                         We understand that a successful e-commerce website is more than just an online storefront—it’s a critical component of your business strategy. Our approach is comprehensive, incorporating user experience (UX) design, search engine optimization (SEO), and performance optimization to ensure your website not only attracts visitors but also converts them into loyal customers. We focus on creating a seamless, intuitive shopping experience that keeps customers coming back.
@@ -33,7 +33,7 @@
                         Our development process is client-centered, beginning with a deep dive into your business goals, brand identity, and customer demographics. From this foundation, we develop a customized e-commerce solution that aligns with your vision while incorporating industry best practices and the latest trends in online retail. We are dedicated to delivering projects on time and within budget, with an unwavering focus on quality and precision.
                     </p>
                     <p class="text-md text-gray-700 leading-relaxed mt-3">
-                        Comestro's commitment to post-launch support ensures that your website continues to perform optimally as your business evolves. Whether you’re a startup looking to make your mark or an established company aiming to enhance your digital footprint, Comestro is your trusted partner for comprehensive web solutions that deliver measurable results.
+                        Learn Syntax's commitment to post-launch support ensures that your website continues to perform optimally as your business evolves. Whether you’re a startup looking to make your mark or an established company aiming to enhance your digital footprint, Learn Syntax is your trusted partner for comprehensive web solutions that deliver measurable results.
                     </p>
                     <p class="text-md text-gray-700 leading-relaxed mt-3">
                         At the core of our services is a profound understanding of the digital sphere and an unwavering focus on leveraging this knowledge to benefit our clients. We have spent billions on Google ads, achieving a remarkable improvement in campaign performance, typically boosting existing performance by 30 to 40%. Moreover, our expertise extends to monitoring online conversations about brands, ensuring their reputation remains stellar across digital platforms.
@@ -102,7 +102,7 @@
 
         <div class="max-w-6xl mx-auto bg-white p-10 border rounded-lg shadow-lg mt-20 mb-20">
             <h2 class="text-2xl font-bold mb-4">FAQ Answered by <a href="/" class="">
-                    <span class="text-orange-500 font-bold">Com</span><span class="text-blue-600 font-bold">estro</span></a>
+                    <span class="text-orange-500 font-bold">Learn</span><span class="text-blue-600 font-bold">syntax</span></a>
             </h2>
 
             <div class="faq-item border border-gray-300 py-2 px-2 mb-4">

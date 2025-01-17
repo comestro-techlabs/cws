@@ -5,11 +5,11 @@
             <div class="d-flex align-items-center sidebar-p-a sidebar-account flex-shrink-0">
                 <a href="index.html" class="flex d-flex align-items-center text-underline-0">
                     
-                    <span class="flex d-flex flex-column">
-                        <span class="sidebar-brand"> <span class="self-center text-2xl font-semibold whitespace-nowrap ">
-                           Learn Syntax
-                        </span>
-                    </span>
+                        <a href="/" class="">
+                            <span class="self-center text-2xl font-semibold whitespace-nowrap ">
+                                <img src="{{ asset('assets/comestro.png') }}" class="md:h-8" alt="">
+                            </span>
+                        </a>
                         {{-- <small>Next Generation</small> --}}
                     </span>
                 </a>

@@ -63,7 +63,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Testimonial 1 -->
                 <div class="bg-white p-6 rounded-lg shadow-md">
-                    <p class="text-gray-700 mb-4">"Comestro TechLab has completely transformed our online presence. Their
+                    <p class="text-gray-700 mb-4">"Learn Syntax has completely transformed our online presence. Their
                         design is modern, responsive, and exactly what we needed to grow our business."</p>
                     <p class="font-bold text-blue-900">- John Doe, CEO of Company A</p>
                 </div>

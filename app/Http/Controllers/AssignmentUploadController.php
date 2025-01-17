@@ -236,8 +236,7 @@ class AssignmentUploadController extends Controller
                 return [
                     'name' => $uploads->first()->user->name,
                     'uploads' => $uploads, 
-                    
-                    
+                 
 
                 ];
             });

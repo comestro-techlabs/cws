@@ -12,7 +12,7 @@
     <div class="container mx-auto text-center">
         <h3 class="text-3xl font-bold mb-6">Comprehensive SEO Solutions</h3>
         <p class="text-lg mb-6">
-            At Comestro Techlabs Pvt Ltd, we offer a full range of SEO services designed to help your business achieve higher search engine rankings, increased visibility, and more qualified leads. Our team of SEO experts uses the latest strategies and techniques to ensure your website ranks well in search results and reaches your target audience.
+            At Learn Syntax, we offer a full range of SEO services designed to help your business achieve higher search engine rankings, increased visibility, and more qualified leads. Our team of SEO experts uses the latest strategies and techniques to ensure your website ranks well in search results and reaches your target audience.
         </p>
     </div>
 </section>
