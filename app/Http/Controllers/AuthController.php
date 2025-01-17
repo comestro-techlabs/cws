@@ -309,8 +309,10 @@ class AuthController extends Controller
             });
 
             // Redirect to OTP verification page
-            return view('auth.verify-otp', ['email' => $user->email])
-                ->with('success', 'OTP sent successfully. Please check your email.');
+            return redirect()->route('auth.register')->with([
+                'showModal' => true,
+                'email' => $user['email'],
+            ])->with('success', 'OTP sent successfully. Please check your email.');
         } catch (\Exception $e) {
             // In case of an error sending the OTP
             return back()->with('error', 'Failed to send OTP. Please try again.');
@@ -331,6 +333,8 @@ class AuthController extends Controller
         $user = User::where('email', $email)->first();
         $userData = $request->session()->get('user_data');
         // dd($userData);
+        $failedAttempts = $request->session()->get('otp_failed_attempts', 0);
+
         // Check if the user exists and if the OTP is valid and not expired
         if ($user && $user->otp === $otp && Carbon::now()->lessThan($user->otp_expires_at)) {
             // OTP verified, mark the user as verified and complete registration
@@ -351,18 +355,24 @@ class AuthController extends Controller
             return redirect()->route('auth.login')->with('success', 'Registration successful. Your account is now verified.');
         }
         else {
-            // OTP is incorrect or expired, delete the user data from the table
-            if ($user) {
-                $user->delete();
-            }
+            // Increment the failed attempts count
+            $failedAttempts++;
     
-            return redirect()->back()->with('error', 'Invalid OTP or OTP expired. User data has been deleted.');
+            if ($failedAttempts >= 3) {
+                // Delete user data on the third failed attempt
+                if ($user) {
+                    $user->delete();
+                }
+    
+                $request->session()->forget(['user_data', 'otp_failed_attempts']);
+                return redirect()->route('auth.register')->with('error', 'Invalid OTP entered three times. User data has been deleted.');
+            } else {
+                // Save the updated failed attempts count to the session
+                $request->session()->put('otp_failed_attempts', $failedAttempts);
+                return redirect()->back()->with('error', "Invalid OTP. You have " . (3 - $failedAttempts) . " attempt(s) remaining.");
+            }
         }
 
-        // dd('fail');
-        // If OTP is invalid or expired, do not submit data and show error
-        // return redirect()->route('auth.verifyOtp', ['email' => $email])
-        //     ->with('error', 'Invalid OTP or OTP expired. Please try again.');
     }
 
     // logout method
