@@ -17,6 +17,7 @@
                     <th class="px-4 py-2 text-left text-sm sm:text-base font-semibold text-gray-700 border-b border-gray-300">Attempt</th>
                     <th class="px-4 py-2 text-left text-sm sm:text-base font-semibold text-gray-700 border-b border-gray-300">Total Marks</th>
                     <th class="px-4 py-2 text-left text-sm sm:text-base font-semibold text-gray-700 border-b border-gray-300">Actions</th>
+                  
                 </tr>
             </thead>
             <tbody>
@@ -28,6 +29,10 @@
                         <a href="{{ route('attempt.details', ['examId' => $exam->id, 'userId' => $user->id, 'attempt' => $attempt->attempt]) }}" class="inline-block px-4 py-2 text-sm sm:text-base font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg  transition duration-200 ease-in-out transform hover:scale-105">
                             View Details
                         </a>
+                        <a href="{{ route('certificate', ['examId' => $exam->id, 'userId' => $user->id, 'attempt' => $attempt->attempt]) }}" target="_blank" class="inline-block px-4 py-2 ml-2 text-sm sm:text-base font-semibold text-white bg-green-600 hover:bg-green-700 rounded-lg transition duration-200 ease-in-out transform hover:scale-105">
+                            View Certificate
+                        </a>
+                    
                     </td>
                 </tr>
                 @endforeach

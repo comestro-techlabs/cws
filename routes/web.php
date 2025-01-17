@@ -56,7 +56,7 @@ use App\Models\Workshop;
 
        // });
 
-
+       
         
 
     Route::get('/get-access-token', [StudentController::class, 'store']);
@@ -106,7 +106,8 @@ use App\Models\Workshop;
             Route::get('/batches', [BatchController::class, 'index'])->name('batches.index');
             Route::post('/batches', [BatchController::class, 'store'])->name('batches.store');
             Route::delete('batches/{batch}/disable', [BatchController::class, 'destroy'])->name('batches.destroy');
-
+             
+          
             Route::get("/search", [AdminController::class, "searchCourse"])->name('course.search');
 
             Route::get("/search-enq", [AdminController::class, "searchEnquiry"])->name('enquiry.search');
@@ -148,6 +149,8 @@ use App\Models\Workshop;
             Route::put('/quiz/{quiz}/update', [QuizController::class, 'update'])->name('quiz.update');
             Route::delete('/quiz/{quiz}', [QuizController::class, 'destroy'])->name('quiz.destroy');
 
+
+
             //result
             // Route::get('/quiz/{quiz}/results', [QuizController::class, 'results'])->name('quiz.results');
 
@@ -159,8 +162,9 @@ use App\Models\Workshop;
             Route::get('/exams/{examId}/user/{userId}/attempts', [ResultController::class, 'getResultsByAttempts'])
     ->name('attempt.results');
             Route::get('/results/{examId}/{userId}/attempt/{attempt}', [ResultController::class, 'getAttemptDetails'])->name('attempt.details');
-
-
+            Route::get('/certificate/{examId}/{userId}/{attempt}', [ResultController::class, 'certificate'])
+            ->name('certificate');
+        
 
             Route::get('/answer',[AnswerController::class,'show'])->name('answer.results');
                   
@@ -236,6 +240,8 @@ use App\Models\Workshop;
         return view('public.launch');
     });
 
+   
+
     Route::get('/phonepe/payment', [PhonepeController::class, 'index'])->name('phonepe.payment');
     Route::post('/phonepe/initiate', [PhonepeController::class, 'initiatePayment'])->name('phonepe.initiate');
     Route::post('/phonepe/callback', [PhonePeController::class, 'callback'])->name('phonepe.callback');
@@ -246,7 +252,6 @@ use App\Models\Workshop;
     Route::get('/portfolio', [PortfolioController::class, 'index'])->name('public.portfolio');
     Route::get('/workshops', [WorkshopController::class, 'index'])->name('public.workshops');
     
-
-
+   
 
   

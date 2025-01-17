@@ -128,6 +128,7 @@ class AdminController extends Controller
         // Return a view to display payment details
         return view('admin.viewPayment', compact('payment'));
     }
+    
 
 
     // public function showPurchasedCourses($userId)

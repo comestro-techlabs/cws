@@ -71,5 +71,31 @@ public function getAttemptDetails($examId, $userId, $attempt)
     return view('admin.result.attempt_details', compact('answers', 'user', 'exam', 'attempt'));
 }
 
+public function certificate($examId, $userId, $attempt)
+{
+    $exam = Exam::findOrFail($examId);
+    $user = User::findOrFail($userId);
+
+  
+    $attemptDetails = Answer::where('exam_id', $examId)
+        ->where('user_id', $userId)
+        ->where('attempt', $attempt)
+        ->select('attempt', DB::raw('SUM(obtained_marks) as total_marks'))
+        ->groupBy('attempt')
+        ->firstOrFail();
+
+      
+
+    $data = [
+        'user' => $user,
+        'exam' => $exam,
+        'attempt' => $attemptDetails,
+        'date' => now()->toFormattedDateString(),
+    ];
+
+  
+    return view('admin.result.certificate', $data);
+}
+
 
 }
