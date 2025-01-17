@@ -11,7 +11,7 @@ Sign up
         <div class="max-md:order-1 hidden md:block flex-col justify-center space-y-16 max-md:mt-16 min-h-full bg-gradient-to-r from-gray-900 to-gray-700 lg:px-8 px-4 py-4">
             <div class="mt-24">
                 <h4 class="text-white text-lg font-semibold">Create Your Account</h4>
-                <p class="text-[13px] text-gray-300 mt-3 leading-relaxed">Welcome to <span class="text-orange-500 font-bold">Com</span><span class="text-blue-600 font-bold">estro</span> Get started by creating your account.</p>
+                <p class="text-[13px] text-gray-300 mt-3 leading-relaxed">Welcome to <span class="text-orange-500 font-bold">Learn</span><span class="text-blue-600 font-bold">syntax</span> Get started by creating your account.</p>
             </div>
             <div>
                 <h4 class="text-white text-lg font-semibold">Affordable | Quality</h4>

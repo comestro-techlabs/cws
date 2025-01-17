@@ -14,8 +14,8 @@ Login
     <div id="otp-form" class="w-full p-12 lg:w-1/2">
         <form action="{{route('auth.sendOtp')}}" method="POST" id="send-otp-form">
             @csrf
-            <h2 class="text-2xl font-semibold text-center"> <span class="text-orange-500 font-bold">Com</span><span
-                    class="text-blue-600 font-bold">estro</span></h2>
+            <h2 class="text-2xl font-semibold text-center"> <span class="text-orange-500 font-bold">Learn</span><span
+                    class="text-blue-600 font-bold">syntax</span></h2>
 
             <p class="text-xl text-gray-600 text-center">Welcome Students</p>
             {{-- <a href="{{ route('auth.google') }}"
