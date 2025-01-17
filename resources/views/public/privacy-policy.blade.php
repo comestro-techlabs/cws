@@ -11,8 +11,8 @@
             <h1 class="text-4xl font-bold text-orange-600 mb-8">Privacy Policy</h1>
 
             <p class="text-gray-700 leading-relaxed mb-6 ">
-                This Privacy Policy describes how COMESTRO TECHLABS PRIVATE LIMITED and its affiliates (collectively
-                "COMESTRO TECHLABS PRIVATE LIMITED, we, our, us") collect, use, share, protect or otherwise process your
+                This Privacy Policy describes how Learn Syntax and its affiliates (collectively
+                "Learn Syntax, we, our, us") collect, use, share, protect or otherwise process your
                 information/ personal data through our website <a href="https://www.comestro.com/" class="text-blue-600 underline">https://www.comestro.com/</a>(referred to as Platform). Please
                 note that you may be able to browse certain sections of the Platform without registering with us.We do not
                 offer any product/service under this Platform outside India and your personal data will primarily be stored
@@ -40,7 +40,7 @@
                 partner collects your personal data directly from you, you will be governed by their privacy policies. We
                 shall not be responsible for the third-party business partner’s privacy practices or the content of their
                 privacy policies, and we request you to read their privacy policies prior to disclosing any information. If
-                you receive an email, a call from a person/association claiming to be COMESTRO TECHLABS PRIVATE LIMITED
+                you receive an email, a call from a person/association claiming to be Learn Syntax
                 seeking any personal data like debit/credit card PIN, net-banking or mobile banking password, we request you
                 to never provide such information. If you have already revealed such information, report it immediately to
                 an appropriate law enforcement agency.
@@ -130,7 +130,7 @@
             </p>
             <div class="text-gray-700 leading-relaxed mb-6 gap-2 flex flex-col">
                 <p class="text-gray-700 leading-relaxed">
-                    <span class="font-bold">COMESTRO TECHLABS PRIVATE LIMITED</span>
+                    <span class="font-bold">Learn Syntax</span>
                     C/O SRI.RAMLAKHAN PRASAD, GANDHI NAGAR, Purnea, Purnea, Purnia- 854301, Bihar
                 </p>
                 <p class="text-gray-700 leading-relaxed">
