@@ -138,8 +138,8 @@ Sign up
                 <!-- Email Field (Read-Only) -->
                 <div class="mb-4">
                     {{-- <label for="email" class="block text-sm font-medium text-gray-700">Email</label> --}}
-                    <input type="hidden" name="email" id="otp_email_hidden" value="{{ session('email') }}">
-
+                    <input type="hidden" name="email" id="otp_email_hidden" 
+                    value="{{ old('email', session('email')) }}">
                 </div>
 
                 <!-- OTP Field -->
@@ -175,10 +175,5 @@ Sign up
         document.getElementById('otpModal').classList.add('hidden');
     });
 </script>
-{{-- <script>
-    // Show modal if session contains 'showModal'
-    @if(session('showModal'))
-        document.getElementById('otpModal').classList.remove('hidden');
-    @endif
-</script> --}}
+
 @endsection

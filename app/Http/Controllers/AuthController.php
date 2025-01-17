@@ -212,15 +212,14 @@ class AuthController extends Controller
     
         // Ensure session data exists and matches the input email
         if (!$userData || $userData['email'] !== $request->input('email')) {
-            return redirect()->back()->with('error', 'Invalid session data. Please restart the registration process.');
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Invalid session data. Please restart the registration process.')
+                ->with('email', $request->input('email'));
         }
     
         $otp = $request->input('otp');
-        // dd($userData['name']);
-        // Check if the OTP matches and is not expired
         if ($userData['otp'] == $otp && Carbon::now()->lessThan($userData['otp_expires_at'])) {
-            // dd("testing otp");
-            // Create the user in the database
             $user = User::create([
                 'name' => $userData['name'],
                 'email' => $userData['email'],
@@ -231,18 +230,20 @@ class AuthController extends Controller
                 'email_verified_at' => Carbon::now(),
             ]);
     
-            // Clear session data
             $request->session()->forget('user_data');
     
             return redirect()->route('auth.login')->with('success', 'Registration successful. Your account is now verified.');
         } else {
             // Clear session data on failure
             $request->session()->forget('user_data');
-            // dd('rtyuio');
-           return redirect()->back()->withErrors(['otp' => 'Invalid OTP or OTP expired. Registration failed.']);      
-          }
-        
+    
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['otp' => 'Invalid OTP or OTP expired. Registration failed.'])
+                ->with('email', $request->input('email'));
+        }
     }
+    
     
 
     // logout method
