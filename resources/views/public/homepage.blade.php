@@ -19,7 +19,7 @@
                     <div class="text-center mb-12">
                         <h2 class="text-3xl font-bold text-blue-600 mb-2">What We Offer</h2>
                         <p class="text-3xl font-bold text-gray-800">
-                            Comestro TechLabs offer end to end 'Software Solutions'
+                            Learn Syntax offer end to end 'Software Solutions'
                         </p>
                         <p class="text-gray-600 mt-4">Our comprehensive services are designed to meet your business needs.
                         </p>

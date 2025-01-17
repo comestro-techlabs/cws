@@ -13,7 +13,7 @@
 
         <!-- Header Section -->
         <livewire:page-heading title="About Comestro"
-            description="Our Comestro TechLab services is one of top Software Devlopment Company in India. We provide 360º
+            description="Our Learn Syntax services is one of top Software Devlopment Company in India. We provide 360º
                     techLab Solutions to businesses across the globe."
             image="about-header.png" />
 
@@ -89,7 +89,7 @@
                 Our Development Journey
             </h2>
             <p class="text-3xl font-bold text-gray-800">
-                Comestro TechLabs offer end-to-end 'Software solutions'
+                Learn Syntax offer end-to-end 'Software solutions'
             </p>
             <p class="text-lg font-light text-gray-600 mt-4">
                 Partner with us to transform your vision into reality. Your journey to innovation starts here!

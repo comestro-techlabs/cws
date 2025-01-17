@@ -7,7 +7,7 @@
 @section('content')
     <div class="bg-white 
  overflow-x-hidden">
-        <livewire:page-heading title="Comestro TechLab Services"
+        <livewire:page-heading title="Learn Syntax Services"
             description="Our TechLab services in India enhance your brand’s online presence, attract new customers, and drive conversions."
             image="about-header.png" />
 
@@ -93,7 +93,7 @@
                 Our Services
             </h2>
             <p class="text-2xl md:text-3xl font-bold text-gray-800">
-                Comestro TechLabs offer end-to-end 'Software solutions'
+                Learn Syntax offer end-to-end 'Software solutions'
             </p>
             <p class="text-base md:text-lg font-light text-gray-600 mt-4">
                 Partner with us to transform your vision into reality. Your journey to innovation starts here!

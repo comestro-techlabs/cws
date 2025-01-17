@@ -10,7 +10,7 @@
 </head>
 
 <body class="bg-white text-gray-800">
-  <h1 class="text-black text-2xl font-bold text-center mt-8">COMESTRO TECHLABS PVT .LIMITED</h1>
+  <h1 class="text-black text-2xl font-bold text-center mt-8">Learn Syntax PVT .LIMITED</h1>
 
  
   <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6">

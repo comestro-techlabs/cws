@@ -7,7 +7,7 @@
 <div class="bg-white 
  overflow-x-hidden">
     <livewire:page-heading title="Ecommerce Website Development"
-        description="Our Comestro TechLab services is one of top Software Devlopment Company in India. We provide 360º
+        description="Our Learn Syntax services is one of top Software Devlopment Company in India. We provide 360º
                     techLab Solutions to businesses across the globe."
         image="about-header.png" />
     

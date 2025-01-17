@@ -4,7 +4,7 @@
     </svg>
     <span class="sr-only">Info</span>   
     <div class="ms-3  text-xs md:text-sm font-medium">
-        Code with SadiQ Now become Comestro Techlabs!
+        Code with SadiQ Now become Learn Syntax!
     </div>
 
   </div> --}}

@@ -15,7 +15,7 @@
             <div class="md:w-1/2 p-6">
                 <h3 class="text-3xl font-bold mb-4">Transform Your Ideas into Reality</h3>
                 <p class="mb-4">
-                    At Comestro Techlabs Pvt Ltd, we specialize in creating innovative and user-friendly mobile apps that meet the unique demands of your business. Our team of experienced developers and designers work closely with you to bring your vision to life.
+                    At Learn Syntax , we specialize in creating innovative and user-friendly mobile apps that meet the unique demands of your business. Our team of experienced developers and designers work closely with you to bring your vision to life.
                 </p>
                 <p class="mb-4">
                     Whether you need a powerful enterprise solution, a sleek e-commerce platform, or an engaging social media app, we've got you covered. Our process includes:
