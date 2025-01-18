@@ -5,13 +5,13 @@
 @section('content')
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6">
     <!-- Admissions Card -->
-    <div class="bg-gradient-to-r bg-slate-100 border-l-4 border-orange-600 text-orange shadow-xl rounded-lg p-4 flex flex-col justify-between" style="height: 130px;">
+    {{-- <div class="bg-gradient-to-r bg-slate-100 border-l-4 border-orange-600 text-orange shadow-xl rounded-lg p-4 flex flex-col justify-between" style="height: 130px;">
         <div>
             <p class="text-3xl text-orange-600 font-bold">{{ $admissionsCount }}</p>
             <h3 class="text-lg text-orange-600 font-semibold">Admissions</h3>
         </div>
         <a href="#" class="text-sm text-blue-600 hover:underline">View Details</a>
-    </div>
+    </div> --}}
 
     <!-- Students Card -->
     <div class="bg-gradient-to-r bg-slate-100 border-l-4 border-green-600 text-green-600 shadow-xl rounded-lg p-4 flex flex-col justify-between" style="height: 130px;">
@@ -19,7 +19,7 @@
             <p class="text-3xl font-bold">{{ $studentsCount }}</p>
             <h3 class="text-lg text-green-600 font-semibold">Students</h3>
         </div>
-        <a href="#" class="text-sm text-green-600 hover:underline">View Details</a>
+        <a href="{{ route('student.manage') }}" class="text-sm text-green-600 hover:underline">View Details</a>
     </div>
 
     <!-- Categories Card -->
@@ -37,7 +37,7 @@
             <p class="text-3xl font-bold">{{ $coursesCount }}</p>
             <h3 class="text-lg text-yellow-600 font-semibold">Courses</h3>
         </div>
-        <a href="#" class="text-sm text-yellow-600 hover:underline">View Details</a>
+        <a href="{{ route('course.index') }}" class="text-sm text-yellow-600 hover:underline">View Details</a>
     </div>
 
     <!-- Batches Card -->
@@ -68,13 +68,13 @@
     </div> --}}
 
     <!-- Payments Card -->
-    {{-- <div class="bg-gradient-to-r bg-slate-100 border-l-4 border-red-600 text-red-600 shadow-xl rounded-lg p-4 flex flex-col justify-between" style="height: 130px;">
+    <div class="bg-gradient-to-r bg-slate-100 border-l-4 border-red-600 text-red-600 shadow-xl rounded-lg p-4 flex flex-col justify-between" style="height: 130px;">
         <div>
             <p class="text-3xl font-bold">{{ $paymentsCount }}</p>
             <h3 class="text-lg text-red-600 font-semibold">Payments</h3>
         </div>
         <a href="#" class="text-sm text-red-600 hover:underline">View Details</a>
-    </div> --}}
+    </div>
 
     <!-- Due Payments Card -->
     {{-- <div class="bg-gradient-to-r bg-slate-100 border-l-4 border-indigo-600 text-indigo-600 shadow-xl rounded-lg p-4 flex flex-col justify-between" style="height: 130px;">
