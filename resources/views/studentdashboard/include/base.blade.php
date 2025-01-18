@@ -1,463 +1,224 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
-
-<!-- Mirrored from educate.frontted.com/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 12 Dec 2024 09:02:00 GMT -->
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Dashboard</title>
+    @vite('resources/css/app.css')
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- Prevent the demo from appearing in search engines -->
-    <meta name="robots" content="noindex">
-
-    <!-- Perfect Scrollbar -->
-    <link type="text/css" href="{{ asset('assets/vendor/perfect-scrollbar.css') }}" rel="stylesheet">
-
-    <!-- App CSS -->
-    <link type="text/css" href="{{ asset('assets/css/app.css') }}" rel="stylesheet">
-    <link type="text/css" href="{{ asset('assets/css/app.rtl.css') }}" rel="stylesheet">
-
-    <!-- Material Design Icons -->
-    <link type="text/css" href="{{ asset('assets/css/vendor-material-icons.css') }}" rel="stylesheet">
-    <link type="text/css" href="{{ asset('assets/css/vendor-material-icons.rtl.css') }}" rel="stylesheet">
-
-    <!-- Font Awesome FREE Icons -->
-    <link type="text/css" href="{{ asset('assets/css/vendor-fontawesome-free.css') }}" rel="stylesheet">
-    <link type="text/css" href="{{ asset('assets/css/vendor-fontawesome-free.rtl.css') }}" rel="stylesheet">
-
-    <!-- ion Range Slider -->
-    <link type="text/css" href="{{ asset('assets/css/vendor-ion-rangeslider.css') }}" rel="stylesheet">
-    <link type="text/css" href="{{ asset('assets/css/vendor-ion-rangeslider.rtl.css') }}" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-
-
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-115115077-4"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-        gtag('js', new Date());
-
-        gtag('config', 'UA-115115077-4');
-    </script>
-
-
-
-    <!-- Facebook Pixel Code -->
-    <script>
-        ! function(f, b, e, v, n, t, s) {
-            if (f.fbq) return;
-            n = f.fbq = function() {
-                n.callMethod ?
-                    n.callMethod.apply(n, arguments) : n.queue.push(arguments)
-            };
-            if (!f._fbq) f._fbq = n;
-            n.push = n;
-            n.loaded = !0;
-            n.version = '2.0';
-            n.queue = [];
-            t = b.createElement(e);
-            t.async = !0;
-            t.src = v;
-            s = b.getElementsByTagName(e)[0];
-            s.parentNode.insertBefore(t, s)
-        }(window, document, 'script',
-            '../connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '340571383230227');
-        fbq('track', 'PageView');
-    </script>
-    <noscript><img height="1" width="1" style="display:none"
-            src="https://www.facebook.com/tr?id=340571383230227&amp;ev=PageView&amp;noscript=1" /></noscript>
-    <!-- End Facebook Pixel Code -->
-
-
-
-
-    <!-- Flatpickr -->
-    <link type="text/css" href="{{ asset('assets/css/vendor-flatpickr.css') }}" rel="stylesheet">
-    <link type="text/css" href="{{ asset('assets/css/vendor-flatpickr.rtl.css') }}" rel="stylesheet">
-    <link type="text/css" href="{{ asset('assets/css/vendor-flatpickr-airbnb.css') }}" rel="stylesheet">
-    <link type="text/css" href="{{ asset('assets/css/vendor-flatpickr-airbnb.rtl.css') }}" rel="stylesheet">
-
-    <!-- Vector Maps -->
-    <link type="text/css" href="{{ asset('assets/vendor/jqvmap/jqvmap.min.css') }}" rel="stylesheet">
-
-        {{-- tailwind --}}
-        <script src="https://cdn.tailwindcss.com"></script>
-
 </head>
 
 <body class="layout-default">
 
-    <div class="mdk-drawer-layout js-mdk-drawer-layout" data-push data-responsive-width="992px" data-fullbleed>
-        <div class="mdk-drawer-layout__content">
-
-            <!-- Header Layout -->
-            <div class="mdk-header-layout js-mdk-header-layout " >
-
-                <!-- Header -->
-
-                <div id="header" class="mdk-header js-mdk-header m-0" data-fixed data-effects="waterfall"
-                    data-retarget-mouse-scroll="false">
-                    <div class="mdk-header__content">
-
-                        <div class="navbar navbar-expand-sm navbar-main navbar-dark  pl-md-0 pr-0" style="background-color: darkgreen" id="navbar"
-                            data-primary>
-                            <div class="container-fluid page__container pr-0">
-
-                                <!-- Navbar toggler -->
-                                <button class="navbar-toggler navbar-toggler-custom  d-lg-none d-flex mr-navbar"
-                                    type="button" data-toggle="sidebar">
-                                    <span class="material-icons icon-14pt">menu</span>
-                                </button>
+    <!-- Header Layout -->
 
 
-                                {{-- <form class="ml-auto search-form search-form--light d-none d-sm-flex flex"
-                                    action="https://educate.frontted.com/index.html">
-                                    <input type="text" class="form-control" placeholder="Search">
-                                    <button class="btn" type="submit"><i class="material-icons">search</i></button>
-                                </form> --}}
+    <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar"
+        type="button"
+        class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+        <span class="sr-only">Open sidebar</span>
+        <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg">
+            <path clip-rule="evenodd" fill-rule="evenodd"
+                d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z">
+            </path>
+        </svg>
+    </button>
+
+    <aside id="default-sidebar"
+        class="fixed top-0 bg-gray-50 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+        aria-label="Sidebar">
 
 
-                                <ul class="nav navbar-nav d-none d-md-flex">
-                                    <li class="nav-item dropdown">
-                                      
-                                       
-                                    </li>
-                                
-                                </ul>
-                                
-
-                                <div class="">
-                                     
-                                    @auth
-                                                @if (Auth::user()->isAdmin)
-                                                    <a href="{{ route('admin.dashboard') }}"
-                                                        class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 text-center ">Admin
-                                                        Panel</a>
-                                                @else
-                                                <a href="#"
-                                                class="text-white mr-2">
-                                                
-                                                <span class="sr-only text-white">Open user menu</span>
-                                                {{ Auth::user()->name }}
-                                                
-                                            </a> 
-                
-                               
-                                                @endif
-                                            @endauth
-                                    {{-- <div id="company_menu"
-                                        class="dropdown-menu dropdown-menu-right navbar-company-menu">
-                                        <div
-                                            class="dropdown-item d-flex align-items-center py-2 navbar-company-info py-3">
-
-                                            <span class="mr-3">
-                                                <img src="{{ asset('assets/images/frontted-logo-blue.svg') }}"
-                                                    width="43" height="43" alt="avatar">
-                                            </span>
-                                             <span class="flex d-flex flex-column">
-                                                <strong class="h5 m-0">Adrian D.</strong>
-                                                <small class="text-muted text-uppercase">STUDENT</small>
-                                                
-                                            </span>
-                                            
-
-                                        </div>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item d-flex align-items-center py-2"
-                                            href="edit-account.html">
-                                            <span class="material-icons mr-2">account_circle</span> Edit Account
-                                        </a>
-                                        <a class="dropdown-item d-flex align-items-center py-2" href="#">
-                                            <span class="material-icons mr-2">settings</span> Settings
-                                        </a>
-                                        <a class="dropdown-item d-flex align-items-center py-2" href="login.html">
-                                            <span class="material-icons mr-2">exit_to_app</span> Logout
-                                        </a>
-                                    </div> --}}
-                                </div>
-
-                            </div>
-                        </div>
-
-                    </div>
+        <div class=" bg-gray-50">
+            <div class="flex justify-end px-4 pt-4">
+                <button id="dropdownButton" data-dropdown-toggle="dropdown"
+                    class="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5"
+                    type="button">
+                    <span class="sr-only">Open dropdown</span>
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                        viewBox="0 0 16 3">
+                        <path
+                            d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
+                    </svg>
+                </button>
+                <!-- Dropdown menu -->
+                <div id="dropdown"
+                    class="z-10 hidden text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                    <ul class="py-2" aria-labelledby="dropdownButton">
+                        <li>
+                            <a href="#"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Edit</a>
+                        </li>
+                        <li>
+                            <a href="#"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Export
+                                Data</a>
+                        </li>
+                        <li>
+                            <a href="#"
+                                class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete</a>
+                        </li>
+                    </ul>
                 </div>
-
-                <!-- // END Header -->
-
-                @section('content')
-
-                @show
+            </div>
+            <div class="flex flex-col items-center pb-2">
+                <img class="w-24 h-24 mb-3 rounded-full shadow-lg" src="{{asset("user.png")}}"
+                    alt="Bonnie image" />
+                <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">@if(auth()->check())
+                    {{ auth()->user()->name }}
+                @endif</h5>
 
             </div>
-            <!-- // END header-layout -->
-
         </div>
-        <!-- // END drawer-layout__content -->
 
-        @include('studentdashboard.include.sidebar')
+        <div class="px-3 py-4 overflow-y-scroll bg-gray-50 dark:bg-gray-800">
+            <ul class="space-y-2 font-medium">
+                <li>
+                    <a href="{{ route('student.dashboard') }}"
+                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                            viewBox="0 0 22 21">
+                            <path
+                                d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z" />
+                            <path
+                                d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
+                        </svg>
+                        <span class="ms-3">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('student.course') }}"
+                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                            viewBox="0 0 18 18">
+                            <path
+                                d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z" />
+                        </svg>
+                        <span class="flex-1 ms-3 whitespace-nowrap">Courses</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('auth.logout') }}"
+                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path
+                                d="m17.418 3.623-.018-.008a6.713 6.713 0 0 0-2.4-.569V2h1a1 1 0 1 0 0-2h-2a1 1 0 0 0-1 1v2H9.89A6.977 6.977 0 0 1 12 8v5h-2V8A5 5 0 1 0 0 8v6a1 1 0 0 0 1 1h8v4a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-4h6a1 1 0 0 0 1-1V8a5 5 0 0 0-2.582-4.377ZM6 12H4a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2Z" />
+                        </svg>
+                        <span class="flex-1 ms-3 whitespace-nowrap">Logout</span>
+
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('student.billing') }}"
+                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                            viewBox="0 0 20 18">
+                            <path
+                                d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
+                        </svg>
+                        <span class="flex-1 ms-3 whitespace-nowrap">Billing</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('student.coursePurchase') }}"
+                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                            viewBox="0 0 18 20">
+                            <path
+                                d="M17 5.923A1 1 0 0 0 16 5h-3V4a4 4 0 1 0-8 0v1H2a1 1 0 0 0-1 .923L.086 17.846A2 2 0 0 0 2.08 20h13.84a2 2 0 0 0 1.994-2.153L17 5.923ZM7 9a1 1 0 0 1-2 0V7h2v2Zm0-5a2 2 0 1 1 4 0v1H7V4Zm6 5a1 1 0 1 1-2 0V7h2v2Z" />
+                        </svg>
+                        <span class="flex-1 ms-3 whitespace-nowrap">My Courses</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('student.assignments-view') }}"
+                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 18 16">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3" />
+                        </svg>
+                        <span class="flex-1 ms-3 whitespace-nowrap">Manage Assignments</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('student.course.result') }}"
+                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 18 16">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3" />
+                        </svg>
+                        <span class="flex-1 ms-3 whitespace-nowrap">My Result</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('student.course.quiz') }}"
+                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z" />
+                            <path
+                                d="M6.737 11.061a2.961 2.961 0 0 1 .81-1.515l6.117-6.116A4.839 4.839 0 0 1 16 2.141V2a1.97 1.97 0 0 0-1.933-2H7v5a2 2 0 0 1-2 2H0v11a1.969 1.969 0 0 0 1.933 2h12.134A1.97 1.97 0 0 0 16 18v-3.093l-1.546 1.546c-.413.413-.94.695-1.513.81l-3.4.679a2.947 2.947 0 0 1-1.85-.227 2.96 2.96 0 0 1-1.635-3.257l.681-3.397Z" />
+                            <path
+                                d="M8.961 16a.93.93 0 0 0 .189-.019l3.4-.679a.961.961 0 0 0 .49-.263l6.118-6.117a2.884 2.884 0 0 0-4.079-4.078l-6.117 6.117a.96.96 0 0 0-.263.491l-.679 3.4A.961.961 0 0 0 8.961 16Zm7.477-9.8a.958.958 0 0 1 .68-.281.961.961 0 0 1 .682 1.644l-.315.315-1.36-1.36.313-.318Zm-5.911 5.911 4.236-4.236 1.359 1.359-4.236 4.237-1.7.339.341-1.699Z" />
+                        </svg>
+                        <span class="flex-1 ms-3 whitespace-nowrap">Take Examinations</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('student.editProfile') }}"
+                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z" />
+                            <path
+                                d="M6.737 11.061a2.961 2.961 0 0 1 .81-1.515l6.117-6.116A4.839 4.839 0 0 1 16 2.141V2a1.97 1.97 0 0 0-1.933-2H7v5a2 2 0 0 1-2 2H0v11a1.969 1.969 0 0 0 1.933 2h12.134A1.97 1.97 0 0 0 16 18v-3.093l-1.546 1.546c-.413.413-.94.695-1.513.81l-3.4.679a2.947 2.947 0 0 1-1.85-.227 2.96 2.96 0 0 1-1.635-3.257l.681-3.397Z" />
+                            <path
+                                d="M8.961 16a.93.93 0 0 0 .189-.019l3.4-.679a.961.961 0 0 0 .49-.263l6.118-6.117a2.884 2.884 0 0 0-4.079-4.078l-6.117 6.117a.96.96 0 0 0-.263.491l-.679 3.4A.961.961 0 0 0 8.961 16Zm7.477-9.8a.958.958 0 0 1 .68-.281.961.961 0 0 1 .682 1.644l-.315.315-1.36-1.36.313-.318Zm-5.911 5.911 4.236-4.236 1.359 1.359-4.236 4.237-1.7.339.341-1.699Z" />
+                        </svg>
+                        <span class="flex-1 ms-3 whitespace-nowrap">Profile Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+
+    <div class="p-4 sm:ml-64">
+        @include('studentdashboard.include.header')
+
+        @section('content')
+
+        @show
+
+
     </div>
-    <!-- // END drawer-layout -->
 
-    <div class="mdk-drawer js-mdk-drawer" id="events-drawer" data-align="end">
-        <div class="mdk-drawer__content">
-            <div class="sidebar sidebar-light sidebar-left" data-perfect-scrollbar>
-
-
-
-
-                <small class="text-dark-gray px-3 py-1">
-                    <strong>Thursday, 28 Feb</strong>
-                </small>
-
-                <div class="list-group list-group-flush">
-
-                    <div class="list-group-item bg-light">
-                        <div class="row">
-                            <div class="col-auto d-flex flex-column">
-                                <small>12:30 PM</small>
-                                <small class="text-dark-gray">2 hrs</small>
-                            </div>
-                            <div class="col">
-                                <div class="d-flex flex-column flex">
-                                    <a href="#" class="text-body"><strong class="text-15pt">Marketing Team
-                                            Meeting</strong></a>
-
-                                    <small class="text-muted d-flex align-items-center"><i
-                                            class="material-icons icon-16pt mr-1">location_on</i> 16845 Hicks
-                                        Road</small>
-
-
-                                </div>
-                                <div class="avatar-group mt-2">
-
-                                    <div class="avatar avatar-xs">
-                                        <img src="{{ asset('assets/images/256_joao-silas-636453-unsplash.jpg') }}"
-                                            alt="Avatar" class="avatar-img rounded-circle">
-                                    </div>
-
-                                    <div class="avatar avatar-xs">
-                                        <img src="{{ asset('assets/images/256_jeremy-banks-798787-unsplash.jpg') }}"
-                                            alt="Avatar" class="avatar-img rounded-circle">
-                                    </div>
-
-                                    <div class="avatar avatar-xs">
-                                        <img src="{{ asset('assets/images/256_daniel-gaffey-1060698-unsplash.jpg') }}"
-                                            alt="Avatar" class="avatar-img rounded-circle">
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <small class="text-dark-gray px-3 py-1">
-                    <strong>Wednesday, 27 Feb</strong>
-                </small>
-
-                <div class="list-group list-group-flush">
-
-                    <div class="list-group-item bg-light">
-                        <div class="row">
-                            <div class="col-auto d-flex flex-column">
-                                <small>07:48 PM</small>
-                                <small class="text-dark-gray">30 min</small>
-                            </div>
-                            <div class="col">
-                                <div class="d-flex flex-column flex">
-                                    <a href="#" class="text-body"><strong class="text-15pt">Call
-                                            Alex</strong></a>
-
-
-                                    <small class="text-muted d-flex align-items-center"><i
-                                            class="material-icons icon-16pt mr-1">phone</i> 202-555-0131</small>
-
-                                </div>
-
-
-
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <small class="text-dark-gray px-3 py-1">
-                    <strong>Tuesday, 26 Feb</strong>
-                </small>
-
-                <div class="list-group list-group-flush">
-
-                    <div class="list-group-item bg-light">
-                        <div class="row">
-                            <div class="col-auto d-flex flex-column">
-                                <small>03:13 PM</small>
-                                <small class="text-dark-gray">2 hrs</small>
-                            </div>
-                            <div class="col">
-                                <div class="d-flex flex-column flex">
-                                    <a href="#" class="text-body"><strong class="text-15pt">Design Team
-                                            Meeting</strong></a>
-
-                                    <small class="text-muted d-flex align-items-center"><i
-                                            class="material-icons icon-16pt mr-1">location_on</i> 16845 Hicks
-                                        Road</small>
-
-
-                                </div>
-                                <div class="avatar-group mt-2">
-
-                                    <div class="avatar avatar-xs">
-                                        <img src="{{ asset('assets/images/256_rsz_1andy-lee-642320-unsplash.jpg') }}"
-                                            alt="Avatar" class="avatar-img rounded-circle">
-                                    </div>
-
-                                    <div class="avatar avatar-xs">
-                                        <img src="{{ asset('assets/images/256_michael-dam-258165-unsplash.jpg') }}"
-                                            alt="Avatar" class="avatar-img rounded-circle">
-                                    </div>
-
-                                    <div class="avatar avatar-xs">
-                                        <img src="{{ asset('assets/images/256_luke-porter-261779-unsplash.jpg') }}"
-                                            alt="Avatar" class="avatar-img rounded-circle">
-                                    </div>
-
-                                    <div class="avatar avatar-xs">
-                                        <img src="{{ asset('assets/images/stories/256_rsz_clem-onojeghuo-193397-unsplash.jpg') }}"
-                                            alt="Avatar" class="avatar-img rounded-circle">
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <small class="text-dark-gray px-3 py-1">
-                    <strong>Monday, 25 Feb</strong>
-                </small>
-
-                <div class="list-group list-group-flush">
-
-                    <div class="list-group-item bg-light">
-                        <div class="row">
-                            <div class="col-auto d-flex flex-column">
-                                <small>12:30 PM</small>
-                                <small class="text-dark-gray">2 hrs</small>
-                            </div>
-                            <div class="col d-flex">
-                                <div class="d-flex flex-column flex">
-                                    <a href="#" class="text-body"><strong class="text-15pt">Call
-                                            Wendy</strong></a>
-
-
-                                    <small class="text-muted d-flex align-items-center"><i
-                                            class="material-icons icon-16pt mr-1">phone</i> 202-555-0131</small>
-
-                                </div>
-
-
-                                <div class="avatar avatar-xs">
-                                    <img src="{{ asset('assets/images/256_michael-dam-258165-unsplash.jpg') }}"
-                                        alt="Avatar" class="avatar-img rounded-circle">
-                                </div>
-
-
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-        </div>
     </div>
 
 
 
     @yield('scripts')
-{{-- 
-    <!-- App Settings FAB -->
-    <div id="app-settings">
-        <app-settings layout-active="default" :layout-location="{
-      'default': 'index.html',
-      'fixed': 'fixed-index.html',
-      'fluid': 'fluid-index.html',
-      'mini': 'mini-index.html'
-    }"></app-settings>
-    </div> --}}
-    {{-- sweetalert --}}
-
-    <!-- jQuery -->
-    <script src="{{ asset('assets/vendor/jquery.min.js') }}"></script>
-
-    <!-- Bootstrap -->
-    <script src="{{ asset('assets/vendor/popper.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/bootstrap.min.js') }}"></script>
-
-    <!-- Perfect Scrollbar -->
-    <script src="{{ asset('assets/vendor/perfect-scrollbar.min.js') }}"></script>
-
-    <!-- DOM Factory -->
-    <script src="{{ asset('assets/vendor/dom-factory.js') }}"></script>
-
-    <!-- MDK -->
-    <script src="{{ asset('assets/vendor/material-design-kit.js') }}"></script>
-
-    <!-- Range Slider -->
-    <script src="{{ asset('assets/vendor/ion.rangeSlider.min.js') }}"></script>
-    <script src="{{ asset('assets/js/ion-rangeslider.js') }}"></script>
-
-    <!-- App -->
-    <script src="{{ asset('assets/js/toggle-check-all.js') }}"></script>
-    <script src="{{ asset('assets/js/check-selected-row.js') }}"></script>
-    <script src="{{ asset('assets/js/dropdown.js') }}"></script>
-    <script src="{{ asset('assets/js/sidebar-mini.js') }}"></script>
-    <script src="{{ asset('assets/js/app.js') }}"></script>
-
-    <!-- App Settings (safe to remove) -->
-    <script src="{{ asset('assets/js/app-settings.js') }}"></script>
-
-
-    <!-- Flatpickr -->
-    <script src="{{ asset('assets/vendor/flatpickr/flatpickr.min.js') }}"></script>
-    <script src="{{ asset('assets/js/flatpickr.js') }}"></script>
-
-    <!-- Global Settings -->
-    <script src="{{ asset('assets/js/settings.js') }}"></script>
-
-    <!-- Moment.js')}} -->
-    <script src="{{ asset('assets/vendor/moment.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/moment-range.js') }}"></script>
-
-
-    <!-- Chart.js')}} -->
-    <script src="{{ asset('assets/vendor/Chart.min.js') }}"></script>
-
-    <!-- App Charts JS -->
-    <script src="{{ asset('assets/js/chartjs-rounded-bar.js') }}"></script>
-    <script src="{{ asset('assets/js/charts.js') }}"></script>
-
-    <!-- Chart Samples -->
-    <script src="{{ asset('assets/js/page.analytics.js') }}"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
 
 </body>
 
-
-<!-- Mirrored from educate.frontted.com/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 12 Dec 2024 09:02:00 GMT -->
-
 </html>
-
-   
