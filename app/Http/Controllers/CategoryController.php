@@ -19,7 +19,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'cat_title' =>'required|string|max:255',
+            'cat_title' =>'required|string|max:255|unique:categories',
             'cat_description' =>'required|string|max:255',
         ]);
 

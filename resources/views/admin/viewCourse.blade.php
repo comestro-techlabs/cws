@@ -41,12 +41,11 @@
             </div>
 
             <div class="inline-flex flex-row md:items-center gap-2" role="group">
-                <form action="{{ route($course->published ? 'course.unpublish' : 'course.publish', $course->id) }}"
+                <form action="{{ route(($course->published ? 'course.unpublish' : 'course.publish'), $course->id) }}"
                     method="POST" class="inline-flex" enctype="multipart/form-data">
                     @csrf
                     <button type="submit"
-                        class="px-3 py-2 {{ $course->published ? 'bg-white hover:bg-teal-600 border border-teal-600 hover:text-white text-teal-600' : 'bg-teal-600 text-white' }}  rounded-lg {{ $countCompletedFields == $totalFields ? 'opacity-100' : 'opacity-50 cursor-not-allowed' }}"
-                        {{ $countCompletedFields != $totalFields && !$course->published ? 'disabled' : '' }}>
+                        class="px-3 py-2 {{ $course->published ? 'bg-red-600  border border-red-600 hover:text-red text-white' : 'bg-teal-600  border border-teal-600 hover:text-teal text-white' }}  rounded-lg">
                         {{ $course->published ? 'Unpublish Course' : 'Publish Course' }}
                     </button>
                 </form>

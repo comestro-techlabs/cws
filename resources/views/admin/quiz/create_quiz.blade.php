@@ -25,25 +25,25 @@
         </div>
         <div class="mt-4">
             <label class="block text-gray-700 mb-2">Question</label>
-            <textarea name="question" class="w-full border px-3 py-2 rounded" rows="4" required></textarea>
+            <textarea name="question" class="w-full border px-3 py-2 rounded" rows="4" required>{{old('question')}}</textarea>
             @error('question')
                 <p class="text-xs text-red-500">{{ $message }}</p>
             @enderror
         </div>
         <div class="mt-4 grid grid-cols-2 gap-4">
-            <input type="text" name="option1" placeholder="Option 1" class="w-full border px-3 py-2 rounded" required>
+            <input type="text" name="option1" placeholder="Option 1" class="w-full border px-3 py-2 rounded" value="{{old('option1')}}" required>
             @error('option1')
                 <p class="text-xs text-red-500">{{ $message }}</p>
             @enderror
-            <input type="text" name="option2" placeholder="Option 2" class="w-full border px-3 py-2 rounded" required>
+            <input type="text" name="option2" placeholder="Option 2" class="w-full border px-3 py-2 rounded" value="{{old('option2')}}" required>
             @error('option2')
                 <p class="text-xs text-red-500">{{ $message }}</p>
             @enderror
-            <input type="text" name="option3" placeholder="Option 3" class="w-full border px-3 py-2 rounded" required>
+            <input type="text" name="option3" placeholder="Option 3" class="w-full border px-3 py-2 rounded" value="{{old('option3')}}" required>
             @error('option3')
                 <p class="text-xs text-red-500">{{ $message }}</p>
             @enderror
-            <input type="text" name="option4" placeholder="Option 4" class="w-full border px-3 py-2 rounded" required>
+            <input type="text" name="option4" placeholder="Option 4" class="w-full border px-3 py-2 rounded" value="{{old('option4')}}" required>
             @error('option4')
                 <p class="text-xs text-red-500">{{ $message }}</p>
             @enderror
@@ -51,10 +51,10 @@
         <div class="mt-4">
             <label class="block text-gray-700 mb-2">Correct Answer</label>
             <select name="correct_answer" class="w-full border px-3 py-2 rounded" required>
-                <option value="option1">Option 1</option>
-                <option value="option2">Option 2</option>
-                <option value="option3">Option 3</option>
-                <option value="option4">Option 4</option>
+                <option value="option1" {{ old('correct_answer') == 'option1' ? 'selected' : '' }}>Option 1</option>
+                <option value="option2" {{ old('correct_answer') == 'option2' ? 'selected' : '' }}>Option 2</option>
+                <option value="option3" {{ old('correct_answer') == 'option3' ? 'selected' : '' }}>Option 3</option>
+                <option value="option4" {{ old('correct_answer') == 'option4' ? 'selected' : '' }}>Option 4</option>
             </select>
             @error('correct_answer')
                 <p class="text-xs text-red-500">{{ $message }}</p>
@@ -62,7 +62,7 @@
         </div>
         <div class="mt-4">
             <label for="time" class="block text-gray-700 mb-2">Time (HH:mm:ss)</label>
-            <input type="text" name="time"id="time" placeholder="HH:mm:ss" class="w-full border px-3 py-2 rounded" >
+            <input type="text" name="time"id="time" placeholder="HH:mm:ss" class="w-full border px-3 py-2 rounded" value="{{old('time')}}" >
                 
             @error('time')
                 <p class="text-xs text-red-500">{{ $message }}</p>

@@ -64,8 +64,7 @@ class QuizController extends Controller
         $quizzes = $query->paginate(10);
 
         return view('admin.quiz.show_quiz', compact('quizzes'));
-
-      
+  
     }
 
     public function toggleStatus(Request $request, Quiz $quiz)
