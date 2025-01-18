@@ -104,7 +104,7 @@
                             </div>
                             <div class="mb-3 flex flex-col gap-2">
                                 <label for="" class="">Category description</label>
-                                <textarea rows="5" name="cat_description" value="{{old('cat_description')}}" class="border w-full px-3 py-2 rounded"></textarea>
+                                <textarea rows="5" name="cat_description" class="border w-full px-3 py-2 rounded">{{old('cat_description')}}</textarea>
                                 @error('cat_description')
                                     <p class="text-xs text-red-600">{{$message}}</p>
                                 @enderror

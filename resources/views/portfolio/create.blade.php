@@ -22,10 +22,13 @@
                 type="text"
                 name="title"
                 id="title"
-                required
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 placeholder="Enter portfolio title"
+                value="{{old('title')}}"
             >
+            @error('title')
+            <p class="text-xs text-red-500">{{ $message }}</p>
+            @enderror
         </div>
 
         <div>
@@ -35,11 +38,12 @@
                 name="image"
                 id="image"
                 accept="image/*"
-                required
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 onchange="previewImage()"
             >
-         
+            @error('image')
+            <p class="text-xs text-red-500">{{ $message }}</p>
+            @enderror
             <div id="imagePreviewContainer" class="mt-4">
                 <img 
                     id="imagePreview" 
@@ -48,7 +52,6 @@
                     class="hidden max-w-[150px] h-auto rounded-md shadow-md" 
                 />
             </div>
-            
         </div>
 
         <div>
@@ -57,10 +60,13 @@
                 type="url"
                 name="url"
                 id="url"
-                required
+                value="{{old('url')}}"
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 placeholder="https://example.com"
             >
+            @error('url')
+            <p class="text-xs text-red-500">{{ $message }}</p>
+            @enderror
         </div>
 
         <div>
@@ -71,7 +77,10 @@
                 rows="4"
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 placeholder="Enter portfolio description"
-            ></textarea>
+            >{{old('description')}}</textarea>
+            @error('description')
+            <p class="text-xs text-red-500">{{ $message }}</p>
+            @enderror
         </div>
 
         <button
