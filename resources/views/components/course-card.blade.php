@@ -17,7 +17,7 @@
       <div class="">
         <span class="text-green-900 font-medium text-sm">Batch Start: {{ \Carbon\Carbon::parse($course->batches[0]->start_date)->format('F j, Y') }}</span>
       </div>
-      <div class="flex flex-1 justify-center">
+      <div class="flex flex-1 justify-center mt-2">
         <a href="{{route('public.courseDetails',['category_slug' => $course->category->cat_slug, 'slug' =>  $course->slug])}}" class="w-full py-3.5 px-7 text-center bg-gray-900 text-white rounded-lg text-sm font-bold uppercase shadow-md hover:shadow-lg transition-all">
           Enroll Now
         </a>
