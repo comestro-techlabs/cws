@@ -33,19 +33,19 @@ class AuthController extends Controller
         ]);
 
         // Try login with password
-        if ($request->password) {
-            $credentials = $request->only('email', 'password');
+        // if ($request->password) {
+        //     $credentials = $request->only('email', 'password');
 
-            if (Auth::attempt($credentials)) {
-                if (Auth::user()->isAdmin) {
-                    return redirect()->route('admin.dashboard');
-                } else {
-                    return redirect()->intended('/student/dashboard');
-                }
-            } else {
-                return back()->withErrors(['password' => 'Invalid credentials.']);
-            }
-        }
+        //     if (Auth::attempt($credentials)) {
+        //         if (Auth::user()->isAdmin) {
+        //             return redirect()->route('admin.dashboard');
+        //         } else {
+        //             return redirect()->intended('/student/dashboard');
+        //         }
+        //     } else {
+        //         return back()->withErrors(['password' => 'Invalid credentials.']);
+        //     }
+        // }
 
         // If no password is provided, proceed to send OTP
         $user = User::where('email', $request->email)->first();
@@ -84,35 +84,39 @@ class AuthController extends Controller
 
         return back()->withErrors(['email' => 'The provided email does not match our records.']);
     }
-
     public function verifyOtp(Request $request)
     {
         $request->validate([
             'email' => 'required|email',
             'otp' => 'required|digits:6',
         ]);
-
+    
         $email = $request->input('email');
         $otp = $request->input('otp');
-
+    
         // Check if the OTP matches
         $user = User::where('email', $email)->first();
-
+    
         if ($user && $user->otp === $otp && Carbon::now()->lessThan($user->otp_expires_at)) {
             // OTP verified, log the user in
             Auth::login($user);
-
-            // Optionally, you can clear OTP after successful login
+    
+            // Update email_verified_at if not already verified
+            if (!$user->hasVerifiedEmail()) {
+                $user->email_verified_at = Carbon::now();
+            }
+    
+            // Optionally, clear OTP after successful login
             $user->otp = null;
             $user->otp_expires_at = null;
             $user->save();
-
-            return redirect('/'); // Redirect to dashboard or home
+    
+            return redirect('/')->with('success', 'Login successful. Email verified.');
         }
-
+    
         return redirect()->back()->withErrors(['otp' => 'Invalid OTP or OTP has expired.']);
     }
-
+    
 
 
 
@@ -156,95 +160,133 @@ class AuthController extends Controller
     }
 
   
-    public function register(Request $request)
-{
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'email' => 'required|string|email|unique:users,email',
-        'contact' => 'required|digits:10|unique:users,contact',
-        'gender' => 'required|in:male,female,other',
-        'education_qualification' => 'required|string|max:255',
-        'dob' => 'required|date|before_or_equal:today',
-    ], [
-        'email.unique' => 'The email address is already taken.',
-        'contact.unique' => 'The contact number is already in use.',
-        'contact.digits' => 'The contact number must be exactly 10 digits.',
-        'dob.date' => 'The date of birth must be a valid date.',
-    ]);
+//     public function register(Request $request)
+// {
+//     $request->validate([
+//         'name' => 'required|string|max:255',
+//         'email' => 'required|string|email|unique:users,email',
+//         'contact' => 'required|digits:10|unique:users,contact',
+//         'gender' => 'required|in:male,female,other',
+//         'education_qualification' => 'required|string|max:255',
+//         'dob' => 'required|date|before_or_equal:today',
+//     ], [
+//         'email.unique' => 'The email address is already taken.',
+//         'contact.unique' => 'The contact number is already in use.',
+//         'contact.digits' => 'The contact number must be exactly 10 digits.',
+//         'dob.date' => 'The date of birth must be a valid date.',
+//     ]);
 
-    // Generate OTP
-    $otp = rand(100000, 999999); // 6-digit OTP
+//     // Generate OTP
+//     $otp = rand(100000, 999999); // 6-digit OTP
 
-    // Store user data and OTP in session
-    $userData = $request->only(['name', 'email', 'contact', 'gender', 'dob', 'education_qualification']);
-    $userData['otp'] = $otp;
-    $userData['otp_expires_at'] = Carbon::now()->addMinutes(10); // OTP expires in 10 minutes
-    $request->session()->put('user_data', $userData);
+//     // Store user data and OTP in session
+//     $userData = $request->only(['name', 'email', 'contact', 'gender', 'dob', 'education_qualification']);
+//     $userData['otp'] = $otp;
+//     $userData['otp_expires_at'] = Carbon::now()->addMinutes(10); // OTP expires in 10 minutes
+//     $request->session()->put('user_data', $userData);
 
-    // Send OTP via email
-    try {
-        Mail::raw("Your OTP for registration is: $otp", function ($message) use ($userData) {
-            $message->to($userData['email'])
-                ->subject('Your OTP for Registration');
-        });
+//     // Send OTP via email
+//     try {
+//         Mail::raw("Your OTP for registration is: $otp", function ($message) use ($userData) {
+//             $message->to($userData['email'])
+//                 ->subject('Your OTP for Registration');
+//         });
 
-        // Redirect to OTP verification page
-        return redirect()->route('auth.register')->with([
-            'showModal' => true,
-            'email' => $userData['email'],
-        ])->with('success', 'OTP sent successfully. Please check your email.');
-    } catch (\Exception $e) {
-        // In case of an error sending the OTP 
-        return back()->with('error', 'Failed to send OTP. Please try again.');
-    }
-}
+//         // Redirect to OTP verification page
+//         return redirect()->route('auth.register')->with([
+//             'showModal' => true,
+//             'email' => $userData['email'],
+//         ])->with('success', 'OTP sent successfully. Please check your email.');
+//     } catch (\Exception $e) {
+//         // In case of an error sending the OTP 
+//         return back()->with('error', 'Failed to send OTP. Please try again.');
+//     }
+// }
 
 
     // OTP verification for registration
-    public function verifyOtpRegister(Request $request)
+    // public function verifyOtpRegister(Request $request)
+    // {
+    //     $request->validate([
+    //         'email' => 'required|email',
+    //         'otp' => 'required|digits:6',
+    //     ]);
+    
+    //     $userData = $request->session()->get('user_data');
+    
+    //     // Ensure session data exists and matches the input email
+    //     if (!$userData || $userData['email'] !== $request->input('email')) {
+    //         return redirect()->back()
+    //             ->withInput()
+    //             ->with('error', 'Invalid session data. Please restart the registration process.')
+    //             ->with('email', $request->input('email'));
+    //     }
+    
+    //     $otp = $request->input('otp');
+    //     if ($userData['otp'] == $otp && Carbon::now()->lessThan($userData['otp_expires_at'])) {
+    //         $user = User::create([
+    //             'name' => $userData['name'],
+    //             'email' => $userData['email'],
+    //             'contact' => $userData['contact'],
+    //             'dob' => $userData['dob'],
+    //             'gender' => $userData['gender'],
+    //             'education_qualification' => $userData['education_qualification'],
+    //             'email_verified_at' => Carbon::now(),
+    //         ]);
+    
+    //         $request->session()->forget('user_data');
+    
+    //         return redirect()->route('auth.login')->with('success', 'Registration successful. Your account is now verified.');
+    //     } else {
+    //         // Clear session data on failure
+    //         $request->session()->forget('user_data');
+    
+    //         return redirect()->back()
+    //             ->withInput()
+    //             ->withErrors(['otp' => 'Invalid OTP or OTP expired. Registration failed.'])
+    //             ->with('email', $request->input('email'));
+    //     }
+    // }
+    
+    
+    public function register(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
-            'otp' => 'required|digits:6',
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|unique:users,email,' . $request->id . ',id',
+            'contact' => 'required|digits:10|unique:users,contact',
+            'gender' => 'required|in:male,female,other',
+            'education_qualification' => 'required|string|max:255',
+            'dob' => 'required|date|before_or_equal:today',
+            // 'password' => 'required|string|min:8|confirmed',
+            
+        ], [
+            'email.unique' => 'The email address is already taken.',
+            'contact.unique' => 'The contact number is already in use.',
+            'contact.digits' => 'The contact number must be exactly 10 digits.',
+            'dob.date' => 'The date of birth must be a valid date.',
         ]);
     
-        $userData = $request->session()->get('user_data');
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+    //    $user->password = bcrypt($request->password); // Use bcrypt for password hashing
+        $user->contact = $request->contact;
+        $user->dob = $request->dob;
+        $user->gender = $request->gender;
+        $user->education_qualification = $request->education_qualification;
+        $user->save();
     
-        // Ensure session data exists and matches the input email
-        if (!$userData || $userData['email'] !== $request->input('email')) {
-            return redirect()->back()
-                ->withInput()
-                ->with('error', 'Invalid session data. Please restart the registration process.')
-                ->with('email', $request->input('email'));
-        }
+        // Send confirmation email
+        Mail::send('emails.registration', ['user' => $user], function ($message) use ($user) {
+            $message->to($user->email)
+                    ->subject('Registration Successful');
+        });
     
-        $otp = $request->input('otp');
-        if ($userData['otp'] == $otp && Carbon::now()->lessThan($userData['otp_expires_at'])) {
-            $user = User::create([
-                'name' => $userData['name'],
-                'email' => $userData['email'],
-                'contact' => $userData['contact'],
-                'dob' => $userData['dob'],
-                'gender' => $userData['gender'],
-                'education_qualification' => $userData['education_qualification'],
-                'email_verified_at' => Carbon::now(),
-            ]);
-    
-            $request->session()->forget('user_data');
-    
-            return redirect()->route('auth.login')->with('success', 'Registration successful. Your account is now verified.');
-        } else {
-            // Clear session data on failure
-            $request->session()->forget('user_data');
-    
-            return redirect()->back()
-                ->withInput()
-                ->withErrors(['otp' => 'Invalid OTP or OTP expired. Registration failed.'])
-                ->with('email', $request->input('email'));
-        }
+        return redirect()->route('auth.login')->with('success', 'Registration successful. A confirmation email has been sent to your email address.');
     }
     
-    
+
 
     // logout method
     public function logout()
