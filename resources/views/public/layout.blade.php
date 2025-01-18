@@ -12,7 +12,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="manifest" href="/site.webmanifest">
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
-    <script src="https://cdn.tailwindcss.com"></script>
+    @vite('resources/css/app.css')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -233,7 +233,7 @@
 
     @show
 
-    <footer class="bg-gray-900 text-gray-200 py-10">
+    <footer class=" text-secondary py-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- About Section -->
@@ -260,7 +260,7 @@
                         <li>
                             <a href="{{route('public.contact')}}" class="hover:text-gray-400">Contact Us</a>
                         </li>
-                      
+
                         <li>
                             <a href="{{ route('public.privacy') }}" class="hover:text-gray-400">Privacy & Policy</a>
                         </li>

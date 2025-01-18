@@ -7,7 +7,7 @@
 
 @section('content')
 
-    <div class="bg-white overflow-x-hidden">
+    <div class="bg-primary overflow-x-hidden">
         <x-hero />
     </div>
 
@@ -41,13 +41,13 @@
                             class="bg-white p-6 rounded-lg shadow-lg text-center">
                             <div class="flex justify-center mb-4">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="h-16 w-16 text-orange-500">
+                                    stroke-width="1.5" stroke="currentColor" class="h-16 w-16 text-primary">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0V12a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 12V5.25" />
                                 </svg>
 
                             </div>
-                            <h3 class="text-2xl font-semibold text-orange-500 mb-4">Web Development</h3>
+                            <h3 class="text-2xl font-semibold text-primary mb-4">Web Development</h3>
                             <p class="text-gray-600">Custom software solutions that drive efficiency and growth.</p>
                         </a>
                         <a href="{{ route('public.services.mobile-app') }}"
@@ -118,7 +118,7 @@
         </p>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8">
-           
+
              <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow duration-300">
                 <p class="text-blue-500 font-bold text-xl mb-4">Step-1</p>
                 <div class="flex items-center space-x-4 mb-4">
@@ -127,35 +127,12 @@
                     </svg>
                     <h3 class="text-2xl font-bold text-gray-800">Admission Start Date</h3>
                 </div>
-            
-               
+
+
                  <p class="text-gray-600  mb-6">
                     Mark your calendar! Admissions begin soon, so make sure to your register on time.
-                </p> 
-            
-                <div class="flex justify-between items-center">
-                    <p class="text-gray-700 font-medium text-lg">January 10, 2025</p>
-                    <svg class="w-6 h-6 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-                    </svg>
-                </div>
-            </div> 
-            
-            <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow duration-300">
-                <p class="text-blue-500 font-bold text-xl mb-4">Step-2</p>
-                <div class="flex items-center space-x-4 mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-orange-500">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c3.866 0 7 2.686 7 6s-3.134 6-7 6-7-2.686-7-6 3.134-6 7-6zm0 12v6m-4 0h8" />
-                      </svg>
-                      
-                    <h3 class="text-2xl font-bold text-gray-800">Courses Available</h3>
-                </div>
-            
-               
-                <p class="text-gray-600  mb-6">
-                    Empower your future with practical, expertly designed courses tailored to  goals.
                 </p>
-            
+
                 <div class="flex justify-between items-center">
                     <p class="text-gray-700 font-medium text-lg">January 10, 2025</p>
                     <svg class="w-6 h-6 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
@@ -163,10 +140,33 @@
                     </svg>
                 </div>
             </div>
-            
-    
-         
-            
+
+            <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow duration-300">
+                <p class="text-blue-500 font-bold text-xl mb-4">Step-2</p>
+                <div class="flex items-center space-x-4 mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-primary">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c3.866 0 7 2.686 7 6s-3.134 6-7 6-7-2.686-7-6 3.134-6 7-6zm0 12v6m-4 0h8" />
+                      </svg>
+
+                    <h3 class="text-2xl font-bold text-gray-800">Courses Available</h3>
+                </div>
+
+
+                <p class="text-gray-600  mb-6">
+                    Empower your future with practical, expertly designed courses tailored to  goals.
+                </p>
+
+                <div class="flex justify-between items-center">
+                    <p class="text-gray-700 font-medium text-lg">January 10, 2025</p>
+                    <svg class="w-6 h-6 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                </div>
+            </div>
+
+
+
+
             <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow duration-300">
                 <p class="text-blue-500 font-bold text-xl mb-4">Step-3</p>
                 <div class="flex items-center space-x-4 mb-4">
@@ -174,16 +174,16 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M5 12l5 5L19 7" />
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z" />
                       </svg>
-                      
-                      
+
+
                     <h3 class="text-2xl font-bold text-gray-800">Eligibility Criteria</h3>
                 </div>
-            
-               
+
+
                 <p class="text-gray-600  mb-6">
                     Candidates must meet minimum educational qualifications, and relevent skill.
                 </p>
-            
+
                 <div class="flex justify-between items-center">
                     <p class="text-gray-700 font-medium text-lg">January 10, 2025</p>
                     <svg class="w-6 h-6 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
@@ -197,17 +197,17 @@
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-red-700">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m6-6h-3m-6 0H6m12-5h-9m0 0V6M9 12V6" />
                       </svg>
-                      
-                      
-                      
+
+
+
                     <h3 class="text-2xl font-bold text-gray-800">Application Fee</h3>
                 </div>
-            
-               
+
+
                 <p class="text-gray-600  mb-6">
                     A non-refundable application fee is required to complete your registration the course.
                 </p>
-            
+
                 <div class="flex justify-between items-center">
                     <p class="text-gray-700 font-medium text-lg">January 10, 2025</p>
                     <svg class="w-6 h-6 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
@@ -222,16 +222,16 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M8 4h8M12 4v16m4-4l2 2 2-2m-6 0l-2 2-2-2" />
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" />
                       </svg>
-                      
-                      
+
+
                     <h3 class="text-2xl font-bold text-gray-800">Certificate Provided</h3>
                 </div>
-            
-               
+
+
                 <p class="text-gray-600  mb-6">
                     Upon successful completion, a certificate will be awarded to recognize your achievements.
                 </p>
-            
+
                 <div class="flex justify-between items-center">
                     <p class="text-gray-700 font-medium text-lg">January 10, 2025</p>
                     <svg class="w-6 h-6 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
@@ -239,11 +239,11 @@
                     </svg>
                 </div>
             </div>
-            
-             
-            
-           
-            
+
+
+
+
+
             <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow duration-300">
                 <p class="text-blue-500 font-bold text-xl mb-4">Step-6</p>
                 <div class="flex items-center space-x-4 mb-4">
@@ -251,7 +251,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3 5h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zm16 0V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
                         <path stroke-linecap="round" stroke-linejoin="round" d="M7 9h10M7 13h8" />
                     </svg>
-                    
+
                     <h3 class="text-2xl font-bold text-gray-800">Mode of Study</h3>
                 </div>
                 <p class="text-gray-600  mb-6">
@@ -264,14 +264,14 @@
                     </svg>
                 </div>
             </div>
-            
-            
-            
-            
+
+
+
+
         </div>
-    </div>  
-     
-    
+    </div>
+
+
     {{-- who we are --}}
     <div class="flex-1 flex flex-col md:flex-row md:px-[8%] gap-10 mt-10">
         <div class="flex-1 p-5">
@@ -290,14 +290,14 @@
                 Consider these steps for brand popularity in the Digital World...
             </a>
             <ul class="flex flex-col gap-2 text-gray-700">
-                <li><i class="fas fa-check text-orange-500 mr-2"></i><a href="#"
-                        class="text-gray-800 font-semibold hover:text-orange-500">Define your goals</a></li>
-                <li><i class="fas fa-check text-orange-500 mr-2"></i><a href="#"
-                        class="text-gray-800 font-semibold hover:text-orange-500">Identify your target audience</a></li>
-                <li><i class="fas fa-check text-orange-500 mr-2"></i><a href="#"
-                        class="text-gray-800 font-semibold hover:text-orange-500">Choose the right channels</a></li>
-                <li><i class="fas fa-check text-orange-500 mr-2"></i><a href="#"
-                        class="text-gray-800 font-semibold hover:text-orange-500">Create and implement your campaigns</a>
+                <li><i class="fas fa-check text-primary mr-2"></i><a href="#"
+                        class="text-gray-800 font-semibold hover:text-primary">Define your goals</a></li>
+                <li><i class="fas fa-check text-primary mr-2"></i><a href="#"
+                        class="text-gray-800 font-semibold hover:text-primary">Identify your target audience</a></li>
+                <li><i class="fas fa-check text-primary mr-2"></i><a href="#"
+                        class="text-gray-800 font-semibold hover:text-primary">Choose the right channels</a></li>
+                <li><i class="fas fa-check text-primary mr-2"></i><a href="#"
+                        class="text-gray-800 font-semibold hover:text-primary">Create and implement your campaigns</a>
                 </li>
             </ul>
         </div>

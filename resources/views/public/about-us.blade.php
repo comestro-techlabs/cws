@@ -26,7 +26,7 @@
                 We’re Leaders In Innovative Software Solutions
             </h2>
             <p class="text-md text-gray-700 leading-relaxed mb-4">
-                <a href="/">At <span class="font-bold text-orange-500">Com</span></a><span class="font-bold text-blue-600">estro</span>, we believe in the power of innovation and technology to transform businesses. Based in Purnea, Bihar, we specialize in developing high-quality web applications, mobile apps, and custom websites that help our clients achieve their digital goals. Our passion for building innovative solutions drives us to deliver projects that are not only functional but also scalable and user-friendly.
+                <a href="/">At <span class="font-bold text-primary">Com</span></a><span class="font-bold text-blue-600">estro</span>, we believe in the power of innovation and technology to transform businesses. Based in Purnea, Bihar, we specialize in developing high-quality web applications, mobile apps, and custom websites that help our clients achieve their digital goals. Our passion for building innovative solutions drives us to deliver projects that are not only functional but also scalable and user-friendly.
             </p>
             <p class="text-md text-gray-700 leading-relaxed mb-4">
                 Our mission is to empower businesses by providing them with cutting-edge digital products that enhance efficiency, drive growth, and create meaningful user experiences. Whether you're a startup or an established company, we partner with you to build software solutions tailored to your unique needs and goals.
@@ -82,7 +82,7 @@
             </div>
         </div>
     </section>
-        
+
         <!-- Development Journey Section -->
         <div class="bg-white py-12 px-4 text-center">
             <h2 class="text-xl font-semibold uppercase text-purple-600 mb-2">
@@ -116,7 +116,7 @@
                             </div>
                         </div>
                     </div>
-        
+
                     <!-- Repeat the above block for additional carousel items -->
                     <div class="flex-shrink-0 w-full sm:w-1/2 lg:w-1/3 px-2 sm:px-4 lg:px-5 flex">
                         <div class="flex flex-col items-center">
@@ -135,7 +135,7 @@
 
                     <!-- Add more items as needed -->
                 </div>
-        
+
                 <!-- Arrows -->
                 <button id="prev" class="absolute top-1/2 left-0 transform -translate-y-1/2 bg-white/45 text-gray-700 px-4 py-2 text-xl md:px-5 md:py-3">
                     &lt;
@@ -145,7 +145,7 @@
                 </button>
             </div>
         </div>
-        
+
     </div>
 @endsection
 

@@ -11,7 +11,7 @@ Sign up
         <div class="max-md:order-1 hidden md:block flex-col justify-center space-y-16 max-md:mt-16 min-h-full bg-gradient-to-r from-gray-900 to-gray-700 lg:px-8 px-4 py-4">
             <div class="mt-24">
                 <h4 class="text-white text-lg font-semibold">Create Your Account</h4>
-                <p class="text-[13px] text-gray-300 mt-3 leading-relaxed">Welcome to <span class="text-orange-500 font-bold">Learn</span><span class="text-blue-600 font-bold">syntax</span> Get started by creating your account.</p>
+                <p class="text-[13px] text-gray-300 mt-3 leading-relaxed">Welcome to <span class="text-primary font-bold">Learn</span><span class="text-blue-600 font-bold">syntax</span> Get started by creating your account.</p>
             </div>
             <div>
                 <h4 class="text-white text-lg font-semibold">Affordable | Quality</h4>
@@ -138,24 +138,24 @@ Sign up
                 <!-- Email Field (Read-Only) -->
                 <div class="mb-4">
                     {{-- <label for="email" class="block text-sm font-medium text-gray-700">Email</label> --}}
-                    <input type="hidden" name="email" id="otp_email_hidden" 
+                    <input type="hidden" name="email" id="otp_email_hidden"
                     value="{{ old('email', session('email')) }}">
                 </div>
 
                 <!-- OTP Field -->
                 <div class="mb-4">
                     <label for="otp" class="block text-sm font-medium text-gray-700">OTP</label>
-                    <input type="text" id="otp" name="otp" value="{{ old('otp') }}" 
+                    <input type="text" id="otp" name="otp" value="{{ old('otp') }}"
                         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
-                    @error('otp') 
-                        <span class="text-red-500 text-xs">{{ $message }}</span> 
+                    @error('otp')
+                        <span class="text-red-500 text-xs">{{ $message }}</span>
                     @enderror
                 </div>
 
                 <!-- Submit Button -->
                 <div class="flex justify-end space-x-2">
 
-                <button type="submit" 
+                <button type="submit"
                     class="w-full bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                     Verify OTP
                 </button>

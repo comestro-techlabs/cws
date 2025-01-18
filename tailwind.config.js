@@ -1,6 +1,6 @@
 import withMT from "@material-tailwind/html/utils/withMT";
 
- 
+
 /** @type {import('tailwindcss').Config} */
 export default {
     content: [
@@ -10,7 +10,12 @@ export default {
         "./resources/**/*.vue",
     ],
     theme: {
-        extend: {},
+        extend: {
+            colors: {
+                primary: "#662d91",
+                secondary: "#0071bc"
+            }
+        }
     },
     plugins: [],
 };

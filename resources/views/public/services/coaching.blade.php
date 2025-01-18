@@ -22,7 +22,7 @@
 
                 <p class="text-md w-full text-gray-700 leading-relaxed">
                     <a href="/" class="">
-                        <span class="text-orange-500 font-bold">Learn</span><span
+                        <span class="text-primary font-bold">Learn</span><span
                             class="text-blue-600 font-bold">syntax</span></a> stands at the forefront of delivering
                     cutting-edge full-stack coaching management systems, meticulously designed to support the unique needs
                     of educational institutions and coaching centers. Our platforms are built with the latest technologies,

@@ -1,30 +1,30 @@
 
-<div class="bg-white  overflow-x-hidden">
+<div class="bg-primary  overflow-x-hidden">
     <div class="relative flex py-12 flex-col md:flex-row bg-slate-100 h-auto md:h-[500px] my-0 py-7 md:py-2 items-center px-5 md:px-[10%] overflow-hidden ">
         <!-- Background Image and Gradient Overlay -->
         <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{{ asset('assets/banner.png') }}');"></div>
         <div class="absolute inset-0 bg-gradient-to-r z-10 from-slate-100 via-slate-500 to-black opacity-50"></div>
 
         <div class="relative flex-1 flex-col max-w-lg ml-5 gap-1 z-50">
-            <h1 class="md:text-5xl roboto-bold text-3xl font-semibold leading-normal text-gray-900">
-                Purnea's <span class="text-orange-500">Most Trusted</span> Software Company
+            <h1 class="md:text-5xl roboto-bold text-3xl font-semibold leading-normal text-primary">
+                Purnea's <span class="text-primary">Most Trusted</span> Software Company
             </h1>
-            <p class="text-lg md:text-xl font-normal text-gray-900 mt-4 md:text-slate-800 text-white font-semibold">
+            <p class="text-lg md:text-xl font-normal mt-4 md:text-slate-800">
                 Empowering you with the skills to achieve your dreams. Start your journey towards success today!
-            </p>            
+            </p>
 
             <br>
-           
 
-          
+
+
 
             <!-- Hire Us Form -->
             <div class="md:flex-row flex-col flex  items-center  gap-3">
-                <button onclick="toggleModal()" class="flex w-52 md:w-40 justify-center text-white flex-1 text-lg bg-orange-600 hover:bg-orange-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-6 py-2.5 text-center dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800 items-center gap-1 " type="button">
+                <button onclick="toggleModal()" class="flex w-52 md:w-40 justify-center text-white flex-1 text-lg bg-primary hover:bg-orange-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-6 py-2.5 text-center  items-center gap-1 " type="button">
                     <svg class="size-7 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.1" d="M12 18.5A2.493 2.493 0 0 1 7.51 20H7.5a2.468 2.468 0 0 1-2.4-3.154 2.98 2.98 0 0 1-.85-5.274 2.468 2.468 0 0 1 .92-3.182 2.477 2.477 0 0 1 1.876-3.344 2.5 2.5 0 0 1 3.41-1.856A2.5 2.5 0 0 1 12 5.5m0 13v-13m0 13a2.493 2.493 0 0 0 4.49 1.5h.01a2.468 2.468 0 0 0 2.403-3.154 2.98 2.98 0 0 0 .847-5.274 2.468 2.468 0 0 0-.921-3.182 2.477 2.477 0 0 0-1.875-3.344A2.5 2.5 0 0 0 14.5 3 2.5 2.5 0 0 0 12 5.5m-8 5a2.5 2.5 0 0 1 3.48-2.3m-.28 8.551a3 3 0 0 1-2.953-5.185M20 10.5a2.5 2.5 0 0 0-3.481-2.3m.28 8.551a3 3 0 0 0 2.954-5.185"/>
                       </svg>
-                      
+
                     Hire Us
                 </button>
                 <a class="gap-2 bg-white/70 text-green-600 text-lg  focus:ring-4 focus:outline-none focus:ring-blue-300  flex items-center font-medium rounded-lg px-6 py-2.5 text-center" href="tel:{{env('PHONE_NO')}}">
@@ -80,7 +80,7 @@
                                 </div>
 
                                 <button type="submit" class="w-full text-white bg-orange-700 hover:bg-orange-800 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800">Send Information</button>
-                                
+
                             </form>
                         </div>
                     </div>

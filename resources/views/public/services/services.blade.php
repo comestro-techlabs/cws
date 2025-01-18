@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <div class="bg-white 
+    <div class="bg-white
  overflow-x-hidden">
         <livewire:page-heading title="Learn Syntax Services"
             description="Our TechLab services in India enhance your brand’s online presence, attract new customers, and drive conversions."
@@ -30,7 +30,7 @@
                     ones.
                 </p>
                 <p class="text-sm md:text-md text-gray-700 leading-relaxed mt-3">
-                    <a href="/https://www.comestro.com/" class="font-bold text-orange-500 hover:text-orange-600">
+                    <a href="/https://www.comestro.com/" class="font-bold text-primary hover:text-orange-600">
                         Com<span class="text-blue-600 hover:text-blue-700">estro</span>
                     </a>
                     believes that every business has infinite potential, and all they need is the right partner to unleash

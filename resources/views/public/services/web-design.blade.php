@@ -4,7 +4,7 @@
     Web Design
 @endsection
 @section('content')
-<div class="bg-white 
+<div class="bg-white
  overflow-x-hidden">
     <livewire:page-heading title="Web Designing"
         description="Our TechLab services in India enhance your brand’s online presence, attract new customers,
@@ -28,7 +28,7 @@
                         We create websites that look great on all devices, ensuring a seamless user experience
                         across desktops, tablets, and mobile phones.
                     </p>
-                    <a href="#" class="text-orange-500 font-bold">Learn More</a>
+                    <a href="#" class="text-primary font-bold">Learn More</a>
                 </div>
                 <!-- Service 2 -->
                 <div class="bg-white p-6 rounded-lg shadow-md">
@@ -38,7 +38,7 @@
                         We design and develop e-commerce platforms that drive sales and provide an exceptional shopping
                         experience.
                     </p>
-                    <a href="#" class="text-orange-500 font-bold">Learn More</a>
+                    <a href="#" class="text-primary font-bold">Learn More</a>
                 </div>
                 <!-- Service 3 -->
                 <div class="bg-white p-6 rounded-lg shadow-md">
@@ -49,7 +49,7 @@
                         We help you create a unique brand identity that resonates with your audience and sets you apart from
                         the competition.
                     </p>
-                    <a href="#" class="text-orange-500 font-bold">Learn More</a>
+                    <a href="#" class="text-primary font-bold">Learn More</a>
                 </div>
                 <!-- Add more services as needed -->
             </div>

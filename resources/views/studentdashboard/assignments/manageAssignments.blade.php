@@ -36,15 +36,15 @@
                                             <td class="px-4 py-2 border">{{ $assignment->title }}</td>
 
                                             <td class="px-4 py-2 border">{!! Str::limit($assignment->description, 50) !!}</td>
-                                            
-                                            
+
+
                                             <td class="px-4 py-2 border">
                                                 @if ($assignment->uploads->isNotEmpty())
                                                     @foreach ($assignment->uploads as $upload)
                                                         <span
                                                             class="
                                                             @if ($upload->status == 'submitted') bg-green-500 text-white rounded-lg px-2 py-1
-                                                            @elseif($upload->status == 'graded') bg-red-500 text-white rounded-lg px-2 py-1 
+                                                            @elseif($upload->status == 'graded') bg-red-500 text-white rounded-lg px-2 py-1
                                                             @else text-red-500 @endif
                                                         ">
                                                             {{ ucfirst($upload->status) }}
@@ -54,11 +54,11 @@
                                                     <span class="text-gray-500">No uploads</span>
                                                 @endif
                                             </td>
-                                            
-                                            
+
+
                                             <td class="px-4 py-2 border text-center">
                                                 <a href="{{ route('student.assignment-upload', $assignment->id) }}"
-                                                    class="text-orange-500 hover:underline">
+                                                    class="text-primary hover:underline">
                                                     View
                                                 </a>
                                             </td>
