@@ -19,7 +19,7 @@
                 <h1 class="text-3xl md:text-5xl font-bold mb-6 text-blue-900">Empowering Your Digital Presence with Innovative Web Solutions</h1>
 
                 <p class="text-base md:text-lg text-gray-700 leading-relaxed mb-6">
-                    <a href="/" class="text-primary font-semibold">Comestro</a> is a leading web development company
+                    <a href="/" class="text-primary font-semibold">LearnSyntax</a> is a leading web development company
                     specializing in high-performance e-commerce websites designed to elevate your online
                     retail business. With a commitment to innovation and quality, we craft platforms that are visually
                     compelling, user-friendly, and optimized for conversion, ensuring your online store stands out and drives sales.
@@ -35,9 +35,9 @@
                     industry best practices and the latest trends in online retail. We are dedicated to delivering projects
                     on time and within budget, with an unwavering focus on quality and precision.
                 </p>
-                <p class="text-base md:text-lg text-gray-700 leading-relaxed mb-6">Comestro's commitment to post-launch support ensures
+                <p class="text-base md:text-lg text-gray-700 leading-relaxed mb-6">LearnSyntax's commitment to post-launch support ensures
                     that your website continues to perform optimally as your business evolves. Whether you’re a startup
-                    looking to make your mark or an established company aiming to enhance your digital footprint, Comestro
+                    looking to make your mark or an established company aiming to enhance your digital footprint, LearnSyntax
                     is your trusted partner for comprehensive web solutions that deliver measurable results.
                 </p>
                 <p class="text-base md:text-lg text-gray-700 leading-relaxed mb-6">At the core of our services is a profound

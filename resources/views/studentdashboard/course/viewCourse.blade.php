@@ -217,7 +217,7 @@
                 "key": "{{ env('RAZORPAY_KEY') }}",
                 "amount": "{{ $course->discounted_fees }}" * 100,
                 "currency": "INR",
-                "name": "Comestro",
+                "name": "LearnSyntax",
                 "description": "Processing Fee",
                 "image": "{{ asset('front_assets/img/logo/logo.png') }}",
                 "handler": function(response) {

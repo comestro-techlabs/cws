@@ -21,7 +21,7 @@ class EnquiryController extends Controller
         $data->email = $request->email;
         $data->save();
 
-        return redirect('/')->with('success', 'Request added successfully.');
+        return redirect()->route('public.contact')->with('success', 'Request added successfully.');
     }
 
 }

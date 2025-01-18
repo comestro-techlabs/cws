@@ -251,21 +251,21 @@
                     <h3 class="text-lg font-semibold text-white mb-4">Quick Links</h3>
                     <ul class="space-y-2">
                         <li>
-                            <a href="{{route('public.about')}}" class="hover:text-gray-400">About</a>
+                            <a href="{{route('public.about')}}" class="hover:text-secondary">About</a>
                         </li>
                         <li>
-                            <a href="{{route('public.training')}}" class="hover:text-gray-400">Courses</a>
-                        </li>
-
-                        <li>
-                            <a href="{{route('public.contact')}}" class="hover:text-gray-400">Contact Us</a>
+                            <a href="{{route('public.training')}}" class="hover:text-secondary">Courses</a>
                         </li>
 
                         <li>
-                            <a href="{{ route('public.privacy') }}" class="hover:text-gray-400">Privacy & Policy</a>
+                            <a href="{{route('public.contact')}}" class="hover:text-secondary">Contact Us</a>
+                        </li>
+
+                        <li>
+                            <a href="{{ route('public.privacy') }}" class="hover:text-secondary">Privacy & Policy</a>
                         </li>
                         <li>
-                            <a href="{{ route('public.terms-conditions') }}" class="hover:text-gray-400">Terms & Conditions</a>
+                            <a href="{{ route('public.terms-conditions') }}" class="hover:text-secondary">Terms & Conditions</a>
                         </li>
                     </ul>
                 </div>

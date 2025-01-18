@@ -5,7 +5,7 @@
 @endsection
 
 @section('meta')
-    <meta name="description" content="Discover Comestro, a leading Software Company based in Purnea Bihar, delivering 360º Software Solutions globally since 2009. With over 110 experts across Bihar, we help businesses thrive through innovative, data-driven marketing strategies."/>
+    <meta name="description" content="Discover LearnSyntax, a leading Software Company based in Purnea Bihar, delivering 360º Software Solutions globally since 2009. With over 110 experts across Bihar, we help businesses thrive through innovative, data-driven marketing strategies."/>
 @endsection
 
 @section('content')

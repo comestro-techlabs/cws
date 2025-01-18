@@ -2,7 +2,7 @@
 
 
 @section('meta')
-    <meta name="description" content="Join Comestro Programming Classes and master coding with expert-led training in C, DBMS, Laravel, and Web Development. Learn hands-on programming techniques from beginner to advanced levels. Enroll now to enhance your coding skills and build a successful career in tech!"/>
+    <meta name="description" content="Join LearnSyntax Programming Classes and master coding with expert-led training in C, DBMS, Laravel, and Web Development. Learn hands-on programming techniques from beginner to advanced levels. Enroll now to enhance your coding skills and build a successful career in tech!"/>
 @endsection
 
 @section('content')
@@ -17,7 +17,7 @@
             <section class="py-5">
                 <div class="container mx-auto px-4">
                     <div class="text-center mb-12">
-                        <h2 class="text-3xl font-bold text-blue-600 mb-2">What We Offer</h2>
+                        <h2 class="text-3xl font-bold text-primary mb-2">What We Offer</h2>
                         <p class="text-3xl font-bold text-gray-800">
                             Learn Syntax offer end to end 'Software Solutions'
                         </p>
@@ -110,7 +110,7 @@
         </div>
     </div>
        <div class="max-w-6xl mx-auto p-6">
-        <h2 class="text-3xl text-center font-bold text-blue-600 mb-4"> Admission to Certification</h2>
+        <h2 class="text-3xl text-center font-bold text-primary mb-4"> Admission to Certification</h2>
         <p class="text-3xl font-bold text-center text-gray-800">
             Explore available courses, check your eligibility
         </p>
@@ -120,7 +120,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8">
 
              <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow duration-300">
-                <p class="text-blue-500 font-bold text-xl mb-4">Step-1</p>
+                <p class="text-secondary font-bold text-xl mb-4">Step-1</p>
                 <div class="flex items-center space-x-4 mb-4">
                     <svg class="w-10 h-10 text-indigo-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M16 7c1.657 0 3 1.343 3 3v4c0 1.657-1.343 3-3 3H8c-1.657 0-3-1.343-3-3v-4c0-1.657 1.343-3 3-3h8zM12 5V3M16.5 9.5h-9m3.75-6h1.5" />
@@ -142,7 +142,7 @@
             </div>
 
             <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow duration-300">
-                <p class="text-blue-500 font-bold text-xl mb-4">Step-2</p>
+                <p class="text-secondary font-bold text-xl mb-4">Step-2</p>
                 <div class="flex items-center space-x-4 mb-4">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-primary">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c3.866 0 7 2.686 7 6s-3.134 6-7 6-7-2.686-7-6 3.134-6 7-6zm0 12v6m-4 0h8" />
@@ -168,7 +168,7 @@
 
 
             <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow duration-300">
-                <p class="text-blue-500 font-bold text-xl mb-4">Step-3</p>
+                <p class="text-secondary font-bold text-xl mb-4">Step-3</p>
                 <div class="flex items-center space-x-4 mb-4">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-green-600">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M5 12l5 5L19 7" />
@@ -192,7 +192,7 @@
                 </div>
             </div>
             <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow duration-300">
-                <p class="text-blue-500 font-bold text-xl mb-4">Step-4</p>
+                <p class="text-secondary font-bold text-xl mb-4">Step-4</p>
                 <div class="flex items-center space-x-4 mb-4">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-red-700">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m6-6h-3m-6 0H6m12-5h-9m0 0V6M9 12V6" />
@@ -216,7 +216,7 @@
                 </div>
             </div>
           <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow duration-300">
-                <p class="text-blue-500 font-bold text-xl mb-4">Step-5</p>
+                <p class="text-secondary font-bold text-xl mb-4">Step-5</p>
                 <div class="flex items-center space-x-4 mb-4">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-yellow-600">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M8 4h8M12 4v16m4-4l2 2 2-2m-6 0l-2 2-2-2" />
@@ -245,7 +245,7 @@
 
 
             <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow duration-300">
-                <p class="text-blue-500 font-bold text-xl mb-4">Step-6</p>
+                <p class="text-secondary font-bold text-xl mb-4">Step-6</p>
                 <div class="flex items-center space-x-4 mb-4">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-purple-700">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3 5h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zm16 0V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
@@ -330,7 +330,7 @@
             </div>
         </div>
     </div>
-
+{{-- 
     <section class="py-16 px-4 sm:px-8 md:px-20 bg-gray-100">
         <div class="flex flex-col items-center justify-center">
             <h1 class="text-2xl text-orange-600 sm:text-3xl font-bold mb-5">Please Feedback!</h1>
@@ -388,7 +388,7 @@
             </div>
         </form>
 
-    </section>
+    </section> --}}
 
 
 @endsection

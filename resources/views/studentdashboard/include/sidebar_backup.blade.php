@@ -8,7 +8,7 @@
                     <span class="flex d-flex flex-column">
                         <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
                             <span class="self-center text-2xl font-semibold whitespace-nowrap ">
-                                <img src="{{ asset('assets/comestro.png') }}" class="md:h-8" alt="">
+                                <img src="{{ asset('assets/LearnSyntax.png') }}" class="md:h-8" alt="">
                             </span>
                         </a>
                     </span>
