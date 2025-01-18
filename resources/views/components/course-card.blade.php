@@ -1,4 +1,6 @@
-  <div data-popover-target="popover-course-details{{$course->id}}" data-popover-placement="right" class="flex border border-slate-300 rounded-t-xl rounded-b-xl w-full max-w-xs flex-col bg-white text-gray-700">
+  <div
+   {{-- data-popover-target="popover-course-details{{$course->id}}" data-popover-placement="right" --}}
+     class="flex border border-slate-300 rounded-t-xl rounded-b-xl w-full max-w-xs flex-col bg-white text-gray-700">
     <a href="{{route('public.courseDetails',['category_slug' => $course->category->cat_slug, 'slug' =>  $course->slug])}}" class="flex flex-1 flex-col">
       <div class="overflow-hidden bg-blue-gray-500 shadow-lg">
       <img src="storage/course_images/{{$course->course_image}}" alt="{{$course->title}}" class="w-full rounded-t-xl object-cover h-auto" />
@@ -14,6 +16,11 @@
       </p>
       <div class="">
         <span class="text-green-900 font-medium text-sm">Batch Start: {{ \Carbon\Carbon::parse($course->batches[0]->start_date)->format('F j, Y') }}</span>
+      </div>
+      <div class="flex flex-1 justify-center">
+        <a href="{{route('public.courseDetails',['category_slug' => $course->category->cat_slug, 'slug' =>  $course->slug])}}" class="w-full py-3.5 px-7 text-center bg-gray-900 text-white rounded-lg text-sm font-bold uppercase shadow-md hover:shadow-lg transition-all">
+          Enroll Now
+        </a>
       </div>
     </div>
     </a>

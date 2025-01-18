@@ -305,6 +305,54 @@
 
 
 
+    {{-- latest course --}}
+    <div class="flex flex-col items-center mt-20 text-center">
+        <h2 class="text-3xl text-primary font-sans font-bold mb-4">Our Latest Courses</h2>
+        <h1 class="text-3xl font-bold text-gray-800 mb-4">Master the Skills to Build Your Future</h1>
+        <p class="text-base text-gray-700 mb-6 max-w-4xl">
+            Explore our curated courses designed to provide you with the latest industry insights and practical knowledge.
+            From beginner to advanced levels, we aim to help you excel in your field with expert-led guidance and innovative
+            content. Upgrade your skills and achieve your career goals with us!
+        </p>
+        <div class="bg-secondary flex justify-between items-center py-2 px-6 rounded-lg shadow gap-2 mb-6">
+            <a href="{{ route('public.training') }}" class=" text-white font-bold ">
+                View All Courses
+            </a>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
+              </svg>
+        </div>
+        
+    </div>
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-20 px-4 lg:px-32">
+        @foreach ($courses as $item)
+        <div class="max-w-md mx-auto bg-white rounded-lg shadow-lg border overflow-hidden">
+            <img class="w-full h-48 object-cover" src="{{asset('storage/course_images/' . $item->course_image)}}" alt="Course Image">
+            
+            <div class="p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-2 line-clamp-1">{{$item->title}}</h2>
+                <p class="text-gray-600 text-sm mb-4">
+                    {{ Str::limit($item->description, 122) }}
+                </p>
+                <div class="flex items-center mb-4">
+                    <div class="ml-3">
+                        <p class="text-gray-700 text-sm font-medium">{{$item->instructor}}</p>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center">
+                    <p class="text-lg font-bold text-primary">Rs.{{$item->discounted_fees}}</p>
+                    <a href="{{route('public.courseDetails',['category_slug' => $item->category->cat_slug, 'slug' =>  $item->slug])}}" class="bg-primary text-white font-bold py-2 px-4 rounded shadow focus:outline-none focus:ring">
+                        Enroll Now
+                    </a>
+                </div>
+            </div>
+        </div>
+        @endforeach
+    </div>
+    
+
+
     {{-- {{static info}} --}}
     <div class="flex flex-col gap-2 p-8 bg-white rounded-2xl mb-12 items-center md:px-[10%]">
         <h2 class="text-lg md:text-xl font-normal max-w-2xl text-gray-900  text-center mb-4 flex flex-col">
@@ -390,49 +438,6 @@
 
     </section> --}}
 
-    <div class="flex flex-col items-center text-center">
-        <h2 class="text-3xl text-primary font-sans font-bold mb-4">Our Latest Courses</h2>
-        <h1 class="text-3xl font-bold text-gray-800 mb-4">Master the Skills to Build Your Future</h1>
-        <p class="text-base text-gray-700 mb-6 max-w-4xl">
-            Explore our curated courses designed to provide you with the latest industry insights and practical knowledge.
-            From beginner to advanced levels, we aim to help you excel in your field with expert-led guidance and innovative
-            content. Upgrade your skills and achieve your career goals with us!
-        </p>
-        
-    </div>
-    
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 px-4 lg:px-32">
-        @foreach ($courses as $item)
-        <div class="max-w-md mx-auto bg-white rounded-lg shadow-lg border overflow-hidden">
-            <img class="w-full h-48 object-cover" src="{{asset('storage/course_images/' . $item->course_image)}}" alt="Course Image">
-            
-            <div class="p-6">
-                <h2 class="text-xl font-bold text-gray-800 mb-2 line-clamp-1">{{$item->title}}</h2>
-                <p class="text-gray-600 text-sm mb-4">
-                    {{ Str::limit($item->description, 122) }}
-                </p>
-                <div class="flex items-center mb-4">
-                    <div class="ml-3">
-                        <p class="text-gray-700 text-sm font-medium">{{$item->instructor}}</p>
-                    </div>
-                </div>
-                <div class="flex justify-between items-center">
-                    <p class="text-lg font-bold text-primary">Rs.{{$item->discounted_fees}}</p>
-                    <a href="{{route('public.courseDetails',['category_slug' => $item->category->cat_slug, 'slug' =>  $item->slug])}}" class="bg-secondary text-white font-bold py-2 px-4 rounded shadow focus:outline-none focus:ring">
-                        Enroll Now
-                    </a>
-                </div>
-            </div>
-        </div>
-        @endforeach
-    </div>
-    
-    <div class="text-center mt-6">
-        <a href="{{ route('public.training') }}" class="bg-secondary text-white font-bold py-2 px-6 rounded shadow">
-            View All Courses 
-        </a>
-    </div>
-    
 
 @endsection
 
