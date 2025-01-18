@@ -75,7 +75,7 @@ use App\Models\Workshop;
             Route::get('/payment/{id}', [AdminController::class, "viewPayment"])->name('admin.payment.view');
             Route::get('/assignments/review/{id}', [AssignmentUploadController::class, 'assignmentReviewWork'])->name('assignment.reviewWork');
             Route::post('/assignments/{assignmentId}/students/{studentId}/grade', [AssignmentUploadController::class, 'insertGrade'])->name('assignments.insertGrade');
-
+            Route::get('/generate-certificate/{examUserId}', [AdminController::class, 'generateCertificate']);
 
             Route::prefix('student')->group(function () {
                 Route::get('/', [StudentController::class, 'index'])->name('student.manage');
