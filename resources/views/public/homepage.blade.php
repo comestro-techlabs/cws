@@ -19,10 +19,10 @@
                     <div class="text-center mb-12">
                         <h2 class="text-3xl font-bold text-primary mb-2">What We Offer</h2>
                         <p class="text-3xl font-bold text-gray-800">
-                            Learn Syntax offer end to end 'Software Solutions'
+                            Learn Syntax offers end-to-end 'Learning Solutions'
                         </p>
-                        <p class="text-gray-600 mt-4">Our comprehensive services are designed to meet your business needs.
-                        </p>
+                        <p class="text-gray-600 mt-4">
+                            Our comprehensive learning services are designed to help you enhance your coding skills and knowledge.                        </p>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <a href="" class="bg-white p-6 rounded-lg shadow-lg text-center">
@@ -35,7 +35,8 @@
 
                             </div>
                             <h3 class="text-2xl font-semibold text-[#090446] mb-4">Consulting</h3>
-                            <p class="text-gray-600">Expert advice to help you navigate complex business challenges.</p>
+                            <p class="text-gray-600">
+                                Expert guidance to help you navigate through your learning journey and overcome challenges.                                .</p>
                         </a>
                         <a href="{{ route('public.services.web-dev') }}"
                             class="bg-white p-6 rounded-lg shadow-lg text-center">
@@ -48,7 +49,7 @@
 
                             </div>
                             <h3 class="text-2xl font-semibold text-primary mb-4">Web Development</h3>
-                            <p class="text-gray-600">Custom software solutions that drive efficiency and growth.</p>
+                            <p class="text-gray-600">Learn web development with hands-on projects that build your skillset.</p>
                         </a>
                         <a href="{{ route('public.services.mobile-app') }}"
                             class="bg-white p-6 rounded-lg shadow-lg text-center">
@@ -61,9 +62,9 @@
 
                             </div>
                             <h3 class="text-2xl font-semibold text-[#ff1d15] mb-4">App Development</h3>
-                            <p class="text-gray-600">Strategic marketing campaigns that deliver measurable results.</p>
+                            <p class="text-gray-600">Master mobile app development through practical lessons and real-world scenarios.</p>
                         </a>
-                        <a href="{{ route('public.services.seo-services') }}"
+                        {{-- <a href="{{ route('public.services.seo-services') }}"
                             class="bg-white p-6 rounded-lg shadow-lg text-center">
                             <div class="flex justify-center mb-4">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
@@ -76,7 +77,7 @@
                             </div>
                             <h3 class="text-2xl font-semibold text-green-600 mb-4">SEO Optimization</h3>
                             <p class="text-gray-600">Enhance your online presence with our expert SEO services.</p>
-                        </a>
+                        </a> --}}
                         <a href="{{ route('public.services.web-design') }}"
                             class="bg-white p-6 rounded-lg shadow-lg text-center">
                             <div class="flex justify-center mb-4">
@@ -88,7 +89,7 @@
 
                             </div>
                             <h3 class="text-2xl font-semibold text-[#2a9d8f] mb-4">Web Design</h3>
-                            <p class="text-gray-600">High-quality content that engages and converts your audience.</p>
+                            <p class="text-gray-600">Learn how to create stunning, user-friendly website designs.</p>
                         </a>
                         <a href="{{ route('public.services.invent-sol') }}"
                             class="bg-white p-6 rounded-lg shadow-lg text-center">
@@ -102,6 +103,18 @@
                             </div>
                             <h3 class="text-2xl font-semibold text-[#033e63e8] mb-4">Inventory Solutions</h3>
                             <p class="text-gray-600">Data-driven insights to help you make informed business decisions.</p>
+                        </a> 
+                        <a href="" class="bg-white p-6 rounded-lg shadow-lg text-center">
+                            <div class="flex justify-center mb-4">
+                               
+                                <svg xmlns="http://www.w3.org/2000/svg"  class="h-10 w-11 text-[#2a9d8f]"  fill="currentColor" class="bi bi-bookmark-check-fill" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5m8.854-9.646a.5.5 0 0 0-.708-.708L7.5 7.793 6.354 6.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0z"/>
+                                  </svg>
+                            </div>
+                            <h3 class="text-2xl font-semibold text-[#2a9d8f] mb-4">Certificates</h3>
+                            <p class="text-gray-600">
+                                Receive a certificate upon completing a course or assignment to showcase your achievements.
+                            </p>
                         </a>
                     </div>
                 </div>
