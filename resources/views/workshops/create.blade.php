@@ -25,10 +25,13 @@
                 type="text"
                 name="title"
                 id="title"
-                required
+                value="{{old('title')}}"
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 placeholder="Enter workshop title"
             >
+            @error('title')
+            <span class="text-sm text-red-500">{{ $message }}</span>
+            @enderror
         </div>
 
         <div>
@@ -36,10 +39,13 @@
             <input
                 type="date"
                 name="date"
+                value="{{old('date')}}"
                 id="date"
-                required
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             >
+            @error('date')
+            <span class="text-sm text-red-500">{{ $message }}</span>
+            @enderror
         </div>
   
 
@@ -49,10 +55,13 @@
             <input
                 type="time"
                 name="time"
+                value="{{old('time')}}"
                 id="time"
-                required
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             >
+            @error('time')
+            <span class="text-sm text-red-500">{{ $message }}</span>
+            @enderror
         </div>
 
         <div>
@@ -62,10 +71,12 @@
                 name="image"
                 id="image"
                 accept="image/*"
-                required
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 onchange="previewImage()"
             >
+            @error('image')
+            <span class="text-sm text-red-500">{{ $message }}</span>
+            @enderror
 
             <div id="imagePreviewContainer" class="mt-4">
                 <img 
@@ -82,11 +93,14 @@
             <input
                 type="number"
                 name="fees"
+                value="{{old('fees')}}"
                 id="fees"
-                required
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 placeholder="Enter workshop fees"
             >
+            @error('fees')
+            <span class="text-sm text-red-500">{{ $message }}</span>
+            @enderror
         </div>
         
        
