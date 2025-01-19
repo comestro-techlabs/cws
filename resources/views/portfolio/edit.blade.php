@@ -32,8 +32,10 @@
                 value="{{ $portfolios->title }}" 
                 class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 placeholder="Enter portfolio title"
-                required
             >
+            @error('title')
+            <span class="text-sm text-red-500">{{ $message }}</span>
+            @enderror
         </div>
 
          
@@ -47,7 +49,9 @@
                 accept="image/*"
                 onchange="previewImage(event)"
             >
-          
+            @error('image')
+            <span class="text-sm text-red-500">{{ $message }}</span>
+            @enderror
             @if ($portfolios->image)
                 <div class="mt-4">
                     <p class="text-sm text-gray-500">Current Image:</p>
@@ -74,8 +78,11 @@
                 value="{{ $portfolios->url }}" 
                 class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 placeholder="https://example.com"
-                required
+             
             >
+            @error('url')
+            <span class="text-sm text-red-500">{{ $message }}</span>
+            @enderror
         </div>
 
         <div>
@@ -87,6 +94,9 @@
                 class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 placeholder="Enter a brief description of the portfolio"
             >{{ $portfolios->description }}</textarea>
+            @error('description')
+            <span class="text-sm text-red-500">{{ $message }}</span>
+            @enderror
         </div>
 
         <div class="flex justify-end">

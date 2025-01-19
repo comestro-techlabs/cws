@@ -88,18 +88,16 @@ public function toggleStatus($id)
 public function update(Request $request, $id)
 {
     $workshop = Workshop::findOrFail($id);
-
-   
-    $request->validate([
-        'title' => 'required',
-        'date' => 'required|date',
-        'time' => 'required|date_format:H:i',
-        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        'active' => 'required|boolean',
-        'fees' => 'required|numeric|min:0',
-    ]);
-
   
+//    dd($workshop);
+     $request->validate([
+        'title' => 'required|string|max:255',
+        'date' => 'nullable|date',
+        'time' => 'nullable',
+        'fees' => 'required|min:0',
+        'active' => 'required|boolean',
+        'image' => 'nullable|image|max:2048',
+    ]);
 
     if ($request->hasFile('image')) {
         $imagePath = $request->file('image')->store('workshops_images', 'public');
@@ -110,9 +108,7 @@ public function update(Request $request, $id)
     $workshop->date = $request->date;
     $workshop->time = $request->time;
     $workshop->active = $request->active;
-    $workshop->fees = $request->fees;
-
-   
+    $workshop->fees = $request->fees;  
     $workshop->save();
 
     
@@ -127,9 +123,6 @@ public function update(Request $request, $id)
       $workshop->delete();
       return redirect()->route('workshops.admin.index')->with('success', 'Workshop deleted successfully.');
   }
- 
-
-
   
 }
 
