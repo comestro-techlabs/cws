@@ -36,7 +36,7 @@
                             <img src="/assets/email.png" alt="Email Image" class="w-15 h-15 sm:w-15 sm:h-15 mb-4 sm:mb-0">
                             <div>
                                 <p>Have a project in mind?<br>Send a message.</p>
-                                <h1 class="text-md font-bold text-black mt-2">@comestrotechlab.com</h1>
+                                <h1 class="text-md font-bold text-black mt-2">@LearnSyntaxtechlab.com</h1>
                             </div>
                         </div>
                         <div class="flex flex-col items-center sm:flex-row sm:items-start space-x-0 sm:space-x-4 text-center sm:text-left">
@@ -59,7 +59,7 @@
                 </div>
                 <div class="flex items-center justify-center">
                     <iframe class="rounded-xl w-full h-64 sm:h-72 md:h-96"
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3592.629023335638!2d87.46747347465347!3d25.782814277338673!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eff97801471a9f%3A0xf8f622c46e9afaa9!2sComestro%20(Code%20with%20SadiQ)!5e0!3m2!1sen!2sin!4v1725219952931!5m2!1sen!2sin"
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3592.629023335638!2d87.46747347465347!3d25.782814277338673!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eff97801471a9f%3A0xf8f622c46e9afaa9!2sLearnSyntax%20(Code%20with%20SadiQ)!5e0!3m2!1sen!2sin!4v1725219952931!5m2!1sen!2sin"
                         style="border:0;" allowfullscreen="" loading="lazy"
                         referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
@@ -73,7 +73,7 @@
                 three-step approach is simple, but it’s effective.</p>
         </div>
 
-        <div class="curve-bottom wave h-32 bg-gray-100"></div>
+        {{-- <div class="curve-bottom wave h-32 bg-gray-100"></div> --}}
 
         <section class="py-16 px-4 sm:px-8 md:px-20 bg-gray-100">
             <div class="flex flex-col items-center justify-center text-center">
@@ -128,6 +128,9 @@
                 </div>
             </form>
         </section>
+
+
+        
 
     </div>
 @endsection

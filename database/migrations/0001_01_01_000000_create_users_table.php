@@ -21,7 +21,7 @@ return new class extends Migration
             $table->boolean("isAdmin")->default(false);
             $table->timestamp('email_verified_at')->nullable();
             $table->date('dob')->nullable();
-            $table->string('password')->nullable();
+            // $table->string('password')->nullable();
             $table->integer('status')->default(0); //0 = new admission, 1 = new student, 2 = old student
             $table->rememberToken();
             $table->timestamps();

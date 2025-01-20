@@ -5,14 +5,14 @@
 @endsection
 
 @section('meta')
-    <meta name="description" content="Discover Comestro, a leading Software Company based in Purnea Bihar, delivering 360º Software Solutions globally since 2009. With over 110 experts across Bihar, we help businesses thrive through innovative, data-driven marketing strategies."/>
+    <meta name="description" content="Discover LearnSyntax, a leading Software Company based in Purnea Bihar, delivering 360º Software Solutions globally since 2009. With over 110 experts across Bihar, we help businesses thrive through innovative, data-driven marketing strategies."/>
 @endsection
 
 @section('content')
     <div class="bg-white pB-12 overflow-x-hidden">
 
         <!-- Header Section -->
-        <livewire:page-heading title="About Comestro"
+        <livewire:page-heading title="About LearnSyntax"
             description="Our Learn Syntax services is one of top Software Devlopment Company in India. We provide 360º
                     techLab Solutions to businesses across the globe."
             image="about-header.png" />
@@ -26,7 +26,7 @@
                 We’re Leaders In Innovative Software Solutions
             </h2>
             <p class="text-md text-gray-700 leading-relaxed mb-4">
-                <a href="/">At <span class="font-bold text-orange-500">Com</span></a><span class="font-bold text-blue-600">estro</span>, we believe in the power of innovation and technology to transform businesses. Based in Purnea, Bihar, we specialize in developing high-quality web applications, mobile apps, and custom websites that help our clients achieve their digital goals. Our passion for building innovative solutions drives us to deliver projects that are not only functional but also scalable and user-friendly.
+                <a href="/">At <span class="font-bold text-primary">Com</span></a><span class="font-bold text-blue-600">estro</span>, we believe in the power of innovation and technology to transform businesses. Based in Purnea, Bihar, we specialize in developing high-quality web applications, mobile apps, and custom websites that help our clients achieve their digital goals. Our passion for building innovative solutions drives us to deliver projects that are not only functional but also scalable and user-friendly.
             </p>
             <p class="text-md text-gray-700 leading-relaxed mb-4">
                 Our mission is to empower businesses by providing them with cutting-edge digital products that enhance efficiency, drive growth, and create meaningful user experiences. Whether you're a startup or an established company, we partner with you to build software solutions tailored to your unique needs and goals.
@@ -55,7 +55,7 @@
             </p>
             <p class="text-md text-gray-700 leading-relaxed">
 
-                Comestro is located at Thana Chowk, a bustling part of Purnea, Bihar, near the well-known Dog Hospital. Our office is easily accessible, making it convenient for local businesses and clients to collaborate with us. Purnea, with its blend of history and modernization, is quickly becoming a hub for tech startups and innovation in Eastern India.
+                LearnSyntax is located at Thana Chowk, a bustling part of Purnea, Bihar, near the well-known Dog Hospital. Our office is easily accessible, making it convenient for local businesses and clients to collaborate with us. Purnea, with its blend of history and modernization, is quickly becoming a hub for tech startups and innovation in Eastern India.
 
                 Our presence in Purnea allows us to tap into local talent while delivering Software solutions that compete on a global scale. We are proud to contribute to the local economy, providing job opportunities and empowering businesses in the region with our state-of-the-art technology services.
             </p>
@@ -82,14 +82,14 @@
             </div>
         </div>
     </section>
-        
+
         <!-- Development Journey Section -->
         <div class="bg-white py-12 px-4 text-center">
             <h2 class="text-xl font-semibold uppercase text-purple-600 mb-2">
                 Our Development Journey
             </h2>
             <p class="text-3xl font-bold text-gray-800">
-                Learn Syntax offer end-to-end 'Software solutions'
+                Learn Syntax offer end-to-end 'Learning Solutions'
             </p>
             <p class="text-lg font-light text-gray-600 mt-4">
                 Partner with us to transform your vision into reality. Your journey to innovation starts here!
@@ -97,7 +97,7 @@
         </div>
 
         <!-- Carousel Section -->
-        <div class="flex flex-1 justify-center my-5">
+        {{-- <div class="flex flex-1 justify-center my-5">
             <div class="relative overflow-hidden w-full md:w-10/12 px-2">
                 <!-- Carousel Container -->
                 <div id="carousel" class="flex my-3 transition-transform duration-700 ease-in-out h-[300px]">
@@ -116,7 +116,7 @@
                             </div>
                         </div>
                     </div>
-        
+
                     <!-- Repeat the above block for additional carousel items -->
                     <div class="flex-shrink-0 w-full sm:w-1/2 lg:w-1/3 px-2 sm:px-4 lg:px-5 flex">
                         <div class="flex flex-col items-center">
@@ -135,7 +135,7 @@
 
                     <!-- Add more items as needed -->
                 </div>
-        
+
                 <!-- Arrows -->
                 <button id="prev" class="absolute top-1/2 left-0 transform -translate-y-1/2 bg-white/45 text-gray-700 px-4 py-2 text-xl md:px-5 md:py-3">
                     &lt;
@@ -144,13 +144,67 @@
                     &gt;
                 </button>
             </div>
-        </div>
-        
+        </div> --}}
+
+        <div class="flex flex-1 justify-center my-5">
+            <div class="relative overflow-hidden w-full md:w-10/12 px-2">
+              <!-- Carousel Container -->
+              <div id="carousel" class="flex transition-transform duration-700 ease-in-out">
+                <!-- Carousel Items -->
+                <div class="flex-shrink-0 w-full sm:w-1/2 lg:w-2/6 px-3">
+                  <div class="bg-white shadow-lg border rounded-tr-xl p-6 text-center">
+                    <div class="w-24 h-24 mx-auto mb-4">
+                      <img src="{{asset('assets/about/work.jpg')}}" alt="Image 1" class="rounded-full">
+                    </div>
+                    <h3 class="text-lg font-bold text-blue-600 mb-2">Work with us</h3>
+                    <p class="text-gray-700 text-sm">
+                        At Learn Syntax, we’re all learners and instructors. We live out our values every day to create a culture that is diverse, and committed to helping employees thrive.                    </p>
+                  </div>
+                </div>
+          
+                <div class="flex-shrink-0 w-full sm:w-1/2 lg:w-2/6 px-3">
+                  <div class="bg-white shadow-lg border rounded-tr-xl p-6 text-center">
+                    <div class="w-24 h-24 mx-auto mb-4">
+                      <img src="{{asset('assets/about/research.png')}}" alt="Image 2" class="rounded-full">
+                    </div>
+                    <h3 class="text-lg font-bold text-blue-600 mb-2">See our research</h3>
+                    <p class="text-gray-700 text-sm">
+                        We’re committed to improving lives through learning. Dig into our original research to learn about the forces that are shaping the modern workplace.                    </p>
+                  </div>
+                </div>
+          
+                <div class="flex-shrink-0 w-full sm:w-1/2 lg:w-2/6 px-3">
+                  <div class="bg-white shadow-lg border rounded-tr-xl p-6 text-center">
+                    <div class="w-24 h-24 mx-auto mb-4">
+                      <img src="{{asset('assets/about/blog.png')}}" alt="Image 3" class="rounded-full">
+                    </div>
+                    <h3 class="text-lg font-bold text-blue-600 mb-2">Read our blog</h3>
+                    <p class="text-gray-700 text-sm">
+                        Want to know what we’ve been up to lately? Check out the Udemy blog to get the scoop on the latest news, ideas and projects, and more.                    </p>
+                  </div>
+                </div>
+          
+                {{-- <div class="flex-shrink-0 w-full sm:w-1/2 lg:w-1/4 px-3">
+                  <div class="bg-white shadow-lg border rounded-lg p-6 text-center">
+                    <div class="w-16 h-16 mx-auto mb-4">
+                      <img src="https://via.placeholder.com/150" alt="Image 4" class="rounded-full">
+                    </div>
+                    <h3 class="text-lg font-bold text-blue-600 mb-2">Title 4</h3>
+                    <p class="text-gray-700 text-sm">
+                      Description for the fourth card, summarizing features.
+                    </p>
+                  </div>
+                </div> --}}
+              </div>
+            </div>
+          </div>
+          
+
     </div>
 @endsection
 
 @section('js')
-    <script>
+    {{-- <script>
         const carousel = document.getElementById('carousel');
         const items = document.querySelectorAll('#carousel > div');
         let index = 0;
@@ -193,5 +247,5 @@
 
         // Set initial slide
         slide();
-    </script>
+    </script> --}}
 @endsection

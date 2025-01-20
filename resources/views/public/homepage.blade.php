@@ -2,12 +2,12 @@
 
 
 @section('meta')
-    <meta name="description" content="Join Comestro Programming Classes and master coding with expert-led training in C, DBMS, Laravel, and Web Development. Learn hands-on programming techniques from beginner to advanced levels. Enroll now to enhance your coding skills and build a successful career in tech!"/>
+    <meta name="description" content="Join LearnSyntax Programming Classes and master coding with expert-led training in C, DBMS, Laravel, and Web Development. Learn hands-on programming techniques from beginner to advanced levels. Enroll now to enhance your coding skills and build a successful career in tech!"/>
 @endsection
 
 @section('content')
 
-    <div class="bg-white overflow-x-hidden">
+    <div class="bg-primary overflow-x-hidden">
         <x-hero />
     </div>
 
@@ -17,12 +17,12 @@
             <section class="py-5">
                 <div class="container mx-auto px-4">
                     <div class="text-center mb-12">
-                        <h2 class="text-3xl font-bold text-blue-600 mb-2">What We Offer</h2>
+                        <h2 class="text-3xl font-bold text-primary mb-2">What We Offer</h2>
                         <p class="text-3xl font-bold text-gray-800">
-                            Learn Syntax offer end to end 'Software Solutions'
+                            Learn Syntax offers end-to-end 'Learning Solutions'
                         </p>
-                        <p class="text-gray-600 mt-4">Our comprehensive services are designed to meet your business needs.
-                        </p>
+                        <p class="text-gray-600 mt-4">
+                            Our comprehensive learning services are designed to help you enhance your coding skills and knowledge.                        </p>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <a href="" class="bg-white p-6 rounded-lg shadow-lg text-center">
@@ -35,20 +35,21 @@
 
                             </div>
                             <h3 class="text-2xl font-semibold text-[#090446] mb-4">Consulting</h3>
-                            <p class="text-gray-600">Expert advice to help you navigate complex business challenges.</p>
+                            <p class="text-gray-600">
+                                Expert guidance to help you navigate through your learning journey and overcome challenges.                                .</p>
                         </a>
                         <a href="{{ route('public.services.web-dev') }}"
                             class="bg-white p-6 rounded-lg shadow-lg text-center">
                             <div class="flex justify-center mb-4">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="h-16 w-16 text-orange-500">
+                                    stroke-width="1.5" stroke="currentColor" class="h-16 w-16 text-primary">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0V12a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 12V5.25" />
                                 </svg>
 
                             </div>
-                            <h3 class="text-2xl font-semibold text-orange-500 mb-4">Web Development</h3>
-                            <p class="text-gray-600">Custom software solutions that drive efficiency and growth.</p>
+                            <h3 class="text-2xl font-semibold text-primary mb-4">Web Development</h3>
+                            <p class="text-gray-600">Learn web development with hands-on projects that build your skillset.</p>
                         </a>
                         <a href="{{ route('public.services.mobile-app') }}"
                             class="bg-white p-6 rounded-lg shadow-lg text-center">
@@ -61,9 +62,9 @@
 
                             </div>
                             <h3 class="text-2xl font-semibold text-[#ff1d15] mb-4">App Development</h3>
-                            <p class="text-gray-600">Strategic marketing campaigns that deliver measurable results.</p>
+                            <p class="text-gray-600">Master mobile app development through practical lessons and real-world scenarios.</p>
                         </a>
-                        <a href="{{ route('public.services.seo-services') }}"
+                        {{-- <a href="{{ route('public.services.seo-services') }}"
                             class="bg-white p-6 rounded-lg shadow-lg text-center">
                             <div class="flex justify-center mb-4">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
@@ -76,7 +77,7 @@
                             </div>
                             <h3 class="text-2xl font-semibold text-green-600 mb-4">SEO Optimization</h3>
                             <p class="text-gray-600">Enhance your online presence with our expert SEO services.</p>
-                        </a>
+                        </a> --}}
                         <a href="{{ route('public.services.web-design') }}"
                             class="bg-white p-6 rounded-lg shadow-lg text-center">
                             <div class="flex justify-center mb-4">
@@ -88,7 +89,7 @@
 
                             </div>
                             <h3 class="text-2xl font-semibold text-[#2a9d8f] mb-4">Web Design</h3>
-                            <p class="text-gray-600">High-quality content that engages and converts your audience.</p>
+                            <p class="text-gray-600">Learn how to create stunning, user-friendly website designs.</p>
                         </a>
                         <a href="{{ route('public.services.invent-sol') }}"
                             class="bg-white p-6 rounded-lg shadow-lg text-center">
@@ -102,6 +103,18 @@
                             </div>
                             <h3 class="text-2xl font-semibold text-[#033e63e8] mb-4">Inventory Solutions</h3>
                             <p class="text-gray-600">Data-driven insights to help you make informed business decisions.</p>
+                        </a> 
+                        <a href="" class="bg-white p-6 rounded-lg shadow-lg text-center">
+                            <div class="flex justify-center mb-4">
+                               
+                                <svg xmlns="http://www.w3.org/2000/svg"  class="h-10 w-11 text-[#2a9d8f]"  fill="currentColor" class="bi bi-bookmark-check-fill" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5m8.854-9.646a.5.5 0 0 0-.708-.708L7.5 7.793 6.354 6.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0z"/>
+                                  </svg>
+                            </div>
+                            <h3 class="text-2xl font-semibold text-[#2a9d8f] mb-4">Certificates</h3>
+                            <p class="text-gray-600">
+                                Receive a certificate upon completing a course or assignment to showcase your achievements.
+                            </p>
                         </a>
                     </div>
                 </div>
@@ -110,7 +123,7 @@
         </div>
     </div>
        <div class="max-w-6xl mx-auto p-6">
-        <h2 class="text-3xl text-center font-bold text-blue-600 mb-4"> Admission to Certification</h2>
+        <h2 class="text-3xl text-center font-bold text-primary mb-4"> Admission to Certification</h2>
         <p class="text-3xl font-bold text-center text-gray-800">
             Explore available courses, check your eligibility
         </p>
@@ -118,44 +131,21 @@
         </p>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8">
-           
+
              <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow duration-300">
-                <p class="text-blue-500 font-bold text-xl mb-4">Step-1</p>
+                <p class="text-secondary font-bold text-xl mb-4">Step-1</p>
                 <div class="flex items-center space-x-4 mb-4">
                     <svg class="w-10 h-10 text-indigo-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M16 7c1.657 0 3 1.343 3 3v4c0 1.657-1.343 3-3 3H8c-1.657 0-3-1.343-3-3v-4c0-1.657 1.343-3 3-3h8zM12 5V3M16.5 9.5h-9m3.75-6h1.5" />
                     </svg>
                     <h3 class="text-2xl font-bold text-gray-800">Admission Start Date</h3>
                 </div>
-            
-               
+
+
                  <p class="text-gray-600  mb-6">
                     Mark your calendar! Admissions begin soon, so make sure to your register on time.
-                </p> 
-            
-                <div class="flex justify-between items-center">
-                    <p class="text-gray-700 font-medium text-lg">January 10, 2025</p>
-                    <svg class="w-6 h-6 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-                    </svg>
-                </div>
-            </div> 
-            
-            <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow duration-300">
-                <p class="text-blue-500 font-bold text-xl mb-4">Step-2</p>
-                <div class="flex items-center space-x-4 mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-orange-500">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c3.866 0 7 2.686 7 6s-3.134 6-7 6-7-2.686-7-6 3.134-6 7-6zm0 12v6m-4 0h8" />
-                      </svg>
-                      
-                    <h3 class="text-2xl font-bold text-gray-800">Courses Available</h3>
-                </div>
-            
-               
-                <p class="text-gray-600  mb-6">
-                    Empower your future with practical, expertly designed courses tailored to  goals.
                 </p>
-            
+
                 <div class="flex justify-between items-center">
                     <p class="text-gray-700 font-medium text-lg">January 10, 2025</p>
                     <svg class="w-6 h-6 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
@@ -163,27 +153,50 @@
                     </svg>
                 </div>
             </div>
-            
-    
-         
-            
+
             <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow duration-300">
-                <p class="text-blue-500 font-bold text-xl mb-4">Step-3</p>
+                <p class="text-secondary font-bold text-xl mb-4">Step-2</p>
+                <div class="flex items-center space-x-4 mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-primary">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c3.866 0 7 2.686 7 6s-3.134 6-7 6-7-2.686-7-6 3.134-6 7-6zm0 12v6m-4 0h8" />
+                      </svg>
+
+                    <h3 class="text-2xl font-bold text-gray-800">Courses Available</h3>
+                </div>
+
+
+                <p class="text-gray-600  mb-6">
+                    Empower your future with practical, expertly designed courses tailored to  goals.
+                </p>
+
+                <div class="flex justify-between items-center">
+                    <p class="text-gray-700 font-medium text-lg">January 10, 2025</p>
+                    <svg class="w-6 h-6 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                </div>
+            </div>
+
+
+
+
+            <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow duration-300">
+                <p class="text-secondary font-bold text-xl mb-4">Step-3</p>
                 <div class="flex items-center space-x-4 mb-4">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-green-600">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M5 12l5 5L19 7" />
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z" />
                       </svg>
-                      
-                      
+
+
                     <h3 class="text-2xl font-bold text-gray-800">Eligibility Criteria</h3>
                 </div>
-            
-               
+
+
                 <p class="text-gray-600  mb-6">
                     Candidates must meet minimum educational qualifications, and relevent skill.
                 </p>
-            
+
                 <div class="flex justify-between items-center">
                     <p class="text-gray-700 font-medium text-lg">January 10, 2025</p>
                     <svg class="w-6 h-6 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
@@ -192,22 +205,22 @@
                 </div>
             </div>
             <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow duration-300">
-                <p class="text-blue-500 font-bold text-xl mb-4">Step-4</p>
+                <p class="text-secondary font-bold text-xl mb-4">Step-4</p>
                 <div class="flex items-center space-x-4 mb-4">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-red-700">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m6-6h-3m-6 0H6m12-5h-9m0 0V6M9 12V6" />
                       </svg>
-                      
-                      
-                      
+
+
+
                     <h3 class="text-2xl font-bold text-gray-800">Application Fee</h3>
                 </div>
-            
-               
+
+
                 <p class="text-gray-600  mb-6">
                     A non-refundable application fee is required to complete your registration the course.
                 </p>
-            
+
                 <div class="flex justify-between items-center">
                     <p class="text-gray-700 font-medium text-lg">January 10, 2025</p>
                     <svg class="w-6 h-6 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
@@ -216,22 +229,22 @@
                 </div>
             </div>
           <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow duration-300">
-                <p class="text-blue-500 font-bold text-xl mb-4">Step-5</p>
+                <p class="text-secondary font-bold text-xl mb-4">Step-5</p>
                 <div class="flex items-center space-x-4 mb-4">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-yellow-600">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M8 4h8M12 4v16m4-4l2 2 2-2m-6 0l-2 2-2-2" />
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" />
                       </svg>
-                      
-                      
+
+
                     <h3 class="text-2xl font-bold text-gray-800">Certificate Provided</h3>
                 </div>
-            
-               
+
+
                 <p class="text-gray-600  mb-6">
                     Upon successful completion, a certificate will be awarded to recognize your achievements.
                 </p>
-            
+
                 <div class="flex justify-between items-center">
                     <p class="text-gray-700 font-medium text-lg">January 10, 2025</p>
                     <svg class="w-6 h-6 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
@@ -239,19 +252,19 @@
                     </svg>
                 </div>
             </div>
-            
-             
-            
-           
-            
+
+
+
+
+
             <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow duration-300">
-                <p class="text-blue-500 font-bold text-xl mb-4">Step-6</p>
+                <p class="text-secondary font-bold text-xl mb-4">Step-6</p>
                 <div class="flex items-center space-x-4 mb-4">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-purple-700">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3 5h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zm16 0V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
                         <path stroke-linecap="round" stroke-linejoin="round" d="M7 9h10M7 13h8" />
                     </svg>
-                    
+
                     <h3 class="text-2xl font-bold text-gray-800">Mode of Study</h3>
                 </div>
                 <p class="text-gray-600  mb-6">
@@ -264,14 +277,14 @@
                     </svg>
                 </div>
             </div>
-            
-            
-            
-            
+
+
+
+
         </div>
-    </div>  
-     
-    
+    </div>
+
+
     {{-- who we are --}}
     <div class="flex-1 flex flex-col md:flex-row md:px-[8%] gap-10 mt-10">
         <div class="flex-1 p-5">
@@ -290,19 +303,67 @@
                 Consider these steps for brand popularity in the Digital World...
             </a>
             <ul class="flex flex-col gap-2 text-gray-700">
-                <li><i class="fas fa-check text-orange-500 mr-2"></i><a href="#"
-                        class="text-gray-800 font-semibold hover:text-orange-500">Define your goals</a></li>
-                <li><i class="fas fa-check text-orange-500 mr-2"></i><a href="#"
-                        class="text-gray-800 font-semibold hover:text-orange-500">Identify your target audience</a></li>
-                <li><i class="fas fa-check text-orange-500 mr-2"></i><a href="#"
-                        class="text-gray-800 font-semibold hover:text-orange-500">Choose the right channels</a></li>
-                <li><i class="fas fa-check text-orange-500 mr-2"></i><a href="#"
-                        class="text-gray-800 font-semibold hover:text-orange-500">Create and implement your campaigns</a>
+                <li><i class="fas fa-check text-primary mr-2"></i><a href="#"
+                        class="text-gray-800 font-semibold hover:text-primary">Define your goals</a></li>
+                <li><i class="fas fa-check text-primary mr-2"></i><a href="#"
+                        class="text-gray-800 font-semibold hover:text-primary">Identify your target audience</a></li>
+                <li><i class="fas fa-check text-primary mr-2"></i><a href="#"
+                        class="text-gray-800 font-semibold hover:text-primary">Choose the right channels</a></li>
+                <li><i class="fas fa-check text-primary mr-2"></i><a href="#"
+                        class="text-gray-800 font-semibold hover:text-primary">Create and implement your campaigns</a>
                 </li>
             </ul>
         </div>
     </div>
 
+
+
+    {{-- latest course --}}
+    <div class="flex flex-col items-center mt-20 text-center">
+        <h2 class="text-3xl text-primary font-sans font-bold mb-4">Our Latest Courses</h2>
+        <h1 class="text-3xl font-bold text-gray-800 mb-4">Master the Skills to Build Your Future</h1>
+        <p class="text-base text-gray-700 mb-6 max-w-4xl">
+            Explore our curated courses designed to provide you with the latest industry insights and practical knowledge.
+            From beginner to advanced levels, we aim to help you excel in your field with expert-led guidance and innovative
+            content. Upgrade your skills and achieve your career goals with us!
+        </p>
+        <div class="bg-secondary flex justify-between items-center py-2 px-6 rounded-lg shadow gap-2 mb-6">
+            <a href="{{ route('public.training') }}" class=" text-white font-bold ">
+                View All Courses
+            </a>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
+              </svg>
+        </div>
+        
+    </div>
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-20 px-4 lg:px-32">
+        @foreach ($courses as $item)
+        <div class="max-w-md mx-auto bg-white rounded-lg shadow-lg border overflow-hidden">
+            <img class="w-full h-48 object-cover" src="{{asset('storage/course_images/' . $item->course_image)}}" alt="Course Image">
+            
+            <div class="p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-2 line-clamp-1">{{$item->title}}</h2>
+                <p class="text-gray-600 text-sm mb-4">
+                    {{ Str::limit($item->description, 122) }}
+                </p>
+                <div class="flex items-center mb-4">
+                    <div class="ml-3">
+                        <p class="text-gray-700 text-sm font-medium">{{$item->instructor}}</p>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center">
+                    <p class="text-lg font-bold text-primary">Rs.{{$item->discounted_fees}}</p>
+                    <a href="{{route('public.courseDetails',['category_slug' => $item->category->cat_slug, 'slug' =>  $item->slug])}}" class="bg-primary text-white font-bold py-2 px-4 rounded shadow focus:outline-none focus:ring">
+                        Enroll Now
+                    </a>
+                </div>
+            </div>
+        </div>
+        @endforeach
+    </div>
+    
 
 
     {{-- {{static info}} --}}
@@ -330,7 +391,7 @@
             </div>
         </div>
     </div>
-
+{{-- 
     <section class="py-16 px-4 sm:px-8 md:px-20 bg-gray-100">
         <div class="flex flex-col items-center justify-center">
             <h1 class="text-2xl text-orange-600 sm:text-3xl font-bold mb-5">Please Feedback!</h1>
@@ -388,7 +449,7 @@
             </div>
         </form>
 
-    </section>
+    </section> --}}
 
 
 @endsection

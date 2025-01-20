@@ -14,7 +14,8 @@ class PublicController extends Controller
 {
     public function index()
     {
-        return view("public.homepage");
+        $data['courses']=Course::where("published", true)->latest()->take(6)->get();
+        return view("public.homepage",$data);
     }
 
 
@@ -65,6 +66,8 @@ class PublicController extends Controller
  
     // to view a course details
     public function courseDetails($category_slug, $slug)
+   
+   
     {
         $course = Course::where('slug',$slug)->first(); // replace 1 with course id
         return view("public.course", compact('course'));
@@ -178,10 +181,6 @@ class PublicController extends Controller
     public function termsAndConditions(){
         return view('public.terms-and-conditions');
     }
-
-
-
-
 
 
 

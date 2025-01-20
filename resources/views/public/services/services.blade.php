@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <div class="bg-white 
+    <div class="bg-white
  overflow-x-hidden">
         <livewire:page-heading title="Learn Syntax Services"
             description="Our TechLab services in India enhance your brand’s online presence, attract new customers, and drive conversions."
@@ -30,7 +30,7 @@
                     ones.
                 </p>
                 <p class="text-sm md:text-md text-gray-700 leading-relaxed mt-3">
-                    <a href="/https://www.comestro.com/" class="font-bold text-orange-500 hover:text-orange-600">
+                    <a href="/https://www.LearnSyntax.com/" class="font-bold text-primary hover:text-orange-600">
                         Com<span class="text-blue-600 hover:text-blue-700">estro</span>
                     </a>
                     believes that every business has infinite potential, and all they need is the right partner to unleash
@@ -45,7 +45,7 @@
                     TechLab Services in India to stay the front-runner in their industry.
                 </h3>
                 <p class="text-xs md:text-sm font-medium text-gray-700 mb-8 text-center md:text-left">
-                    Let us comprehend the ways Comestro assists companies like yours to achieve their goals.
+                    Let us comprehend the ways LearnSyntax assists companies like yours to achieve their goals.
                 </p>
 
                 <!-- Feature List -->
@@ -54,7 +54,7 @@
                     <div>
                         <h4 class="text-lg md:text-xl font-bold text-gray-800 mb-2">Measurable results</h4>
                         <p class="text-gray-700">
-                            All activities performed by Comestro on various digital platforms are recorded in real-time and
+                            All activities performed by LearnSyntax on various digital platforms are recorded in real-time and
                             are always available at the tips of your fingers. Data like customer interaction, conversion
                             rate, impressions, etc., are saved automatically and are available on the various accounts
                             created by our <a href="#" class="text-blue-600 hover:text-blue-800">Software Company</a>
@@ -67,7 +67,7 @@
                         <h4 class="text-lg md:text-xl font-bold text-gray-800 mb-2">Low cost</h4>
                         <p class="text-gray-700">
                             Small businesses predominantly find it difficult to compete with industry giants in marketing
-                            due to the latter’s enormous marketing budget. At Comestro, we believe that every rupee saved is
+                            due to the latter’s enormous marketing budget. At LearnSyntax, we believe that every rupee saved is
                             a rupee earned. Our Software Company specializes in smart spending so that you can achieve the
                             maximum out of any budget size.
                         </p>
@@ -79,7 +79,7 @@
                         <p class="text-gray-700">
                             An ad in an esteemed newspaper agency will be viewed by millions. But how many of them will be
                             your target audience? Probably a petite fraction of it. This means that lakhs of rupees are down
-                            the drain. Comestro will not allow you to make the same mistake. We scrutinize the target
+                            the drain. LearnSyntax will not allow you to make the same mistake. We scrutinize the target
                             audience for you from the vast range of demographic options available and ensure that only
                             relevant people view your ads.
                         </p>

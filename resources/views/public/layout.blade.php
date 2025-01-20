@@ -8,223 +8,13 @@
     <title>@yield('title') {{ env('APP_NAME') }} | Best Programming Training Center in Purnea Bihar</title>
     @yield('meta')
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/site.webmanifest">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
-    <script src="https://cdn.tailwindcss.com"></script>
+    @vite('resources/css/app.css')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    @livewireStyles
-    <link
-        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-        rel="stylesheet">
-    <style>
-        .roboto-thin {
-            font-family: "Roboto", sans-serif;
-            font-weight: 100;
-            font-style: normal;
-        }
-
-        .roboto-light {
-            font-family: "Roboto", sans-serif;
-            font-weight: 300;
-            font-style: normal;
-        }
-
-        .roboto-regular {
-            font-family: "Roboto", sans-serif;
-            font-weight: 400;
-            font-style: normal;
-        }
-
-        .roboto-medium {
-            font-family: "Roboto", sans-serif;
-            font-weight: 500;
-            font-style: normal;
-        }
-
-        .roboto-bold {
-            font-family: "Roboto", sans-serif;
-            font-weight: 700;
-            font-style: normal;
-        }
-
-        .roboto-black {
-            font-family: "Roboto", sans-serif;
-            font-weight: 900;
-            font-style: normal;
-        }
-
-        .roboto-thin-italic {
-            font-family: "Roboto", sans-serif;
-            font-weight: 100;
-            font-style: italic;
-        }
-
-        .roboto-light-italic {
-            font-family: "Roboto", sans-serif;
-            font-weight: 300;
-            font-style: italic;
-        }
-
-        .roboto-regular-italic {
-            font-family: "Roboto", sans-serif;
-            font-weight: 400;
-            font-style: italic;
-        }
-
-        .roboto-medium-italic {
-            font-family: "Roboto", sans-serif;
-            font-weight: 500;
-            font-style: italic;
-        }
-
-        .roboto-bold-italic {
-            font-family: "Roboto", sans-serif;
-            font-weight: 700;
-            font-style: italic;
-        }
-
-        .roboto-black-italic {
-            font-family: "Roboto", sans-serif;
-            font-weight: 900;
-            font-style: italic;
-        }
-
-        /* Keyframes for shaking animation */
-        @keyframes shake {
-
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-
-            25% {
-                transform: translateY(-8px);
-            }
-
-            50% {
-                transform: translateY(8px);
-            }
-
-            75% {
-                transform: translateY(-8px);
-            }
-        }
-
-        .shake {
-            animation: shake 2s infinite;
-        }
-
-        .bend-bottom {
-            clip-path: polygon(0 0, 100% 0, 100% 100%, 100% 100%);
-        }
-
-        .elementor-divider-separator {
-            display: block;
-            height: 3px;
-            margin: 20px 0;
-            width: 110px;
-            background: linear-gradient(to right, #feb47b, #570250);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .faq-item {
-            cursor: pointer;
-            color: blue;
-        }
-
-        .faq-answer {
-            display: none;
-        }
-
-        .faq-item.active .faq-answer {
-            display: block;
-        }
-
-        .bend-bottom {
-            clip-path: polygon(0 0, 100% 0, 100% 100%, 100% 100%);
-        }
-
-        .elementor-divider-separator {
-            display: block;
-            height: 3px;
-            margin: 20px 0;
-            width: 110px;
-            background: linear-gradient(to right, #feb47b, #570250);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        ul.custom-checkmarks {
-            list-style-type: none;
-            /* Remove default bullets */
-            padding-left: 0;
-            /* Remove default padding */
-        }
-
-        ul.custom-checkmarks li {
-            position: relative;
-            /* Position relative for the custom bullet */
-            padding-left: 2rem;
-            /* Space for the custom bullet */
-            font-size: 1rem;
-            /* Adjust font size if needed */
-        }
-
-        ul.custom-checkmarks li::before {
-            content: '\f00c';
-            /* Font Awesome checkmark icon */
-            font-family: 'Font Awesome 6 Free';
-            /* Use Font Awesome font */
-            font-weight: 900;
-            /* Required for solid icons */
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 1.25rem;
-            /* Size of the checkmark */
-            color: #ff6600;
-            /* Color of the checkmark */
-        }
-
-        <style>.elementor-divider-separator {
-            display: block;
-            height: 3px;
-            margin: 20px 0;
-            width: 110px;
-            background: linear-gradient(to right, #feb47b, #570250);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .faq-item {
-            cursor: pointer;
-            color: blue;
-        }
-
-        .faq-answer {
-            display: none;
-        }
-
-        .faq-item.active .faq-answer {
-            display: block;
-        }
-
-        .elementor-divider-separator {
-        display: block;
-        height: 3px;
-        margin: 20px 0;
-        width: 110px;
-        background: linear-gradient(to right, #feb47b, #570250);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-    </style>
-
+ @livewireStyles
 </head>
-
 <body>
     @include('public.publicheader')
 
@@ -233,13 +23,13 @@
 
     @show
 
-    <footer class="bg-gray-900 text-gray-200 py-10">
+    <footer class=" bg-secondary text-gray-50 py-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- About Section -->
                 <div>
                     <h3 class="text-lg font-semibold text-white mb-4">About Us</h3>
-                    <p class="text-gray-400">
+                    <p class="text-gray-50">
                         At Learn Syntax, we are committed to providing high-quality programming education that empowers
                         students to excel in the IT industry. Our hands-on approach and real-world projects ensure that
                         our students are job-ready.
@@ -251,36 +41,36 @@
                     <h3 class="text-lg font-semibold text-white mb-4">Quick Links</h3>
                     <ul class="space-y-2">
                         <li>
-                            <a href="{{route('public.about')}}" class="hover:text-gray-400">About</a>
+                            <a href="{{route('public.about')}}" class="">About</a>
                         </li>
                         <li>
-                            <a href="{{route('public.training')}}" class="hover:text-gray-400">Courses</a>
+                            <a href="{{route('public.training')}}" class="">Courses</a>
                         </li>
 
                         <li>
-                            <a href="{{route('public.contact')}}" class="hover:text-gray-400">Contact Us</a>
+                            <a href="{{route('public.contact')}}" class="">Contact Us</a>
                         </li>
-                      
+
                         <li>
-                            <a href="{{ route('public.privacy') }}" class="hover:text-gray-400">Privacy & Policy</a>
+                            <a href="{{ route('public.privacy') }}" class="">Privacy & Policy</a>
                         </li>
                         <li>
-                            <a href="{{ route('public.terms-conditions') }}" class="hover:text-gray-400">Terms & Conditions</a>
+                            <a href="{{ route('public.terms-conditions') }}" class="">Terms & Conditions</a>
                         </li>
                     </ul>
                 </div>
                 <!-- Contact Information -->
                 <div>
                     <h3 class="text-lg font-semibold text-white mb-4">Contact Us</h3>
-                    <p class="text-gray-400">{{ env('APP_NAME') }} TechLabs Pvt Ltd.</p>
-                    <p class="text-gray-400">Purnea, Bihar, India</p>
-                    <p class="text-gray-400">Email: info@learnSyntax.com</p>
-                    <p class="text-gray-400">Phone: +91-9546805580</p>
+                    <p class="text-gray-100">{{ env('APP_NAME') }} TechLabs Pvt Ltd.</p>
+                    <p class="text-gray-100">Purnea, Bihar, India</p>
+                    <p class="text-gray-100">Email: info@learnSyntax.com</p>
+                    <p class="text-gray-100">Phone: +91-9546805580</p>
                 </div>
             </div>
 
-            <div class="mt-8 border-t border-gray-700 pt-8 text-center">
-                <p class="text-gray-500 text-sm">
+            <div class="mt-8 border-t border-gray-50 pt-8 text-center">
+                <p class="text-gray-100 text-sm">
                     &copy; 2024 {{ env('APP_NAME') }}. All rights reserved.
                 </p>
             </div>

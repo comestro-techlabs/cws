@@ -22,7 +22,7 @@
 
                 <p class="text-md w-full text-gray-700 leading-relaxed">
                     <a href="/" class="">
-                        <span class="text-orange-500 font-bold">Learn</span><span
+                        <span class="text-primary font-bold">Learn</span><span
                             class="text-blue-600 font-bold">syntax</span></a> stands at the forefront of delivering
                     cutting-edge full-stack coaching management systems, meticulously designed to support the unique needs
                     of educational institutions and coaching centers. Our platforms are built with the latest technologies,
@@ -35,7 +35,7 @@
                     tracking progress, or scheduling classes, our platform provides a comprehensive suite of tools to
                     streamline every aspect of your coaching operations.
                 </p>
-                <p class="text-md text-gray-700 leading-relaxed mt-3">Affordability is a core value at Comestro. We believe
+                <p class="text-md text-gray-700 leading-relaxed mt-3">Affordability is a core value at LearnSyntax. We believe
                     that high-quality technology should be accessible to all, regardless of budget constraints. Our pricing
                     models are designed to offer maximum value, ensuring that even small to medium-sized institutions can
                     benefit from our state-of-the-art solutions without compromising on quality.
@@ -48,11 +48,11 @@
                 </p>
                 <p class="text-md text-gray-700 leading-relaxed mt-3">Our full-stack systems are engineered with scalability
                     in mind, ensuring that as your institution grows, our platform can grow with you. Whether you're
-                    expanding to new locations or increasing your student base, Comestro’s solutions are designed to scale
+                    expanding to new locations or increasing your student base, LearnSyntax’s solutions are designed to scale
                     effortlessly, adapting to your evolving needs without disruption.
                 </p>
                 <p class="text-md text-gray-700 leading-relaxed mt-3">Security and data integrity are paramount in today’s
-                    digital landscape, and Comestro takes this responsibility seriously. Our systems are built with robust
+                    digital landscape, and LearnSyntax takes this responsibility seriously. Our systems are built with robust
                     security measures to protect sensitive information, ensuring that student data, financial records, and
                     other critical assets are kept safe and secure at all times. We adhere to industry best practices,
                     providing peace of mind to educators and administrators alike.

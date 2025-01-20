@@ -7,7 +7,7 @@
 @section('content')
 
     <!-- Header Section -->
-    <div class="bg-white 
+    <div class="bg-white
  overflow-x-hidden">
         <livewire:page-heading title="Web Development"
             description="At Learn Syntax, we pride ourselves on being one of India's leading tech lab service agencies. Our comprehensive 360º tech lab solutions are designed to support businesses worldwide, delivering cutting-edge technology and expert solutions to meet all your needs."
@@ -24,7 +24,7 @@
 
                     <p class="text-md text-gray-700 leading-relaxed mt-3">
                         <a href="/" class="">
-                            <span class="text-orange-500 font-bold">Learn</span><span class="text-blue-600 font-bold">syntax</span></a> is a leading web development company specializing in the creation of high-performance e-commerce websites designed to elevate your online retail business. With a steadfast commitment to innovation and quality, we craft e-commerce platforms that are visually compelling, user-friendly, and optimized for conversion, ensuring that your online store not only stands out but also drives sales and customer engagement.
+                            <span class="text-primary font-bold">Learn</span><span class="text-blue-600 font-bold">syntax</span></a> is a leading web development company specializing in the creation of high-performance e-commerce websites designed to elevate your online retail business. With a steadfast commitment to innovation and quality, we craft e-commerce platforms that are visually compelling, user-friendly, and optimized for conversion, ensuring that your online store not only stands out but also drives sales and customer engagement.
                     </p>
                     <p class="text-md text-gray-700 leading-relaxed mt-3">
                         We understand that a successful e-commerce website is more than just an online storefront—it’s a critical component of your business strategy. Our approach is comprehensive, incorporating user experience (UX) design, search engine optimization (SEO), and performance optimization to ensure your website not only attracts visitors but also converts them into loyal customers. We focus on creating a seamless, intuitive shopping experience that keeps customers coming back.
@@ -102,7 +102,7 @@
 
         <div class="max-w-6xl mx-auto bg-white p-10 border rounded-lg shadow-lg mt-20 mb-20">
             <h2 class="text-2xl font-bold mb-4">FAQ Answered by <a href="/" class="">
-                    <span class="text-orange-500 font-bold">Learn</span><span class="text-blue-600 font-bold">syntax</span></a>
+                    <span class="text-primary font-bold">Learn</span><span class="text-blue-600 font-bold">syntax</span></a>
             </h2>
 
             <div class="faq-item border border-gray-300 py-2 px-2 mb-4">
@@ -143,7 +143,7 @@
 
         </div>
 
-    
+
 
         <div class="curve-bottom wave h-32 bg-gray-100"></div>
 

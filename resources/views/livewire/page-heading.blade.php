@@ -12,10 +12,10 @@
                         class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-5 rounded-full">
                         GET FREE Consultations
                     </a>
-                    <a href="tel:+919546805580"
+                    {{-- <a href="tel:+919546805580"
                         class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-5 rounded-full">
                         Call: {{env('PHONE_NO')}}
-                    </a>
+                    </a> --}}
                 </div>
             </div>
             <!-- Image -->

@@ -13,7 +13,7 @@
     <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-4 py-5">
         <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
             <span class="self-center text-2xl font-semibold whitespace-nowrap ">
-                <img src="{{ asset('assets/comestro.png') }}" class="md:h-8" alt="">
+                <img src="{{ asset('assets/LearnSyntax.png') }}" class="md:h-8" alt="">
             </span>
         </a>
 
@@ -45,7 +45,7 @@
                 </li>
                 <li>
                     <a href="{{ route('public.training') }}"
-                        class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 ">Training Courses</a>
+                        class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 ">Courses</a>
                 </li>
                 <li>
                     <a href="{{route('public.portfolio')}}"
@@ -55,7 +55,7 @@
                     <a href="{{route('public.workshops')}}"
                         class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 ">Workshop</a>
                 </li>
-                <li>
+                {{-- <li>
                     <button id="mega-menu-dropdown-button" data-dropdown-toggle="mega-menu-dropdown"
                         class="flex items-center justify-between w-full py-2 px-3 text-gray-900 border-b border-gray-100 md:w-auto hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0 ">
                         Services <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -112,7 +112,7 @@
                         </div>
                         <div class="p-4 w-48 pb-0 text-gray-900 md:pb-4 ">
                             <h2 class="mb-2 font-semibold text-gray-900 ">Our Services</h2>
-                            <p class="mb-2 text-gray-500 ">At Comestro, we have a portfolio of brands that cater to a
+                            <p class="mb-2 text-gray-500 ">At LearnSyntax, we have a portfolio of brands that cater to a
                                 variety of preferences.</p>
                             <a href="{{ route('public.services.services') }}"
                                 class="inline-flex items-center text-sm font-medium text-blue-600 hover:underline hover:text-blue-600 ">
@@ -125,7 +125,7 @@
                             </a>
                         </div>
                     </div>
-                </li>
+                </li> --}}
                 <li>
                     <a href="/contact"
                         class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 ">Contact</a>
@@ -171,7 +171,7 @@
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.1"
                             d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0 0a8.949 8.949 0 0 0 4.951-1.488A3.987 3.987 0 0 0 13 16h-2a3.987 3.987 0 0 0-3.951 3.512A8.948 8.948 0 0 0 12 21Zm3-11a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                     </svg>
-                    Login</a>
+                    Join Us</a>
             @endguest
             @guest
                 <a href="{{ route('auth.login') }}"

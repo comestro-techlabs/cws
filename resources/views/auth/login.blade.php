@@ -14,11 +14,11 @@ Login
     <div id="otp-form" class="w-full p-12 lg:w-1/2">
         <form action="{{route('auth.sendOtp')}}" method="POST" id="send-otp-form">
             @csrf
-            <h2 class="text-2xl font-semibold text-center"> <span class="text-orange-500 font-bold">Learn</span><span
+            <h2 class="text-2xl font-semibold text-center"> <span class="text-primary font-bold">Learn</span><span
                     class="text-blue-600 font-bold">syntax</span></h2>
 
             <p class="text-xl text-gray-600 text-center">Welcome Students</p>
-            
+
             <div class="mt-4 flex items-center justify-between">
                 <span class="border-b w-1/5 lg:w-1/4"></span>
                 <a href="#" class="text-xs text-center text-gray-500 uppercase">or login with email</a>
@@ -54,7 +54,7 @@ Login
             </div>
         </form>
     </div>
-  
+
 <!-- OTP Modal -->
 <div id="otp-modal" class="hidden fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
     <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">

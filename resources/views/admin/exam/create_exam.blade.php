@@ -17,17 +17,22 @@
         @csrf
         <div>
             <label class="block text-gray-700 mb-2">Course</label>
-            <select name="course_id" class="w-full border px-3 py-2 rounded" required>
-                <option value="" disabled selected>Select a course</option>
+            <select name="course_id" class="w-full border px-3 py-2 rounded">
+                <option value="" {{ old('course_id') == '' ? 'selected' : '' }}>Select a course</option>
                 @foreach ($courses as $course)
-                    <option value="{{ $course->id }}">{{ $course->title }}</option>
+                <option value="{{ $course->id }}" {{ old('course_id') == $course->id ? 'selected' : '' }}>{{ $course->title }}</option>
                 @endforeach
             </select>
+            @error('course_id')
+            <span class="text-sm text-red-500">{{ $message }}</span>
+            @enderror
         </div>
         <div class="mt-4">
             <label for="" class="block text-gray-700">Exam Name</label>
-            <input type="text" name="exam_name" class="w-full border px-3 py-2 rounded"required>
-
+            <input type="text" name="exam_name" value="{{old('exam_name')}}" class="w-full border px-3 py-2 rounded">
+            @error('exam_name')
+            <p class="text-xs text-red-600">{{$message}}</p>
+            @enderror
         </div>
         <div class="mt-4">
             <label for="" class="block text-gray-700">Exam Date</label>
@@ -42,4 +47,3 @@
     </form>
 </div>
 @endsection
-
