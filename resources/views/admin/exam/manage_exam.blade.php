@@ -21,6 +21,7 @@
                 {{-- <th class="border px-4 py-2">Course</th> --}}
                 <th class="border px-4 py-2">Course</th>
                 <th class="border px-4 py-2">Exam Name</th>
+                <th class="border px-4 py-2">Exam Date</th>
                 <th class="border px-4 py-2">status</th>
                 
                 <th class="border px-4 py-2">Actions</th>
@@ -32,6 +33,7 @@
                     <td class="border px-4 py-2">{{ $exam->id }}</td>
                     <td class="border px-4 py-2">{{ $exam->course->title }}</td>
                     <td class="border px-4 py-2">{{ $exam->exam_name }}</td>
+                    <td class="border px-4 py-2">{{ $exam->exam_date }}</td>
                     <td class="border px-4 py-2">
                     <form action="{{ route('exam.toggleStatus', ['exam' => $exam->id]) }}" method="POST" class="inline-block">
                         @csrf

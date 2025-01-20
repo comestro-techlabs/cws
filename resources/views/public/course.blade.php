@@ -69,7 +69,7 @@
                 </div>
 
                 @auth
-                <form action="{{route('phonepe.initiate')}}" class="w-full" method="post" role="form">
+                {{-- <form action="{{route('phonepe.initiate')}}" class="w-full" method="post" role="form">
                     @csrf
                     <input type="hidden" name="name" id="" value="{{Auth::user()->name}}">
                     <input type="hidden" name="email" id="" value="{{Auth::user()->email}}">
@@ -83,7 +83,7 @@
                         <span>Proceed with PhonePe</span>
                     </button>
 
-                </form>
+                </form> --}}
 
                 <a href="{{route('phonepe.payment')}}" id="pay-button"
                     class="flex items-center justify-center bg-white text-black  rounded-full mt-2 shadow-xl px-6 py-2  transition duration-300 ease-in-out transform hover:scale-105 space-x-3">

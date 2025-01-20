@@ -89,7 +89,7 @@
                 Our Development Journey
             </h2>
             <p class="text-3xl font-bold text-gray-800">
-                Learn Syntax offer end-to-end 'Software solutions'
+                Learn Syntax offer end-to-end 'Learning Solutions'
             </p>
             <p class="text-lg font-light text-gray-600 mt-4">
                 Partner with us to transform your vision into reality. Your journey to innovation starts here!
@@ -97,7 +97,7 @@
         </div>
 
         <!-- Carousel Section -->
-        <div class="flex flex-1 justify-center my-5">
+        {{-- <div class="flex flex-1 justify-center my-5">
             <div class="relative overflow-hidden w-full md:w-10/12 px-2">
                 <!-- Carousel Container -->
                 <div id="carousel" class="flex my-3 transition-transform duration-700 ease-in-out h-[300px]">
@@ -144,13 +144,67 @@
                     &gt;
                 </button>
             </div>
-        </div>
+        </div> --}}
+
+        <div class="flex flex-1 justify-center my-5">
+            <div class="relative overflow-hidden w-full md:w-10/12 px-2">
+              <!-- Carousel Container -->
+              <div id="carousel" class="flex transition-transform duration-700 ease-in-out">
+                <!-- Carousel Items -->
+                <div class="flex-shrink-0 w-full sm:w-1/2 lg:w-2/6 px-3">
+                  <div class="bg-white shadow-lg border rounded-tr-xl p-6 text-center">
+                    <div class="w-24 h-24 mx-auto mb-4">
+                      <img src="{{asset('assets/about/work.jpg')}}" alt="Image 1" class="rounded-full">
+                    </div>
+                    <h3 class="text-lg font-bold text-blue-600 mb-2">Work with us</h3>
+                    <p class="text-gray-700 text-sm">
+                        At Learn Syntax, we’re all learners and instructors. We live out our values every day to create a culture that is diverse, and committed to helping employees thrive.                    </p>
+                  </div>
+                </div>
+          
+                <div class="flex-shrink-0 w-full sm:w-1/2 lg:w-2/6 px-3">
+                  <div class="bg-white shadow-lg border rounded-tr-xl p-6 text-center">
+                    <div class="w-24 h-24 mx-auto mb-4">
+                      <img src="{{asset('assets/about/research.png')}}" alt="Image 2" class="rounded-full">
+                    </div>
+                    <h3 class="text-lg font-bold text-blue-600 mb-2">See our research</h3>
+                    <p class="text-gray-700 text-sm">
+                        We’re committed to improving lives through learning. Dig into our original research to learn about the forces that are shaping the modern workplace.                    </p>
+                  </div>
+                </div>
+          
+                <div class="flex-shrink-0 w-full sm:w-1/2 lg:w-2/6 px-3">
+                  <div class="bg-white shadow-lg border rounded-tr-xl p-6 text-center">
+                    <div class="w-24 h-24 mx-auto mb-4">
+                      <img src="{{asset('assets/about/blog.png')}}" alt="Image 3" class="rounded-full">
+                    </div>
+                    <h3 class="text-lg font-bold text-blue-600 mb-2">Read our blog</h3>
+                    <p class="text-gray-700 text-sm">
+                        Want to know what we’ve been up to lately? Check out the Udemy blog to get the scoop on the latest news, ideas and projects, and more.                    </p>
+                  </div>
+                </div>
+          
+                {{-- <div class="flex-shrink-0 w-full sm:w-1/2 lg:w-1/4 px-3">
+                  <div class="bg-white shadow-lg border rounded-lg p-6 text-center">
+                    <div class="w-16 h-16 mx-auto mb-4">
+                      <img src="https://via.placeholder.com/150" alt="Image 4" class="rounded-full">
+                    </div>
+                    <h3 class="text-lg font-bold text-blue-600 mb-2">Title 4</h3>
+                    <p class="text-gray-700 text-sm">
+                      Description for the fourth card, summarizing features.
+                    </p>
+                  </div>
+                </div> --}}
+              </div>
+            </div>
+          </div>
+          
 
     </div>
 @endsection
 
 @section('js')
-    <script>
+    {{-- <script>
         const carousel = document.getElementById('carousel');
         const items = document.querySelectorAll('#carousel > div');
         let index = 0;
@@ -193,5 +247,5 @@
 
         // Set initial slide
         slide();
-    </script>
+    </script> --}}
 @endsection

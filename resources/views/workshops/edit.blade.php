@@ -28,11 +28,13 @@
                 type="text"
                 name="title"
                 id="title"
-                value="{{ ( $workshops->title) }}"
-                required
+                value="{{ $workshops->title}}"
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 placeholder="Enter workshop title"
             >
+            @error('title')
+            <p class="text-xs text-red-500">{{ $message }}</p>
+            @enderror
         </div>
 
         <div>
@@ -41,10 +43,12 @@
                 type="date"
                 name="date"
                 id="date"
-                value="{{ ( $workshops->date) }}"
-                required
+                value="{{ $workshops->date }}"
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             >
+            @error('date')
+            <p class="text-xs text-red-500">{{ $message }}</p>
+            @enderror
         </div>
 
         <div>
@@ -53,25 +57,15 @@
                 type="time"
                 name="time"
                 id="time"
-                value="{{ ( $workshops->time) }}"
-                required
+                value="{{ $workshops->time }}"
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             >
+            @error('time')
+            <p class="text-xs text-red-500">{{ $message }}</p>
+            @enderror
         </div>
 
-         {{-- <div>
-            <label for="image" class="block text-sm font-medium text-gray-700 mb-1">Workshop Image</label>
-            <input
-                type="file"
-                name="image"
-                id="image"
-                class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            >
-            @if ($workshops->image)
-            <img src="{{ asset('storage/' . $workshops->image) }}" alt="Workshop Image" class="w-24 h-24 mt-4 rounded-md shadow-md">
-            @endif
-        </div> 
-          --}}
+       
           <div>
             <label for="image" class="block text-sm font-medium text-gray-700 mb-1">Image</label>
             <input 
@@ -106,11 +100,13 @@
                 type="number"
                 name="fees"
                 id="fees"
-                value="{{ ( $workshops->fees) }}"
-                required
+                value="{{ $workshops->fees }}"
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 placeholder="Enter workshop fees"
             >
+            @error('fees')
+            <p class="text-xs text-red-500">{{ $message }}</p>
+            @enderror
         </div>
         
 

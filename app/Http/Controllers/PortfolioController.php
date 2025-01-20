@@ -54,6 +54,7 @@ class PortfolioController extends Controller
             'url' => 'required|url',
             'description' => 'nullable|string',
         ]);
+        
     
         $portfolios = Portfolio::findOrFail($id);
     
