@@ -42,7 +42,6 @@ class QuizController extends Controller
             'option4' => 'required|string',
             'correct_answer' => 'required|in:option1,option2,option3,option4',
             'status' => 'nullable|boolean',
-            'time' => 'required|date_format:H:i:s',
         ]);
 
         Quiz::create($request->all());
