@@ -73,7 +73,7 @@
                 three-step approach is simple, but it’s effective.</p>
         </div>
 
-        <div class="curve-bottom wave h-32 bg-gray-100"></div>
+        {{-- <div class="curve-bottom wave h-32 bg-gray-100"></div> --}}
 
         <section class="py-16 px-4 sm:px-8 md:px-20 bg-gray-100">
             <div class="flex flex-col items-center justify-center text-center">
