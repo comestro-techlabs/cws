@@ -198,17 +198,44 @@ class StudentController extends Controller
         return view('studentdashboard.dashboard',$datas);
     }
 
-    public function coursePurchase()
-    {
-        if(!Auth::check()){
-            return redirect()->route('auth.login')->with('error','you must be logged in to access this page');
-        }
-        $studentId = User::findOrFail(Auth::id())->id;
-        $data = [
+    // public function coursePurchase()
+    // {
+    //     if(!Auth::check()){
+    //         return redirect()->route('auth.login')->with('error','you must be logged in to access this page');
+    //     }
+    //     $studentId = User::findOrFail(Auth::id())->id;
+    //     $data = [
+           
+    //         'courses' => User::find(Auth::id())->courses()->get(),
+    //     ];
+    //     return view('studentdashboard.course.purchaseCourse', $data);
+    // }
 
-            'courses' => User::find(Auth::id())->courses()->get(),
-        ];
-        return view('studentdashboard.course.purchaseCourse', $data);
+    public function coursePurchase()
+{
+    if (!Auth::check()) {
+        return redirect()->route('auth.login')->with('error', 'You must be logged in to access this page');
+    }
+    $user = Auth::user();
+    $courses = $user->courses()->with(['batches'])->get();
+
+    return view('studentdashboard.course.purchaseCourse', [
+        'courses' => $courses,
+    ]);
+}
+
+    public function updateBatch(Request $request, $courseId)
+    {
+        $request->validate([
+            'batch_id' => 'required|exists:batches,id',
+        ]);
+        $user = auth()->user();
+        $course = Course::findOrFail($courseId);
+        $course->users()->updateExistingPivot($user->id, [
+            'batch_id' => $request->batch_id,
+        ]);
+
+        return redirect()->back()->with('success', 'Batch updated successfully!');
     }
     public function course()
     {

@@ -41,6 +41,8 @@ use App\Models\Workshop;
             Route::get('/edit-profile',  'editProfile')->name('student.editProfile');
             Route::post('/update-profile', 'updateProfile')->name('student.updateProfile');
             Route::get('/coursePurchase', 'coursePurchase')->name('student.coursePurchase');
+            Route::put('/courses/{course}/update-batch', 'updateBatch')->name('course.updateBatch');
+
             Route::get('/course/{id}', 'buyCourse')->name('student.buyCourse');
             Route::get('/course', 'course')->name('student.course');
             Route::get('/assignments/view', 'assignmentList')->name('student.assignments-view');
@@ -243,7 +245,7 @@ Route::post('send-otp', 'sendOtp')->name('auth.sendOtp');
         return view('public.launch');
     });
 
-    Route::get('/phonepe/payment', [PhonepeController::class, 'index'])->name('phonepe.payment');
+    Route::post('/phonepe/payment', [PhonepeController::class, 'index'])->name('phonepe.payment');
     Route::post('/phonepe/initiate', [PhonepeController::class, 'initiatePayment'])->name('phonepe.initiate');
     Route::post('/phonepe/callback', [PhonePeController::class, 'callback'])->name('phonepe.callback');
     Route::get('/phonepe/status/{transactionId}', [PhonePeController::class, 'checkStatus'])->name('phonepe.status');

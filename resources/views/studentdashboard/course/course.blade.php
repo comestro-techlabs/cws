@@ -13,7 +13,7 @@
     </div>
 
     <div class="container-fluid page__container">
-        <form action="#" class="mb-3 border-bottom pb-3">
+        {{-- <form action="#" class="mb-3 border-bottom pb-3">
             <div class="d-flex">
                 <div class="search-form mr-3 search-form--light">
                     <input type="text" class="form-control" placeholder="Search courses" id="searchSample02">
@@ -40,7 +40,7 @@
                     </div>
                 </div>
             </div>
-        </form>
+        </form> --}}
 
         <div class="row">
 
@@ -70,8 +70,11 @@
                                 <i class="material-icons">add_shopping_cart</i>
                             </a>                        </div>
                     </div>
+                    <!-- Batch Selection -->
+                    
                 </div>
             </div>
+            
             @endforeach
 
         

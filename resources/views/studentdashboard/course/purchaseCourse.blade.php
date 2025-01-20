@@ -92,7 +92,33 @@
                                         </div>
                                     </div>
                                 </div>
+                               
 
+                                @if ($course->pivot && $course->pivot->batch_id)
+                                
+                                    <div>
+                                        <strong>Selected Batch:</strong> {{ $course->batches->firstWhere('id', $course->pivot->batch_id)->batch_name }}
+                                    </div>
+                                @else
+                                <form action="{{ route('course.updateBatch', $course->id) }}" method="POST">
+                                    @csrf
+                                    @method('PUT') <!-- Optional if you stick to PUT -->
+                                
+                                    <div class="form-group">
+                                        <label for="batch_{{ $course->id }}">Select Batch:</label>
+                                        <select name="batch_id" id="batch_{{ $course->id }}" class="form-control">
+                                            <option value="">-- Select a Batch --</option>
+                                            @foreach ($course->batches as $batch)
+                                                <option value="{{ $batch->id }}" 
+                                                    {{ $course->pivot && $course->pivot->batch_id == $batch->id ? 'selected' : '' }}>
+                                                    {{ $batch->batch_name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-secondary mt-2">Update Batch</button>
+                                </form>
+                                @endif
                             </div>
                         </div>
                     </div>

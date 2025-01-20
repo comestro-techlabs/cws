@@ -30,6 +30,11 @@
 
         </div>
         <div class="mt-4">
+            <label for="" class="block text-gray-700">Exam Date</label>
+            <input type="date" name="exam_date" class="w-full border px-3 py-2 rounded"required>
+
+        </div>
+        <div class="mt-4">
             <label class="block text-gray-700 mb-2">Status</label>
             <input type="checkbox" name="status" value="1" class="mr-2"> Active
         </div>
