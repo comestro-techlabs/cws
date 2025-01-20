@@ -159,9 +159,12 @@ use App\Models\Workshop;
             Route::get('/exams/{examId}/user/{userId}/attempts', [ResultController::class, 'getResultsByAttempts'])
     ->name('attempt.results');
             Route::get('/results/{examId}/{userId}/attempt/{attempt}', [ResultController::class, 'getAttemptDetails'])->name('attempt.details');
-
-
-
+            Route::get('certificate/{userId}', [ResultController::class, 'Certificate'])
+            ->name('admin.certificate');
+            Route::get('viewCertificate/{userId}', [ResultController::class, 'index'])
+            ->name('admin.viewCertificate');
+          
+            
             Route::get('/answer',[AnswerController::class,'show'])->name('answer.results');
                   
     Route::get('/portfolio/create', [PortfolioController::class, 'create'])->name('portfolio.create');
@@ -243,6 +246,8 @@ Route::post('send-otp', 'sendOtp')->name('auth.sendOtp');
         return view('public.launch');
     });
 
+   
+
     Route::get('/phonepe/payment', [PhonepeController::class, 'index'])->name('phonepe.payment');
     Route::post('/phonepe/initiate', [PhonepeController::class, 'initiatePayment'])->name('phonepe.initiate');
     Route::post('/phonepe/callback', [PhonePeController::class, 'callback'])->name('phonepe.callback');
@@ -252,8 +257,7 @@ Route::post('send-otp', 'sendOtp')->name('auth.sendOtp');
 
     Route::get('/portfolio', [PortfolioController::class, 'index'])->name('public.portfolio');
     Route::get('/workshops', [WorkshopController::class, 'index'])->name('public.workshops');
-    
-
+   
 
 
   

@@ -6,6 +6,7 @@ use App\Models\Answer;
 use App\Models\Exam;
 use App\Models\ExamUser;
 use App\Models\User;
+use App\Models\Assignment_upload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -72,4 +73,56 @@ public function getAttemptDetails($examId, $userId, $attempt)
 }
 
 
+
+public function Certificate($userId)
+{
+    $user = User::find($userId);
+    if (!$user) {
+        return redirect()->back()->with('error', 'User not found.');
+    }
+
+    $examUser = ExamUser::where('user_id', $userId)->first();
+    $examTotal = $examUser ? $examUser->total_marks : 0;
+    $assignmentTotal = Assignment_upload::where('student_id', $userId)->sum('grade') ?? 0;
+
+    $examName = $examUser ? $examUser->exam->exam_name : 'N/A';
+
+    $maxAssignmentMarks = 50;
+    $maxExamMarks = 20;
+    $totalMarks = $assignmentTotal + $examTotal;
+    $maxTotalMarks = $maxAssignmentMarks + $maxExamMarks;
+    $percentage = ($totalMarks / $maxTotalMarks) * 100;
+
+  
+    return view('admin.certificate', compact('user', 'percentage', 'totalMarks', 'assignmentTotal', 'examTotal','examName'));
 }
+
+
+
+public function index($userId)
+{
+    $user = User::find($userId);
+    if (!$user) {
+        return redirect()->back()->with('error', 'User not found.');
+    }
+
+    $examUser = ExamUser::where('user_id', $userId)->first();
+    $examTotal = $examUser ? $examUser->total_marks : 0;
+    $assignmentTotal = Assignment_upload::where('student_id', $userId)->sum('grade') ?? 0;
+
+    $examName = $examUser ? $examUser->exam->exam_name : 'N/A';
+
+    $maxAssignmentMarks = 50;
+    $maxExamMarks = 20;
+    $totalMarks = $assignmentTotal + $examTotal;
+    $maxTotalMarks = $maxAssignmentMarks + $maxExamMarks;
+    $percentage = ($totalMarks / $maxTotalMarks) * 100;
+
+    $date = now()->toFormattedDateString(); 
+    return view('admin.viewCertificate', compact('user', 'percentage', 'totalMarks', 'assignmentTotal', 'examTotal','examName','date'));
+}
+
+
+}
+
+
