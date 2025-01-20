@@ -89,7 +89,7 @@
                 Our Development Journey
             </h2>
             <p class="text-3xl font-bold text-gray-800">
-                Learn Syntax offer end-to-end 'Software solutions'
+                Learn Syntax offer end-to-end 'Learning Solutions'
             </p>
             <p class="text-lg font-light text-gray-600 mt-4">
                 Partner with us to transform your vision into reality. Your journey to innovation starts here!
@@ -154,7 +154,7 @@
                 <div class="flex-shrink-0 w-full sm:w-1/2 lg:w-2/6 px-3">
                   <div class="bg-white shadow-lg border rounded-tr-xl p-6 text-center">
                     <div class="w-24 h-24 mx-auto mb-4">
-                      <img src="https://img.freepik.com/free-vector/business-people-sharing-ideas_52683-28608.jpg?ga=GA1.1.1275289697.1728223870&semt=ais_hybrid" alt="Image 1" class="rounded-full">
+                      <img src="{{asset('assets/about/work.jpg')}}" alt="Image 1" class="rounded-full">
                     </div>
                     <h3 class="text-lg font-bold text-blue-600 mb-2">Work with us</h3>
                     <p class="text-gray-700 text-sm">
@@ -165,7 +165,7 @@
                 <div class="flex-shrink-0 w-full sm:w-1/2 lg:w-2/6 px-3">
                   <div class="bg-white shadow-lg border rounded-tr-xl p-6 text-center">
                     <div class="w-24 h-24 mx-auto mb-4">
-                      <img src="https://img.freepik.com/premium-vector/drawing-man-shaking-hands-with-another-man-remotely_1210842-9.jpg?ga=GA1.1.1275289697.1728223870&semt=ais_hybrid" alt="Image 2" class="rounded-full">
+                      <img src="{{asset('assets/about/research.png')}}" alt="Image 2" class="rounded-full">
                     </div>
                     <h3 class="text-lg font-bold text-blue-600 mb-2">See our research</h3>
                     <p class="text-gray-700 text-sm">
@@ -176,7 +176,7 @@
                 <div class="flex-shrink-0 w-full sm:w-1/2 lg:w-2/6 px-3">
                   <div class="bg-white shadow-lg border rounded-tr-xl p-6 text-center">
                     <div class="w-24 h-24 mx-auto mb-4">
-                      <img src="https://img.freepik.com/free-vector/organic-flat-blog-post-illustration-with-people_23-2148955260.jpg?ga=GA1.1.1275289697.1728223870&semt=ais_hybrid" alt="Image 3" class="rounded-full">
+                      <img src="{{asset('assets/about/blog.png')}}" alt="Image 3" class="rounded-full">
                     </div>
                     <h3 class="text-lg font-bold text-blue-600 mb-2">Read our blog</h3>
                     <p class="text-gray-700 text-sm">
