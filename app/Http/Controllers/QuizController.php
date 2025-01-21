@@ -125,11 +125,11 @@ class QuizController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    // public function destroy(Quiz $quiz)
-    // {
-    //     $quiz->delete();
-    //     return redirect()->route('exam.showQuestions')->with('success','Quiz deleted successfully');
-    // }
+    public function destroy(Quiz $quiz)
+    {
+        $quiz->delete();
+        return redirect()->route('quiz.show')->with('success','Quiz deleted successfully');
+    }
 
 
     

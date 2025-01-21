@@ -150,8 +150,8 @@ use App\Models\Workshop;
             Route::patch('/quiz/{quiz}/toggle-status', [QuizController::class, 'toggleStatus'])->name('quiz.toggleStatus');
             Route::get('/quiz/{quiz}/edit', [QuizController::class, 'edit'])->name('quiz.edit');
             Route::put('/quiz/{quiz}/update', [QuizController::class, 'update'])->name('quiz.update');
-            // Route::delete('/quiz/{quiz}', [QuizController::class, 'destroy'])->name('quiz.destroy');
-            Route::delete('/quiz/{question_id}', [QuizController::class, 'quizQuestionDestroy'])->name('quizQuestion.destroy');
+            Route::delete('/quiz/question/{question_id}', [QuizController::class, 'quizQuestionDestroy'])->name('quizQuestion.destroy');
+            Route::delete('/quiz/{quiz}', [QuizController::class, 'destroy'])->name('quiz.destroy');
 
 
             //result
