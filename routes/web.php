@@ -131,6 +131,8 @@ use App\Models\Workshop;
             Route::get('/exam/create', [ExamController::class, 'create'])->name('exam.create');
             Route::post('/exam/store', [ExamController::class, 'store'])->name('exam.store');
             Route::get('/exam/show', [ExamController::class, 'show'])->name('exam.show');
+            Route::get('/exam/show/{exam}/{course_title}/{exam_name}/questions', [ExamController::class, 'showQuestions'])->name('exam.showQuestions');
+
             Route::get('/exam/view/{exam}', [ExamController::class, 'view'])->name('exam.view');
             Route::patch('/exam/{exam}/toggle-status', [ExamController::class, 'toggleStatus'])->name('exam.toggleStatus');
             Route::get('/exam/{exam}/edit', [ExamController::class, 'edit'])->name('exam.edit');
@@ -146,7 +148,9 @@ use App\Models\Workshop;
             Route::patch('/quiz/{quiz}/toggle-status', [QuizController::class, 'toggleStatus'])->name('quiz.toggleStatus');
             Route::get('/quiz/{quiz}/edit', [QuizController::class, 'edit'])->name('quiz.edit');
             Route::put('/quiz/{quiz}/update', [QuizController::class, 'update'])->name('quiz.update');
-            Route::delete('/quiz/{quiz}', [QuizController::class, 'destroy'])->name('quiz.destroy');
+            // Route::delete('/quiz/{quiz}', [QuizController::class, 'destroy'])->name('quiz.destroy');
+            Route::delete('/quiz/{question_id}', [QuizController::class, 'quizQuestionDestroy'])->name('quizQuestion.destroy');
+
 
             //result
             // Route::get('/quiz/{quiz}/results', [QuizController::class, 'results'])->name('quiz.results');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Exam;
 use App\Models\Course;
+use App\Models\Quiz;
 use Illuminate\Http\Request;
 
 class ExamController extends Controller
@@ -57,6 +58,15 @@ class ExamController extends Controller
         $exams = $query->paginate(10);
 
         return view('admin.exam.manage_exam', compact('exams'));
+    }
+
+    public function showQuestions(Exam $exam){
+        $examId=$exam->id;
+        $exam_name=$exam->exam_name;
+        $course_title=$exam->course->title;
+        // dd($exam->course->title);
+        $quizQuestions = Quiz::where('exam_id',$examId)->get();
+        return view('admin.exam.view_questions', compact('quizQuestions','exam_name','course_title'));
     }
 
     public function toggleStatus(Request $request, Exam $exam)

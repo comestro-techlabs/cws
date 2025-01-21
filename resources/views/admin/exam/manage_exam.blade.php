@@ -50,8 +50,10 @@
                             @method('DELETE')
                             <button type="submit" class="bg-red-500 text-white py-2 px-4 rounded" onclick="return confirm('Are you sure?')">Delete</button>
                         </form>
+                        <a href="{{ route('exam.showQuestions', ['exam' => $exam->id,'course_title'=>$exam->course->title,'exam_name'=>$exam->exam_name]) }}" class="bg-green-500 text-white py-2 px-4 rounded">View Q's</a>
                     </div>
                     </td>
+                    
                 </tr>
             @endforeach
         </tbody>
