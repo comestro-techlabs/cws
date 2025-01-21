@@ -114,7 +114,10 @@ class AuthController extends Controller
             return redirect('/')->with('success', 'Login successful. Email verified.');
         }
     
-        return redirect()->back()->withErrors(['otp' => 'Invalid OTP or OTP has expired.']);
+        return redirect()->back()->withInput()->withErrors(['otp' => 'Invalid OTP or OTP has expired.'])->with([
+            'otp_sent'=>true,
+            'email'=>$email,
+        ]);
     }
     
 

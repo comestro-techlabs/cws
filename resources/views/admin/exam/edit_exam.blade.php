@@ -26,6 +26,11 @@
             <input type="text" name="exam_name" value="{{$exam->exam_name}}" class="w-full border px-3 py-2 rounded"required>
 
         </div>
+        <div class="mt-4">
+            <label for="" class="block text-gray-700">Exam date</label>
+            <input type="date" name="exam_date" value="{{$exam->exam_date}}" class="w-full border px-3 py-2 rounded"required>
+
+        </div>
        
         <div class="mt-4">
             <label class="inline-flex items-center">
