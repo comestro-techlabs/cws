@@ -1,7 +1,5 @@
 @extends('studentdashboard.include.base')
 @section('content')
-
-
     <!-- Header Layout Content -->
     <div class="mdk-header-layout__content mdk-header-layout__content--fullbleed mdk-header-layout__content--scrollable page"
         style="">
@@ -57,28 +55,35 @@
                 <div class="bg-gray-50 p-6 rounded-lg shadow-lg lg:col-span-1">
                     <h2 class="text-xl font-bold mb-4 text-gray-600">Assignments</h2>
                     <ul class="space-y-4">
-                        @foreach ($assignments as $assignment)
-                            <li class="bg-gray-700 p-4 rounded-lg flex justify-between items-center shadow-md">
-                                <span class="text-white text-bold">📜 {{ $assignment->title }}</span>
-                                <span class="text-green-400 font-bold">
-                                    @if ($assignment->uploads->isNotEmpty())
-                                        @foreach ($assignment->uploads as $upload)
-                                            <span
-                                                class="px-2 py-1 rounded-lg text-white
-                        @if ($upload->status == 'submitted') bg-green-500
-                        @elseif($upload->status == 'graded') bg-blue-500
-                        @else bg-gray-500 @endif">
-                                                {{ ucfirst($upload->status) }}
-                                            </span><br>
-                                        @endforeach
-                                    @else
-                                        <span class="text-gray-500">No uploads</span>
-                                    @endif
-                                </span>
-                            </li>
-                        @endforeach
+                        @if ($assignments->isNotEmpty() )
+                            @foreach ($assignments as $assignment)
+                               
+                                    <li class="bg-gray-700 p-4 rounded-lg flex justify-between items-center shadow-md">
+                                        <span class="text-white text-bold">📜 {{ $assignment->title }}</span>
+                                        <span class="text-green-400 font-bold">
+                                            @if ($assignment->uploads->isNotEmpty())
+                                                @foreach ($assignment->uploads as $upload)
+                                                    <span
+                                                        class="px-2 py-1 rounded-lg text-white
+                                              @if ($upload->status == 'submitted') bg-green-500
+                                              @elseif($upload->status == 'graded') bg-blue-500
+                                              @else bg-gray-500 @endif">
+                                                        {{ ucfirst($upload->status) }}
+                                                    </span><br>
+                                                @endforeach
+                                            @else
+                                                <span class="text-gray-500">No uploads</span>
+                                            @endif
+                                        </span>
+                                    </li>
+                                   
+                                @endforeach
+                              
+                            @else
+                                <p class="text-center text-gray-500">📜No Assignment available for the logged-in student.</p>
+                            @endif
 
-                        {{-- <li class="bg-gray-700 p-4 rounded-lg flex justify-between items-center shadow-md">
+                            {{-- <li class="bg-gray-700 p-4 rounded-lg flex justify-between items-center shadow-md">
               <span class="text-white text-bold">📜 Assignment 2 - Data Structures</span>
               <span class="text-red-400 font-bold">Pending</span>
             </li>
@@ -109,7 +114,7 @@
                             <li class="bg-gray-700 p-4 rounded-lg flex justify-between items-center shadow-md">
                                 <span class="text-white text-bold">📝 {{ $exam->exam->exam_name }}</span>
                                 {{-- {{dd($exam)}} --}}
-                                <span class="text-blue-400 font-bold">{{$exam->total_marks}}%</span>
+                                <span class="text-blue-400 font-bold">{{ $exam->total_marks }}%</span>
                             </li>
                         @endforeach
 
