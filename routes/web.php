@@ -41,6 +41,8 @@ use App\Models\Workshop;
             Route::get('/edit-profile',  'editProfile')->name('student.editProfile');
             Route::post('/update-profile', 'updateProfile')->name('student.updateProfile');
             Route::get('/coursePurchase', 'coursePurchase')->name('student.coursePurchase');
+            Route::put('/courses/{course}/update-batch', 'updateBatch')->name('course.updateBatch');
+
             Route::get('/course/{id}', 'buyCourse')->name('student.buyCourse');
             Route::get('/course', 'course')->name('student.course');
             Route::get('/assignments/view', 'assignmentList')->name('student.assignments-view');
@@ -131,6 +133,8 @@ use App\Models\Workshop;
             Route::get('/exam/create', [ExamController::class, 'create'])->name('exam.create');
             Route::post('/exam/store', [ExamController::class, 'store'])->name('exam.store');
             Route::get('/exam/show', [ExamController::class, 'show'])->name('exam.show');
+            Route::get('/exam/show/{exam}/{course_title}/{exam_name}/questions', [ExamController::class, 'showQuestions'])->name('exam.showQuestions');
+
             Route::get('/exam/view/{exam}', [ExamController::class, 'view'])->name('exam.view');
             Route::patch('/exam/{exam}/toggle-status', [ExamController::class, 'toggleStatus'])->name('exam.toggleStatus');
             Route::get('/exam/{exam}/edit', [ExamController::class, 'edit'])->name('exam.edit');
@@ -146,7 +150,9 @@ use App\Models\Workshop;
             Route::patch('/quiz/{quiz}/toggle-status', [QuizController::class, 'toggleStatus'])->name('quiz.toggleStatus');
             Route::get('/quiz/{quiz}/edit', [QuizController::class, 'edit'])->name('quiz.edit');
             Route::put('/quiz/{quiz}/update', [QuizController::class, 'update'])->name('quiz.update');
+            Route::delete('/quiz/question/{question_id}', [QuizController::class, 'quizQuestionDestroy'])->name('quizQuestion.destroy');
             Route::delete('/quiz/{quiz}', [QuizController::class, 'destroy'])->name('quiz.destroy');
+
 
             //result
             // Route::get('/quiz/{quiz}/results', [QuizController::class, 'results'])->name('quiz.results');
@@ -159,9 +165,12 @@ use App\Models\Workshop;
             Route::get('/exams/{examId}/user/{userId}/attempts', [ResultController::class, 'getResultsByAttempts'])
     ->name('attempt.results');
             Route::get('/results/{examId}/{userId}/attempt/{attempt}', [ResultController::class, 'getAttemptDetails'])->name('attempt.details');
-
-
-
+            Route::get('certificate/{userId}', [ResultController::class, 'Certificate'])
+            ->name('admin.certificate');
+            Route::get('viewCertificate/{userId}', [ResultController::class, 'index'])
+            ->name('admin.viewCertificate');
+          
+            
             Route::get('/answer',[AnswerController::class,'show'])->name('answer.results');
                   
     Route::get('/portfolio/create', [PortfolioController::class, 'create'])->name('portfolio.create');
@@ -243,6 +252,8 @@ Route::post('send-otp', 'sendOtp')->name('auth.sendOtp');
         return view('public.launch');
     });
 
+   
+
     Route::get('/phonepe/payment', [PhonepeController::class, 'index'])->name('phonepe.payment');
     Route::post('/phonepe/initiate', [PhonepeController::class, 'initiatePayment'])->name('phonepe.initiate');
     Route::post('/phonepe/callback', [PhonePeController::class, 'callback'])->name('phonepe.callback');
@@ -252,8 +263,7 @@ Route::post('send-otp', 'sendOtp')->name('auth.sendOtp');
 
     Route::get('/portfolio', [PortfolioController::class, 'index'])->name('public.portfolio');
     Route::get('/workshops', [WorkshopController::class, 'index'])->name('public.workshops');
-    
-
+   
 
 
   

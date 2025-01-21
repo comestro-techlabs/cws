@@ -89,6 +89,17 @@ class QuizController extends Controller
         return view('admin.quiz.edit_quiz', compact('quiz', 'exams'));
     }
 
+    public function quizQuestionDestroy($question_id){
+
+        $quiz_question = Quiz::find($question_id);
+        if (!$quiz_question) {
+            return redirect()->back()->with('error', 'Quiz question not found.');
+        }
+        $quiz_question->delete();
+        return redirect()->back()->with('success','Quiz deleted successfully');
+    }
+    
+
     /**
      * Update the specified resource in storage.
      */

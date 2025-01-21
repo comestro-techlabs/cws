@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Exam;
 use App\Models\Course;
+use App\Models\Quiz;
+use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 
 class ExamController extends Controller
@@ -35,9 +38,22 @@ class ExamController extends Controller
             'course_id'=>'required|exists:courses,id',
             'exam_name'=> 'required|string',
             'status' => 'nullable|boolean',
+            'exam_date' => 'nullable|date',
         ]);
 
-        Exam::create($request->all());
+       $exam = Exam::create($request->all());
+
+        if($exam->status ==1 && Quiz::where('exam_id',$exam->id)->count() >=3){
+            $users = User::whereHas('courses', function ($query) use ($exam){
+                $query->where('course_id',$exam->course_id);
+            })->get();
+            foreach($users as $user){
+                Mail::send('emails.exam_notification',['user' => $user, 'exam'=>$exam],
+                function ($message) use ($user){$message->to($user->email,$user->name)->subject('New Exam Available');
+            });
+
+        }
+    }
         return redirect()->route('exam.create')->with('success','your exam inserted successfully');
     }
 
@@ -59,11 +75,32 @@ class ExamController extends Controller
         return view('admin.exam.manage_exam', compact('exams'));
     }
 
+    public function showQuestions(Exam $exam){
+        $examId=$exam->id;
+        $exam_name=$exam->exam_name;
+        $course_title=$exam->course->title;
+        // dd($exam->course->title);
+        $quizQuestions = Quiz::where('exam_id',$examId)->get();
+        return view('admin.exam.view_questions', compact('quizQuestions','exam_name','course_title'));
+    }
+
     public function toggleStatus(Request $request, Exam $exam)
     {
         $exam->status = !$exam->status;
         $exam->save();
 
+        if($exam->status ==1 && Quiz::where('exam_id',$exam->id)->count() >=3){
+            $users = User::whereHas('courses', function ($query) use ($exam){
+                $query->where('course_id',$exam->course_id);
+            })->get();
+            foreach($users as $user){
+                Mail::send('emails.exam_notification',['user' => $user, 'exam'=>$exam],
+                function ($message) use ($user){$message->to($user->email,$user->name)->subject('New Exam Available');
+            });
+
+        }
+    }
+        
         return redirect()->back()->with('success', 'Exam status updated successfully!');
     }
 
@@ -87,6 +124,7 @@ class ExamController extends Controller
             'course_id'=>'required|exists:courses,id',
             'exam_name'=> 'required|string',
             'status' => 'nullable|boolean',
+            'exam_date' => 'nullable|date',
         ]);
         $exam->update($request->all());
 

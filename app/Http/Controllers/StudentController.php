@@ -189,26 +189,54 @@ class StudentController extends Controller
         $datas = [
             'courses' => User::find(Auth::id())->courses()->take(2)->get(),
             'payments' => Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->get(),
-            'assignments' => Assignments::whereIn('course_id', User::find(Auth::id())->courses->pluck('id'))->take(2)->get(),
-            'exams' => Exam::whereIn('course_id', User::find(Auth::id())->courses->pluck('id'))->where('status', 1)->take(2)->get(),
+            'assignments' => Assignments::whereIn('course_id', User::find(Auth::id())->courses->pluck('id'))->latest()->take(4)->get(),
+            'exams' => ExamUser::whereIn('exam_id', User::find(Auth::id())->courses->pluck('id'))->take(2)->get(),
             'first_attempts'=>$firstAttempts,
             'second_attempts'=>$secondAttempts,
 
         ];
+
         return view('studentdashboard.dashboard',$datas);
     }
 
-    public function coursePurchase()
-    {
-        if(!Auth::check()){
-            return redirect()->route('auth.login')->with('error','you must be logged in to access this page');
-        }
-        $studentId = User::findOrFail(Auth::id())->id;
-        $data = [
+    // public function coursePurchase()
+    // {
+    //     if(!Auth::check()){
+    //         return redirect()->route('auth.login')->with('error','you must be logged in to access this page');
+    //     }
+    //     $studentId = User::findOrFail(Auth::id())->id;
+    //     $data = [
+           
+    //         'courses' => User::find(Auth::id())->courses()->get(),
+    //     ];
+    //     return view('studentdashboard.course.purchaseCourse', $data);
+    // }
 
-            'courses' => User::find(Auth::id())->courses()->get(),
-        ];
-        return view('studentdashboard.course.purchaseCourse', $data);
+    public function coursePurchase()
+{
+    if (!Auth::check()) {
+        return redirect()->route('auth.login')->with('error', 'You must be logged in to access this page');
+    }
+    $user = Auth::user();
+    $courses = $user->courses()->with(['batches'])->get();
+
+    return view('studentdashboard.course.purchaseCourse', [
+        'courses' => $courses,
+    ]);
+}
+
+    public function updateBatch(Request $request, $courseId)
+    {
+        $request->validate([
+            'batch_id' => 'required|exists:batches,id',
+        ]);
+        $user = auth()->user();
+        $course = Course::findOrFail($courseId);
+        $course->users()->updateExistingPivot($user->id, [
+            'batch_id' => $request->batch_id,
+        ]);
+
+        return redirect()->back()->with('success', 'Batch updated successfully!');
     }
     public function course()
     {
@@ -392,12 +420,6 @@ class StudentController extends Controller
     return view("studentdashboard.quiz.quiz", compact('courses', 'quizzes'));
 }
 
-    
-
-
-
-    
-
     public function storeAnswer(Request $request)
 {
     if(!Auth::check()){
@@ -463,8 +485,6 @@ class StudentController extends Controller
         ]);
     }
 }
-
-
     public function showResults($exam_id)
     {
         if(!Auth::check()){
@@ -578,12 +598,12 @@ public function showAllAttempts($course_id)
         }
         $student = Auth::user();
         $data = [
-            'name' => 'required|string|max:255',
-            'contact' => 'nullable|string|max:20',
-            'dob' => 'nullable|date',
+          'name' => 'required|string|max:255',
+            // 'email' => 'required|string|email|unique:users,email,' . $request->id . ',id',
+            'contact' => 'required|digits:10',
             'gender' => 'required|in:male,female,other',
-            'password' => 'required|string|min:8|confirmed',
-            'education_qualification' => 'nullable|string|max:255',
+            'education_qualification' => 'required|in:BCA,MCA,BBA,B.COM,other',
+            'dob' => 'required|date|before_or_equal:today',
         ];
 
         $validatedData = $request->validate($data);
