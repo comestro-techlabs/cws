@@ -107,7 +107,8 @@
                     <ul class="space-y-4">
                         @foreach ($exams as $exam)
                             <li class="bg-gray-700 p-4 rounded-lg flex justify-between items-center shadow-md">
-                                <span class="text-white text-bold">📝 {{ $exam->exam_name }}</span>
+                                <span class="text-white text-bold">📝 {{ $exam->exam->exam_name }}</span>
+                                {{-- {{dd($exam)}} --}}
                                 <span class="text-blue-400 font-bold">{{$exam->total_marks}}%</span>
                             </li>
                         @endforeach

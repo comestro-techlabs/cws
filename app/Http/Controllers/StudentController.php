@@ -190,7 +190,7 @@ class StudentController extends Controller
             'courses' => User::find(Auth::id())->courses()->take(2)->get(),
             'payments' => Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->get(),
             'assignments' => Assignments::whereIn('course_id', User::find(Auth::id())->courses->pluck('id'))->latest()->take(4)->get(),
-            'exams' => Exam::whereIn('course_id', User::find(Auth::id())->courses->pluck('id'))->where('status', 1)->take(2)->get(),
+            'exams' => ExamUser::whereIn('exam_id', User::find(Auth::id())->courses->pluck('id'))->take(2)->get(),
             'first_attempts'=>$firstAttempts,
             'second_attempts'=>$secondAttempts,
 
