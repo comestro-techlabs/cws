@@ -75,6 +75,15 @@ class ExamController extends Controller
         return view('admin.exam.manage_exam', compact('exams'));
     }
 
+    public function showQuestions(Exam $exam){
+        $examId=$exam->id;
+        $exam_name=$exam->exam_name;
+        $course_title=$exam->course->title;
+        // dd($exam->course->title);
+        $quizQuestions = Quiz::where('exam_id',$examId)->get();
+        return view('admin.exam.view_questions', compact('quizQuestions','exam_name','course_title'));
+    }
+
     public function toggleStatus(Request $request, Exam $exam)
     {
         $exam->status = !$exam->status;

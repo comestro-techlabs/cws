@@ -419,12 +419,6 @@ class StudentController extends Controller
     return view("studentdashboard.quiz.quiz", compact('courses', 'quizzes'));
 }
 
-    
-
-
-
-    
-
     public function storeAnswer(Request $request)
 {
     if(!Auth::check()){
@@ -490,8 +484,6 @@ class StudentController extends Controller
         ]);
     }
 }
-
-
     public function showResults($exam_id)
     {
         if(!Auth::check()){
@@ -605,12 +597,12 @@ public function showAllAttempts($course_id)
         }
         $student = Auth::user();
         $data = [
-            'name' => 'required|string|max:255',
-            'contact' => 'nullable|string|max:20',
-            'dob' => 'nullable|date',
+          'name' => 'required|string|max:255',
+            // 'email' => 'required|string|email|unique:users,email,' . $request->id . ',id',
+            'contact' => 'required|digits:10',
             'gender' => 'required|in:male,female,other',
-            'password' => 'required|string|min:8|confirmed',
-            'education_qualification' => 'nullable|string|max:255',
+            'education_qualification' => 'required|in:BCA,MCA,BBA,B.COM,other',
+            'dob' => 'required|date|before_or_equal:today',
         ];
 
         $validatedData = $request->validate($data);
