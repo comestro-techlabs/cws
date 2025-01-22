@@ -1,4 +1,4 @@
-@extends('admin.base')
+ @extends('admin.base')
 
 @section('title', 'Add assigment | ')
 
@@ -51,7 +51,7 @@
                 <div>
                     <label for="course_id" class="block text-sm font-medium text-gray-700 mb-2">Select Course</label>
                     <select name="course_id" id="course_id"
-                        class="w-full bg-gray-50 border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent">
+                        class="w-full bg-gray-50 border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent" onchange="updateBatches()">
                         <option value="" disabled {{ old('course_id') == '' ? 'selected' : '' }}>Select a course</option>
                         @foreach ($courses as $course)
                         <option value="{{ $course->id }}" {{ old('course_id') == $course->id ? 'selected' : '' }}>
@@ -60,6 +60,18 @@
                         @endforeach
                     </select>
                     @error('course_id')
+                    <span class="text-sm text-red-500">{{ $message }}</span>
+                    @enderror
+                </div>
+                {{-- batch --}}
+                <div>
+                    <label for="batch_id" class="block text-sm font-medium text-gray-700 mb-2">Select Batch</label>
+                    <select name="batch_id" id="batch_id"
+                        class="w-full bg-gray-50 border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent" >
+                        <option value="" disabled {{ old('batch_id') == '' ? 'selected' : '' }}>Select a batch</option>
+                       
+                    </select>
+                    @error('batch_id')
                     <span class="text-sm text-red-500">{{ $message }}</span>
                     @enderror
                 </div>
@@ -87,5 +99,32 @@
         .catch(error => {
             console.error(error);
         });
+
+        // JavaScript to filter batches based on course selection
+    const allBatches = @json($batches);
+
+    function updateBatches()
+    {
+        const courseId = document.getElementById('course_id').value;
+        const batchDropdown = document.getElementById('batch_id');
+
+        // Clear the current options
+        batchDropdown.innerHTML = '<option value="">Select a Batch</option>';
+
+        // Filter batches based on the selected course
+        const filteredBatches = allBatches.filter(batch => batch.course_id == courseId);
+
+        // Populate the batch dropdown
+        filteredBatches.forEach(batch => {
+            const option = document.createElement('option');
+            option.value = batch.id;
+            option.textContent = batch.batch_name;
+            batchDropdown.appendChild(option);
+        });
+    }
 </script>
-@endsection
+@endsection 
+
+
+
+
