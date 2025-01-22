@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Batch;
 use App\Models\Exam;
 use App\Models\Course;
 use App\Models\Quiz;
@@ -22,11 +23,16 @@ class ExamController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
         //
-        $courses = Course::all();
-        return view('admin.exam.create_exam', compact('courses'));
+        $courses = Course::with('batches')->get();
+        $batches = [];
+        if ($request->has('course_id')) {
+            $batches = Batch::where('course_id', $request->course_id)->get(); // Fetch batches for the selected course
+        }
+
+        return view('admin.exam.create_exam', compact('courses','batches'));
     }
 
     /**
@@ -35,27 +41,33 @@ class ExamController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'course_id'=>'required|exists:courses,id',
-            'exam_name'=> 'required|string',
+            'course_id' => 'required|exists:courses,id',
+            'batch_id' => 'required|exists:batches,id',
+            'exam_name' => 'required|string',
             'status' => 'nullable|boolean',
-            'exam_date' => 'nullable|date',
+            'exam_date' => 'required|date|after_or_equal:today', 
         ]);
-
-       $exam = Exam::create($request->all());
-
-        if($exam->status ==1 && Quiz::where('exam_id',$exam->id)->count() >=3){
-            $users = User::whereHas('courses', function ($query) use ($exam){
-                $query->where('course_id',$exam->course_id);
+    
+        $exam = Exam::create($request->all());
+    
+        if ($exam->status == 1 && Quiz::where('exam_id', $exam->id)->count() >= 3) {
+            $users = User::whereHas('batches', function ($query) use ($exam) {
+                $query->where('batch_id', $exam->batch_id);
             })->get();
-            foreach($users as $user){
-                Mail::send('emails.exam_notification',['user' => $user, 'exam'=>$exam],
-                function ($message) use ($user){$message->to($user->email,$user->name)->subject('New Exam Available');
-            });
-
+            foreach ($users as $user) {
+                Mail::send(
+                    'emails.exam_notification',
+                    ['user' => $user, 'exam' => $exam],
+                    function ($message) use ($user) {
+                        $message->to($user->email, $user->name)->subject('New Exam Available');
+                    }
+                );
+            }
         }
+    
+        return redirect()->route('exam.create')->with('success', 'Your exam was inserted successfully.');
     }
-        return redirect()->route('exam.create')->with('success','your exam inserted successfully');
-    }
+    
 
     /**
      * Display the specified resource.
@@ -63,7 +75,7 @@ class ExamController extends Controller
     public function show(Request $request )
     {
         //
-        $query = Exam::with('course');
+        $query = Exam::with('course', 'batch');
 
         // Search functionality
         if ($request->has('search')) {
@@ -111,7 +123,8 @@ class ExamController extends Controller
     public function edit(Exam $exam)
     {
         $courses = Course::all();
-        return view('admin.exam.edit_exam', compact('exam', 'courses'));
+        $batches = Batch::all();
+        return view('admin.exam.edit_exam', compact('exam', 'courses','batches'));
     }
 
     /**
@@ -122,6 +135,7 @@ class ExamController extends Controller
         
         $request->validate([
             'course_id'=>'required|exists:courses,id',
+            'batch_id' => 'required|exists:batches,id',
             'exam_name'=> 'required|string',
             'status' => 'nullable|boolean',
             'exam_date' => 'nullable|date',
