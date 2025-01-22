@@ -70,27 +70,33 @@
 
                 @auth
                 {{-- <form action="{{route('phonepe.initiate')}}" class="w-full" method="post" role="form">
-                    @csrf
-                    <input type="hidden" name="name" id="" value="{{Auth::user()->name}}">
-                    <input type="hidden" name="email" id="" value="{{Auth::user()->email}}">
-                    <input type="hidden" value="{{ $course->id }}" name="course_id" id="course_id">
-                    <input type="hidden" value="{{Auth::user()->contact}}" name="mobile_number" id="mobile_number">
-                    <input type="hidden" value="{{$course->discounted_fees}}" name="amount" id="amount">
-                    <button type="submit" target="_blank"
-                        class="flex items-center justify-center  text-black  rounded-full mt-2 shadow-xl px-6 py-3 w-full transition duration-300 ease-in-out transform hover:scale-105 space-x-3">
-                        <img src="https://img.icons8.com/?size=100&id=OYtBxIlJwMGA&format=png&color=000000"
-                            alt="PhonePe Logo" class="w-8 h-8 object-contain">
-                        <span>Proceed with PhonePe</span>
-                    </button>
+                @csrf
+                <input type="hidden" name="name" id="" value="{{Auth::user()->name}}">
+                <input type="hidden" name="email" id="" value="{{Auth::user()->email}}">
+                <input type="hidden" value="{{ $course->id }}" name="course_id" id="course_id">
+                <input type="hidden" value="{{Auth::user()->contact}}" name="mobile_number" id="mobile_number">
+                <input type="hidden" value="{{$course->discounted_fees}}" name="amount" id="amount">
+                <button type="submit" target="_blank"
+                    class="flex items-center justify-center  text-black  rounded-full mt-2 shadow-xl px-6 py-3 w-full transition duration-300 ease-in-out transform hover:scale-105 space-x-3">
+                    <img src="https://img.icons8.com/?size=100&id=OYtBxIlJwMGA&format=png&color=000000"
+                        alt="PhonePe Logo" class="w-8 h-8 object-contain">
+                    <span>Proceed with PhonePe</span>
+                </button>
 
                 </form> --}}
 
+                @if($payment_exist)
+                <div class="bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3 flex items-center justify-center" role="alert">
+                    <p class="text-sm font-bold">Already Enrolled.</p>
+                </div>
+                @else
                 <a href="{{route('phonepe.payment')}}" id="pay-button"
                     class="flex items-center justify-center bg-white text-black  rounded-full mt-2 shadow-xl px-6 py-2  transition duration-300 ease-in-out transform hover:scale-105 space-x-3">
                     <img src="https://cdn.iconscout.com/icon/free/png-512/free-razorpay-logo-icon-download-in-svg-png-gif-file-formats--payment-gateway-brand-logos-icons-1399875.png?f=webp&w=256"
                         alt="PhonePe Logo" class="w-12 h-12 object-cover">
                     <span>Proceed with Razorpay</span>
                 </a>
+                @endif
                 @endauth
 
                 @guest
