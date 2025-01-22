@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Assignments;
+use App\Models\Batch;
 use App\Models\Course;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
@@ -21,6 +22,7 @@ class AssignmentsController extends Controller
             $data['assignments'] = Assignments::all();
         }
         $data['courses'] = Course::all();
+        $data['batches'] = Batch::all();
 
         return view('admin.assignments.manageAssignments', $data);
     }
@@ -32,6 +34,7 @@ class AssignmentsController extends Controller
     public function create()
     {
         $data['courses'] = Course::all();
+        $data['batches'] = Batch::all();
         return view('admin.assignments.create', $data);
     }
 
@@ -46,6 +49,7 @@ class AssignmentsController extends Controller
         // Validate the incoming request
         $validated = $request->validate([
             'course_id' => 'required|exists:courses,id',
+            'batch_id' => 'required|exists:courses,id',
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'status' => 'nullable|boolean',
@@ -84,7 +88,9 @@ class AssignmentsController extends Controller
     public function edit(Assignments $assignment)
 {
     $courses = Course::all(); 
-    return view('admin.assignments.editAssignment', compact('assignment', 'courses'));
+    $batches = Batch::all(); 
+    
+    return view('admin.assignments.editAssignment', compact('assignment', 'courses','batches'));
 }
 
     /**
@@ -94,6 +100,7 @@ class AssignmentsController extends Controller
     {
         $validated = $request->validate([
             'course_id' => 'required|exists:courses,id',
+            'batch_id' => 'required|exists:batches,id',
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
         ]);

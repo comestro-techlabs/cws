@@ -21,6 +21,17 @@
                 @endforeach
             </select>
         </div>
+        <div>
+            <label class="block text-gray-700 mb-2">Batch</label>
+            <select name="batch_id" class="w-full border px-3 py-2 rounded" required>
+                <option value="" disabled selected>Select a course</option>
+                @foreach ($batches as $batch)
+                    <option value="{{ $batch->id }}" {{ $exam->batch_id == $batch->id ? 'selected' : '' }}>
+                        {{ $batch->batch_name }}
+                    </option> 
+                @endforeach
+            </select>
+        </div>
         <div class="mt-4">
             <label for="" class="block text-gray-700">Exam Name</label>
             <input type="text" name="exam_name" value="{{$exam->exam_name}}" class="w-full border px-3 py-2 rounded"required>
@@ -47,3 +58,8 @@
     </form>
 </div>
 @endsection
+
+
+
+
+

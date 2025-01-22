@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->foreignId('course_id')->nullable()->constrained()->onDelete('cascade'); 
+            $table->foreignId('batch_id')->nullable()->constrained()->onDelete('cascade'); 
             $table->boolean('status')->default(1);
             $table->timestamps();
         });

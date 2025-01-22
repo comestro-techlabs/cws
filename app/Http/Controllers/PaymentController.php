@@ -54,6 +54,7 @@ class PaymentController extends Controller
             'error_reason' => $response->error_reason,
             'status' => 1,
         ]);
+        // dd("halting here");
         $student->courses()->attach($request->input('course_id'));
 
         if($payment){

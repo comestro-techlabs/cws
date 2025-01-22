@@ -25,6 +25,10 @@ class Exam extends Model
     {
         return $this->hasMany(Quiz::class);
     }
+    public function batch()
+    {
+        return $this->belongsTo(Batch::class, 'batch_id');
+    }
     public function examUser()
     {
         return $this->belongsTo(ExamUser::class, 'exam_id', 'exam_id');

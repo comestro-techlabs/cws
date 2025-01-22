@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Models\User;
 use App\Models\Enquiry;
+use App\Models\Payment;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -70,7 +71,10 @@ class PublicController extends Controller
    
     {
         $course = Course::where('slug',$slug)->first(); // replace 1 with course id
-        return view("public.course", compact('course'));
+        $course_id = $course->id;
+
+        $payment_exist = Payment::where("student_id",Auth::id())->where("course_id",$course_id)->exists();
+        return view("public.course", compact('course', "payment_exist"));
     }
 
     // public function showLoginForm()

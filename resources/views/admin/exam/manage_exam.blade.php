@@ -18,8 +18,8 @@
         <thead>
             <tr>
                 <th class="border px-4 py-2">ID</th>
-                {{-- <th class="border px-4 py-2">Course</th> --}}
                 <th class="border px-4 py-2">Course</th>
+                <th class="border px-4 py-2">Batch</th>
                 <th class="border px-4 py-2">Exam Name</th>
                 <th class="border px-4 py-2">Exam Date</th>
                 <th class="border px-4 py-2">status</th>
@@ -32,6 +32,7 @@
                 <tr>
                     <td class="border px-4 py-2">{{ $exam->id }}</td>
                     <td class="border px-4 py-2">{{ $exam->course->title }}</td>
+                    <td class="border px-4 py-2">{{ $exam->batch->batch_name}}</td>
                     <td class="border px-4 py-2">{{ $exam->exam_name }}</td>
                     <td class="border px-4 py-2">{{ $exam->exam_date }}</td>
                     <td class="border px-4 py-2">
