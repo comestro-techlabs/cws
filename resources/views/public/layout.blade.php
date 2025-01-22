@@ -11,10 +11,10 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
-    @vite('resources/css/app.css')
+    <link rel="stylesheet" href="{{asset('build/assets/app-B9FQpHNS.css ')}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
  @livewireStyles
-</head>
+</head>  
 <body>
     @include('public.publicheader')
 
@@ -81,7 +81,7 @@
     @yield('js')
 
     @livewireScripts
-
+    <script type="module" src="{{ asset('build/assets/app-CEsE5a7F.js') }}"></script>
 
 </body>
 
