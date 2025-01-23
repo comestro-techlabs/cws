@@ -22,23 +22,26 @@
                 <div class="bg-gray-50 p-6 rounded-lg shadow-lg lg:col-span-2">
                     <h2 class="text-xl font-bold mb-4 text-gray-600">My Courses</h2>
                     <ul class="space-y-4">
-                        @foreach ($courses as $course)
+                        {{-- @foreach ($courses as $course)
                             <li class="bg-gray-700 p-4 rounded-lg flex justify-between items-center shadow-md">
                                 <span class="text-white text-bold">💻{{ $course->title }}</span>
-                                <?php
-                                
-                                $daysElapsed = Carbon\Carbon::now()->diffInWeeks($course->created_at);
-                                if ($course->duration > 0) {
-                                    $course->progress_percentage = min(max(($daysElapsed / $course->duration) * 100, 0), 100);
-                                } else {
-                                    $course->progress_percentage = 0;
-                                }
-                                ?>
                                 <span class="text-sm text-gray-300"> <span class="text-green-400 font-bold">
-                                        {{ number_format($course->progress_percentage, 2) }}%</span></span>
+                                      %</span></span>
                             </li>
-                        @endforeach
+                        @endforeach --}}
+                        @foreach($payments as $payment)
+                            {{-- <h3>{{ $payment->course->title }}</h3> --}}
+                            <li class="bg-gray-700 p-4 rounded-lg flex justify-between items-center shadow-md">
 
+                            <span class="text-white text-bold">💻{{ $payment->course->title }}</span>
+
+                            {{-- <p>Progress: {{ $payment->progress }}%</p> --}}
+                            <div class="progress-bar bg-blue-500"  style="width: {{ $payment->progress }}%; height: 20px; "></div>
+                            {{-- <p>Start Date: {{ $payment->created_at->format('d M Y') }}</p> --}}
+                            <span class="text-sm text-gray-300"> <span class="text-green-400 font-bold">
+                                {{ $payment->progress }}%</span></span>
+                            </li>
+                    @endforeach
 
                         {{-- <li class="bg-gray-700 p-4 rounded-lg flex justify-between items-center shadow-md">
               <span class="text-white text-bold">📊 Data Structures</span>
@@ -110,10 +113,13 @@
                 <div class="text-gray-700 bg-gray-50 p-6 rounded-lg shadow-lg lg:col-span-1">
                     <h2 class="text-xl font-bold mb-4 text-gray-600">Last Quiz Scores</h2>
                     <ul class="space-y-4">
+                        {{-- {{dd($exams)}} --}}
+
+
                         @foreach ($exams as $exam)
                             <li class="bg-gray-700 p-4 rounded-lg flex justify-between items-center shadow-md">
                                 <span class="text-white text-bold">📝 {{ $exam->exam->exam_name }}</span>
-                                {{-- {{dd($exam)}} --}}
+                                {{dd($exam)}}
                                 <span class="text-blue-400 font-bold">{{ $exam->total_marks }}%</span>
                             </li>
                         @endforeach

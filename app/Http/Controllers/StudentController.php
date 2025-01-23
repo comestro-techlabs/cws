@@ -159,22 +159,26 @@ class StudentController extends Controller
 
     public function dashboard()
     {
-        if(!Auth::check()){
-            return redirect()->route('auth.login')->with('error','you must be logged in to access this page');
+        if (!Auth::check()) {
+            return redirect()->route('auth.login')->with('error', 'You must be logged in to access this page');
         }
+    
         $studentId = User::findOrFail(Auth::id())->id;
+    
+        // Get the first and second attempts
         $firstAttempts = Answer::where('user_id', $studentId)
             ->where('attempt', 1)
             ->with('exam')
             ->get()
             ->groupBy('exam_id')
-            ->map(function ($answers){
+            ->map(function ($answers) {
                 return [
                     'exam_name' => $answers->first()->exam->exam_name,
-                    'total_marks'=> $answers->sum('obtained_marks'),
+                    'total_marks' => $answers->sum('obtained_marks'),
                 ];
             });
-            $secondAttempts = Answer::where('user_id', $studentId)
+    
+        $secondAttempts = Answer::where('user_id', $studentId)
             ->where('attempt', 2)
             ->with('exam')
             ->get()
@@ -184,20 +188,34 @@ class StudentController extends Controller
                     'exam_name' => $answers->first()->exam->name,
                     'total_marks' => $answers->sum('obtained_marks'),
                 ];
-            });    
-             
+            });
+    
+        // Fetch user courses, payments, assignments, and exams
+        $user = User::find(Auth::id());
+    
+        $courses = $user->courses()->take(2)->get();
+        $payments = Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->with('course')->get();
+        $assignments = Assignments::whereIn('course_id', $user->courses->pluck('id'))->latest()->take(4)->get();
+        $exams = ExamUser::whereIn('exam_id', $user->courses->pluck('id'))->take(4)->get();
+    
+        // Calculate progress for each payment
+        foreach ($payments as $payment) {
+            $payment->progress = $payment->course_progress; // Access the computed attribute
+        }
+    
+        // Prepare data for the view
         $datas = [
-            'courses' => User::find(Auth::id())->courses()->take(2)->get(),
-            'payments' => Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->get(),
-            'assignments' => Assignments::whereIn('course_id', User::find(Auth::id())->courses->pluck('id'))->latest()->take(4)->get(),
-            'exams' => ExamUser::whereIn('exam_id', User::find(Auth::id())->courses->pluck('id'))->take(2)->get(),
-            'first_attempts'=>$firstAttempts,
-            'second_attempts'=>$secondAttempts,
-
+            'courses' => $courses,
+            'payments' => $payments,
+            'assignments' => $assignments,
+            'exams' => $exams,
+            'first_attempts' => $firstAttempts,
+            'second_attempts' => $secondAttempts,
         ];
-
-        return view('studentdashboard.dashboard',$datas);
+    
+        return view('studentdashboard.dashboard', $datas);
     }
+    
 
     // public function coursePurchase()
     // {
@@ -301,7 +319,7 @@ class StudentController extends Controller
         return redirect()->route('auth.login')->with('error','you must be logged in to access this page');
     }
     $user = Auth::user();
-    $courses = $user->courses()->with('users')->get();
+    $courses = $user->courses()->with('users','exams')->get();
 
     return view('studentdashboard.quiz.course', compact('courses'));
 }
