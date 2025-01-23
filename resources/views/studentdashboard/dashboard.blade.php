@@ -6,11 +6,11 @@
         @if ($courses->isEmpty())
             <div class="flex flex-col items-center justify-center md:mt-16 lg:mt-20 text-center px-6 md:px-4 space-y-2">
                 <img src="{{ asset('assets/welcome.png') }}" class="w-56 md:w-64 lg:w-72 ">
-                <h4 class="text-xl md:text-2xl font-semibold text-gray-800 mb-2">
+                <h4 class="text-md md:text-2xl font-semibold text-gray-800 mb-2">
                     Welcome! Please purchase a course to access your dashboard.
                 </h4>
                 <a href="{{ route('student.course') }}">
-                    <button class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 text-sm md:text-lg">
+                    <button class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 text-sm md:text-md">
                         Browse Courses
                     </button>
 
@@ -19,115 +19,103 @@
         @else
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
                 <!-- Courses Section -->
-                <div class="bg-gray-50 p-6 rounded-lg shadow-lg lg:col-span-2">
-                    <h2 class="text-xl font-bold mb-4 text-gray-600">My Courses</h2>
+                <div class=" p-6 rounded-lg border lg:col-span-2">
+                    <h2 class="text-md font-medium mb-4 text-gray-600">My Courses</h2>
                     <ul class="space-y-4">
-                        {{-- @foreach ($courses as $course)
-                            <li class="bg-gray-700 p-4 rounded-lg flex justify-between items-center shadow-md">
-                                <span class="text-white text-bold">💻{{ $course->title }}</span>
-                                <span class="text-sm text-gray-300"> <span class="text-green-400 font-bold">
-                                      %</span></span>
+                        @foreach ($payments as $payment)
+                            <li class="bg-gray-100 p-4 rounded-lg flex justify-between items-center gap-4">
+                                <!-- Course Image -->
+                                <div class="flex items-center gap-4">
+                                    <img src="{{ asset('storage/course_images/' . $payment->course->course_image) }}"
+                                        alt="Course Image" class="w-16 h-16 rounded-full object-cover shadow-sm">
+
+                                    <!-- Course Details -->
+                                    <div>
+                                        <span
+                                            class="text-slate-700 font-semibold text-lg">{{ $payment->course->title }}</span>
+                                        <p class="text-sm text-gray-500">Duration: {{ $payment->course->duration }} hours
+                                        </p>
+                                        <p class="text-sm text-gray-500">Batch: </p>
+                                    </div>
+                                </div>
+
+                                <!-- Progress Bar -->
+                                <div class="flex flex-col items-end">
+                                    <div class="w-40 bg-gray-200 rounded-full overflow-hidden h-4">
+                                        <div class="bg-blue-500 h-4" style="width: {{ $payment->progress }}%;"></div>
+                                    </div>
+                                    <span class="text-sm text-gray-500 mt-2">
+                                        Progress: <span class="text-green-500 font-medium">{{ $payment->progress }}%</span>
+                                    </span>
+                                </div>
                             </li>
-                        @endforeach --}}
-                        @foreach($payments as $payment)
-                            {{-- <h3>{{ $payment->course->title }}</h3> --}}
-                            <li class="bg-gray-700 p-4 rounded-lg flex justify-between items-center shadow-md">
+                        @endforeach
 
-                            <span class="text-white text-bold">💻{{ $payment->course->title }}</span>
 
-                            {{-- <p>Progress: {{ $payment->progress }}%</p> --}}
-                            <div class="progress-bar bg-blue-500"  style="width: {{ $payment->progress }}%; height: 20px; "></div>
-                            {{-- <p>Start Date: {{ $payment->created_at->format('d M Y') }}</p> --}}
-                            <span class="text-sm text-gray-300"> <span class="text-green-400 font-bold">
-                                {{ $payment->progress }}%</span></span>
-                            </li>
-                    @endforeach
-
-                        {{-- <li class="bg-gray-700 p-4 rounded-lg flex justify-between items-center shadow-md">
-              <span class="text-white text-bold">📊 Data Structures</span>
-              <span class="text-sm text-gray-300">Progress: <span class="text-yellow-400 font-bold">60%</span></span>
-            </li>
-            <li class="bg-gray-700 p-4 rounded-lg flex justify-between items-center shadow-md">
-              <span class="text-white text-bold">🌐 Web Development</span>
-              <span class="text-sm text-gray-300">Progress: <span class="text-blue-400 font-bold">90%</span></span>
-            </li> --}}
                     </ul>
                 </div>
 
                 <!-- Assignments Section -->
-                <div class="bg-gray-50 p-6 rounded-lg shadow-lg lg:col-span-1">
-                    <h2 class="text-xl font-bold mb-4 text-gray-600">Assignments</h2>
+                <div class="border  p-6 rounded-lg lg:col-span-1">
+                    <h2 class="text-md font-medium mb-4 text-gray-600">Assignments</h2>
                     <ul class="space-y-4">
-                        @if ($assignments->isNotEmpty() )
+                        @if ($assignments->isNotEmpty())
                             @foreach ($assignments as $assignment)
-                               
-                                    <li class="bg-gray-700 p-4 rounded-lg flex justify-between items-center shadow-md">
-                                        <span class="text-white text-bold">📜 {{ $assignment->title }}</span>
-                                        <span class="text-green-400 font-bold">
-                                            @if ($assignment->uploads->isNotEmpty())
-                                                @foreach ($assignment->uploads as $upload)
-                                                    <span
-                                                        class="px-2 py-1 rounded-lg text-white
-                                              @if ($upload->status == 'submitted') bg-green-500
-                                              @elseif($upload->status == 'graded') bg-blue-500
-                                              @else bg-gray-500 @endif">
-                                                        {{ ucfirst($upload->status) }}
-                                                    </span><br>
-                                                @endforeach
-                                            @else
-                                                <span class="text-gray-500">No uploads</span>
-                                            @endif
-                                        </span>
-                                    </li>
-                                   
-                                @endforeach
-                              
-                            @else
-                                <p class="text-center text-gray-500">📜No Assignment available for the logged-in student.</p>
-                            @endif
+                                <li class="p-4 rounded-lg flex justify-between items-center shadow-sm">
+                                    <!-- Assignment Title -->
+                                    <span class="text-gray-800 font-semibold">📜 {{ $assignment->title }}</span>
 
-                            {{-- <li class="bg-gray-700 p-4 rounded-lg flex justify-between items-center shadow-md">
-              <span class="text-white text-bold">📜 Assignment 2 - Data Structures</span>
-              <span class="text-red-400 font-bold">Pending</span>
-            </li>
-            <li class="bg-gray-700 p-4 rounded-lg flex justify-between items-center shadow-md">
-              <span class="text-white text-bold">📜 Assignment 3 - Web Project</span>
-              <span class="text-yellow-400 font-bold">In Progress</span>
-            </li> --}}
+                                    <!-- Upload Status -->
+                                    <span class="flex flex-col items-end">
+                                        @if ($assignment->uploads->isNotEmpty())
+                                            @foreach ($assignment->uploads as $upload)
+                                                <span
+                                                    class="px-3 py-1 rounded-lg text-white text-sm font-medium
+                                                    @if ($upload->status == 'submitted') bg-green-500
+                                                    @elseif($upload->status == 'graded') bg-blue-500
+                                                    @else bg-gray-500 @endif">
+                                                    {{ ucfirst($upload->status) }}
+                                                </span>
+                                            @endforeach
+                                        @else
+                                            <span class="text-gray-500 text-sm">No uploads</span>
+                                        @endif
+                                    </span>
+                                </li>
+                            @endforeach
+                        @else
+                            <p class="text-center text-gray-500">No Assignments available</p>
+                        @endif
                     </ul>
                 </div>
 
+
                 <!-- Notifications Section -->
-                <div class="p-6 bg-gray-50 rounded-lg shadow-lg lg:col-span-1">
-                    <h2 class="text-xl font-bold mb-4 text-gray-600">Notifications</h2>
-                    <ul class="space-y-4">
-                        <li class="bg-gray-700 p-4 rounded-lg shadow-md text-white">🔔 New quiz available for "Data
+                <div class="p-6  rounded-lg border lg:col-span-1 h-[300px]">
+                    <h2 class="text-md font-medium mb-4 text-gray-600">Notifications</h2>
+                    <ul class="space-y-4 overflow-y-scroll">
+                        <li class="bg-gray-50 p-4 rounded-lg text-slate-700">New quiz available for "Data
                             Structures".</li>
-                        <li class="bg-gray-700 p-4 rounded-lg shadow-md text-white">🔔 Assignment 2 deadline extended.</li>
-                        <li class="bg-gray-700 p-4 rounded-lg shadow-md text-white">🔔 Web Dev project submissions start
+                        <li class="bg-gray-50 p-4 rounded-lg text-slate-700">Assignment 2 deadline extended.</li>
+                        <li class="bg-gray-50 p-4 rounded-lg text-slate-700">Web Dev project submissions start
                             next week.</li>
+
                     </ul>
                 </div>
 
                 <!-- Quiz Scores -->
-                <div class="text-gray-700 bg-gray-50 p-6 rounded-lg shadow-lg lg:col-span-1">
-                    <h2 class="text-xl font-bold mb-4 text-gray-600">Last Quiz Scores</h2>
+                <div class="text-gray-700  p-6 rounded-lg border lg:col-span-1">
+                    <h2 class="text-md font-medium mb-4 text-gray-600">Last Quiz Scores</h2>
                     <ul class="space-y-4">
-                        {{-- {{dd($exams)}} --}}
-
-
-                        @foreach ($exams as $exam)
-                            <li class="bg-gray-700 p-4 rounded-lg flex justify-between items-center shadow-md">
+                        @forelse ($exams as $exam)
+                            <li class="bg-gray-50 p-4 rounded-lg flex justify-between items-center">
                                 <span class="text-white text-bold">📝 {{ $exam->exam->exam_name }}</span>
-                                {{dd($exam)}}
-                                <span class="text-blue-400 font-bold">{{ $exam->total_marks }}%</span>
+                                {{ dd($exam) }}
+                                <span class="text-blue-400 font-medium">{{ $exam->total_marks }}%</span>
                             </li>
-                        @endforeach
-
-                        {{-- <li class="bg-gray-700 p-4 rounded-lg flex justify-between items-center shadow-md">
-              <span class="text-white text-bold">📝 Quiz 2: Data Structures</span>
-              <span class="text-blue-400 font-bold">78%</span>
-            </li> --}}
+                        @empty
+                        <p class="text-center text-gray-500">No Exam available</p>
+                        @endforelse
                     </ul>
                 </div>
 
