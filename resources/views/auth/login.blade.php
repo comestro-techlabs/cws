@@ -58,7 +58,11 @@ Login
 <!-- OTP Modal -->
 <div id="otp-modal" class="hidden fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
     <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-        <h3 class="text-lg font-semibold text-gray-800">Enter OTP</h3>
+       <div class="flex justify-between"> <h3 class="text-lg font-semibold text-gray-800">Enter OTP</h3>
+        <button type="button" id="close-modal" class=" text-gray-700 "><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+          </svg></button></div>
+
         <p class="text-sm text-gray-600 mb-4">An OTP has been sent to your email. Please enter it below:</p>
 
         <form action="{{ route('verify.otp') }}" method="POST" class="space-y-4">
@@ -75,7 +79,6 @@ Login
             </div>
 
             <div class="flex justify-end space-x-2">
-                <button type="button" id="close-modal" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md">Cancel</button>
                 <button type="submit" class="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600">Verify OTP</button>
             </div>
         </form>

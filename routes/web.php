@@ -237,10 +237,10 @@ use App\Models\Workshop;
         Route::get('/login', 'showLoginForm')->name('auth.login');
         Route::post('/login', 'login')->name('auth.login.post');
         Route::get('/verify-otp',  'showOtpForm')->name('show.otp.form');
-
-// OTP verification handling route (POST request to verify OTP)
-Route::post('verify-otp',  'verifyOtp')->name('verify.otp');
-Route::post('send-otp', 'sendOtp')->name('auth.sendOtp');
+        
+        // OTP verification handling route (POST request to verify OTP)
+        Route::post('verify-otp',  'verifyOtp')->name('verify.otp');
+        Route::post('send-otp', 'sendOtp')->name('auth.sendOtp');
 
         Route::get('/register', 'showRegistrationForm')->name('auth.register');
         Route::post('/register', 'register')->name('auth.register.post');
