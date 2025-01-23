@@ -20,7 +20,7 @@ class PaymentController extends Controller
     {
 
         $input = $request->all();
-        // dd($input);
+        dd($input);
         $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
         try {
             $student = User::findOrFail(Auth::id());
@@ -32,19 +32,19 @@ class PaymentController extends Controller
                 'student_id' => $student->id,
                 'receipt_no' => $order,
                 'order_id' => $order,
-                'payment_id' => $request->razorpay_payment_id, 
+                'payment_id' => $request->razorpay_payment_id,
                 'transaction_fee' => $request->input('amount'),
                 'amount' => $request->input('amount'),
                 'transaction_id' => time() . rand(11, 99) . date('yd'),
                 'transaction_date' => now(),
                 'payment_date' => now(),
-                'payment_status' => 'initiated', 
+                'payment_status' => 'initiated',
                 'ip_address' => $request->ip(),
-                'status' => 0, 
+                'status' => 0,
             ]);
-            
-            //Agr frontend pe modal ko close krdiya jaye ya phir payment_id null aye , 
-            //to ondismis wala array element  k wjh se yha null ajayega razorpay_payment_id or niche if condition trigger ni hoga 
+
+            //Agr frontend pe modal ko close krdiya jaye ya phir payment_id null aye ,
+            //to ondismis wala array element  k wjh se yha null ajayega razorpay_payment_id or niche if condition trigger ni hoga
             if ($request->filled('razorpay_payment_id')) {
                 $payment = $api->payment->fetch($input['razorpay_payment_id']);
                 // dd($payment);
@@ -62,7 +62,7 @@ class PaymentController extends Controller
                         'payment_vpa' => $response->vpa,
                         'international_payment' => $response->international,
                         'error_reason' => $response->error_reason ?? 'No error',
-                        'status' => 1, 
+                        'status' => 1,
                     ]);
                     $student->courses()->attach($request->input('course_id'));
                     return redirect('/student/dashboard')->with('success', 'Payment Successfull');
@@ -71,7 +71,7 @@ class PaymentController extends Controller
                     $paymentData->update([
                         'payment_status' => $payment->status,
                         'error_reason' => $paymentData->error_reason ?? 'Payment failed.',
-                        'status' => 0, 
+                        'status' => 0,
                     ]);
                     return redirect()->back()->with('error', 'Payment failed: ' . $paymentData->error_reason);
                 }
@@ -82,10 +82,10 @@ class PaymentController extends Controller
                     'error_reason' => 'Transaction cancelled by the user.',
                     'status' => 0,
                 ]);
-    
+
                 return redirect()->back()->with('error', 'Transaction cancelled by the user.');
-            } 
-      
+            }
+
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Payment processing failed:' . $e->getMessage());
         }

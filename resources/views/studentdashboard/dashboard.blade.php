@@ -62,7 +62,7 @@
                             @foreach ($assignments as $assignment)
                                
                                     <li class="bg-gray-700 p-4 rounded-lg flex justify-between items-center shadow-md">
-                                        <span class="text-white text-bold">📜 {{ $assignment->title }}</span>
+                                        <span class="text-white text-bold line-clamp-1">📜 {{ $assignment->title }}</span>
                                         <span class="text-green-400 font-bold">
                                             @if ($assignment->uploads->isNotEmpty())
                                                 @foreach ($assignment->uploads as $upload)
@@ -115,14 +115,17 @@
                     <ul class="space-y-4">
                         {{-- {{dd($exams)}} --}}
 
-
+                        @if ($exams->isNotEmpty() )
                         @foreach ($exams as $exam)
                             <li class="bg-gray-700 p-4 rounded-lg flex justify-between items-center shadow-md">
                                 <span class="text-white text-bold">📝 {{ $exam->exam->exam_name }}</span>
-                                {{dd($exam)}}
+                                {{-- {{dd($exam)}} --}}
                                 <span class="text-blue-400 font-bold">{{ $exam->total_marks }}%</span>
                             </li>
                         @endforeach
+                        @else
+                        <p class="text-center text-gray-500">📝 No quize available for the logged-in student.</p>
+                    @endif
 
                         {{-- <li class="bg-gray-700 p-4 rounded-lg flex justify-between items-center shadow-md">
               <span class="text-white text-bold">📝 Quiz 2: Data Structures</span>
