@@ -22,7 +22,10 @@
           <thead class="bg-gray-100 dark:bg-gray-700">
             <tr>
               <th class="py-3 px-4 text-left text-sm font-medium text-gray-600 dark:text-gray-400">Course Name</th>
-              <th class="py-3 px-4 text-left text-sm font-medium text-gray-600 dark:text-gray-400">Course Category</th>
+              <!-- <th class="py-3 px-4 text-left text-sm font-medium text-gray-600 dark:text-gray-400">Course Category</th> -->
+              <th class="py-3 px-4 text-left text-sm font-medium text-gray-600 dark:text-gray-400">Order Id</th>
+              <th class="py-3 px-4 text-left text-sm font-medium text-gray-600 dark:text-gray-400">Payment Status</th>
+              <th class="py-3 px-4 text-left text-sm font-medium text-gray-600 dark:text-gray-400">Method</th>
               <th class="py-3 px-4 text-left text-sm font-medium text-gray-600 dark:text-gray-400">Payment Amount</th>
               <th class="py-3 px-4 text-left text-sm font-medium text-gray-600 dark:text-gray-400">Payment Date</th>
               <th class="py-3 px-4 text-left text-sm font-medium text-gray-600 dark:text-gray-400">Action</th>
@@ -35,7 +38,13 @@
                 {{ $item->course->title }}
               </td>
               <td class="py-3 px-4 text-gray-800 dark:text-gray-200">
-                {{ $item->course->category->cat_title }}
+                {{ $item->order_id }}
+              </td>
+              <td class="py-3 px-4 text-gray-800 dark:text-gray-200">
+                {{  $item->status }}
+              </td>
+              <td class="py-3 px-4 text-gray-800 dark:text-gray-200">
+                {{  $item->method }}
               </td>
               <td class="py-3 px-4 text-gray-800 dark:text-gray-200">
                 ₹{{ $item->transaction_fee }}
@@ -43,9 +52,18 @@
               <td class="py-3 px-4 text-gray-800 dark:text-gray-200">
                 {{ \Carbon\Carbon::parse($item->transaction_date)->format('d M Y') }}
               </td>
+
+              @if($item->status == 1)
               <td class="py-3 px-4">
                 <button class="text-blue-600 dark:text-blue-400 hover:underline" onclick="window.print()">Print Invoice</button>
               </td>
+              @else
+              <td class="py-3 px-4">
+                 <a href="{{route('phonepe.payment')}}" id="pay-button">
+                <button class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" >Refresh</button>
+                </a>
+              </td>
+              @endif
             </tr>
             @endforeach
           </tbody>
