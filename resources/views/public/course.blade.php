@@ -315,24 +315,32 @@
             e.preventDefault();
             var options = {
                 "key": "{{ env('RAZORPAY_KEY') }}",
-                "amount": "{{ $course->discounted_fees }}" * 100,
+                "amount": "{{ $course->discounted_fees }}" * 100, // Amount in paisa
                 "currency": "INR",
                 "name": "LearnSyntax",
                 "description": "Processing Fee",
                 "image": "{{ asset('front_assets/img/logo/logo.png') }}",
                 "handler": function(response) {
+                    // Trigger form submission on successful payment
                     document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
                     document.forms[0].submit();
                 },
                 "prefill": {
                     "name": "{{ Auth::user()->name }}",
-                    "email": "{{ Auth::user()->email }}",
-                    // "contact": {{ Auth::user()->contact }}
+                    "email": "{{ Auth::user()->email }}"
                 },
                 "theme": {
                     "color": "#0a64a3"
+                },
+                "modal": {
+                    "ondismiss": function() {
+                        alert('Payment process was canceled.');
+                        document.getElementById('razorpay_payment_id').value = null;
+                        document.forms[0].submit();
+                    }
                 }
             };
+
             var rzp1 = new Razorpay(options);
             rzp1.open();
         }
