@@ -371,7 +371,7 @@
         "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information, especially their phone number
             "name": "Gaurav Kumar", //your customer's name
             "email": "gaurav.kumar@example.com",
-            "contact": "9000090000" //Provide the customer's phone number for better conversion rates 
+            "contact": "9000090000" //Provide the customer's phone number for better conversion rates
         },
         "notes": {
             "address": "Razorpay Corporate Office"
@@ -387,7 +387,7 @@
         alert(response.error.source);
         alert(response.error.step);
         alert(response.error.reason);
-        
+
         alert(response.error.metadata.order_id);
         alert(response.error.metadata.payment_id);
     });
