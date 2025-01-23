@@ -9,7 +9,7 @@
     @foreach ($courses as $course)
         <div class="bg-white shadow-md rounded-lg p-6 mb-4">
             <h2 class="text-xl font-bold text-gray-800">{{ $course->title }}</h2>
-            <span class="text-xl font-bold text-gray-800">{{ $course->pivot->batch_id }}</span>
+            {{-- <span class="text-xl font-bold text-gray-800">{{ $course->pivot->batch_id }}</span> --}}
             {{-- <span class="text-xl font-bold text-gray-800">{{ $course->exams }}</span> --}}
             <div class="flex justify-between ">
                 @foreach ($course->exams as $exam)

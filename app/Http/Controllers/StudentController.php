@@ -14,7 +14,7 @@ use App\Models\ExamUser;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 use Illuminate\Support\Facades\Http;
@@ -280,49 +280,93 @@ class StudentController extends Controller
     }
 
     
-    // public function courseQuiz($courseId){
-    //     $user = Auth::user();
-    //     // dd($user);
-    //     // $course = $user->courses()->where('id',$courseId)->first();
-    //     $courses = $user->courses()->with('exams') // Load the related exams
-    //     ->where('courses.id', $courseId)
-    //     ->first();       
-    //      if (!$courses){
-    //         return redirect()->route('student.dashboard')->with('error', 'Course not found');
+//     // public function courseQuiz($courseId){
+//     //     $user = Auth::user();
+//     //     // dd($user);
+//     //     // $course = $user->courses()->where('id',$courseId)->first();
+//     //     $courses = $user->courses()->with('exams') // Load the related exams
+//     //     ->where('courses.id', $courseId)
+//     //     ->first();       
+//     //      if (!$courses){
+//     //         return redirect()->route('student.dashboard')->with('error', 'Course not found');
 
-    //      }
+//     //      }
 
-    //       // Check if the course has exams
-    // if ($courses->exams->isEmpty()) {
-    //     return redirect()->route('student.dashboard')->with('error', 'No exams available for this course');
-    // }
+//     //       // Check if the course has exams
+//     // if ($courses->exams->isEmpty()) {
+//     //     return redirect()->route('student.dashboard')->with('error', 'No exams available for this course');
+//     // }
           
-    //      // Check if the user has already taken the exam for this course
-    //      $exam =$courses->exams()->where('status',true)->first();
-    //      $examUser = $exam ?ExamUser::where('user_id',$user->id)->where('exam_id',$exam->id)->first() : null;
+//     //      // Check if the user has already taken the exam for this course
+//     //      $exam =$courses->exams()->where('status',true)->first();
+//     //      $examUser = $exam ?ExamUser::where('user_id',$user->id)->where('exam_id',$exam->id)->first() : null;
 
-    //      if($examUser && $examUser->attempts >=3){
-    //          return redirect()->route('student.examResult', $exam->id)->with('error', 'You have already attempted this exam 3 times');
-    //      }
+//     //      if($examUser && $examUser->attempts >=3){
+//     //          return redirect()->route('student.examResult', $exam->id)->with('error', 'You have already attempted this exam 3 times');
+//     //      }
 
-    //      //get active quiz for that course 
+//     //      //get active quiz for that course 
 
-    //      $quizzes = $exam ?$exam->quizzes()->where('status',true)->get() : collect();
+//     //      $quizzes = $exam ?$exam->quizzes()->where('status',true)->get() : collect();
         
-    //      return view('studentdashboard.quiz.course',compact('courses','quizzes','exam','courseTitle'));
+//     //      return view('studentdashboard.quiz.course',compact('courses','quizzes','exam','courseTitle'));
 
-    // }
+//     // }
 
-    public function courseQuiz()
+//  public function courseQuiz()
+// {
+//     if (!Auth::check()) {
+//         return redirect()->route('auth.login')->with('error', 'You must be logged in to access this page');
+//     }
+
+//     $user = Auth::user();
+
+//     // Get the batch IDs for the courses the user is enrolled in
+//     $batchIds = DB::table('course_user')
+//         ->where('user_id', $user->id)
+//         ->pluck('batch_id', 'course_id'); // Fetch batch_id mapped by course_id
+
+//     // Fetch courses and filter exams based on the user's batch
+//     $courses = $user->courses()
+//         ->with([
+//             'users',
+//             'exams' => function ($query) use ($batchIds) {
+//                 $query->whereIn('batch_id', $batchIds); // Only show exams for the user's batch
+//             }
+//         ])
+//         ->get();
+
+//     return view('studentdashboard.quiz.course', compact('courses'));
+// }
+
+
+
+public function courseQuiz()
 {
-    if(!Auth::check()){
-        return redirect()->route('auth.login')->with('error','you must be logged in to access this page');
+    if (!Auth::check()) {
+        return redirect()->route('auth.login')->with('error', 'You must be logged in to access this page');
     }
+
     $user = Auth::user();
-    $courses = $user->courses()->with('users','exams')->get();
+
+    // Get the batch IDs for the courses the user is enrolled in
+    $batchIds = DB::table('course_user')
+        ->where('user_id', $user->id)
+        ->pluck('batch_id', 'course_id'); // Fetch batch_id mapped by course_id
+
+    // Fetch courses and filter exams based on the user's batch
+    $courses = $user->courses()
+        ->with([
+            'users',
+            'exams' => function ($query) use ($batchIds) {
+                $query->whereIn('batch_id', $batchIds); // Only show exams for the user's batch
+            }
+        ])
+        ->get();
 
     return view('studentdashboard.quiz.course', compact('courses'));
 }
+
     // public function showquiz()
     // {
     //     if (!Auth::check()) {
@@ -633,24 +677,35 @@ public function showAllAttempts($course_id)
 
     public function assignmentList()
     {
-        if(!Auth::check()){
-            return redirect()->route('auth.login')->with('error','you must be logged in to access this page');
+        if (!Auth::check()) {
+            return redirect()->route('auth.login')->with('error', 'You must be logged in to access this page');
         }
-        
-        $studentId = Auth::id(); 
     
+        $studentId = Auth::id();
+    
+        // Get the batch IDs for the courses the student is enrolled in
+        $studentBatches = DB::table('course_user')
+            ->where('user_id', $studentId)
+            ->pluck('batch_id', 'course_id'); // Fetch batch_id mapped by course_id
+    
+        // Fetch courses and filter assignments based on the student's batch
         $data['courses'] = Course::whereHas('students', function ($query) use ($studentId) {
             $query->where('user_id', $studentId);
         })
-        ->with(['assignments' => function ($query) {
-            $query->where('status', 1); 
-        }, 'assignments.uploads' => function ($query) use ($studentId) {
-            $query->where('student_id', $studentId); 
-        }])
+        ->with([
+            'assignments' => function ($query) use ($studentBatches) {
+                $query->where('status', 1)
+                      ->whereIn('batch_id', $studentBatches); // Only show assignments for the student's batch
+            },
+            'assignments.uploads' => function ($query) use ($studentId) {
+                $query->where('student_id', $studentId); // Include uploads specific to the student
+            }
+        ])
         ->get();
     
         return view('studentdashboard.assignments.manageAssignments', $data);
     }
+    
     
 
     public function viewAssignments($id)
