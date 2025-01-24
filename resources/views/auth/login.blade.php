@@ -80,36 +80,49 @@ Login
 
             <div class="flex justify-end space-x-2">
                 <button type="submit" class="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600">Verify OTP</button>
+               
+                
             </div>
+        </form>
+        <form id="resend-otp-form" action="{{ route('auth.resend-otp') }}" method="POST">
+            @csrf
+            <input type="hidden" name="email" value="{{ session('email') }}">
+            <p class="text-sm text-gray-600 mt-4 text-center">
+                Didn't receive the OTP? 
+            <button type="submit" class="text-blue-500 font-semibold">Resend OTP</button>
+            </p>
         </form>
     </div>
 </div>
 
 </div>
 <script>
-   document.addEventListener("DOMContentLoaded", function () {
-    const otpModal = document.getElementById('otp-modal');
-    const closeModalButton = document.getElementById('close-modal');
-    const otpEmailField = document.getElementById('otp_email');
-    const otpHiddenField = document.getElementById('otp_email_hidden');
+    document.addEventListener("DOMContentLoaded", function () {
+        const otpModal = document.getElementById('otp-modal');
+        const closeModalButton = document.getElementById('close-modal');
+        
+        // Show OTP modal if session has otp_sent
+        @if (session('otp_sent'))
+            otpModal.classList.remove('hidden');
+        @endif
 
-    // Show OTP modal if session has otp_sent
-    @if (session('otp_sent'))
-        otpModal.classList.remove('hidden');
-        otpHiddenField.value = "{{ session('email') }}";
-    @endif
+        // Hide OTP modal when close button is clicked
+        closeModalButton.addEventListener('click', function () {
+            otpModal.classList.add('hidden');
+        });
 
-    // Hide OTP modal when "Cancel" button is clicked
-    closeModalButton.addEventListener('click', function () {
-        otpModal.classList.add('hidden');
+        // Add event listener for Resend OTP form
+        document.getElementById('resend-otp-form').addEventListener('submit', function () {
+            // Before submitting, ensure modal stays open
+            localStorage.setItem('keepModalOpen', 'true');
+        });
+
+        // Check localStorage to reopen modal after reload
+        if (localStorage.getItem('keepModalOpen') === 'true') {
+            otpModal.classList.remove('hidden');
+            localStorage.removeItem('keepModalOpen'); // Clear the flag
+        }
     });
-
-    // Ensure email is passed to the hidden field before form submission
-    document.getElementById('send-otp-form').addEventListener('submit', function () {
-        const email = otpEmailField.value;
-        otpHiddenField.value = email;
-    });
-});
 </script>
 
 @endsection

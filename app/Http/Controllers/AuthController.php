@@ -154,6 +154,44 @@ class AuthController extends Controller
         }
     }
 
+  
+    
+    public function resendOtp(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+        ]);
+    
+        $email = $request->email;
+    
+        // Find the user by email
+        $user = User::where('email', $email)->first();
+    
+        if ($user) {
+            $otp = rand(100000, 999999); // Replace with Str::random(6) for more security
+    
+            // Update OTP and expiration time
+            $user->otp = $otp; // Use Hash::make($otp) for more security
+            $user->otp_expires_at = Carbon::now()->addMinutes(10);
+            $user->save();
+    
+            // Resend OTP email
+            try {
+                Mail::send('emails.otp', ['otp' => $otp], function ($message) use ($user) {
+                    $message->to($user->email)
+                        ->subject('Your OTP Code');
+                });
+    
+                return redirect()->back()->with(['otp_sent' => true, 'email' => $email]);
+            } catch (\Exception $e) {
+                \Log::error('OTP email failed to send: ' . $e->getMessage());
+                return redirect()->back()->with('error', 'Failed to resend OTP. Please try again.');
+            }
+        }
+    
+        return redirect()->back()->withErrors(['email' => 'If the email exists in our system, you will receive an OTP.']);
+    }
+    
 
 
     // displaying registration form 
