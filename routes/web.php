@@ -13,7 +13,8 @@
     use App\Http\Controllers\LessonController;
     use App\Http\Controllers\OptionController;
     use App\Http\Controllers\PhonepeController;
-    use App\Http\Controllers\PublicController;
+    use App\Http\Controllers\PlacedStudentController;
+use App\Http\Controllers\PublicController;
     use App\Http\Controllers\ResultController;
     use App\Http\Controllers\StudentController;
     use App\Http\Controllers\PaymentController;
@@ -24,7 +25,7 @@
     use App\Http\Controllers\ExamController;
     use App\Http\Middleware\AdminMiddleware;
     use App\Http\Controllers\QuizController;
-
+use App\Models\PlacedStudent;
 use App\Models\Workshop;
 
 
@@ -187,6 +188,7 @@ use App\Models\Workshop;
     Route::get('/admin/workshops/{id}/edit', [WorkshopController::class, 'edit'])->name('admin.workshops.edit');
     Route::put('/admin/workshop/{id}', [WorkshopController::class, 'update'])->name('admin.workshops.update');
     Route::delete('admin/workshop/{id}', [WorkshopController::class, 'destroy'])->name('admin.workshops.destroy');
+    Route::get('/placedStudent/create', [PlacedStudentController::class, 'create'])->name('placedStudent.create');
 
         });
     });

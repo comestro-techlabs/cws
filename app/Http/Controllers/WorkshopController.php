@@ -56,7 +56,6 @@ public function toggleStatus($id)
             
     ]);
    
-
     $imagePath = $request->file('image')->store('workshops', 'public');
 
     Workshop::create([
