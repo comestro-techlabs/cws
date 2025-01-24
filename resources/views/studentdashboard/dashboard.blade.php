@@ -19,11 +19,11 @@
         @else
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
                 <!-- Courses Section -->
-                <div class=" p-6 rounded-lg border lg:col-span-2">
+                <div class="px-6 py-3 rounded-lg border border-slate-200 lg:col-span-2">
                     <h2 class="text-md font-medium mb-4 text-gray-600">My Courses</h2>
                     <ul class="space-y-4">
                         @foreach ($payments as $payment)
-                            <li class="bg-gray-100 p-4 rounded-lg flex justify-between items-center gap-4">
+                            <li class="bg-slate-50 p-4 rounded-lg flex justify-between items-center gap-4">
                                 <!-- Course Image -->
                                 <div class="flex items-center gap-4">
                                     <img src="{{ asset('storage/course_images/' . $payment->course->course_image) }}"
@@ -56,7 +56,7 @@
                 </div>
 
                 <!-- Assignments Section -->
-                <div class="border  p-6 rounded-lg lg:col-span-1">
+                <div class="border border-slate-200 px-6 py-3 rounded-lg lg:col-span-1">
                     <h2 class="text-md font-medium mb-4 text-gray-600">Assignments</h2>
                     <ul class="space-y-4">
                         @if ($assignments->isNotEmpty())
@@ -91,7 +91,7 @@
 
 
                 <!-- Notifications Section -->
-                <div class="p-6  rounded-lg border lg:col-span-1 h-[300px]">
+                <div class="px-6 py-3  rounded-lg border border-slate-200 lg:col-span-1 h-[300px]">
                     <h2 class="text-md font-medium mb-4 text-gray-600">Notifications</h2>
                     <ul class="space-y-4 overflow-y-scroll">
                         <li class="bg-gray-50 p-4 rounded-lg text-slate-700">New quiz available for "Data
@@ -104,7 +104,7 @@
                 </div>
 
                 <!-- Quiz Scores -->
-                <div class="text-gray-700  p-6 rounded-lg border lg:col-span-1">
+                <div class="text-gray-700 px-6 py-3 rounded-lg border border-slate-200 lg:col-span-1">
                     <h2 class="text-md font-medium mb-4 text-gray-600">Last Quiz Scores</h2>
                     <ul class="space-y-4">
                         @forelse ($exams as $exam)
