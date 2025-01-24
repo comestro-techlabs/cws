@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Dashboard</title>
-    @vite('resources/css/app.css')
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -35,53 +35,23 @@
 
 
         <div class=" bg-gray-50">
-            <div class="flex justify-end px-4 pt-4">
-                <button id="dropdownButton" data-dropdown-toggle="dropdown"
-                    class="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5"
-                    type="button">
-                    <span class="sr-only">Open dropdown</span>
-                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                        viewBox="0 0 16 3">
-                        <path
-                            d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
-                    </svg>
-                </button>
-                <!-- Dropdown menu -->
-                <div id="dropdown"
-                    class="z-10 hidden text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-                    <ul class="py-2" aria-labelledby="dropdownButton">
-                        <li>
-                            <a href="#"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Edit</a>
-                        </li>
-                        <li>
-                            <a href="#"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Export
-                                Data</a>
-                        </li>
-                        <li>
-                            <a href="#"
-                                class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="flex flex-col items-center pb-2">
+
+            <div class="flex flex-col items-center pb-2 mt-3">
                 <img class="w-24 h-24 mb-3 rounded-full shadow-lg" src="{{asset("user.png")}}"
                     alt="Bonnie image" />
-                <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">@if(auth()->check())
+                <h5 class="mb-1 text-xl text-lighter uppercase text-gray-900">@if(auth()->check())
                     {{ auth()->user()->name }}
                 @endif</h5>
 
             </div>
         </div>
 
-        <div class="px-3 py-4 bg-gray-50 dark:bg-gray-800">
-            <ul class="space-y-2 font-medium">
+        <div class="px-3 py-4 bg-gray-50">
+            <ul class="space-y-2 font-light">
                 <li>
                     <a href="{{ route('student.dashboard') }}"
-                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                        class="flex items-center p-2 text-gray-900 hover:text-indigo-900 bg-transparent rounded-sm hover:bg-blue-200 group">
+                        <svg class="w-5 h-5"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                             viewBox="0 0 22 21">
                             <path
@@ -94,8 +64,8 @@
                 </li>
                 <li>
                     <a href="{{ route('student.course') }}"
-                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                        class="flex items-center p-2 text-gray-900 hover:text-indigo-900 bg-transparent rounded-sm hover:bg-blue-200 group">
+                        <svg class="w-5 h-5"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                             viewBox="0 0 18 18">
                             <path
@@ -105,11 +75,11 @@
                     </a>
                 </li>
 
-               
+
                 <li>
                     <a href="{{ route('student.billing') }}"
-                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                        class="flex items-center p-2 text-gray-900 hover:text-indigo-900 bg-transparent rounded-sm hover:bg-blue-200 group">
+                        <svg class="w-5 h-5"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                             viewBox="0 0 20 18">
                             <path
@@ -120,8 +90,8 @@
                 </li>
                 <li>
                     <a href="{{ route('student.coursePurchase') }}"
-                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                        class="flex items-center p-2 text-gray-900 hover:text-indigo-900 bg-transparent rounded-sm hover:bg-blue-200 group">
+                        <svg class="w-5 h-5"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                             viewBox="0 0 18 20">
                             <path
@@ -132,8 +102,8 @@
                 </li>
                 <li>
                     <a href="{{ route('student.assignments-view') }}"
-                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                        class="flex items-center p-2 text-gray-900 hover:text-indigo-900 bg-transparent rounded-sm hover:bg-blue-200 group">
+                        <svg class="w-5 h-5"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 18 16">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -145,8 +115,8 @@
                 </li>
                 <li>
                     <a href="{{ route('student.course.result') }}"
-                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                        class="flex items-center p-2 text-gray-900 hover:text-indigo-900 bg-transparent rounded-sm hover:bg-blue-200 group">
+                        <svg class="w-5 h-5"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 18 16">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -158,8 +128,8 @@
                 </li>
                 <li>
                     <a href="{{ route('student.course.quiz') }}"
-                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                        class="flex items-center p-2 text-gray-900 hover:text-indigo-900 bg-transparent rounded-sm hover:bg-blue-200 group">
+                        <svg class="w-5 h-5"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                             viewBox="0 0 20 20">
                             <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z" />
@@ -173,8 +143,8 @@
                 </li>
                 <li>
                     <a href="{{ route('student.editProfile') }}"
-                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                        class="flex items-center p-2 text-gray-900 hover:text-indigo-900 bg-transparent rounded-sm hover:bg-blue-200 group">
+                        <svg class="w-5 h-5"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                             viewBox="0 0 20 20">
                             <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z" />
@@ -188,8 +158,8 @@
                 </li>
                 <li>
                     <a href="{{ route('auth.logout') }}"
-                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                        class="flex items-center p-2 text-gray-900 hover:text-indigo-900 bg-transparent rounded-sm hover:bg-blue-200 group">
+                        <svg class="w-5 h-5"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                             viewBox="0 0 20 20">
                             <path
