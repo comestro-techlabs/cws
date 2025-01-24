@@ -11,7 +11,8 @@
     use App\Http\Controllers\CourseController;
     use App\Http\Controllers\EnquiryController;
     use App\Http\Controllers\LessonController;
-    use App\Http\Controllers\OptionController;
+    use App\Http\Controllers\MessageController;
+use App\Http\Controllers\OptionController;
     use App\Http\Controllers\PhonepeController;
     use App\Http\Controllers\PlacedStudentController;
 use App\Http\Controllers\PublicController;
@@ -69,6 +70,7 @@ use App\Models\Workshop;
     Route::post('save-course-payment', [PaymentController::class, 'saveCoursePayment'])->name('save.course.payment');
      Route::post('save-workshop-payment', [PaymentController::class, 'saveWorkshopPayment'])->name('save.workshop.payment');
   
+     Route::get('payment/refresh/{paymentId}', [PaymentController::class, 'refreshPayment'])->name('payment.refresh');
 
     Route::middleware([AdminMiddleware::class, "auth"])->group(function () {
 
@@ -129,7 +131,7 @@ use App\Models\Workshop;
 
             Route::patch('/assignment/{assignment}/toggle-status', [AssignmentsController::class, 'toggleStatus'])->name('assignment.toggleStatus');
 
-
+            
             //exam
             Route::get('/exam/create', [ExamController::class, 'create'])->name('exam.create');
             Route::post('/exam/store', [ExamController::class, 'store'])->name('exam.store');
@@ -189,6 +191,11 @@ use App\Models\Workshop;
     Route::put('/admin/workshop/{id}', [WorkshopController::class, 'update'])->name('admin.workshops.update');
     Route::delete('admin/workshop/{id}', [WorkshopController::class, 'destroy'])->name('admin.workshops.destroy');
     Route::resource('placedStudent', PlacedStudentController::class);
+
+
+    Route::get('/message/create', [MessageController::class, 'create'])->name('messages.create');
+    Route::post('/message/store', [MessageController::class, 'store'])->name('messages.store');
+    Route::get('/message/show', [MessageController::class, 'index'])->name('messages.show');
 
         });
     });

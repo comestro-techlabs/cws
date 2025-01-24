@@ -20,7 +20,7 @@ class PaymentController extends Controller
     {
 
         $input = $request->all();
-        dd($input);
+        // dd($input);
         $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
         try {
             $student = User::findOrFail(Auth::id());
@@ -78,7 +78,7 @@ class PaymentController extends Controller
             }
             else{
                 $paymentData->update([
-                    'payment_status' => 'canceled',
+                    'payment_status' => 'cancelled',
                     'error_reason' => 'Transaction cancelled by the user.',
                     'status' => 0,
                 ]);
@@ -135,5 +135,42 @@ class PaymentController extends Controller
         } else {
             return redirect()->back()->with('error', 'Something Went Wrong.');
         }
+    }
+
+   //this method works when refresh button is clicked in billing page 
+    public function refreshPayment($paymentId){
+        try {
+            $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
+    
+            $paymentDetails = $api->payment->fetch($paymentId);
+    // dd( $paymentDetails);
+            if ($paymentDetails) {
+                $status = $paymentDetails['status']; // e.g., "authorized", "captured"
+    
+                $payment = Payment::where('payment_id', $paymentId)->first();
+    
+                if ($payment) {
+                    $payment->update([
+                        'payment_status' => $status,
+                        'status' => $status === 'captured' ? 1 : 0, 
+                    ]);
+    
+                    if ($status === 'captured') {
+                        return redirect()->back()->with('success', 'Payment captured successfully.');
+                    } elseif ($status === 'authorized') {
+                        return redirect()->back()->with('info', 'Payment is authorized but not captured.');
+                    } else {
+                        return redirect()->back()->with('error', 'Payment status: ' . $status);
+                    }
+                } else {
+                    return redirect()->back()->with('error', 'Payment record not found in the database.');
+                }
+            } else {
+                return redirect()->back()->with('error', 'Failed to fetch payment details from Razorpay.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error: ' . $e->getMessage());
+        }
+
     }
 }
