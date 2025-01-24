@@ -36,7 +36,18 @@ class PlacedStudentController extends Controller
                    'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
                    
            ]);
-          
+           $imagePath = $request->file('image')->store('store', 'public');
+
+           PlacedStudent::create([
+               'name' => $request->title,
+               'content' => $request->date,
+               'position' => $request->time,
+               'image' => $imagePath,
+               
+              
+           ]);
+           return redirect()->route('placedStudent.create')->with('success', 'placedstudent created successfully!');
+
     }
 
     /**

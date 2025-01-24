@@ -188,7 +188,7 @@ use App\Models\Workshop;
     Route::get('/admin/workshops/{id}/edit', [WorkshopController::class, 'edit'])->name('admin.workshops.edit');
     Route::put('/admin/workshop/{id}', [WorkshopController::class, 'update'])->name('admin.workshops.update');
     Route::delete('admin/workshop/{id}', [WorkshopController::class, 'destroy'])->name('admin.workshops.destroy');
-    Route::get('/placedStudent/create', [PlacedStudentController::class, 'create'])->name('placedStudent.create');
+    Route::resource('placedStudent', PlacedStudentController::class);
 
         });
     });
