@@ -2,6 +2,7 @@
 @section('content')
     <div class="mt-16 px-6 py-8">
         <!-- Page Heading -->
+
         <div class="border-b border-gray-200 pb-6 mb-8">
             <div class="container mx-auto flex justify-between items-center">
                 <h1 class="text-lg font-medium text-gray-900">Courses</h1>
@@ -22,7 +23,6 @@
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                         </svg>
-
                     </button>
                 </div>
 
