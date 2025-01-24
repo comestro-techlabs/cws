@@ -11,7 +11,8 @@
     use App\Http\Controllers\CourseController;
     use App\Http\Controllers\EnquiryController;
     use App\Http\Controllers\LessonController;
-    use App\Http\Controllers\OptionController;
+    use App\Http\Controllers\MessageController;
+use App\Http\Controllers\OptionController;
     use App\Http\Controllers\PhonepeController;
     use App\Http\Controllers\PublicController;
     use App\Http\Controllers\ResultController;
@@ -128,7 +129,7 @@ use App\Models\Workshop;
 
             Route::patch('/assignment/{assignment}/toggle-status', [AssignmentsController::class, 'toggleStatus'])->name('assignment.toggleStatus');
 
-
+            
             //exam
             Route::get('/exam/create', [ExamController::class, 'create'])->name('exam.create');
             Route::post('/exam/store', [ExamController::class, 'store'])->name('exam.store');
@@ -187,6 +188,11 @@ use App\Models\Workshop;
     Route::get('/admin/workshops/{id}/edit', [WorkshopController::class, 'edit'])->name('admin.workshops.edit');
     Route::put('/admin/workshop/{id}', [WorkshopController::class, 'update'])->name('admin.workshops.update');
     Route::delete('admin/workshop/{id}', [WorkshopController::class, 'destroy'])->name('admin.workshops.destroy');
+
+
+    Route::get('/message/create', [MessageController::class, 'create'])->name('messages.create');
+    Route::post('/message/store', [MessageController::class, 'store'])->name('messages.store');
+    Route::get('/message/show', [MessageController::class, 'index'])->name('messages.show');
 
         });
     });
