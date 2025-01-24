@@ -239,86 +239,25 @@
 
         {{-- Student List --}}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl">
-            <!-- Student 1 -->
+          
+            @foreach ($placedStudents as $item)
             <div class="flex flex-col md:flex-row bg-secondary text-white py-6 px-6  shadow gap-6">
                 <!-- Student Image -->
                 <div class="w-full md:w-1/3 flex justify-center items-center">
-                    <img src="https://img.freepik.com/premium-photo/work-from-home_1246590-8920.jpg?ga=GA1.1.1275289697.1728223870&semt=ais_incoming_vrsd"
+                    <img src="{{ asset('storage/' . $item->image) }}"
                         alt="Student 1 Image" class="rounded-lg shadow-lg w-full md:w-3/4">
                 </div>
                 <!-- Student Details -->
                 <div class="w-full md:w-2/3 flex flex-col justify-center items-start text-left">
-                    <h3 class="text-2xl font-bold mb-4">Kamana Kumari</h3>
+                    <h3 class="text-2xl font-bold mb-4">{{$item->name}}</h3>
                     <p class="text-base mb-4">
-                        "John completed our Python programming course and secured a role as a Software Developer at a
-                        leading
-                        tech company."
+                        {{$item->content}}
                     </p>
-                    <p class="text-base mb-2"><strong></strong>Django developer</p>
+                    <p class="text-base mb-2"><strong></strong>{{$item->position}}</p>
                     {{-- <p class="text-base"><strong>Contact:</strong> +1 123 456 7890</p> --}}
                 </div>
             </div>
-
-            <!-- Student 2 -->
-            <div class="flex flex-col md:flex-row bg-secondary text-white py-6 px-6  shadow gap-6">
-                <!-- Student Image -->
-                <div class="w-full md:w-1/3 flex justify-center items-center">
-                    <img src="https://img.freepik.com/premium-photo/work-from-home_1246590-8920.jpg?ga=GA1.1.1275289697.1728223870&semt=ais_incoming_vrsd"
-                        alt="Student 1 Image" class="rounded-lg shadow-lg w-full md:w-3/4">
-                </div>
-                <!-- Student Details -->
-                <div class="w-full md:w-2/3 flex flex-col justify-center items-start text-left">
-                    <h3 class="text-2xl font-bold mb-4">Puja Kumari</h3>
-                    <p class="text-base mb-4">
-                        "John completed our Python programming course and secured a role as a Software Developer at a
-                        leading
-                        tech company."
-                    </p>
-                    <p class="text-base mb-2"><strong></strong>Laravel Developer</p>
-                    {{-- <p class="text-base"><strong>Contact:</strong> +1 123 456 7890</p> --}}
-                </div>
-            </div>
-
-            <!-- Student 3 -->
-            <div class="flex flex-col md:flex-row bg-secondary text-white py-6 px-6  shadow gap-6">
-                <!-- Student Image -->
-                <div class="w-full md:w-1/3 flex justify-center items-center">
-                    <img src="https://img.freepik.com/premium-photo/work-from-home_1246590-8920.jpg?ga=GA1.1.1275289697.1728223870&semt=ais_incoming_vrsd"
-                        alt="Student 1 Image" class="rounded-lg shadow-lg w-full md:w-3/4">
-                </div>
-                <!-- Student Details -->
-                <div class="w-full md:w-2/3 flex flex-col justify-center items-start text-left">
-                    <h3 class="text-2xl font-bold mb-4">Neha</h3>
-                    <p class="text-base mb-4">
-                        "John completed our Python programming course and secured a role as a Software Developer at a
-                        leading
-                        tech company."
-                    </p>
-                    <p class="text-base mb-2"><strong></strong>Backend developer</p>
-                    {{-- <p class="text-base"><strong>Contact:</strong> +1 123 456 7890</p> --}}
-                </div>
-            </div>
-            <!-- Student 4 -->
-            <div class="flex flex-col md:flex-row bg-secondary text-white py-6 px-6  shadow gap-6">
-                <!-- Student Image -->
-                <div class="w-full md:w-1/3 flex justify-center items-center">
-                    <img src="https://img.freepik.com/premium-photo/work-from-home_1246590-8920.jpg?ga=GA1.1.1275289697.1728223870&semt=ais_incoming_vrsd"
-                        alt="Student 1 Image" class="rounded-lg shadow-lg w-full md:w-3/4">
-                </div>
-                <!-- Student Details -->
-                <div class="w-full md:w-2/3 flex flex-col justify-center items-start text-left">
-                    <h3 class="text-2xl font-bold mb-4">Komal kumari</h3>
-                    <p class="text-base mb-4">
-                        "John completed our Python programming course and secured a role as a Software Developer at a
-                        leading
-                        tech company."
-                    </p>
-                    <p class="text-base mb-2"><strong></strong>Django Developer</p>
-                    {{-- <p class="text-base"><strong>Contact:</strong> +1 123 456 7890</p> --}}
-                </div>
-            </div>
-
-
+            @endforeach
 
         </div>
     </div>
