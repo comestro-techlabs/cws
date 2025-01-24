@@ -86,8 +86,10 @@
                 </form> --}}
 
                 @if($payment_exist)
-                <div class="bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3 flex items-center justify-center" role="alert">
-                    <p class="text-sm font-bold">Already Enrolled.</p>
+
+                <div class="bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3 flex flex-col items-center justify-center" role="alert">
+                    <p class="font-bold">Already Enrolled</p>
+                    <p class="text-sm"><a href="{{ route('student.dashboard') }}" class="text-sm underline text-blue-700">Go to Dashboard</a></p>
                 </div>
                 @else
                 <a href="{{route('phonepe.payment')}}" id="pay-button"
@@ -315,24 +317,32 @@
             e.preventDefault();
             var options = {
                 "key": "{{ env('RAZORPAY_KEY') }}",
-                "amount": "{{ $course->discounted_fees }}" * 100,
+                "amount": "{{ $course->discounted_fees }}" * 100, // Amount in paisa
                 "currency": "INR",
                 "name": "LearnSyntax",
                 "description": "Processing Fee",
                 "image": "{{ asset('front_assets/img/logo/logo.png') }}",
                 "handler": function(response) {
+                    // Trigger form submission on successful payment
                     document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
                     document.forms[0].submit();
                 },
                 "prefill": {
                     "name": "{{ Auth::user()->name }}",
-                    "email": "{{ Auth::user()->email }}",
-                    // "contact": {{ Auth::user()->contact }}
+                    "email": "{{ Auth::user()->email }}"
                 },
                 "theme": {
                     "color": "#0a64a3"
+                },
+                "modal": {
+                    "ondismiss": function() {
+                        alert('Payment process was cancelled.');
+                        document.getElementById('razorpay_payment_id').value = null;
+                        document.forms[0].submit();
+                    }
                 }
             };
+
             var rzp1 = new Razorpay(options);
             rzp1.open();
         }
@@ -361,7 +371,7 @@
         "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information, especially their phone number
             "name": "Gaurav Kumar", //your customer's name
             "email": "gaurav.kumar@example.com",
-            "contact": "9000090000" //Provide the customer's phone number for better conversion rates 
+            "contact": "9000090000" //Provide the customer's phone number for better conversion rates
         },
         "notes": {
             "address": "Razorpay Corporate Office"
@@ -377,7 +387,7 @@
         alert(response.error.source);
         alert(response.error.step);
         alert(response.error.reason);
-        
+
         alert(response.error.metadata.order_id);
         alert(response.error.metadata.payment_id);
     });

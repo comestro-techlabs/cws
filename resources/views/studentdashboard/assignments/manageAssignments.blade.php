@@ -8,7 +8,7 @@
 
         <!-- Check if Courses Exist -->
         @if ($courses->isNotEmpty())
-            @foreach ($courses as $course)
+            @foreach ($courses as $course  )
                 <div class="mb-8">
                     <!-- Course Title -->
                     <div class="bg-teal-600 text-white px-6 py-3 rounded-t-lg">

@@ -14,7 +14,8 @@
     use App\Http\Controllers\MessageController;
 use App\Http\Controllers\OptionController;
     use App\Http\Controllers\PhonepeController;
-    use App\Http\Controllers\PublicController;
+    use App\Http\Controllers\PlacedStudentController;
+use App\Http\Controllers\PublicController;
     use App\Http\Controllers\ResultController;
     use App\Http\Controllers\StudentController;
     use App\Http\Controllers\PaymentController;
@@ -25,7 +26,7 @@ use App\Http\Controllers\OptionController;
     use App\Http\Controllers\ExamController;
     use App\Http\Middleware\AdminMiddleware;
     use App\Http\Controllers\QuizController;
-
+use App\Models\PlacedStudent;
 use App\Models\Workshop;
 
 
@@ -69,6 +70,7 @@ use App\Models\Workshop;
     Route::post('save-course-payment', [PaymentController::class, 'saveCoursePayment'])->name('save.course.payment');
      Route::post('save-workshop-payment', [PaymentController::class, 'saveWorkshopPayment'])->name('save.workshop.payment');
   
+     Route::get('payment/refresh/{paymentId}', [PaymentController::class, 'refreshPayment'])->name('payment.refresh');
 
     Route::middleware([AdminMiddleware::class, "auth"])->group(function () {
 
@@ -188,6 +190,7 @@ use App\Models\Workshop;
     Route::get('/admin/workshops/{id}/edit', [WorkshopController::class, 'edit'])->name('admin.workshops.edit');
     Route::put('/admin/workshop/{id}', [WorkshopController::class, 'update'])->name('admin.workshops.update');
     Route::delete('admin/workshop/{id}', [WorkshopController::class, 'destroy'])->name('admin.workshops.destroy');
+    Route::get('/placedStudent/create', [PlacedStudentController::class, 'create'])->name('placedStudent.create');
 
 
     Route::get('/message/create', [MessageController::class, 'create'])->name('messages.create');
@@ -243,10 +246,11 @@ use App\Models\Workshop;
         Route::get('/login', 'showLoginForm')->name('auth.login');
         Route::post('/login', 'login')->name('auth.login.post');
         Route::get('/verify-otp',  'showOtpForm')->name('show.otp.form');
+        Route::post('/resend-otp',  'resendOtp')->name('auth.resend-otp');
 
-// OTP verification handling route (POST request to verify OTP)
-Route::post('verify-otp',  'verifyOtp')->name('verify.otp');
-Route::post('send-otp', 'sendOtp')->name('auth.sendOtp');
+        // OTP verification handling route (POST request to verify OTP)
+        Route::post('verify-otp',  'verifyOtp')->name('verify.otp');
+        Route::post('send-otp', 'sendOtp')->name('auth.sendOtp');
 
         Route::get('/register', 'showRegistrationForm')->name('auth.register');
         Route::post('/register', 'register')->name('auth.register.post');
