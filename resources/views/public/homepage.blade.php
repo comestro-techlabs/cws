@@ -43,7 +43,7 @@
                             <div class="">
                                 <p class="text-gray-700 text-sm font-medium">By:{{ $item->instructor }}</p>
                                 <span class="text-gray-600 text-sm font-semibold">
-                                    Duration: {{ $item->duration * 7 }} Days
+                                    Duration: {{ $item->duration  }} Weeks
                                 </span>
                                 </div>
                         </div>
@@ -268,23 +268,23 @@
     <div class="bg-white py-12 mt-20 mb-20 px-6">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2">
             <!-- Left Side: Text Content -->
-            <div>
+            <div class="" style="padding-left: 50px">
                 <h2 class="text-3xl font-bold text-black">
                     We <span class="text-primary">love</span> to help you
                 </h2>
                 <p class="text-gray-600 mt-2">Explore new and trending Learn syntax.</p>
                 <div class="mt-6">
-                    <div class="flex items-start space-x-4">
+                    <div class="flex items-start space-x-4  border-b-2 w-96">
                         <span class="font-medium text-black">Phone:</span>
-                        <p class="text-gray-700">+91-9546805580</p>
+                        <p class="text-gray-700 mb-3">+91-9546805580</p>
                     </div>
-                    <div class="flex items-start space-x-4 mt-4">
+                    <div class="flex items-start space-x-4  border-b-2 w-96 mt-4">
                         <span class="font-medium text-black">Email:</span>
-                        <a href="mailto:support@nareshit.com" class="text-blue-600 underline">info@learnSyntax.com</a>
+                        <a href="mailto:support@nareshit.com" class="text-blue-600 mb-3">info@learnSyntax.com</a>
                     </div>
-                    <div class="flex items-start space-x-4 mt-4">
+                    <div class="flex items-start space-x-4  mt-4">
                         <span class="font-medium text-black">Location:</span>
-                        <p class="text-gray-700">Purnea, Bihar, India</p>
+                        <p class="text-gray-700 mb-3">Purnea, Bihar, India</p>
                     </div>
                 </div>
             </div>

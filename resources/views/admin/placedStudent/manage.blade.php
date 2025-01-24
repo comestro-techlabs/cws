@@ -30,7 +30,7 @@
                     <tr>
                         <td class="border border-gray-300 px-4 py-2">{{ $key + 1 }}</td>
                         <td class="border border-gray-300 px-4 py-2">{{ $student->name }}</td>
-                        <td class="border border-gray-300 px-4 py-2">{{ $student->content }}</td>
+                        <td class="border border-gray-300 px-4 py-2 line-clamp-1">{{ $student->content }}</td>
                         <td class="border border-gray-300 px-4 py-2">{{ $student->position }}</td>
                         {{-- <td class="border border-gray-300 px-4 py-2">{{ $student->status }}</td> --}}
                         <td class="border border-gray-300 px-4 py-2 text-center">
