@@ -68,6 +68,7 @@ use App\Models\Workshop;
     Route::post('save-course-payment', [PaymentController::class, 'saveCoursePayment'])->name('save.course.payment');
      Route::post('save-workshop-payment', [PaymentController::class, 'saveWorkshopPayment'])->name('save.workshop.payment');
   
+     Route::get('payment/refresh/{paymentId}', [PaymentController::class, 'refreshPayment'])->name('payment.refresh');
 
     Route::middleware([AdminMiddleware::class, "auth"])->group(function () {
 

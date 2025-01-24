@@ -336,7 +336,7 @@
                 },
                 "modal": {
                     "ondismiss": function() {
-                        alert('Payment process was canceled.');
+                        alert('Payment process was cancelled.');
                         document.getElementById('razorpay_payment_id').value = null;
                         document.forms[0].submit();
                     }
