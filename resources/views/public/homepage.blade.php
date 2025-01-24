@@ -15,8 +15,8 @@
     {{-- latest course --}}
     <div class="">
         <div class="flex flex-col items-center mt-20 text-center">
-            <h2 class="text-3xl text-primary font-sans font-bold mb-4">Our Latest Courses</h2>
-            <h1 class="text-3xl font-bold text-gray-800 mb-4">Master the Skills to Build Your Future</h1>
+            <h2 class="text-3xl text-gray-900 font-sans font-bold mb-4">Our <span class="text-secondary">Latest</span> Courses</h2>
+            <h1 class="text-xl font-semibold text-gray-800 mb-4">Master the Skills to Build Your Future</h1>
             <p class="text-base text-gray-700 mb-6 max-w-4xl">
                 Explore our curated courses designed to provide you with the latest industry insights and practical
                 knowledge.
@@ -40,12 +40,18 @@
                             {{ Str::limit($item->description, 122) }}
                         </p>
                         <div class="flex items-center mb-4">
-                            <div class="ml-3">
-                                <p class="text-gray-700 text-sm font-medium">{{ $item->instructor }}</p>
-                            </div>
+                            <div class="">
+                                <p class="text-gray-700 text-sm font-medium">By:{{ $item->instructor }}</p>
+                                <span class="text-gray-600 text-sm font-semibold">
+                                    Duration: {{ $item->duration * 7 }} Days
+                                </span>
+                                </div>
                         </div>
                         <div class="flex justify-between items-center">
-                            <p class="text-lg font-bold text-primary">Rs.{{ $item->discounted_fees }}</p>
+                            <p class="text-sm font-semibold text-primary">Fees:  Rs.
+                                <span class="text-sm text-gray-600 line-through">{{ $item->fees }}</span>
+                                {{ $item->discounted_fees }}</p>
+                            
                             <a href="{{ route('public.courseDetails', ['category_slug' => $item->category->cat_slug, 'slug' => $item->slug]) }}"
                                 class="bg-primary text-white font-bold py-2 px-4 rounded shadow focus:outline-none focus:ring">
                                 Enroll Now
@@ -57,7 +63,7 @@
         </div>
         <div class="flex justify-center items-center">
 
-            <div class="bg-secondary flex  items-center py-2   px-6 rounded-lg shadow gap-2 mb-20">
+            <div class="bg-secondary flex  items-center py-3 px-6 rounded-lg shadow gap-2 mb-20">
                 <a href="{{ route('public.training') }}" class=" text-white font-bold ">
                     View All Courses
                 </a>
