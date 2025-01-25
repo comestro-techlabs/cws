@@ -5,7 +5,23 @@
 @section('content')
 <div class="bg-gray-100 py-10 min-h-screen">
     <div class="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md">
-        <h2 class="text-2xl font-bold mb-4">Create New Item</h2>
+        <h2 class="text-2xl font-bold mb-4">Create New Placed Students</h2>
+
+        @if ($errors->any())
+        <div class="mb-4 p-4 text-red-700 bg-red-100 border border-red-400 rounded">
+            <ul class="list-disc pl-5">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    @if (session('success'))
+        <div class="mb-4 p-4 text-green-700 bg-green-100 border border-green-400 rounded">
+            {{ session('success') }}
+        </div>
+    @endif
         <form action="{{ route('placedStudent.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
             @csrf
             <!-- Name -->

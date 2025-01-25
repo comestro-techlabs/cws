@@ -1,25 +1,25 @@
 @extends('studentdashboard.include.base')
 @section('content')
 
-<div class="page mt-16 bg-gray-50 dark:bg-gray-900 min-h-screen">
+<div class="page mt-16  min-h-screen">
   <!-- Page Heading -->
-  <div class="border-b border-gray-300 dark:border-gray-700 py-4">
+  <div class="border-b border-gray-300 py-4">
     <div class="container mx-auto px-6 flex items-center">
-      <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Billing</h1>
+      <h1 class="text-2xl font-bold text-gray-800">Manage Your Billing</h1>
     </div>
   </div>
 
   <div class="container mx-auto px-6 py-6">
     <!-- Invoices Table -->
-    <div class="bg-white dark:bg-gray-800 shadow rounded-lg">
-      <div class="p-4 border-b border-gray-300 dark:border-gray-700">
-        <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100">Invoices</h2>
-        <p class="text-sm text-gray-600 dark:text-gray-400">Your past payments</p>
+    <div class="bg-white shadow rounded-lg">
+      <div class="p-4 border-b border-gray-300">
+        <h2 class="text-lg font-semibold text-gray-800">Invoices</h2>
+        <p class="text-sm text-gray-600">Your past payments</p>
       </div>
 
       <div class="p-4 overflow-x-auto">
-        <table class="min-w-full bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-          <thead class="bg-gray-100 dark:bg-gray-700">
+        <table class="min-w-full bg-white divide-y divide-gray-200">
+          <thead class="bg-gray-100">
             <tr>
               <th class="py-3 px-4 text-centert text-sm font-medium text-gray-600 dark:text-gray-400">Course Name</th>
               <!-- <th class="py-3 px-4 text-left text-sm font-medium text-gray-600 dark:text-gray-400">Course Category</th> -->
@@ -32,13 +32,13 @@
               <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 dark:text-gray-400">Action</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+          <tbody class="divide-y divide-gray-200">
             @foreach ($payments as $item)
             <tr>
-              <td class="py-3 px-4 text-center text-gray-800 dark:text-gray-200">
+              <td class="py-3 px-4 text-center text-gray-800">
                 {{ $item->course->title }}
               </td>
-              <td class="py-3 px-4 text-center text-gray-800 dark:text-gray-200">
+              <td class="py-3 px-4 text-center text-gray-800">
                 {{ $item->order_id }}
               </td>
               <td class="py-3 px-4 text-center text-gray-800 dark:text-gray-200 ">
