@@ -62,10 +62,13 @@
     Route::post('/student/assignments/upload/{assignment_id}', [StudentController::class, 'store'])->name('assignments.store');
 
 
-    Route::post('save-course-payment', [PaymentController::class, 'saveCoursePayment'])->name('save.course.payment');
-    Route::post('save-workshop-payment', [PaymentController::class, 'saveWorkshopPayment'])->name('save.workshop.payment');
+     Route::post('save-workshop-payment', [PaymentController::class, 'saveWorkshopPayment'])->name('save.workshop.payment');
+  
+     Route::post('/initiate-payment', [PaymentController::class, 'initiatePayment'])->name('store.payment.initiation');
+     Route::post('/payment-response', [PaymentController::class, 'handlePaymentResponse'])->name('handle.payment.response');
+     Route::post('/refresh-payment-status', [PaymentController::class, 'refreshPaymentStatus'])->name('refresh.payment.status');
 
-    Route::get('payment/refresh/{paymentId}', [PaymentController::class, 'refreshPayment'])->name('payment.refresh');
+
 
     Route::middleware([AdminMiddleware::class, "auth"])->group(function () {
 

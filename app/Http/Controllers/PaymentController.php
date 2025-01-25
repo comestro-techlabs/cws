@@ -11,87 +11,13 @@ use Exception;
 use Razorpay\Api\Api;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class PaymentController extends Controller
 {
 
 
-    public function saveCoursePayment(Request $request)
-    {
-
-        $input = $request->all();
-        // dd($input);
-        $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
-        try {
-            $student = User::findOrFail(Auth::id());
-            $order = time() . $student->id . $request->input('amount');
-
-            //Initially we will save these data in DB
-            $paymentData = Payment::create([
-                'course_id' => $request->input('course_id'),
-                'student_id' => $student->id,
-                'receipt_no' => $order,
-                'order_id' => $order,
-                'payment_id' => $request->razorpay_payment_id,
-                'transaction_fee' => $request->input('amount'),
-                'amount' => $request->input('amount'),
-                'transaction_id' => time() . rand(11, 99) . date('yd'),
-                'transaction_date' => now(),
-                'payment_date' => now(),
-                'payment_status' => 'initiated',
-                'ip_address' => $request->ip(),
-                'status' => 0,
-            ]);
-
-            //Agr frontend pe modal ko close krdiya jaye ya phir payment_id null aye ,
-            //to ondismis wala array element  k wjh se yha null ajayega razorpay_payment_id or niche if condition trigger ni hoga
-            if ($request->filled('razorpay_payment_id')) {
-                $payment = $api->payment->fetch($input['razorpay_payment_id']);
-                // dd($payment);
-                if ($payment->status === 'authorized') {
-                    $response = $api->payment->fetch($input['razorpay_payment_id'])->capture([
-                        'amount' => $payment['amount']
-                    ]);
-                    // dd($response);
-                    $paymentData->update([
-                        'payment_id' => $response->id,
-                        'payment_status' => $response->status,
-                        'payment_card_id' => $response->card_id,
-                        'method' => $response->method,
-                        'wallet' => $response->wallet,
-                        'payment_vpa' => $response->vpa,
-                        'international_payment' => $response->international,
-                        'error_reason' => $response->error_reason ?? 'No error',
-                        'status' => 1,
-                    ]);
-                    $student->courses()->attach($request->input('course_id'));
-                    return redirect('/student/dashboard')->with('success', 'Payment Successfull');
-                }
-                else {
-                    $paymentData->update([
-                        'payment_status' => $payment->status,
-                        'error_reason' => $paymentData->error_reason ?? 'Payment failed.',
-                        'status' => 0,
-                    ]);
-                    return redirect()->back()->with('error', 'Payment failed: ' . $paymentData->error_reason);
-                }
-            }
-            else{
-                $paymentData->update([
-                    'payment_status' => 'cancelled',
-                    'error_reason' => 'Transaction cancelled by the user.',
-                    'status' => 0,
-                ]);
-
-                return redirect()->back()->with('error', 'Transaction cancelled by the user.');
-            }
-
-        } catch (Exception $e) {
-            return redirect()->back()->with('error', 'Payment processing failed:' . $e->getMessage());
-        }
-    }
-
-
+   
     public function saveWorkshopPayment(Request $request)
     {
         $input = $request->all();
@@ -137,40 +63,142 @@ class PaymentController extends Controller
         }
     }
 
-   //this method works when refresh button is clicked in billing page 
-    public function refreshPayment($paymentId){
+    public function initiatePayment(Request $request)
+    {
+        // Create a payment record in the payments table
+        $payment = Payment::create([
+            'student_id' => $request->student_id,
+            'course_id' => $request->course_id,
+            'amount' => $request->amount,
+            'receipt_no' => $request->receipt_no,
+            'transaction_fee' => $request->amount, // Use appropriate fee if needed
+            'transaction_date' => now()->toDateTimeString(),
+            'ip_address' => $request->ip_address,
+            'payment_status' => 'initiated',
+        ]);
+    
+        // Now, create the Razorpay order
+        $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
+    
+        // Prepare Razorpay order details
+        $orderData = [
+            'amount' => $request->amount * 100, // Razorpay expects amount in paise
+            'currency' => 'INR',
+            'receipt' => $payment->receipt_no,
+            'payment_capture' => 1, // auto-capture the payment
+        ];
+    
         try {
-            $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
+            $order = $api->order->create($orderData);
     
-            $paymentDetails = $api->payment->fetch($paymentId);
-    // dd( $paymentDetails);
-            if ($paymentDetails) {
-                $status = $paymentDetails['status']; // e.g., "authorized", "captured"
+            // Update the payment record with Razorpay order ID
+            $payment->update([
+                'order_id' => $order->id,
+            ]);
     
-                $payment = Payment::where('payment_id', $paymentId)->first();
+            return response()->json([
+                'success' => true,
+                'order_id' => $order->id,
+                'payment_id' => $payment->id,  // You can send the payment ID back for frontend reference
+            ]);
     
-                if ($payment) {
-                    $payment->update([
-                        'payment_status' => $status,
-                        'status' => $status === 'captured' ? 1 : 0, 
-                    ]);
-    
-                    if ($status === 'captured') {
-                        return redirect()->back()->with('success', 'Payment captured successfully.');
-                    } elseif ($status === 'authorized') {
-                        return redirect()->back()->with('info', 'Payment is authorized but not captured.');
-                    } else {
-                        return redirect()->back()->with('error', 'Payment status: ' . $status);
-                    }
-                } else {
-                    return redirect()->back()->with('error', 'Payment record not found in the database.');
-                }
-            } else {
-                return redirect()->back()->with('error', 'Failed to fetch payment details from Razorpay.');
-            }
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Error: ' . $e->getMessage());
+            // Handle error if Razorpay order creation fails
+            $payment->update([
+                'payment_status' => 'failed',
+                'error_reason' => $e->getMessage(),
+            ]);
+    
+            return response()->json([
+                'success' => false,
+                'message' => 'Error creating Razorpay order: ' . $e->getMessage()
+            ]);
         }
+    }
+    public function handlePaymentResponse(Request $request)
+    {
+        // Retrieve the payment record using the payment ID
+        $payment = Payment::findOrFail($request->payment_id);
+    
+        // Razorpay response will contain payment details
+        $razorpay_payment_id = $request->razorpay_payment_id;
+    
+        // Update the payment record with the received details
+        $payment->update([
+            'payment_id' => $razorpay_payment_id,
+            'transaction_id' => $request->razorpay_payment_id, // or any other transaction ID
+            'payment_status' => 'completed',
+            'status'=> 'captured',
+            'payment_date' => now()->toDateTimeString(),
+            'method' => 'razorpay',  // Or any other payment method used
+            'payment_vpa' => $request->razorpay_vpa ?? null, // If available
+        ]);
+    
+        // Optionally, you can also check the payment status from Razorpay and update accordingly
+        if ($request->razorpay_payment_id) {
+            // You can verify the payment status with Razorpay API if needed
+            // Example: $api->payment->fetch($razorpay_payment_id)->capture([]);
+        }
+    
+        return response()->json([
+            'success' => true,
+            'message' => 'Payment processed successfully.',
+        ]);
 
     }
+        
+    public function refreshPaymentStatus(Request $request)
+    {
+        $orderId = $request->order_id; // The order_id passed from the frontend
+    
+        // Use Razorpay API to fetch payments associated with the order_id
+        try {
+            $response = Http::withBasicAuth(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'))
+                            ->get("https://api.razorpay.com/v1/orders/{$orderId}/payments");
+    
+            $paymentData = $response->json();
+    
+            // Check if the API returned any payments
+            if (isset($paymentData['items']) && count($paymentData['items']) > 0) {
+                // Assume we have only one payment record for this order
+                $payment = $paymentData['items'][0];  // Only one payment in the response for the order
+    
+                // Find the payment record in the database using the order_id
+                $paymentRecord = Payment::where('order_id', $orderId)->first();
+    
+                if ($paymentRecord) {
+                    // Update the payment record with the latest data from Razorpay
+                    $paymentRecord->status = $payment['status'];
+                    $paymentRecord->payment_id = $payment['id'];  // Save Razorpay payment ID
+                    $paymentRecord->transaction_id = $payment['id'];  // Save the transaction ID
+                    $paymentRecord->transaction_date = now();  // Update with the current date
+                    $paymentRecord->error_reason = $payment['error_description'] ?? null;  // Handle errors if any
+                    $paymentRecord->save();
+    
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Payment record updated successfully',
+                        'data' => $paymentRecord
+                    ]);
+                }
+    
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Payment record not found for the given order ID'
+                ]);
+            }
+    
+            return response()->json([
+                'success' => false,
+                'message' => 'No payments found for the given order ID'
+            ]);
+    
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error occurred while refreshing payment status: ' . $e->getMessage()
+            ]);
+        }
+    }
+
 }

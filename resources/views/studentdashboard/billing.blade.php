@@ -21,13 +21,15 @@
         <table class="min-w-full bg-white divide-y divide-gray-200">
           <thead class="bg-gray-100">
             <tr>
-              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600">Course Name</th>
-              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600">Order Id</th>
-              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600">Payment Status</th>
-              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600">Method</th>
-              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600">Payment Amount</th>
-              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600">Payment Date</th>
-              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600">Action</th>
+              <th class="py-3 px-4 text-centert text-sm font-medium text-gray-600 dark:text-gray-400">Course Name</th>
+              <!-- <th class="py-3 px-4 text-left text-sm font-medium text-gray-600 dark:text-gray-400">Course Category</th> -->
+              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 dark:text-gray-400">Order Id</th>
+              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 dark:text-gray-400">Payment Status</th>
+              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 dark:text-gray-400">Method</th>
+              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 dark:text-gray-400">Payment Amount</th>
+              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 dark:text-gray-400">Payment Date</th>
+              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 dark:text-gray-400">Error Reason</th>
+              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 dark:text-gray-400">Action</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-200">
@@ -39,45 +41,47 @@
               <td class="py-3 px-4 text-center text-gray-800">
                 {{ $item->order_id }}
               </td>
-              <td class="py-3 px-4 text-center text-gray-800">
-                <div class="flex items-center justify-center">
-                  @if($item->payment_status === 'captured')
-                  <p class="inline-block bg-green-500 text-white text-xs font-medium px-2 py-0.5 rounded">Completed</p>
-                  @elseif($item->payment_status === 'cancelled')
-                  <p class="inline-block bg-red-500 text-white text-xs font-medium px-2 py-0.5 rounded">Failed</p>
-                  @else
-                  <p class="inline-block bg-yellow-300 text-gray-800 text-xs font-medium px-2 py-0.5 rounded">Pending</p>
-                  @endif
+              <td class="py-3 px-4 text-center text-gray-800 dark:text-gray-200 ">
+                @if($item->status === "captured")
+                <div class="flex items-center justify-center rounded-full bg-green-500 uppercase px-2 py-1 text-center text-xs font-bold mr-3">
+                  {{$item->status}}
                 </div>
+                @elseif($item->status === "failed")
+                <div class="flex items-center justify-center rounded-full bg-red-500 uppercase px-2 py-1 text-xs text-center font-bold mr-3">
+                  {{$item->status}}
+                </div>
+                @else
+                <div class="flex items-center justify-center rounded-full bg-yellow-500 uppercase px-2 py-1 text-center text-xs font-bold mr-3">
+                  {{$item->status}}
+                </div>
+                @endif
               </td>
-              <td class="py-3 px-4 text-center text-gray-800">
+              <td class="py-3 px-4 text-gray-800 text-center dark:text-gray-200">
                 {{ $item->method }}
               </td>
-              <td class="py-3 px-4 text-center text-gray-800">
+              <td class="py-3 px-4 text-gray-800 text-center dark:text-gray-200">
                 ₹{{ $item->transaction_fee }}
               </td>
-              <td class="py-3 px-4 text-center text-gray-800">
+              <td class="py-3 px-4 text-gray-800 text-center dark:text-gray-200">
                 {{ \Carbon\Carbon::parse($item->transaction_date)->format('d M Y') }}
               </td>
-
-              @if($item->payment_status === 'captured')
-              <td class="py-3 px-4 text-center">
-                <button class="text-blue-600 hover:underline" onclick="window.print()">Print Invoice</button>
+              <td class="py-3 px-4 text-gray-800 text-left dark:text-gray-200 truncate max-w-xs" title="{{ $item->error_reason }}"  >
+                {{ $item->error_reason }}
               </td>
-              @elseif($item->payment_status === 'cancelled')
+
+              @if($item->status === 'captured')
               <td class="py-3 px-4 text-center">
-                <button class="text-white bg-red-700 font-medium rounded-full text-sm px-5 py-2.5">Failed</button>
+                <button class="text-blue-600 dark:text-blue-400 hover:underline cursor-pointer" onclick="window.print()">Print Invoice</button>
+              </td>
+              @elseif($item->status === 'failed')
+              <td class="py-3 px-4 text-center">
               </td>
               @else
               <td class="py-3 px-4 text-center">
-                @if($item->payment_status === 'authorized')
-                <a href="{{route('payment.refresh', '$item->payment_id')}}">
-                  <button class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-full text-sm px-5 py-2.5">Refresh</button>
-                </a>
-                @else
-                <button class="text-white bg-red-700 font-medium rounded-full text-sm px-5 py-2.5">Failed</button>
-                @endif
+                <button class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 cursor-pointer" id="refresh-payment" data-order-id="{{ $item->order_id }}">Refresh</button>
               </td>
+
+
               @endif
             </tr>
             @endforeach
@@ -88,4 +92,43 @@
   </div>
 </div>
 
+@endsection
+
+@section('scripts')
+<script>
+  document.getElementById('refresh-payment').onclick = function(e) {
+    e.preventDefault();
+
+    // Get the order ID from the button's data attribute
+    const orderId = e.target.getAttribute('data-order-id');
+
+    // Send a request to the backend to refresh the payment status for the given order_id
+    fetch("{{ route('refresh.payment.status') }}", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-TOKEN": "{{ csrf_token() }}"
+        },
+        body: JSON.stringify({
+          order_id: orderId
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert('Payment status updated successfully!');
+          window.location.reload(true);
+
+          // Optionally update the UI with the new payment status
+          // You can update a status text, or refresh the entire payment record displayed to the user
+        } else {
+          alert('Failed to refresh payment status: ' + data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error refreshing payment:', error);
+        alert('There was an error refreshing the payment status.');
+      });
+  };
+</script>
 @endsection
