@@ -12,17 +12,77 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="{{asset('build/assets/app-B9FQpHNS.css ')}}">
+    <link rel="stylesheet" href="{{ asset('build/assets/app-B9FQpHNS.css ') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
- @livewireStyles
-</head>  
+    @livewireStyles
+</head>
+
 <body>
-    @include('public.publicheader')
 
 
-    @section('content')
 
-    @show
+    <nav class="fixed top-0 z-50 w-full bg-white shadow-md ">
+
+        @include('public.publicheader')
+
+    </nav>
+
+    <aside id="logo-sidebar"
+    class="fixed sm:hidden sm:w-0 top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 "
+    aria-label="Sidebar">
+    <div class="h-full px-3 pb-4 overflow-y-auto bg-white">
+        <ul class="space-y-2 font-medium">
+            <li>
+                <a href="/"
+                    class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
+                    <span class="ms-3">Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('public.about') }}"
+                    class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
+                    <span class="ms-3">About Us</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('public.training') }}"
+                    class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
+                    <span class="ms-3">Courses</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('public.portfolio') }}"
+                    class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
+                    <span class="ms-3">Portfolio</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('public.workshops') }}"
+                    class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
+                    <span class="ms-3">Workshop</span>
+                </a>
+            </li>
+            <li>
+                <a href="/contact"
+                    class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
+                    <span class="ms-3">Contact</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</aside>
+
+
+    <div class="sm:p-0 p-4 sm:ml-0">
+
+        @section('content')
+
+        @show
+
+    </div>
+
+
+
 
     <footer class=" bg-secondary text-gray-50 py-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -42,14 +102,14 @@
                     <h3 class="text-lg font-semibold text-white mb-4">Quick Links</h3>
                     <ul class="space-y-2">
                         <li>
-                            <a href="{{route('public.about')}}" class="">About</a>
+                            <a href="{{ route('public.about') }}" class="">About</a>
                         </li>
                         <li>
-                            <a href="{{route('public.training')}}" class="">Courses</a>
+                            <a href="{{ route('public.training') }}" class="">Courses</a>
                         </li>
 
                         <li>
-                            <a href="{{route('public.contact')}}" class="">Contact Us</a>
+                            <a href="{{ route('public.contact') }}" class="">Contact Us</a>
                         </li>
 
                         <li>
