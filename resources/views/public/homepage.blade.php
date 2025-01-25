@@ -59,16 +59,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex justify-between items-center">
-                    @if ($item->discounted_fees > 0)
-                    <p class="text-lg font-bold text-primary">Rs.{{$item->discounted_fees}}</p>
-                    <a href="{{route('public.courseDetails',['category_slug' => $item->category->cat_slug, 'slug' =>  $item->slug])}}" class="bg-primary text-white font-bold py-2 px-4 rounded shadow focus:outline-none focus:ring">
-                        Enroll Now
-                    </a>
-                    @else
-                    <p class="text-green-600 font-bold">Free</p> 
-                    @endif
-                </div>
+            @endforeach
+        </div>
+        <div class="flex justify-center items-center">
+
+            <div class="bg-secondary flex  items-center py-3 px-6 rounded-lg shadow gap-2 mb-20">
+                <a href="{{ route('public.training') }}" class=" text-white font-bold ">
+                    View All Courses
+                </a>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white"
+                    class="bi bi-arrow-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8" />
+                </svg>
             </div>
         </div>
 
