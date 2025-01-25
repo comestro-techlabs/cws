@@ -9,7 +9,6 @@
     use App\Http\Controllers\CategoryController;
     use App\Http\Controllers\ChapterController;
     use App\Http\Controllers\CourseController;
-    use App\Http\Controllers\EnquiryController;
     use App\Http\Controllers\LessonController;
     use App\Http\Controllers\MessageController;
     use App\Http\Controllers\PhonepeController;
@@ -21,7 +20,6 @@
     use App\Http\Controllers\PortfolioController;
     use App\Http\Controllers\WorkshopController;
     use Illuminate\Support\Facades\Route;
-    use App\Http\Controllers\Auth\SocialiteController;
     use App\Http\Controllers\ExamController;
     use App\Http\Middleware\AdminMiddleware;
     use App\Http\Controllers\QuizController;
@@ -104,9 +102,7 @@
 
             Route::get("/search", [AdminController::class, "searchCourse"])->name('course.search');
 
-            Route::get("/search-enq", [AdminController::class, "searchEnquiry"])->name('enquiry.search');
-
-            Route::get('/enquiry', [AdminController::class, 'indexEnquiry'])->name('admin.manage.enquiry');
+            Route::get("/enquiry", [AdminController::class, "searchEnquiry"])->name('admin.manage.enquiry');
             Route::get('/enquiry-view/{enquiry}', [AdminController::class, 'editEnquiry'])->name('admin.enquiry.show');
             Route::put('/enquiry-view/{enquiry}', [AdminController::class, 'updateEnquiry'])->name('admin.enquiry.update');
             Route::resource('assignment', AssignmentsController::class);
@@ -221,7 +217,7 @@
         });
     });
 
-    Route::post('/enquiry-store', [EnquiryController::class, 'storeEnquiry'])->name('enquiry.store');
+    Route::post('/enquiry-store', [PublicController::class, 'storeEnquiry'])->name('enquiry.store');
 
     Route::get('generate', function () {
         \Illuminate\Support\Facades\Artisan::call('storage:link');

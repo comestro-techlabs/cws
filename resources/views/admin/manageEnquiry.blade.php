@@ -22,7 +22,7 @@
 
 
                 <div class="inline-flex md:flex-row flex-col  md:items-center gap-2" role="group">
-                    <form action="{{ route('enquiry.search') }}" method="get" class=" md:max-w-xl md:mx-auto mt-20">
+                    <form action="{{ route('admin.manage.enquiry') }}" method="get" class=" md:max-w-xl md:mx-auto mt-20">
 
                         <div class="flex border rounded-lg ps-3">
 

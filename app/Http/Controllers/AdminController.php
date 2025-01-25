@@ -16,50 +16,25 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
-        $admissionsCount = User::count();
-
-        // counting students here on the basis of purchased courses as well as made a payment:
-        $studentsCount = Payment::whereNotNull('course_id')
-            ->where('payment_status', 'captured')
-            ->distinct('student_id')
-            ->count('student_id');
-
-        $categoriesCount = Category::count();
-        $coursesCount = Course::count();
-        $batchesCount = Batch::count();
-        $lessonsCount = Lesson::count();
-        $chaptersCount = Chapter::count();
-        $enquiriesCount = Enquiry::count();
-        $paymentsCount = 0;
-        $duePaymentsCount = 0;
-
-        return view('admin.dashboard', compact(
-            'admissionsCount',
-            'studentsCount',
-            'categoriesCount',
-            'coursesCount',
-            'batchesCount',
-            'lessonsCount',
-            'enquiriesCount',
-            'chaptersCount',
-            'paymentsCount',
-            'duePaymentsCount'
-        ));
-        // return view('admin.dashboard');
+        $counts = [
+            'studentsCount' => Payment::whereNotNull('course_id')
+                ->where('payment_status', 'captured')
+                ->distinct('student_id')
+                ->count('student_id'),
+            'coursesCount' => Course::count(),
+            'batchesCount' => Batch::count(),
+            'paymentsCount' => Payment::sum('amount'),
+        ];
+        return view('admin.dashboard', $counts);
     }
+
 
     // search Course
     public function searchCourse(Request $request)
     {
         $search = $request->search;
-        $search_course = Course::whereLike('title', "%$search%")->paginate(10);
-        return view("admin.manageCourse", ['courses' => $search_course]);
-    }
-
-    public function indexEnquiry()
-    {
-        $data['enquiry'] = Enquiry::paginate(20);
-        return view("admin.manageEnquiry", $data);
+        $search_course = Course::whereLike('title', value: "%$search%")->paginate(10);
+        return view("admin.manageCourse", ['courses' => $search_course, "search" => $search]);
     }
 
     public function searchEnquiry(Request $request)
@@ -76,47 +51,41 @@ class AdminController extends Controller
 
     public function updateEnquiry(Request $request, Enquiry $enquiry)
     {
-        // Validate the incoming request data
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'mobile' => 'required|digits:10|regex:/^[0-9]{10}$/',
-            'status' => 'required|string',  // Adjust as needed for valid statuses
+            'status' => 'required|string',
         ]);
 
-        // Update the enquiry with validated data
         $enquiry->update($validatedData);
 
-        // Redirect with a success message
         return redirect()->route('admin.manage.enquiry', $enquiry)->with('success', 'Enquiry updated successfully');
     }
 
-    // showing students who have paid:
+
     public function managePayment(Request $request)
     {
-        // Fetch all payments with related student and course data
         $query = Payment::with(['student', 'course'])
-            ->where('payment_status', 'captured'); // Assuming 'captured' means fully paid
+            ->where('status', 'captured');
 
-        // here checking if the search term is provided:
+        // Search filter for student name
         if ($request->filled('search')) {
             $search = $request->input('search');
-
-            // filter by student name:
             $query->whereHas('student', function ($studentQuery) use ($search) {
-                $studentQuery->where('name', 'LIKE', '%' . $search . '%');
+                $studentQuery->where('name', 'LIKE', "%{$search}%");
             });
         }
 
-        // fetch results and sort them:
-        $payments = $query->orderBy('payment_date', 'desc')->paginate(10);
- 
-        // pass payments and search term to the view
-        return view('admin.managePayment', compact('payments'));
+        // Fetch and paginate results, sorted by payment date
+        $payments = $query->latest('payment_date')->paginate(10);
 
-        // ->orderBy('payment_date','desc') //sorting by date in descending order here;
-        // ->paginate(10);
-
+        // Return view with payments and search term
+        return view('admin.managePayment', [
+            'payments' => $payments,
+            'search' => $request->input('search'),
+        ]);
     }
+
 
 
     // function to view the payment:
@@ -129,14 +98,6 @@ class AdminController extends Controller
         return view('admin.viewPayment', compact('payment'));
     }
 
+    // ------------------------------------------------- tested ---------------------------------------
 
-    // public function showPurchasedCourses($userId)
-    // {
-    //     // Fetch the user along with their payments and related courses
-    //     $user = User::with(['payments.course' => function ($query) {
-    //         $query->where('payment_status', 'captured'); // Only successful payments
-    //     }])->findOrFail($userId);
-
-    //     return view('purchased-courses', compact('user'));
-    // }
 }

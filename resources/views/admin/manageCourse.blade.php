@@ -9,23 +9,23 @@
 
                 <h2 class="md:text-xl text-lg font-semibold dark:text-slate-300 text-slate-500 border-s-4 border-s-orange-400 pl-3">@if(isset($_GET['search']) && $_GET['search'] !== "")
                     {{$_GET['search']}}
-                @else 
+                @else
                     {{"Manage all"}}
                 @endif Courses ({{count($courses)}})</h2>
 
 
                 {{-- search form starts here --}}
-                
+
                 {{-- search form ends here --}}
 
 
                 <div class="inline-flex md:flex-row flex-col  md:items-center gap-2" role="group">
                     <form action="{{ route('course.search') }}" method="get" class=" md:max-w-md md:mx-auto">
-                   
+
                         <div class="flex border rounded-lg ps-3">
-                           
+
                             <input type="search" id="default-search" name="search"
-                                value="{{old('search')}}"
+                                value="{{$search ? $search : ""}}"
                                 class="border-0 focus:outline-none focus:border-none w-full"
                                 placeholder="Search course by name..." size="30"  />
                             <button type="submit"
@@ -60,7 +60,7 @@
                             <th scope="col" class="px-6 py-3">
                                 Fees
                             </th>
-                          
+
                             <th scope="col" class="px-6 py-3">
                                 Duration
                             </th>
@@ -94,12 +94,12 @@
                                         {{'₹' . number_format($course->fees, 2) }}
                                     @endif
                                     @else
-                                    <p class="text-green-600">Free</p> 
+                                    <p class="text-green-600">Free</p>
                                     @endif
-                                </td> 
-                                 
-                            
-                               
+                                </td>
+
+
+
                                 <td class="px-6 py-4">
                                     @if ($course->duration > 1)
                                         {{ $course->duration }} Weeks
@@ -112,12 +112,11 @@
                                     @endif
                                 </td>
                                 <td class="px-3 py-4">
-                                    {!!(!$course->published)? 
-                                    "<span class='text-slate-100 bg-slate-600 text-xs px-2 py-1 rounded-xl'>Draft</span>" : 
+                                    {!!(!$course->published)?
+                                    "<span class='text-slate-100 bg-slate-600 text-xs px-2 py-1 rounded-xl'>Draft</span>" :
                                     "<span class='text-slate-100 bg-teal-600 text-xs px-2 py-1 rounded-xl'>Published</span>"!!}
                                 </td>
                                 <td class="flex gap-2 items-center px-6 py-4">
-                                    <a href="{{route('course.batches',$course->id)}}" class="px-3 py-2 bg-yellow-400 text-xs rounded-xl font-medium text-white">Batches</a>
                                     <a href="{{ route('course.show', $course->id) }}"
                                         class="px-3 py-2 text-xs rounded-xl font-medium text-white bg-teal-500">
                                         Show
