@@ -92,7 +92,7 @@
                     <p class="text-sm"><a href="{{ route('student.dashboard') }}" class="text-sm underline text-blue-700">Go to Dashboard</a></p>
                 </div>
                 @else
-                <a href="{{route('phonepe.payment')}}" id="pay-button"
+                <a href="" id="pay-button"
                     class="flex items-center justify-center bg-white text-black  rounded-full mt-2 shadow-xl px-6 py-2  transition duration-300 ease-in-out transform hover:scale-105 space-x-3">
                     <img src="https://cdn.iconscout.com/icon/free/png-512/free-razorpay-logo-icon-download-in-svg-png-gif-file-formats--payment-gateway-brand-logos-icons-1399875.png?f=webp&w=256"
                         alt="PhonePe Logo" class="w-12 h-12 object-cover">
