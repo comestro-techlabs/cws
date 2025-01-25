@@ -1,11 +1,11 @@
 @extends('studentdashboard.include.base')
 @section('content')
-<div class="page mt-16 bg-gray-50 min-h-screen">
+<div class="page mt-16  min-h-screen">
     <!-- Page Heading -->
     <div class="border-b border-gray-300 py-4">
         <div class="container mx-auto px-6 flex items-center">
             <h1 class="text-2xl font-bold text-gray-800">Courses</h1>
-            <a href="quiz-edit.html"
+            <a href="{{route('student.course')}}"
                 class="ml-auto bg-indigo-600 hover:bg-indigo-500 text-white py-2 px-4 rounded flex items-center shadow">
                 New Course
             </a>

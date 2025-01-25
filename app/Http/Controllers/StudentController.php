@@ -143,17 +143,6 @@ class StudentController extends Controller
     }
 
 
-    // public function dashboard()
-    // {
-
-    //     $studentId = User::findOrFail(Auth::id())->id;
-    //     $datas = [
-    //         'courses' => User::find(Auth::id())->courses()->get(),
-    //         'payments' => Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->get(),
-    //     ];
-    //     return view('student.dashboard');
-    // }
-
     public function dashboard()
     {
         if (!Auth::check()) {
@@ -214,19 +203,6 @@ class StudentController extends Controller
     }
 
 
-    // public function coursePurchase()
-    // {
-    //     if(!Auth::check()){
-    //         return redirect()->route('auth.login')->with('error','you must be logged in to access this page');
-    //     }
-    //     $studentId = User::findOrFail(Auth::id())->id;
-    //     $data = [
-
-    //         'courses' => User::find(Auth::id())->courses()->get(),
-    //     ];
-    //     return view('studentdashboard.course.purchaseCourse', $data);
-    // }
-
     public function coursePurchase()
     {
         if (!Auth::check()) {
@@ -283,7 +259,7 @@ class StudentController extends Controller
     //     //     // $course = $user->courses()->where('id',$courseId)->first();
     //     //     $courses = $user->courses()->with('exams') // Load the related exams
     //     //     ->where('courses.id', $courseId)
-    //     //     ->first();       
+    //     //     ->first();
     //     //      if (!$courses){
     //     //         return redirect()->route('student.dashboard')->with('error', 'Course not found');
 
@@ -302,7 +278,7 @@ class StudentController extends Controller
     //     //          return redirect()->route('student.examResult', $exam->id)->with('error', 'You have already attempted this exam 3 times');
     //     //      }
 
-    //     //      //get active quiz for that course 
+    //     //      //get active quiz for that course
 
     //     //      $quizzes = $exam ?$exam->quizzes()->where('status',true)->get() : collect();
 

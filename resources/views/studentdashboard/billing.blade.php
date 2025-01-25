@@ -1,11 +1,11 @@
 @extends('studentdashboard.include.base')
 @section('content')
 
-<div class="page mt-16 bg-gray-50 min-h-screen">
+<div class="page mt-16  min-h-screen">
   <!-- Page Heading -->
   <div class="border-b border-gray-300 py-4">
     <div class="container mx-auto px-6 flex items-center">
-      <h1 class="text-2xl font-bold text-gray-800">Billing</h1>
+      <h1 class="text-2xl font-bold text-gray-800">Manage Your Billing</h1>
     </div>
   </div>
 
