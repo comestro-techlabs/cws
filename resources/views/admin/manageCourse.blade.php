@@ -117,6 +117,7 @@
                                     "<span class='text-slate-100 bg-teal-600 text-xs px-2 py-1 rounded-xl'>Published</span>"!!}
                                 </td>
                                 <td class="flex gap-2 items-center px-6 py-4">
+                                    <a href="{{route('course.batches',$course->id)}}" class="px-3 py-2 bg-yellow-400 text-xs rounded-xl font-medium text-white">Batches</a>
                                     <a href="{{ route('course.show', $course->id) }}"
                                         class="px-3 py-2 text-xs rounded-xl font-medium text-white bg-teal-500">
                                         Show

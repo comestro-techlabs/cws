@@ -24,10 +24,7 @@
     ],
     "require": {
         "php": "^8.2",
-        "anandsiddharth/laravel-paytm-wallet": "*",
-        "google/apiclient": "^2.18",
         "laravel/framework": "^11.9",
-        "laravel/socialite": "^5.16",
         "laravel/tinker": "^2.9",
         "livewire/livewire": "*",
         "phonepe/phonepe-pg-php-sdk": "^1.0",

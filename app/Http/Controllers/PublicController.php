@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Models\User;
 use App\Models\Enquiry;
+use App\Models\Payment;
+use App\Models\PlacedStudent;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -15,6 +17,7 @@ class PublicController extends Controller
     public function index()
     {
         $data['courses']=Course::where("published", true)->latest()->take(6)->get();
+        $data['placedStudents'] = PlacedStudent::where('status', 1)->inRandomOrder()->take(4)->get();
         return view("public.homepage",$data);
     }
 
@@ -70,7 +73,10 @@ class PublicController extends Controller
    
     {
         $course = Course::where('slug',$slug)->first(); // replace 1 with course id
-        return view("public.course", compact('course'));
+        $course_id = $course->id;
+
+        $payment_exist = Payment::where("student_id",Auth::id())->where("course_id",$course_id)->where("payment_status","captured")->exists();
+        return view("public.course", compact('course', "payment_exist"));
     }
 
     // public function showLoginForm()

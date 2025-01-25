@@ -45,7 +45,8 @@
                             {{-- <th class="px-4 py-2 text-left  border">Description</th> --}}
                             <th class="px-4 py-2 text-left  border">isPublished</th>
                             <th class="px-4 py-2 text-left  border">Status</th>
-                            <th class="px-4 py-2 text-left  border">course</th>
+                            <th class="px-4 py-2 text-left  border">Course</th>
+                            <th class="px-4 py-2 text-left  border">Batch</th>
                             <th class="px-4 py-2 text-left  border">Date</th>
                             <th class="px-4 py-2 text-left  border">Actions</th>
                         </tr>
@@ -67,6 +68,7 @@
                                     </form>
                                     </td>   
                                     <td class="px-4 py-2 truncate max-w-80 border">{!! $assignment->course->title !!}</td>
+                                    <td class="px-4 py-2 truncate max-w-80 border">{!! $assignment->batch->batch_name !!}</td>
 
                                 <td class="px-4 py-2 border">{{ $assignment->created_at->format('Y-m-d') }}</td>
 
