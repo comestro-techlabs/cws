@@ -7,7 +7,14 @@
 
 @section('content')
 <div class="container mx-auto p-4">
-    <h1 class="text-2xl font-bold mb-4">Students in Batch: {{ $batch->batch_name }}</h1>
+    <nav class="flex items-center space-x-2 text-gray-600 overflow-auto" aria-label="Breadcrumb">
+        <a href="#" class="text-gray-600 hover:underline">Dashboard</a>
+        <span class="text-gray-400">/</span>
+
+        <a href="#" class="text-blue-600 hover:underline"> {{ $course->title }}</a>
+        <span class="text-gray-400">/</span>
+        <span class="truncate max-w-xs text-gray-800 font-medium">{{ $batch->batch_name }}</span>
+      </nav>
 
     <table class="min-w-full table-auto border-collapse border border-gray-300">
         <thead class="bg-gray-100">

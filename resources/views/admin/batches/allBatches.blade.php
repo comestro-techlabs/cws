@@ -1,9 +1,17 @@
 @extends('admin.base')
 
 @section('title', 'Add Assignment | ')
-
+{{-- {{dd($batches->course_id)}} --}}
 @section('content')
 <div class="col-span-1 md:col-span-6">
+    <nav class="flex items-center space-x-2 text-gray-600 overflow-auto" aria-label="Breadcrumb">
+        <a href="#" class="text-gray-600 hover:underline">Dashboard</a>
+        <span class="text-gray-400">/</span>
+
+        <a href="#" class="text-blue-600 hover:underline"> {{ $course->title }}</a>
+        
+      </nav>
+      
     <div class="container mx-auto p-4">
         <h1 class="text-2xl font-bold mb-4">Batches </h1>
     {{-- {{dd($batches)}} --}}
