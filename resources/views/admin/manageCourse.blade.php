@@ -85,14 +85,20 @@
                                 <td class="px-6 py-4">
                                     {{ $course->instructor }}
                                 </td>
-                                <td class="px-6 py-4 text-slate-600">
-                                    @if ($course->discounted_fees)
+                                  <td class="px-6 py-4 text-slate-600">
+                                    @if ($course->discounted_fees > 0)
+                                    @if ($course->discounted_fees )
                                         {{ $course->discounted_fees }}
                                         <span class="text-slate-300"><del>{{ '₹' . number_format($course->discounted_fees, 2) }}</del></span>
                                     @else
                                         {{'₹' . number_format($course->fees, 2) }}
                                     @endif
-                                </td>
+                                    @else
+                                    <p class="text-green-600">Free</p> 
+                                    @endif
+                                </td> 
+                                 
+                            
                                
                                 <td class="px-6 py-4">
                                     @if ($course->duration > 1)
@@ -111,6 +117,7 @@
                                     "<span class='text-slate-100 bg-teal-600 text-xs px-2 py-1 rounded-xl'>Published</span>"!!}
                                 </td>
                                 <td class="flex gap-2 items-center px-6 py-4">
+                                    <a href="{{route('course.batches',$course->id)}}" class="px-3 py-2 bg-yellow-400 text-xs rounded-xl font-medium text-white">Batches</a>
                                     <a href="{{ route('course.show', $course->id) }}"
                                         class="px-3 py-2 text-xs rounded-xl font-medium text-white bg-teal-500">
                                         Show

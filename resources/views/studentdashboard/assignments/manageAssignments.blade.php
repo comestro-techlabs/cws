@@ -58,8 +58,16 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="5" class="py-6 px-6 text-center text-gray-500">
+                                        {{-- <td colspan="5" class="px-4 py-3 border text-center text-gray-500">
                                             No assignments available for this course.
+                                        </td> --}}
+                                        <td colspan="5" class="px-4 py-3 border text-center">
+                                            <div class="flex flex-col items-center py-8">
+                                                <img src="https://tse4.mm.bing.net/th?id=OIP.fqgd7Ij7CDhGwPwro_SsiQAAAA&pid=Api&P=0&h=180" alt="No Assignments"
+                                                     class="w-32 h-32 mb-4">
+                                                <p class="text-xl font-semibold text-gray-600">No assignments available for this course.</p>
+                                                <p class="text-gray-500">Stay tuned for upcoming assignments.</p>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforelse

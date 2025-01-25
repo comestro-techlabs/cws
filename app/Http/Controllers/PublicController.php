@@ -75,7 +75,7 @@ class PublicController extends Controller
         $course = Course::where('slug',$slug)->first(); // replace 1 with course id
         $course_id = $course->id;
 
-        $payment_exist = Payment::where("student_id",Auth::id())->where("course_id",$course_id)->where("payment_status","captured")->exists();
+        $payment_exist = Payment::where("student_id",Auth::id())->where("course_id",$course_id)->where("status","captured")->exists();
         return view("public.course", compact('course', "payment_exist"));
     }
 
