@@ -103,10 +103,10 @@
                             </div>
                             <h3 class="text-2xl font-semibold text-[#033e63e8] mb-4">Inventory Solutions</h3>
                             <p class="text-gray-600">Data-driven insights to help you make informed business decisions.</p>
-                        </a> 
+                        </a>
                         <a href="" class="bg-white p-6 rounded-lg shadow-lg text-center">
                             <div class="flex justify-center mb-4">
-                               
+
                                 <svg xmlns="http://www.w3.org/2000/svg"  class="h-10 w-11 text-[#2a9d8f]"  fill="currentColor" class="bi bi-bookmark-check-fill" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5m8.854-9.646a.5.5 0 0 0-.708-.708L7.5 7.793 6.354 6.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0z"/>
                                   </svg>
@@ -322,7 +322,7 @@
     <div class="flex flex-col items-center mt-20 text-center">
         <h2 class="text-3xl text-primary font-sans font-bold mb-4">Our Latest Courses</h2>
         <h1 class="text-3xl font-bold text-gray-800 mb-4">Master the Skills to Build Your Future</h1>
-        <p class="text-base text-gray-700 mb-6 max-w-4xl">
+        <p class="text-base text-gray-700 mb-6 ">
             Explore our curated courses designed to provide you with the latest industry insights and practical knowledge.
             From beginner to advanced levels, we aim to help you excel in your field with expert-led guidance and innovative
             content. Upgrade your skills and achieve your career goals with us!
@@ -335,14 +335,14 @@
                 <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
               </svg>
         </div>
-        
+
     </div>
-    
+
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-20 px-4 lg:px-32">
         @foreach ($courses as $item)
         <div class="max-w-md mx-auto bg-white rounded-lg shadow-lg border overflow-hidden">
             <img class="w-full h-48 object-cover" src="{{asset('storage/course_images/' . $item->course_image)}}" alt="Course Image">
-            
+
             <div class="p-6">
                 <h2 class="text-xl font-bold text-gray-800 mb-2 line-clamp-1">{{$item->title}}</h2>
                 <p class="text-gray-600 text-sm mb-4">
@@ -363,7 +363,7 @@
         </div>
         @endforeach
     </div>
-    
+
 
 
     {{-- {{static info}} --}}
@@ -391,7 +391,7 @@
             </div>
         </div>
     </div>
-{{-- 
+{{--
     <section class="py-16 px-4 sm:px-8 md:px-20 bg-gray-100">
         <div class="flex flex-col items-center justify-center">
             <h1 class="text-2xl text-orange-600 sm:text-3xl font-bold mb-5">Please Feedback!</h1>

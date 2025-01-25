@@ -208,7 +208,7 @@
                     @endforeach
                 </ul>
                 @else
-                <p class="text-gray-500 dark:text-gray-400">No batches available for this course.</p>
+                <p class="text-gray-500 ">No batches available for this course.</p>
                 @endif
             </div>
         </div>
@@ -312,7 +312,7 @@
     @auth
 
     <script>
-      
+
         document.getElementById('pay-button').onclick = function(e) {
     e.preventDefault();
 

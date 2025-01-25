@@ -16,7 +16,7 @@
             description="Our LearnSyntax platform is one of the top learning platforms in India. We provide 360º learning solutions to empower individuals and businesses across the globe with in-demand tech skills."
             image="about-header.png" />
         <div class=" mt-20 mb-20 py-10 px-5 md:px-20">
-            <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 items-center gap-10">
+            <div class=" mx-auto grid grid-cols-1 md:grid-cols-2 items-center gap-10">
                 <!-- Badge Section -->
                 <div class="flex justify-center md:justify-start">
                     <img src="https://img.freepik.com/free-photo/healthy-lifestyle-sustained-home_23-2149362469.jpg?ga=GA1.1.1275289697.1728223870&semt=ais_hybrid"
@@ -56,7 +56,7 @@
                 All cards must be the same height and width for space calculations on large screens.
               </p>
               <div class="relative">
-               
+
                 <!-- 2003 -->
                 <div class="flex items-start border-b-2 border-gray-500 mb-12">
                   <div class="w-16 text-right pr-4">
@@ -73,7 +73,7 @@
                     </ul>
                   </div>
                 </div>
-          
+
                 <!-- 2018 Academic Training -->
                 <div class="flex items-start border-b-2 border-gray-500 mb-12">
                   <div class="w-16 text-right pr-4">
@@ -88,7 +88,7 @@
                     </ul>
                   </div>
                 </div>
-          
+
                 <!-- 2018 Corporate Training -->
                 <div class="flex items-start border-b-2 border-gray-500 mb-12">
                   <div class="w-16 text-right pr-4">
@@ -107,7 +107,7 @@
                     </ul>
                   </div>
                 </div>
-          
+
                 <!-- 2023 -->
                 <div class="flex  items-start">
                   <div class="w-16 text-right pr-4">
@@ -157,7 +157,7 @@
                     LearnSyntax provides comprehensive training in programming languages, frameworks, and coding best practices to help students and professionals excel in their careers.
                   </div>
                 </div>
-          
+
                 <!-- FAQ Item 2 -->
                 <div class="border border-gray-300 rounded-lg shadow">
                   <button
@@ -180,7 +180,7 @@
                     You can enroll in our courses by visiting the LearnSyntax website, selecting a course, and following the instructions for registration.
                   </div>
                 </div>
-          
+
                 <!-- FAQ Item 3 -->
                 <div class="border border-gray-300 rounded-lg shadow">
                   <button
@@ -206,9 +206,9 @@
               </div>
             </div>
           </div>
-          
-          
-          
+
+
+
     </div>
 
 
@@ -217,7 +217,7 @@
         function toggleFaq(id) {
           const content = document.getElementById(`${id}-content`);
           const icon = document.getElementById(`${id}-icon`);
-      
+
           if (content.classList.contains('hidden')) {
             content.classList.remove('hidden');
             icon.classList.add('rotate-180');

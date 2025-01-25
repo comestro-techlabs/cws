@@ -17,7 +17,7 @@
         <div class="flex flex-col items-center mt-20 text-center">
             <h2 class="text-3xl text-gray-900 font-sans font-bold mb-4">Our <span class="text-secondary">Latest</span> Courses</h2>
             <h1 class="text-xl font-semibold text-gray-800 mb-4">Master the Skills to Build Your Future</h1>
-            <p class="text-base text-gray-700 mb-6 max-w-4xl">
+            <p class="text-base text-gray-700 mb-6 ">
                 Explore our curated courses designed to provide you with the latest industry insights and practical
                 knowledge.
                 From beginner to advanced levels, we aim to help you excel in your field with expert-led guidance and
@@ -51,7 +51,7 @@
                             <p class="text-sm font-semibold text-primary">Fees:  Rs.
                                 <span class="text-sm text-gray-600 line-through">{{ $item->fees }}</span>
                                 {{ $item->discounted_fees }}</p>
-                            
+
                             <a href="{{ route('public.courseDetails', ['category_slug' => $item->category->cat_slug, 'slug' => $item->slug]) }}"
                                 class="bg-primary text-white font-bold py-2 px-4 rounded shadow focus:outline-none focus:ring">
                                 Enroll Now
@@ -231,7 +231,7 @@
     <div class="flex flex-col items-center mt-20 text-center">
         <h2 class="text-4xl font-bold text-gray-800">Our <span class="text-secondary">Proud</span> Students</h2>
         <h1 class="text-xl font-semibold text-gray-800 mb-4">Meet Our Achievers</h1>
-        <p class="text-base text-gray-700 mb-6 max-w-4xl">
+        <p class="text-base text-gray-700 mb-6 ">
             Celebrating the success and dedication of our students who have excelled in their respective fields. With their
             hard work and our expert guidance, they have achieved incredible milestones. Get inspired by their stories!
         </p>
@@ -239,7 +239,7 @@
 
         {{-- Student List --}}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl">
-          
+
             @foreach ($placedStudents as $item)
             <div class="flex flex-col md:flex-row bg-secondary text-white py-6 px-6  shadow gap-6">
                 <!-- Student Image -->
@@ -262,8 +262,8 @@
         </div>
     </div>
 
-   
-    
+
+
 
     <div class="bg-white py-12 mt-20 mb-20 px-6">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2">

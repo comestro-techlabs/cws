@@ -4,7 +4,7 @@
 @section( 'content')
 
 <div class="container mx-auto py-8">
-    <h2 class="md:text-xl text-lg font-semibold dark:text-slate-300 text-slate-500 border-s-4 border-s-blue-800 pl-3">
+    <h2 class="md:text-xl text-lg font-semibold  text-slate-500 border-s-4 border-s-blue-800 pl-3">
         Messages </h2>
     @if (session('success'))
         <div class="bg-green-100 text-green-800 p-4 rounded mb-4">
@@ -32,7 +32,7 @@
                             <div class="flex gap-2 item-center justify-center">
                              <a href="" class="bg-blue-500 text-white py-1 px-4 rounded-lg  ">View</a> |
                             <a href="" class="bg-teal-500 text-white py-1 px-4 rounded-lg">Edit</a> |
-                            
+
                                 <button type="submit" class="bg-red-500 text-white py-1 px-4 rounded-lg">Delete</button>
                             </div>
                         </td>

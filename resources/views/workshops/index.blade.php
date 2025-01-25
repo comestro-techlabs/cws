@@ -5,13 +5,13 @@
 @section('content')
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="flex justify-between items-center mb-6">
-            <h1 class="text-2xl font-bold  dark:text-gray-200">Workshops List</h1>
+            <h1 class="text-2xl font-bold  ">Workshops List</h1>
             <a href="{{ route('workshops.create') }}" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-                Add New Workshop 
+                Add New Workshop
             </a>
         </div>
         <div class="overflow-hidden bg-white shadow sm:rounded-lg">
-           
+
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
@@ -36,7 +36,7 @@
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Fees
                             </th>
-                          
+
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                              Status
                             </th>
@@ -67,7 +67,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                     {{ $workshop->fees }}
                                 </td>
-                               
+
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                     @if ($workshop->active)
                                         <form action="{{ route('workshops.toggleStatus', $workshop->id) }}" method="POST">
@@ -89,7 +89,7 @@
                                         </form>
                                     @endif
                                 </td>
-                               
+
                                 {{-- <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                     {{ $workshop->payment ? $workshop->payment->payment_status : 'Pending' }}
                                 </td> --}}
@@ -108,22 +108,22 @@
                                     <span class="px-2 py-1 text-white bg-yellow-500 rounded-md hover:bg-yellow-600">Pending</span>
                                     @endif
                                 </td>
-                                
-                                
-                                
-                              
-                                
+
+
+
+
+
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                     <a href="{{route('admin.workshops.edit', $workshop->id)}}" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">Edit</a>
-                                
-                                   
+
+
                                     <form action="{{route('admin.workshops.destroy',$workshop->id)}}" method="POST" style="display:inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 onclick="return confirm('Are you sure you want to delete this workshop?');">Delete</button>
                                     </form>
                                 </td>
-                               
+
                             </tr>
                         @endforeach
                     </tbody>

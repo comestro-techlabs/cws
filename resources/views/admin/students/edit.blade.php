@@ -29,7 +29,7 @@
     <div class="flex flex-1 w-full px-[2%] py-0 flex-col">
         <div class="flex flex-1 gap-3 my-5 flex-row justify-between items-center">
             <div class="flex flex-1 flex-col border-s-4 border-s-orange-400 pl-3">
-                <h2 class="md:text-xl text-lg font-normal dark:text-slate-300 text-slate-500">Edit Student</h2>
+                <h2 class="md:text-xl text-lg font-normal  text-slate-500">Edit Student</h2>
                 <p class="text-sm text-slate-400 font-normal">Please fill {{ $countCompletedFields }} of {{ $totalFields }}
                     fields</p>
             </div>

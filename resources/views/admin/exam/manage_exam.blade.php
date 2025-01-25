@@ -9,7 +9,7 @@
         {{ session('success') }}
     </div>
     @endif
- 
+
     <form method="GET" class="mb-4">
         <input type="text" name="search" placeholder="Search..." class="border px-3 py-2 rounded w-full" value="{{ request('search') }}">
     </form>
@@ -23,7 +23,7 @@
                 <th class="border px-4 py-2">Exam Name</th>
                 <th class="border px-4 py-2">Exam Date</th>
                 <th class="border px-4 py-2">status</th>
-                
+
                 <th class="border px-4 py-2">Actions</th>
             </tr>
         </thead>
@@ -41,7 +41,7 @@
                         @method('PATCH')
                         <label class="relative inline-flex items-center cursor-pointer">
                             <input type="checkbox" name="status" class="sr-only peer" onchange="this.form.submit()" {{ $exam->status ? 'checked' : '' }}>
-                            <div class="w-11 h-6 bg-gray-200 rounded-full peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
+                            <div class="w-11 h-6 bg-gray-200 rounded-full peer-focus:ring-4 peer-focus:ring-green-300  peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
                         </label>
                     </form>
                     </td>
@@ -56,7 +56,7 @@
                         <a href="{{ route('exam.showQuestions', ['exam' => $exam->id,'course_title'=>$exam->course->title,'exam_name'=>$exam->exam_name]) }}" class="bg-green-500 text-white py-2 px-4 rounded">View Q's</a>
                     </div>
                     </td>
-                    
+
                 </tr>
             @endforeach
         </tbody>
