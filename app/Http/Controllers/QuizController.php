@@ -45,6 +45,14 @@ class QuizController extends Controller
     /**
      * Display the specified resource.
      */
+
+     public function answerShow(Answer $answer)
+     {
+         $answers = Answer::with('user','quiz')->get();
+
+         return view('admin.result.result',compact('answers'));
+     }
+
     public function show(Request $request )
     {
         $query = Quiz::with('exam');

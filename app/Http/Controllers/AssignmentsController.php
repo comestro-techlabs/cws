@@ -60,12 +60,12 @@ class AssignmentsController extends Controller
 
         if($assignment->status == 1){
             $users = User::whereHas('courses', function ($query) use ($assignment) {
-                $query->where('course_id', $assignment->course_id); 
+                $query->where('course_id', $assignment->course_id);
             })->get();
             foreach($users as $user){
                 Mail::send('emails.assignment_notification', ['user'=> $user,'assignment'=> $assignment], function($message) use ($user){
                     $message->to($user->email, $user->name)->subject('New Assignment Available');
-                    
+
             });
         }
     }
@@ -87,9 +87,9 @@ class AssignmentsController extends Controller
      */
     public function edit(Assignments $assignment)
 {
-    $courses = Course::all(); 
-    $batches = Batch::all(); 
-    
+    $courses = Course::all();
+    $batches = Batch::all();
+
     return view('admin.assignments.editAssignment', compact('assignment', 'courses','batches'));
 }
 

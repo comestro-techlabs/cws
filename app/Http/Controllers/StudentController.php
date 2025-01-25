@@ -107,8 +107,6 @@ class StudentController extends Controller
         return view('admin.students.edit', compact('student', 'purchasedCourses', 'paymentsGroupedByCourse'));
     }
 
-
-
     public function update(Request $request, $id, $field)
     {
         if (!Auth::check()) {
@@ -141,18 +139,6 @@ class StudentController extends Controller
 
         return redirect()->route('student.edit', $student->id)->with('success', ucfirst($field) . ' updated successfully!');
     }
-
-
-    // public function dashboard()
-    // {
-
-    //     $studentId = User::findOrFail(Auth::id())->id;
-    //     $datas = [
-    //         'courses' => User::find(Auth::id())->courses()->get(),
-    //         'payments' => Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->get(),
-    //     ];
-    //     return view('student.dashboard');
-    // }
 
     public function dashboard()
     {
@@ -213,20 +199,6 @@ class StudentController extends Controller
         return view('studentdashboard.dashboard', $datas);
     }
 
-
-    // public function coursePurchase()
-    // {
-    //     if(!Auth::check()){
-    //         return redirect()->route('auth.login')->with('error','you must be logged in to access this page');
-    //     }
-    //     $studentId = User::findOrFail(Auth::id())->id;
-    //     $data = [
-
-    //         'courses' => User::find(Auth::id())->courses()->get(),
-    //     ];
-    //     return view('studentdashboard.course.purchaseCourse', $data);
-    // }
-
     public function coursePurchase()
     {
         if (!Auth::check()) {
@@ -277,67 +249,6 @@ class StudentController extends Controller
     }
 
 
-    //     // public function courseQuiz($courseId){
-    //     //     $user = Auth::user();
-    //     //     // dd($user);
-    //     //     // $course = $user->courses()->where('id',$courseId)->first();
-    //     //     $courses = $user->courses()->with('exams') // Load the related exams
-    //     //     ->where('courses.id', $courseId)
-    //     //     ->first();
-    //     //      if (!$courses){
-    //     //         return redirect()->route('student.dashboard')->with('error', 'Course not found');
-
-    //     //      }
-
-    //     //       // Check if the course has exams
-    //     // if ($courses->exams->isEmpty()) {
-    //     //     return redirect()->route('student.dashboard')->with('error', 'No exams available for this course');
-    //     // }
-
-    //     //      // Check if the user has already taken the exam for this course
-    //     //      $exam =$courses->exams()->where('status',true)->first();
-    //     //      $examUser = $exam ?ExamUser::where('user_id',$user->id)->where('exam_id',$exam->id)->first() : null;
-
-    //     //      if($examUser && $examUser->attempts >=3){
-    //     //          return redirect()->route('student.examResult', $exam->id)->with('error', 'You have already attempted this exam 3 times');
-    //     //      }
-
-    //     //      //get active quiz for that course
-
-    //     //      $quizzes = $exam ?$exam->quizzes()->where('status',true)->get() : collect();
-
-    //     //      return view('studentdashboard.quiz.course',compact('courses','quizzes','exam','courseTitle'));
-
-    //     // }
-
-    //  public function courseQuiz()
-    // {
-    //     if (!Auth::check()) {
-    //         return redirect()->route('auth.login')->with('error', 'You must be logged in to access this page');
-    //     }
-
-    //     $user = Auth::user();
-
-    //     // Get the batch IDs for the courses the user is enrolled in
-    //     $batchIds = DB::table('course_user')
-    //         ->where('user_id', $user->id)
-    //         ->pluck('batch_id', 'course_id'); // Fetch batch_id mapped by course_id
-
-    //     // Fetch courses and filter exams based on the user's batch
-    //     $courses = $user->courses()
-    //         ->with([
-    //             'users',
-    //             'exams' => function ($query) use ($batchIds) {
-    //                 $query->whereIn('batch_id', $batchIds); // Only show exams for the user's batch
-    //             }
-    //         ])
-    //         ->get();
-
-    //     return view('studentdashboard.quiz.course', compact('courses'));
-    // }
-
-
-
     public function courseQuiz()
     {
         if (!Auth::check()) {
@@ -364,74 +275,6 @@ class StudentController extends Controller
         return view('studentdashboard.quiz.course', compact('courses'));
     }
 
-    // public function showquiz()
-    // {
-    //     if (!Auth::check()) {
-    //         return redirect()->route('login');
-    //     }
-
-    //     $user = Auth::user();
-    //     $courses = $user->courses()->with([
-    //         'exams' => function ($query) {
-    //             $query->where('status', true);
-    //         },
-    //         'exams.quizzes' => function ($query) {
-    //             $query->where('status', true);
-    //         }
-    //     ])->get();
-
-    //     $attempt = ExamUser::where('user_id', $user->id)->first();
-    //     $value = $attempt ? $attempt->attempts : 0;
-
-    //     if ($value <= 3) {
-    //         return view("studentdashboard.quiz.quiz", compact('courses'));
-    //     } else {
-    //         return redirect()->route('student.examResult');
-    //     }
-
-
-
-    // }
-
-
-
-    // public function showquiz($courseId)
-    // {
-    //     if (!Auth::check()) {
-    //         return redirect()->route('login');
-    //     }
-
-
-
-    //     $user = Auth::user();
-    //     $courses = $user->courses()->where('courses.id', $courseId)->with([
-    //         'exams' => function ($query) {
-    //             $query->where('status', true);
-    //         },
-    //         'exams.quizzes' => function ($query) {
-    //             $query->where('status', true);
-    //         }
-    //     ])->first();
-
-
-    //     if (!$courses) {
-    //         return redirect()->route('student.course.quiz')->with('error', 'Course not found or you do not have access to it.');
-    //     }
-
-    //     $attempt = ExamUser::where('user_id', $user->id)
-    //         ->whereHas('exam', function ($query) use ($courseId) {
-    //             $query->where('course_id', $courseId);
-    //         })
-    //         ->first();
-
-    //     $value = $attempt ? $attempt->attempts : 0;
-
-    //     if ($value <= 3) {
-    //         return view("studentdashboard.quiz.quiz", compact('courses'));
-    //     } else {
-    //         return redirect()->route('student.course.quiz')->with('error', 'You had reached the max.');
-    //     }
-    // }
 
     public function showquiz($courseId)
     {
@@ -579,29 +422,6 @@ class StudentController extends Controller
 
         return view('studentdashboard.quiz.course', compact('courses'));
     }
-    //     public function showAllAttempts($exam_id)
-    // {
-    //     $user_id = Auth::id();
-
-    //     // Retrieve all answers for the user and exam, grouped by attempts
-    //     $attempts = Answer::where('user_id', $user_id)
-    //                       ->where('exam_id', $exam_id)
-    //                       ->orderBy('attempt')
-    //                       ->get()
-    //                       ->groupBy('attempt');
-
-    //     // Calculate total marks for each attempt
-    //     $attempts_data = [];
-    //     foreach ($attempts as $attempt => $answers) {
-    //         $total_marks = $answers->sum('obtained_marks');
-    //         $attempts_data[] = [
-    //             'attempt' => $attempt,
-    //             'total_marks' => $total_marks,
-    //         ];
-    //     }
-
-    //     return view('studentdashboard.quiz.all_attempts', compact('attempts_data', 'exam_id'));
-    // }
     public function showAllAttempts($course_id)
     {
         if (!Auth::check()) {
@@ -811,9 +631,4 @@ class StudentController extends Controller
             return response('Failed to upload file to Google Drive', 500);
         }
     }
-    // public function viewAssignments(){
-    //     $data['assignments']=Assignments::all();
-    //     return view('studentdashboard.assignments.studentAssignment',$data);
-    // }
-
 }

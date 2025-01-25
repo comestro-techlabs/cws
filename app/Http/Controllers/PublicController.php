@@ -16,80 +16,44 @@ class PublicController extends Controller
 {
     public function index()
     {
-        $data['courses']=Course::where("published", true)->latest()->take(6)->get();
+        $data['courses'] = Course::where("published", true)->latest()->take(6)->get();
         $data['placedStudents'] = PlacedStudent::where('status', 1)->inRandomOrder()->take(4)->get();
-        return view("public.homepage",$data);
+        return view("public.homepage", $data);
     }
 
+    //----------------------------- tested- -------------------------------------------
     public function courseDetails($category_slug, $slug)
-
-
     {
-        $course = Course::where('slug',$slug)->first(); // replace 1 with course id
+        $course = Course::where('slug', $slug)->first(); // replace 1 with course id
         $course_id = $course->id;
 
-        $payment_exist = Payment::where("student_id",Auth::id())->where("course_id",$course_id)->where("status","captured")->exists();
+        $payment_exist = Payment::where("student_id", Auth::id())->where("course_id", $course_id)->where("status", "captured")->exists();
         return view("public.course", compact('course', "payment_exist"));
     }
 
-    public function training(){
+    public function training()
+    {
         $courses = Course::where("published", true)->get();
         return view("public.training")->with('courses', $courses);
     }
-    public function aboutPage(){
+    public function aboutPage()
+    {
         return view("public.about-us");
     }
 
-    public function contactUsPage(){
+    public function contactUsPage()
+    {
         return view("public.contact-us");
     }
 
-    public function privacyAndPolicy(){
+    public function privacyAndPolicy()
+    {
         return view('public.privacy-policy');
     }
 
 
-    public function seoServices(){
-        return view('public.services.seo-services');
-    }
-
-    public function webDevPage(){
-        return view('public.services.web-development');
-    }
-
-    public function mobileAppPage(){
-        return view('public.services.mobile-app');
-    }
-
-    public function ecommercePage(){
-        return view('public.services.ecommerce');
-    }
-
-    public function webDesignPage(){
-        return view("public.services.web-design");
-    }
-
-    public function softwareDev(){
-        return view('public.services.software-dev');
-    }
-
-    public function nativeApp(){
-        return view('public.services.native-app');
-    }
-
-    public function inventorySolution(){
-        return view('public.services.inventory-solution');
-    }
-
-    public function servicePage(){
-        return view('public.services.services');
-    }
-
-    public function coachingPage(){
-        return view('public.services.coaching');
-    }
-
-    public function termsAndConditions(){
+    public function termsAndConditions()
+    {
         return view('public.terms-and-conditions');
     }
 
@@ -110,7 +74,4 @@ class PublicController extends Controller
 
         return redirect()->route('public.contact')->with('success', 'Request added successfully.');
     }
-
-
-
 }
