@@ -43,6 +43,9 @@
             Route::get('/course', 'course')->name('student.course');
             Route::get('/assignments/view', 'assignmentList')->name('student.assignments-view');
             Route::get('/assignments/upload/{id}', 'viewAssignments')->name('student.assignment-upload');
+            Route::get('/viewCertificate/{userId}',  'showCertificate')->name('student.viewCertificate');
+            Route::get('/certificate/{userId}',  'Certificate')->name('student.certificate');
+
         });
     });
 
