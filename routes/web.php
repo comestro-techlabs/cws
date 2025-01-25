@@ -93,6 +93,8 @@ use App\Models\Workshop;
             });
 
             Route::resource('course', CourseController::class);
+            Route::get('/courses/{course}/batches', [CourseController::class, 'batches'])->name('course.batches');
+
             Route::get('/courses/{course_id}/chapters/create', [ChapterController::class, 'create'])->name('chapter.create');
             Route::post('/courses/{course_id}/chapters', [ChapterController::class, 'store'])->name('chapter.store');
             Route::get('/chapters/{chapter}/edit', [ChapterController::class, 'edit'])->name('chapter.edit');
@@ -101,6 +103,7 @@ use App\Models\Workshop;
             Route::post('/courses/{id}/features', [CourseController::class, 'addFeature'])->name('course.addFeature');
             Route::post('/courses/{course}/publish', [CourseController::class, 'publish'])->name('course.publish');
             Route::post('/course/{id}/unpublish', [CourseController::class, 'unpublish'])->name('course.unpublish');
+            Route::get('/batches/{batch}/students', [CourseController::class, 'showStudents'])->name('batches.students');
 
 
             Route::get('/chapters/{chapter}/lessons/create', [LessonController::class, 'create'])->name('lessons.create');

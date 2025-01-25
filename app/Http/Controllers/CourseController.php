@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Batch;
 use App\Models\Category;
 use App\Models\Course;
 use App\Models\Payment;
@@ -180,7 +181,14 @@ class CourseController extends Controller
         return redirect()->route('course.index');
     }
 
-
-
-    
+    public function batches(Course $course){
+        $data['batches']  = $course->batches()->withCount('users')->get();
+        return view('admin.batches.allBatches',$data);
+    }
+    public function showStudents(Batch $batch)
+{
+    $students = $batch->users; 
+    return view('admin.batches.allStudents', compact('batch', 'students'));
+}
+     
 }
