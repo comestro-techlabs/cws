@@ -59,35 +59,31 @@
                         alt="{{ $course->title }}" class="w-full h-auto object-cover">
                 </div>
 
-             
-                 <div class="text-center mb-4">
-                    @if ($course->discounted_fees > 0)
+                <!-- Course Price -->
+                <div class="text-center mb-4">
                     <span class="text-3xl font-bold text-gray-900">₹{{ $course->discounted_fees }}</span>
                     <span class="text-gray-500 line-through ml-2">₹{{ $course->fees }}</span>
                     <span
                         class="text-teal-600 ml-2">({{ round((($course->fees - $course->discounted_fees) / $course->fees) * 100, 2) }}%
                         off)</span>
-                        @else
-                          <p class="text-green-600">Free</p> 
-                          @endif
-                </div> 
+                </div>
 
                 @auth
-                <form action="{{route('phonepe.initiate')}}" class="w-full" method="post" role="form">
-                    @csrf
-                    <input type="hidden" name="name" id="" value="{{Auth::user()->name}}">
-                    <input type="hidden" name="email" id="" value="{{Auth::user()->email}}">
-                    <input type="hidden" value="{{ $course->id }}" name="course_id" id="course_id">
-                    <input type="hidden" value="{{Auth::user()->contact}}" name="mobile_number" id="mobile_number">
-                    <input type="hidden" value="{{$course->discounted_fees}}" name="amount" id="amount">
-                    <button type="submit" target="_blank"
-                        class="flex items-center justify-center  text-black  rounded-full mt-2 shadow-xl px-6 py-3 w-full transition duration-300 ease-in-out transform hover:scale-105 space-x-3">
-                        <img src="https://img.icons8.com/?size=100&id=OYtBxIlJwMGA&format=png&color=000000"
-                            alt="PhonePe Logo" class="w-8 h-8 object-contain">
-                        <span>Proceed with PhonePe</span>
-                    </button>
+                {{-- <form action="{{route('phonepe.initiate')}}" class="w-full" method="post" role="form">
+                @csrf
+                <input type="hidden" name="name" id="" value="{{Auth::user()->name}}">
+                <input type="hidden" name="email" id="" value="{{Auth::user()->email}}">
+                <input type="hidden" value="{{ $course->id }}" name="course_id" id="course_id">
+                <input type="hidden" value="{{Auth::user()->contact}}" name="mobile_number" id="mobile_number">
+                <input type="hidden" value="{{$course->discounted_fees}}" name="amount" id="amount">
+                <button type="submit" target="_blank"
+                    class="flex items-center justify-center  text-black  rounded-full mt-2 shadow-xl px-6 py-3 w-full transition duration-300 ease-in-out transform hover:scale-105 space-x-3">
+                    <img src="https://img.icons8.com/?size=100&id=OYtBxIlJwMGA&format=png&color=000000"
+                        alt="PhonePe Logo" class="w-8 h-8 object-contain">
+                    <span>Proceed with PhonePe</span>
+                </button>
 
-                </form>
+                </form> --}}
 
                 @if($payment_exist)
 
@@ -102,16 +98,17 @@
                         alt="PhonePe Logo" class="w-12 h-12 object-cover">
                     <span>Proceed with Razorpay</span>
                 </a>
+                @endif
                 @endauth
 
-                 @guest
+                @guest
                 <a href="{{ route('auth.login') }}"
                     class="block bg-purple-600 text-white text-center py-2 rounded-full hover:bg-purple-700">
                     Proceed Now
                 </a>
-                @endguest 
- 
-                
+                @endguest
+
+
 
 
 
@@ -404,12 +401,3 @@
     </script>
     @endauth
 @endsection
-
-
-
-
-
-
-
-
-
