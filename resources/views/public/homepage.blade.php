@@ -126,7 +126,7 @@
             </div>
             <!-- Internships -->
             <div class="flex items-center space-x-6 border border-gray-400">
-                <img src="https://img.freepik.com/premium-photo/girl-gazing-digital-display-data-information_329343-2867.jpg?ga=GA1.1.1275289697.1728223870&semt=ais_incoming_vrsd"
+                <img src="https://img.freepik.com/free-photo/businesswoman-business-teammeeting-conference-videocall-online-greeting-remotely-collegues_482257-10095.jpg?ga=GA1.1.1275289697.1728223870&semt=ais_hybrid"
                     alt="Internships" class="w-1/2">
                 <div class="mt-6">
                     <h3 class="text-xl font-semibold text-gray-800">Internships</h3>
@@ -136,7 +136,7 @@
             </div>
             <!-- Workshops -->
             <div class="flex items-center space-x-6 border border-gray-400">
-                <img src="https://img.freepik.com/premium-photo/cheerful-woman-speaking-microphone-workshop_53876-156971.jpg?ga=GA1.1.1275289697.1728223870&semt=ais_incoming_vrsd"
+                <img src="https://img.freepik.com/free-photo/three-relaxed-fellow-students-studying-chatting_1262-15305.jpg?ga=GA1.1.1275289697.1728223870&semt=ais_hybrid"
                     alt="Workshops" class="w-1/2">
                 <div>
                     <h3 class="text-xl font-semibold text-gray-800">Workshops</h3>
@@ -146,7 +146,7 @@
             </div>
             <!-- Weekend Training -->
             <div class="flex items-center space-x-6 border border-gray-400">
-                <img src="https://media.istockphoto.com/id/1328313970/photo/multi-ethnic-group-of-business-persons-during-a-conference.jpg?b=1&s=612x612&w=0&k=20&c=Qb0ZfE3ONgKIiZ6vkd6uUS1kpL5iS2_AwBk0OgNxcw8="
+                <img src="https://img.freepik.com/premium-photo/focused-male-adult-student-working-computer-classroom_926199-2608965.jpg?ga=GA1.1.1275289697.1728223870&semt=ais_hybrid"
                     alt="Weekend Training" class="w-1/2">
                 <div>
                     <h3 class="text-xl font-semibold text-gray-800">Weekend Training</h3>
@@ -200,7 +200,7 @@
                 alt="">
         </div>
         <div class="flex-1 p-5 md:p-10 bg-gray-100 rounded-lg shadow-md">
-            <h2 class="text-3xl font-sans mb-4">Who We Are</h2>
+            <h2 class="text-4xl font-bold text-gray-800">Who <span class="text-secondary">We</span> Are</h2>
             <h1 class="text-xl font-bold mb-4">Est. 2011 - Top Web Designing Company</h1>
             <p class="text-base text-gray-700 mb-6">
                 With more than 15 years of expertise in the field, we've established ourselves as an evolving Software
@@ -229,7 +229,7 @@
 
     {{-- Student List Section --}}
     <div class="flex flex-col items-center mt-20 text-center">
-        <h2 class="text-3xl text-primary font-sans font-bold mb-2">Our Proud Students</h2>
+        <h2 class="text-4xl font-bold text-gray-800">Our <span class="text-secondary">Proud</span> Students</h2>
         <h1 class="text-xl font-semibold text-gray-800 mb-4">Meet Our Achievers</h1>
         <p class="text-base text-gray-700 mb-6 max-w-4xl">
             Celebrating the success and dedication of our students who have excelled in their respective fields. With their
@@ -269,8 +269,8 @@
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2">
             <!-- Left Side: Text Content -->
             <div class="" style="padding-left: 50px">
-                <h2 class="text-3xl font-bold text-black">
-                    We <span class="text-primary">love</span> to help you
+                <h2 class="text-4xl font-bold text-gray-800">
+                    We <span class="text-secondary">love</span> to help you
                 </h2>
                 <p class="text-gray-600 mt-2">Explore new and trending Learn syntax.</p>
                 <div class="mt-6">
