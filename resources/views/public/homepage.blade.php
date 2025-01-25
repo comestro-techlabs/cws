@@ -354,10 +354,14 @@
                     </div>
                 </div>
                 <div class="flex justify-between items-center">
+                    @if ($item->discounted_fees > 0)
                     <p class="text-lg font-bold text-primary">Rs.{{$item->discounted_fees}}</p>
                     <a href="{{route('public.courseDetails',['category_slug' => $item->category->cat_slug, 'slug' =>  $item->slug])}}" class="bg-primary text-white font-bold py-2 px-4 rounded shadow focus:outline-none focus:ring">
                         Enroll Now
                     </a>
+                    @else
+                    <p class="text-green-600 font-bold">Free</p> 
+                    @endif
                 </div>
             </div>
         </div>

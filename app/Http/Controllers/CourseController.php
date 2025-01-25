@@ -40,6 +40,7 @@ class CourseController extends Controller
 
         $course = new Course();
         $course->title = $request->title;
+        $course->course_code = $request->course_code; 
         $course->slug = Str::slug($request->title);
         $course->save();
         return redirect()->route('course.show', array('course' => $course));
@@ -89,7 +90,8 @@ class CourseController extends Controller
             'fees' => 'nullable|numeric',
             'discounted_fees' => 'nullable|numeric',
             'category_id' => 'nullable|exists:categories,id',
-            'course_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'course_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'course_code' => 'required|string|unique:courses' 
         ];
         
         // Validate only the field being updated
@@ -104,7 +106,7 @@ class CourseController extends Controller
                 $field => $rules[$field]
             ]);
         }
-    
+      
         // Handle file upload if updating the course_image
         if ($field === 'course_image' && $request->hasFile('course_image')) {
             $image = $request->file('course_image');
@@ -126,10 +128,15 @@ class CourseController extends Controller
         // Check if all required fields are filled
         $allFieldsCompleted = true;
         foreach ($requiredFields as $requiredField) {
-            if (empty($course->$requiredField)) {
+            // if (empty($course->$requiredField)) {
+            //     $allFieldsCompleted = false;
+            //     break;
+            // }
+            if (is_null($course->$requiredField)) {
                 $allFieldsCompleted = false;
                 break;
             }
+            
         }
     
         // Update the published status
@@ -148,10 +155,11 @@ class CourseController extends Controller
     // Check if all required fields are filled
     $allFieldsCompleted = true;
     foreach ($requiredFields as $requiredField) {
-        if (empty($course->$requiredField)) {
+        if (is_null($course->$requiredField)) {
             $allFieldsCompleted = false;
             break;
         }
+        
     }
 
     // Check if at least one chapter and one feature is added

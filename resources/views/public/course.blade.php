@@ -59,16 +59,21 @@
                         alt="{{ $course->title }}" class="w-full h-auto object-cover">
                 </div>
 
-                <!-- Course Price -->
-                <div class="text-center mb-4">
+             
+                 <div class="text-center mb-4">
+                    @if ($course->discounted_fees > 0)
                     <span class="text-3xl font-bold text-gray-900">₹{{ $course->discounted_fees }}</span>
                     <span class="text-gray-500 line-through ml-2">₹{{ $course->fees }}</span>
                     <span
                         class="text-teal-600 ml-2">({{ round((($course->fees - $course->discounted_fees) / $course->fees) * 100, 2) }}%
                         off)</span>
-                </div>
+                        @else
+                          <p class="text-green-600">Free</p> 
+                          @endif
+                </div> 
 
-                @auth
+                 @auth
+                  @if ($course->discounted_fees > 0) 
                 <form action="{{route('phonepe.initiate')}}" class="w-full" method="post" role="form">
                     @csrf
                     <input type="hidden" name="name" id="" value="{{Auth::user()->name}}">
@@ -91,16 +96,22 @@
                         alt="PhonePe Logo" class="w-12 h-12 object-cover">
                     <span>Proceed with Razorpay</span>
                 </a>
+                  @else
+                <a href=""
+                    class="flex items-center justify-center bg-green-500 text-white  rounded-full mt-2 shadow-xl px-6 py-2  transition duration-300 ease-in-out transform hover:scale-105 space-x-3">
+                    <span>Free to join</span>
+                </a>
+            @endif 
                 @endauth
 
-                @guest
+                 @guest
                 <a href="{{ route('auth.login') }}"
                     class="block bg-purple-600 text-white text-center py-2 rounded-full hover:bg-purple-700">
                     Proceed Now
                 </a>
-                @endguest
-
-
+                @endguest 
+ 
+                
 
 
 

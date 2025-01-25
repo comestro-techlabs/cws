@@ -85,14 +85,20 @@
                                 <td class="px-6 py-4">
                                     {{ $course->instructor }}
                                 </td>
-                                <td class="px-6 py-4 text-slate-600">
-                                    @if ($course->discounted_fees)
+                                  <td class="px-6 py-4 text-slate-600">
+                                    @if ($course->discounted_fees > 0)
+                                    @if ($course->discounted_fees )
                                         {{ $course->discounted_fees }}
                                         <span class="text-slate-300"><del>{{ '₹' . number_format($course->discounted_fees, 2) }}</del></span>
                                     @else
                                         {{'₹' . number_format($course->fees, 2) }}
                                     @endif
-                                </td>
+                                    @else
+                                    <p class="text-green-600">Free</p> 
+                                    @endif
+                                </td> 
+                                 
+                            
                                
                                 <td class="px-6 py-4">
                                     @if ($course->duration > 1)

@@ -45,6 +45,8 @@ use App\Models\Workshop;
             Route::get('/course', 'course')->name('student.course');
             Route::get('/assignments/view', 'assignmentList')->name('student.assignments-view');
             Route::get('/assignments/upload/{id}', 'viewAssignments')->name('student.assignment-upload');
+            Route::get('/viewCertificate/{userId}',  'showCertificate')->name('student.viewCertificate');
+            Route::get('/certificate/{userId}',  'Certificate')->name('student.certificate');
 
          });    
     });
@@ -159,8 +161,12 @@ use App\Models\Workshop;
             Route::get('/exams/{examId}/user/{userId}/attempts', [ResultController::class, 'getResultsByAttempts'])
     ->name('attempt.results');
             Route::get('/results/{examId}/{userId}/attempt/{attempt}', [ResultController::class, 'getAttemptDetails'])->name('attempt.details');
-            Route::get('certificate/{userId}', [ResultController::class, 'Certificate'])
-            ->name('admin.certificate');
+            // Route::get('certificate/{userId}', [ResultController::class, 'Certificate'])
+            // ->name('admin.certificate');
+
+            Route::get('certificate', [ResultController::class, 'Certificate'])
+    ->name('admin.certificate');
+
             Route::get('viewCertificate/{userId}', [ResultController::class, 'index'])
             ->name('admin.viewCertificate');
           
