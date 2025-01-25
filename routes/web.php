@@ -191,6 +191,7 @@ use App\Models\Workshop;
     Route::put('/admin/workshop/{id}', [WorkshopController::class, 'update'])->name('admin.workshops.update');
     Route::delete('admin/workshop/{id}', [WorkshopController::class, 'destroy'])->name('admin.workshops.destroy');
     Route::resource('placedStudent', PlacedStudentController::class);
+    Route::post('/placed-students/{placedStudent}/toggle-status', [PlacedStudentController::class, 'toggleStatus'])->name('placedStudent.toggleStatus');
 
 
     Route::get('/message/create', [MessageController::class, 'create'])->name('messages.create');

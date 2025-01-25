@@ -6,6 +6,7 @@ use App\Models\Course;
 use App\Models\User;
 use App\Models\Enquiry;
 use App\Models\Payment;
+use App\Models\PlacedStudent;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -16,6 +17,7 @@ class PublicController extends Controller
     public function index()
     {
         $data['courses']=Course::where("published", true)->latest()->take(6)->get();
+        $data['placedStudents'] = PlacedStudent::where('status', 1)->inRandomOrder()->take(4)->get();
         return view("public.homepage",$data);
     }
 
