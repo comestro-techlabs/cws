@@ -6,7 +6,7 @@ Login
 
 @section('content')
 
-<div class="flex bg-white rounded-lg mb-12 mt-20 py-12 shadow-xl border overflow-hidden mx-auto max-w-sm lg:">
+<div class="flex bg-white rounded-lg md:max-w-3xl mb-12 mt-20 py-12 shadow-xl border overflow-hidden mx-auto max-w-sm lg:">
     <div class="hidden lg:block lg:w-1/2 bg-cover"
         style="background-image:url('{{ asset('assets/icons/loginimage.png') }}')">
     </div>
