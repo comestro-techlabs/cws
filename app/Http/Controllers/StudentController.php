@@ -143,6 +143,17 @@ class StudentController extends Controller
     }
 
 
+    // public function dashboard()
+    // {
+
+    //     $studentId = User::findOrFail(Auth::id())->id;
+    //     $datas = [
+    //         'courses' => User::find(Auth::id())->courses()->get(),
+    //         'payments' => Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->get(),
+    //     ];
+    //     return view('student.dashboard');
+    // }
+
     public function dashboard()
     {
         if (!Auth::check()) {
@@ -202,6 +213,19 @@ class StudentController extends Controller
         return view('studentdashboard.dashboard', $datas);
     }
 
+
+    // public function coursePurchase()
+    // {
+    //     if(!Auth::check()){
+    //         return redirect()->route('auth.login')->with('error','you must be logged in to access this page');
+    //     }
+    //     $studentId = User::findOrFail(Auth::id())->id;
+    //     $data = [
+
+    //         'courses' => User::find(Auth::id())->courses()->get(),
+    //     ];
+    //     return view('studentdashboard.course.purchaseCourse', $data);
+    // }
 
     public function coursePurchase()
     {
@@ -791,93 +815,5 @@ class StudentController extends Controller
     //     $data['assignments']=Assignments::all();
     //     return view('studentdashboard.assignments.studentAssignment',$data);
     // }
-    public function showCertificate($userId)
-{
-   
-
-    $user = User::find($userId);
-    if (!$user) {
-        return redirect()->route('student.dashboard')->with('error', 'User not found.');
-    }
-
-    $course = $user->courses()->first(); 
-    $courseCode = $course ? $course->course_code : 'N/A';
-
-    $examUser = ExamUser::where('user_id', $userId)->first();
-    $examTotal = $examUser ? $examUser->total_marks : 0;
-    $assignmentTotal = Assignment_upload::where('student_id', $userId)->sum('grade') ?? 0;
-
-    $examName = $examUser ? $examUser->exam->exam_name : 'N/A';
-    $maxAssignmentMarks = 100;
-    $maxExamMarks = 20;
-
-    
-    $assignmentPercentage = ($assignmentTotal / $maxAssignmentMarks) * 100;
-    $examPercentage = ($examTotal / $maxExamMarks) * 100;
-    $percentage = ($assignmentPercentage + $examPercentage) / 2;
-
-    $date = now()->toFormattedDateString();
-    $year = now()->year;
-
-    $certificateNumber = str_pad($userId, 4, '0', STR_PAD_LEFT);
-   
-  
-    return view('studentdashboard.certificate.viewCertificate', compact(
-        'user',
-        'percentage',
-        'assignmentPercentage',
-        'examPercentage',
-        'assignmentTotal',
-        'examTotal',
-        'examName',
-        'date',
-        'year',
-        'courseCode',
-        'certificateNumber'  
-        
-    ));
-}
-
-public function Certificate($userId)
-{
-    if (!Auth::check() || Auth::id() != $userId) {
-        return redirect()->route('auth.login')->with('error', 'Access denied.');
-    }
-    $user = User::find($userId);
-    if (!$user) {
-        return redirect()->back()->with('error', 'User not found.');
-    }
-
-    $examUser = ExamUser::where('user_id', $userId)->first();
-    $examTotal = $examUser ? $examUser->total_marks : 0;
-    $assignmentTotal = Assignment_upload::where('student_id', $userId)->sum('grade') ?? 0;
-
-    $examName = $examUser ? $examUser->exam->exam_name : 'N/A';
-
-    $maxAssignmentMarks = 100;
-    $maxExamMarks = 20;
-
-   
-    $assignmentPercentage = ($assignmentTotal / $maxAssignmentMarks) * 100;
-    $examPercentage = ($examTotal / $maxExamMarks) * 100;
-
-  
-    $percentage = ($assignmentPercentage + $examPercentage) / 2;
-
-    $date = now()->toFormattedDateString();
-    
-    return view('studentdashboard.certificate.certificate', compact(
-        'user',
-        'percentage',
-        'assignmentPercentage',
-        'examPercentage',
-        'assignmentTotal',
-        'examTotal',
-        'examName',
-        'date'
-    ));
-   
-}
-
 
 }

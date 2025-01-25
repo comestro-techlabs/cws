@@ -12,7 +12,6 @@
     use App\Http\Controllers\EnquiryController;
     use App\Http\Controllers\LessonController;
     use App\Http\Controllers\MessageController;
-    use App\Http\Controllers\OptionController;
     use App\Http\Controllers\PhonepeController;
     use App\Http\Controllers\PlacedStudentController;
     use App\Http\Controllers\PublicController;
@@ -44,15 +43,11 @@
             Route::post('/update-profile', 'updateProfile')->name('student.updateProfile');
             Route::get('/coursePurchase', 'coursePurchase')->name('student.coursePurchase');
             Route::put('/courses/{course}/update-batch', 'updateBatch')->name('course.updateBatch');
-
             Route::get('/course/{id}', 'buyCourse')->name('student.buyCourse');
             Route::get('/course', 'course')->name('student.course');
             Route::get('/assignments/view', 'assignmentList')->name('student.assignments-view');
             Route::get('/assignments/upload/{id}', 'viewAssignments')->name('student.assignment-upload');
-            Route::get('/viewCertificate/{userId}',  'showCertificate')->name('student.viewCertificate');
-            Route::get('/certificate/{userId}',  'Certificate')->name('student.certificate');
-
-         });    
+        });
     });
 
 
@@ -62,13 +57,10 @@
     Route::post('/student/assignments/upload/{assignment_id}', [StudentController::class, 'store'])->name('assignments.store');
 
 
-     Route::post('save-workshop-payment', [PaymentController::class, 'saveWorkshopPayment'])->name('save.workshop.payment');
-  
-     Route::post('/initiate-payment', [PaymentController::class, 'initiatePayment'])->name('store.payment.initiation');
-     Route::post('/payment-response', [PaymentController::class, 'handlePaymentResponse'])->name('handle.payment.response');
-     Route::post('/refresh-payment-status', [PaymentController::class, 'refreshPaymentStatus'])->name('refresh.payment.status');
+    Route::post('save-course-payment', [PaymentController::class, 'saveCoursePayment'])->name('save.course.payment');
+    Route::post('save-workshop-payment', [PaymentController::class, 'saveWorkshopPayment'])->name('save.workshop.payment');
 
-
+    Route::get('payment/refresh/{paymentId}', [PaymentController::class, 'refreshPayment'])->name('payment.refresh');
 
     Route::middleware([AdminMiddleware::class, "auth"])->group(function () {
 
@@ -91,8 +83,6 @@
             });
 
             Route::resource('course', CourseController::class);
-            Route::get('/courses/{course}/batches', [CourseController::class, 'batches'])->name('course.batches');
-
             Route::get('/courses/{course_id}/chapters/create', [ChapterController::class, 'create'])->name('chapter.create');
             Route::post('/courses/{course_id}/chapters', [ChapterController::class, 'store'])->name('chapter.store');
             Route::get('/chapters/{chapter}/edit', [ChapterController::class, 'edit'])->name('chapter.edit');
@@ -101,7 +91,6 @@
             Route::post('/courses/{id}/features', [CourseController::class, 'addFeature'])->name('course.addFeature');
             Route::post('/courses/{course}/publish', [CourseController::class, 'publish'])->name('course.publish');
             Route::post('/course/{id}/unpublish', [CourseController::class, 'unpublish'])->name('course.unpublish');
-            Route::get('/batches/{batch}/students', [CourseController::class, 'showStudents'])->name('batches.students');
 
 
             Route::get('/chapters/{chapter}/lessons/create', [LessonController::class, 'create'])->name('lessons.create');
@@ -169,12 +158,8 @@
             Route::get('/exams/{examId}/user/{userId}/attempts', [ResultController::class, 'getResultsByAttempts'])
                 ->name('attempt.results');
             Route::get('/results/{examId}/{userId}/attempt/{attempt}', [ResultController::class, 'getAttemptDetails'])->name('attempt.details');
-            // Route::get('certificate/{userId}', [ResultController::class, 'Certificate'])
-            // ->name('admin.certificate');
-
-            Route::get('certificate', [ResultController::class, 'Certificate'])
-    ->name('admin.certificate');
-
+            Route::get('certificate/{userId}', [ResultController::class, 'Certificate'])
+                ->name('admin.certificate');
             Route::get('viewCertificate/{userId}', [ResultController::class, 'index'])
                 ->name('admin.viewCertificate');
 
@@ -206,9 +191,6 @@
     });
 
 
-
-    Route::get('auth/google', [SocialiteController::class, 'redirectToGoogle'])->name('auth.google');
-    Route::get('auth/google/callback', [SocialiteController::class, 'handleGoogleCallback']);
 
     // public routes here:
     Route::controller(PublicController::class)->group(function () {
@@ -273,7 +255,6 @@
     Route::post('/phonepe/initiate', [PhonepeController::class, 'initiatePayment'])->name('phonepe.initiate');
     Route::post('/phonepe/callback', [PhonePeController::class, 'callback'])->name('phonepe.callback');
     Route::get('/phonepe/status/{transactionId}', [PhonePeController::class, 'checkStatus'])->name('phonepe.status');
-    // Route::post('/phonepe/refund', [PhonePeController::class, 'refund'])->name('phonepe.refund');
     Route::get('/phonepe/redirect', [PhonePeController::class, 'redirect'])->name('phonepe.redirect');
 
     Route::get('/portfolio', [PortfolioController::class, 'index'])->name('public.portfolio');

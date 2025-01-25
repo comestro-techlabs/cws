@@ -45,7 +45,7 @@
                     <span class="text-gray-700 font-medium">Duration: {{ $course->duration }} Weeks</span>
                     <span class="text-xl font-bold text-green-600">₹{{ $course->discounted_fees }}</span>
                 </div>
-                <form action="{{ route('phonepe.initiate') }}" method="post" class="mb-4">
+                {{-- <form action="{{ route('phonepe.initiate') }}" method="post" class="mb-4">
                     @csrf
                     <input type="hidden" name="course_id" value="{{ $course->id }}">
                     <input type="hidden" name="amount" value="{{ $course->discounted_fees }}">
@@ -56,15 +56,15 @@
                              class="w-6 h-6 mr-2">
                         <span>Pay with PhonePe</span>
                     </button>
-                </form>
+                </form> --}}
 
-                <a href="{{ route('phonepe.payment') }}" id="pay-button"
+                {{-- <a href="{{ route('phonepe.payment') }}" id="pay-button"
                    class="flex items-center justify-center w-full bg-blue-600 text-white rounded-lg py-3 shadow hover:bg-blue-700 transition">
                     <img src="https://cdn.iconscout.com/icon/free/png-512/free-razorpay-logo-icon-download-in-svg-png-gif-file-formats--payment-gateway-brand-logos-icons-1399875.png"
                          alt="Razorpay Logo"
                          class="w-8 h-8 mr-2">
                     <span>Pay with Razorpay</span>
-                </a>
+                </a> --}}
             </div>
 
             <!-- Course Features -->
@@ -82,42 +82,6 @@
         </div>
     </div>
 </div>
-
-<!-- Razorpay Integration -->
-<form action="{{ route('save.course.payment') }}" method="post">
-    @csrf
-    <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id">
-    <input type="hidden" value="{{ $course->id }}" name="course_id">
-    <input type="hidden" value="{{ $course->discounted_fees }}" name="amount">
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-    @auth
-    <script>
-        document.getElementById('pay-button').onclick = function(e) {
-            e.preventDefault();
-            var options = {
-                "key": "{{ env('RAZORPAY_KEY') }}",
-                "amount": "{{ $course->discounted_fees }}" * 100,
-                "currency": "INR",
-                "name": "LearnSyntax",
-                "description": "Processing Fee",
-                "image": "{{ asset('front_assets/img/logo/logo.png') }}",
-                "handler": function(response) {
-                    document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
-                    document.forms[0].submit();
-                },
-                "prefill": {
-                    "name": "{{ Auth::user()->name }}",
-                    "email": "{{ Auth::user()->email }}"
-                },
-                "theme": {
-                    "color": "#0a64a3"
-                }
-            };
-            var rzp1 = new Razorpay(options);
-            rzp1.open();
-        }
-    </script>
-    @endauth
-</form>
+{{-- #todo: shaique --}}
 
 @endsection
