@@ -34,7 +34,7 @@
                             <td class="border border-gray-300 px-4 py-2">{{ $batch->available_seats }}</td>
                             <td class="border border-gray-300 px-4 py-2">{{ $batch->users_count }}</td>
                             <td class="border border-gray-300 px-4 py-2">
-                                <a href="{{ route('batches.students', $batch->id) }}" class="text-blue-500 hover:underline">
+                                <a href="{{ route('batches.students', $batch->id) }}" class="text-white bg-teal-400 px-2 py-1 rounded-lg">
                                     View Students
                                 </a>
                             </td>
