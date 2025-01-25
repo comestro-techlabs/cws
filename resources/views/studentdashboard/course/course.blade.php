@@ -25,27 +25,6 @@
                         </svg>
                     </button>
                 </div>
-
-                <!-- Category Filter -->
-                <div>
-                    <select id="custom-select"
-                        class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                        <option selected>All categories</option>
-                        <option value="1">Vue.js</option>
-                        <option value="2">Node.js</option>
-                        <option value="3">GitHub</option>
-                    </select>
-                </div>
-
-                <!-- Status Filter -->
-                <div>
-                    <select id="published01"
-                        class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                        <option selected>All</option>
-                        <option value="1">In Progress</option>
-                        <option value="3">New Releases</option>
-                    </select>
-                </div>
             </div>
         </form>
 
