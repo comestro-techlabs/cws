@@ -12,17 +12,20 @@
 <div class="bg-white overflow-x-hidden">
     <livewire:page-heading 
         title="Welcome To My Portfolio"
-        description="Our TechLab services in India enhance your brand’s online presence, attract new customers, and drive conversions."
+        description="Showcasing my journey of innovation, creativity, and expertise through impactful projects and real-world solutions. Explore how I transform ideas into reality, deliver exceptional results, and continuously strive to push boundaries in the tech world."
         image="about-header.png" 
     />
 
     <div class="p-8 w-full md:w-1/2" id="portfolio">
-        <h3 class="text-blue-400 uppercase tracking-widest text-2xl border-b-2 border-blue-300 font-bold pb-2">
-            My Services
+        <h3 class="text-secondary uppercase tracking-widest text-2xl border-b-2 border-blue-300 font-bold pb-2">
+            My Portfolio
         </h3>
-        <h1 class="text-4xl font-bold text-black mt-4">
-            What Kinds of Work I Do?
+        <h1 class="text-2xl font-semibold text-gray-800 mt-4">
+            Crafting Ideas into Reality Through My Work.
         </h1>
+        <p class="text-gray-600 mt-2">
+            Explore my journey through projects that highlight innovation, skill, and a commitment to excellence.
+        </p>
     </div>
 
     

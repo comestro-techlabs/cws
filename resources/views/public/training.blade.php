@@ -25,7 +25,7 @@
             </div>
 
 
-            <div class="flex flex-1 w-full">
+            {{-- <div class="flex flex-1 w-full">
                 <h2 class="text-2xl md:text-3xl font-bold text-gray-800 text-center my-8 flex-1">
                     Students' Reviews on <span class="text-blue-600">Google Business</span>
                 </h2>
@@ -48,7 +48,7 @@
                     fullname="Neeraj Kumar"
                     review="Really talented teacher praises students and work hard along with them, motivating to be next level Software Engineer/Developer. Purnia has never such practical teacher on field of computer education, we need more teachers like Sadique Sir 💥"
                     star="5.0" />
-            </div>
+            </div> --}}
         </div>
     </div>
 @endsection
