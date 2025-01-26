@@ -6,7 +6,7 @@
 
 @section('meta')
     <meta name="description"
-        content="Discover LearnSyntax, a leading Software Company based in Purnea Bihar, delivering 360º Software Solutions globally since 2009. With over 110 experts across Bihar, we help businesses thrive through innovative, data-driven marketing strategies." />
+        content="Discover Learn Syntax, a leading Software Company based in Purnea Bihar, delivering 360º Software Solutions globally since 2009. With over 110 experts across Bihar, we help businesses thrive through innovative, data-driven marketing strategies." />
 @endsection
 
 @section('content')
@@ -68,7 +68,7 @@
                                         "key": "{{ env('RAZORPAY_KEY') }}",
                                         "amount": {{ $workshop->fees }} * 100,
                                         "currency": "INR",
-                                        "name": "LearnSyntax",
+                                        "name": "Learn Syntax",
                                         "description": "Workshop Fee Payment",
                                         "image": "{{ asset('front_assets/img/logo/logo.png') }}",
                                         "handler": function(response) {

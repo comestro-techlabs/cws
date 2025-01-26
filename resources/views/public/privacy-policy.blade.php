@@ -13,7 +13,7 @@
             <p class="text-gray-700 leading-relaxed mb-6 ">
                 This Privacy Policy describes how Learn Syntax and its affiliates (collectively
                 "Learn Syntax, we, our, us") collect, use, share, protect or otherwise process your
-                information/ personal data through our website <a href="https://www.LearnSyntax.com/" class="text-blue-600 underline">https://www.LearnSyntax.com/</a>(referred to as Platform). Please
+                information/ personal data through our website <a href="https://www.Learn Syntax.com/" class="text-blue-600 underline">https://www.Learn Syntax.com/</a>(referred to as Platform). Please
                 note that you may be able to browse certain sections of the Platform without registering with us.We do not
                 offer any product/service under this Platform outside India and your personal data will primarily be stored
                 and processed in India. By visiting this Platform, providing your information or availing any
