@@ -266,40 +266,6 @@
 
 
 
-    <div class="bg-white py-12 mt-20 mb-20 px-6">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2">
-            <!-- Left Side: Text Content -->
-            <div class="" style="padding-left: 50px">
-                <h2 class="text-4xl font-bold text-gray-800">
-                    We <span class="text-secondary">love</span> to help you
-                </h2>
-                <p class="text-gray-600 mt-2">Explore new and trending Learn syntax.</p>
-                <div class="mt-6">
-                    <div class="flex items-start space-x-4  border-b-2 w-96">
-                        <span class="font-medium text-black">Phone:</span>
-                        <p class="text-gray-700 mb-3">+91-9546805580</p>
-                    </div>
-                    <div class="flex items-start space-x-4  border-b-2 w-96 mt-4">
-                        <span class="font-medium text-black">Email:</span>
-                        <a href="mailto:support@nareshit.com" class="text-blue-600 mb-3">info@Learn Syntax.com</a>
-                    </div>
-                    <div class="flex items-start space-x-4  mt-4">
-                        <span class="font-medium text-black">Location:</span>
-                        <p class="text-gray-700 mb-3">Purnea, Bihar, India</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Right Side: Map -->
-            <div class="">
-
-                <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3592.6739424016805!2d87.46727227485653!3d25.781331207794718!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eff97822565985%3A0x8a37146a54d517d3!2sThana%20Chowk%2C%20Pratap%20Nagar%2C%20Purnia%2C%20Bihar%20854301!5e0!3m2!1sen!2sin!4v1737696546865!5m2!1sen!2sin"
-                    width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"
-                    referrerpolicy="no-referrer-when-downgrade"></iframe>
-            </div>
-        </div>
-    </div>
 @endsection
 
 @section('js')
