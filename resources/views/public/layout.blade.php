@@ -86,11 +86,15 @@
 
     <footer class=" bg-secondary text-gray-50 py-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
                 <!-- About Section -->
+                
                 <div>
-                    <h3 class="text-lg font-semibold text-white mb-4">About Us</h3>
-                    <p class="text-gray-50">
+                   
+                    <img src="{{asset('assets/footer_logo.png')}}" alt="" class=" h-16">
+
+
+                    <p class="text-gray-50 mt-4">
                         At Learn Syntax, we are committed to providing high-quality programming education that empowers
                         students to excel in the IT industry. Our hands-on approach and real-world projects ensure that
                         our students are job-ready.
@@ -98,7 +102,7 @@
                 </div>
 
                 <!-- Links Section -->
-                <div>
+                <div class="pl-12">
                     <h3 class="text-lg font-semibold text-white mb-4">Quick Links</h3>
                     <ul class="space-y-2">
                         <li>

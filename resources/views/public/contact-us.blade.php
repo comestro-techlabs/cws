@@ -6,9 +6,9 @@
 @section('content')
     <div class="bg-white 
  overflow-x-hidden">
-        <livewire:page-heading title="Get in Touch"
-            description="We’re here to help with your Software Devlopment needs. Whether you have questions or need support, our
-                    team is ready to assist you."
+        <livewire:page-heading title="Our Contact"
+        description="We’re here to help with all your software development needs. Whether you have inquiries, require technical support, or want to discuss a project idea, our dedicated team is here to assist you. Reach out to us today and let’s build something exceptional together." 
+
             image="about-header.png" />
 
         <section class="py-16 px-4 sm:px-8 lg:px-16 max-w-screen-xl mx-auto" id="contact-form">
