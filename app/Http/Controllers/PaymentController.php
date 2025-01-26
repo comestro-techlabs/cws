@@ -17,7 +17,7 @@ class PaymentController extends Controller
 {
 
 
-
+//it's of no use
     public function saveWorkshopPayment(Request $request)
     {
         $input = $request->all();
@@ -149,11 +149,13 @@ public function handlePaymentResponse(Request $request)
     ];
 
     $api->utility->verifyPaymentSignature($attributes);
+    $razorpayPayment = $api->payment->fetch($razorpay_payment_id);
 
     // Update payment record based on payment status
     $payment->update([
         'payment_id' => $razorpay_payment_id,
         'transaction_id' => $razorpay_payment_id,
+        'method' => $razorpayPayment->method,
         'payment_status' => 'completed', // Set payment status as completed
         'status' => 'captured', // Set the status as captured
         'payment_date' => now(),
