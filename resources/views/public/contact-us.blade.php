@@ -68,10 +68,10 @@
 
 
 
-        <div class="container flex items-center justify-center text-slate-600 font-semibold mb-10 mt-10 px-4 sm:px-8 lg:px-16 ">
+        {{-- <div class="container flex items-center justify-center text-slate-600 font-semibold mb-10 mt-10 px-4 sm:px-8 lg:px-16 ">
             <p>We’ll help you understand your needs, develop a customized plan, and execute the plan effectively. Our
                 three-step approach is simple, but it’s effective.</p>
-        </div>
+        </div> --}}
 
         {{-- <div class="curve-bottom wave h-32 bg-gray-100"></div> --}}
 
@@ -84,20 +84,42 @@
             </div>
 
             @if ($errors->any())
-                <div class="bg-red-100 text-red-700 p-4 rounded mb-4">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+            @once
+                <!-- Include SweetAlert2 -->
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            @endonce
+        
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        html: `{!! implode('', $errors->all('<li>:message</li>')) !!}`,
+                        confirmButtonColor: '#0272bd' 
 
-            @if (session('success'))
-                <div class="bg-green-100 text-green-700 p-4 rounded mb-4">
-                    {{ session('success') }}
-                </div>
-            @endif
+                    });
+                });
+            </script>
+        @endif
+        
+        @if (session('success'))
+            @once
+                <!-- Include SweetAlert2 -->
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            @endonce
+        
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: @json(session('success')),
+                        confirmButtonColor: '#0272bd' 
+                    });
+                });
+            </script>
+        @endif
+        
 
             <form action="{{ route('enquiry.store') }}" method="post" class="mt-5">
                 @csrf
@@ -133,4 +155,6 @@
         
 
     </div>
+    
+
 @endsection

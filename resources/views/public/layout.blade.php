@@ -91,10 +91,10 @@
                 
                 <div>
                    
-                    <img src="{{asset('assets/footer_logo.png')}}" alt="" class=" h-16">
+                    <img src="{{asset('assets/footer_logo.png')}}" alt="" class="lg:h-16 h-11">
 
 
-                    <p class="text-gray-50 mt-4">
+                    <p class="text-gray-50 md:text-md text-sm mt-4">
                         At Learn Syntax, we are committed to providing high-quality programming education that empowers
                         students to excel in the IT industry. Our hands-on approach and real-world projects ensure that
                         our students are job-ready.
@@ -102,7 +102,7 @@
                 </div>
 
                 <!-- Links Section -->
-                <div class="pl-12">
+                <div class="md:pl-12">
                     <h3 class="text-lg font-semibold text-white mb-4">Quick Links</h3>
                     <ul class="space-y-2">
                         <li>
@@ -147,7 +147,6 @@
 
     @livewireScripts
     <script type="module" src="{{ asset('build/assets/app-CEsE5a7F.js') }}"></script>
-
 </body>
 
 </html>
