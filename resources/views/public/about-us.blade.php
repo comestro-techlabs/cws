@@ -6,13 +6,13 @@
 
 @section('meta')
     <meta name="description"
-        content="Discover Learn Syntax, a leading Software Company based in Purnea Bihar, delivering 360º Software Solutions globally since 2009. With over 110 experts across Bihar, we help businesses thrive through innovative, data-driven marketing strategies." />
+        content="Discover LearnSyntax, a leading Software Company based in Purnea Bihar, delivering 360º Software Solutions globally since 2009. With over 110 experts across Bihar, we help businesses thrive through innovative, data-driven marketing strategies." />
 @endsection
 
 @section('content')
 
     <div class="bg-white pB-12 overflow-x-hidden">
-        <livewire:page-heading title="About Learn Syntax"
+        <livewire:page-heading title="About"
             description="Our Learn Syntax platform is one of the top learning platforms in India. We provide 360º learning solutions to empower individuals and businesses across the globe with in-demand tech skills."
             image="about-header.png" />
         <div class=" mt-20 mb-20 py-10 px-5 md:px-20">
@@ -210,7 +210,7 @@
                     </svg>
                   </button>
                   <div id="faq3-content" class="hidden p-4 bg-gray-50 text-gray-700">
-                    Yes, Learn Syntax offers dedicated placement assistance to ensure our students secure jobs in top companies.
+                    Yes, LearnSyntax offers dedicated placement assistance to ensure our students secure jobs in top companies.
                   </div>
                 </div>
               </div>

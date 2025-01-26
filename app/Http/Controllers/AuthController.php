@@ -106,9 +106,6 @@ class AuthController extends Controller
         ]);
     }
 
-
-
-
     public function sendOtp(Request $request)
     {
         $request->validate([

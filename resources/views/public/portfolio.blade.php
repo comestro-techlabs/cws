@@ -16,7 +16,7 @@
         image="about-header.png" 
     />
 
-    <div class="p-8 w-full md:w-1/2" id="portfolio">
+    <div class="p-8 w-full md:w-1/2 ml-36" id="portfolio">
         <h3 class="text-secondary uppercase tracking-widest text-2xl border-b-2 border-blue-300 font-bold pb-2">
             My Portfolio
         </h3>
