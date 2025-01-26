@@ -1,8 +1,8 @@
 <div class="w-full">
-    <section class="bg-blue-900 text-white py-12">
+    <section class="bg-blue-900 text-white py-8">
         <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
             <!-- Text Content -->
-            <div class="text-center md:text-left mb-8 md:mb-0 md:w-1/2">
+            <div class="text-center md:text-left mb-8 md:mb-0m mt-10  md:w-1/2">
                 <h1 class="text-3xl md:text-4xl font-bold mb-4 mt-5">{{$title}}</h1>
                 <p class="text-md md:text-lg mb-6">
                     {{$description}}
@@ -20,7 +20,7 @@
             </div>
             <!-- Image -->
             <div class="md:flex justify-center hidden md:justify-end md:w-1/2 px-4">
-                <img src="{{asset('assets/'.$image)}}" alt="{{$title}}" class="max-w-full h-auto rounded-lg">
+                <img src="{{asset('assets/'.$image)}}" alt="{{$title}}" class="max-w-full h-auto mt-10 rounded-lg">
             </div>
         </div>
     </section>
