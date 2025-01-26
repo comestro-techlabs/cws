@@ -159,30 +159,7 @@ public function handlePaymentResponse(Request $request)
         'payment_status' => 'completed', // Set payment status as completed
         'status' => 'captured', // Set the status as captured
         'payment_date' => now(),
-    ]);
-
-    // Check if payment is captured and associate the user with course or workshop
-    if ($payment->status === 'captured') {
-        // If it's for a course
-        if ($payment->course_id) {
-            DB::table('course_user')->insert([
-                'course_id' => $payment->course_id,
-                'user_id' => $payment->student_id,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        }
-
-        // If it's for a workshop
-        if ($payment->workshop_id) {
-            DB::table('workshop_user')->insert([
-                'workshop_id' => $payment->workshop_id,
-                'user_id' => $payment->student_id,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        }
-    }
+    ]);    
 
     return response()->json([
         'success' => true,
