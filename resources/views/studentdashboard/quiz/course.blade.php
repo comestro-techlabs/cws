@@ -20,7 +20,7 @@
                                     $quizAvailable = true;
                                 @endphp
                                 <a href="{{ route('student.quiz', ['courseId' => $course->id]) }}">
-                                    <button class="bg-blue-500 text-white font-medium px-4 py-2 rounded-lg shadow hover:bg-blue-600 transition">
+                                    <button id="start-quiz-btn" class="bg-blue-500 text-white font-medium px-4 py-2 rounded-lg shadow hover:bg-blue-600 transition">
                                         Take Quiz
                                     </button>
                                 </a>
@@ -67,5 +67,6 @@
         });
     </script>
 @endif
+
 
 @endsection

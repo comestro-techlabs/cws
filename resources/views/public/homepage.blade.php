@@ -3,21 +3,22 @@
 
 @section('meta')
     <meta name="description"
-        content="Join LearnSyntax Programming Classes and master coding with expert-led training in C, DBMS, Laravel, and Web Development. Learn hands-on programming techniques from beginner to advanced levels. Enroll now to enhance your coding skills and build a successful career in tech!" />
+        content="Join Learn Syntax Programming Classes and master coding with expert-led training in C, DBMS, Laravel, and Web Development. Learn hands-on programming techniques from beginner to advanced levels. Enroll now to enhance your coding skills and build a successful career in tech!" />
 @endsection
 
 @section('content')
-    <div class="bg-primary overflow-x-hidden">
-        <x-hero />
-    </div>
 
+{{-- banner --}}
+    <div class="w-full mt-12">
+        <img src="{{asset("assets/banner.png")}}" class="" alt="">
+    </div>
 
     {{-- latest course --}}
     <div class="">
-        <div class="flex flex-col items-center mt-20 text-center">
+        <div class="flex flex-col items-center mt-5 md:mt-20 text-center">
             <h2 class="text-3xl text-gray-900 font-sans font-bold mb-4">Our <span class="text-secondary">Latest</span> Courses</h2>
             <h1 class="text-xl font-semibold text-gray-800 mb-4">Master the Skills to Build Your Future</h1>
-            <p class="text-base text-gray-700 mb-6 ">
+            <p class="text-base text-gray-700 mb-6 md:mx-64">
                 Explore our curated courses designed to provide you with the latest industry insights and practical
                 knowledge.
                 From beginner to advanced levels, we aim to help you excel in your field with expert-led guidance and
@@ -231,7 +232,7 @@
     <div class="flex flex-col items-center mt-20 text-center">
         <h2 class="text-4xl font-bold text-gray-800">Our <span class="text-secondary">Proud</span> Students</h2>
         <h1 class="text-xl font-semibold text-gray-800 mb-4">Meet Our Achievers</h1>
-        <p class="text-base text-gray-700 mb-6 ">
+        <p class="text-base text-gray-700 mb-6 mx-64">
             Celebrating the success and dedication of our students who have excelled in their respective fields. With their
             hard work and our expert guidance, they have achieved incredible milestones. Get inspired by their stories!
         </p>
@@ -280,7 +281,7 @@
                     </div>
                     <div class="flex items-start space-x-4  border-b-2 w-96 mt-4">
                         <span class="font-medium text-black">Email:</span>
-                        <a href="mailto:support@nareshit.com" class="text-blue-600 mb-3">info@learnSyntax.com</a>
+                        <a href="mailto:support@nareshit.com" class="text-blue-600 mb-3">info@Learn Syntax.com</a>
                     </div>
                     <div class="flex items-start space-x-4  mt-4">
                         <span class="font-medium text-black">Location:</span>

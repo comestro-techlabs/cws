@@ -43,12 +43,12 @@
 
         </div>
        
-        <div class="mt-4">
+        {{-- <div class="mt-4">
             <label class="inline-flex items-center">
                 <input type="checkbox" name="status" value="1" {{ $exam->status ? 'checked' : '' }} class="rounded">
                 <span class="ml-2 text-gray-700">Publish</span>
             </label>
-        </div>
+        </div> --}}
 
         <div class="mt-6">
             <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 transition">

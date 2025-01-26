@@ -5,27 +5,27 @@
 @endsection
 
 @section('meta')
-    <meta name="description" content="LearnSyntax offers comprehensive training in Full-Stack Web Development, C Programming, Laravel, SQL Database Management, and JavaScript & React. Our hands-on courses are designed to equip you with practical skills for real-world software and web development projects."/>
+    <meta name="description" content="Learn Syntax offers comprehensive training in Full-Stack Web Development, C Programming, Laravel, SQL Database Management, and JavaScript & React. Our hands-on courses are designed to equip you with practical skills for real-world software and web development projects."/>
 @endsection
 
 @section('content')
     <div class="bg-white overflow-x-hidden">
 
-        <livewire:page-heading title="Learn Syntax Training"
-            description="LearnSyntax offers comprehensive training in Full-Stack Web Development, C Programming, Laravel, SQL Database Management, and JavaScript & React. Our hands-on courses are designed to equip you with practical skills for real-world software and web development projects." image="about-header.png" />
+        <livewire:page-heading title="Our Courses"
+            description="Learn Syntax offers comprehensive training in Full-Stack Web Development, C Programming, Laravel, SQL Database Management, and JavaScript & React. Our hands-on courses are designed to equip you with practical skills for real-world software and web development projects." image="about-header.png" />
 
         <div class="md:px-10">
             <!-- Header Section -->
 
 
-            <div class="grid md:grid-cols-4 px-2 md:px-10 gap-2 grid-cols-2 md:py-5 mt-9 bg-white flex-1">
+            <div class="grid md:grid-cols-4 px-2 md:px-10 gap-2 grid-cols-2 ml-28 md:py-5 mt-9 bg-white flex-1">
                 @foreach ($courses as $course)
                     <x-course-card :course="$course" />
                 @endforeach
             </div>
 
 
-            <div class="flex flex-1 w-full">
+            {{-- <div class="flex flex-1 w-full">
                 <h2 class="text-2xl md:text-3xl font-bold text-gray-800 text-center my-8 flex-1">
                     Students' Reviews on <span class="text-blue-600">Google Business</span>
                 </h2>
@@ -48,7 +48,7 @@
                     fullname="Neeraj Kumar"
                     review="Really talented teacher praises students and work hard along with them, motivating to be next level Software Engineer/Developer. Purnia has never such practical teacher on field of computer education, we need more teachers like Sadique Sir 💥"
                     star="5.0" />
-            </div>
+            </div> --}}
         </div>
     </div>
 @endsection

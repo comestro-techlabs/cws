@@ -7,7 +7,9 @@ use App\Models\Batch;
 use App\Models\Course;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+
 
 class AssignmentsController extends Controller
 {
@@ -49,7 +51,7 @@ class AssignmentsController extends Controller
         // Validate the incoming request
         $validated = $request->validate([
             'course_id' => 'required|exists:courses,id',
-            'batch_id' => 'required|exists:courses,id',
+            'batch_id' => 'required|exists:batches,id',
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'status' => 'nullable|boolean',
@@ -114,14 +116,40 @@ class AssignmentsController extends Controller
     {
         $assignment->status = !$assignment->status;
         $assignment->save();
+        if ($assignment->status) {
+            $this->sendAssignmentNotification($assignment);
+        }
 
         return redirect()->back()->with('success', 'assignment status updated successfully!');
     }
+    private function sendAssignmentNotification(Assignments $assignment)
+{
+    // Retrieve users enrolled in the course and batch associated with the assignment
+    $users = User::whereHas('courses', function ($query) use ($assignment) {
+        $query->where('course_id', $assignment->course_id);
+    })->whereHas('batches', function ($query) use ($assignment) {
+        $query->where('batch_id', $assignment->batch_id);
+    })->get();
 
+    if ($users->isEmpty()) {
+        \Log::info('No users found for course ID: ' . $assignment->course_id . ' and batch ID: ' . $assignment->batch_id);
+        return;
+    }
+    $users->each(function ($user) use ($assignment) {
+        try {
+            Mail::send('emails.assignment_notification', [
+                'user' => $user,
+                'assignment' => $assignment,
+            ], function ($message) use ($user) {
+                $message->to($user->email, $user->name)
+                        ->subject('New Assignment Available');
+            });
+        } catch (\Exception $e) {
+            \Log::error('Failed to send email to ' . $user->email . ': ' . $e->getMessage());
+        }
+    });
+}
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id)
     {
         $assignment = Assignments::findOrFail($id);
