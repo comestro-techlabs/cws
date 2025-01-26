@@ -42,7 +42,7 @@ Workshop
                 </p>
 
                 @if ($workshop->fees > 0)
-               
+
                 <button id="pay-button"
                     class="flex items-center justify-center w-full bg-white border-4 border-double text-black  rounded-full mt-2 shadow-xl px-6 py-2  transition duration-300 ease-in-out transform hover:scale-105 space-x-3">
                     <img src="https://cdn.iconscout.com/icon/free/png-512/free-razorpay-logo-icon-download-in-svg-png-gif-file-formats--payment-gateway-brand-logos-icons-1399875.png?f=webp&w=256"
@@ -104,7 +104,7 @@ Workshop
                 body: JSON.stringify({
                     student_id: "{{ Auth::id() }}" ?? 99,
                     receipt_no: receipt_no,
-                    amount: "{{ $workshop->fees }}"??null,
+                    amount: "{{ $workshop->fees }}" ?? null,
                     ip_address: "{{ request()->ip() }}",
                     workshop_id: "{{ $workshop->id }}" ?? 1,
                 })
@@ -136,7 +136,10 @@ Workshop
                                         razorpay_signature: response.razorpay_signature,
                                     })
                                 })
-                                .then(response => response.json())
+                                .then(response => {
+                                    console.log('Response from backend:', response);
+                                    return response.json();
+                                })
                                 .then(data => {
                                     if (data.success) {
                                         alert('Payment processed successfully');
