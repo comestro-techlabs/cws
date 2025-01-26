@@ -25,7 +25,4 @@ class Batch extends Model
                     ->withTimestamps();
     }
     
-
-    
-    
 }

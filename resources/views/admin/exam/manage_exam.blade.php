@@ -9,7 +9,12 @@
         {{ session('success') }}
     </div>
     @endif
-
+    @if (session('error'))
+    <div class="bg-red-100 text-red-700 p-4 rounded mb-4">
+        {{ session('error') }}
+    </div>
+    @endif
+ 
     <form method="GET" class="mb-4">
         <input type="text" name="search" placeholder="Search..." class="border px-3 py-2 rounded w-full" value="{{ request('search') }}">
     </form>
@@ -36,15 +41,24 @@
                     <td class="border px-4 py-2">{{ $exam->exam_name }}</td>
                     <td class="border px-4 py-2">{{ $exam->exam_date }}</td>
                     <td class="border px-4 py-2">
-                    <form action="{{ route('exam.toggleStatus', ['exam' => $exam->id]) }}" method="POST" class="inline-block">
-                        @csrf
-                        @method('PATCH')
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" name="status" class="sr-only peer" onchange="this.form.submit()" {{ $exam->status ? 'checked' : '' }}>
-                            <div class="w-11 h-6 bg-gray-200 rounded-full peer-focus:ring-4 peer-focus:ring-green-300  peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
-                        </label>
-                    </form>
+                        {{-- Status Toggle --}}
+                        <form action="{{ route('exam.toggleStatus', $exam->id) }}" method="POST" class="inline-block">
+                            @csrf
+                            @method('PATCH')
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input 
+                                    type="checkbox" 
+                                    name="status" 
+                                    class="sr-only peer" 
+                                    onchange="this.form.submit()" 
+                                    {{ $exam->status ? 'checked' : '' }}
+                                    {{ $exam->quizzes->count() < 10 && !$exam->status ? 'disabled' : '' }}>
+                                <div class="w-11 h-6 bg-gray-200 rounded-full peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
+                            </label>
+                        </form>
+                       
                     </td>
+                    
                     <td class="border px-4 py-2">
                         <div class="flex gap-2">
                         <a href="{{ route('exam.edit', $exam->id) }}" class="bg-blue-500 text-white py-2 px-4 rounded">Edit</a>

@@ -48,6 +48,13 @@
 
         });
     });
+   
+          
+        // Route::get('/quiz_instruction', function () {
+        //     return view('studentdashboard.quiz_instruction');
+        // })->name('quiz_instruction');  
+
+       // });
 
 
 
@@ -138,8 +145,10 @@
             //quiz
             // Route::resource('quiz', QuizController::class);
 
-            Route::get('/quiz/create', [QuizController::class, 'create'])->name('quiz.create');
+            Route::get('/quiz/create/{exam_id?}', [QuizController::class, 'create'])->name('quiz.create');
             Route::post('/quiz/store', [QuizController::class, 'store'])->name('quiz.store');
+            // Route::get('/quiz/select-exam', [QuizController::class, 'selectExam'])->name('quiz.select_exam');
+
             Route::get('/quiz/show', [QuizController::class, 'show'])->name('quiz.show');
             Route::get('/quiz/view/{quiz}', [QuizController::class, 'view'])->name('quiz.view');
             Route::patch('/quiz/{quiz}/toggle-status', [QuizController::class, 'toggleStatus'])->name('quiz.toggleStatus');
@@ -183,9 +192,10 @@
             Route::post('/placed-students/{placedStudent}/toggle-status', [PlacedStudentController::class, 'toggleStatus'])->name('placedStudent.toggleStatus');
 
 
-            Route::get('/message/create', [MessageController::class, 'create'])->name('messages.create');
-            Route::post('/message/store', [MessageController::class, 'store'])->name('messages.store');
-            Route::get('/message/show', [MessageController::class, 'index'])->name('messages.show');
+    Route::get('/message/create', [MessageController::class, 'create'])->name('messages.create');
+    Route::post('/message/store', [MessageController::class, 'store'])->name('messages.store');
+    Route::get('/message/show', [MessageController::class, 'index'])->name('messages.show');
+
         });
     });
 

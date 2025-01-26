@@ -7,14 +7,15 @@
 @endsection
 
 @section('content')
-    <div class="bg-primary overflow-x-hidden">
-        <x-hero />
-    </div>
 
+{{-- banner --}}
+    <div class="w-full mt-12">
+        <img src="{{asset("assets/banner.png")}}" class="" alt="">
+    </div>
 
     {{-- latest course --}}
     <div class="">
-        <div class="flex flex-col items-center mt-20 text-center">
+        <div class="flex flex-col items-center mt-5 md:mt-20 text-center">
             <h2 class="text-3xl text-gray-900 font-sans font-bold mb-4">Our <span class="text-secondary">Latest</span> Courses</h2>
             <h1 class="text-xl font-semibold text-gray-800 mb-4">Master the Skills to Build Your Future</h1>
             <p class="text-base text-gray-700 mb-6 ">

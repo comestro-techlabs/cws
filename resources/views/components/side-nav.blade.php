@@ -328,21 +328,40 @@
                     <span class="flex-1 ms-3 whitespace-nowrap">Manage Enquiries</span>
                 </a>
                 </li>
-
+                {{-- message --}}
                 <li>
-                <a href="{{ route('messages.create') }}"
-                    class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100group">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 9h3.75m-4.5 2.625h4.5M12 18.75 9.75 16.5h.375a2.625 2.625 0 0 0 0-5.25H9.75m.75-9H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
-                    </svg>
 
-
-                    <span class="flex-1 ms-3 whitespace-nowrap">Message</span>
-                </a>
+                    <button type="button"
+                        class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                        aria-controls="message-dropdown" data-collapse-toggle="message-dropdown">
+                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0 0 48 48">
+                            <path d="M 10.5 5 C 6.92 5 4 7.92 4 11.5 L 4 30.5 C 4 34.08 6.92 37 10.5 37 L 22.150391 37 C 22.050391 36.35 22 35.68 22 35 C 22 34.66 22.010781 34.33 22.050781 34 L 10.5 34 C 8.57 34 7 32.43 7 30.5 L 7 16.015625 L 23.287109 24.820312 A 1.50015 1.50015 0 0 0 24.712891 24.820312 L 41 16.015625 L 41 23.470703 C 42.1 24.040703 43.11 24.770859 44 25.630859 L 44 11.5 C 44 7.92 41.08 5 37.5 5 L 10.5 5 z M 10.5 8 L 37.5 8 C 39.43 8 41 9.57 41 11.5 L 41 12.605469 L 24 21.794922 L 7 12.605469 L 7 11.5 C 7 9.57 8.57 8 10.5 8 z M 35 24 C 28.925 24 24 28.925 24 35 C 24 41.075 28.925 46 35 46 C 41.075 46 46 41.075 46 35 C 46 28.925 41.075 24 35 24 z M 35 27 C 35.552 27 36 27.448 36 28 L 36 34 L 42 34 C 42.552 34 43 34.448 43 35 C 43 35.552 42.552 36 42 36 L 36 36 L 36 42 C 36 42.552 35.552 43 35 43 C 34.448 43 34 42.552 34 42 L 34 36 L 28 36 C 27.448 36 27 35.552 27 35 C 27 34.448 27.448 34 28 34 L 34 34 L 34 28 C 34 27.448 34.448 27 35 27 z"></path>
+                            </svg>
+                        <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Manage Message</span>
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m1 1 4 4 4-4" />
+                        </svg>
+                    </button>
+        
+                    <ul id="message-dropdown" class="hidden py-2 space-y-2">
+                        <li>
+                            <a href="{{ route('messages.create') }}"
+                                class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                                Send Messages
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('messages.manage') }}"
+                                class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                                Manage Messages
+                            </a>
+                        </li>
+                    </ul>
                 </li>
-
+              
+     
 
         {{-- logout --}}
         <li>

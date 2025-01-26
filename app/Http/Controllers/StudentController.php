@@ -310,14 +310,12 @@ class StudentController extends Controller
             return redirect()->route('student.course.quiz')->with('error', 'You have reached the maximum number of attempts.');
         }
 
-        // Fetch quizzes and check if there are enough questions
-        $quizzes = $courses->exams->flatMap(function ($exam) {
-            return $exam->quizzes->where('status', true);
-        })->shuffle()->take(3);
+    // Fetch quizzes and check if there are enough questions
+    $quizzes = $courses->exams->flatMap(function ($exam) {
+        return $exam->quizzes->where('status', true);
+    })->shuffle()->take(10);
 
-        if ($quizzes->count() < 3) {
-            abort(500, 'Not enough quiz questions available (minimum 3 required).');
-        }
+    
 
         return view("studentdashboard.quiz.quiz", compact('courses', 'quizzes'));
     }
@@ -459,9 +457,13 @@ class StudentController extends Controller
         if (!Auth::check()) {
             return redirect()->route('auth.login')->with('error', 'you must be logged in to access this page');
         }
-        $data['course'] = Course::findOrFail($id);
 
-        return view("studentdashboard.course.viewCourse", $data);
+        $course = Course::findOrFail($id);
+        $course_id = $course->id;
+
+        $payment_exist = Payment::where("student_id", Auth::id())->where("course_id", $course_id)->where("status", "captured")->exists();
+        
+        return view("studentdashboard.course.viewCourse", compact('course','payment_exist'));
     }
     public function editProfile()
     {
