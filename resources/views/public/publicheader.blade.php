@@ -75,7 +75,7 @@
 
         @guest
             <a href="{{ route('auth.login') }}"
-                class="text-white md:flex items-center bg-orange-600 hover:bg-orange-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-lg px-4 hidden md:block py-2 text-center  gap-1">
+                class="text-white md:flex items-center bg-orange-500 hover:bg-orange-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-lg hidden md:block  text-center py-2 px-5 rounded-full gap-1">
                 <svg class="size-7 text-white " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                     height="24" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.1"
