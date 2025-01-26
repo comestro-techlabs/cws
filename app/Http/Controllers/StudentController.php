@@ -206,10 +206,15 @@ class StudentController extends Controller
         }
         $user = Auth::user();
         $courses = $user->courses()->with(['batches'])->get();
+        $coursesWithoutBatch = $courses->filter(function ($course) use ($user) {
+        $pivotData = $course->pivot;
+        return empty($pivotData->batch_id);
+    });
 
-        return view('studentdashboard.course.purchaseCourse', [
-            'courses' => $courses,
-        ]);
+    return view('studentdashboard.course.purchaseCourse', [
+        'courses' => $courses,
+        'coursesWithoutBatch' => $coursesWithoutBatch,
+    ]);
     }
 
     public function updateBatch(Request $request, $courseId)

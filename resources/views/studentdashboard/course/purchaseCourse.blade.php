@@ -12,7 +12,7 @@
         </div>
     </div>
 
-
+    
     <!-- Courses Section -->
     <div class="container mx-auto px-6 py-6">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -84,4 +84,29 @@
         </div>
     </div>
 </div>
+
+@if ($coursesWithoutBatch->isNotEmpty())
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const courseNames = `
+                <ul>
+                    @foreach ($coursesWithoutBatch as $course)
+                        <li>{{ $course->title }}</li>
+                    @endforeach
+                </ul>
+            `;
+
+            Swal.fire({
+                title: 'Reminder',
+                html: `
+                    <p>The following courses do not have a batch selected:</p>
+                    ${courseNames}
+                    <p>Please update them.</p>
+                `,
+                icon: 'warning',
+                confirmButtonText: 'OK',
+            });
+        });
+    </script>
+@endif
 @endsection
