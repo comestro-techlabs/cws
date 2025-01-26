@@ -9,7 +9,7 @@
 
 <div class=" mx-auto mt-10 p-6 bg-white rounded shadow-md">
     <h1 class="text-2xl font-bold mb-6">Add a Quiz Question</h1>
-    <form action="{{ route('quiz.store') }}" method="POST">
+    <form action="{{ route('quiz.store') }}" method="POST" id="quiz-form">
         @csrf
         <div>
             {{-- {{dd($selectedExamId)}} --}}
@@ -93,7 +93,33 @@
             <p class="text-xs text-red-500">{{ $message }}</p>
             @enderror
         </div> --}}
-        <button class="mt-6 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">Save Quiz</button>
-    </form>
+        <div class="mt-6 flex space-x-4">
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">Save Question</button>
+            <button type="button" onclick="addMoreQuestions()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700">Add More Questions</button>
+        </div>
+    `    </form>
 </div>
+>
+</div>
+
+<script>
+    function addMoreQuestions() {
+        const form = document.getElementById('quiz-form');
+        const formData = new FormData(form);
+
+        // Prevent navigating away from the current page
+        formData.append('_token', '{{ csrf_token() }}');
+
+        fetch("{{ route('quiz.store') }}", {
+            method: 'POST',
+            body: formData,
+        }).then(response => {
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                alert('Failed to add question. Please try again.');
+            }
+        }).catch(error => console.error('Error:', error));
+    }
+</script>
 @endsection
