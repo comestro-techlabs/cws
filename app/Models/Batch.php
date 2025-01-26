@@ -24,6 +24,5 @@ class Batch extends Model
                     ->withPivot('course_id')
                     ->withTimestamps();
     }
-
     
 }

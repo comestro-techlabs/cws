@@ -110,7 +110,7 @@
                         @forelse ($exams as $exam)
                             <li class="bg-gray-50 p-4 rounded-lg flex justify-between items-center">
                                 <span class="text-white text-bold">📝 {{ $exam->exam->exam_name }}</span>
-                                {{ dd($exam) }}
+                                {{-- {{ dd($exam) }} --}}
                                 <span class="text-blue-400 font-medium">{{ $exam->total_marks }}%</span>
                             </li>
                         @empty

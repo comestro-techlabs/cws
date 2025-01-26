@@ -7,17 +7,18 @@
 @endsection
 
 @section('content')
-    <div class="bg-primary overflow-x-hidden">
-        <x-hero />
-    </div>
 
+{{-- banner --}}
+    <div class="w-full mt-12">
+        <img src="{{asset("assets/banner.png")}}" class="" alt="">
+    </div>
 
     {{-- latest course --}}
     <div class="">
-        <div class="flex flex-col items-center mt-20 text-center">
+        <div class="flex flex-col items-center mt-5 md:mt-20 text-center">
             <h2 class="text-3xl text-gray-900 font-sans font-bold mb-4">Our <span class="text-secondary">Latest</span> Courses</h2>
             <h1 class="text-xl font-semibold text-gray-800 mb-4">Master the Skills to Build Your Future</h1>
-            <p class="text-base text-gray-700 mb-6 max-w-4xl">
+            <p class="text-base text-gray-700 mb-6 ">
                 Explore our curated courses designed to provide you with the latest industry insights and practical
                 knowledge.
                 From beginner to advanced levels, we aim to help you excel in your field with expert-led guidance and
@@ -43,7 +44,7 @@
                             <div class="">
                                 <p class="text-gray-700 text-sm font-medium">By:{{ $item->instructor }}</p>
                                 <span class="text-gray-600 text-sm font-semibold">
-                                    Duration: {{ $item->duration * 7 }} Days
+                                    Duration: {{ $item->duration  }} Weeks
                                 </span>
                                 </div>
                         </div>
@@ -51,7 +52,7 @@
                             <p class="text-sm font-semibold text-primary">Fees:  Rs.
                                 <span class="text-sm text-gray-600 line-through">{{ $item->fees }}</span>
                                 {{ $item->discounted_fees }}</p>
-                            
+
                             <a href="{{ route('public.courseDetails', ['category_slug' => $item->category->cat_slug, 'slug' => $item->slug]) }}"
                                 class="bg-primary text-white font-bold py-2 px-4 rounded shadow focus:outline-none focus:ring">
                                 Enroll Now
@@ -126,7 +127,7 @@
             </div>
             <!-- Internships -->
             <div class="flex items-center space-x-6 border border-gray-400">
-                <img src="https://img.freepik.com/premium-photo/girl-gazing-digital-display-data-information_329343-2867.jpg?ga=GA1.1.1275289697.1728223870&semt=ais_incoming_vrsd"
+                <img src="https://img.freepik.com/free-photo/businesswoman-business-teammeeting-conference-videocall-online-greeting-remotely-collegues_482257-10095.jpg?ga=GA1.1.1275289697.1728223870&semt=ais_hybrid"
                     alt="Internships" class="w-1/2">
                 <div class="mt-6">
                     <h3 class="text-xl font-semibold text-gray-800">Internships</h3>
@@ -136,7 +137,7 @@
             </div>
             <!-- Workshops -->
             <div class="flex items-center space-x-6 border border-gray-400">
-                <img src="https://img.freepik.com/premium-photo/cheerful-woman-speaking-microphone-workshop_53876-156971.jpg?ga=GA1.1.1275289697.1728223870&semt=ais_incoming_vrsd"
+                <img src="https://img.freepik.com/free-photo/three-relaxed-fellow-students-studying-chatting_1262-15305.jpg?ga=GA1.1.1275289697.1728223870&semt=ais_hybrid"
                     alt="Workshops" class="w-1/2">
                 <div>
                     <h3 class="text-xl font-semibold text-gray-800">Workshops</h3>
@@ -146,7 +147,7 @@
             </div>
             <!-- Weekend Training -->
             <div class="flex items-center space-x-6 border border-gray-400">
-                <img src="https://media.istockphoto.com/id/1328313970/photo/multi-ethnic-group-of-business-persons-during-a-conference.jpg?b=1&s=612x612&w=0&k=20&c=Qb0ZfE3ONgKIiZ6vkd6uUS1kpL5iS2_AwBk0OgNxcw8="
+                <img src="https://img.freepik.com/premium-photo/focused-male-adult-student-working-computer-classroom_926199-2608965.jpg?ga=GA1.1.1275289697.1728223870&semt=ais_hybrid"
                     alt="Weekend Training" class="w-1/2">
                 <div>
                     <h3 class="text-xl font-semibold text-gray-800">Weekend Training</h3>
@@ -200,7 +201,7 @@
                 alt="">
         </div>
         <div class="flex-1 p-5 md:p-10 bg-gray-100 rounded-lg shadow-md">
-            <h2 class="text-3xl font-sans mb-4">Who We Are</h2>
+            <h2 class="text-4xl font-bold text-gray-800">Who <span class="text-secondary">We</span> Are</h2>
             <h1 class="text-xl font-bold mb-4">Est. 2011 - Top Web Designing Company</h1>
             <p class="text-base text-gray-700 mb-6">
                 With more than 15 years of expertise in the field, we've established ourselves as an evolving Software
@@ -229,9 +230,9 @@
 
     {{-- Student List Section --}}
     <div class="flex flex-col items-center mt-20 text-center">
-        <h2 class="text-3xl text-primary font-sans font-bold mb-2">Our Proud Students</h2>
+        <h2 class="text-4xl font-bold text-gray-800">Our <span class="text-secondary">Proud</span> Students</h2>
         <h1 class="text-xl font-semibold text-gray-800 mb-4">Meet Our Achievers</h1>
-        <p class="text-base text-gray-700 mb-6 max-w-4xl">
+        <p class="text-base text-gray-700 mb-6 ">
             Celebrating the success and dedication of our students who have excelled in their respective fields. With their
             hard work and our expert guidance, they have achieved incredible milestones. Get inspired by their stories!
         </p>
@@ -239,113 +240,52 @@
 
         {{-- Student List --}}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl">
-            <!-- Student 1 -->
+
+            @foreach ($placedStudents as $item)
             <div class="flex flex-col md:flex-row bg-secondary text-white py-6 px-6  shadow gap-6">
                 <!-- Student Image -->
                 <div class="w-full md:w-1/3 flex justify-center items-center">
-                    <img src="https://img.freepik.com/premium-photo/work-from-home_1246590-8920.jpg?ga=GA1.1.1275289697.1728223870&semt=ais_incoming_vrsd"
+                    <img src="{{ asset('storage/' . $item->image) }}"
                         alt="Student 1 Image" class="rounded-lg shadow-lg w-full md:w-3/4">
                 </div>
                 <!-- Student Details -->
                 <div class="w-full md:w-2/3 flex flex-col justify-center items-start text-left">
-                    <h3 class="text-2xl font-bold mb-4">Kamana Kumari</h3>
+                    <h3 class="text-2xl font-bold mb-4">{{$item->name}}</h3>
                     <p class="text-base mb-4">
-                        "John completed our Python programming course and secured a role as a Software Developer at a
-                        leading
-                        tech company."
+                        {{$item->content}}
                     </p>
-                    <p class="text-base mb-2"><strong></strong>Django developer</p>
+                    <p class="text-base mb-2"><strong></strong>{{$item->position}}</p>
                     {{-- <p class="text-base"><strong>Contact:</strong> +1 123 456 7890</p> --}}
                 </div>
             </div>
-
-            <!-- Student 2 -->
-            <div class="flex flex-col md:flex-row bg-secondary text-white py-6 px-6  shadow gap-6">
-                <!-- Student Image -->
-                <div class="w-full md:w-1/3 flex justify-center items-center">
-                    <img src="https://img.freepik.com/premium-photo/work-from-home_1246590-8920.jpg?ga=GA1.1.1275289697.1728223870&semt=ais_incoming_vrsd"
-                        alt="Student 1 Image" class="rounded-lg shadow-lg w-full md:w-3/4">
-                </div>
-                <!-- Student Details -->
-                <div class="w-full md:w-2/3 flex flex-col justify-center items-start text-left">
-                    <h3 class="text-2xl font-bold mb-4">Puja Kumari</h3>
-                    <p class="text-base mb-4">
-                        "John completed our Python programming course and secured a role as a Software Developer at a
-                        leading
-                        tech company."
-                    </p>
-                    <p class="text-base mb-2"><strong></strong>Laravel Developer</p>
-                    {{-- <p class="text-base"><strong>Contact:</strong> +1 123 456 7890</p> --}}
-                </div>
-            </div>
-
-            <!-- Student 3 -->
-            <div class="flex flex-col md:flex-row bg-secondary text-white py-6 px-6  shadow gap-6">
-                <!-- Student Image -->
-                <div class="w-full md:w-1/3 flex justify-center items-center">
-                    <img src="https://img.freepik.com/premium-photo/work-from-home_1246590-8920.jpg?ga=GA1.1.1275289697.1728223870&semt=ais_incoming_vrsd"
-                        alt="Student 1 Image" class="rounded-lg shadow-lg w-full md:w-3/4">
-                </div>
-                <!-- Student Details -->
-                <div class="w-full md:w-2/3 flex flex-col justify-center items-start text-left">
-                    <h3 class="text-2xl font-bold mb-4">Neha</h3>
-                    <p class="text-base mb-4">
-                        "John completed our Python programming course and secured a role as a Software Developer at a
-                        leading
-                        tech company."
-                    </p>
-                    <p class="text-base mb-2"><strong></strong>Backend developer</p>
-                    {{-- <p class="text-base"><strong>Contact:</strong> +1 123 456 7890</p> --}}
-                </div>
-            </div>
-            <!-- Student 4 -->
-            <div class="flex flex-col md:flex-row bg-secondary text-white py-6 px-6  shadow gap-6">
-                <!-- Student Image -->
-                <div class="w-full md:w-1/3 flex justify-center items-center">
-                    <img src="https://img.freepik.com/premium-photo/work-from-home_1246590-8920.jpg?ga=GA1.1.1275289697.1728223870&semt=ais_incoming_vrsd"
-                        alt="Student 1 Image" class="rounded-lg shadow-lg w-full md:w-3/4">
-                </div>
-                <!-- Student Details -->
-                <div class="w-full md:w-2/3 flex flex-col justify-center items-start text-left">
-                    <h3 class="text-2xl font-bold mb-4">Komal kumari</h3>
-                    <p class="text-base mb-4">
-                        "John completed our Python programming course and secured a role as a Software Developer at a
-                        leading
-                        tech company."
-                    </p>
-                    <p class="text-base mb-2"><strong></strong>Django Developer</p>
-                    {{-- <p class="text-base"><strong>Contact:</strong> +1 123 456 7890</p> --}}
-                </div>
-            </div>
-
-
+            @endforeach
 
         </div>
     </div>
 
-   
-    
+
+
 
     <div class="bg-white py-12 mt-20 mb-20 px-6">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2">
             <!-- Left Side: Text Content -->
-            <div>
-                <h2 class="text-3xl font-bold text-black">
-                    We <span class="text-primary">love</span> to help you
+            <div class="" style="padding-left: 50px">
+                <h2 class="text-4xl font-bold text-gray-800">
+                    We <span class="text-secondary">love</span> to help you
                 </h2>
                 <p class="text-gray-600 mt-2">Explore new and trending Learn syntax.</p>
                 <div class="mt-6">
-                    <div class="flex items-start space-x-4">
+                    <div class="flex items-start space-x-4  border-b-2 w-96">
                         <span class="font-medium text-black">Phone:</span>
-                        <p class="text-gray-700">+91-9546805580</p>
+                        <p class="text-gray-700 mb-3">+91-9546805580</p>
                     </div>
-                    <div class="flex items-start space-x-4 mt-4">
+                    <div class="flex items-start space-x-4  border-b-2 w-96 mt-4">
                         <span class="font-medium text-black">Email:</span>
-                        <a href="mailto:support@nareshit.com" class="text-blue-600 underline">info@learnSyntax.com</a>
+                        <a href="mailto:support@nareshit.com" class="text-blue-600 mb-3">info@learnSyntax.com</a>
                     </div>
-                    <div class="flex items-start space-x-4 mt-4">
+                    <div class="flex items-start space-x-4  mt-4">
                         <span class="font-medium text-black">Location:</span>
-                        <p class="text-gray-700">Purnea, Bihar, India</p>
+                        <p class="text-gray-700 mb-3">Purnea, Bihar, India</p>
                     </div>
                 </div>
             </div>

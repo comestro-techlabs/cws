@@ -12,6 +12,7 @@
         'discounted_fees',
         'category_id',
         'course_image',
+        'course_code',
     ];
     $countCompletedFields = 0;
     foreach ($fields as $field) {
@@ -35,7 +36,7 @@
     <div class="flex px-[2%] py-0 flex-col">
         <div class="flex gap-3 my-5 flex-row justify-between items-center">
             <div class="flex flex-1 flex-col border-s-4 border-s-orange-400 pl-3">
-                <h2 class="md:text-xl text-lg font-normal dark:text-slate-300 text-slate-500">View Course</h2>
+                <h2 class="md:text-xl text-lg font-normal  text-slate-500">View Course</h2>
                 <p class="text-sm text-slate-400 font-normal">Please fill {{ $countCompletedFields }} of {{ $totalFields }}
                     fields</p>
             </div>
@@ -65,8 +66,8 @@
                                     class="bg-teal-600 text-white text-sm px-3 py-1 self-start rounded">Edit</button>
                             </div>
 
-                            <span id="{{ $field }}-value">
-                                @if ($course->$field)
+                             <span id="{{ $field }}-value">
+                                @if ($course->$field !== null)
                                     {!! $field == 'fees' || $field == 'discounted_fees'
                                         ? '₹ ' . number_format($course->$field, 2)
                                         : ($field == 'duration'
@@ -83,6 +84,10 @@
                                 @else
                                     <span class="italic">{{ $field }} is empty</span>
                                 @endif
+                            </span>
+
+
+
                             </span>
                             <form id="{{ $field }}-form"
                                 action="{{ route('course.update', ['course' => $course->id, 'field' => $field]) }}"
@@ -109,6 +114,8 @@
                                                     {{ $category->cat_title }}</option>
                                             @endforeach
                                         </select>
+                                        @elseif ($field == 'course_code')
+                                        <input class="border w-full px-3 py-2" type="text" name="course_code" value="{{ $course->course_code }}" required>
                                     @else
                                         <input class="border w-full px-3 py-2"
                                             type="{{ $field == 'fees' || $field == 'discounted_fees' || $field == 'duration' ? 'number' : 'text' }}"

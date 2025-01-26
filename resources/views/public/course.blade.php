@@ -92,7 +92,7 @@
                     <p class="text-sm"><a href="{{ route('student.dashboard') }}" class="text-sm underline text-blue-700">Go to Dashboard</a></p>
                 </div>
                 @else
-                <a href="{{route('phonepe.payment')}}" id="pay-button"
+                <a href="" id="pay-button"
                     class="flex items-center justify-center bg-white text-black  rounded-full mt-2 shadow-xl px-6 py-2  transition duration-300 ease-in-out transform hover:scale-105 space-x-3">
                     <img src="https://cdn.iconscout.com/icon/free/png-512/free-razorpay-logo-icon-download-in-svg-png-gif-file-formats--payment-gateway-brand-logos-icons-1399875.png?f=webp&w=256"
                         alt="PhonePe Logo" class="w-12 h-12 object-cover">
@@ -208,7 +208,7 @@
                     @endforeach
                 </ul>
                 @else
-                <p class="text-gray-500 dark:text-gray-400">No batches available for this course.</p>
+                <p class="text-gray-500 ">No batches available for this course.</p>
                 @endif
             </div>
         </div>
@@ -304,95 +304,97 @@
 
 
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-<form action="{{ route('save.course.payment') }}" method="post" role="form">
-    @csrf
-    <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id" value="">
-    <input type="hidden" value="{{ $course->id }}" name="course_id" id="course_id">
-    <input type="hidden" value="{{ $course->discounted_fees }}" name="amount" id="amount">
+
+
+
+
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     @auth
-
     <script>
         document.getElementById('pay-button').onclick = function(e) {
             e.preventDefault();
-            var options = {
-                "key": "{{ env('RAZORPAY_KEY') }}",
-                "amount": "{{ $course->discounted_fees }}" * 100, // Amount in paisa
-                "currency": "INR",
-                "name": "LearnSyntax",
-                "description": "Processing Fee",
-                "image": "{{ asset('front_assets/img/logo/logo.png') }}",
-                "handler": function(response) {
-                    // Trigger form submission on successful payment
-                    document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
-                    document.forms[0].submit();
+
+            const receipt_no = `${Date.now()}`;
+
+            // First, initiate payment by sending the details to the backend
+            fetch("{{ route('store.payment.initiation') }}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
                 },
-                "prefill": {
-                    "name": "{{ Auth::user()->name }}",
-                    "email": "{{ Auth::user()->email }}"
-                },
-                "theme": {
-                    "color": "#0a64a3"
-                },
-                "modal": {
-                    "ondismiss": function() {
-                        alert('Payment process was cancelled.');
-                        document.getElementById('razorpay_payment_id').value = null;
-                        document.forms[0].submit();
-                    }
+                body: JSON.stringify({
+                    student_id: "{{ Auth::id() }}",  // Assuming Auth::id() will always return a valid ID
+                    course_id: "{{ $course->id }}",
+                    receipt_no: receipt_no,
+                    amount: "{{ $course->discounted_fees }}",
+                    ip_address: "{{ request()->ip() }}",
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Use the Razorpay order_id received from backend
+                    const options = {
+                        "key": "{{ env('RAZORPAY_KEY') }}",
+                        "amount": "{{ $course->discounted_fees }}" * 100, // amount in paise
+                        "currency": "INR",
+                        "name": "LearnSyntax",
+                        "description": "Processing Fee",
+                        "image": "{{ asset('front_assets/img/logo/logo.png') }}",
+                        "order_id": data.order_id,  // Razorpay order ID
+                        "handler": function(response) {
+                            // After successful payment, send the payment details to the backend
+                            fetch("{{ route('handle.payment.response') }}", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                                },
+                                body: JSON.stringify({
+                                    payment_id: data.payment_id,  // Payment ID created in the backend
+                                    razorpay_payment_id: response.razorpay_payment_id,
+                                    razorpay_order_id: response.razorpay_order_id,
+                                    razorpay_signature: response.razorpay_signature,
+                                })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    alert('Payment processed successfully');
+                                    window.location.href = '/student/billing';
+                                } else {
+                                    alert('Payment failed: ' + data.message);
+                                }
+                            })
+                            .catch(error => console.error("Error in updating payment:", error));
+                        },
+                        "prefill": {
+                            "name": "{{ Auth::user()->name }}",
+                            "email": "{{ Auth::user()->email }}"
+                        },
+                        "theme": {
+                            "color": "#0a64a3"
+                        },
+                        "modal": {
+                            "ondismiss": function() {
+                                alert('Payment process was cancelled.');
+                                document.forms[0].submit();
+                            }
+                        }
+                    };
+
+                    // Open the Razorpay payment modal
+                    const rzp1 = new Razorpay(options);
+                    rzp1.open();
+
+                } else {
+                    alert("Error initiating payment: " + data.message);
                 }
-            };
-
-            var rzp1 = new Razorpay(options);
-            rzp1.open();
-        }
+            })
+            .catch(error => console.error("Error initiating payment:", error));
+        };
     </script>
+
     @endauth
-</form>
 @endsection
-
-
-{{-- <button id="rzp-button1">Pay</button>
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-<script>
-    var options = {
-        "key": "YOUR_KEY_ID", // Enter the Key ID generated from the Dashboard
-        "amount": "50000", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-        "currency": "INR",
-        "name": "Acme Corp", //your business name
-        "description": "Test Transaction",
-        "image": "https://example.com/your_logo",
-        "order_id": "order_9A33XWu170gUtm", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-        "handler": function(response) {
-            alert(response.razorpay_payment_id);
-            alert(response.razorpay_order_id);
-            alert(response.razorpay_signature)
-        },
-        "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information, especially their phone number
-            "name": "Gaurav Kumar", //your customer's name
-            "email": "gaurav.kumar@example.com",
-            "contact": "9000090000" //Provide the customer's phone number for better conversion rates
-        },
-        "notes": {
-            "address": "Razorpay Corporate Office"
-        },
-        "theme": {
-            "color": "#3399cc"
-        }
-    };
-    var rzp1 = new Razorpay(options);
-    rzp1.on('payment.failed', function(response) {
-        alert(response.error.code);
-        alert(response.error.description);
-        alert(response.error.source);
-        alert(response.error.step);
-        alert(response.error.reason);
-
-        alert(response.error.metadata.order_id);
-        alert(response.error.metadata.payment_id);
-    });
-    document.getElementById('rzp-button1').onclick = function(e) {
-        rzp1.open();
-        e.preventDefault();
-    }
-</script> --}}

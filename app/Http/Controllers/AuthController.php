@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Mail;
 class AuthController extends Controller
 {
 
-    // displaying login form 
+    // displaying login form
     public function showLoginForm()
     {
         if (Auth::id()) {
@@ -32,20 +32,6 @@ class AuthController extends Controller
             'password' => 'nullable', // Password is optional if OTP is used
         ]);
 
-        // Try login with password
-        // if ($request->password) {
-        //     $credentials = $request->only('email', 'password');
-
-        //     if (Auth::attempt($credentials)) {
-        //         if (Auth::user()->isAdmin) {
-        //             return redirect()->route('admin.dashboard');
-        //         } else {
-        //             return redirect()->intended('/student/dashboard');
-        //         }
-        //     } else {
-        //         return back()->withErrors(['password' => 'Invalid credentials.']);
-        //     }
-        // }
 
         // If no password is provided, proceed to send OTP
         $user = User::where('email', $request->email)->first();
@@ -90,36 +76,36 @@ class AuthController extends Controller
             'email' => 'required|email',
             'otp' => 'required|digits:6',
         ]);
-    
+
         $email = $request->input('email');
         $otp = $request->input('otp');
-    
+
         // Check if the OTP matches
         $user = User::where('email', $email)->first();
-    
+
         if ($user && $user->otp === $otp && Carbon::now()->lessThan($user->otp_expires_at)) {
             // OTP verified, log the user in
             Auth::login($user);
-    
+
             // Update email_verified_at if not already verified
             if (!$user->hasVerifiedEmail()) {
                 $user->email_verified_at = Carbon::now();
             }
-    
+
             // Optionally, clear OTP after successful login
             $user->otp = null;
             $user->otp_expires_at = null;
             $user->save();
-    
+
             return redirect('/')->with('success', 'Login successful. Email verified.');
         }
-    
+
         return redirect()->back()->withInput()->withErrors(['otp' => 'Invalid OTP or OTP has expired.'])->with([
             'otp_sent'=>true,
             'email'=>$email,
         ]);
     }
-    
+
 
 
 
@@ -154,53 +140,53 @@ class AuthController extends Controller
         }
     }
 
-  
-    
+
+
     public function resendOtp(Request $request)
     {
         $request->validate([
             'email' => 'required|email|exists:users,email',
         ]);
-    
+
         $email = $request->email;
-    
+
         // Find the user by email
         $user = User::where('email', $email)->first();
-    
+
         if ($user) {
             $otp = rand(100000, 999999); // Replace with Str::random(6) for more security
-    
+
             // Update OTP and expiration time
             $user->otp = $otp; // Use Hash::make($otp) for more security
             $user->otp_expires_at = Carbon::now()->addMinutes(10);
             $user->save();
-    
+
             // Resend OTP email
             try {
                 Mail::send('emails.otp', ['otp' => $otp], function ($message) use ($user) {
                     $message->to($user->email)
                         ->subject('Your OTP Code');
                 });
-    
+
                 return redirect()->back()->with(['otp_sent' => true, 'email' => $email]);
             } catch (\Exception $e) {
                 \Log::error('OTP email failed to send: ' . $e->getMessage());
                 return redirect()->back()->with('error', 'Failed to resend OTP. Please try again.');
             }
         }
-    
+
         return redirect()->back()->withErrors(['email' => 'If the email exists in our system, you will receive an OTP.']);
     }
-    
 
 
-    // displaying registration form 
+
+    // displaying registration form
     public function showRegistrationForm()
     {
         return view('public.register');
     }
 
- 
+
     public function register(Request $request)
     {
         $request->validate([
@@ -211,14 +197,14 @@ class AuthController extends Controller
             'education_qualification' => 'required|string|max:255',
             'dob' => 'required|date|before_or_equal:today',
             // 'password' => 'required|string|min:8|confirmed',
-            
+
         ], [
             'email.unique' => 'The email address is already taken.',
             'contact.unique' => 'The contact number is already in use.',
             'contact.digits' => 'The contact number must be exactly 10 digits.',
             'dob.date' => 'The date of birth must be a valid date.',
         ]);
-    
+
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
@@ -228,16 +214,16 @@ class AuthController extends Controller
         $user->gender = $request->gender;
         $user->education_qualification = $request->education_qualification;
         $user->save();
-    
+
         // Send confirmation email
         Mail::send('emails.registration', ['user' => $user], function ($message) use ($user) {
             $message->to($user->email)
                     ->subject('Registration Successful');
         });
-    
+
         return redirect()->route('auth.login')->with('success', 'Registration successful. A confirmation email has been sent to your email address.');
     }
-    
+
 
 
     // logout method

@@ -24,11 +24,11 @@
       </div>
     </div>
     </a>
-    <div data-popover id="popover-course-details{{$course->id}}" role="tooltip" class="absolute z-[999] invisible inline-block text-sm text-gray-500 transition-opacity duration-300 bg-white border border-slate-300 shadow-xl rounded-lg opacity-0 w-80 dark:text-gray-400 dark:bg-gray-800 dark:border-gray-600">
+    <div data-popover id="popover-course-details{{$course->id}}" role="tooltip" class="absolute z-[999] invisible inline-block text-sm text-gray-500 transition-opacity duration-300 bg-white border border-slate-300 shadow-xl rounded-lg opacity-0 w-80   ">
       <div class="p-3">
         <div class="flex">
           <div>
-            <p class="mb-1 text-base font-semibold leading-none text-gray-900 dark:text-white">
+            <p class="mb-1 text-base font-semibold leading-none text-gray-900 ">
               <a href="#" class="hover:underline text-lg uppercase text-teal-800 font-bold">{{$course->title}}</a>
             </p>
             <p class="mb-3 text-sm font-normal capitalize">
@@ -55,7 +55,7 @@
             </div>
 
             <!-- Batch Information -->
-            
+
 
             <div class="flex flex-1 justify-center">
               <a href="{{route('public.courseDetails',['category_slug' => $course->category->cat_slug, 'slug' =>  $course->slug])}}" class="w-full py-3.5 px-7 text-center bg-gray-900 text-white rounded-lg text-sm font-bold uppercase shadow-md hover:shadow-lg transition-all">

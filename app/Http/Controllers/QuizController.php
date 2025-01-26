@@ -10,13 +10,7 @@ use Illuminate\Http\Request;
 
 class QuizController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(Request $request)
-    {
-        
-    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -53,6 +47,14 @@ class QuizController extends Controller
     /**
      * Display the specified resource.
      */
+
+     public function answerShow(Answer $answer)
+     {
+         $answers = Answer::with('user','quiz')->get();
+
+         return view('admin.result.result',compact('answers'));
+     }
+
     public function show(Request $request )
     {
         $query = Quiz::with('exam');
@@ -65,7 +67,7 @@ class QuizController extends Controller
         $quizzes = $query->paginate(10);
 
         return view('admin.quiz.show_quiz', compact('quizzes'));
-  
+
     }
 
     public function toggleStatus(Request $request, Quiz $quiz)
@@ -100,7 +102,7 @@ class QuizController extends Controller
         $quiz_question->delete();
         return redirect()->back()->with('success','Quiz deleted successfully');
     }
-    
+
 
     /**
      * Update the specified resource in storage.
@@ -134,7 +136,7 @@ class QuizController extends Controller
     }
 
 
-    
+
 
     public function results(Quiz $quiz)
     {

@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="flex flex-wrap justify-between items-center p-4">
-        <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-2 ">
+        <h2 class="text-2xl font-bold text-gray-800  mb-2 ">
             Manage Assignments
         </h2>
         <a href="{{ route('assignment.create') }}"
@@ -30,11 +30,11 @@
                             @endforeach
                         </select>
                     </form>
-                    
+
 
                 </div>
-            </div> 
-            
+            </div>
+
 
             <!-- Table displaying existing assignments -->
             <div class="overflow-x-auto flex-wrap">
@@ -63,10 +63,10 @@
                                         @method('PATCH')
                                         <label class="relative inline-flex items-center cursor-pointer">
                                             <input type="checkbox" name="status" class="sr-only peer" onchange="this.form.submit()" {{ $assignment->status ? 'checked' : '' }}>
-                                            <div class="w-11 h-6 bg-gray-200 rounded-full peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
+                                            <div class="w-11 h-6 bg-gray-200 rounded-full peer-focus:ring-4 peer-focus:ring-green-300  peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
                                         </label>
                                     </form>
-                                    </td>   
+                                    </td>
                                     <td class="px-4 py-2 truncate max-w-80 border">{!! $assignment->course->title !!}</td>
                                     <td class="px-4 py-2 truncate max-w-80 border">{!! $assignment->batch->batch_name !!}</td>
 

@@ -2,6 +2,7 @@
 @section('content')
     <div class="mt-16 px-6 py-8">
         <!-- Page Heading -->
+
         <div class="border-b border-gray-200 pb-6 mb-8">
             <div class="container mx-auto flex justify-between items-center">
                 <h1 class="text-lg font-medium text-gray-900">Courses</h1>
@@ -22,29 +23,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                         </svg>
-
                     </button>
-                </div>
-
-                <!-- Category Filter -->
-                <div>
-                    <select id="custom-select"
-                        class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                        <option selected>All categories</option>
-                        <option value="1">Vue.js</option>
-                        <option value="2">Node.js</option>
-                        <option value="3">GitHub</option>
-                    </select>
-                </div>
-
-                <!-- Status Filter -->
-                <div>
-                    <select id="published01"
-                        class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                        <option selected>All</option>
-                        <option value="1">In Progress</option>
-                        <option value="3">New Releases</option>
-                    </select>
                 </div>
             </div>
         </form>

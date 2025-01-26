@@ -74,30 +74,49 @@ public function getAttemptDetails($examId, $userId, $attempt)
 
 
 
-public function Certificate($userId)
+
+
+
+
+
+
+
+
+
+public function Certificate()
 {
-    $user = User::find($userId);
-    if (!$user) {
-        return redirect()->back()->with('error', 'User not found.');
+   
+   $users =User::where('isadmin',0)->get();
+    $userData = [];
+
+    foreach ($users as $user) {
+        $examUser = ExamUser::where('user_id', $user->id)->first();
+        $examTotal = $examUser ? $examUser->total_marks : 0;
+        $assignmentTotal = Assignment_upload::where('student_id', $user->id)->sum('grade') ?? 0;
+
+        $examName = $examUser ? $examUser->exam->exam_name : 'N/A';
+
+        $maxAssignmentMarks = 100;
+        $maxExamMarks = 20;
+
+        $assignmentPercentage = ($assignmentTotal / $maxAssignmentMarks) * 100;
+        $examPercentage = ($examTotal / $maxExamMarks) * 100;
+
+        $percentage = ($assignmentPercentage + $examPercentage) / 2;
+
+       
+        $userData[] = [
+            'name' => $user->name,
+            'examName' => $examName,
+            'assignmentTotal' => $assignmentTotal,
+            'examTotal' => $examTotal,
+            'percentage' => $percentage,
+            'id' => $user->id
+        ];
     }
 
-    $examUser = ExamUser::where('user_id', $userId)->first();
-    $examTotal = $examUser ? $examUser->total_marks : 0;
-    $assignmentTotal = Assignment_upload::where('student_id', $userId)->sum('grade') ?? 0;
-
-    $examName = $examUser ? $examUser->exam->exam_name : 'N/A';
-
-    $maxAssignmentMarks = 50;
-    $maxExamMarks = 20;
-    $totalMarks = $assignmentTotal + $examTotal;
-    $maxTotalMarks = $maxAssignmentMarks + $maxExamMarks;
-    $percentage = ($totalMarks / $maxTotalMarks) * 100;
-
-  
-    return view('admin.certificate', compact('user', 'percentage', 'totalMarks', 'assignmentTotal', 'examTotal','examName'));
+    return view('admin.certificate', compact('userData'));
 }
-
-
 
 public function index($userId)
 {
@@ -112,16 +131,22 @@ public function index($userId)
 
     $examName = $examUser ? $examUser->exam->exam_name : 'N/A';
 
-    $maxAssignmentMarks = 50;
+    $maxAssignmentMarks = 100;
     $maxExamMarks = 20;
-    $totalMarks = $assignmentTotal + $examTotal;
-    $maxTotalMarks = $maxAssignmentMarks + $maxExamMarks;
-    $percentage = ($totalMarks / $maxTotalMarks) * 100;
+
+  
+    $assignmentPercentage = ($assignmentTotal / $maxAssignmentMarks) * 100;
+    $examPercentage = ($examTotal / $maxExamMarks) * 100;
+
+  
+    $percentage = ($assignmentPercentage + $examPercentage) / 2;
+
 
     $date = now()->toFormattedDateString(); 
-    return view('admin.viewCertificate', compact('user', 'percentage', 'totalMarks', 'assignmentTotal', 'examTotal','examName','date'));
-}
+    $year = now()->year;
 
+    return view('admin.viewCertificate', compact('user', 'percentage', 'assignmentPercentage', 'examPercentage', 'assignmentTotal', 'examTotal', 'examName', 'date', 'year'));
+}
 
 }
 

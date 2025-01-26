@@ -1,7 +1,6 @@
     <?php
 
     use App\Http\Controllers\AdminController;
-    use App\Http\Controllers\AnswerController;
     use App\Http\Controllers\AssignmentsController;
     use App\Http\Controllers\AssignmentUploadController;
     use App\Http\Controllers\AuthController;
@@ -9,25 +8,21 @@
     use App\Http\Controllers\CategoryController;
     use App\Http\Controllers\ChapterController;
     use App\Http\Controllers\CourseController;
-    use App\Http\Controllers\EnquiryController;
     use App\Http\Controllers\LessonController;
     use App\Http\Controllers\MessageController;
-use App\Http\Controllers\OptionController;
-    use App\Http\Controllers\PhonepeController;
     use App\Http\Controllers\PlacedStudentController;
-use App\Http\Controllers\PublicController;
+    use App\Http\Controllers\PublicController;
     use App\Http\Controllers\ResultController;
     use App\Http\Controllers\StudentController;
     use App\Http\Controllers\PaymentController;
     use App\Http\Controllers\PortfolioController;
     use App\Http\Controllers\WorkshopController;
     use Illuminate\Support\Facades\Route;
-    use App\Http\Controllers\Auth\SocialiteController;
     use App\Http\Controllers\ExamController;
     use App\Http\Middleware\AdminMiddleware;
     use App\Http\Controllers\QuizController;
-use App\Models\PlacedStudent;
-use App\Models\Workshop;
+    use App\Models\PlacedStudent;
+    use App\Models\Workshop;
 
 
     Route::prefix("student")->group(function () {
@@ -44,19 +39,17 @@ use App\Models\Workshop;
             Route::post('/update-profile', 'updateProfile')->name('student.updateProfile');
             Route::get('/coursePurchase', 'coursePurchase')->name('student.coursePurchase');
             Route::put('/courses/{course}/update-batch', 'updateBatch')->name('course.updateBatch');
-
             Route::get('/course/{id}', 'buyCourse')->name('student.buyCourse');
             Route::get('/course', 'course')->name('student.course');
             Route::get('/assignments/view', 'assignmentList')->name('student.assignments-view');
             Route::get('/assignments/upload/{id}', 'viewAssignments')->name('student.assignment-upload');
+            Route::get('/viewCertificate/{userId}',  'showCertificate')->name('student.viewCertificate');
+            Route::get('/certificate/{userId}',  'Certificate')->name('student.certificate');
 
-         });    
+        });
     });
    
-    Route::get('/user/messages', [MessageController::class, 'userMessages'])->name('user.messages');
-    
-
-  
+          
         // Route::get('/quiz_instruction', function () {
         //     return view('studentdashboard.quiz_instruction');
         // })->name('quiz_instruction');  
@@ -64,16 +57,21 @@ use App\Models\Workshop;
        // });
 
 
-        
+
 
     Route::get('/get-access-token', [StudentController::class, 'store']);
     Route::post('/student/assignments/upload/{assignment_id}', [StudentController::class, 'store'])->name('assignments.store');
 
 
-    Route::post('save-course-payment', [PaymentController::class, 'saveCoursePayment'])->name('save.course.payment');
-     Route::post('save-workshop-payment', [PaymentController::class, 'saveWorkshopPayment'])->name('save.workshop.payment');
-  
-     Route::get('payment/refresh/{paymentId}', [PaymentController::class, 'refreshPayment'])->name('payment.refresh');
+    // Route::post('save-course-payment', [PaymentController::class, 'saveCoursePayment'])->name('save.course.payment');
+    // Route::post('save-workshop-payment', [PaymentController::class, 'saveWorkshopPayment'])->name('save.workshop.payment');
+
+    // Route::get('payment/refresh/{paymentId}', [PaymentController::class, 'refreshPayment'])->name('payment.refresh');
+
+    //razorpay routes
+    Route::post('/initiate-payment', [PaymentController::class, 'initiatePayment'])->name('store.payment.initiation');
+    Route::post('/payment-response', [PaymentController::class, 'handlePaymentResponse'])->name('handle.payment.response');
+    Route::post('/refresh-payment-status', [PaymentController::class, 'refreshPaymentStatus'])->name('refresh.payment.status');
 
     Route::middleware([AdminMiddleware::class, "auth"])->group(function () {
 
@@ -117,9 +115,7 @@ use App\Models\Workshop;
 
             Route::get("/search", [AdminController::class, "searchCourse"])->name('course.search');
 
-            Route::get("/search-enq", [AdminController::class, "searchEnquiry"])->name('enquiry.search');
-
-            Route::get('/enquiry', [AdminController::class, 'indexEnquiry'])->name('admin.manage.enquiry');
+            Route::get("/enquiry", [AdminController::class, "searchEnquiry"])->name('admin.manage.enquiry');
             Route::get('/enquiry-view/{enquiry}', [AdminController::class, 'editEnquiry'])->name('admin.enquiry.show');
             Route::put('/enquiry-view/{enquiry}', [AdminController::class, 'updateEnquiry'])->name('admin.enquiry.update');
             Route::resource('assignment', AssignmentsController::class);
@@ -134,7 +130,7 @@ use App\Models\Workshop;
 
             Route::patch('/assignment/{assignment}/toggle-status', [AssignmentsController::class, 'toggleStatus'])->name('assignment.toggleStatus');
 
-            
+
             //exam
             Route::get('/exam/create', [ExamController::class, 'create'])->name('exam.create');
             Route::post('/exam/store', [ExamController::class, 'store'])->name('exam.store');
@@ -163,56 +159,47 @@ use App\Models\Workshop;
 
 
             //result
-            // Route::get('/quiz/{quiz}/results', [QuizController::class, 'results'])->name('quiz.results');
 
-            Route::get('/answer',[AnswerController::class,'show'])->name('answer.results');
-            Route::get('/exam/result',[ResultController::class,'showExam'])->name('exam.results');
-            Route::get('/exam/{exam}/users',[ResultController::class,'showExamUser'])->name('exam.user.results');
-            
-            // Route::get('/results/{examId}/{userId}/attempts', [ResultController::class, 'getResultsByAttempts'])->name('attempt.results');
+            Route::get('/answer', [QuizController::class, 'answerShow'])->name('answer.results');
+            Route::get('/exam/result', [ResultController::class, 'showExam'])->name('exam.results');
+            Route::get('/exam/{exam}/users', [ResultController::class, 'showExamUser'])->name('exam.user.results');
+
             Route::get('/exams/{examId}/user/{userId}/attempts', [ResultController::class, 'getResultsByAttempts'])
-    ->name('attempt.results');
+                ->name('attempt.results');
             Route::get('/results/{examId}/{userId}/attempt/{attempt}', [ResultController::class, 'getAttemptDetails'])->name('attempt.details');
             Route::get('certificate/{userId}', [ResultController::class, 'Certificate'])
-            ->name('admin.certificate');
+                ->name('admin.certificate');
             Route::get('viewCertificate/{userId}', [ResultController::class, 'index'])
-            ->name('admin.viewCertificate');
-          
-            
-            Route::get('/answer',[AnswerController::class,'show'])->name('answer.results');
-                  
-    Route::get('/portfolio/create', [PortfolioController::class, 'create'])->name('portfolio.create');
-    Route::post('/portfolio/store', [PortfolioController::class, 'store'])->name('portfolio.store');
-    Route::get('/admin/portfolio', [PortfolioController::class, 'show'])->name('portfolio.admin.index');
-    Route::get('/portfolio/{id}/edit', [PortfolioController::class, 'edit'])->name('portfolio.admin.edit');
-    Route::put('/portfolio/{id}', [PortfolioController::class, 'update'])->name('portfolio.admin.update');
-    Route::delete('/portfolio/{id}', [PortfolioController::class, 'destroy'])->name('portfolio.admin.destroy');
+                ->name('admin.viewCertificate');
 
-    Route::get('/workshops/create', [WorkshopController::class, 'create'])->name('workshops.create');
-    Route::post('/workshops/store', [WorkshopController::class, 'store'])->name('workshops.store');
-    Route::get('/admin/workshops', [WorkshopController::class, 'show'])->name('workshops.admin.index');
-    Route::patch('/workshops/{id}/toggle-status', [WorkshopController::class, 'toggleStatus'])->name('workshops.toggleStatus');
-    Route::get('/admin/workshops/{id}/edit', [WorkshopController::class, 'edit'])->name('admin.workshops.edit');
-    Route::put('/admin/workshop/{id}', [WorkshopController::class, 'update'])->name('admin.workshops.update');
-    Route::delete('admin/workshop/{id}', [WorkshopController::class, 'destroy'])->name('admin.workshops.destroy');
-    Route::get('/placedStudent/create', [PlacedStudentController::class, 'create'])->name('placedStudent.create');
+
+
+            Route::get('/portfolio/create', [PortfolioController::class, 'create'])->name('portfolio.create');
+            Route::post('/portfolio/store', [PortfolioController::class, 'store'])->name('portfolio.store');
+            Route::get('/admin/portfolio', [PortfolioController::class, 'show'])->name('portfolio.admin.index');
+            Route::get('/portfolio/{id}/edit', [PortfolioController::class, 'edit'])->name('portfolio.admin.edit');
+            Route::put('/portfolio/{id}', [PortfolioController::class, 'update'])->name('portfolio.admin.update');
+            Route::delete('/portfolio/{id}', [PortfolioController::class, 'destroy'])->name('portfolio.admin.destroy');
+
+            Route::get('/workshops/create', [WorkshopController::class, 'create'])->name('workshops.create');
+            Route::post('/workshops/store', [WorkshopController::class, 'store'])->name('workshops.store');
+            Route::get('/admin/workshops', [WorkshopController::class, 'show'])->name('workshops.admin.index');
+            Route::patch('/workshops/{id}/toggle-status', [WorkshopController::class, 'toggleStatus'])->name('workshops.toggleStatus');
+            Route::get('/admin/workshops/{id}/edit', [WorkshopController::class, 'edit'])->name('admin.workshops.edit');
+            Route::put('/admin/workshop/{id}', [WorkshopController::class, 'update'])->name('admin.workshops.update');
+            Route::delete('admin/workshop/{id}', [WorkshopController::class, 'destroy'])->name('admin.workshops.destroy');
+            Route::resource('placedStudent', PlacedStudentController::class);
+            Route::post('/placed-students/{placedStudent}/toggle-status', [PlacedStudentController::class, 'toggleStatus'])->name('placedStudent.toggleStatus');
 
 
     Route::get('/message/create', [MessageController::class, 'create'])->name('messages.create');
     Route::post('/message/store', [MessageController::class, 'store'])->name('messages.store');
-    Route::get('/message/manage', [MessageController::class, 'index'])->name('messages.manage');
-    Route::get('/message/{message}/show', [MessageController::class, 'show'])->name('messages.show');
-    // Route::get('/message/{id}/edit', [MessageController::class, 'edit'])->name('messages.edit');
-    // Route::put('/message/{message}/update', [MessageController::class, 'update'])->name('messages.update');
-    Route::delete('/message/{message}/delete', [MessageController::class, 'destroy'])->name('messages.delete');
+    Route::get('/message/show', [MessageController::class, 'index'])->name('messages.show');
 
         });
     });
 
 
-
-    Route::get('auth/google', [SocialiteController::class, 'redirectToGoogle'])->name('auth.google');
-    Route::get('auth/google/callback', [SocialiteController::class, 'handleGoogleCallback']);
 
     // public routes here:
     Route::controller(PublicController::class)->group(function () {
@@ -227,23 +214,9 @@ use App\Models\Workshop;
         Route::get('/contact', 'contactUsPage')->name('public.contact');
         Route::get('/privacy-policy', 'privacyAndPolicy')->name('public.privacy');
         Route::get('/terms-conditions', 'termsAndConditions')->name('public.terms-conditions');
-
-        // service's routes here:
-        Route::prefix("services")->group(function () {
-            Route::get('/coaching', 'coachingPage')->name('public.services.coaching');
-            Route::get('/ecommerce', 'ecommercePage')->name('public.services.ecommerce');
-            Route::get('/seo-services', 'seoServices')->name('public.services.seo-services');
-            Route::get('/web-development', 'webDevPage')->name('public.services.web-dev');
-            Route::get('/mobile-app', 'mobileAppPage')->name('public.services.mobile-app');
-            Route::get('/web-design', 'webDesignPage')->name('public.services.web-design');
-            Route::get('/software-development', 'softwareDev')->name('public.services.software-dev');
-            Route::get('/native-app', 'nativeApp')->name('public.services.native-app');
-            Route::get('/inventory-solution', 'inventorySolution')->name('public.services.invent-sol');
-            Route::get('/', 'servicePage')->name('public.services.services');
-        });
+        Route::post('/enquiry-store', 'storeEnquiry')->name('enquiry.store');
     });
 
-    Route::post('/enquiry-store', [EnquiryController::class, 'storeEnquiry'])->name('enquiry.store');
 
     Route::get('generate', function () {
         \Illuminate\Support\Facades\Artisan::call('storage:link');
@@ -271,18 +244,6 @@ use App\Models\Workshop;
         return view('public.launch');
     });
 
-   
-
-    Route::get('/phonepe/payment', [PhonepeController::class, 'index'])->name('phonepe.payment');
-    Route::post('/phonepe/initiate', [PhonepeController::class, 'initiatePayment'])->name('phonepe.initiate');
-    Route::post('/phonepe/callback', [PhonePeController::class, 'callback'])->name('phonepe.callback');
-    Route::get('/phonepe/status/{transactionId}', [PhonePeController::class, 'checkStatus'])->name('phonepe.status');
-    // Route::post('/phonepe/refund', [PhonePeController::class, 'refund'])->name('phonepe.refund');
-    Route::get('/phonepe/redirect', [PhonePeController::class, 'redirect'])->name('phonepe.redirect');
 
     Route::get('/portfolio', [PortfolioController::class, 'index'])->name('public.portfolio');
     Route::get('/workshops', [WorkshopController::class, 'index'])->name('public.workshops');
-   
-
-
-  

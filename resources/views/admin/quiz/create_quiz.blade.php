@@ -7,7 +7,7 @@
 </div>
 @endif
 
-<div class="max-w-4xl mx-auto mt-10 p-6 bg-white rounded shadow-md">
+<div class=" mx-auto mt-10 p-6 bg-white rounded shadow-md">
     <h1 class="text-2xl font-bold mb-6">Add a Quiz Question</h1>
     <form action="{{ route('quiz.store') }}" method="POST">
         @csrf

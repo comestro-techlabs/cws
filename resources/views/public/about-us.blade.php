@@ -5,247 +5,227 @@
 @endsection
 
 @section('meta')
-    <meta name="description" content="Discover LearnSyntax, a leading Software Company based in Purnea Bihar, delivering 360º Software Solutions globally since 2009. With over 110 experts across Bihar, we help businesses thrive through innovative, data-driven marketing strategies."/>
+    <meta name="description"
+        content="Discover LearnSyntax, a leading Software Company based in Purnea Bihar, delivering 360º Software Solutions globally since 2009. With over 110 experts across Bihar, we help businesses thrive through innovative, data-driven marketing strategies." />
 @endsection
 
 @section('content')
+
     <div class="bg-white pB-12 overflow-x-hidden">
-
-        <!-- Header Section -->
         <livewire:page-heading title="About LearnSyntax"
-            description="Our Learn Syntax services is one of top Software Devlopment Company in India. We provide 360º
-                    techLab Solutions to businesses across the globe."
+            description="Our LearnSyntax platform is one of the top learning platforms in India. We provide 360º learning solutions to empower individuals and businesses across the globe with in-demand tech skills."
             image="about-header.png" />
-
-        <!-- Content Section -->
-        <section class="py-10 flex flex-col md:flex-row">
-        <!-- Text Content Section -->
-        <div class="mx-4 md:mx-10 px-4 md:px-6 w-full md:w-1/2">
-            <h2 class="text-lg font-semibold mb-4 text-gray-700 text-center md:text-left">About Us</h2>
-            <h2 class="text-2xl md:text-3xl font-bold mb-6 text-blue-900 text-center md:text-left">
-                We’re Leaders In Innovative Software Solutions
-            </h2>
-            <p class="text-md text-gray-700 leading-relaxed mb-4">
-                <a href="/">At <span class="font-bold text-primary">Com</span></a><span class="font-bold text-blue-600">estro</span>, we believe in the power of innovation and technology to transform businesses. Based in Purnea, Bihar, we specialize in developing high-quality web applications, mobile apps, and custom websites that help our clients achieve their digital goals. Our passion for building innovative solutions drives us to deliver projects that are not only functional but also scalable and user-friendly.
-            </p>
-            <p class="text-md text-gray-700 leading-relaxed mb-4">
-                Our mission is to empower businesses by providing them with cutting-edge digital products that enhance efficiency, drive growth, and create meaningful user experiences. Whether you're a startup or an established company, we partner with you to build software solutions tailored to your unique needs and goals.
-            </p>
-            <p class="font-bold text-lg text-gray-700 mb-2">
-                What We Do:
-            </p>
-            <p class="text-md text-gray-700 leading-relaxed mb-4">
-                1. Web Application Development:
-                Our web applications are designed to meet your specific business needs, ensuring scalability, reliability, and seamless user experience. From complex enterprise-level systems to SaaS platforms, we deliver robust web apps that are both user-friendly and efficient.
-
-
-            </p>
-            <p class="text-md text-gray-700 leading-relaxed mb-4">
-                2. Mobile App Development:
-                We create high-performance mobile apps for both iOS and Android platforms. Our apps are built with a focus on usability, performance, and sleek design to ensure users love interacting with your brand on the go.
-
-            </p>
-            <p class="text-md text-gray-700 leading-relaxed">
-
-                3. Custom Website Development:
-                Your website is the digital face of your business. We design and develop custom websites that are visually stunning, optimized for performance, security, and SEO. Whether it's a corporate website, e-commerce platform, or portfolio, we ensure your site is built to succeed.
-            </p>
-            <p class="font-bold text-lg text-gray-700 mt-4 mb-2">
-          Our Location:
-            </p>
-            <p class="text-md text-gray-700 leading-relaxed">
-
-                LearnSyntax is located at Thana Chowk, a bustling part of Purnea, Bihar, near the well-known Dog Hospital. Our office is easily accessible, making it convenient for local businesses and clients to collaborate with us. Purnea, with its blend of history and modernization, is quickly becoming a hub for tech startups and innovation in Eastern India.
-
-                Our presence in Purnea allows us to tap into local talent while delivering Software solutions that compete on a global scale. We are proud to contribute to the local economy, providing job opportunities and empowering businesses in the region with our state-of-the-art technology services.
-            </p>
-        </div>
-
-        <!-- Stats Cards Section -->
-        <div class="w-full md:w-1/2 flex flex-col gap-6 md:gap-10 px-4 md:px-10 mt-10 md:mt-0 shake">
-            <!-- Card 1 -->
-            <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center">
-                <div class="text-3xl md:text-4xl font-bold text-orange-600">500+</div>
-                <div class="text-gray-600 mt-2 mr-2">Happy Clients</div>
-            </div>
-
-            <!-- Card 2 -->
-            <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center shake">
-                <div class="text-3xl md:text-4xl font-bold text-green-600">2500+</div>
-                <div class="text-gray-600 mt-2 mr-4">Software</div>
-            </div>
-
-            <!-- Card 3 -->
-            <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center shake">
-                <div class="text-3xl md:text-4xl font-bold text-orange-600">345+</div>
-                <div class="text-gray-600 mt-2 mr-2">Leads Delivered</div>
-            </div>
-        </div>
-    </section>
-
-        <!-- Development Journey Section -->
-        <div class="bg-white py-12 px-4 text-center">
-            <h2 class="text-xl font-semibold uppercase text-purple-600 mb-2">
-                Our Development Journey
-            </h2>
-            <p class="text-3xl font-bold text-gray-800">
-                Learn Syntax offer end-to-end 'Learning Solutions'
-            </p>
-            <p class="text-lg font-light text-gray-600 mt-4">
-                Partner with us to transform your vision into reality. Your journey to innovation starts here!
-            </p>
-        </div>
-
-        <!-- Carousel Section -->
-        {{-- <div class="flex flex-1 justify-center my-5">
-            <div class="relative overflow-hidden w-full md:w-10/12 px-2">
-                <!-- Carousel Container -->
-                <div id="carousel" class="flex my-3 transition-transform duration-700 ease-in-out h-[300px]">
-                    <!-- Carousel items -->
-                    <div class="flex-shrink-0 w-full sm:w-1/2 lg:w-1/3 px-2 sm:px-4 lg:px-5 flex">
-                        <div class="flex flex-col items-center">
-                            <div class="bg-white shadow-lg border rounded-lg p-6 text-center mb-4">
-                                <p class="text-gray-700">
-                                    Team size grows to 60+ digital experts & a new office is acquired.
-                                </p>
-                            </div>
-                            <hr class="border-t border-gray-300 w-full mb-4">
-                            <p class="text-blue-500 font-semibold mb-4">2018</p>
-                            <div class="w-32 h-32 rounded-full overflow-hidden mb-4">
-                                <img src="/assets/ab-1.jpg" alt="Profile Image" class="w-full h-full object-cover">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Repeat the above block for additional carousel items -->
-                    <div class="flex-shrink-0 w-full sm:w-1/2 lg:w-1/3 px-2 sm:px-4 lg:px-5 flex">
-                        <div class="flex flex-col items-center">
-                            <div class="bg-white shadow-lg border rounded-lg p-6 text-center mb-4">
-                                <p class="text-gray-700">
-                                    Expanded our services to include new Software technology services.
-                                </p>
-                            </div>
-                            <hr class="border-t border-gray-300 w-full mb-4">
-                            <p class="text-blue-500 font-semibold mb-4">2020</p>
-                            <div class="w-32 h-32 rounded-full overflow-hidden mb-4">
-                                <img src="/assets/ab-2.jpg" alt="Profile Image" class="w-full h-full object-cover">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Add more items as needed -->
+        <div class=" mt-20 mb-20 py-10 px-5 md:px-20">
+            <div class=" mx-auto grid grid-cols-1 md:grid-cols-2 items-center gap-10">
+                <!-- Badge Section -->
+                <div class="flex justify-center md:justify-start">
+                    <img src="https://img.freepik.com/free-photo/healthy-lifestyle-sustained-home_23-2149362469.jpg?ga=GA1.1.1275289697.1728223870&semt=ais_hybrid"
+                        alt="Education Excellence Awards 2023" class="w-96" />
                 </div>
 
-                <!-- Arrows -->
-                <button id="prev" class="absolute top-1/2 left-0 transform -translate-y-1/2 bg-white/45 text-gray-700 px-4 py-2 text-xl md:px-5 md:py-3">
-                    &lt;
-                </button>
-                <button id="next" class="absolute top-1/2 right-0 transform -translate-y-1/2 bg-white/45 text-gray-700 px-4 py-2 text-xl md:px-5 md:py-3">
-                    &gt;
-                </button>
-            </div>
-        </div> --}}
-
-        <div class="flex flex-1 justify-center my-5">
-            <div class="relative overflow-hidden w-full md:w-10/12 px-2">
-              <!-- Carousel Container -->
-              <div id="carousel" class="flex transition-transform duration-700 ease-in-out">
-                <!-- Carousel Items -->
-                <div class="flex-shrink-0 w-full sm:w-1/2 lg:w-2/6 px-3">
-                  <div class="bg-white shadow-lg border rounded-tr-xl p-6 text-center">
-                    <div class="w-24 h-24 mx-auto mb-4">
-                      <img src="{{asset('assets/about/work.jpg')}}" alt="Image 1" class="rounded-full">
-                    </div>
-                    <h3 class="text-lg font-bold text-blue-600 mb-2">Work with us</h3>
-                    <p class="text-gray-700 text-sm">
-                        At Learn Syntax, we’re all learners and instructors. We live out our values every day to create a culture that is diverse, and committed to helping employees thrive.                    </p>
-                  </div>
-                </div>
-          
-                <div class="flex-shrink-0 w-full sm:w-1/2 lg:w-2/6 px-3">
-                  <div class="bg-white shadow-lg border rounded-tr-xl p-6 text-center">
-                    <div class="w-24 h-24 mx-auto mb-4">
-                      <img src="{{asset('assets/about/research.png')}}" alt="Image 2" class="rounded-full">
-                    </div>
-                    <h3 class="text-lg font-bold text-blue-600 mb-2">See our research</h3>
-                    <p class="text-gray-700 text-sm">
-                        We’re committed to improving lives through learning. Dig into our original research to learn about the forces that are shaping the modern workplace.                    </p>
-                  </div>
-                </div>
-          
-                <div class="flex-shrink-0 w-full sm:w-1/2 lg:w-2/6 px-3">
-                  <div class="bg-white shadow-lg border rounded-tr-xl p-6 text-center">
-                    <div class="w-24 h-24 mx-auto mb-4">
-                      <img src="{{asset('assets/about/blog.png')}}" alt="Image 3" class="rounded-full">
-                    </div>
-                    <h3 class="text-lg font-bold text-blue-600 mb-2">Read our blog</h3>
-                    <p class="text-gray-700 text-sm">
-                        Want to know what we’ve been up to lately? Check out the Udemy blog to get the scoop on the latest news, ideas and projects, and more.                    </p>
-                  </div>
-                </div>
-          
-                {{-- <div class="flex-shrink-0 w-full sm:w-1/2 lg:w-1/4 px-3">
-                  <div class="bg-white shadow-lg border rounded-lg p-6 text-center">
-                    <div class="w-16 h-16 mx-auto mb-4">
-                      <img src="https://via.placeholder.com/150" alt="Image 4" class="rounded-full">
-                    </div>
-                    <h3 class="text-lg font-bold text-blue-600 mb-2">Title 4</h3>
-                    <p class="text-gray-700 text-sm">
-                      Description for the fourth card, summarizing features.
+                <!-- Text Content Section -->
+                <div>
+                    <h2 class="text-2xl md:text-3xl font-bold text-gray-800">
+                        Empower Your <span class="text-secondary">Future</span> with LearnSyntax
+                    </h2>
+                    <p class="mt-4 text-gray-600">
+                        Discover the ultimate platform for mastering coding with LearnSyntax. <br />
+                        Enhance your skills by learning <span class="font-semibold">syntax, frameworks, and real-world
+                            applications</span> to build a successful career in tech.
                     </p>
+                    <p class="mt-2 text-gray-600">
+                        Backed by 20+ years of expertise in education and technology, LearnSyntax is dedicated to
+                        transforming students' aspirations into achievements.
+                        Join us to become a part of our innovative and empowering journey in the coding world.
+                    </p>
+                    <button
+                        class="mt-6 px-6 py-3 bg-gradient-to-r from-purple-500 to-blue-500 text-white font-medium rounded-lg shadow-lg hover:shadow-xl">
+                        Get Started Today!
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+
+
+        <div class="bg-blue-900 text-white py-12 px-6">
+            <div class="max-w-5xl mx-auto">
+              <h2 class="text-3xl md:text-4xl font-bold text-center mb-8">Our Journey</h2>
+              <p class="text-center text-gray-300 mb-12">
+                All cards must be the same height and width for space calculations on large screens.
+              </p>
+              <div class="relative">
+
+                <!-- 2003 -->
+                <div class="flex items-start border-b-2 border-gray-500 mb-12">
+                  <div class="w-16 text-right pr-4">
+                    <h3 class="text-lg font-bold">2003</h3>
                   </div>
-                </div> --}}
+                  <div class="relative mb-6 pl-8">
+                    <h4 class="text-xl font-bold">A Humble Beginning...</h4>
+                    <ul class="mt-2 text-gray-300 list-disc ml-5">
+                      <li>
+                        Started in the year 2003 with an intention to provide a Just Opportunity to
+                        maximum students who deserve a chance in the IT Industry!!
+                      </li>
+                      <li>In a small campus of 4000 SFT.</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- 2018 Academic Training -->
+                <div class="flex items-start border-b-2 border-gray-500 mb-12">
+                  <div class="w-16 text-right pr-4">
+                    <h3 class="text-lg font-bold">2018</h3>
+                  </div>
+                  <div class="relative mb-6 pl-8">
+                    <h4 class="text-xl font-bold">15+ Years of Training Academic Students...</h4>
+                    <ul class="mt-2 text-gray-300 list-disc ml-5">
+                      <li>Trained over 10 Lakh+ Students.</li>
+                      <li>From 1800+ Colleges.</li>
+                      <li>Spanning across 16 States.</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- 2018 Corporate Training -->
+                <div class="flex items-start border-b-2 border-gray-500 mb-12">
+                  <div class="w-16 text-right pr-4">
+                    <h3 class="text-lg font-bold">2018</h3>
+                  </div>
+                  <div class="relative mb-6 pl-8">
+                    {{-- <div class="absolute -left-6 top-1 w-6 h-6 bg-green-500 rounded-full"></div> --}}
+                    <h4 class="text-xl font-bold">15+ Years of Training the Corporates...</h4>
+                    <ul class="mt-2 text-gray-300 list-disc ml-5">
+                      <li>Preferred Corporate Training Partner for 100+ IT Majors in Hyderabad.</li>
+                      <li>Provided Corporate Training in 400+ Corporates.</li>
+                      <li>
+                        Corporate Training aimed at up-skilling seasoned professionals. Naresh IT spans
+                        in a carpet area of 75,000 SFT. 100+ State of the Art Classrooms.
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- 2023 -->
+                <div class="flex  items-start">
+                  <div class="w-16 text-right pr-4">
+                    <h3 class="text-lg font-bold">2023</h3>
+                  </div>
+                  <div class="relative pl-8">
+                    {{-- <div class="absolute -left-6 top-1 w-6 h-6 bg-green-500 rounded-full"></div> --}}
+                    <h4 class="text-xl font-bold">Our Infrastructure</h4>
+                    <ul class="mt-2 text-gray-300 list-disc ml-5">
+                      <li>Can accommodate 12,000 students on any given day.</li>
+                      <li>140+ Faculty Members with an average of 8+ years of experience.</li>
+                      <li>Only Training Organization with 100+ Developers Team.</li>
+                      <li>Dedicated Placement Assistance Division.</li>
+                      <li>Advanced AV Recording Studio and Delivery Units for Virtual Trainings.</li>
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          
+
+          <div class=" mt-20 mb-20 py-12 px-6">
+            <div class="max-w-5xl mx-auto">
+              <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-8">
+                Frequently <span class="text-secondary">Asked</span> Questions
+              </h2>
+              <div class="space-y-4">
+                <!-- FAQ Item 1 -->
+                <div class="border border-gray-300 rounded-lg shadow">
+                  <button
+                    class="w-full flex justify-between items-center p-4 bg-white text-left hover:bg-gray-50 transition focus:outline-none focus:ring-2 focus:ring-gray-500"
+                    onclick="toggleFaq('faq1')"
+                  >
+                    <span class="text-lg font-medium text-gray-800">What services does LearnSyntax provide?</span>
+                    <svg
+                      id="faq1-icon"
+                      class="w-6 h-6 transform transition-transform text-gray-600"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  <div id="faq1-content" class="hidden p-4 bg-gray-50 text-gray-700">
+                    LearnSyntax provides comprehensive training in programming languages, frameworks, and coding best practices to help students and professionals excel in their careers.
+                  </div>
+                </div>
+
+                <!-- FAQ Item 2 -->
+                <div class="border border-gray-300 rounded-lg shadow">
+                  <button
+                    class="w-full flex justify-between items-center p-4 bg-white text-left hover:bg-gray-50 transition focus:outline-none focus:ring-2 focus:ring-gray-500"
+                    onclick="toggleFaq('faq2')"
+                  >
+                    <span class="text-lg font-medium text-gray-800">How can I enroll in a course?</span>
+                    <svg
+                      id="faq2-icon"
+                      class="w-6 h-6 transform transition-transform text-gray-600"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  <div id="faq2-content" class="hidden p-4 bg-gray-50 text-gray-700">
+                    You can enroll in our courses by visiting the LearnSyntax website, selecting a course, and following the instructions for registration.
+                  </div>
+                </div>
+
+                <!-- FAQ Item 3 -->
+                <div class="border border-gray-300 rounded-lg shadow">
+                  <button
+                    class="w-full flex justify-between items-center p-4 bg-white text-left hover:bg-gray-50 transition focus:outline-none focus:ring-2 focus:ring-gray-500"
+                    onclick="toggleFaq('faq3')"
+                  >
+                    <span class="text-lg font-medium text-gray-800">Do you offer placement assistance?</span>
+                    <svg
+                      id="faq3-icon"
+                      class="w-6 h-6 transform transition-transform text-gray-600"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  <div id="faq3-content" class="hidden p-4 bg-gray-50 text-gray-700">
+                    Yes, LearnSyntax offers dedicated placement assistance to ensure our students secure jobs in top companies.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
 
     </div>
-@endsection
 
-@section('js')
-    {{-- <script>
-        const carousel = document.getElementById('carousel');
-        const items = document.querySelectorAll('#carousel > div');
-        let index = 0;
 
-        function slide() {
-            const totalItems = items.length;
-            const itemWidth = items[0].offsetWidth;
-            const offset = -index * itemWidth;
+    <script>
+        // Function to toggle FAQ content visibility
+        function toggleFaq(id) {
+          const content = document.getElementById(`${id}-content`);
+          const icon = document.getElementById(`${id}-icon`);
 
-            if (index >= totalItems) {
-                index = 0;
-                carousel.style.transition = 'none';
-                carousel.style.transform = `translateX(0)`;
-            } else {
-                carousel.style.transition = 'transform 0.7s ease-in-out';
-                carousel.style.transform = `translateX(${offset}px)`;
-            }
+          if (content.classList.contains('hidden')) {
+            content.classList.remove('hidden');
+            icon.classList.add('rotate-180');
+          } else {
+            content.classList.add('hidden');
+            icon.classList.remove('rotate-180');
+          }
         }
+      </script>
 
-        document.getElementById('next').addEventListener('click', () => {
-            index++;
-            slide();
-            clearInterval(autoSlide); // Stops auto slide when clicking next/prev
-        });
-
-        document.getElementById('prev').addEventListener('click', () => {
-            index = index <= 0 ? items.length - 1 : index - 1;
-            slide();
-            clearInterval(autoSlide); // Stops auto slide when clicking next/prev
-        });
-
-        // Auto slide every 5 seconds
-        let autoSlide = setInterval(() => {
-            index++;
-            slide();
-        }, 5000);
-
-        // Handle window resize
-        window.addEventListener('resize', slide);
-
-        // Set initial slide
-        slide();
-    </script> --}}
 @endsection

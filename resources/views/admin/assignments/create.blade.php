@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="bg-gray-100 py-10 min-h-screen">
-    <div class="max-w-4xl mx-auto px-6">
+    <div class=" mx-auto px-6">
         <h2 class="text-4xl font-semibold text-center text-gray-800 mb-8">Create Assignment</h2>
         <!-- Success and Error Messages -->
         @if (session('success'))
@@ -69,7 +69,7 @@
                     <select name="batch_id" id="batch_id"
                         class="w-full bg-gray-50 border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent" >
                         <option value="" disabled {{ old('batch_id') == '' ? 'selected' : '' }}>Select a batch</option>
-                       
+
                     </select>
                     @error('batch_id')
                     <span class="text-sm text-red-500">{{ $message }}</span>
@@ -123,7 +123,7 @@
         });
     }
 </script>
-@endsection 
+@endsection
 
 
 

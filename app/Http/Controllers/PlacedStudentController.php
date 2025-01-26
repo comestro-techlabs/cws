@@ -12,7 +12,8 @@ class PlacedStudentController extends Controller
      */
     public function index()
     {
-        //
+        $data['placedStudents']=PlacedStudent::all();
+        return view('admin.placedStudent.manage',$data);
     }
 
     /**
@@ -29,15 +30,33 @@ class PlacedStudentController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-                   'name' => 'required',
-                   'content' => 'required',
-                   'position' => 'required',
-                   'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-                   
-           ]);
-          
+            'name' => 'required|string|max:255',
+            'content' => 'required|string',
+            'position' => 'required|string|max:255',
+            'image' => 'required|image|mimes:jpeg,png,jpg',
+        ]);
+    
+        $imagePath = $request->file('image')->store('store', 'public');
+    
+        PlacedStudent::create([
+            'name' => $request->name,
+            'content' => $request->content,
+            'position' => $request->position,
+            'image' => $imagePath,
+        ]);
+    
+        // Redirect back with a success message
+        return redirect()->route('placedStudent.create')->with('success', 'Placed student created successfully!');
     }
+    public function toggleStatus(Request $request, PlacedStudent $placedStudent)
+    {
+        $placedStudent->status = !$placedStudent->status;
+        $placedStudent->save();
+
+        return redirect()->back()->with('success', 'placedStudent status updated successfully!');
+    }
+
+
 
     /**
      * Display the specified resource.
@@ -66,8 +85,11 @@ class PlacedStudentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(PlacedStudent $placedStudent)
+    public function destroy($id)
     {
-        //
+        $placedStudent=PlacedStudent::findOrFail($id);
+        $placedStudent->delete();
+        return redirect()->back()->with('success','succesfully deleted');
     }
+ 
 }

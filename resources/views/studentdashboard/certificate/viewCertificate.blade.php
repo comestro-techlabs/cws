@@ -34,15 +34,13 @@
 
     <div class="text-center">
       
-        <div class="relative w-[995px] h-[695px] bg-no-repeat bg-cover shadow-xl" 
+        <div class="relative w-[990px] h-[690px] bg-no-repeat bg-cover shadow-xl" 
              style="background-image: url('{{ asset('certificate.jpeg') }}')">
 
           
 
            
-             {{-- <div class="absolute top-[350px] left-1/2 transform -translate-x-1/2">
-                <h2 class="text-2xl md:text-3xl font-serif font-bold text-black">{{ $user->name }}</h2>
-            </div>  --}}
+            
             <div class="absolute top-[350px] left-1/2 transform -translate-x-1/2">
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-800" style="font-family: 'Great Vibes', cursive;">
                     {{ $user->name }}
@@ -62,13 +60,12 @@
                 </p>
             </div>
 
-
           
             <div class="absolute top-[330px]  right-[-75px]  transform rotate-90 text-gray-800 font-semibold text-lg tracking-wider">
-                Certificate No: LS/DBMS/{{ $year }}/0077
+                Certificate No: LS/{{ $courseCode }}/{{ $year }}/{{ $certificateNumber }}
             </div> 
 
-            <div class="absolute bottom-[25px] left-[510px]">
+            <div class="absolute bottom-[23px] left-[510px]">
                 <p class="text-lg text-gray-800 text-center"> {{ $date }}</p>
             </div>
         </div>
@@ -81,6 +78,7 @@
             Print Certificate
         </button>
     </div>
+   
 
 </body>
 </html>

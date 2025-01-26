@@ -7,30 +7,30 @@
         <div class="md:px-[2%] px-5 py-5">
             <div class="flex gap-3 flex-col md:flex-row justify-between md:items-center">
 
-                <h2 class="md:text-xl text-lg font-semibold dark:text-slate-300 text-slate-500 border-s-4 border-s-orange-400 pl-3">@if(isset($_GET['search']) && $_GET['search'] !== "")
+                <h2 class="md:text-xl text-lg font-semibold text-slate-500 border-s-4 border-s-orange-400 pl-3">@if(isset($_GET['search']) && $_GET['search'] !== "")
                     {{$_GET['search']}}
-                @else 
+                @else
                     {{"Manage all"}}
                 @endif Courses ({{count($courses)}})</h2>
 
 
                 {{-- search form starts here --}}
-                
+
                 {{-- search form ends here --}}
 
 
                 <div class="inline-flex md:flex-row flex-col  md:items-center gap-2" role="group">
                     <form action="{{ route('course.search') }}" method="get" class=" md:max-w-md md:mx-auto">
-                   
+
                         <div class="flex border rounded-lg ps-3">
-                           
+
                             <input type="search" id="default-search" name="search"
-                                value="{{old('search')}}"
+                                value=""
                                 class="border-0 focus:outline-none focus:border-none w-full"
                                 placeholder="Search course by name..." size="30"  />
                             <button type="submit"
                                 class="bg-slate-100 px-3">
-                                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                <svg class="w-4 h-4 text-gray-500 " aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
@@ -44,9 +44,9 @@
                 </div>
 
             </div>
-            <div class="relative overflow-x-auto flex-1 border dark:border-slate-500 mt-5">
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <div class="relative overflow-x-auto flex-1 border  mt-5">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500 ">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
                         <tr>
                             <th scope="col" class="px-6 py-3">
                                 Id
@@ -60,7 +60,7 @@
                             <th scope="col" class="px-6 py-3">
                                 Fees
                             </th>
-                          
+
                             <th scope="col" class="px-6 py-3">
                                 Duration
                             </th>
@@ -74,9 +74,9 @@
                     </thead>
                     <tbody>
                         @foreach ($courses as $course)
-                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            <tr class="bg-white border-b ">
                                 <th scope="row"
-                                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                     {{ $course->id }}
                                 </th>
                                 <td class="px-6 py-4">
@@ -85,15 +85,21 @@
                                 <td class="px-6 py-4">
                                     {{ $course->instructor }}
                                 </td>
-                                <td class="px-6 py-4 text-slate-600">
-                                    @if ($course->discounted_fees)
+                                  <td class="px-6 py-4 text-slate-600">
+                                    @if ($course->discounted_fees > 0)
+                                    @if ($course->discounted_fees )
                                         {{ $course->discounted_fees }}
                                         <span class="text-slate-300"><del>{{ '₹' . number_format($course->discounted_fees, 2) }}</del></span>
                                     @else
                                         {{'₹' . number_format($course->fees, 2) }}
                                     @endif
+                                    @else
+                                    <p class="text-green-600">Free</p>
+                                    @endif
                                 </td>
-                               
+
+
+
                                 <td class="px-6 py-4">
                                     @if ($course->duration > 1)
                                         {{ $course->duration }} Weeks
@@ -106,8 +112,8 @@
                                     @endif
                                 </td>
                                 <td class="px-3 py-4">
-                                    {!!(!$course->published)? 
-                                    "<span class='text-slate-100 bg-slate-600 text-xs px-2 py-1 rounded-xl'>Draft</span>" : 
+                                    {!!(!$course->published)?
+                                    "<span class='text-slate-100 bg-slate-600 text-xs px-2 py-1 rounded-xl'>Draft</span>" :
                                     "<span class='text-slate-100 bg-teal-600 text-xs px-2 py-1 rounded-xl'>Published</span>"!!}
                                 </td>
                                 <td class="flex gap-2 items-center px-6 py-4">

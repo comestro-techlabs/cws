@@ -28,7 +28,7 @@
                 <th class="border px-4 py-2">Exam Name</th>
                 <th class="border px-4 py-2">Exam Date</th>
                 <th class="border px-4 py-2">status</th>
-                
+
                 <th class="border px-4 py-2">Actions</th>
             </tr>
         </thead>
@@ -70,7 +70,7 @@
                         <a href="{{ route('exam.showQuestions', ['exam' => $exam->id,'course_title'=>$exam->course->title,'exam_name'=>$exam->exam_name]) }}" class="bg-green-500 text-white py-2 px-4 rounded">View Q's</a>
                     </div>
                     </td>
-                    
+
                 </tr>
             @endforeach
         </tbody>
