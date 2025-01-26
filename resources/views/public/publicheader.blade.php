@@ -13,7 +13,7 @@
     <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-4 py-5">
         <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
             <span class="self-center text-2xl font-semibold whitespace-nowrap ">
-                <img src="{{ asset('assets/LearnSyntax.png') }}" class="md:h-8" alt="">
+                <img src="{{ asset('assets/Learn Syntax.png') }}" class="md:h-8" alt="">
             </span>
         </a>
 
@@ -112,7 +112,7 @@
                         </div>
                         <div class="p-4 w-48 pb-0 text-gray-900 md:pb-4 ">
                             <h2 class="mb-2 font-semibold text-gray-900 ">Our Services</h2>
-                            <p class="mb-2 text-gray-500 ">At LearnSyntax, we have a portfolio of brands that cater to a
+                            <p class="mb-2 text-gray-500 ">At Learn Syntax, we have a portfolio of brands that cater to a
                                 variety of preferences.</p>
                             <a href="{{ route('public.services.services') }}"
                                 class="inline-flex items-center text-sm font-medium text-blue-600 hover:underline hover:text-blue-600 ">

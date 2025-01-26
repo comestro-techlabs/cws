@@ -5,14 +5,14 @@
 @endsection
 
 @section('meta')
-    <meta name="description" content="Discover LearnSyntax, a leading Software Company based in Purnea Bihar, delivering 360º Software Solutions globally since 2009. With over 110 experts across Bihar, we help businesses thrive through innovative, data-driven marketing strategies."/>
+    <meta name="description" content="Discover Learn Syntax, a leading Software Company based in Purnea Bihar, delivering 360º Software Solutions globally since 2009. With over 110 experts across Bihar, we help businesses thrive through innovative, data-driven marketing strategies."/>
 @endsection
 
 @section('content')
     <div class="bg-white pB-12 overflow-x-hidden">
 
         <!-- Header Section -->
-        <livewire:page-heading title="About LearnSyntax"
+        <livewire:page-heading title="About Learn Syntax"
             description="Our Learn Syntax services is one of top Software Devlopment Company in India. We provide 360º
                     techLab Solutions to businesses across the globe."
             image="about-header.png" />
@@ -55,7 +55,7 @@
             </p>
             <p class="text-md text-gray-700 leading-relaxed">
 
-                LearnSyntax is located at Thana Chowk, a bustling part of Purnea, Bihar, near the well-known Dog Hospital. Our office is easily accessible, making it convenient for local businesses and clients to collaborate with us. Purnea, with its blend of history and modernization, is quickly becoming a hub for tech startups and innovation in Eastern India.
+                Learn Syntax is located at Thana Chowk, a bustling part of Purnea, Bihar, near the well-known Dog Hospital. Our office is easily accessible, making it convenient for local businesses and clients to collaborate with us. Purnea, with its blend of history and modernization, is quickly becoming a hub for tech startups and innovation in Eastern India.
 
                 Our presence in Purnea allows us to tap into local talent while delivering Software solutions that compete on a global scale. We are proud to contribute to the local economy, providing job opportunities and empowering businesses in the region with our state-of-the-art technology services.
             </p>

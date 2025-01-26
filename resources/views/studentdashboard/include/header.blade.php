@@ -2,7 +2,7 @@
     <div class="max-w-screen-xl flex items-center justify-between mx-auto p-4">
       <!-- Logo Section -->
       <a href="{{ route('student.dashboard') }}" class="flex items-center space-x-3 rtl:space-x-reverse">
-        <img src="{{ asset('assets/learnSyntax.png') }}" class="h-8" alt="Dashboard Logo">
+        <img src="{{ asset('assets/Learn Syntax.png') }}" class="h-8" alt="Dashboard Logo">
       </a>
 
       <!-- Right-side Section -->

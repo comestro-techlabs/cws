@@ -341,7 +341,7 @@
                 "key": "{{ env('RAZORPAY_KEY') }}",
                 "amount": "{{ $course->discounted_fees }}" * 100, // amount in paise
                 "currency": "INR",
-                "name": "LearnSyntax",
+                "name": "Learn Syntax",
                 "description": "Processing Fee",
                 "image": "{{ asset('front_assets/img/logo/logo.png') }}",
                 "order_id": data.order_id,  // Razorpay order ID

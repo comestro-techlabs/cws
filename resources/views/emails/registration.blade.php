@@ -18,7 +18,7 @@
                 Congratulations! Your account has been successfully created.
             </p>
             <div style="margin: 20px 0; font-size: 20px; font-weight: bold; color: #4CAF50;">
-                ✨ Welcome to LearnSyntax Connect! ✨
+                ✨ Welcome to Learn Syntax Connect! ✨
             </div>
             <p style="font-size: 16px; line-height: 1.5; color: #555555;">
                 You can now log in and start exploring our platform. If you have any questions or need assistance, feel free to reach out to our support team.
@@ -29,7 +29,7 @@
         </main>
         <footer style="background-color: #f4f4f9; padding: 15px; text-align: center; border-top: 1px solid #dddddd; font-size: 14px; color: #888888;">
             <p style="margin: 0;">🌟 Thank you for joining us! 🌟</p>
-            <p style="margin: 5px 0;">© {{ date('Y') }} LearnSyntax Connect. Innovate, Achieve. All rights reserved.</p>
+            <p style="margin: 5px 0;">© {{ date('Y') }} Learn Syntax Connect. Innovate, Achieve. All rights reserved.</p>
         </footer>
     </div>
 </body>

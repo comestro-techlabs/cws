@@ -9,7 +9,7 @@
          </button>
         <a href="{{env('APP_URL')}}" class="flex items-center space-x-3 rtl:space-x-reverse">
             <span class="self-center text-2xl font-semibold whitespace-nowrap ">
-                <img src="{{asset('assets/LearnSyntax.png')}}" width="150px"/>
+                <img src="{{asset('assets/Learn Syntax.png')}}" width="150px"/>
             </span>
         </a>
     </div>

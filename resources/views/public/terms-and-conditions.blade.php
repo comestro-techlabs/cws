@@ -20,7 +20,7 @@
                 <strong>B.</strong> This document is published in accordance with the provisions of Rule 3 (1) of the
                 Information Technology (Intermediaries guidelines) Rules, 2011 that require publishing the rules and
                 regulations, privacy policy and Terms of Use for access or usage of domain name
-                <a href="https://www.LearnSyntax.com/" class="text-blue-600 underline">https://www.LearnSyntax.com/</a>(“Website”),
+                <a href="https://www.Learn Syntax.com/" class="text-blue-600 underline">https://www.Learn Syntax.com/</a>(“Website”),
                 including the related mobile site and mobile application (hereinafter referred to as “Platform”).
             </p>
             <p class="text-gray-700 mb-6">

@@ -26,7 +26,7 @@
         </main>
         <footer style="background-color: #f4f4f9; padding: 15px; text-align: center; border-top: 1px solid #dddddd; font-size: 14px; color: #888888;">
             <p style="margin: 0;">🌟 Thank you for trusting us! 🌟</p>
-            <p style="margin: 5px 0;">© {{ date('Y') }} LearnSyntax Connect innovate , Achieve. All rights reserved.</p>
+            <p style="margin: 5px 0;">© {{ date('Y') }} Learn Syntax Connect innovate , Achieve. All rights reserved.</p>
         </footer>
     </div>
 </body>

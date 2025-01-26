@@ -1,5 +1,5 @@
 <div class="w-full">
-    <section class="bg-blue-900 text-white py-12 md:py-16">
+    <section class="bg-blue-900 text-white py-12">
         <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
             <!-- Text Content -->
             <div class="text-center md:text-left mb-8 md:mb-0 md:w-1/2">
@@ -24,5 +24,5 @@
             </div>
         </div>
     </section>
-    <div class="bend-bottom bg-blue-900 h-16 hidden md:flex"></div>
+    <div class="bend-bottom bg-blue-900 hidden md:flex"></div>
 </div>

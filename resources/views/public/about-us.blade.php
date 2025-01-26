@@ -6,40 +6,35 @@
 
 @section('meta')
     <meta name="description"
-        content="Discover LearnSyntax, a leading Software Company based in Purnea Bihar, delivering 360º Software Solutions globally since 2009. With over 110 experts across Bihar, we help businesses thrive through innovative, data-driven marketing strategies." />
+        content="Discover Learn Syntax, a leading Software Company based in Purnea Bihar, delivering 360º Software Solutions globally since 2009. With over 110 experts across Bihar, we help businesses thrive through innovative, data-driven marketing strategies." />
 @endsection
 
 @section('content')
 
     <div class="bg-white pB-12 overflow-x-hidden">
-        <livewire:page-heading title="About LearnSyntax"
-            description="Our LearnSyntax platform is one of the top learning platforms in India. We provide 360º learning solutions to empower individuals and businesses across the globe with in-demand tech skills."
+        <livewire:page-heading title="About Learn Syntax"
+            description="Our Learn Syntax platform is one of the top learning platforms in India. We provide 360º learning solutions to empower individuals and businesses across the globe with in-demand tech skills."
             image="about-header.png" />
         <div class=" mt-20 mb-20 py-10 px-5 md:px-20">
             <div class=" mx-auto grid grid-cols-1 md:grid-cols-2 items-center gap-10">
                 <!-- Badge Section -->
-                <div class="flex justify-center md:justify-start">
-                    <img src="https://img.freepik.com/free-photo/healthy-lifestyle-sustained-home_23-2149362469.jpg?ga=GA1.1.1275289697.1728223870&semt=ais_hybrid"
-                        alt="Education Excellence Awards 2023" class="w-96" />
+                <div class="flex justify-center">
+                    <img src="https://img.freepik.com/free-photo/business-people-using-computers-dark-office_74855-2617.jpg?ga=GA1.1.1275289697.1728223870&semt=ais_hybrid" class="w-96" />
                 </div>
 
                 <!-- Text Content Section -->
                 <div>
                     <h2 class="text-2xl md:text-3xl font-bold text-gray-800">
-                        Empower Your <span class="text-secondary">Future</span> with LearnSyntax
+                        Empower Your <span class="text-secondary">Future</span> with Learn Syntax
                     </h2>
                     <p class="mt-4 text-gray-600">
-                        Discover the ultimate platform for mastering coding with LearnSyntax. <br />
-                        Enhance your skills by learning <span class="font-semibold">syntax, frameworks, and real-world
-                            applications</span> to build a successful career in tech.
-                    </p>
-                    <p class="mt-2 text-gray-600">
-                        Backed by 20+ years of expertise in education and technology, LearnSyntax is dedicated to
-                        transforming students' aspirations into achievements.
-                        Join us to become a part of our innovative and empowering journey in the coding world.
-                    </p>
+                      Learn Syntax is a premier learning platform dedicated to empowering aspiring coders and tech enthusiasts. 
+                      With a focus on mastering syntax, frameworks, and real-world applications, we provide the tools and 
+                      resources needed to build a successful career in technology. Backed by 20+ years of expertise, Learn Syntax 
+                      is where passion for coding meets innovative education.
+                  </p>
                     <button
-                        class="mt-6 px-6 py-3 bg-gradient-to-r from-purple-500 to-blue-500 text-white font-medium rounded-lg shadow-lg hover:shadow-xl">
+                        class="mt-6 px-6 py-3 bg-secondary text-white font-medium rounded-lg  hover:shadow-xl">
                         Get Started Today!
                     </button>
                 </div>
@@ -141,7 +136,7 @@
                     class="w-full flex justify-between items-center p-4 bg-white text-left hover:bg-gray-50 transition focus:outline-none focus:ring-2 focus:ring-gray-500"
                     onclick="toggleFaq('faq1')"
                   >
-                    <span class="text-lg font-medium text-gray-800">What services does LearnSyntax provide?</span>
+                    <span class="text-lg font-medium text-gray-800">What services does Learn Syntax provide?</span>
                     <svg
                       id="faq1-icon"
                       class="w-6 h-6 transform transition-transform text-gray-600"
@@ -154,7 +149,7 @@
                     </svg>
                   </button>
                   <div id="faq1-content" class="hidden p-4 bg-gray-50 text-gray-700">
-                    LearnSyntax provides comprehensive training in programming languages, frameworks, and coding best practices to help students and professionals excel in their careers.
+                    Learn Syntax provides comprehensive training in programming languages, frameworks, and coding best practices to help students and professionals excel in their careers.
                   </div>
                 </div>
 
@@ -177,7 +172,7 @@
                     </svg>
                   </button>
                   <div id="faq2-content" class="hidden p-4 bg-gray-50 text-gray-700">
-                    You can enroll in our courses by visiting the LearnSyntax website, selecting a course, and following the instructions for registration.
+                    You can enroll in our courses by visiting the Learn Syntax website, selecting a course, and following the instructions for registration.
                   </div>
                 </div>
 
@@ -200,7 +195,7 @@
                     </svg>
                   </button>
                   <div id="faq3-content" class="hidden p-4 bg-gray-50 text-gray-700">
-                    Yes, LearnSyntax offers dedicated placement assistance to ensure our students secure jobs in top companies.
+                    Yes, Learn Syntax offers dedicated placement assistance to ensure our students secure jobs in top companies.
                   </div>
                 </div>
               </div>

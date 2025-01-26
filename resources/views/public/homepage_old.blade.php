@@ -2,7 +2,7 @@
 
 
 @section('meta')
-    <meta name="description" content="Join LearnSyntax Programming Classes and master coding with expert-led training in C, DBMS, Laravel, and Web Development. Learn hands-on programming techniques from beginner to advanced levels. Enroll now to enhance your coding skills and build a successful career in tech!"/>
+    <meta name="description" content="Join Learn Syntax Programming Classes and master coding with expert-led training in C, DBMS, Laravel, and Web Development. Learn hands-on programming techniques from beginner to advanced levels. Enroll now to enhance your coding skills and build a successful career in tech!"/>
 @endsection
 
 @section('content')

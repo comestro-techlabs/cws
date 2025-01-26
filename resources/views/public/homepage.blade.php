@@ -3,7 +3,7 @@
 
 @section('meta')
     <meta name="description"
-        content="Join LearnSyntax Programming Classes and master coding with expert-led training in C, DBMS, Laravel, and Web Development. Learn hands-on programming techniques from beginner to advanced levels. Enroll now to enhance your coding skills and build a successful career in tech!" />
+        content="Join Learn Syntax Programming Classes and master coding with expert-led training in C, DBMS, Laravel, and Web Development. Learn hands-on programming techniques from beginner to advanced levels. Enroll now to enhance your coding skills and build a successful career in tech!" />
 @endsection
 
 @section('content')
@@ -280,7 +280,7 @@
                     </div>
                     <div class="flex items-start space-x-4  border-b-2 w-96 mt-4">
                         <span class="font-medium text-black">Email:</span>
-                        <a href="mailto:support@nareshit.com" class="text-blue-600 mb-3">info@learnSyntax.com</a>
+                        <a href="mailto:support@nareshit.com" class="text-blue-600 mb-3">info@Learn Syntax.com</a>
                     </div>
                     <div class="flex items-start space-x-4  mt-4">
                         <span class="font-medium text-black">Location:</span>
