@@ -28,9 +28,9 @@
                         Empower Your <span class="text-secondary">Future</span> with Learn Syntax
                     </h2>
                     <p class="mt-4 text-gray-600">
-                      Learn Syntax is a premier learning platform dedicated to empowering aspiring coders and tech enthusiasts. 
-                      With a focus on mastering syntax, frameworks, and real-world applications, we provide the tools and 
-                      resources needed to build a successful career in technology. Backed by 20+ years of expertise, Learn Syntax 
+                      Learn Syntax is a premier learning platform dedicated to empowering aspiring coders and tech enthusiasts.
+                      With a focus on mastering syntax, frameworks, and real-world applications, we provide the tools and
+                      resources needed to build a successful career in technology. Backed by 20+ years of expertise, Learn Syntax
                       is where passion for coding meets innovative education.
                   </p>
                     <button
@@ -43,80 +43,95 @@
         </div>
 
 
-
         <div class="bg-blue-900 text-white py-12 px-6">
             <div class="max-w-5xl mx-auto">
               <h2 class="text-3xl md:text-4xl font-bold text-center mb-8">Our Journey</h2>
               <p class="text-center text-gray-300 mb-12">
-                All cards must be the same height and width for space calculations on large screens.
+                A story of growth, innovation, and commitment to empowering aspiring developers and IT professionals.
               </p>
               <div class="relative">
 
-                <!-- 2003 -->
+                <!-- 2014 -->
                 <div class="flex items-start border-b-2 border-gray-500 mb-12">
                   <div class="w-16 text-right pr-4">
-                    <h3 class="text-lg font-bold">2003</h3>
+                    <h3 class="text-lg font-bold">2014</h3>
                   </div>
                   <div class="relative mb-6 pl-8">
-                    <h4 class="text-xl font-bold">A Humble Beginning...</h4>
+                    <h4 class="text-xl font-bold">The Beginning</h4>
                     <ul class="mt-2 text-gray-300 list-disc ml-5">
-                      <li>
-                        Started in the year 2003 with an intention to provide a Just Opportunity to
-                        maximum students who deserve a chance in the IT Industry!!
-                      </li>
-                      <li>In a small campus of 4000 SFT.</li>
+                      <li>Started "Code with Sadiq" with just 2 students in a personal room.</li>
+                      <li>Used a 14-inch monitor to teach coding basics and fundamentals.</li>
                     </ul>
                   </div>
                 </div>
 
-                <!-- 2018 Academic Training -->
+                <!-- 2016 -->
                 <div class="flex items-start border-b-2 border-gray-500 mb-12">
                   <div class="w-16 text-right pr-4">
-                    <h3 class="text-lg font-bold">2018</h3>
+                    <h3 class="text-lg font-bold">2016</h3>
                   </div>
                   <div class="relative mb-6 pl-8">
-                    <h4 class="text-xl font-bold">15+ Years of Training Academic Students...</h4>
+                    <h4 class="text-xl font-bold">Growth and Expansion</h4>
                     <ul class="mt-2 text-gray-300 list-disc ml-5">
-                      <li>Trained over 10 Lakh+ Students.</li>
-                      <li>From 1800+ Colleges.</li>
-                      <li>Spanning across 16 States.</li>
+                      <li>Officially adopted the name "Code with Sadiq."</li>
+                      <li>Opened a new branch in Madhubani, Purnea, Bihar.</li>
+                      <li>Started training BCA, B.Tech, and M.Tech students.</li>
                     </ul>
                   </div>
                 </div>
 
-                <!-- 2018 Corporate Training -->
+                <!-- 2020 -->
                 <div class="flex items-start border-b-2 border-gray-500 mb-12">
                   <div class="w-16 text-right pr-4">
-                    <h3 class="text-lg font-bold">2018</h3>
+                    <h3 class="text-lg font-bold">2020</h3>
                   </div>
                   <div class="relative mb-6 pl-8">
-                    {{-- <div class="absolute -left-6 top-1 w-6 h-6 bg-green-500 rounded-full"></div> --}}
-                    <h4 class="text-xl font-bold">15+ Years of Training the Corporates...</h4>
+                    <h4 class="text-xl font-bold">Milestone Achievement</h4>
                     <ul class="mt-2 text-gray-300 list-disc ml-5">
-                      <li>Preferred Corporate Training Partner for 100+ IT Majors in Hyderabad.</li>
-                      <li>Provided Corporate Training in 400+ Corporates.</li>
-                      <li>
-                        Corporate Training aimed at up-skilling seasoned professionals. Naresh IT spans
-                        in a carpet area of 75,000 SFT. 100+ State of the Art Classrooms.
-                      </li>
+                      <li>Reached a remarkable milestone of training 10,000 students.</li>
+                      <li>Empowered students with skills to excel in the IT industry.</li>
                     </ul>
                   </div>
                 </div>
 
-                <!-- 2023 -->
-                <div class="flex  items-start">
+                <!-- 2022 -->
+                <div class="flex items-start border-b-2 border-gray-500 mb-12">
                   <div class="w-16 text-right pr-4">
-                    <h3 class="text-lg font-bold">2023</h3>
+                    <h3 class="text-lg font-bold">2022</h3>
+                  </div>
+                  <div class="relative mb-6 pl-8">
+                    <h4 class="text-xl font-bold">Student Placements</h4>
+                    <ul class="mt-2 text-gray-300 list-disc ml-5">
+                      <li>Achieved 800 student placements in renowned IT companies.</li>
+                      <li>Placed students both in India and abroad, ensuring career success.</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- 2024 -->
+                <div class="flex items-start border-b-2 border-gray-500 mb-12">
+                  <div class="w-16 text-right pr-4">
+                    <h3 class="text-lg font-bold">2024</h3>
+                  </div>
+                  <div class="relative mb-6 pl-8">
+                    <h4 class="text-xl font-bold">New Horizons</h4>
+                    <ul class="mt-2 text-gray-300 list-disc ml-5">
+                      <li>Registered "Comestro Techlabs Pvt. Ltd." as an IT service company.</li>
+                      <li>Expanded focus to include IT services alongside training.</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- 2025 -->
+                <div class="flex items-start">
+                  <div class="w-16 text-right pr-4">
+                    <h3 class="text-lg font-bold">2025</h3>
                   </div>
                   <div class="relative pl-8">
-                    {{-- <div class="absolute -left-6 top-1 w-6 h-6 bg-green-500 rounded-full"></div> --}}
-                    <h4 class="text-xl font-bold">Our Infrastructure</h4>
+                    <h4 class="text-xl font-bold">Rebranding for the Future</h4>
                     <ul class="mt-2 text-gray-300 list-disc ml-5">
-                      <li>Can accommodate 12,000 students on any given day.</li>
-                      <li>140+ Faculty Members with an average of 8+ years of experience.</li>
-                      <li>Only Training Organization with 100+ Developers Team.</li>
-                      <li>Dedicated Placement Assistance Division.</li>
-                      <li>Advanced AV Recording Studio and Delivery Units for Virtual Trainings.</li>
+                      <li>Rebranded "Code with Sadiq" to "Learn Syntax."</li>
+                      <li>Introduced a modernized learning platform to empower developers.</li>
                     </ul>
                   </div>
                 </div>

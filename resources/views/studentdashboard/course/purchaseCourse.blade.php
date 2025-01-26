@@ -12,7 +12,7 @@
         </div>
     </div>
 
-    
+
     <!-- Courses Section -->
     <div class="container mx-auto px-6 py-6">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -25,7 +25,6 @@
                              alt="{{ $course->title }}"
                              class="w-full h-full object-cover">
                     </div>
-
                     <!-- Course Details -->
                     <div class="basis-2/3 p-6 flex flex-col">
                         <!-- Title -->
