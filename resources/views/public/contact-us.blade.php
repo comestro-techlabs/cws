@@ -36,7 +36,7 @@
                             <img src="/assets/email.png" alt="Email Image" class="w-15 h-15 sm:w-15 sm:h-15 mb-4 sm:mb-0">
                             <div>
                                 <p>Have a project in mind?<br>Send a message.</p>
-                                <h1 class="text-md font-bold text-black mt-2">@Learn Syntaxtechlab.com</h1>
+                                <h1 class="text-md font-bold text-black mt-2"> info@LearnSyntax.com</h1>
                             </div>
                         </div>
                         <div class="flex flex-col items-center sm:flex-row sm:items-start space-x-0 sm:space-x-4 text-center sm:text-left">
@@ -123,7 +123,7 @@
 
                 <div class="mt-8 flex justify-center">
                     <button type="submit"
-                        class="bg-orange-500 text-white px-8 py-2 rounded-full shadow-md font-medium hover:bg-orange-600 transition duration-300">Send
+                        class="bg-secondary text-white px-8 py-2 rounded-full shadow-md font-medium hover:bg-orange-600 transition duration-300">Send
                         Message</button>
                 </div>
             </form>
