@@ -100,29 +100,45 @@
             console.error(error);
         });
 
-        // JavaScript to filter batches based on course selection
+    // JavaScript to filter batches based on course selection
     const allBatches = @json($batches);
 
-    function updateBatches()
-    {
+    function updateBatches() {
         const courseId = document.getElementById('course_id').value;
         const batchDropdown = document.getElementById('batch_id');
 
         // Clear the current options
-        batchDropdown.innerHTML = '<option value="">Select a Batch</option>';
+        batchDropdown.innerHTML = '<option value="" disabled>Select a Batch</option>';
 
         // Filter batches based on the selected course
         const filteredBatches = allBatches.filter(batch => batch.course_id == courseId);
 
-        // Populate the batch dropdown
-        filteredBatches.forEach(batch => {
+        if (filteredBatches.length > 0) {
+            filteredBatches.forEach(batch => {
+                const option = document.createElement('option');
+                option.value = batch.id;
+                option.textContent = batch.batch_name;
+                option.selected = batch.id == {{ old('batch_id') ? old('batch_id') : 'null' }} ? true : false; // Handle old value
+                batchDropdown.appendChild(option);
+            });
+        } else {
+            // If no batches found, show a disabled placeholder
             const option = document.createElement('option');
-            option.value = batch.id;
-            option.textContent = batch.batch_name;
+            option.value = "";
+            option.textContent = "No batches available";
+            option.disabled = true;
             batchDropdown.appendChild(option);
-        });
+        }
     }
+
+    // Automatically populate batches if old input exists
+    document.addEventListener("DOMContentLoaded", function () {
+        if (document.getElementById('course_id').value) {
+            updateBatches();
+        }
+    });
 </script>
+
 @endsection
 
 
