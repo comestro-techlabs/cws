@@ -129,7 +129,7 @@
                     <p class="text-gray-100">{{ env('APP_NAME') }} TechLabs Pvt Ltd.</p>
                     <p class="text-gray-100">Purnea, Bihar, India</p>
                     <p class="text-gray-100">Email: info@LearnSyntax.com</p>
-                    <p class="text-gray-100">Phone: +91-9546805580</p>
+                    <p class="text-gray-100">Phone: +919546805580</p>
                 </div>
             </div>
 
