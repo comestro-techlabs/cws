@@ -5,6 +5,11 @@
 
 
 @section('content')
+@if (session('success'))
+    <div class="bg-green-100 text-green-700 p-4 rounded mb-4">
+        {{ session('success') }}
+    </div>
+    @endif
 <div class="container mx-auto p-6">
     <h1 class="text-2xl font-semibold text-gray-700">Create a New Message</h1>
     <form action="{{ route('messages.store') }}" method="POST" class="mt-6">

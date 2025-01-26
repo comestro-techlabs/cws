@@ -21,10 +21,12 @@ class QuizController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request, $exam_id = null)
     {
+        $selectedExamId = $exam_id ?? $request->get('exam_id');
         $exams = Exam::all();
-        return view('admin.quiz.create_quiz',compact('exams'));
+    
+        return view('admin.quiz.create_quiz', compact('exams', 'selectedExamId'));
     }
 
     /**
@@ -114,7 +116,7 @@ class QuizController extends Controller
             'option4' => 'required|string',
             'correct_answer' => 'required|in:option1,option2,option3,option4',
             'status' => 'nullable|boolean',
-            'time' => 'required|date_format:H:i:s',
+            // 'time' => 'required|date_format:H:i:s',
         ]);
 
         $quiz->update($request->all());
@@ -136,7 +138,7 @@ class QuizController extends Controller
 
     public function results(Quiz $quiz)
     {
-        dd($quiz);
+        // dd($quiz);
         $answers = Answer::with('user')
         ->where('quiz_id', $quiz->id)
         ->get();

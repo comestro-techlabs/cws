@@ -473,11 +473,9 @@ public function courseQuiz()
     // Fetch quizzes and check if there are enough questions
     $quizzes = $courses->exams->flatMap(function ($exam) {
         return $exam->quizzes->where('status', true);
-    })->shuffle()->take(3);
+    })->shuffle()->take(10);
 
-    if ($quizzes->count() < 3) {
-        abort(500, 'Not enough quiz questions available (minimum 3 required).');
-    }
+    
 
     return view("studentdashboard.quiz.quiz", compact('courses', 'quizzes'));
 }

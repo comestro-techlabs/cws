@@ -65,12 +65,19 @@
             @enderror
         </div>
 
-        <div class="mt-4">
+        {{-- <div class="mt-4">
             <label class="block text-gray-700 mb-2">Status</label>
             <input type="checkbox" name="status" value="1" class="mr-2" {{ old('status') ? 'checked' : '' }}> Active
-        </div>
+        </div> --}}
 
         <button class="mt-6 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">Save Exam</button>
     </form>
+   
+    @if (session('exam_id'))
+        <a href="{{ route('quiz.create', ['exam_id' => session('exam_id')]) }}" 
+        class="mt-4 inline-block bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700">
+            Add Questions
+        </a>
+    @endif
 </div>
 @endsection

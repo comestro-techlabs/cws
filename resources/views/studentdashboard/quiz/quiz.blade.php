@@ -19,7 +19,7 @@
                                     <h5 class="card-title">{{ $exam->exam_name }}</h5>
                                     
                                     @php
-                                    $quizzes = $exam->quizzes->where('status', 1)->shuffle()->take(3);
+                                    $quizzes = $exam->quizzes->where('status', 1)->shuffle()->take(10);
                                     @endphp
                                     @foreach ($quizzes as $quiz)
                                         @if ($quiz->status)
@@ -73,7 +73,7 @@
                             @foreach ($courses->exams as $exam)
                                 @if ($exam->status)
                                 @php
-                                    $quizzes = $exam->quizzes->where('status', 1)->shuffle()->take(3);
+                                    $quizzes = $exam->quizzes->where('status', 1)->shuffle()->take(10);
                                     @endphp
                                     @foreach ($quizzes as $quiz)
                                         @if ($quiz->status)

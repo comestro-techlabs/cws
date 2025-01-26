@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('option3');
             $table->string('option4');
             $table->enum('correct_answer', ['option1', 'option2', 'option3', 'option4']);
-            $table->integer('time')->default(1);
-            $table->boolean('status')->default(false);
+            // $table->integer('time')->default(1);
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }

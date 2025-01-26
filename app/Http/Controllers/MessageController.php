@@ -6,6 +6,7 @@ use App\Models\Batch;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MessageController extends Controller
 {
@@ -75,30 +76,49 @@ class MessageController extends Controller
      */
     public function show(Message $message)
     {
-        //
+        $recipients = json_decode($message->recipients, true) ?? [];
+        // dd($recipients);
+        $recipientDetails = User::whereIn('id',$recipients)->get();
+        return view('admin.message.view',compact('message','recipientDetails'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Message $message)
-    {
-        //
-    }
+   
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Message $message)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Message $message)
     {
-        //
+        $message->delete();
+        return redirect()->route('messages.manage')->with('success','Message Deleted Successfully');
     }
+
+    public function userMessages()
+    {
+        $user = Auth::user();
+        $messages = Message::where(function ($query) use ($user) {
+            $query->where('recipient_type', 'all_users')
+                  ->orWhere(function ($query) use ($user) {
+                      $query->where('recipient_type', 'single_user')
+                            ->whereJsonContains('recipients', $user->id);
+                  })
+                  ->orWhere(function ($query) use ($user) {
+                      $query->where('recipient_type', 'some_users')
+                            ->whereJsonContains('recipients', $user->id);
+                  })
+                  ->orWhere(function ($query) use ($user) {
+                      $query->where('recipient_type', 'batch')
+                            ->whereJsonContains('recipients', $user->id);
+                  });
+        })->get();
+                           
+        // dd($messages);          
+    
+        return view('studentdashboard.notification', compact('messages'));
+
+       
+    }
+
+    
 }
