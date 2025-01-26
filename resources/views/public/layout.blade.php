@@ -93,7 +93,6 @@
                    
                     <img src="{{asset('assets/footer_logo.png')}}" alt="" class="lg:h-16 h-11">
 
-
                     <p class="text-gray-50 md:text-md text-sm mt-4">
                         At Learn Syntax, we are committed to providing high-quality programming education that empowers
                         students to excel in the IT industry. Our hands-on approach and real-world projects ensure that
