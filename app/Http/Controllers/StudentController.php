@@ -147,6 +147,7 @@ class StudentController extends Controller
         }
 
         $studentId = User::findOrFail(Auth::id())->id;
+        $hasCompleted = $this->hasCompletedExamOrAssignment($studentId);
 
         // Get the first and second attempts
         $firstAttempts = Answer::where('user_id', $studentId)
@@ -180,7 +181,7 @@ class StudentController extends Controller
         $payments = Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->with('course')->get();
         $assignments = Assignments::whereIn('course_id', $user->courses->pluck('id'))->latest()->take(4)->get();
         $exams = ExamUser::whereIn('exam_id', $user->courses->pluck('id'))->take(4)->get();
-
+     
         // Calculate progress for each payment
         foreach ($payments as $payment) {
             $payment->progress = $payment->course_progress; // Access the computed attribute
@@ -188,6 +189,7 @@ class StudentController extends Controller
 
         // Prepare data for the view
         $datas = [
+            'hasCompleted' =>$hasCompleted,
             'courses' => $courses,
             'payments' => $payments,
             'assignments' => $assignments,
@@ -246,7 +248,9 @@ class StudentController extends Controller
             return redirect()->route('auth.login')->with('error', 'you must be logged in to access this page');
         }
         $studentId = User::findOrFail(Auth::id())->id;
+        $hasCompleted = $this->hasCompletedExamOrAssignment($studentId);
         $datas = [
+            'hasCompleted' => $hasCompleted,
             'courses' => User::find(Auth::id())->courses()->get(),
             'payments' => Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->get(),
         ];
@@ -725,5 +729,10 @@ public function Certificate($userId)
         'date'
     ));
 
+}
+public function hasCompletedExamOrAssignment($userId){
+    $hasExam =ExamUser::where('user_id',$userId)->exists();
+    $hasAssignment = Assignment_upload::where('student_id',$userId)->exists();
+    return $hasExam || $hasAssignment;
 }
 }

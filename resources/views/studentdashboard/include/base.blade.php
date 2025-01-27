@@ -105,6 +105,7 @@
                         <span class="flex-1 ms-3 whitespace-nowrap">Manage Assignments</span>
                     </a>
                 </li>
+                @if(isset($hasCompleted) && $hasCompleted)
                 <li>
                     <a href="{{ route('student.course.result') }}"
                         class="flex items-center p-2 text-gray-900 hover:text-indigo-900 bg-transparent rounded-sm hover:bg-blue-200 group">
@@ -115,6 +116,7 @@
                         <span class="flex-1 ms-3 whitespace-nowrap">My Result</span>
                     </a>
                 </li>
+                @endif
                 <li>
                     <a href="{{ route('student.course.quiz') }}"
                         class="flex items-center p-2 text-gray-900 hover:text-indigo-900 bg-transparent rounded-sm hover:bg-blue-200 group">
@@ -126,7 +128,7 @@
                     </a>
                 </li>
 
-
+                @if(isset($hasCompleted) && $hasCompleted)
                 <li>
                     <a href="{{ route('student.certificate', ['userId' => Auth::id()]) }}"
                         class="flex items-center p-2 text-gray-900 rounded-lg  hover:bg-gray-100  group">
@@ -139,6 +141,7 @@
                         <span class="flex-1 ms-3 whitespace-nowrap">Certificate</span>
                     </a>
                 </li>
+                @endif
 
                 <li>
                     <a href="{{ route('student.editProfile') }}"
