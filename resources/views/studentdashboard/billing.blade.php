@@ -8,16 +8,16 @@
       <h1 class="text-2xl font-bold text-gray-800">Manage Your Billing</h1>
     </div>
   </div>
-
-  <div class="container mx-auto px-6 py-6">
+  
+  <div class="container mx-auto px-4 py-4">
     <!-- Invoices Table -->
-    <div class="bg-white shadow rounded-lg">
-      <div class="p-4 border-b border-gray-300">
+     <div class="bg-white shadow rounded-lg"> 
+      <div class="p-4 border-b border-gray-300 mt-5">
         <h2 class="text-lg font-semibold text-gray-800">Invoices</h2>
         <p class="text-sm text-gray-600">Your past payments</p>
       </div>
 
-      <div class="p-4 overflow-x-auto">
+       <div class="p-4 overflow-x-auto"> 
         <table class="min-w-full bg-white divide-y divide-gray-200">
           <thead class="bg-gray-100">
             <tr>
@@ -71,7 +71,7 @@
 
               @if($item->status === 'captured')
               <td class="py-3 px-4 text-center">
-                <button class="text-blue-600  hover:underline cursor-pointer" onclick="window.print()">Print Invoice</button>
+                <button class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5  cursor-pointer" onclick="window.print()">Print Invoice</button>
               </td>
               @elseif($item->status === 'failed')
               <td class="py-3 px-4 text-center">
@@ -87,14 +87,101 @@
             @endforeach
           </tbody>
         </table>
-      </div>
+       </div> 
+     
     </div>
   </div>
 </div>
 
+
+
 @endsection
 
 @section('scripts')
+
+
+   <style>
+  @media print {
+   
+   
+    @page {
+          margin: 0;
+      }
+      
+    body  {
+        -webkit-print-color-adjust: exact;
+        
+    }
+
+     body *{
+      visibility: hidden;
+    } 
+
+    .page, .page * {
+      visibility: visible;
+    }
+    
+    
+    .page {
+      position: absolute;
+      top: 0;
+      left: 0;
+      margin: 0;
+      padding: 0;
+      width:100%;
+    }
+   
+    /* h2.text-lg, p.text-sm {
+    display: none !important;
+  }  */
+  h2.text-lg{
+    display: none !important;
+  }
+  
+   table {
+      
+   width:100%;
+  height:100px;
+  table-layout: fixed; 
+  border-collapse: collapse; 
+  margin-bottom: 1rem;
+     }   
+   td {
+      padding: 12px 16px;
+  text-align: center; 
+  font-size: 14px;
+  white-space:normal;
+  word-wrap: break-word; 
+    }   
+
+ 
+  
+     .bg-white {
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 0.375rem; 
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); 
+}  
+   
+    button {
+      display: none;
+    
+    }
+    .bg-green-500 {
+    background-color: transparent !important;
+  }
+    .overflow-x-auto {
+      overflow: visible !important;
+    }
+     
+  }
+</style>     
+ 
+
+
+
+
+
 <script>
   document.getElementById('refresh-payment').onclick = function(e) {
     e.preventDefault();
@@ -131,4 +218,6 @@
       });
   };
 </script>
+
+
 @endsection

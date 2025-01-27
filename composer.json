@@ -27,7 +27,6 @@
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
         "livewire/livewire": "*",
-        "phonepe/phonepe-pg-php-sdk": "^1.0",
         "razorpay/razorpay": "^2.9"
     },
     "require-dev": {

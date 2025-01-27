@@ -12,7 +12,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="{{ asset('build/assets/app-B9FQpHNS.css ') }}">
+    <link rel="stylesheet" href="{{ asset('build/assets/app-DqeXZnGt.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     @livewireStyles
 </head>
@@ -88,9 +88,9 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
                 <!-- About Section -->
-                
+
                 <div>
-                   
+
                     <img src="{{asset('assets/footer_logo.png')}}" alt="" class="lg:h-16 h-11">
 
                     <p class="text-gray-50 md:text-md text-sm mt-4">
@@ -145,7 +145,7 @@
     @yield('js')
 
     @livewireScripts
-    <script type="module" src="{{ asset('build/assets/app-CEsE5a7F.js') }}"></script>
+    <script type="module" src="{{ asset('build/assets/app-l0sNRNKZ.js') }}"></script>
 </body>
 
 </html>
