@@ -178,7 +178,7 @@ class StudentController extends Controller
         $user = User::find(Auth::id());
 
         $courses = $user->courses()->take(2)->get();
-        $payments = Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->with('course')->get();
+        $payments = Payment::where('student_id', $studentId)->where('course_id','!=',null)->orderBy('created_at', 'ASC')->with('course')->get();
         $assignments = Assignments::whereIn('course_id', $user->courses->pluck('id'))->latest()->take(4)->get();
         $exams = ExamUser::whereIn('exam_id', $user->courses->pluck('id'))->take(4)->get();
      
