@@ -117,7 +117,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto px-4">
             <!-- Real-Time Projects -->
             <div class="flex items-center space-x-6 border border-gray-400">
-                <img src="https://img.freepik.com/free-photo/rear-view-programmer-working-all-night-long_1098-18697.jpg?ga=GA1.1.1275289697.1728223870&semt=ais_incoming_vrsd"
+                <img src="{{asset('assets/home/real_time.png')}}"
                     alt="Real-Time Projects" class="w-1/2 ">
                 <div class="mt-6">
                     <h3 class="text-xl font-semibold text-gray-800">Real-Time Projects</h3>
@@ -127,7 +127,7 @@
             </div>
             <!-- Internships -->
             <div class="flex items-center space-x-6 border border-gray-400">
-                <img src="https://img.freepik.com/free-photo/businesswoman-business-teammeeting-conference-videocall-online-greeting-remotely-collegues_482257-10095.jpg?ga=GA1.1.1275289697.1728223870&semt=ais_hybrid"
+                <img src="{{asset('assets/home/Internships.jpg')}}"
                     alt="Internships" class="w-1/2">
                 <div class="mt-6">
                     <h3 class="text-xl font-semibold text-gray-800">Internships</h3>
@@ -137,7 +137,7 @@
             </div>
             <!-- Workshops -->
             <div class="flex items-center space-x-6 border border-gray-400">
-                <img src="https://img.freepik.com/free-photo/three-relaxed-fellow-students-studying-chatting_1262-15305.jpg?ga=GA1.1.1275289697.1728223870&semt=ais_hybrid"
+                <img src="{{asset('assets/home/workshop.png')}}"
                     alt="Workshops" class="w-1/2">
                 <div>
                     <h3 class="text-xl font-semibold text-gray-800">Workshops</h3>
@@ -147,7 +147,7 @@
             </div>
             <!-- Weekend Training -->
             <div class="flex items-center space-x-6 border border-gray-400">
-                <img src="https://img.freepik.com/premium-photo/focused-male-adult-student-working-computer-classroom_926199-2608965.jpg?ga=GA1.1.1275289697.1728223870&semt=ais_hybrid"
+                <img src="{{asset('assets/home/Weekend.jpg')}}"
                     alt="Weekend Training" class="w-1/2">
                 <div>
                     <h3 class="text-xl font-semibold text-gray-800">Weekend Training</h3>
@@ -186,7 +186,7 @@
 
             <!-- Image Section -->
             <div class="">
-                <img src="https://img.freepik.com/premium-photo/woman-computer-screen_1404509-625.jpg?ga=GA1.1.1275289697.1728223870&semt=ais_incoming_vrsd"
+                <img src="{{asset('assets/home/banner-r.png')}}"
                     alt="Corporate Training" class="">
             </div>
         </div>
@@ -226,8 +226,6 @@
         </div>
     </div>
 
-
-
     {{-- Student List Section --}}
     <div class="flex flex-col items-center mt-20 text-center">
         <h2 class="text-4xl font-bold text-gray-800">Our <span class="text-secondary">Proud</span> Students</h2>
@@ -236,7 +234,6 @@
             Celebrating the success and dedication of our students who have excelled in their respective fields. With their
             hard work and our expert guidance, they have achieved incredible milestones. Get inspired by their stories!
         </p>
-
 
         {{-- Student List --}}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl">

@@ -58,7 +58,7 @@ Workshop
             @empty
 
             <div class="flex flex-col items-center justify-center col-span-1 md:col-span-3 p-8 bg-gray-100">
-                <img src="https://img.freepik.com/premium-photo/presentation-office-business-people-meeting-teamwork-discussion-feedback-creative-company-startup-men-women-with-whiteboard-planning-collaboration-project-ideas_590464-454492.jpg?ga=GA1.1.1275289697.1728223870&semt=ais_hybrid"
+                <img src="{{asset('/workshop.jpg')}}"
                     alt="No workshops available"
                     class="w-64 h-64 mb-4">
                 <h2 class="text-gray-800 text-2xl font-bold mb-2">No Workshops Available</h2>
