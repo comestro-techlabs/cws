@@ -187,8 +187,7 @@
                 </li>
             </ul>
         </li>
-
-
+      
 
         {{-- Portfolio --}}
         <li>
@@ -272,6 +271,20 @@
                 </svg>
 
                 <span class="flex-1 ms-3 whitespace-nowrap">Insert Placements</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="{{route('admin.certificate')}}"
+                class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100group">
+               
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M4.5 3h15a1.5 1.5 0 011.5 1.5v15a1.5 1.5 0 01-1.5 1.5h-15a1.5 1.5 0 01-1.5-1.5v-15A1.5 1.5 0 014.5 3z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 8.25h6M9 12h6M9 15.75h3" />
+            </svg>
+                <span class="flex-1 ms-3 whitespace-nowrap">Certificate</span>
             </a>
         </li>
          <li>
