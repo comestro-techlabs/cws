@@ -185,6 +185,14 @@
                         class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 ">Manage
                         Quiz</a>
                 </li>
+
+                <li>
+                    <a href="{{ route('exam.results') }}"
+                    class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 ">
+                    Manage Result</a>
+                            
+                    </a>
+                </li>
             </ul>
         </li>
 
@@ -260,8 +268,73 @@
             </ul>
         </li>
 
+        <li>
 
+            <button type="button"
+                class="flex items-center w-full p-2  text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 "
+                aria-controls="placedStudent-dropdown" data-collapse-toggle="placedStudent-dropdown">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0M12 12.75h.008v.008H12v-.008Z" />
+            </svg>
+                <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Placed Students</span>
+                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 10 6">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m1 1 4 4 4-4" />
+                </svg>
+            </button>
 
+            <ul id="placedStudent-dropdown" class="hidden py-2 space-y-2">
+                <li>
+                    <a  href="{{route('placedStudent.create')}}"
+                        class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 ">
+                        Insert Placed Student
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('placedStudent.index')}}"
+                        class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 ">
+                        calling Placed Student
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+           {{-- message --}}
+           <li>
+
+            <button type="button"
+            class="flex items-center w-full p-2  text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 "
+            aria-controls="message-dropdown" data-collapse-toggle="message-dropdown">
+                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0 0 48 48">
+                    <path d="M 10.5 5 C 6.92 5 4 7.92 4 11.5 L 4 30.5 C 4 34.08 6.92 37 10.5 37 L 22.150391 37 C 22.050391 36.35 22 35.68 22 35 C 22 34.66 22.010781 34.33 22.050781 34 L 10.5 34 C 8.57 34 7 32.43 7 30.5 L 7 16.015625 L 23.287109 24.820312 A 1.50015 1.50015 0 0 0 24.712891 24.820312 L 41 16.015625 L 41 23.470703 C 42.1 24.040703 43.11 24.770859 44 25.630859 L 44 11.5 C 44 7.92 41.08 5 37.5 5 L 10.5 5 z M 10.5 8 L 37.5 8 C 39.43 8 41 9.57 41 11.5 L 41 12.605469 L 24 21.794922 L 7 12.605469 L 7 11.5 C 7 9.57 8.57 8 10.5 8 z M 35 24 C 28.925 24 24 28.925 24 35 C 24 41.075 28.925 46 35 46 C 41.075 46 46 41.075 46 35 C 46 28.925 41.075 24 35 24 z M 35 27 C 35.552 27 36 27.448 36 28 L 36 34 L 42 34 C 42.552 34 43 34.448 43 35 C 43 35.552 42.552 36 42 36 L 36 36 L 36 42 C 36 42.552 35.552 43 35 43 C 34.448 43 34 42.552 34 42 L 34 36 L 28 36 C 27.448 36 27 35.552 27 35 C 27 34.448 27.448 34 28 34 L 34 34 L 34 28 C 34 27.448 34.448 27 35 27 z"></path>
+                    </svg>
+                <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Manage Message</span>
+                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 10 6">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m1 1 4 4 4-4" />
+                </svg>
+            </button>
+
+            <ul id="message-dropdown" class="hidden py-2 space-y-2">
+                <li>
+                    <a href="{{ route('messages.create') }}"
+                    class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 ">
+                    Send Messages
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('messages.manage') }}"
+                    class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 ">
+                    Manage Messages
+                    </a>
+                </li>
+            </ul>
+        </li>
+{{-- 
         <li>
             <a href="{{route('placedStudent.create')}}"
                 class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100group">
@@ -285,7 +358,7 @@
 
                 <span class="flex-1 ms-3 whitespace-nowrap">calling Placed Student</span>
             </a>
-        </li>
+        </li> --}}
 
 
 
@@ -301,17 +374,7 @@
                     <span class="flex-1 ms-3 whitespace-nowrap">Manage Payments</span>
                 </a>
             </li>
-         {{-- results --}}
-            <li>
-                <a href="{{ route('exam.results') }}"
-                    class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100group">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6h16.5M3.75 12h16.5M3.75 18h10.5" />
-                    </svg>
-                    <span class="flex-1 ms-3 whitespace-nowrap">Manage Result</span>
-                </a>
-            </li>
+        
 
 
          {{-- Enquiries --}}
@@ -328,38 +391,7 @@
                     <span class="flex-1 ms-3 whitespace-nowrap">Manage Enquiries</span>
                 </a>
                 </li>
-                {{-- message --}}
-                <li>
-
-                    <button type="button"
-                        class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                        aria-controls="message-dropdown" data-collapse-toggle="message-dropdown">
-                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0 0 48 48">
-                            <path d="M 10.5 5 C 6.92 5 4 7.92 4 11.5 L 4 30.5 C 4 34.08 6.92 37 10.5 37 L 22.150391 37 C 22.050391 36.35 22 35.68 22 35 C 22 34.66 22.010781 34.33 22.050781 34 L 10.5 34 C 8.57 34 7 32.43 7 30.5 L 7 16.015625 L 23.287109 24.820312 A 1.50015 1.50015 0 0 0 24.712891 24.820312 L 41 16.015625 L 41 23.470703 C 42.1 24.040703 43.11 24.770859 44 25.630859 L 44 11.5 C 44 7.92 41.08 5 37.5 5 L 10.5 5 z M 10.5 8 L 37.5 8 C 39.43 8 41 9.57 41 11.5 L 41 12.605469 L 24 21.794922 L 7 12.605469 L 7 11.5 C 7 9.57 8.57 8 10.5 8 z M 35 24 C 28.925 24 24 28.925 24 35 C 24 41.075 28.925 46 35 46 C 41.075 46 46 41.075 46 35 C 46 28.925 41.075 24 35 24 z M 35 27 C 35.552 27 36 27.448 36 28 L 36 34 L 42 34 C 42.552 34 43 34.448 43 35 C 43 35.552 42.552 36 42 36 L 36 36 L 36 42 C 36 42.552 35.552 43 35 43 C 34.448 43 34 42.552 34 42 L 34 36 L 28 36 C 27.448 36 27 35.552 27 35 C 27 34.448 27.448 34 28 34 L 34 34 L 34 28 C 34 27.448 34.448 27 35 27 z"></path>
-                            </svg>
-                        <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Manage Message</span>
-                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                            viewBox="0 0 10 6">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="m1 1 4 4 4-4" />
-                        </svg>
-                    </button>
-        
-                    <ul id="message-dropdown" class="hidden py-2 space-y-2">
-                        <li>
-                            <a href="{{ route('messages.create') }}"
-                                class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
-                                Send Messages
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('messages.manage') }}"
-                                class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
-                                Manage Messages
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+             
               
      
 
