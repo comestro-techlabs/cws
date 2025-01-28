@@ -13,20 +13,23 @@ class WorkshopController extends Controller
 
 public function index()
 {
-    $currentDateTime = now();
-    $startTime = Carbon::createFromTime(8, 0);
-    $endTime = Carbon::createFromTime(13, 0);
+    // $currentDateTime = now();
+    // $startTime = Carbon::createFromTime(8, 0);
+    // $endTime = Carbon::createFromTime(13, 0);
 
+
+    // $workshops = Workshop::with('payment') 
+    //     ->where('date', '>=', $currentDateTime->toDateString())
+    //     ->where(function ($query) use ($currentDateTime) {
+    //         $query->where('time', '>=', $currentDateTime->format('H:i'))
+    //               ->orWhere('date', '>', $currentDateTime->toDateString());
+    //     })
+    //     ->whereTime('time', '>=', $startTime->format('H:i'))
+    //     ->whereTime('time', '<=', $endTime->format('H:i'))
+    //     ->get();
+    $workshops = Workshop::get();
    
-    $workshops = Workshop::with('payment') 
-        ->where('date', '>=', $currentDateTime->toDateString())
-        ->where(function ($query) use ($currentDateTime) {
-            $query->where('time', '>=', $currentDateTime->format('H:i'))
-                  ->orWhere('date', '>', $currentDateTime->toDateString());
-        })
-        ->whereTime('time', '>=', $startTime->format('H:i'))
-        ->whereTime('time', '<=', $endTime->format('H:i'))
-        ->get();
+    
 
     return view('public.workshop', compact('workshops'));
 }

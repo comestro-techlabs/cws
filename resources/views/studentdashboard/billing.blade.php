@@ -8,20 +8,19 @@
       <h1 class="text-2xl font-bold text-gray-800">Manage Your Billing</h1>
     </div>
   </div>
-  
+
   <div class="container mx-auto px-4 py-4">
     <!-- Invoices Table -->
-     <div class="bg-white shadow rounded-lg"> 
+    <div class="bg-white shadow rounded-lg">
       <div class="p-4 border-b border-gray-300 mt-5">
         <h2 class="text-lg font-semibold text-gray-800">Invoices</h2>
         <p class="text-sm text-gray-600">Your past payments</p>
       </div>
-
-       <div class="p-4 overflow-x-auto"> 
+      <div class="p-4 overflow-x-auto">
         <table class="min-w-full bg-white divide-y divide-gray-200">
           <thead class="bg-gray-100">
             <tr>
-              <th class="py-3 px-4 text-centert text-sm font-medium text-gray-600 ">Course Name</th>
+              <th class="py-3 px-4 text-centert text-sm font-medium text-gray-600 ">Course / Workshop Name</th>
               <!-- <th class="py-3 px-4 text-left text-sm font-medium text-gray-600 ">Course Category</th> -->
               <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 ">Order Id</th>
               <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 ">Payment Status</th>
@@ -33,15 +32,22 @@
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-200">
-            @foreach ($payments as $item)
+            @foreach ($paymentsWithWorkshops as $item)
             <tr>
               <td class="py-3 px-4 text-center text-gray-800">
+                @if(!empty($item->workshop_title))
+                {{ $item->workshop_title }}
+                @elseif(!empty($item->course->title))
                 {{ $item->course->title }}
+                @else
+                {{ 'No Title Available' }}
+                @endif
               </td>
+
               <td class="py-3 px-4 text-center text-gray-800">
                 {{ $item->order_id }}
               </td>
-              <td class="py-3 px-4 text-center text-gray-800  ">
+              <td class="py-3 px-4 text-center text-gray-800">
                 @if($item->status === "captured")
                 <div class="flex items-center justify-center rounded-full bg-green-500 uppercase px-2 py-1 text-center text-xs font-bold mr-3">
                   {{$item->status}}
@@ -56,39 +62,38 @@
                 </div>
                 @endif
               </td>
-              <td class="py-3 px-4 text-gray-800 text-center ">
-                {{ $item->method }}
+              <td class="py-3 px-4 text-gray-800 text-center">
+                {{ $item->method ?? 'N/A'}}
               </td>
-              <td class="py-3 px-4 text-gray-800 text-center ">
+              <td class="py-3 px-4 text-gray-800 text-center">
                 ₹{{ $item->transaction_fee }}
               </td>
-              <td class="py-3 px-4 text-gray-800 text-center ">
+              <td class="py-3 px-4 text-gray-800 text-center">
                 {{ \Carbon\Carbon::parse($item->transaction_date)->format('d M Y') }}
               </td>
-              <td class="py-3 px-4 text-gray-800 text-left  truncate max-w-xs" title="{{ $item->error_reason }}"  >
+              <td class="py-3 px-4 text-gray-800 text-left truncate max-w-xs" title="{{ $item->error_reason }}">
                 {{ $item->error_reason }}
               </td>
 
               @if($item->status === 'captured')
               <td class="py-3 px-4 text-center">
-                <button class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5  cursor-pointer" onclick="window.print()">Print Invoice</button>
+                <button class="py-2.5 px-6 text-sm font-semibold text-indigo-500 transition-all duration-500 hover:text-indigo-700" onclick="window.print()">Print Invoice</button>
               </td>
               @elseif($item->status === 'failed')
               <td class="py-3 px-4 text-center">
               </td>
               @else
               <td class="py-3 px-4 text-center">
-                <button class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2    cursor-pointer" id="refresh-payment" data-order-id="{{ $item->order_id }}">Refresh</button>
+              <button class="refresh-payment py-2.5 px-6 text-sm bg-indigo-900 text-white rounded-lg cursor-pointer font-semibold text-center shadow-xs transition-all duration-500 hover:bg-indigo-700" data-order-id="{{ $item->order_id }}">Refresh</button>
               </td>
-
-
               @endif
             </tr>
             @endforeach
           </tbody>
+
         </table>
-       </div> 
-     
+      </div>
+
     </div>
   </div>
 </div>
@@ -101,17 +106,12 @@
 
 
 
-
-
-
-
 <script>
-  document.getElementById('refresh-payment').onclick = function(e) {
+  document.querySelectorAll('.refresh-payment').forEach(button => {
+  button.addEventListener('click', function (e) {
     e.preventDefault();
 
-    // Get the order ID from the button's data attribute
     const orderId = e.target.getAttribute('data-order-id');
-
     // Send a request to the backend to refresh the payment status for the given order_id
     fetch("{{ route('refresh.payment.status') }}", {
         method: "POST",
@@ -127,10 +127,7 @@
       .then(data => {
         if (data.success) {
           alert('Payment status updated successfully!');
-          window.location.reload(true);
-
-          // Optionally update the UI with the new payment status
-          // You can update a status text, or refresh the entire payment record displayed to the user
+          window.location.reload(true); // Reload the page to reflect updates
         } else {
           alert('Failed to refresh payment status: ' + data.message);
         }
@@ -139,7 +136,9 @@
         console.error('Error refreshing payment:', error);
         alert('There was an error refreshing the payment status.');
       });
-  };
+  });
+});
+
 </script>
 
 
