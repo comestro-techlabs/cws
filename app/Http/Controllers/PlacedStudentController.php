@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PlacedStudent;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PlacedStudentController extends Controller
@@ -21,7 +22,8 @@ class PlacedStudentController extends Controller
      */
     public function create()
     {
-        return view('admin.placedStudent.create');
+        $data['students']=User::all();
+        return view('admin.placedStudent.create',$data);
     }
 
     /**

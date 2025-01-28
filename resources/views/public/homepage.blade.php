@@ -9,9 +9,9 @@
 @section('content')
     {{-- banner --}}
     <div class="w-full mt-12">
-        <img src="{{ asset('assets/banner.png') }}" class="w-full h-48 sm:h-64 md:h-80 lg:h-96 object-cover" alt="Banner">
+        <img src="{{ asset('assets/home/banner.png') }}" class="w-full h-full" alt="Banner">
     </div>
-
+    
 
     {{-- latest course --}}
     <div class="">
