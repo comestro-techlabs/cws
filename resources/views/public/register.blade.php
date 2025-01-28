@@ -6,7 +6,7 @@ Sign up
 @endsection
 @section('content')
 
-<div class="font-[sans-serif] max-w-3xl mt-8 bg-white  flex w-full h-screen items-center mx-auto md:h-screen p-4">
+<div class="font-[sans-serif] max-w-3xl md:mt-8 mt-4 bg-white  flex w-full h-screen items-center mx-auto md:h-screen p-4">
     <div class=" grid md:grid-cols-3 items-center shadow-xl border rounded-xl  overflow-hidden">
         <div class="max-md:order-1  hidden md:block  flex-col justify-center space-y-16 max-md:mt-16 min-h-full bg-gradient-to-r from-gray-900 to-gray-700 lg:px-8 px-4 py-4">
             <div class="mt-24">
@@ -80,7 +80,7 @@ Sign up
                 </div>
 
                 <!-- Education Qualification -->
-                <div class="flex flex-1 gap-2">
+                <div class="md:flex md:flex-1 gap-2">
                     <div class="flex-1">
                         <label for="education_qualification" class="block text-sm font-medium text-gray-700">Education Qualification</label>
                         <select name="education_qualification" id="education_qualification"

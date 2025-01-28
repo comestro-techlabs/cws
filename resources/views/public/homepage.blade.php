@@ -105,8 +105,8 @@
 
 
     <div class="bg-white py-12 mt-20">
-        <div class="text-center mb-8">
-            <h2 class="text-4xl font-bold text-gray-800">
+        <div class="text-center mb-8 px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-800">
                 Our <span class="text-secondary">Training</span> Services
             </h2>
             <p class="text-gray-600 mt-2">
@@ -114,56 +114,54 @@
                 Software Courses.
             </p>
         </div>
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-7xl mx-auto px-4">
             <!-- Real-Time Projects -->
-            <div class="flex items-center space-x-6 border border-gray-400">
-                <img src="{{asset('assets/home/real_time.png')}}"
-                    alt="Real-Time Projects" class="w-1/2 ">
-                <div class="mt-6">
+            <div class="flex flex-col md:flex-row items-center md:items-start md:space-x-6 border border-gray-400 rounded-lg p-4">
+                <img src="{{ asset('assets/home/real_time.png') }}" alt="Real-Time Projects" class="w-full md:w-1/2 object-cover rounded-lg">
+                <div class="mt-4 md:mt-0">
                     <h3 class="text-xl font-semibold text-gray-800">Real-Time Projects</h3>
                     <p class="text-gray-600 mt-2">Learn by Doing: Real-World Projects for Practical Mastery.</p>
-                    <a href="#" class="text-secondary mt-4 block">View more →</a>
+                    <a href="{{route('public.training')}}" class="text-secondary mt-4 block">View more →</a>
                 </div>
             </div>
             <!-- Internships -->
-            <div class="flex items-center space-x-6 border border-gray-400">
-                <img src="{{asset('assets/home/Internships.jpg')}}"
-                    alt="Internships" class="w-1/2">
-                <div class="mt-6">
+            <div class="flex flex-col md:flex-row items-center md:items-start md:space-x-6 border border-gray-400 rounded-lg p-4">
+                <img src="{{ asset('assets/home/Intern.jpg') }}" alt="Internships" class="w-full md:w-1/2 object-cover rounded-lg">
+                <div class="mt-4 md:mt-0">
                     <h3 class="text-xl font-semibold text-gray-800">Internships</h3>
                     <p class="text-gray-600 mt-2">Industry-Mentor Guided Internship.</p>
-                    <a href="#" class="text-secondary  mt-4 block">View more →</a>
+                    <a href="{{route('public.training')}}" class="text-secondary mt-4 block">View more →</a>
                 </div>
             </div>
             <!-- Workshops -->
-            <div class="flex items-center space-x-6 border border-gray-400">
-                <img src="{{asset('assets/home/workshop.png')}}"
-                    alt="Workshops" class="w-1/2">
-                <div>
+            <div class="flex flex-col md:flex-row items-center md:items-start md:space-x-6 border border-gray-400 rounded-lg p-4">
+                <img src="{{ asset('assets/home/workshop.png') }}" alt="Workshops" class="w-full md:w-1/2 object-cover rounded-lg">
+                <div class="mt-4 md:mt-0">
                     <h3 class="text-xl font-semibold text-gray-800">Workshops</h3>
                     <p class="text-gray-600 mt-2">Unlocking IT Excellence: Join Our Transformative Workshops.</p>
-                    <a href="#" class="text-secondary mt-4 block">View more →</a>
+                    <a href="{{route('public.training')}}" class="text-secondary mt-4 block">View more →</a>
                 </div>
             </div>
             <!-- Weekend Training -->
-            <div class="flex items-center space-x-6 border border-gray-400">
-                <img src="{{asset('assets/home/Weekend.jpg')}}"
-                    alt="Weekend Training" class="w-1/2">
-                <div>
+            <div class="flex flex-col md:flex-row items-center md:items-start md:space-x-6 border border-gray-400 rounded-lg p-4">
+                <img src="{{ asset('assets/home/Weekend.jpg') }}" alt="Weekend Training" class="w-full md:w-1/2 object-cover rounded-lg">
+                <div class="mt-4 md:mt-0">
                     <h3 class="text-xl font-semibold text-gray-800">Weekend Training</h3>
                     <p class="text-gray-600 mt-2">Supercharge Your Weekends with Our Training Programs.</p>
-                    <a href="#" class="text-secondary  mt-4 block">View more →</a>
+                    <a href="{{route('public.training')}}" class="text-secondary mt-4 block">View more →</a>
                 </div>
             </div>
         </div>
-        <div class="text-center mt-12">
-            <button class="px-6 py-3 bg-secondary text-white rounded-lg shadow-lg hover:bg-blue-700">Explore
-                Services</button>
+        <div class="text-center md:mt-12 mt-8 px-4">
+            <button class="px-6 py-3 bg-secondary text-white rounded-lg shadow-lg hover:bg-blue-700 transition duration-300">
+                Explore Services
+            </button>
         </div>
     </div>
+    
 
 
-    <div class="bg-gray-900 text-white py-12 mt-20 px-6">
+    <div class="bg-gray-900 text-white py-12 md:mt-20 mt-8 px-6">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             <!-- Text Section -->
             <div>
@@ -176,10 +174,10 @@
                     accuracy in writing code. Stay ahead in the competitive tech world with our comprehensive, expert-led
                     training sessions tailored to meet your learning goals.
                 </p>
-                <a href="#" class="text-blue-400 hover:underline inline-block mb-4">View more →</a>
+                <a href="{{route('public.contact')}}" class="text-blue-400 hover:underline inline-block mb-4">View more →</a>
                 <div>
                     <button class=" bg-secondary text-white font-semibold py-2 px-4 rounded shadow-lg">
-                        CONTACT US
+                        <a href="{{route('public.contact')}}">CONTACT US</a>
                     </button>
                 </div>
             </div>
@@ -230,7 +228,7 @@
     <div class="flex flex-col items-center mt-20 mb-20 text-center">
         <h2 class="text-4xl font-bold text-gray-800">Our <span class="text-secondary">Proud</span> Students</h2>
         <h1 class="text-xl font-semibold text-gray-800 mb-4">Meet Our Achievers</h1>
-        <p class="text-base text-gray-700 mb-6 mx-64">
+        <p class="text-base text-gray-700 mb-6 md:mx-64">
             Celebrating the success and dedication of our students who have excelled in their respective fields. With their
             hard work and our expert guidance, they have achieved incredible milestones. Get inspired by their stories!
         </p>
