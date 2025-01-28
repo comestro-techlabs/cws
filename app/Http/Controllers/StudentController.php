@@ -11,7 +11,7 @@ use App\Models\Payment;
 use App\Models\User;
 use App\Models\Quiz;
 use App\Models\ExamUser;
-
+use App\Models\Workshop;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -178,7 +178,7 @@ class StudentController extends Controller
         $user = User::find(Auth::id());
 
         $courses = $user->courses()->take(2)->get();
-        $payments = Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->with('course')->get();
+        $payments = Payment::where('student_id', $studentId)->where('course_id','!=',null)->orderBy('created_at', 'ASC')->with('course')->get();
         $assignments = Assignments::whereIn('course_id', $user->courses->pluck('id'))->latest()->take(4)->get();
         $exams = ExamUser::whereIn('exam_id', $user->courses->pluck('id'))->take(4)->get();
      
@@ -241,20 +241,34 @@ class StudentController extends Controller
         return view('studentdashboard.course.course', $data);
     }
 
-
     public function billing()
     {
         if (!Auth::check()) {
-            return redirect()->route('auth.login')->with('error', 'you must be logged in to access this page');
+            return redirect()->route('auth.login')->with('error', 'You must be logged in to access this page');
         }
-        $studentId = User::findOrFail(Auth::id())->id;
+    
+        $studentId = Auth::id();
         $hasCompleted = $this->hasCompletedExamOrAssignment($studentId);
-        $datas = [
-            'hasCompleted' => $hasCompleted,
-            'courses' => User::find(Auth::id())->courses()->get(),
-            'payments' => Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->get(),
-        ];
-        return view("studentdashboard.billing", $datas);
+    
+        $payments = Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->get();
+    
+        $paymentsWithWorkshops = $payments->map(function ($payment) {
+            $workshopTitle = null;
+    
+            // Check if the payment has a workshop_id and fetch the workshop title
+            if ($payment->workshop_id) {
+                $workshop = Workshop::find($payment->workshop_id);
+                $workshopTitle = $workshop ? $workshop->title : null;
+            }
+    
+            $payment->workshop_title = $workshopTitle;
+    
+            return $payment;
+        });
+    
+        $courses = User::find($studentId)->courses()->get();
+    
+        return view('studentdashboard.billing', compact('hasCompleted', 'courses', 'paymentsWithWorkshops'));
     }
     public function viewbilling()
     {

@@ -180,10 +180,8 @@
     Route::get('/message/create', [MessageController::class, 'create'])->name('messages.create');
     Route::post('/message/store', [MessageController::class, 'store'])->name('messages.store');
     Route::get('/message/manage', [MessageController::class, 'index'])->name('messages.manage');
-    Route::get('/message/{message}/show', [MessageController::class, 'show'])->name('messages.show');
-    // Route::get('/message/{id}/edit', [MessageController::class, 'edit'])->name('messages.edit');
-    // Route::put('/message/{message}/update', [MessageController::class, 'update'])->name('messages.update');
-    Route::delete('/message/{message}/delete', [MessageController::class, 'destroy'])->name('messages.delete');
+    Route::get('/message/show/{message}', [MessageController::class, 'show'])->name('messages.show');
+    Route::delete('/message/delete/{message}', [MessageController::class, 'destroy'])->name('messages.delete');
 
             Route::get('/portfolio/create', [PortfolioController::class, 'create'])->name('portfolio.create');
             Route::post('/portfolio/store', [PortfolioController::class, 'store'])->name('portfolio.store');
@@ -203,9 +201,7 @@
             Route::post('/placed-students/{placedStudent}/toggle-status', [PlacedStudentController::class, 'toggleStatus'])->name('placedStudent.toggleStatus');
 
 
-            Route::get('/message/create', [MessageController::class, 'create'])->name('messages.create');
-            Route::post('/message/store', [MessageController::class, 'store'])->name('messages.store');
-            Route::get('/message/show', [MessageController::class, 'index'])->name('messages.show');
+           
         });
     });
 

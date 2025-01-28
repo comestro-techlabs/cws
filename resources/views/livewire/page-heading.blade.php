@@ -2,12 +2,12 @@
     <section class="bg-blue-900 text-white py-8">
         <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
             <!-- Text Content -->
-            <div class="text-center ml-16 md:text-left mb-8 md:mb-0m mt-10  md:w-1/2">
+            <div class="text-center md:ml-16 md:text-left mb-8 md:mb-0m mt-10  md:w-1/2">
                 <h1 class="text-3xl md:text-4xl font-bold mb-4 mt-5">{{$title}}</h1>
                 <p class="text-md md:text-lg mb-6">
                     {{$description}}
                 </p>
-                <div class="flex md:flex-row items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-5 rounded-full w-40">
+                <div class="flex md:flex-row justify-center items-center gap-2 ml-20 md:ml-0 bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-5 rounded-full w-40">
                     <a href="{{route('public.contact')}}"
                         class="">
                         GET Started

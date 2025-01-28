@@ -6,7 +6,7 @@ Sign up
 @endsection
 @section('content')
 
-<div class="font-[sans-serif] max-w-3xl mt-8 bg-white  flex w-full h-screen items-center mx-auto md:h-screen p-4">
+<div class="font-[sans-serif] max-w-3xl md:mt-8 mt-4 bg-white  flex w-full h-screen items-center mx-auto md:h-screen p-4">
     <div class=" grid md:grid-cols-3 items-center shadow-xl border rounded-xl  overflow-hidden">
         <div class="max-md:order-1  hidden md:block  flex-col justify-center space-y-16 max-md:mt-16 min-h-full bg-gradient-to-r from-gray-900 to-gray-700 lg:px-8 px-4 py-4">
             <div class="mt-24">
@@ -54,7 +54,7 @@ Sign up
                     <!-- Contact -->
                     <div class="flex-1">
                         <label for="contact" class="block text-sm font-medium text-gray-700">Contact</label>
-                        <input type="text" placeholder="+123456789" value="{{old('contact')}}" name="contact" id="contact"
+                        <input type="text" placeholder="9XXXXXXXX5" value="{{old('contact')}}" name="contact" id="contact"
                             class="form-input mt-1 block w-full rounded-md border-gray-300 focus:border-gray-500 focus:ring focus:ring-gray-200 focus:ring-opacity-50">
                         @error('contact')
                         <p class="text-xs text-red-500">{{ $message }}</p>
@@ -80,7 +80,7 @@ Sign up
                 </div>
 
                 <!-- Education Qualification -->
-                <div class="flex flex-1 gap-2">
+                <div class="md:flex md:flex-1 gap-2">
                     <div class="flex-1">
                         <label for="education_qualification" class="block text-sm font-medium text-gray-700">Education Qualification</label>
                         <select name="education_qualification" id="education_qualification"
@@ -162,7 +162,7 @@ Sign up
         const educationQualification = document.getElementById('education_qualification').value.trim();
         const dob = document.getElementById('dob').value.trim();
         //const password = document.getElementById('password').value.trim();
-        const terms = document.getElementById('terms').checked;
+       
 
         let valid = true;
 

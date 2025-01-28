@@ -31,7 +31,6 @@
                         <td class="px-6 py-3 border-b ">
                             <div class="flex gap-2 item-center justify-center">
                              <a href="{{ route('messages.show', $message) }}" class="bg-blue-500 text-white py-1 px-4 rounded-lg  ">View</a> |
-                            {{-- <a href="{{ route('messages.edit', $message) }}" class="bg-teal-500 text-white py-1 px-4 rounded-lg">Edit</a> | --}}
                             <form action="{{ route('messages.delete', $message) }}" method="POST" class="inline-block">
                                 @csrf
                                 @method('DELETE')

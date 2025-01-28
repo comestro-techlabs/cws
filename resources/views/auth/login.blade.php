@@ -24,7 +24,7 @@ Login
         
             <div class="mt-4 flex items-center justify-between">
                 <span class="border-b w-1/5 lg:w-1/4"></span>
-                <a href="#" class="text-xs text-center text-gray-500 uppercase">or login with email</a>
+                <a href="#" class="text-xs text-center text-gray-500 uppercase">login with email</a>
                 <span class="border-b w-1/5 lg:w-1/4"></span>
             </div>
             <div class="mt-4">
