@@ -127,7 +127,7 @@ class AuthController extends Controller
 
             Mail::send('emails.otp', ['otp' => $otp,'user'=>$user], function ($message) use ($user) {
                 $message->to($user->email)
-                    ->subject('Your OTP Code');
+                    ->subject('Your OTP For Login');
             });
 
             // Redirect with success message
@@ -162,7 +162,7 @@ class AuthController extends Controller
             try {
                 Mail::send('emails.otp', ['otp' => $otp,'user'=>$user], function ($message) use ($user) {
                     $message->to($user->email)
-                        ->subject('Your ResendOtp Here');
+                        ->subject('Your ResendOtp For Login');
                 });
 
                 return redirect()->back()->with(['otp_sent' => true, 'email' => $email]);
