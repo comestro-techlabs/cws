@@ -15,7 +15,7 @@
 
     {{-- latest course --}}
     <div class="">
-        <div class="flex flex-col items-center mt-5 md:mt-20 text-center">
+        <div class="flex flex-col items-center mt-10 md:mt-20 text-center">
             <h2 class="text-3xl text-gray-900 font-sans font-bold mb-4">Our <span class="text-secondary">Latest</span> Courses
             </h2>
             <h1 class="text-xl font-semibold text-gray-800 mb-4">Master the Skills to Build Your Future</h1>
@@ -80,10 +80,10 @@
 
     </div>
     {{-- {{static info}} --}}
-    <div class="flex flex-col gap-2 p-8 bg-gray-50 rounded-2xl mb-12 items-center md:px-[10%]">
+    <div class="flex flex-col gap-2 p-8 mt-10 bg-gray-50 rounded-2xl mb-12 items-center md:px-[10%]">
         <h2 class="text-lg md:text-xl font-normal max-w-2xl text-gray-900  text-center mb-4 flex flex-col">
             <span class="font-semibold mb-1">Results that Speak for Themselves:</span>
-            <span class="text-3xl font-semibold"> We’re a Top Software Devlopment Company in India</span>
+            <span class="md:text-3xl text-xl font-semibold"> We’re a Top Software Devlopment Company in India</span>
         </h2>
 
         <div class="flex flex-col md:flex-row w-full gap-8">
@@ -131,7 +131,7 @@
             <!-- Internships -->
             <div
                 class="flex flex-col md:flex-row items-center md:items-start md:space-x-6 border border-gray-400 rounded-lg p-4">
-                <img src="{{ asset('assets/home/Intern.jpg') }}" alt="Internships"
+                <img src="{{ asset('assets/home/intern.jpg') }}" alt="Internships"
                     class="w-full md:w-1/2 object-cover rounded-lg">
                 <div class="mt-4 md:mt-0">
                     <h3 class="text-xl font-semibold text-gray-800">Internships</h3>
