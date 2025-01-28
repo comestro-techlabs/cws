@@ -16,7 +16,7 @@
         image="about-header.png" 
     />
 
-    <div class="p-8 w-full md:w-1/2 ml-36" id="portfolio">
+    <div class="p-8 w-full md:w-1/2 ml-4 md:ml-36" id="portfolio">
         <h3 class="text-secondary uppercase tracking-widest text-2xl border-b-2 border-blue-300 font-bold pb-2">
             My Portfolio
         </h3>
@@ -30,8 +30,8 @@
 
     
    
-    
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-8">
+   
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-8 ml-4 md:ml-36">
         @foreach($portfolios as $portfolio)
             <div class="relative group rounded-lg overflow-hidden shadow-lg hover:shadow-xl transform transition duration-300 hover:scale-105">
                 <img src="{{ asset('storage/' . $portfolio->image) }}" 
@@ -49,12 +49,8 @@
                 </div>
             </div>
         @endforeach
-    </div>
-    
-    
-    
-    
-    
+        </div>  
+         
 </div>
 
 @endsection

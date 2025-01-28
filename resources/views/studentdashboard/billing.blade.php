@@ -71,7 +71,11 @@
 
               @if($item->status === 'captured')
               <td class="py-3 px-4 text-center">
-                <button class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5  cursor-pointer" onclick="window.print()">Print Invoice</button>
+                {{-- <button class="text-white bg-blue-700 hover:bg-blue-800  rounded text-sm px-5 py-2.5  cursor-pointer">Print Invoice</button> --}}
+                <a href="{{ route('student.viewbilling') }}" 
+                 class="text-white bg-blue-700 hover:bg-blue-800 rounded text-sm px-5 py-2.5 cursor-pointer inline-block">
+                  Print Invoice
+                        </a>
               </td>
               @elseif($item->status === 'failed')
               <td class="py-3 px-4 text-center">

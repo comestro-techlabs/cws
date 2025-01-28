@@ -256,6 +256,20 @@ class StudentController extends Controller
         ];
         return view("studentdashboard.billing", $datas);
     }
+    public function viewbilling()
+    {
+           if(!Auth::check()){
+            return redirect()->route('auth.login')->with('error','you must be logged in to access this page');
+           }
+           $studentId = User::findorFail(Auth::id())->id;
+           
+          $datas =[
+            'courses' => User::find(Auth::id())->courses()->get(),
+            'payments' => Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->get(),
+          ];
+          return view("studentdashboard.viewbilling",$datas);
+
+    }
 
 
     public function courseQuiz()
