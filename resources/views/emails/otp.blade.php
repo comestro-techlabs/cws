@@ -9,7 +9,7 @@
     <div style="">
         <header style="">
             <h1 style="margin: 0; font-size: 28px; font-weight: bold;">Your OTP Code</h1>
-            <img src="http://127.0.0.1:8000/assets/LearnSyntax.png" alt="Learn Syntax" style="max-width: 150px; margin-top: 10px;">
+            <img src="https://learnsyntax.com/assets/LearnSyntax.png" alt="Learn Syntax" style="max-width: 150px; margin-top: 10px;">
         </header>
         <main style="padding: 20px; color: #333333;">
             <p style="font-size: 16px; line-height: 1.5; color: #555555;">
