@@ -54,7 +54,7 @@ Sign up
                     <!-- Contact -->
                     <div class="flex-1">
                         <label for="contact" class="block text-sm font-medium text-gray-700">Contact</label>
-                        <input type="text" placeholder="+123456789" value="{{old('contact')}}" name="contact" id="contact"
+                        <input type="text" placeholder="9XXXXXXXX5" value="{{old('contact')}}" name="contact" id="contact"
                             class="form-input mt-1 block w-full rounded-md border-gray-300 focus:border-gray-500 focus:ring focus:ring-gray-200 focus:ring-opacity-50">
                         @error('contact')
                         <p class="text-xs text-red-500">{{ $message }}</p>
