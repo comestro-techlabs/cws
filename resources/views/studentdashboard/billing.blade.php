@@ -77,14 +77,14 @@
 
               @if($item->status === 'captured')
               <td class="py-3 px-4 text-center">
-                <button class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 cursor-pointer" onclick="window.print()">Print Invoice</button>
+                <button class="py-2.5 px-6 text-sm font-semibold text-indigo-500 transition-all duration-500 hover:text-indigo-700" onclick="window.print()">Print Invoice</button>
               </td>
               @elseif($item->status === 'failed')
               <td class="py-3 px-4 text-center">
               </td>
               @else
               <td class="py-3 px-4 text-center">
-                <button class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 cursor-pointer" id="refresh-payment" data-order-id="{{ $item->order_id }}">Refresh</button>
+              <button class="refresh-payment py-2.5 px-6 text-sm bg-indigo-900 text-white rounded-lg cursor-pointer font-semibold text-center shadow-xs transition-all duration-500 hover:bg-indigo-700" data-order-id="{{ $item->order_id }}">Refresh</button>
               </td>
               @endif
             </tr>
@@ -106,17 +106,12 @@
 
 
 
-
-
-
-
 <script>
-  document.getElementById('refresh-payment').onclick = function(e) {
+  document.querySelectorAll('.refresh-payment').forEach(button => {
+  button.addEventListener('click', function (e) {
     e.preventDefault();
 
-    // Get the order ID from the button's data attribute
     const orderId = e.target.getAttribute('data-order-id');
-
     // Send a request to the backend to refresh the payment status for the given order_id
     fetch("{{ route('refresh.payment.status') }}", {
         method: "POST",
@@ -132,10 +127,7 @@
       .then(data => {
         if (data.success) {
           alert('Payment status updated successfully!');
-          window.location.reload(true);
-
-          // Optionally update the UI with the new payment status
-          // You can update a status text, or refresh the entire payment record displayed to the user
+          window.location.reload(true); // Reload the page to reflect updates
         } else {
           alert('Failed to refresh payment status: ' + data.message);
         }
@@ -144,7 +136,9 @@
         console.error('Error refreshing payment:', error);
         alert('There was an error refreshing the payment status.');
       });
-  };
+  });
+});
+
 </script>
 
 
