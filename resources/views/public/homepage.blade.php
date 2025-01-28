@@ -29,7 +29,7 @@
 
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-20 px-4 lg:px-32">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:mb-20 mb-10 px-4 lg:px-32">
             @foreach ($courses as $item)
                 <div class="max-w-md mx-auto bg-white rounded-lg shadow-lg border overflow-hidden">
                     <img class="w-full h-48 object-cover" src="{{ asset('storage/course_images/' . $item->course_image) }}"
@@ -64,7 +64,7 @@
         </div>
         <div class="flex justify-center items-center">
 
-            <div class="bg-secondary flex  items-center py-3 px-6 rounded-lg shadow gap-2 mb-20">
+            <div class="bg-secondary flex items-center py-3 px-6 rounded-lg shadow gap-2 md:mb-20 mb-10">
                 <a href="{{ route('public.training') }}" class=" text-white font-bold ">
                     View All Courses
                 </a>
@@ -227,7 +227,7 @@
     </div>
 
     {{-- Student List Section --}}
-    <div class="flex flex-col items-center mt-20 text-center">
+    <div class="flex flex-col items-center mt-20 mb-20 text-center">
         <h2 class="text-4xl font-bold text-gray-800">Our <span class="text-secondary">Proud</span> Students</h2>
         <h1 class="text-xl font-semibold text-gray-800 mb-4">Meet Our Achievers</h1>
         <p class="text-base text-gray-700 mb-6 mx-64">
