@@ -162,7 +162,7 @@ Sign up
         const educationQualification = document.getElementById('education_qualification').value.trim();
         const dob = document.getElementById('dob').value.trim();
         //const password = document.getElementById('password').value.trim();
-        const terms = document.getElementById('terms').checked;
+       
 
         let valid = true;
 
