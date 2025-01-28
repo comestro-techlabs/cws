@@ -7,16 +7,17 @@
 @endsection
 
 @section('content')
-
-{{-- banner --}}
+    {{-- banner --}}
     <div class="w-full mt-12">
-        <img src="{{asset("assets/banner.png")}}" class="" alt="">
+        <img src="{{ asset('assets/banner.png') }}" class="w-full h-48 sm:h-64 md:h-80 lg:h-96 object-cover" alt="Banner">
     </div>
+
 
     {{-- latest course --}}
     <div class="">
         <div class="flex flex-col items-center mt-5 md:mt-20 text-center">
-            <h2 class="text-3xl text-gray-900 font-sans font-bold mb-4">Our <span class="text-secondary">Latest</span> Courses</h2>
+            <h2 class="text-3xl text-gray-900 font-sans font-bold mb-4">Our <span class="text-secondary">Latest</span> Courses
+            </h2>
             <h1 class="text-xl font-semibold text-gray-800 mb-4">Master the Skills to Build Your Future</h1>
             <p class="text-base text-gray-700 mb-6 md:mx-64">
                 Explore our curated courses designed to provide you with the latest industry insights and practical
@@ -44,14 +45,15 @@
                             <div class="">
                                 <p class="text-gray-700 text-sm font-medium">By:{{ $item->instructor }}</p>
                                 <span class="text-gray-600 text-sm font-semibold">
-                                    Duration: {{ $item->duration  }} Weeks
+                                    Duration: {{ $item->duration }} Weeks
                                 </span>
-                                </div>
+                            </div>
                         </div>
                         <div class="flex justify-between items-center">
-                            <p class="text-sm font-semibold text-primary">Fees:  Rs.
+                            <p class="text-sm font-semibold text-primary">Fees: Rs.
                                 <span class="text-sm text-gray-600 line-through">{{ $item->fees }}</span>
-                                {{ $item->discounted_fees }}</p>
+                                {{ $item->discounted_fees }}
+                            </p>
 
                             <a href="{{ route('public.courseDetails', ['category_slug' => $item->category->cat_slug, 'slug' => $item->slug]) }}"
                                 class="bg-primary text-white font-bold py-2 px-4 rounded shadow focus:outline-none focus:ring">
@@ -116,49 +118,58 @@
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-7xl mx-auto px-4">
             <!-- Real-Time Projects -->
-            <div class="flex flex-col md:flex-row items-center md:items-start md:space-x-6 border border-gray-400 rounded-lg p-4">
-                <img src="{{ asset('assets/home/real_time.png') }}" alt="Real-Time Projects" class="w-full md:w-1/2 object-cover rounded-lg">
+            <div
+                class="flex flex-col md:flex-row items-center md:items-start md:space-x-6 border border-gray-400 rounded-lg p-4">
+                <img src="{{ asset('assets/home/real_time.png') }}" alt="Real-Time Projects"
+                    class="w-full md:w-1/2 object-cover rounded-lg">
                 <div class="mt-4 md:mt-0">
                     <h3 class="text-xl font-semibold text-gray-800">Real-Time Projects</h3>
                     <p class="text-gray-600 mt-2">Learn by Doing: Real-World Projects for Practical Mastery.</p>
-                    <a href="{{route('public.training')}}" class="text-secondary mt-4 block">View more →</a>
+                    <a href="{{ route('public.training') }}" class="text-secondary mt-4 block">View more →</a>
                 </div>
             </div>
             <!-- Internships -->
-            <div class="flex flex-col md:flex-row items-center md:items-start md:space-x-6 border border-gray-400 rounded-lg p-4">
-                <img src="{{ asset('assets/home/Intern.jpg') }}" alt="Internships" class="w-full md:w-1/2 object-cover rounded-lg">
+            <div
+                class="flex flex-col md:flex-row items-center md:items-start md:space-x-6 border border-gray-400 rounded-lg p-4">
+                <img src="{{ asset('assets/home/Intern.jpg') }}" alt="Internships"
+                    class="w-full md:w-1/2 object-cover rounded-lg">
                 <div class="mt-4 md:mt-0">
                     <h3 class="text-xl font-semibold text-gray-800">Internships</h3>
                     <p class="text-gray-600 mt-2">Industry-Mentor Guided Internship.</p>
-                    <a href="{{route('public.training')}}" class="text-secondary mt-4 block">View more →</a>
+                    <a href="{{ route('public.training') }}" class="text-secondary mt-4 block">View more →</a>
                 </div>
             </div>
             <!-- Workshops -->
-            <div class="flex flex-col md:flex-row items-center md:items-start md:space-x-6 border border-gray-400 rounded-lg p-4">
-                <img src="{{ asset('assets/home/workshop.png') }}" alt="Workshops" class="w-full md:w-1/2 object-cover rounded-lg">
+            <div
+                class="flex flex-col md:flex-row items-center md:items-start md:space-x-6 border border-gray-400 rounded-lg p-4">
+                <img src="{{ asset('assets/home/workshop.png') }}" alt="Workshops"
+                    class="w-full md:w-1/2 object-cover rounded-lg">
                 <div class="mt-4 md:mt-0">
                     <h3 class="text-xl font-semibold text-gray-800">Workshops</h3>
                     <p class="text-gray-600 mt-2">Unlocking IT Excellence: Join Our Transformative Workshops.</p>
-                    <a href="{{route('public.training')}}" class="text-secondary mt-4 block">View more →</a>
+                    <a href="{{ route('public.training') }}" class="text-secondary mt-4 block">View more →</a>
                 </div>
             </div>
             <!-- Weekend Training -->
-            <div class="flex flex-col md:flex-row items-center md:items-start md:space-x-6 border border-gray-400 rounded-lg p-4">
-                <img src="{{ asset('assets/home/Weekend.jpg') }}" alt="Weekend Training" class="w-full md:w-1/2 object-cover rounded-lg">
+            <div
+                class="flex flex-col md:flex-row items-center md:items-start md:space-x-6 border border-gray-400 rounded-lg p-4">
+                <img src="{{ asset('assets/home/Weekend.jpg') }}" alt="Weekend Training"
+                    class="w-full md:w-1/2 object-cover rounded-lg">
                 <div class="mt-4 md:mt-0">
                     <h3 class="text-xl font-semibold text-gray-800">Weekend Training</h3>
                     <p class="text-gray-600 mt-2">Supercharge Your Weekends with Our Training Programs.</p>
-                    <a href="{{route('public.training')}}" class="text-secondary mt-4 block">View more →</a>
+                    <a href="{{ route('public.training') }}" class="text-secondary mt-4 block">View more →</a>
                 </div>
             </div>
         </div>
         <div class="text-center md:mt-12 mt-8 px-4">
-            <button class="px-6 py-3 bg-secondary text-white rounded-lg shadow-lg hover:bg-blue-700 transition duration-300">
+            <button
+                class="px-6 py-3 bg-secondary text-white rounded-lg shadow-lg hover:bg-blue-700 transition duration-300">
                 Explore Services
             </button>
         </div>
     </div>
-    
+
 
 
     <div class="bg-gray-900 text-white py-12 md:mt-20 mt-8 px-6">
@@ -174,18 +185,18 @@
                     accuracy in writing code. Stay ahead in the competitive tech world with our comprehensive, expert-led
                     training sessions tailored to meet your learning goals.
                 </p>
-                <a href="{{route('public.contact')}}" class="text-blue-400 hover:underline inline-block mb-4">View more →</a>
+                <a href="{{ route('public.contact') }}" class="text-blue-400 hover:underline inline-block mb-4">View more
+                    →</a>
                 <div>
                     <button class=" bg-secondary text-white font-semibold py-2 px-4 rounded shadow-lg">
-                        <a href="{{route('public.contact')}}">CONTACT US</a>
+                        <a href="{{ route('public.contact') }}">CONTACT US</a>
                     </button>
                 </div>
             </div>
 
             <!-- Image Section -->
             <div class="">
-                <img src="{{asset('assets/home/banner-r.png')}}"
-                    alt="Corporate Training" class="">
+                <img src="{{ asset('assets/home/banner-r.png') }}" alt="Corporate Training" class="">
             </div>
         </div>
     </div>
@@ -237,30 +248,26 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl">
 
             @foreach ($placedStudents as $item)
-            <div class="flex flex-col md:flex-row bg-secondary text-white py-6 px-6  shadow gap-6">
-                <!-- Student Image -->
-                <div class="w-full md:w-1/3 flex justify-center items-center">
-                    <img src="{{ asset('storage/' . $item->image) }}"
-                        alt="Student 1 Image" class="rounded-lg shadow-lg w-full md:w-3/4">
+                <div class="flex flex-col md:flex-row bg-secondary text-white py-6 px-6  shadow gap-6">
+                    <!-- Student Image -->
+                    <div class="w-full md:w-1/3 flex justify-center items-center">
+                        <img src="{{ asset('storage/' . $item->image) }}" alt="Student 1 Image"
+                            class="rounded-lg shadow-lg w-full md:w-3/4">
+                    </div>
+                    <!-- Student Details -->
+                    <div class="w-full md:w-2/3 flex flex-col justify-center items-start text-left">
+                        <h3 class="text-2xl font-bold mb-4">{{ $item->name }}</h3>
+                        <p class="text-base mb-4">
+                            {{ $item->content }}
+                        </p>
+                        <p class="text-base mb-2"><strong></strong>{{ $item->position }}</p>
+                        {{-- <p class="text-base"><strong>Contact:</strong> +1 123 456 7890</p> --}}
+                    </div>
                 </div>
-                <!-- Student Details -->
-                <div class="w-full md:w-2/3 flex flex-col justify-center items-start text-left">
-                    <h3 class="text-2xl font-bold mb-4">{{$item->name}}</h3>
-                    <p class="text-base mb-4">
-                        {{$item->content}}
-                    </p>
-                    <p class="text-base mb-2"><strong></strong>{{$item->position}}</p>
-                    {{-- <p class="text-base"><strong>Contact:</strong> +1 123 456 7890</p> --}}
-                </div>
-            </div>
             @endforeach
 
         </div>
     </div>
-
-
-
-
 @endsection
 
 @section('js')

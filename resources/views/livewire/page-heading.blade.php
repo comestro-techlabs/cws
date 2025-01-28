@@ -7,7 +7,7 @@
                 <p class="text-md md:text-lg mb-6">
                     {{$description}}
                 </p>
-                <div class="flex md:flex-row items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-5 rounded-full w-40">
+                <div class="flex md:flex-row justify-center items-center gap-2 ml-20 md:ml-0 bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-5 rounded-full w-40">
                     <a href="{{route('public.contact')}}"
                         class="">
                         GET Started
