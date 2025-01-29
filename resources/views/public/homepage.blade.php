@@ -30,9 +30,11 @@
 
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:mb-20 mb-10 px-4 lg:px-32">
+         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:mb-20 mb-10 px-4 lg:px-32"> 
+         
+        
             @foreach ($courses as $item)
-                <div class="max-w-md mx-auto bg-white rounded-lg shadow-lg border overflow-hidden">
+                 <div class="max-w-md mx-auto bg-white rounded-lg  border overflow-hidden"> 
                     <img class="w-full h-48 object-cover" src="{{ asset('storage/course_images/' . $item->course_image) }}"
                         alt="Course Image">
 
@@ -50,10 +52,14 @@
                             </div>
                         </div>
                         <div class="flex justify-between items-center">
+                            @if ($item->discounted_fees > 0)
                             <p class="text-sm font-semibold text-primary">Fees: Rs.
                                 <span class="text-sm text-gray-600 line-through">{{ $item->fees }}</span>
                                 {{ $item->discounted_fees }}
                             </p>
+                            @else
+                            <p class="text-green-400 font-bold">Free</P>
+                                @endif
 
                             <a href="{{ route('public.courseDetails', ['category_slug' => $item->category->cat_slug, 'slug' => $item->slug]) }}"
                                 class="bg-primary text-white font-bold py-2 px-4 rounded shadow focus:outline-none focus:ring">
@@ -64,6 +70,7 @@
                 </div>
             @endforeach
         </div>
+    
         <div class="flex justify-center items-center">
 
             <div class="bg-secondary flex items-center py-3 px-6 rounded-lg shadow gap-2 md:mb-20 mb-10">
