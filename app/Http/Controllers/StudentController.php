@@ -41,7 +41,6 @@ class StudentController extends Controller
         $students = User::whereLike('title', "%$search%")->paginate(10);
         return view("admin.students.manage", ['students' => $students]);
     }
-
     public function assignCourse(Request $request, $studentId)
     {
         if (!Auth::check()) {
@@ -71,7 +70,6 @@ class StudentController extends Controller
 
         return redirect()->back()->with('success', 'Course assigned successfully! & Payment Generated Success');
     }
-
     public function removeCourse(User $student, Course $course)
     {
         if (!Auth::check()) {

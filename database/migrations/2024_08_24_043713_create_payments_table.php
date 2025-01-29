@@ -30,7 +30,7 @@ return new class extends Migration
             $table->string('ip_address')->nullable();
             $table->string('international_payment')->nullable();
             $table->string('error_reason')->nullable();
-            $table->string('payment_status')->nullable();
+            $table->string('payment_status')->nullable();            
             $table->string('status')->default('pending');
             $table->timestamps();
         });

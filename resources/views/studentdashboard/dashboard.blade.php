@@ -126,10 +126,7 @@
         </div>
 
         <!-- membership button -->
-        <button id="membership-pay-button"
-            class="flex items-center justify-center w-48 h-12 bg-indigo-400 border-4 border-double text-black mt-2 shadow-xl px-6 py-3 transition duration-300 ease-in-out transform hover:scale-105 space-x-3 rounded-lg">
-            <span>Become Member</span>
-        </button>
+        
 
     </div>
 </div>  
@@ -192,7 +189,6 @@
                                     })
                                 })
                                 .then(response => {
-                                    console.log('Response from backend:',response);
                                     return response.json();
                                 })
                                 .then(data => {

@@ -11,25 +11,25 @@
 
   <div class="container mx-auto px-4 py-4">
     <!-- Invoices Table -->
-   
+
     <div class="mb-4 ">
       <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-styled-tab" data-tabs-toggle="#default-styled-tab-content" data-tabs-active-classes="text-purple-600 hover:text-purple-600 dark:text-purple-500 dark:hover:text-purple-500 border-purple-600 dark:border-purple-500" data-tabs-inactive-classes="dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300" role="tablist">
-          <li class="me-2" role="presentation">
-              <button class="inline-block p-4 border-b-2 rounded-t-lg" id="profile-styled-tab" data-tabs-target="#styled-profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Invoice</button>
-          </li>
-          <li class="me-2" role="presentation">
-              <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="dashboard-styled-tab" data-tabs-target="#styled-dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">Membership</button>
-          </li>
-         
+        <li class="me-2" role="presentation">
+          <button class="inline-block p-4 border-b-2 rounded-t-lg" id="profile-styled-tab" data-tabs-target="#styled-profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Invoice</button>
+        </li>
+        <li class="me-2" role="presentation">
+          <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="dashboard-styled-tab" data-tabs-target="#styled-dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">Membership</button>
+        </li>
+
       </ul>
     </div>
     <div id="default-styled-tab-content">
-    {{-- <div class="bg-white shadow rounded-lg "id="default-styled-tab-content"  > --}}
+      {{-- <div class="bg-white shadow rounded-lg "id="default-styled-tab-content"  > --}}
       {{-- <div class="p-4 border-b border-gray-300 mt-5">
         <h2 class="text-lg font-semibold text-gray-800">Invoices</h2>
         <p class="text-sm text-gray-600">Your past payments</p>
       </div> --}}
-      <div class="p-4 overflow-x-auto" id="styled-profile" role="tabpanel" aria-labelledby="profile-tab" >
+      <div class="p-4 overflow-x-auto" id="styled-profile" role="tabpanel" aria-labelledby="profile-tab">
         <table class="min-w-full bg-white divide-y divide-gray-200">
           <thead class="bg-gray-100">
             <tr>
@@ -47,15 +47,25 @@
           <tbody class="divide-y divide-gray-200">
             @foreach ($paymentsWithWorkshops as $item)
             <tr>
-              <td class="py-3 px-4 text-center text-gray-800">
-                @if(!empty($item->workshop_title))
-                {{ $item->workshop_title }}
-                @elseif(!empty($item->course->title))
-                {{ $item->course->title }}
+              <!-- {{$item->id}} -->
+              <td class="py-3 px-4 text-center">
+                @if($item->status === 'captured')
+                <a href="{{ route('student.viewbilling') }}" class="py-2.5 px-6 text-sm font-semibold text-indigo-500 transition-all duration-500 hover:text-indigo-700">Print Invoice</a>
+                @elseif($item->status === 'failed')
+                <span class="text-red-500 font-semibold">Failed</span>
+                @elseif($item->status === 'unpaid')
+                <button class="pay-now-button py-2.5 px-6 text-sm bg-green-500 text-white rounded-lg font-semibold shadow-xs transition-all duration-500 hover:bg-green-700"
+                  data-payment-id="{{ $item->id }}"
+                  data-order-id="{{ $item->order_id }}"
+                  data-amount="{{ $item->transaction_fee }}"
+                  data-student-id="{{ $item->student_id }}">
+                  Pay Now
+                </button>
                 @else
-                {{ 'No Title Available' }}
+                <button class="refresh-payment py-2.5 px-6 text-sm bg-indigo-900 text-white rounded-lg font-semibold shadow-xs transition-all duration-500 hover:bg-indigo-700" data-order-id="{{ $item->order_id }}">Refresh</button>
                 @endif
               </td>
+
 
               <td class="py-3 px-4 text-center text-gray-800">
                 {{ $item->order_id }}
@@ -90,14 +100,14 @@
 
               @if($item->status === 'captured')
               <td class="py-3 px-4 text-center">
-                <a href="{{ route('student.viewbilling') }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5  cursor-pointer">Print Invoice</a>
+                <a href="{{ route('student.viewbilling') }}" class="py-2.5 px-6 text-sm font-semibold text-indigo-500 transition-all duration-500 hover:text-indigo-700">Print Invoice</a>
               </td>
               @elseif($item->status === 'failed')
               <td class="py-3 px-4 text-center">
               </td>
               @else
               <td class="py-3 px-4 text-center">
-              <button class="refresh-payment py-2.5 px-6 text-sm bg-indigo-900 text-white rounded-lg cursor-pointer font-semibold text-center shadow-xs transition-all duration-500 hover:bg-indigo-700" data-order-id="{{ $item->order_id }}">Refresh</button>
+                <button class="refresh-payment py-2.5 px-6 text-sm bg-indigo-900 text-white rounded-lg cursor-pointer font-semibold text-center shadow-xs transition-all duration-500 hover:bg-indigo-700" data-order-id="{{ $item->order_id }}">Refresh</button>
               </td>
               @endif
             </tr>
@@ -106,10 +116,10 @@
 
         </table>
       </div>
-      
 
-    {{-- </div> --}}
-    {{-- <div class="bg-white shadow rounded-lg " id="styled-dashboard" role="tabpanel" aria-labelledby="dashboard-tab"> --}}
+
+      {{-- </div> --}}
+      {{-- <div class="bg-white shadow rounded-lg " id="styled-dashboard" role="tabpanel" aria-labelledby="dashboard-tab"> --}}
       {{-- <div class="p-4 border-b border-gray-300 mt-5">
         <h2 class="text-lg font-semibold text-gray-800">MemberShip</h2>
         <p class="text-sm text-gray-600">Your past payments</p>
@@ -130,19 +140,17 @@
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-200">
-            
+
           </tbody>
 
         </table>
       </div>
-      
+
 
     </div>
   </div>
-  </div>
 </div>
-
-
+</div>
 
 
 
@@ -151,42 +159,99 @@
 
 @section('scripts')
 
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 
 <script>
-  document.querySelectorAll('.refresh-payment').forEach(button => {
-  button.addEventListener('click', function (e) {
-    e.preventDefault();
 
-    const orderId = e.target.getAttribute('data-order-id');
-    // Send a request to the backend to refresh the payment status for the given order_id
-    fetch("{{ route('refresh.payment.status') }}", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-TOKEN": "{{ csrf_token() }}"
-        },
-        body: JSON.stringify({
-          order_id: orderId
-        })
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          alert('Payment status updated successfully!');
-          window.location.reload(true); // Reload the page to reflect updates
-        } else {
-          alert('Failed to refresh payment status: ' + data.message);
-        }
-      })
-      .catch(error => {
-        console.error('Error refreshing payment:', error);
-        alert('There was an error refreshing the payment status.');
-      });
-  });
+document.querySelectorAll('.pay-now-button').forEach(button => {
+    button.addEventListener('click', function (e) {
+        e.preventDefault();
+        
+        const paymentId = this.getAttribute('data-payment-id');
+        const orderId = this.getAttribute('data-order-id');
+        const amount = this.getAttribute('data-amount');
+        const studentId = this.getAttribute('data-student-id');
+
+        var options = {
+            "key": "{{ env('RAZORPAY_KEY') }}",
+            "amount": amount * 100, // Convert to paisa
+            "currency": "INR",
+            "name": "Your Company Name",
+            "description": "Course/Workshop Payment",
+            "order_id": orderId,
+            "handler": function (response) {
+                // Send payment details to Laravel backend
+                fetch("{{ route('update.payment.status') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    },
+                    body: JSON.stringify({
+                        payment_id: paymentId,
+                        student_id: studentId,
+                        razorpay_payment_id: response.razorpay_payment_id,
+                        razorpay_order_id: response.razorpay_order_id,
+                        razorpay_signature: response.razorpay_signature
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Payment successful! Redirecting...');
+                        window.location.reload(true); // Reload page
+                    } else {
+                        alert('Payment failed: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error updating payment:', error);
+                    alert('Error updating payment status.');
+                });
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+    });
 });
 
 
+  document.querySelectorAll('.refresh-payment').forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+
+      const orderId = e.target.getAttribute('data-order-id');
+      // Send a request to the backend to refresh the payment status for the given order_id
+      fetch("{{ route('refresh.payment.status') }}", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+          },
+          body: JSON.stringify({
+            order_id: orderId
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert('Payment status updated successfully!');
+            window.location.reload(true); // Reload the page to reflect updates
+          } else {
+            alert('Failed to refresh payment status: ' + data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Error refreshing payment:', error);
+          alert('There was an error refreshing the payment status.');
+        });
+    });
+  });
 </script>
 
 
