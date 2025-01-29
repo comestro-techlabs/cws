@@ -61,11 +61,15 @@
 
                 <!-- Course Price -->
                 <div class="text-center mb-4">
+                    @if ($course->discounted_fees > 0)
                     <span class="text-3xl font-bold text-gray-900">₹{{ $course->discounted_fees }}</span>
                     <span class="text-gray-500 line-through ml-2">₹{{ $course->fees }}</span>
                     <span
                         class="text-teal-600 ml-2">({{ round((($course->fees - $course->discounted_fees) / $course->fees) * 100, 2) }}%
                         off)</span>
+                        @else
+                         <p class="text-green-600">Free</p>
+                         @endif
                 </div>
 
                 @auth
