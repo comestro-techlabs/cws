@@ -194,31 +194,62 @@ class PaymentController extends Controller
         }
     }
 
+
     public function updatePaymentStatus(Request $request)
     {
-        $payment = Payment::findOrFail($request->payment_id);
+        $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
+
+        // dd($request->);
+        // Find payment record by Razorpay order ID
+        $payment = Payment::where('order_id', $request->razorpay_order_id)->first();
+
         if (!$payment) {
-            return response()->json(['success' => false, 'message' => 'Payment not found'], 404);
+            // Create a new order if not found
+            $newOrder = $api->order->create([
+                'amount' => $request->amount * 100, // Convert to paise
+                'currency' => 'INR',
+                'receipt' => 'RCPT-' . now()->year . '-' . now()->month . '-' . now()->day,
+                'payment_capture' => 1,
+            ]);
+
+            // Save the new order in the database
+            $payment = Payment::create([
+                'student_id' => $request->student_id,
+                'amount' => $request->amount,
+                'order_id' => $newOrder->id,
+                'receipt_no' => $newOrder->receipt,
+                'transaction_date' => now(),
+                'status' => 'unpaid',
+                'month' => now()->month,
+                'year' => now()->year,
+            ]);
+
+            return response()->json(['success' => false, 'message' => 'New order created. Please retry payment.', 'order_id' => $newOrder->id], 400);
         }
 
-        $attributes = [
-            'razorpay_order_id' => $request->razorpay_order_id,
-            'razorpay_payment_id' => $request->razorpay_payment_id,
-            'razorpay_signature' => $request->razorpay_signature,
-        ];
+        try {
+            // Verify Razorpay signature
+            $attributes = [
+                'razorpay_order_id' => $request->razorpay_order_id,
+                'razorpay_payment_id' => $request->razorpay_payment_id,
+                'razorpay_signature' => $request->razorpay_signature,
+            ];
 
-        // if (!$this->verifyRazorpaySignature($attributes)) {
-        //     return response()->json(['success' => false, 'message' => 'Payment verification failed'], 400);
-        // }
+            $api->utility->verifyPaymentSignature($attributes);
 
-        $payment->update([
-            'status' => 'captured',
-            'payment_status' => 'completed',
-            'transaction_date' => now(),
-        ]);
+            // Update payment record
+            $payment->update([
+                'payment_id' => $request->razorpay_payment_id,
+                'payment_status' => 'completed',
+                'transaction_date' => now(),
+            ]);
 
-        return response()->json(['success' => true, 'message' => 'Payment updated successfully']);
+            return response()->json(['success' => true, 'message' => 'Payment verified and updated successfully']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Payment verification failed: ' . $e->getMessage()], 400);
+        }
     }
+
 
     public function refreshPaymentStatus(Request $request)
     {

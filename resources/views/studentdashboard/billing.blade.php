@@ -160,47 +160,49 @@
 @section('scripts')
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-
-
 <script>
+    var razorpayKey = "{{ env('RAZORPAY_KEY') }}";
+    var csrfToken = "{{ csrf_token() }}";
+    var updatePaymentRoute = "{{ route('update.payment.status') }}";
 
 document.querySelectorAll('.pay-now-button').forEach(button => {
     button.addEventListener('click', function (e) {
         e.preventDefault();
-        
+
         const paymentId = this.getAttribute('data-payment-id');
         const orderId = this.getAttribute('data-order-id');
         const amount = this.getAttribute('data-amount');
         const studentId = this.getAttribute('data-student-id');
 
         var options = {
-            "key": "{{ env('RAZORPAY_KEY') }}",
+            "key": razorpayKey,  // Use the variable defined in Blade
             "amount": amount * 100, // Convert to paisa
             "currency": "INR",
-            "name": "Your Company Name",
-            "description": "Course/Workshop Payment",
             "order_id": orderId,
             "handler": function (response) {
                 // Send payment details to Laravel backend
-                fetch("{{ route('update.payment.status') }}", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                    },
-                    body: JSON.stringify({
+                console.log(response);
+                let bodydata = {
                         payment_id: paymentId,
                         student_id: studentId,
                         razorpay_payment_id: response.razorpay_payment_id,
-                        razorpay_order_id: response.razorpay_order_id,
+                        razorpay_order_id: orderId,
                         razorpay_signature: response.razorpay_signature
-                    })
+                    };
+                    console.log(bodydata);
+                fetch(updatePaymentRoute, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": csrfToken
+                    },
+                    body: JSON.stringify(bodydata)
                 })
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
                         alert('Payment successful! Redirecting...');
-                        window.location.reload(true); // Reload page
+                        window.location.reload(true);
                     } else {
                         alert('Payment failed: ' + data.message);
                     }
@@ -216,9 +218,16 @@ document.querySelectorAll('.pay-now-button').forEach(button => {
         };
 
         var rzp1 = new Razorpay(options);
+
+        // Handle payment failure
+        rzp1.on('payment.failed', function(response) {
+            alert('Payment failed: ' + response.error.description);
+        });
+
         rzp1.open();
     });
 });
+
 
 
   document.querySelectorAll('.refresh-payment').forEach(button => {
