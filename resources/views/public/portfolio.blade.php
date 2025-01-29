@@ -33,7 +33,7 @@
    
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-8 ml-4 md:ml-36">
         @foreach($portfolios as $portfolio)
-            <div class="relative group rounded-lg overflow-hidden shadow-lg hover:shadow-xl transform transition duration-300 hover:scale-105">
+            <div class="relative group rounded-lg overflow-hidden">
                 <img src="{{ asset('storage/' . $portfolio->image) }}" 
                      alt="{{ $portfolio->title }}" 
                      class="w-full h-60 object-cover">
@@ -45,7 +45,7 @@
                             <i class="fas fa-external-link-alt"></i>
                         </a>
                     </div>
-                    <p class="text-gray-300 text-center text-sm px-4 mt-2">{{ $portfolio->description }}</p>
+                    <p class="text-gray-300 text-center font-semibold uppercase text-sm px-4 mt-2">{{ $portfolio->description }}</p>
                 </div>
             </div>
         @endforeach
