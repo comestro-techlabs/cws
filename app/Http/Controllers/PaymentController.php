@@ -69,13 +69,7 @@ class PaymentController extends Controller
     $workshopId = $request->workshop_id ?? null;
     $courseId = $request->course_id ?? null;
 
-    // Ensure either workshop_id or course_id is provided
-    if (!$workshopId && !$courseId) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Either course_id or workshop_id is required.'
-        ]);
-    }
+    
 
     // Create a payment record in the payments table
     $payment = Payment::create([
@@ -89,6 +83,8 @@ class PaymentController extends Controller
         'ip_address' => $request->ip_address,
         'payment_status' => 'initiated',
     ]);
+
+   
 
     // Initialize Razorpay API
     $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
@@ -109,10 +105,19 @@ class PaymentController extends Controller
             'order_id' => $order->id,
         ]);
 
+        if (is_null($workshopId) && is_null($courseId)) {
+            $user = User::findOrFail($request->student_id);
+            $user->update([
+                'is_member' => 1,
+            ]);
+        }
+
         return response()->json([
             'success' => true,
             'order_id' => $order->id,
-            'payment_id' => $payment->id,  // You can send the payment ID back for frontend reference
+            'payment_id' => $payment->id,
+
+            // You can send the payment ID back for frontend reference
         ]);
     } catch (\Exception $e) {
         // Handle error if Razorpay order creation fails
@@ -135,9 +140,9 @@ public function handlePaymentResponse(Request $request)
     $razorpay_order_id = $request->razorpay_order_id;
     $razorpay_signature = $request->razorpay_signature;
 
+
     // Retrieve the payment record using the payment ID
     $payment = Payment::findOrFail($payment_id);
-
     // Initialize Razorpay API
     $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
 

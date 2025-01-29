@@ -27,6 +27,7 @@ class User extends Authenticatable
         'password',
         'referral',
         'education_qualification',
+        'is_member',
     ];
 
     /**
