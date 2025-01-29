@@ -1,9 +1,9 @@
 @extends('studentdashboard.include.base')
 @section('content')
 
-<div class="page mt-16  min-h-screen">
+<div class="page mt-10  min-h-screen">
   <!-- Page Heading -->
-  <div class="border-b border-gray-300 py-4">
+  <div class=" py-4">
     <div class="container mx-auto px-6 flex items-center">
       <h1 class="text-2xl font-bold text-gray-800">Manage Your Billing</h1>
     </div>
@@ -11,12 +11,25 @@
 
   <div class="container mx-auto px-4 py-4">
     <!-- Invoices Table -->
-    <div class="bg-white shadow rounded-lg">
-      <div class="p-4 border-b border-gray-300 mt-5">
+   
+    <div class="mb-4 ">
+      <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-styled-tab" data-tabs-toggle="#default-styled-tab-content" data-tabs-active-classes="text-purple-600 hover:text-purple-600 dark:text-purple-500 dark:hover:text-purple-500 border-purple-600 dark:border-purple-500" data-tabs-inactive-classes="dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300" role="tablist">
+          <li class="me-2" role="presentation">
+              <button class="inline-block p-4 border-b-2 rounded-t-lg" id="profile-styled-tab" data-tabs-target="#styled-profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Invoice</button>
+          </li>
+          <li class="me-2" role="presentation">
+              <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="dashboard-styled-tab" data-tabs-target="#styled-dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">Membership</button>
+          </li>
+         
+      </ul>
+    </div>
+    <div id="default-styled-tab-content">
+    {{-- <div class="bg-white shadow rounded-lg "id="default-styled-tab-content"  > --}}
+      {{-- <div class="p-4 border-b border-gray-300 mt-5">
         <h2 class="text-lg font-semibold text-gray-800">Invoices</h2>
         <p class="text-sm text-gray-600">Your past payments</p>
-      </div>
-      <div class="p-4 overflow-x-auto">
+      </div> --}}
+      <div class="p-4 overflow-x-auto" id="styled-profile" role="tabpanel" aria-labelledby="profile-tab" >
         <table class="min-w-full bg-white divide-y divide-gray-200">
           <thead class="bg-gray-100">
             <tr>
@@ -93,10 +106,44 @@
 
         </table>
       </div>
+      
+
+    {{-- </div> --}}
+    {{-- <div class="bg-white shadow rounded-lg " id="styled-dashboard" role="tabpanel" aria-labelledby="dashboard-tab"> --}}
+      {{-- <div class="p-4 border-b border-gray-300 mt-5">
+        <h2 class="text-lg font-semibold text-gray-800">MemberShip</h2>
+        <p class="text-sm text-gray-600">Your past payments</p>
+      </div> --}}
+      <div class="p-4 overflow-x-auto" id="styled-dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+        <table class="min-w-full bg-white divide-y divide-gray-200">
+          <thead class="bg-gray-100">
+            <tr>
+              <th class="py-3 px-4 text-centert text-sm font-medium text-gray-600 ">Month</th>
+              <!-- <th class="py-3 px-4 text-left text-sm font-medium text-gray-600 ">Course Category</th> -->
+              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 ">Order Id</th>
+              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 ">Payment Status</th>
+              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 ">Method</th>
+              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 ">Payment Amount</th>
+              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 ">Payment Date</th>
+              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 ">Error Reason</th>
+              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 ">Action</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200">
+            
+          </tbody>
+
+        </table>
+      </div>
+      
 
     </div>
   </div>
+  </div>
 </div>
+
+
+
 
 
 
@@ -138,6 +185,7 @@
       });
   });
 });
+
 
 </script>
 
