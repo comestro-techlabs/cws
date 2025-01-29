@@ -42,6 +42,7 @@
             Route::put('/courses/{course}/update-batch', 'updateBatch')->name('course.updateBatch');
             Route::get('/course/{id}', 'buyCourse')->name('student.buyCourse');
             Route::get('/course', 'course')->name('student.course');
+            Route::post('/course/{courseId}', 'enrollCourse')->name('course.enroll');
             Route::get('/assignments/view', 'assignmentList')->name('student.assignments-view');
             Route::get('/assignments/upload/{id}', 'viewAssignments')->name('student.assignment-upload');
             Route::get('/viewCertificate/{userId}',  'showCertificate')->name('student.viewCertificate');

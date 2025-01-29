@@ -165,7 +165,19 @@ public function handlePaymentResponse(Request $request)
         'status' => 'captured', // Set the status as captured
         'payment_date' => now(),
     ]);    
-
+    if ($razorpayPayment->status == 'captured' && $payment->course_id) {
+        DB::table('course_user')->updateOrInsert(
+            [
+                'course_id' => $payment->course_id,
+                'user_id' => $payment->student_id, // Ensure student_id is used as user_id
+                
+            ],
+            [
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        );
+    }
     return response()->json([
         'success' => true,
         'message' => 'Payment processed successfully.',

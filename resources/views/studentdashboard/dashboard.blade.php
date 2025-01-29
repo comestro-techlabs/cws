@@ -3,6 +3,7 @@
 <!-- Header Layout Content -->
 <div class="mdk-header-layout__content mdk-header-layout__content--fullbleed mdk-header-layout__content--scrollable page"
     style="">
+   
     @if ($courses->isEmpty())
     <div class="flex flex-col items-center justify-center md:mt-16 lg:mt-20 text-center px-6 md:px-4 space-y-2">
         <img src="{{ asset('assets/welcome.png') }}" class="w-56 md:w-64 lg:w-72 ">
@@ -15,6 +16,10 @@
             </button>
 
         </a>
+        <button id="membership-pay-button"
+            class="flex items-center justify-center w-48 h-12 bg-indigo-400 border-4 border-double text-black mt-2 shadow-xl px-6 py-3 transition duration-300 ease-in-out transform hover:scale-105 space-x-3 rounded-lg">
+            <span>Become Member</span>
+        </button>
     </div>
     @else
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
