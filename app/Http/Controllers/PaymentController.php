@@ -242,6 +242,7 @@ class PaymentController extends Controller
                 'payment_id' => $request->razorpay_payment_id,
                 'payment_status' => 'completed',
                 'transaction_date' => now(),
+
             ]);
 
             return response()->json(['success' => true, 'message' => 'Payment verified and updated successfully']);
