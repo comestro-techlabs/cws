@@ -24,7 +24,7 @@
 @endif
 <div class="mdk-header-layout__content mdk-header-layout__content--fullbleed mdk-header-layout__content--scrollable page"
     style="">
-   
+
     @if ($courses->isEmpty())
     <div class="flex flex-col items-center justify-center md:mt-16 lg:mt-20 text-center px-6 md:px-4 space-y-2">
         <img src="{{ asset('assets/welcome.png') }}" class="w-56 md:w-64 lg:w-72 ">
@@ -147,24 +147,24 @@
         </div>
 
         <!-- membership button -->
-        
+
 
     </div>
-</div>  
+</div>
 @endif
 @endsection
 @section('scripts')
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 @auth
 <script>
-   
+
     document.getElementById('membership-pay-button').onclick = function(e) {
         const payButton = document.getElementById('membership-pay-button');
         payButton.disabled = true;
         e.preventDefault();
 
         const receipt_no = `${Date.now()}`;
-       
+
 
         // First, initiate payment by sending the details to the backend
         fetch("{{ route('store.payment.initiation') }}", {
@@ -178,7 +178,7 @@
                     receipt_no: receipt_no,
                     amount: 700 ?? null,
                     ip_address: "{{ request()->ip() }}",
-                    workshop_id:  null,  
+                    workshop_id:  null,
                 })
             })
             .then(response => response.json())
