@@ -37,10 +37,13 @@
             </button>
 
         </a>
+        @if(!auth()->user()->is_member) 
         <button id="membership-pay-button"
-            class="flex items-center justify-center w-48 h-12 bg-indigo-400 border-4 border-double text-black mt-2 shadow-xl px-6 py-3 transition duration-300 ease-in-out transform hover:scale-105 space-x-3 rounded-lg">
-            <span>Become Member</span>
-        </button>
+        class="flex items-center justify-center w-48 h-12 bg-indigo-400 border-4 border-double text-black mt-2 shadow-xl px-6 py-3 transition duration-300 ease-in-out transform hover:scale-105 space-x-3 rounded-lg">
+        <span>Become Member</span>
+    </button>
+        @endif
+        
     </div>
     @else
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
