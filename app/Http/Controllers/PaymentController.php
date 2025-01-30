@@ -150,7 +150,6 @@ class PaymentController extends Controller
             if (is_null($payment->course_id) && is_null($payment->workshop_id)) {
                 $user = User::findOrFail($payment->student_id);
                 $user->update(['is_member' => 1]);
-
                 $this->createFuturePayments($payment);
             }
 
@@ -183,7 +182,7 @@ class PaymentController extends Controller
                     'student_id' => $payment->student_id,
                     'amount' => $payment->amount,
                     'receipt_no' => 'RCPT-' . $year . '-' . $month . '-' . $payment->student_id,
-                    'transaction_fee' => $payment->amount * 0.02,
+                    'transaction_fee' => $payment->amount,
                     'transaction_date' => Carbon::create($year, $month, 1),
                     'ip_address' => request()->ip(),
                     'status' => 'unpaid',
@@ -198,11 +197,8 @@ class PaymentController extends Controller
     public function updatePaymentStatus(Request $request)
     {
         $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
-
-        // dd($request->);
         // Find payment record by Razorpay order ID
         $payment = Payment::where('order_id', $request->razorpay_order_id)->first();
-
         if (!$payment) {
             // Create a new order if not found
             $newOrder = $api->order->create([
@@ -236,13 +232,13 @@ class PaymentController extends Controller
             ];
 
             $api->utility->verifyPaymentSignature($attributes);
-
+            // dd($request->all());
             // Update payment record
             $payment->update([
                 'payment_id' => $request->razorpay_payment_id,
                 'payment_status' => 'completed',
                 'transaction_date' => now(),
-
+                "status" => "captured",
             ]);
 
             return response()->json(['success' => true, 'message' => 'Payment verified and updated successfully']);
