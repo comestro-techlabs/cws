@@ -155,7 +155,7 @@
                 body: JSON.stringify({
                     student_id: "{{ Auth::id() }}" ?? 99,
                     receipt_no: receipt_no,
-                    amount: 700 ?? null,
+                    amount: 700,
                     ip_address: "{{ request()->ip() }}",
                     workshop_id:  null,
                 })
