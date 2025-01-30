@@ -251,6 +251,61 @@ class PaymentController extends Controller
     }
 
 
+    public function createRazorpayOrder(Request $request)
+    {
+        try {
+            // Initialize Razorpay API
+            $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
+
+            // Validate request data
+            $request->validate([
+                'student_id' => 'required|exists:users,id',
+                'amount' => 'required|numeric|min:1',
+            ]);
+
+            // Check if an unpaid record exists for the same amount
+            $payment = Payment::where('student_id', $request->student_id)
+                ->where('amount', 700)
+                ->where('status', 'unpaid')
+                ->first();
+
+            if (!$payment) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No unpaid payment record found for this student.'
+                ], 400);
+            }
+
+            // Create a new Razorpay Order
+            $order = $api->order->create([
+                'amount' => $request->amount * 100, // Convert to paise
+                'currency' => 'INR',
+                'receipt' => 'RCPT-' . now()->year . '-' . now()->month . '-' . now()->day . '-' . $request->student_id,
+                'payment_capture' => 1, // Auto-capture
+            ]);
+
+            // Update the payment record with the order ID
+            $payment->update([
+                'order_id' => $order->id,
+                'receipt_no' => $order->receipt
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Razorpay order created successfully.',
+                'order_id' => $order->id,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error creating order: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+
+
+
     public function refreshPaymentStatus(Request $request)
     {
         $orderId = $request->order_id;
