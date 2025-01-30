@@ -150,12 +150,13 @@
           @if(Auth::user()->is_member)
           <tbody class="divide-y divide-gray-200">
             @foreach ($paymentsWithWorkshops as $item)
+            @if(empty($item->course_id) && empty($item->workshop_title))
             <tr>
-            <td class="py-3 px-4 text-gray-800 text-center">
+              <td class="py-3 px-4 text-gray-800 text-center">
                 {{ \Carbon\Carbon::parse($item->transaction_date)->format('d M Y') }}
               </td>
               <td class="py-3 px-4 text-gray-800 text-center">
-              {{ \Carbon\Carbon::create((int)$item->year, (int)$item->month, 1)->format('M Y') }}
+                {{ \Carbon\Carbon::create((int)$item->year, (int)$item->month, 1)->format('M Y') }}
               </td>
               <td class="py-3 px-4 text-center text-gray-800">
                 {{ $item->order_id }}
@@ -181,7 +182,6 @@
               <td class="py-3 px-4 text-gray-800 text-center">
                 ₹{{ $item->transaction_fee }}
               </td>
-             
               <td class="py-3 px-4 text-gray-800 text-center">
                 {{ $item->year}}
               </td>
@@ -205,11 +205,12 @@
                 <button class="refresh-payment py-2.5 px-6 text-sm bg-indigo-900 text-white rounded-lg font-semibold shadow-xs transition-all duration-500 hover:bg-indigo-700" data-order-id="{{ $item->order_id }}">Refresh</button>
                 @endif
               </td>
-
             </tr>
+            @endif
             @endforeach
           </tbody>
           @endif
+
 
         </table>
       </div>
