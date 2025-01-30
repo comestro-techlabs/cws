@@ -41,7 +41,6 @@ class StudentController extends Controller
         $students = User::whereLike('title', "%$search%")->paginate(10);
         return view("admin.students.manage", ['students' => $students]);
     }
-
     public function assignCourse(Request $request, $studentId)
     {
         if (!Auth::check()) {
@@ -71,7 +70,6 @@ class StudentController extends Controller
 
         return redirect()->back()->with('success', 'Course assigned successfully! & Payment Generated Success');
     }
-
     public function removeCourse(User $student, Course $course)
     {
         if (!Auth::check()) {
@@ -234,12 +232,42 @@ class StudentController extends Controller
     }
     public function course()
     {
-
         $data = [
             'courses' => Course::paginate(4),
         ];
         return view('studentdashboard.course.course', $data);
     }
+
+    public function enrollCourse($courseId)
+    {
+        $user = auth()->user();
+        if ($user->courses()->where('course_id', $courseId)->exists()) {
+            return redirect()->back()->with('error', 'You are already enrolled in this course.');
+        }
+    
+        if ($user->is_member) {
+            $enrolledCourseCount = $user->courses()->count();
+    
+            if ($enrolledCourseCount >= 1) {
+                return redirect()->route('student.buyCourse', ['id' => $courseId])
+                    ->with('error', 'As a member, you can only enroll in one course for free. Please purchase additional courses.');
+            }
+            $user->courses()->attach($courseId);
+    
+        } else {
+            return redirect()->route('student.buyCourse', ['id' => $courseId]);
+        }
+        $courses = $user->courses()->with(['batches'])->get();
+        $coursesWithoutBatch = $courses->filter(fn($course) => empty($course->pivot->batch_id));
+    
+        return view('studentdashboard.course.purchaseCourse', [
+            'courses' => $courses,
+            'coursesWithoutBatch' => $coursesWithoutBatch,
+            'courseId' => $courseId
+        ]);
+    }
+    
+
 
     public function billing()
     {

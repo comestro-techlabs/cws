@@ -16,10 +16,10 @@ Workshop
         image="about-header.png" />
 
     <div class="p-4 sm:p-8 bg-gray-100">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6  ml-4 md:ml-36">
             @forelse ($workshops as $workshop)
             <div
-                class="flex flex-col items-center transform transition duration-300 hover:scale-105 hover:bg-gray-50 rounded-lg p-5 shadow-lg bg-white relative">
+                class="flex flex-col items-center rounded-lg p-5  bg-white relative">
                 <img src="{{ asset('storage/' . $workshop->image) }}" alt=""
                     class="w-full h-64 object-cover object-top rounded mb-4">
 

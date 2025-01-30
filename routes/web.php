@@ -42,6 +42,7 @@
             Route::put('/courses/{course}/update-batch', 'updateBatch')->name('course.updateBatch');
             Route::get('/course/{id}', 'buyCourse')->name('student.buyCourse');
             Route::get('/course', 'course')->name('student.course');
+            Route::post('/course/{courseId}', 'enrollCourse')->name('course.enroll');
             Route::get('/assignments/view', 'assignmentList')->name('student.assignments-view');
             Route::get('/assignments/upload/{id}', 'viewAssignments')->name('student.assignment-upload');
             Route::get('/viewCertificate/{userId}',  'showCertificate')->name('student.viewCertificate');
@@ -49,14 +50,14 @@
 
         });
     });
-   
-    Route::get('/user/messages', [MessageController::class, 'userMessages'])->name('user.messages');
-    
 
-  
+    Route::get('/user/messages', [MessageController::class, 'userMessages'])->name('user.messages');
+
+
+
         // Route::get('/quiz_instruction', function () {
         //     return view('studentdashboard.quiz_instruction');
-        // })->name('quiz_instruction');  
+        // })->name('quiz_instruction');
 
        // });
 
@@ -76,6 +77,8 @@
     Route::post('/initiate-payment', [PaymentController::class, 'initiatePayment'])->name('store.payment.initiation');
     Route::post('/payment-response', [PaymentController::class, 'handlePaymentResponse'])->name('handle.payment.response');
     Route::post('/refresh-payment-status', [PaymentController::class, 'refreshPaymentStatus'])->name('refresh.payment.status');
+    Route::post('/update-payment-status', [PaymentController::class, 'updatePaymentStatus'])->name('update.payment.status');
+    Route::post('/create-razorpay-order', [PaymentController::class, 'createRazorpayOrder'])->name('create.razorpay.order');
 
     Route::middleware([AdminMiddleware::class, "auth"])->group(function () {
 
@@ -201,7 +204,7 @@
             Route::post('/placed-students/{placedStudent}/toggle-status', [PlacedStudentController::class, 'toggleStatus'])->name('placedStudent.toggleStatus');
 
 
-           
+
         });
     });
 
