@@ -17,7 +17,6 @@
 
     <!-- Header Layout -->
 
-    @include('studentdashboard.include.header')
 
 
 
@@ -174,6 +173,7 @@
     </aside>
 
     <div class="p-4 sm:ml-64">
+        @include('studentdashboard.include.header')
 
         @section('content')
 
