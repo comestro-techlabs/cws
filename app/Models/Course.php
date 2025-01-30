@@ -18,10 +18,10 @@ class Course extends Model
         return $this->hasMany(Payment::class);
     }
 
-    public function students()
-    {
-        return $this->belongsToMany(User::class);
-    }
+    // public function students()
+    // {
+    //     return $this->belongsToMany(User::class);
+    // }
 
     /**
      * Get the user associated with the Course

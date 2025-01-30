@@ -1,7 +1,27 @@
 @extends('studentdashboard.include.base')
 
 @section('content')
+@if(session('success'))
+    <script>
+        Swal.fire({
+            title: 'Success!',
+            text: "{{ session('success') }}",
+            icon: 'success',
+            confirmButtonText: 'OK'
+        });
+    </script>
+@endif
 
+@if(session('error'))
+    <script>
+        Swal.fire({
+            title: 'Error!',
+            text: "{{ session('error') }}",
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
+    </script>
+@endif
 <div class="container mx-auto p-6">
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <!-- Left Column: Course Details -->

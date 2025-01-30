@@ -1,6 +1,27 @@
 @extends('studentdashboard.include.base')
 @section('content')
 <!-- Header Layout Content -->
+@if(session('success'))
+    <script>
+        Swal.fire({
+            title: 'Success!',
+            text: "{{ session('success') }}",
+            icon: 'success',
+            confirmButtonText: 'OK'
+        });
+    </script>
+@endif
+
+@if(session('error'))
+    <script>
+        Swal.fire({
+            title: 'Error!',
+            text: "{{ session('error') }}",
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
+    </script>
+@endif
 <div class="mdk-header-layout__content mdk-header-layout__content--fullbleed mdk-header-layout__content--scrollable page"
     style="">
 
@@ -236,5 +257,6 @@
             });
     };
 </script>
+
 @endauth
 @endsection
