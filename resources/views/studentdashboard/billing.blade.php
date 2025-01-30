@@ -46,23 +46,16 @@
           </thead>
           <tbody class="divide-y divide-gray-200">
             @foreach ($paymentsWithWorkshops as $item)
+            
             <tr>
               <!-- {{$item->id}} -->
               <td class="py-3 px-4 text-center">
-                @if($item->status === 'captured')
-                <a href="{{ route('student.viewbilling') }}" class="py-2.5 px-6 text-sm font-semibold text-indigo-500 transition-all duration-500 hover:text-indigo-700">Print Invoice</a>
-                @elseif($item->status === 'failed')
-                <span class="text-red-500 font-semibold">Failed</span>
-                @elseif($item->status === 'unpaid')
-                <button class="pay-now-button py-2.5 px-6 text-sm bg-green-500 text-white rounded-lg font-semibold shadow-xs transition-all duration-500 hover:bg-green-700"
-                  data-payment-id="{{ $item->id }}"
-                  data-order-id="{{ $item->order_id }}"
-                  data-amount="{{ $item->transaction_fee }}"
-                  data-student-id="{{ $item->student_id }}">
-                  Pay Now
-                </button>
+              @if(!empty($item->workshop_title))
+                {{ $item->workshop_title }}
+                @elseif(!empty($item->course->title))
+                {{ $item->course->title }}
                 @else
-                <button class="refresh-payment py-2.5 px-6 text-sm bg-indigo-900 text-white rounded-lg font-semibold shadow-xs transition-all duration-500 hover:bg-indigo-700" data-order-id="{{ $item->order_id }}">Refresh</button>
+                {{ 'No Title Available' }}
                 @endif
               </td>
 
@@ -97,19 +90,24 @@
               <td class="py-3 px-4 text-gray-800 text-left truncate max-w-xs" title="{{ $item->error_reason }}">
                 {{ $item->error_reason }}
               </td>
-
+              <td class="py-3 px-4 text-gray-800 text-center">
               @if($item->status === 'captured')
-              <td class="py-3 px-4 text-center">
                 <a href="{{ route('student.viewbilling') }}" class="py-2.5 px-6 text-sm font-semibold text-indigo-500 transition-all duration-500 hover:text-indigo-700">Print Invoice</a>
+                @elseif($item->status === 'failed')
+                <span class="text-red-500 font-semibold">Failed</span>
+                @elseif($item->status === 'unpaid')
+                <button class="pay-now-button py-2.5 px-6 text-sm bg-green-500 text-white rounded-lg font-semibold shadow-xs transition-all duration-500 hover:bg-green-700"
+                  data-payment-id="{{ $item->id }}"
+                  data-order-id="{{ $item->order_id }}"
+                  data-amount="{{ $item->transaction_fee }}"
+                  data-student-id="{{ $item->student_id }}">
+                  Pay Now
+                </button>
+                @else
+                <button class="refresh-payment py-2.5 px-6 text-sm bg-indigo-900 text-white rounded-lg font-semibold shadow-xs transition-all duration-500 hover:bg-indigo-700" data-order-id="{{ $item->order_id }}">Refresh</button>
+                @endif              
               </td>
-              @elseif($item->status === 'failed')
-              <td class="py-3 px-4 text-center">
-              </td>
-              @else
-              <td class="py-3 px-4 text-center">
-                <button class="refresh-payment py-2.5 px-6 text-sm bg-indigo-900 text-white rounded-lg cursor-pointer font-semibold text-center shadow-xs transition-all duration-500 hover:bg-indigo-700" data-order-id="{{ $item->order_id }}">Refresh</button>
-              </td>
-              @endif
+
             </tr>
             @endforeach
           </tbody>
