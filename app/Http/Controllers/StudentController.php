@@ -257,7 +257,6 @@ class StudentController extends Controller
         }
     
         if ($user->is_member) {
-            // Find active batches where the user is already enrolled
             $activeFreeCourse = $user->courses()
                 ->whereHas('batches', function ($query) {
                     $query->whereDate('end_date', '>=', now());

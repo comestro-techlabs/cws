@@ -218,6 +218,7 @@
             Route::get("/", "training")->name('public.training');
             Route::get("/register/success", "success")->name('public.success');
             Route::get('/courses/{category_slug}/{slug}', 'courseDetails')->name('public.courseDetails');
+            Route::post('/courses/{courseId}', 'enrollCourse')->name('public.enrollCourse');
         });
         Route::get('/about', 'aboutPage')->name('public.about');
         Route::get('/contact', 'contactUsPage')->name('public.contact');
