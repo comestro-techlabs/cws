@@ -111,100 +111,95 @@ class PaymentController extends Controller
         }
     }
 
-    public function handlePaymentResponse(Request $request)
-    {
-        $paymentId = $request->payment_id;
-        $razorpayPaymentId = $request->razorpay_payment_id;
-        $razorpayOrderId = $request->razorpay_order_id;
-        $razorpaySignature = $request->razorpay_signature;
+            public function handlePaymentResponse(Request $request)
+            {
+                $paymentId = $request->payment_id;
+                $razorpayPaymentId = $request->razorpay_payment_id;
+                $razorpayOrderId = $request->razorpay_order_id;
+                $razorpaySignature = $request->razorpay_signature;
 
-        $payment = Payment::findOrFail($paymentId);
+                $payment = Payment::findOrFail($paymentId);
 
-        $attributes = [
-            'razorpay_order_id' => $razorpayOrderId,
-            'razorpay_payment_id' => $razorpayPaymentId,
-            'razorpay_signature' => $razorpaySignature,
-        ];
+                $attributes = [
+                    'razorpay_order_id' => $razorpayOrderId,
+                    'razorpay_payment_id' => $razorpayPaymentId,
+                    'razorpay_signature' => $razorpaySignature,
+                ];
 
-        if (!$this->verifyRazorpaySignature($attributes)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Payment verification failed',
-            ], 400);
-        }
+                if (!$this->verifyRazorpaySignature($attributes)) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Payment verification failed',
+                    ], 400);
+                }
 
-        try {
-            $api = $this->getRazorpayApi();
-            $razorpayPayment = $api->payment->fetch($razorpayPaymentId);
+                try {
+                    $api = $this->getRazorpayApi();
+                    $razorpayPayment = $api->payment->fetch($razorpayPaymentId);
 
-            $payment->update([
-                'payment_id' => $razorpayPaymentId,
-                'transaction_id' => $razorpayPaymentId,
-                'method' => $razorpayPayment->method,
-                'payment_status' => 'completed',
-                'status' => 'captured',
-                'payment_date' => now(),
-            ]);
-             // Grant course access if the payment is for a course
-             if ($razorpayPayment->status == 'captured' && $payment->course_id) {
-                DB::table('course_user')->updateOrInsert(
-                    [
-                        'course_id' => $payment->course_id,
-                        'user_id' => $payment->student_id,
-                    ],
-                    [
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ]
-                );
+                    $payment->update([
+                        'payment_id' => $razorpayPaymentId,
+                        'transaction_id' => $razorpayPaymentId,
+                        'method' => $razorpayPayment->method,
+                        'payment_status' => 'completed',
+                        'status' => 'captured',
+                        'payment_date' => now(),
+                    ]);
+
+                    // Handle membership and future payments for membership
+                    if (is_null($payment->course_id) && is_null($payment->workshop_id)) {
+                        $user = User::findOrFail($payment->student_id);
+                        $user->update(['is_member' => 1]);
+                        $this->createFuturePayments($payment);
+                    }
+
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Payment processed successfully.',
+                    ]);
+                } catch (\Exception $e) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Payment verification failed: ' . $e->getMessage(),
+                    ], 400);
+                }
             }
 
-            // Handle membership and future payments for membership
-            if (is_null($payment->course_id) && is_null($payment->workshop_id)) {
-                $user = User::findOrFail($payment->student_id);
-                $user->update(['is_member' => 1]);
-                $this->createFuturePayments($payment);
-            }
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Payment processed successfully.',
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Payment verification failed: ' . $e->getMessage(),
-            ], 400);
-        }
-    }
-
-    private function createFuturePayments($payment)
-    {
-        $currentMonth = Carbon::now()->month;
-        $year = Carbon::now()->year;
-
-        // Generate future payments for the membership
-        for ($month = $currentMonth + 1; $month <= 12; $month++) {
-            $existingPayment = Payment::where('student_id', $payment->student_id)
-                ->where('month', $month)
-                ->where('year', $year)
-                ->first();
-
-            if (!$existingPayment) {
-                Payment::create([
-                    'student_id' => $payment->student_id,
-                    'amount' => $payment->amount,
-                    'receipt_no' => 'RCPT-' . $year . '-' . $month . '-' . $payment->student_id,
-                    'transaction_fee' => $payment->amount,
-                    'transaction_date' => Carbon::create($year, $month, 1),
-                    'ip_address' => request()->ip(),
-                    'status' => 'unpaid',
-                    'month' => $month,
-                    'year' => $year,
-                ]);
+        private function createFuturePayments($payment)
+        {
+            $nextPaymentDate = Carbon::parse($payment->transaction_date); // Start from the first payment date
+            $year = $nextPaymentDate->year;
+        
+            // Generate future payments for the membership
+            for ($i = 1; $i <= 11; $i++) { // Generate 11 more payments after the first one
+                $nextPaymentDate = $nextPaymentDate->addDays(30); // Add 30 days from last payment
+        
+                // Extract month and year from the new payment date
+                $month = $nextPaymentDate->month;
+                $year = $nextPaymentDate->year;
+        
+                // Check if a payment for this month already exists
+                $existingPayment = Payment::where('student_id', $payment->student_id)
+                    ->where('month', $month)
+                    ->where('year', $year)
+                    ->first();
+        
+                if (!$existingPayment) {
+                    Payment::create([
+                        'student_id' => $payment->student_id,
+                        'amount' => $payment->amount,
+                        'receipt_no' => 'RCPT-' . $year . '-' . $month . '-' . $payment->student_id,
+                        'transaction_fee' => $payment->amount,
+                        'transaction_date' => $nextPaymentDate, // Set new transaction date
+                        'ip_address' => request()->ip(),
+                        'status' => 'unpaid',
+                        'month' => $month,
+                        'year' => $year,
+                    ]);
+                }
             }
         }
-    }
+    
 
 
     public function updatePaymentStatus(Request $request)
