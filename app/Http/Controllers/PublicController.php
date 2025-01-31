@@ -25,6 +25,10 @@ class PublicController extends Controller
     //----------------------------- tested- -------------------------------------------
     public function courseDetails($category_slug, $slug)
     {
+        $user = auth()->user();
+        if (!$user->is_active) {
+            return redirect()->back()->with('error', 'Your account is inactive. Please contact support.');
+        }
         $course = Course::where('slug', $slug)->first(); // replace 1 with course id
         $course_id = $course->id;
 
@@ -41,6 +45,9 @@ class PublicController extends Controller
     public function enrollCourse($courseId)
     {
         $user = auth()->user();
+        if (!$user->is_active) {
+            return redirect()->back()->with('error', 'Your account is inactive. Please contact support.');
+        }
         $course = Course::with('category')->where('id', $courseId)->first();
 
         $coursesWithoutBatch = $user->courses()->wherePivot('batch_id', null)->exists();

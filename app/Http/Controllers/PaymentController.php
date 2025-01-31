@@ -111,53 +111,59 @@ class PaymentController extends Controller
         }
     }
 
-    public function handlePaymentResponse(Request $request)
-    {
-        $paymentId = $request->payment_id;
-        $razorpayPaymentId = $request->razorpay_payment_id;
-        $razorpayOrderId = $request->razorpay_order_id;
-        $razorpaySignature = $request->razorpay_signature;
+            public function handlePaymentResponse(Request $request)
+            {
+                $paymentId = $request->payment_id;
+                $razorpayPaymentId = $request->razorpay_payment_id;
+                $razorpayOrderId = $request->razorpay_order_id;
+                $razorpaySignature = $request->razorpay_signature;
 
-        $payment = Payment::findOrFail($paymentId);
+                $payment = Payment::findOrFail($paymentId);
 
-        $attributes = [
-            'razorpay_order_id' => $razorpayOrderId,
-            'razorpay_payment_id' => $razorpayPaymentId,
-            'razorpay_signature' => $razorpaySignature,
-        ];
+                $attributes = [
+                    'razorpay_order_id' => $razorpayOrderId,
+                    'razorpay_payment_id' => $razorpayPaymentId,
+                    'razorpay_signature' => $razorpaySignature,
+                ];
 
-        if (!$this->verifyRazorpaySignature($attributes)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Payment verification failed',
-            ], 400);
-        }
+                if (!$this->verifyRazorpaySignature($attributes)) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Payment verification failed',
+                    ], 400);
+                }
 
-        try {
-            $api = $this->getRazorpayApi();
-            $razorpayPayment = $api->payment->fetch($razorpayPaymentId);
+                try {
+                    $api = $this->getRazorpayApi();
+                    $razorpayPayment = $api->payment->fetch($razorpayPaymentId);
 
-            $payment->update([
-                'payment_id' => $razorpayPaymentId,
-                'transaction_id' => $razorpayPaymentId,
-                'method' => $razorpayPayment->method,
-                'payment_status' => 'completed',
-                'status' => 'captured',
-                'payment_date' => now(),
-            ]);
+                    $payment->update([
+                        'payment_id' => $razorpayPaymentId,
+                        'transaction_id' => $razorpayPaymentId,
+                        'method' => $razorpayPayment->method,
+                        'payment_status' => 'completed',
+                        'status' => 'captured',
+                        'payment_date' => now(),
+                    ]);
 
-            // Handle membership and future payments for membership
-            if (is_null($payment->course_id) && is_null($payment->workshop_id)) {
-                $user = User::findOrFail($payment->student_id);
-                $user->update(['is_member' => 1]);
-                $this->createFuturePayments($payment);
-            }
+                    // Handle membership and future payments for membership
+                    if (is_null($payment->course_id) && is_null($payment->workshop_id)) {
+                        $user = User::findOrFail($payment->student_id);
+                        $user->update(['is_member' => 1]);
+                        $this->createFuturePayments($payment);
+                    }
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Payment processed successfully.',
-            ]);
-        } catch (\Exception $e) {
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Payment processed successfully.',
+                    ]);
+                } catch (\Exception $e) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Payment verification failed: ' . $e->getMessage(),
+                    ], 400);
+                }
+            catch (\Exception $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Payment verification failed: ' . $e->getMessage(),
@@ -199,6 +205,7 @@ class PaymentController extends Controller
     public function updatePaymentStatus(Request $request)
     {
         $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
+        $user = User::where('id', Auth::id())->first();
         // Find payment record by Razorpay order ID
         $payment = Payment::where('order_id', $request->razorpay_order_id)->first();
         if (!$payment) {
@@ -250,6 +257,10 @@ class PaymentController extends Controller
                 'status' => 'captured',
                 'payment_date' => now(),
             ]);
+            if ($user) {
+                $user->is_active = 1;
+                $user->save();
+            }
 
             return response()->json(['success' => true, 'message' => 'Payment verified and updated successfully']);
         } catch (\Exception $e) {
@@ -273,7 +284,7 @@ class PaymentController extends Controller
             // Check if an unpaid record exists for the same amount
             $payment = Payment::where('student_id', $request->student_id)
                 ->where('amount', 700)
-                ->where('status', 'unpaid')
+                ->whereIn('status', ['unpaid', 'due'])
                 ->first();
 
             if (!$payment) {

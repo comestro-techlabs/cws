@@ -13,6 +13,7 @@ use App\Models\Quiz;
 use App\Models\ExamUser;
 use App\Models\Workshop;
 use App\Models\Batch;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -247,6 +248,10 @@ class StudentController extends Controller
     public function enrollCourse($courseId)
     {
         $user = auth()->user();
+        if (!$user->is_active) {
+            return redirect()->back()->with('error', 'Your account is inactive. Please contact support.');
+        }
+    
         $coursesWithoutBatch = $user->courses()->wherePivot('batch_id', null)->exists();
 
         if ($coursesWithoutBatch) {
@@ -293,13 +298,15 @@ class StudentController extends Controller
         if (!Auth::check()) {
             return redirect()->route('auth.login')->with('error', 'You must be logged in to access this page');
         }
-    
         $studentId = Auth::id();
+        $user = User::where('id', $studentId)->first();
+
         $hasCompleted = $this->hasCompletedExamOrAssignment($studentId);
-    
+        $today = Carbon::now(); // Define the current date
+        // $today =\Carbon\Carbon::parse('2025-07-15 00:00:00');
         $payments = Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->get();
     
-        $paymentsWithWorkshops = $payments->map(function ($payment) {
+        $paymentsWithWorkshops = $payments->map(function ($payment) use ($today,$user) { // Pass $today inside use()
             $workshopTitle = null;
     
             // Check if the payment has a workshop_id and fetch the workshop title
@@ -308,8 +315,19 @@ class StudentController extends Controller
                 $workshopTitle = $workshop ? $workshop->title : null;
             }
     
-            $payment->workshop_title = $workshopTitle;
+            // Update status to "due" if unpaid and past due date
+            if ($payment->status === 'unpaid' && Carbon::parse($payment->transaction_date)->lt($today)) {
+                $payment->status = 'due';
+                $payment->save();
+                
+                if ($user) { 
+                    $user->is_active = 0;
+                    $user->save();
+                }
+
+            }
     
+            $payment->workshop_title = $workshopTitle;
             return $payment;
         });
     
@@ -317,6 +335,7 @@ class StudentController extends Controller
     
         return view('studentdashboard.billing', compact('hasCompleted', 'courses', 'paymentsWithWorkshops'));
     }
+    
     public function viewbilling()
     {
            if(!Auth::check()){

@@ -166,7 +166,7 @@
                 <div class="flex items-center justify-center rounded-full bg-green-500 uppercase px-2 py-1 text-center text-xs font-bold mr-3">
                   {{$item->status}}
                 </div>
-                @elseif($item->status === "failed")
+                @elseif($item->status === "failed" || $item->status==='due' )
                 <div class="flex items-center justify-center rounded-full bg-red-500 uppercase px-2 py-1 text-xs text-center font-bold mr-3">
                   {{$item->status}}
                 </div>
@@ -193,7 +193,7 @@
                 <a href="{{ route('student.viewbilling') }}" class="py-2.5 px-6 text-sm font-semibold text-indigo-500 transition-all duration-500 hover:text-indigo-700">Print Invoice</a>
                 @elseif($item->status === 'failed')
                 <span class="text-red-500 font-semibold">Failed</span>
-                @elseif($item->status === 'unpaid')
+                @elseif($item->status === 'unpaid' || $item->status==='due')
                 <button class="pay-now-button py-2.5 px-6 text-sm bg-green-500 text-white rounded-lg font-semibold shadow-xs transition-all duration-500 hover:bg-green-700"
                   data-payment-id="{{ $item->id }}"
                   data-order-id="{{ $item->order_id }}"
