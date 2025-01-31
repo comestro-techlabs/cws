@@ -30,46 +30,46 @@
 
         </div>
 
-         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:mb-20 mb-10 px-4 lg:px-32"> 
-         
-        
-            @foreach ($courses as $item)
-                 <div class="max-w-md mx-auto bg-white rounded-lg  border overflow-hidden"> 
-                    <img class="w-full h-48 object-cover" src="{{ asset('storage/course_images/' . $item->course_image) }}"
-                        alt="Course Image">
+      
 
-                    <div class="p-6">
-                        <h2 class="text-xl font-bold text-gray-800 mb-2 line-clamp-1">{{ $item->title }}</h2>
-                        <p class="text-gray-600 text-sm mb-4">
-                            {{ Str::limit($item->description, 122) }}
-                        </p>
-                        <div class="flex items-center mb-4">
-                            <div class="">
-                                <p class="text-gray-700 text-sm font-medium">By:{{ $item->instructor }}</p>
-                                <span class="text-gray-600 text-sm font-semibold">
-                                    Duration: {{ $item->duration }} Weeks
-                                </span>
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            @if ($item->discounted_fees > 0)
-                            <p class="text-sm font-semibold text-primary">Fees: Rs.
-                                <span class="text-sm text-gray-600 line-through">{{ $item->fees }}</span>
-                                {{ $item->discounted_fees }}
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:mb-20 mb-10 px-4 lg:px-32">
+        @foreach ($courses as $item)
+            <div class="max-w-md mx-auto bg-white rounded-lg border overflow-hidden flex flex-col h-full min-h-[450px]">
+              
+                <div class="w-full h-60">
+                    <img class="w-full h-full object-cover" src="{{ asset('storage/course_images/' . $item->course_image) }}" alt="Course Image">
+                </div>
+    
+             
+                <div class="p-6 flex flex-col flex-grow">
+                    <h2 class="text-xl font-bold text-gray-800 mb-2 line-clamp-1">{{ $item->title }}</h2>
+                    <p class="text-gray-600 text-sm mb-4 flex-grow min-h-[60px]">
+                        {{ Str::limit($item->description, 122) }}
+                    </p>
+                    <div class="mb-4">
+                        <p class="text-gray-700 text-sm font-medium">By: {{ $item->instructor }}</p>
+                        <span class="text-gray-600 text-sm font-semibold">Duration: {{ $item->duration }} Weeks</span>
+                    </div>
+    
+                   
+                    <div class="flex justify-between items-center mt-auto">
+                        @if ($item->discounted_fees > 0)
+                            <p class="text-sm font-semibold text-primary">
+                                Fees: Rs. <span class="text-gray-600 line-through">{{ $item->fees }}</span> {{ $item->discounted_fees }}
                             </p>
-                            @else
-                            <p class="text-green-400 font-bold">Free</P>
-                                @endif
-
-                            <a href="{{ route('public.courseDetails', ['category_slug' => $item->category->cat_slug, 'slug' => $item->slug]) }}"
-                                class="bg-primary text-white font-bold py-2 px-4 rounded shadow focus:outline-none focus:ring">
-                                Enroll Now
-                            </a>
-                        </div>
+                        @else
+                            <p class="text-green-500 font-bold">Free</p>
+                        @endif
+    
+                        <a href="{{ route('public.courseDetails', ['category_slug' => $item->category->cat_slug, 'slug' => $item->slug]) }}"
+                            class="bg-primary text-white font-bold py-2 px-4 rounded shadow focus:outline-none focus:ring hover:bg-primary-dark transition">
+                            Enroll Now
+                        </a>
                     </div>
                 </div>
-            @endforeach
-        </div>
+            </div>
+        @endforeach
+    </div>
     
         <div class="flex justify-center items-center">
 
