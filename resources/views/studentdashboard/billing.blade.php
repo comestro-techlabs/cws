@@ -166,7 +166,7 @@
                 <div class="flex items-center justify-center rounded-full bg-green-500 uppercase px-2 py-1 text-center text-xs font-bold mr-3">
                   {{$item->status}}
                 </div>
-                @elseif($item->status === "failed")
+                @elseif($item->status === "failed" || $item->status==='due' )
                 <div class="flex items-center justify-center rounded-full bg-red-500 uppercase px-2 py-1 text-xs text-center font-bold mr-3">
                   {{$item->status}}
                 </div>

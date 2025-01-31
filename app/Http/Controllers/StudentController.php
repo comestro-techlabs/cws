@@ -303,7 +303,7 @@ class StudentController extends Controller
 
         $hasCompleted = $this->hasCompletedExamOrAssignment($studentId);
         $today = Carbon::now(); // Define the current date
-        // $today =\Carbon\Carbon::parse('2025-03-15 00:00:00');
+        $today =\Carbon\Carbon::parse('2025-07-15 00:00:00');
         $payments = Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->get();
     
         $paymentsWithWorkshops = $payments->map(function ($payment) use ($today,$user) { // Pass $today inside use()

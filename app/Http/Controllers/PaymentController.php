@@ -203,8 +203,9 @@ class PaymentController extends Controller
 
 
     public function updatePaymentStatus(Request $request)
-    {
+    {   
         $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
+        $user = User::where('id', Auth::id())->first();
         // Find payment record by Razorpay order ID
         $payment = Payment::where('order_id', $request->razorpay_order_id)->first();
         if (!$payment) {
@@ -248,6 +249,10 @@ class PaymentController extends Controller
                 'transaction_date' => now(),
                 "status" => "captured",
             ]);
+            if ($user) { 
+                $user->is_active = 1;
+                $user->save();
+            }
 
             return response()->json(['success' => true, 'message' => 'Payment verified and updated successfully']);
         } catch (\Exception $e) {
