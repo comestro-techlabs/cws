@@ -2,6 +2,27 @@
 @section('content')
     <div class="mt-16 px-6 py-8">
         <!-- Page Heading -->
+        @if(session('success'))
+        <script>
+            Swal.fire({
+                title: 'Success!',
+                text: "{{ session('success') }}",
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+        </script>
+    @endif
+    
+    @if(session('error'))
+        <script>
+            Swal.fire({
+                title: 'Error!',
+                text: "{{ session('error') }}",
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        </script>
+    @endif
 
         <div class="border-b border-gray-200 pb-6 mb-8">
             <div class="container mx-auto flex justify-between items-center">
@@ -58,18 +79,14 @@
 
                             </a> --}}
                             @if(auth()->user() && auth()->user()->is_member)
-                            {{-- @if($already_enrolled)
-                                <button class="bg-gray-400 text-white font-medium rounded-lg px-4 py-2 cursor-not-allowed" disabled>
-                                    Already Enrolled
-                                </button>
-                            @else --}}
+                           
                                 <form action="{{ route('course.enroll', $course->id) }}" method="POST">
                                     @csrf
                                     <button type="submit" class="bg-green-600 text-white font-medium rounded-lg px-4 py-2 hover:bg-green-700 transition-colors">
                                         Enroll 
                                     </button>
                                 </form>
-                            {{-- @endif --}}
+                            
                         @else
                         
                         <a href="{{ route('student.buyCourse', ['id' => $course->id]) }}"
@@ -84,7 +101,6 @@
                             </div>
 
                         </a>
-                        {{-- @endif --}}
                         @endif
                         </div>
                     </div>

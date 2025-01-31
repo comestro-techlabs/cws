@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Models\Quiz;
 use App\Models\ExamUser;
 use App\Models\Workshop;
+use App\Models\Batch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -231,44 +232,62 @@ class StudentController extends Controller
         return redirect()->back()->with('success', 'Batch updated successfully!');
     }
     public function course()
-    {
-        $data = [
-            'courses' => Course::paginate(4),
-        ];
-        return view('studentdashboard.course.course', $data);
-    }
+{
+    $userId = auth()->id();
 
+    $enrolledCourses = DB::table('course_user')
+    ->where('user_id', $userId)
+    ->pluck('course_id');
+    $data = [
+        'courses' => Course::whereNotIn('id', $enrolledCourses)->paginate(4),
+    ];
+
+    return view('studentdashboard.course.course', $data);
+}
     public function enrollCourse($courseId)
     {
         $user = auth()->user();
+        $coursesWithoutBatch = $user->courses()->wherePivot('batch_id', null)->exists();
+
+        if ($coursesWithoutBatch) {
+            return redirect()->back()->with('error', 'Please update the batch for your existing course before enrolling in a new one.');
+        }
         if ($user->courses()->where('course_id', $courseId)->exists()) {
             return redirect()->back()->with('error', 'You are already enrolled in this course.');
         }
     
         if ($user->is_member) {
-            $enrolledCourseCount = $user->courses()->count();
+            $activeFreeCourse = $user->courses()
+                ->whereHas('batches', function ($query) {
+                    $query->whereDate('end_date', '>=', now());
+                })
+                ->withPivot('batch_id')
+                ->get()
+                ->pluck('pivot.batch_id')
+                ->filter()
+                ->isNotEmpty();
     
-            if ($enrolledCourseCount >= 1) {
+            if ($activeFreeCourse) {
+                // Redirect the member to payment if they have an ongoing free course
                 return redirect()->route('student.buyCourse', ['id' => $courseId])
-                    ->with('error', 'As a member, you can only enroll in one course for free. Please purchase additional courses.');
+                    ->with('error', 'You can only have one active free course at a time. Complete your current course before enrolling in another for free. You can buy this course now.');
+            }
+    
+            // Find an active batch for the course the member wants to enroll in
+            $batch = Batch::where('course_id', $courseId)
+                          ->whereDate('end_date', '>=', now())
+                          ->first();
+    
+            if (!$batch) {
+                return redirect()->back()->with('error', 'No active batch available for this course.');
             }
             $user->courses()->attach($courseId);
-    
         } else {
             return redirect()->route('student.buyCourse', ['id' => $courseId]);
         }
-        $courses = $user->courses()->with(['batches'])->get();
-        $coursesWithoutBatch = $courses->filter(fn($course) => empty($course->pivot->batch_id));
     
-        return view('studentdashboard.course.purchaseCourse', [
-            'courses' => $courses,
-            'coursesWithoutBatch' => $coursesWithoutBatch,
-            'courseId' => $courseId
-        ]);
+        return redirect()->route('student.dashboard')->with('success', 'You have successfully enrolled in the course.');
     }
-    
-
-
     public function billing()
     {
         if (!Auth::check()) {

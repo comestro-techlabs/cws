@@ -17,7 +17,6 @@
 
     <!-- Header Layout -->
 
-    @include('studentdashboard.include.header')
 
 
 
@@ -35,6 +34,11 @@
                 <h5 class="mb-1 text-xl text-lighter uppercase text-gray-900">@if(auth()->check())
                     {{ auth()->user()->name }}
                 @endif</h5>
+                @if(auth()->check() && auth()->user()->is_member) 
+            <span class="px-3 py-1 text-sm font-semibold text-blue-700 bg-blue-200 rounded-full">
+                Member
+            </span>
+        @endif
 
             </div>
         </div>
@@ -169,6 +173,7 @@
     </aside>
 
     <div class="p-4 sm:ml-64">
+        @include('studentdashboard.include.header')
 
         @section('content')
 

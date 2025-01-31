@@ -1,6 +1,27 @@
 @extends('studentdashboard.include.base')
 @section('content')
 <!-- Header Layout Content -->
+@if(session('success'))
+    <script>
+        Swal.fire({
+            title: 'Success!',
+            text: "{{ session('success') }}",
+            icon: 'success',
+            confirmButtonText: 'OK'
+        });
+    </script>
+@endif
+
+@if(session('error'))
+    <script>
+        Swal.fire({
+            title: 'Error!',
+            text: "{{ session('error') }}",
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
+    </script>
+@endif
 <div class="mdk-header-layout__content mdk-header-layout__content--fullbleed mdk-header-layout__content--scrollable page"
     style="">
 
@@ -16,10 +37,13 @@
             </button>
 
         </a>
+        @if(!auth()->user()->is_member) 
         <button id="membership-pay-button"
-            class="flex items-center justify-center w-48 h-12 bg-indigo-400 border-4 border-double text-black mt-2 shadow-xl px-6 py-3 transition duration-300 ease-in-out transform hover:scale-105 space-x-3 rounded-lg">
-            <span>Become Member</span>
-        </button>
+        class="flex items-center justify-center w-48 h-12 bg-indigo-400 border-4 border-double text-black mt-2 shadow-xl px-6 py-3 transition duration-300 ease-in-out transform hover:scale-105 space-x-3 rounded-lg">
+        <span>Become Member</span>
+    </button>
+        @endif
+        
     </div>
     @else
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
@@ -155,7 +179,7 @@
                 body: JSON.stringify({
                     student_id: "{{ Auth::id() }}" ?? 99,
                     receipt_no: receipt_no,
-                    amount: 700 ?? null,
+                    amount: 700,
                     ip_address: "{{ request()->ip() }}",
                     workshop_id:  null,
                 })
@@ -236,5 +260,6 @@
             });
     };
 </script>
+
 @endauth
 @endsection

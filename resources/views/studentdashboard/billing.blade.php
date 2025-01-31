@@ -40,29 +40,25 @@
               <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 ">Method</th>
               <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 ">Payment Amount</th>
               <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 ">Payment Date</th>
+              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 ">Payment Month</th>
+              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 ">Payment Year</th>
               <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 ">Error Reason</th>
               <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 ">Action</th>
             </tr>
           </thead>
+
           <tbody class="divide-y divide-gray-200">
             @foreach ($paymentsWithWorkshops as $item)
+            @if($item->course_id || $item->workshop_title)
             <tr>
               <!-- {{$item->id}} -->
               <td class="py-3 px-4 text-center">
-                @if($item->status === 'captured')
-                <a href="{{ route('student.viewbilling') }}" class="py-2.5 px-6 text-sm font-semibold text-indigo-500 transition-all duration-500 hover:text-indigo-700">Print Invoice</a>
-                @elseif($item->status === 'failed')
-                <span class="text-red-500 font-semibold">Failed</span>
-                @elseif($item->status === 'unpaid')
-                <button class="pay-now-button py-2.5 px-6 text-sm bg-green-500 text-white rounded-lg font-semibold shadow-xs transition-all duration-500 hover:bg-green-700"
-                  data-payment-id="{{ $item->id }}"
-                  data-order-id="{{ $item->order_id }}"
-                  data-amount="{{ $item->transaction_fee }}"
-                  data-student-id="{{ $item->student_id }}">
-                  Pay Now
-                </button>
+                @if(!empty($item->workshop_title))
+                {{ $item->workshop_title }}
+                @elseif(!empty($item->course->title))
+                {{ $item->course->title }}
                 @else
-                <button class="refresh-payment py-2.5 px-6 text-sm bg-indigo-900 text-white rounded-lg font-semibold shadow-xs transition-all duration-500 hover:bg-indigo-700" data-order-id="{{ $item->order_id }}">Refresh</button>
+                {{ 'Membership Fee' }}
                 @endif
               </td>
 
@@ -94,23 +90,35 @@
               <td class="py-3 px-4 text-gray-800 text-center">
                 {{ \Carbon\Carbon::parse($item->transaction_date)->format('d M Y') }}
               </td>
+              <td class="py-3 px-4 text-gray-800 text-center">
+                {{ \Carbon\Carbon::create()->month((int)$item->month)->format('M') }}
+              </td>
+              <td class="py-3 px-4 text-gray-800 text-center">
+                {{ $item->year}}
+              </td>
               <td class="py-3 px-4 text-gray-800 text-left truncate max-w-xs" title="{{ $item->error_reason }}">
                 {{ $item->error_reason }}
               </td>
-
-              @if($item->status === 'captured')
-              <td class="py-3 px-4 text-center">
+              <td class="py-3 px-4 text-gray-800 text-center">
+                @if($item->status === 'captured')
                 <a href="{{ route('student.viewbilling') }}" class="py-2.5 px-6 text-sm font-semibold text-indigo-500 transition-all duration-500 hover:text-indigo-700">Print Invoice</a>
+                @elseif($item->status === 'failed')
+                <span class="text-red-500 font-semibold">Failed</span>
+                @elseif($item->status === 'unpaid')
+                <button class="pay-now-button py-2.5 px-6 text-sm bg-green-500 text-white rounded-lg font-semibold shadow-xs transition-all duration-500 hover:bg-green-700"
+                  data-payment-id="{{ $item->id }}"
+                  data-order-id="{{ $item->order_id }}"
+                  data-amount="{{ $item->transaction_fee }}"
+                  data-student-id="{{ $item->student_id }}">
+                  Pay Now
+                </button>
+                @else
+                <button class="refresh-payment py-2.5 px-6 text-sm bg-indigo-900 text-white rounded-lg font-semibold shadow-xs transition-all duration-500 hover:bg-indigo-700" data-order-id="{{ $item->order_id }}">Refresh</button>
+                @endif
               </td>
-              @elseif($item->status === 'failed')
-              <td class="py-3 px-4 text-center">
-              </td>
-              @else
-              <td class="py-3 px-4 text-center">
-                <button class="refresh-payment py-2.5 px-6 text-sm bg-indigo-900 text-white rounded-lg cursor-pointer font-semibold text-center shadow-xs transition-all duration-500 hover:bg-indigo-700" data-order-id="{{ $item->order_id }}">Refresh</button>
-              </td>
-              @endif
+
             </tr>
+            @endif
             @endforeach
           </tbody>
 
@@ -128,8 +136,8 @@
         <table class="min-w-full bg-white divide-y divide-gray-200">
           <thead class="bg-gray-100">
             <tr>
-              <th class="py-3 px-4 text-centert text-sm font-medium text-gray-600 ">Month</th>
-              <!-- <th class="py-3 px-4 text-left text-sm font-medium text-gray-600 ">Course Category</th> -->
+              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 ">Payment Date</th>
+              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 "> Month & Year</th>
               <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 ">Order Id</th>
               <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 ">Payment Status</th>
               <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 ">Method</th>
@@ -139,9 +147,70 @@
               <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 ">Action</th>
             </tr>
           </thead>
+          @if(Auth::user()->is_member)
           <tbody class="divide-y divide-gray-200">
-
+            @foreach ($paymentsWithWorkshops as $item)
+            @if(empty($item->course_id) && empty($item->workshop_title))
+            <tr>
+              <td class="py-3 px-4 text-gray-800 text-center">
+                {{ \Carbon\Carbon::parse($item->transaction_date)->format('d M Y') }}
+              </td>
+              <td class="py-3 px-4 text-gray-800 text-center">
+                {{ \Carbon\Carbon::create((int)$item->year, (int)$item->month, 1)->format('M Y') }}
+              </td>
+              <td class="py-3 px-4 text-center text-gray-800">
+                {{ $item->order_id }}
+              </td>
+              <td class="py-3 px-4 text-center text-gray-800">
+                @if($item->status === "captured")
+                <div class="flex items-center justify-center rounded-full bg-green-500 uppercase px-2 py-1 text-center text-xs font-bold mr-3">
+                  {{$item->status}}
+                </div>
+                @elseif($item->status === "failed")
+                <div class="flex items-center justify-center rounded-full bg-red-500 uppercase px-2 py-1 text-xs text-center font-bold mr-3">
+                  {{$item->status}}
+                </div>
+                @else
+                <div class="flex items-center justify-center rounded-full bg-yellow-500 uppercase px-2 py-1 text-center text-xs font-bold mr-3">
+                  {{$item->status}}
+                </div>
+                @endif
+              </td>
+              <td class="py-3 px-4 text-gray-800 text-center">
+                {{ $item->method ?? 'N/A'}}
+              </td>
+              <td class="py-3 px-4 text-gray-800 text-center">
+                ₹{{ $item->transaction_fee }}
+              </td>
+              <td class="py-3 px-4 text-gray-800 text-center">
+                {{ $item->year}}
+              </td>
+              <td class="py-3 px-4 text-gray-800 text-left truncate max-w-xs" title="{{ $item->error_reason }}">
+                {{ $item->error_reason }}
+              </td>
+              <td class="py-3 px-4 text-gray-800 text-center">
+                @if($item->status === 'captured')
+                <a href="{{ route('student.viewbilling') }}" class="py-2.5 px-6 text-sm font-semibold text-indigo-500 transition-all duration-500 hover:text-indigo-700">Print Invoice</a>
+                @elseif($item->status === 'failed')
+                <span class="text-red-500 font-semibold">Failed</span>
+                @elseif($item->status === 'unpaid')
+                <button class="pay-now-button py-2.5 px-6 text-sm bg-green-500 text-white rounded-lg font-semibold shadow-xs transition-all duration-500 hover:bg-green-700"
+                  data-payment-id="{{ $item->id }}"
+                  data-order-id="{{ $item->order_id }}"
+                  data-amount="{{ $item->transaction_fee }}"
+                  data-student-id="{{ $item->student_id }}">
+                  Pay Now
+                </button>
+                @else
+                <button class="refresh-payment py-2.5 px-6 text-sm bg-indigo-900 text-white rounded-lg font-semibold shadow-xs transition-all duration-500 hover:bg-indigo-700" data-order-id="{{ $item->order_id }}">Refresh</button>
+                @endif
+              </td>
+            </tr>
+            @endif
+            @endforeach
           </tbody>
+          @endif
+
 
         </table>
       </div>
@@ -161,75 +230,109 @@
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
-    var razorpayKey = "{{ env('RAZORPAY_KEY') }}";
-    var csrfToken = "{{ csrf_token() }}";
-    var updatePaymentRoute = "{{ route('update.payment.status') }}";
+  var razorpayKey = "{{ env('RAZORPAY_KEY') }}";
+  var csrfToken = "{{ csrf_token() }}";
+  var createOrderRoute = "{{ route('create.razorpay.order') }}"; // Route to create Razorpay order
+  var updatePaymentRoute = "{{ route('update.payment.status') }}"; // Route to update payment status
 
-document.querySelectorAll('.pay-now-button').forEach(button => {
-    button.addEventListener('click', function (e) {
-        e.preventDefault();
+  document.querySelectorAll('.pay-now-button').forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
 
-        const paymentId = this.getAttribute('data-payment-id');
-        const orderId = this.getAttribute('data-order-id');
-        const amount = this.getAttribute('data-amount');
-        const studentId = this.getAttribute('data-student-id');
+      const studentId = this.getAttribute('data-student-id');
+      const amount = this.getAttribute('data-amount');
 
-        var options = {
-            "key": razorpayKey,  // Use the variable defined in Blade
-            "amount": amount * 100, // Convert to paisa
-            "currency": "INR",
-            "order_id": orderId,
-            "handler": function (response) {
-                // Send payment details to Laravel backend
-                console.log(response);
-                let bodydata = {
-                        payment_id: paymentId,
-                        student_id: studentId,
-                        razorpay_payment_id: response.razorpay_payment_id,
-                        razorpay_order_id: orderId,
-                        razorpay_signature: response.razorpay_signature
-                    };
-                    console.log(bodydata);
+      console.log("Creating order for amount:", amount);
+
+      // ✅ Step 1: Create Razorpay Order before initiating payment
+      fetch(createOrderRoute, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": csrfToken
+          },
+          body: JSON.stringify({
+            student_id: studentId,
+            amount: amount
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            const orderId = data.order_id;
+
+            console.log("Generated Order ID:", orderId);
+
+            // ✅ Step 2: Open Razorpay Payment Popup
+            var options = {
+              "key": razorpayKey,
+              "amount": amount * 100, // Convert to paisa
+              "currency": "INR",
+              "order_id": orderId, // Pass the correct order ID
+              "name": "Comestro Techlabs",
+              "description": "Payment for Course Fee",
+              "handler": function(response) {
+                console.log("Payment Response:", response);
+
+                let bodyData = {
+                  student_id: studentId,
+                  razorpay_payment_id: response.razorpay_payment_id,
+                  razorpay_order_id: response.razorpay_order_id,
+                  razorpay_signature: response.razorpay_signature
+                };
+
+                console.log("Updating payment status with:", bodyData);
+
+                // ✅ Step 3: Update payment status after successful payment
                 fetch(updatePaymentRoute, {
                     method: "POST",
                     headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRF-TOKEN": csrfToken
+                      "Content-Type": "application/json",
+                      "X-CSRF-TOKEN": csrfToken
                     },
-                    body: JSON.stringify(bodydata)
-                })
-                .then(response => response.json())
-                .then(data => {
+                    body: JSON.stringify(bodyData)
+                  })
+                  .then(response => response.json())
+                  .then(data => {
                     if (data.success) {
-                        alert('Payment successful! Redirecting...');
-                        window.location.reload(true);
+                      alert('Payment successful! Redirecting...');
+                      window.location.reload(true);
                     } else {
-                        alert('Payment failed: ' + data.message);
+                      alert('Payment failed: ' + data.message);
                     }
-                })
-                .catch(error => {
+                  })
+                  .catch(error => {
                     console.error('Error updating payment:', error);
                     alert('Error updating payment status.');
-                });
-            },
-            "theme": {
+                  });
+              },
+              "theme": {
                 "color": "#3399cc"
-            }
-        };
+              }
+            };
 
-        var rzp1 = new Razorpay(options);
+            var rzp1 = new Razorpay(options);
 
-        // Handle payment failure
-        rzp1.on('payment.failed', function(response) {
-            alert('Payment failed: ' + response.error.description);
+            // ✅ Handle payment failure
+            rzp1.on('payment.failed', function(response) {
+              alert('Payment failed: ' + response.error.description);
+            });
+
+            rzp1.open();
+          } else {
+            alert("Failed to create order: " + data.message);
+          }
+        })
+        .catch(error => {
+          console.error("Error creating order:", error);
+          alert("Error creating Razorpay order.");
         });
-
-        rzp1.open();
     });
-});
+  });
+</script>
+</script>
 
-
-
+<script>
   document.querySelectorAll('.refresh-payment').forEach(button => {
     button.addEventListener('click', function(e) {
       e.preventDefault();
@@ -262,6 +365,5 @@ document.querySelectorAll('.pay-now-button').forEach(button => {
     });
   });
 </script>
-
 
 @endsection

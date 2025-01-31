@@ -19,9 +19,9 @@
                 To complete your login process, here is your One-Time Password (OTP):
             </p>
             <div style="font-size: 24px; font-weight: bold; color: white;">
-                <p style="font-size:20px; font-weight: bold; text-align: center; background-color: #662d91; color: white; padding: 5px; border-radius: 8px; width: 20%; margin: 20px auto;">
+                <p style="font-size:20px; font-weight: bold; text-align: center; background-color: #662d91; color: white; padding: 5px; border-radius: 8px; width: 20%; margin: 20px auto; width: auto; min-width: 120px; max-width: 20%; ">
                     {{ $otp }}
-                </p>            </div>
+                </p>  </div>
             <p style="font-size: 16px; line-height: 1.5; color: #555555;">
                  This OTP is valid for <strong>5 minutes</strong> only.
             </p>

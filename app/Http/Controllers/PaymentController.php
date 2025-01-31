@@ -150,7 +150,6 @@ class PaymentController extends Controller
             if (is_null($payment->course_id) && is_null($payment->workshop_id)) {
                 $user = User::findOrFail($payment->student_id);
                 $user->update(['is_member' => 1]);
-
                 $this->createFuturePayments($payment);
             }
 
@@ -183,7 +182,7 @@ class PaymentController extends Controller
                     'student_id' => $payment->student_id,
                     'amount' => $payment->amount,
                     'receipt_no' => 'RCPT-' . $year . '-' . $month . '-' . $payment->student_id,
-                    'transaction_fee' => $payment->amount * 0.02,
+                    'transaction_fee' => $payment->amount,
                     'transaction_date' => Carbon::create($year, $month, 1),
                     'ip_address' => request()->ip(),
                     'status' => 'unpaid',
@@ -198,11 +197,8 @@ class PaymentController extends Controller
     public function updatePaymentStatus(Request $request)
     {
         $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
-
-        // dd($request->);
         // Find payment record by Razorpay order ID
         $payment = Payment::where('order_id', $request->razorpay_order_id)->first();
-
         if (!$payment) {
             // Create a new order if not found
             $newOrder = $api->order->create([
@@ -236,12 +232,13 @@ class PaymentController extends Controller
             ];
 
             $api->utility->verifyPaymentSignature($attributes);
-
+            // dd($request->all());
             // Update payment record
             $payment->update([
                 'payment_id' => $request->razorpay_payment_id,
                 'payment_status' => 'completed',
                 'transaction_date' => now(),
+                "status" => "captured",
             ]);
 
             return response()->json(['success' => true, 'message' => 'Payment verified and updated successfully']);
@@ -249,6 +246,61 @@ class PaymentController extends Controller
             return response()->json(['success' => false, 'message' => 'Payment verification failed: ' . $e->getMessage()], 400);
         }
     }
+
+
+    public function createRazorpayOrder(Request $request)
+    {
+        try {
+            // Initialize Razorpay API
+            $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
+
+            // Validate request data
+            $request->validate([
+                'student_id' => 'required|exists:users,id',
+                'amount' => 'required|numeric|min:1',
+            ]);
+
+            // Check if an unpaid record exists for the same amount
+            $payment = Payment::where('student_id', $request->student_id)
+                ->where('amount', 700)
+                ->where('status', 'unpaid')
+                ->first();
+
+            if (!$payment) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No unpaid payment record found for this student.'
+                ], 400);
+            }
+
+            // Create a new Razorpay Order
+            $order = $api->order->create([
+                'amount' => $request->amount * 100, // Convert to paise
+                'currency' => 'INR',
+                'receipt' => 'RCPT-' . now()->year . '-' . now()->month . '-' . now()->day . '-' . $request->student_id,
+                'payment_capture' => 1, // Auto-capture
+            ]);
+
+            // Update the payment record with the order ID
+            $payment->update([
+                'order_id' => $order->id,
+                'receipt_no' => $order->receipt
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Razorpay order created successfully.',
+                'order_id' => $order->id,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error creating order: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+
 
 
     public function refreshPaymentStatus(Request $request)
