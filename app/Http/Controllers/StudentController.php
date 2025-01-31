@@ -247,6 +247,10 @@ class StudentController extends Controller
     public function enrollCourse($courseId)
     {
         $user = auth()->user();
+        if (!$user->is_active) {
+            return redirect()->back()->with('error', 'Your account is inactive. Please contact support.');
+        }
+    
         $coursesWithoutBatch = $user->courses()->wherePivot('batch_id', null)->exists();
 
         if ($coursesWithoutBatch) {

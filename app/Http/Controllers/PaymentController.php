@@ -145,6 +145,19 @@ class PaymentController extends Controller
                 'status' => 'captured',
                 'payment_date' => now(),
             ]);
+             // Grant course access if the payment is for a course
+             if ($razorpayPayment->status == 'captured' && $payment->course_id) {
+                DB::table('course_user')->updateOrInsert(
+                    [
+                        'course_id' => $payment->course_id,
+                        'user_id' => $payment->student_id,
+                    ],
+                    [
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]
+                );
+            }
 
             // Handle membership and future payments for membership
             if (is_null($payment->course_id) && is_null($payment->workshop_id)) {
