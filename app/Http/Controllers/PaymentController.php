@@ -166,33 +166,35 @@ class PaymentController extends Controller
     }
 
     private function createFuturePayments($payment)
-    {
-        $currentMonth = Carbon::now()->month;
-        $year = Carbon::now()->year;
+{
+    $currentDate = Carbon::now();
 
-        // Generate future payments for the membership
-        for ($month = $currentMonth + 1; $month <= 12; $month++) {
-            $existingPayment = Payment::where('student_id', $payment->student_id)
-                ->where('month', $month)
-                ->where('year', $year)
-                ->first();
+    // Generate future payments for the next 12 months
+    for ($i = 1; $i <= 12; $i++) {
+        $futureDate = $currentDate->copy()->addMonths($i);
+        $month = $futureDate->month;
+        $year = $futureDate->year;
 
-            if (!$existingPayment) {
-                Payment::create([
-                    'student_id' => $payment->student_id,
-                    'amount' => $payment->amount,
-                    'receipt_no' => 'RCPT-' . $year . '-' . $month . '-' . $payment->student_id,
-                    'transaction_fee' => $payment->amount,
-                    'transaction_date' => Carbon::create($year, $month, 1),
-                    'ip_address' => request()->ip(),
-                    'status' => 'unpaid',
-                    'month' => $month,
-                    'year' => $year,
-                ]);
-            }
+        $existingPayment = Payment::where('student_id', $payment->student_id)
+            ->where('month', $month)
+            ->where('year', $year)
+            ->first();
+
+        if (!$existingPayment) {
+            Payment::create([
+                'student_id' => $payment->student_id,
+                'amount' => $payment->amount,
+                'receipt_no' => 'RCPT-' . $year . '-' . $month . '-' . $payment->student_id,
+                'transaction_fee' => $payment->amount,
+                'transaction_date' => Carbon::create($year, $month, 1),
+                'ip_address' => request()->ip(),
+                'status' => 'unpaid',
+                'month' => $month,
+                'year' => $year,
+            ]);
         }
     }
-
+}
 
     public function updatePaymentStatus(Request $request)
     {
@@ -223,6 +225,8 @@ class PaymentController extends Controller
             return response()->json(['success' => false, 'message' => 'New order created. Please retry payment.', 'order_id' => $newOrder->id], 400);
         }
 
+
+
         try {
             // Verify Razorpay signature
             $attributes = [
@@ -234,11 +238,17 @@ class PaymentController extends Controller
             $api->utility->verifyPaymentSignature($attributes);
             // dd($request->all());
             // Update payment record
+            $razorpayPaymentId = $request->razorpay_payment_id;
+
+            $razorpayPayment = $api->payment->fetch($razorpayPaymentId);
+
             $payment->update([
-                'payment_id' => $request->razorpay_payment_id,
+                'payment_id' => $razorpayPaymentId,
+                'transaction_id' => $razorpayPaymentId,
+                'method' => $razorpayPayment->method,
                 'payment_status' => 'completed',
-                'transaction_date' => now(),
-                "status" => "captured",
+                'status' => 'captured',
+                'payment_date' => now(),
             ]);
 
             return response()->json(['success' => true, 'message' => 'Payment verified and updated successfully']);
