@@ -294,14 +294,15 @@ class StudentController extends Controller
         if (!Auth::check()) {
             return redirect()->route('auth.login')->with('error', 'You must be logged in to access this page');
         }
-    
         $studentId = Auth::id();
+        $user = User::where('id', $studentId)->first();
+
         $hasCompleted = $this->hasCompletedExamOrAssignment($studentId);
         $today = Carbon::now(); // Define the current date
         // $today =\Carbon\Carbon::parse('2025-04-15 00:00:00');
         $payments = Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->get();
     
-        $paymentsWithWorkshops = $payments->map(function ($payment) use ($today) { // Pass $today inside use()
+        $paymentsWithWorkshops = $payments->map(function ($payment) use ($today,$user) { // Pass $today inside use()
             $workshopTitle = null;
     
             // Check if the payment has a workshop_id and fetch the workshop title
@@ -314,8 +315,12 @@ class StudentController extends Controller
             if ($payment->status === 'unpaid' && Carbon::parse($payment->transaction_date)->lt($today)) {
                 $payment->status = 'due';
                 $payment->save();
-
                 
+                if ($user) { 
+                    $user->is_active = 0;
+                    $user->save();
+                }
+
             }
     
             $payment->workshop_title = $workshopTitle;
