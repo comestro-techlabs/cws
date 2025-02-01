@@ -61,6 +61,7 @@ class PaymentController extends Controller
             'student_id' => $studentId,
             'course_id' => $courseId,
             'workshop_id' => $workshopId,
+            'total_amount' => $amount,
             'amount' => $amount,
             'receipt_no' => $request->receipt_no,
             'transaction_fee' => $amount, // You can change this if needed
