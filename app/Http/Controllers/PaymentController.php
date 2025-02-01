@@ -283,7 +283,7 @@ class PaymentController extends Controller
             // Check if an unpaid record exists for the same amount
             $payment = Payment::where('student_id', $request->student_id)
                 ->where('amount', 700)
-                ->whereIn('status', ['unpaid', 'due'])
+                ->whereIn('status', ['unpaid', 'overdue'])
                 ->first();
 
             if (!$payment) {
