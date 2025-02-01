@@ -27,7 +27,7 @@ class MessageController extends Controller
         $batches = Batch::with('course')->get();
         $users = User::all();
         return view('admin.message.create', compact('batches', 'users'));
-     
+
     }
 
     /**
@@ -47,9 +47,9 @@ class MessageController extends Controller
                 return array_unique($request->some_user_ids ?? []);
             default:
                 return [];
-            }   
+            }
         }
-  
+
 
     public function store(Request $request)
     {
@@ -81,10 +81,10 @@ class MessageController extends Controller
             'recipient_type' => $request->recipient_type,
             'recipients' => $recipients, // No need for json_encode
         ]);
-    
+
         return redirect()->route('messages.create')->with('success', 'Message created successfully.');
     }
-    
+
 
 
     /**
@@ -101,7 +101,7 @@ class MessageController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-   
+
 
 
     public function destroy(Message $message)
@@ -130,8 +130,6 @@ class MessageController extends Controller
                   });
         })->get();
 
-        return view('studentdashboard.notification', compact('messages'));       
+        return view('studentdashboard.notification', compact('messages'));
     }
-
-    
 }

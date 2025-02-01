@@ -79,7 +79,7 @@
     Route::post('/refresh-payment-status', [PaymentController::class, 'refreshPaymentStatus'])->name('refresh.payment.status');
     Route::post('/update-payment-status', [PaymentController::class, 'updatePaymentStatus'])->name('update.payment.status');
     Route::post('/create-razorpay-order', [PaymentController::class, 'createRazorpayOrder'])->name('create.razorpay.order');
-
+    Route::get('/process-overdue-payments', [PaymentController::class, 'processOverduePayments']);
     Route::middleware([AdminMiddleware::class, "auth"])->group(function () {
 
         Route::prefix('admin')->group(function () {

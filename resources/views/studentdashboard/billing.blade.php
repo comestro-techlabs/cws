@@ -153,7 +153,7 @@
             @if(empty($item->course_id) && empty($item->workshop_title))
             <tr>
               <td class="py-3 px-4 text-gray-800 text-center">
-                {{ \Carbon\Carbon::parse($item->transaction_date)->format('d M Y') }}
+                {{ \Carbon\Carbon::parse($item->due_date)->format('d M Y') }}
               </td>
               <td class="py-3 px-4 text-gray-800 text-center">
                 {{ \Carbon\Carbon::create((int)$item->year, (int)$item->month, 1)->format('M Y') }}
@@ -180,7 +180,7 @@
                 {{ $item->method ?? 'N/A'}}
               </td>
               <td class="py-3 px-4 text-gray-800 text-center">
-                ₹{{ $item->transaction_fee }}
+                ₹{{ $item->total_amount }}
               </td>
               <td class="py-3 px-4 text-gray-800 text-center">
                 {{ $item->year}}

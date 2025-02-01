@@ -64,7 +64,7 @@ class PaymentController extends Controller
             'amount' => $amount,
             'receipt_no' => $request->receipt_no,
             'transaction_fee' => $amount, // You can change this if needed
-            'transaction_date' => now()->toDateTimeString(),
+            'due_date' => now()->toDateTimeString(),
             'ip_address' => $request->ip_address,
             'payment_status' => 'initiated',
             'month' => $currentMonth,
@@ -111,59 +111,58 @@ class PaymentController extends Controller
         }
     }
 
-            public function handlePaymentResponse(Request $request)
-            {
-                $paymentId = $request->payment_id;
-                $razorpayPaymentId = $request->razorpay_payment_id;
-                $razorpayOrderId = $request->razorpay_order_id;
-                $razorpaySignature = $request->razorpay_signature;
+    public function handlePaymentResponse(Request $request)
+    {
+        $paymentId = $request->payment_id;
+        $razorpayPaymentId = $request->razorpay_payment_id;
+        $razorpayOrderId = $request->razorpay_order_id;
+        $razorpaySignature = $request->razorpay_signature;
 
-                $payment = Payment::findOrFail($paymentId);
+        $payment = Payment::findOrFail($paymentId);
 
-                $attributes = [
-                    'razorpay_order_id' => $razorpayOrderId,
-                    'razorpay_payment_id' => $razorpayPaymentId,
-                    'razorpay_signature' => $razorpaySignature,
-                ];
+        $attributes = [
+            'razorpay_order_id' => $razorpayOrderId,
+            'razorpay_payment_id' => $razorpayPaymentId,
+            'razorpay_signature' => $razorpaySignature,
+        ];
 
-                if (!$this->verifyRazorpaySignature($attributes)) {
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'Payment verification failed',
-                    ], 400);
-                }
+        if (!$this->verifyRazorpaySignature($attributes)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Payment verification failed',
+            ], 400);
+        }
 
-                try {
-                    $api = $this->getRazorpayApi();
-                    $razorpayPayment = $api->payment->fetch($razorpayPaymentId);
+        try {
+            $api = $this->getRazorpayApi();
+            $razorpayPayment = $api->payment->fetch($razorpayPaymentId);
 
-                    $payment->update([
-                        'payment_id' => $razorpayPaymentId,
-                        'transaction_id' => $razorpayPaymentId,
-                        'method' => $razorpayPayment->method,
-                        'payment_status' => 'completed',
-                        'status' => 'captured',
-                        'payment_date' => now(),
-                    ]);
+            $payment->update([
+                'payment_id' => $razorpayPaymentId,
+                'transaction_id' => $razorpayPaymentId,
+                'method' => $razorpayPayment->method,
+                'payment_status' => 'completed',
+                'status' => 'captured',
+                'payment_date' => now(),
+            ]);
 
-                    // Handle membership and future payments for membership
-                    if (is_null($payment->course_id) && is_null($payment->workshop_id)) {
-                        $user = User::findOrFail($payment->student_id);
-                        $user->update(['is_member' => 1]);
-                        $this->createFuturePayments($payment);
-                    }
+            // Handle membership and future payments for membership
+            if (is_null($payment->course_id) && is_null($payment->workshop_id)) {
+                $user = User::findOrFail($payment->student_id);
+                $user->update(['is_member' => 1]);
+                $this->createFuturePayments($payment);
+            }
 
-                    return response()->json([
-                        'success' => true,
-                        'message' => 'Payment processed successfully.',
-                    ]);
-                } catch (\Exception $e) {
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'Payment verification failed: ' . $e->getMessage(),
-                    ], 400);
-                }
-            catch (\Exception $e) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Payment processed successfully.',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Payment verification failed: ' . $e->getMessage(),
+            ], 400);
+        } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Payment verification failed: ' . $e->getMessage(),
@@ -172,35 +171,36 @@ class PaymentController extends Controller
     }
 
     private function createFuturePayments($payment)
-{
-    $currentDate = Carbon::now();
+    {
+        $startDate = Carbon::parse($payment->payment_date);
+        $studentId = $payment->student_id;
 
-    // Generate future payments for the next 12 months
-    for ($i = 1; $i <= 12; $i++) {
-        $futureDate = $currentDate->copy()->addMonths($i);
-        $month = $futureDate->month;
-        $year = $futureDate->year;
+        // Create 11 more payments (total 12)
+        for ($i = 1; $i <= 11; $i++) {
+            $dueDate = $startDate->copy()->addDays(28 * $i);
+            $year = $dueDate->year;
+            $month = $dueDate->month;
 
-        $existingPayment = Payment::where('student_id', $payment->student_id)
-            ->where('month', $month)
-            ->where('year', $year)
-            ->first();
+            $existingPayment = Payment::where('student_id', $studentId)
+                ->where('due_date', $dueDate->toDateString())
+                ->first();
 
-        if (!$existingPayment) {
-            Payment::create([
-                'student_id' => $payment->student_id,
-                'amount' => $payment->amount,
-                'receipt_no' => 'RCPT-' . $year . '-' . $month . '-' . $payment->student_id,
-                'transaction_fee' => $payment->amount,
-                'transaction_date' => Carbon::create($year, $month, 1),
-                'ip_address' => request()->ip(),
-                'status' => 'unpaid',
-                'month' => $month,
-                'year' => $year,
-            ]);
+            if (!$existingPayment) {
+                Payment::create([
+                    'student_id' => $studentId,
+                    'amount' => $payment->amount,
+                    'receipt_no' => 'RCPT-' . $year . '-' . $month . '-' . $studentId,
+                    'transaction_fee' => $payment->amount,
+                    'due_date' => $dueDate,
+                    'ip_address' => request()->ip(),
+                    'status' => 'unpaid',
+                    'month' => $month,
+                    'year' => $year,
+                    'total_amount' =>  $payment->amount,
+                ]);
+            }
         }
     }
-}
 
     public function updatePaymentStatus(Request $request)
     {
@@ -223,7 +223,7 @@ class PaymentController extends Controller
                 'amount' => $request->amount,
                 'order_id' => $newOrder->id,
                 'receipt_no' => $newOrder->receipt,
-                'transaction_date' => now(),
+                'payment_date' => now(),
                 'status' => 'unpaid',
                 'month' => now()->month,
                 'year' => now()->year,
@@ -267,7 +267,6 @@ class PaymentController extends Controller
             return response()->json(['success' => false, 'message' => 'Payment verification failed: ' . $e->getMessage()], 400);
         }
     }
-
 
     public function createRazorpayOrder(Request $request)
     {
@@ -321,9 +320,6 @@ class PaymentController extends Controller
         }
     }
 
-
-
-
     public function refreshPaymentStatus(Request $request)
     {
         $orderId = $request->order_id;
@@ -341,7 +337,7 @@ class PaymentController extends Controller
                         'status' => $payment['status'],
                         'payment_id' => $payment['id'],
                         'transaction_id' => $payment['id'],
-                        'transaction_date' => now(),
+                        'payment_date' => now(),
                         'error_reason' => $payment['error_description'] ?? null,
                     ]);
 
@@ -363,22 +359,4 @@ class PaymentController extends Controller
         }
     }
 
-    // private function updateCourseAndWorkshop($paymentRecord)
-    // {
-    //     if ($paymentRecord->course_id) {
-    //         DB::table('course_user')->insert([
-    //             'course_id' => $paymentRecord->course_id,
-    //             'created_at' => now(),
-    //             'updated_at' => now(),
-    //         ]);
-    //     }
-
-    //     if ($paymentRecord->workshop_id) {
-    //         DB::table('workshop_user')->insert([
-    //             'workshop_id' => $paymentRecord->workshop_id,
-    //             'created_at' => now(),
-    //             'updated_at' => now(),
-    //         ]);
-    //     }
-    // }
 }
