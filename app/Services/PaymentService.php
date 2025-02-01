@@ -14,8 +14,8 @@ class PaymentService
      */
     public function processOverduePayments()
     {
-        $today = Carbon::parse("2025-04-17 00:00:00");
-        // $today = Carbon::today();
+        // $today = Carbon::parse("2025-04-17 00:00:00");
+        $today = Carbon::today();
         $oneMonthAgo = $today->copy()->subMonth();
         // Fetch all unpaid payments with due dates in the past
         $overduePayments = Payment::whereIn('status', ['unpaid', 'overdue'])
