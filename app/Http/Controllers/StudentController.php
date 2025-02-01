@@ -338,7 +338,7 @@ class StudentController extends Controller
 
 
         $courses = User::find($studentId)->courses()->get();
-        
+
         $processedCount = $this->paymentService->processOverduePayments();
 
         return view('studentdashboard.billing', compact('hasCompleted', 'courses', 'paymentsWithWorkshops'));
