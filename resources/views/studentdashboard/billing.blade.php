@@ -182,7 +182,10 @@
                 ₹{{ $item->total_amount }}
               </td>
               <td class="p-2 text-gray-800 text-center">
-                {{ $item->year}}
+                @if($item->payment_date)
+                {{ \Carbon\Carbon::parse($item->payment_date)->format('d M Y') }}
+                @else
+                @endif
               </td>
 
               <td class="p-2 text-gray-800 text-center">
