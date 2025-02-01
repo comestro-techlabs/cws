@@ -201,8 +201,8 @@
                   data-student-id="{{ $item->student_id }}">
                   Pay Now
                 </button>
-                {{-- {{$overdueCount}} --}}
-                @if($overdueCount)
+                {{$overdueCount}}
+                @if(!$overdueCount)
                    @php $isPayable = false; @endphp
                 @endif
                 @else
@@ -245,8 +245,8 @@
 
       const studentId = this.getAttribute('data-student-id');
       const amount = this.getAttribute('data-amount');
+      const payment_id = this.getAttribute('data-payment-id');
 
-      console.log("Creating order for amount:", amount);
 
       // ✅ Step 1: Create Razorpay Order before initiating payment
       fetch(createOrderRoute, {
@@ -257,7 +257,8 @@
           },
           body: JSON.stringify({
             student_id: studentId,
-            amount: amount
+            amount: amount,
+            payment_id:payment_id
           })
         })
         .then(response => response.json())
@@ -265,7 +266,6 @@
           if (data.success) {
             const orderId = data.order_id;
 
-            console.log("Generated Order ID:", orderId);
 
             // ✅ Step 2: Open Razorpay Payment Popup
             var options = {
@@ -282,8 +282,10 @@
                   student_id: studentId,
                   razorpay_payment_id: response.razorpay_payment_id,
                   razorpay_order_id: response.razorpay_order_id,
-                  razorpay_signature: response.razorpay_signature
+                  razorpay_signature: response.razorpay_signature,
+                  payment_id:payment_id
                 };
+
 
                 console.log("Updating payment status with:", bodyData);
 

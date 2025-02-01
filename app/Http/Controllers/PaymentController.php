@@ -209,6 +209,7 @@ class PaymentController extends Controller
         $user = User::where('id', Auth::id())->first();
         // Find payment record by Razorpay order ID
         $payment = Payment::where('order_id', $request->razorpay_order_id)->first();
+
         if (!$payment) {
             // Create a new order if not found
             $newOrder = $api->order->create([
@@ -284,6 +285,7 @@ class PaymentController extends Controller
             // Check if an unpaid record exists for the same amount
             $payment = Payment::where('student_id', $request->student_id)
                 ->where('amount', 700)
+                ->where("id",$request->payment_id)
                 ->whereIn('status', ['unpaid', 'overdue'])
                 ->first();
 
