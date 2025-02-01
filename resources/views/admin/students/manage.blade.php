@@ -71,6 +71,9 @@
                                 DOB
                             </th>
                             <th scope="col" class="px-6 py-3">
+                                IsMember
+                            </th>
+                            <th scope="col" class="px-6 py-3">
                                 Action
                             </th>
                         </tr>
@@ -100,6 +103,12 @@
                                 <td class="px-6 py-4">
                                     {{ $student->dob }}
                                 </td>
+                                <td class="px-6 py-4">
+                                    <span class="{{ $student->is_member == 1 ? 'text-green-600' : 'text-red-600' }}">
+                                    {{ $student->is_member == 1 ? 'Yes' : 'No' }}
+                                    </span>
+                                </td>
+                                
 
 
                                 <td class="flex gap-2 items-center px-6 py-4">
