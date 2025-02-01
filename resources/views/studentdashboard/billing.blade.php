@@ -165,7 +165,7 @@
                 <div class="flex items-center justify-center rounded-full bg-green-500 px-2 py-1 text-center text-xs mr-3">
                   {{$item->status}}
                 </div>
-                @elseif($item->status === "failed" || $item->status==='due' )
+                @elseif($item->status === "failed" || $item->status==='overdue' )
                 <div class="flex items-center justify-center rounded-full bg-red-500 px-2 py-1 text-xs text-center mr-3">
                   {{$item->status}}
                 </div>
@@ -189,7 +189,10 @@
                 ₹{{ $item->total_amount }}
               </td>
               <td class="p-2 text-gray-800 text-center">
-                {{ $item->year}}
+                @if($item->payment_date)
+                {{ \Carbon\Carbon::parse($item->payment_date)->format('d M Y') }}
+                @else
+                @endif
               </td>
 
               <td class="p-2 text-gray-800 text-center">
@@ -201,7 +204,7 @@
                 <button class="pay-now-button py-1 px-2 text-xs bg-green-500 text-white rounded-lg font-semibold shadow-xs transition-all duration-500 hover:bg-green-700"
                   data-payment-id="{{ $item->id }}"
                   data-order-id="{{ $item->order_id }}"
-                  data-amount="{{ $item->transaction_fee }}"
+                  data-amount="{{ $item->total_amount }}"
                   data-student-id="{{ $item->student_id }}">
                   Pay Now
                 </button>
