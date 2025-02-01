@@ -24,17 +24,12 @@
       </ul>
     </div>
     <div id="default-styled-tab-content">
-      {{-- <div class="bg-white shadow rounded-lg "id="default-styled-tab-content"  > --}}
-      {{-- <div class="p-4 border-b border-gray-300 mt-5">
-        <h2 class="text-lg font-semibold text-gray-800">Invoices</h2>
-        <p class="text-xs text-gray-600">Your past payments</p>
-      </div> --}}
+
       <div class="p-4 overflow-x-auto" id="styled-profile" role="tabpanel" aria-labelledby="profile-tab">
         <table class="min-w-full bg-white divide-y divide-gray-200">
           <thead class="bg-gray-100">
             <tr>
               <th class="p-2 text-centert text-xs font-medium text-gray-600 ">Course / Workshop Name</th>
-              <!-- <th class="p-2 text-left text-xs font-medium text-gray-600 ">Course Category</th> -->
               <th class="p-2 text-center text-xs font-medium text-gray-600 ">Order Id</th>
               <th class="p-2 text-center text-xs font-medium text-gray-600 ">Payment Status</th>
               <th class="p-2 text-center text-xs font-medium text-gray-600 ">Method</th>
@@ -48,6 +43,9 @@
           </thead>
 
           <tbody class="divide-y divide-gray-200">
+            @php
+                $isPayable = true;
+            @endphp
             @foreach ($paymentsWithWorkshops as $item)
             @if($item->course_id || $item->workshop_title)
             <tr>
@@ -125,13 +123,6 @@
         </table>
       </div>
 
-
-      {{-- </div> --}}
-      {{-- <div class="bg-white shadow rounded-lg " id="styled-dashboard" role="tabpanel" aria-labelledby="dashboard-tab"> --}}
-      {{-- <div class="p-4 border-b border-gray-300 mt-5">
-        <h2 class="text-lg font-semibold text-gray-800">MemberShip</h2>
-        <p class="text-xs text-gray-600">Your past payments</p>
-      </div> --}}
       <div class="p-4 overflow-x-auto" id="styled-dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
         <table class="min-w-full bg-white divide-y divide-gray-200">
           <thead class="bg-gray-100">
@@ -149,6 +140,7 @@
           @if(Auth::user()->is_member)
           <tbody class="divide-y divide-gray-200 text-xs">
             @foreach ($paymentsWithWorkshops as $item)
+
             @if(empty($item->course_id) && empty($item->workshop_title))
             <tr>
               <td class="px-2 py-1 text-gray-800 text-center">
@@ -195,12 +187,13 @@
                 @endif
               </td>
 
+
               <td class="p-2 text-gray-800 text-center">
                 @if($item->status === 'captured')
                 <a href="{{ route('student.viewbilling') }}" class="py-1 px-2 text-xs font-semibold text-indigo-500 transition-all duration-500 hover:text-indigo-700">Print Invoice</a>
                 @elseif($item->status === 'failed')
                 <span class="text-red-500 font-semibold">Failed</span>
-                @elseif($item->status === 'unpaid' || $item->status==='overdue')
+                @elseif(($item->status === 'unpaid' || $item->status==='overdue') && $isPayable)
                 <button class="pay-now-button py-1 px-2 text-xs bg-green-500 text-white rounded-lg font-semibold shadow-xs transition-all duration-500 hover:bg-green-700"
                   data-payment-id="{{ $item->id }}"
                   data-order-id="{{ $item->order_id }}"
@@ -208,6 +201,10 @@
                   data-student-id="{{ $item->student_id }}">
                   Pay Now
                 </button>
+                {{-- {{$overdueCount}} --}}
+                @if($overdueCount)
+                   @php $isPayable = false; @endphp
+                @endif
                 @else
                 <button class="refresh-payment py-1 px-2 text-xs bg-indigo-900 text-white rounded-lg font-semibold shadow-xs transition-all duration-500 hover:bg-indigo-700" data-order-id="{{ $item->order_id }}">Refresh</button>
                 @endif
