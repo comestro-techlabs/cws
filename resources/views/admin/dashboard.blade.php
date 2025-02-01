@@ -68,13 +68,15 @@
     </div> --}}
 
     <!-- Payments Card -->
-    <div class="bg-gradient-to-r bg-slate-100 border-l-4 border-red-600 text-red-600 shadow-xl rounded-lg p-4 flex flex-col justify-between" style="height: 130px;">
+     <div class="bg-gradient-to-r bg-slate-100 border-l-4 border-green-800 text-green-800 shadow-xl rounded-lg p-4 flex flex-col justify-between" style="height: 130px;">
         <div>
             <p class="text-3xl font-bold">{{ $paymentsCount }}</p>
-            <h3 class="text-lg text-red-600 font-semibold">Payments</h3>
+            <h3 class="text-lg text-green-800 font-semibold">Payments</h3>
         </div>
-        <a href="#" class="text-sm text-red-600 hover:underline">View Details</a>
-    </div>
+        <a href="{{route('admin.manage-payment')}}" class="text-sm text-green-800 hover:underline">View Details</a>
+    </div> 
+  
+    
 
     <!-- Due Payments Card -->
     {{-- <div class="bg-gradient-to-r bg-slate-100 border-l-4 border-indigo-600 text-indigo-600 shadow-xl rounded-lg p-4 flex flex-col justify-between" style="height: 130px;">

@@ -18,12 +18,13 @@ class AdminController extends Controller
     {
         $counts = [
             'studentsCount' => Payment::whereNotNull('course_id')
-                ->where('payment_status', 'captured')
+                ->where('payment_status', 'completed')
                 ->distinct('student_id')
                 ->count('student_id'),
             'coursesCount' => Course::count(),
             'batchesCount' => Batch::count(),
-            'paymentsCount' => Payment::sum('amount'),
+            // 'paymentsCount' => Payment::sum('amount'),
+            'paymentsCount' => Payment::where('payment_status', 'completed')->sum('transaction_fee'),
         ];
         return view('admin.dashboard', $counts);
     }
