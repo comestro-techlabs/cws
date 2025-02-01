@@ -13,7 +13,7 @@
     <!-- Invoices Table -->
 
     <div class="mb-4 ">
-      <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-styled-tab" data-tabs-toggle="#default-styled-tab-content" data-tabs-active-classes="text-purple-600 hover:text-purple-600 dark:text-purple-500 dark:hover:text-purple-500 border-purple-600 dark:border-purple-500" data-tabs-inactive-classes="dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300" role="tablist">
+      <ul class="flex flex-wrap -mb-px text-xs font-medium text-center" id="default-styled-tab" data-tabs-toggle="#default-styled-tab-content" data-tabs-active-classes="text-purple-600 hover:text-purple-600 dark:text-purple-500 dark:hover:text-purple-500 border-purple-600 dark:border-purple-500" data-tabs-inactive-classes="dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300" role="tablist">
         <li class="me-2" role="presentation">
           <button class="inline-block p-4 border-b-2 rounded-t-lg" id="profile-styled-tab" data-tabs-target="#styled-profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Invoice</button>
         </li>
@@ -27,23 +27,23 @@
       {{-- <div class="bg-white shadow rounded-lg "id="default-styled-tab-content"  > --}}
       {{-- <div class="p-4 border-b border-gray-300 mt-5">
         <h2 class="text-lg font-semibold text-gray-800">Invoices</h2>
-        <p class="text-sm text-gray-600">Your past payments</p>
+        <p class="text-xs text-gray-600">Your past payments</p>
       </div> --}}
       <div class="p-4 overflow-x-auto" id="styled-profile" role="tabpanel" aria-labelledby="profile-tab">
         <table class="min-w-full bg-white divide-y divide-gray-200">
           <thead class="bg-gray-100">
             <tr>
-              <th class="py-3 px-4 text-centert text-sm font-medium text-gray-600 ">Course / Workshop Name</th>
-              <!-- <th class="py-3 px-4 text-left text-sm font-medium text-gray-600 ">Course Category</th> -->
-              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 ">Order Id</th>
-              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 ">Payment Status</th>
-              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 ">Method</th>
-              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 ">Payment Amount</th>
-              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 ">Payment Date</th>
-              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 ">Payment Month</th>
-              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 ">Payment Year</th>
-              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 ">Error Reason</th>
-              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 ">Action</th>
+              <th class="p-2 text-centert text-xs font-medium text-gray-600 ">Course / Workshop Name</th>
+              <!-- <th class="p-2 text-left text-xs font-medium text-gray-600 ">Course Category</th> -->
+              <th class="p-2 text-center text-xs font-medium text-gray-600 ">Order Id</th>
+              <th class="p-2 text-center text-xs font-medium text-gray-600 ">Payment Status</th>
+              <th class="p-2 text-center text-xs font-medium text-gray-600 ">Method</th>
+              <th class="p-2 text-center text-xs font-medium text-gray-600 ">Payment Amount</th>
+              <th class="p-2 text-center text-xs font-medium text-gray-600 ">Payment Date</th>
+              <th class="p-2 text-center text-xs font-medium text-gray-600 ">Payment Month</th>
+              <th class="p-2 text-center text-xs font-medium text-gray-600 ">Payment Year</th>
+              <th class="p-2 text-center text-xs font-medium text-gray-600 ">Error Reason</th>
+              <th class="p-2 text-center text-xs font-medium text-gray-600 ">Action</th>
             </tr>
           </thead>
 
@@ -52,7 +52,7 @@
             @if($item->course_id || $item->workshop_title)
             <tr>
               <!-- {{$item->id}} -->
-              <td class="py-3 px-4 text-center">
+              <td class="p-2 text-center  text-xs">
                 @if(!empty($item->workshop_title))
                 {{ $item->workshop_title }}
                 @elseif(!empty($item->course->title))
@@ -63,49 +63,49 @@
               </td>
 
 
-              <td class="py-3 px-4 text-center text-gray-800">
+              <td class="p-2 text-center  text-xs text-gray-800">
                 {{ $item->order_id }}
               </td>
-              <td class="py-3 px-4 text-center text-gray-800">
+              <td class="p-2 text-center  text-xs text-gray-800">
                 @if($item->status === "captured")
                 <div class="flex items-center justify-center rounded-full bg-green-500 uppercase px-2 py-1 text-center text-xs font-bold mr-3">
                   {{$item->status}}
                 </div>
                 @elseif($item->status === "failed")
-                <div class="flex items-center justify-center rounded-full bg-red-500 uppercase px-2 py-1 text-xs text-center font-bold mr-3">
+                <div class="flex items-center  text-xs justify-center rounded-full bg-red-500 uppercase px-2 py-1 text-xs text-center font-bold mr-3">
                   {{$item->status}}
                 </div>
                 @else
-                <div class="flex items-center justify-center rounded-full bg-yellow-500 uppercase px-2 py-1 text-center text-xs font-bold mr-3">
+                <div class="flex items-center  text-xs justify-center rounded-full bg-yellow-500 uppercase px-2 py-1 text-center text-xs font-bold mr-3">
                   {{$item->status}}
                 </div>
                 @endif
               </td>
-              <td class="py-3 px-4 text-gray-800 text-center">
+              <td class="p-2 text-gray-800 text-center  text-xs">
                 {{ $item->method ?? 'N/A'}}
               </td>
-              <td class="py-3 px-4 text-gray-800 text-center">
+              <td class="p-2 text-gray-800 text-center  text-xs">
                 ₹{{ $item->transaction_fee }}
               </td>
-              <td class="py-3 px-4 text-gray-800 text-center">
+              <td class="p-2 text-gray-800 text-center  text-xs">
                 {{ \Carbon\Carbon::parse($item->transaction_date)->format('d M Y') }}
               </td>
-              <td class="py-3 px-4 text-gray-800 text-center">
+              <td class="p-2 text-gray-800 text-center  text-xs">
                 {{ \Carbon\Carbon::create()->month((int)$item->month)->format('M') }}
               </td>
-              <td class="py-3 px-4 text-gray-800 text-center">
+              <td class="p-2 text-gray-800 text-center  text-xs">
                 {{ $item->year}}
               </td>
-              <td class="py-3 px-4 text-gray-800 text-left truncate max-w-xs" title="{{ $item->error_reason }}">
+              <td class="p-2 text-gray-800 text-left truncate max-w-xs  text-xs" title="{{ $item->error_reason }}">
                 {{ $item->error_reason }}
               </td>
-              <td class="py-3 px-4 text-gray-800 text-center">
+              <td class="p-2 text-gray-800 text-center  text-xs">
                 @if($item->status === 'captured')
-                <a href="{{ route('student.viewbilling') }}" class="py-2.5 px-6 text-sm font-semibold text-indigo-500 transition-all duration-500 hover:text-indigo-700">Print Invoice</a>
+                <a href="{{ route('student.viewbilling') }}" class="py-2.5 px-6 text-xs font-semibold text-indigo-500 transition-all duration-500 hover:text-indigo-700">Print Invoice</a>
                 @elseif($item->status === 'failed')
                 <span class="text-red-500 font-semibold">Failed</span>
                 @elseif($item->status === 'unpaid')
-                <button class="pay-now-button py-2.5 px-6 text-sm bg-green-500 text-white rounded-lg font-semibold shadow-xs transition-all duration-500 hover:bg-green-700"
+                <button class="pay-now-button py-2.5 px-6 text-xs bg-green-500 text-white rounded-lg font-semibold shadow-xs transition-all duration-500 hover:bg-green-700"
                   data-payment-id="{{ $item->id }}"
                   data-order-id="{{ $item->order_id }}"
                   data-amount="{{ $item->transaction_fee }}"
@@ -113,7 +113,7 @@
                   Pay Now
                 </button>
                 @else
-                <button class="refresh-payment py-2.5 px-6 text-sm bg-indigo-900 text-white rounded-lg font-semibold shadow-xs transition-all duration-500 hover:bg-indigo-700" data-order-id="{{ $item->order_id }}">Refresh</button>
+                <button class="refresh-payment py-2.5 px-6 text-xs bg-indigo-900 text-white rounded-lg font-semibold shadow-xs transition-all duration-500 hover:bg-indigo-700" data-order-id="{{ $item->order_id }}">Refresh</button>
                 @endif
               </td>
 
@@ -130,71 +130,68 @@
       {{-- <div class="bg-white shadow rounded-lg " id="styled-dashboard" role="tabpanel" aria-labelledby="dashboard-tab"> --}}
       {{-- <div class="p-4 border-b border-gray-300 mt-5">
         <h2 class="text-lg font-semibold text-gray-800">MemberShip</h2>
-        <p class="text-sm text-gray-600">Your past payments</p>
+        <p class="text-xs text-gray-600">Your past payments</p>
       </div> --}}
       <div class="p-4 overflow-x-auto" id="styled-dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
         <table class="min-w-full bg-white divide-y divide-gray-200">
           <thead class="bg-gray-100">
             <tr>
-              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 ">Payment Date</th>
-              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 "> Month & Year</th>
-              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 ">Order Id</th>
-              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 ">Payment Status</th>
-              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 ">Method</th>
-              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 ">Payment Amount</th>
-              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 ">Payment Date</th>
-              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 ">Error Reason</th>
-              <th class="py-3 px-4 text-center text-sm font-medium text-gray-600 ">Action</th>
+              <th class="p-2 text-center text-xs font-medium text-gray-600 ">Due Date</th>
+              <th class="p-2 text-center text-xs font-medium text-gray-600 "> Month</th>
+              <th class="p-2 text-center text-xs font-medium text-gray-600 ">Order Id</th>
+              <th class="p-2 text-center text-xs font-medium text-gray-600 ">Payment Status</th>
+              <th class="p-2 text-center text-xs font-medium text-gray-600 ">Method</th>
+              <th class="p-2 text-center text-xs font-medium text-gray-600 ">Payment Amount</th>
+              <th class="p-2 text-center text-xs font-medium text-gray-600 ">Payment Date</th>
+              <th class="p-2 text-center text-xs font-medium text-gray-600 ">Action</th>
             </tr>
           </thead>
           @if(Auth::user()->is_member)
-          <tbody class="divide-y divide-gray-200">
+          <tbody class="divide-y divide-gray-200 text-xs">
             @foreach ($paymentsWithWorkshops as $item)
             @if(empty($item->course_id) && empty($item->workshop_title))
             <tr>
-              <td class="py-3 px-4 text-gray-800 text-center">
+              <td class="px-2 py-1 text-gray-800 text-center">
                 {{ \Carbon\Carbon::parse($item->due_date)->format('d M Y') }}
               </td>
-              <td class="py-3 px-4 text-gray-800 text-center">
+              <td class="px-2 py-1 text-gray-800 text-center">
                 {{ \Carbon\Carbon::create((int)$item->year, (int)$item->month, 1)->format('M Y') }}
               </td>
-              <td class="py-3 px-4 text-center text-gray-800">
+              <td class="px-2 py-1 text-center text-gray-800">
                 {{ $item->order_id }}
               </td>
-              <td class="py-3 px-4 text-center text-gray-800">
+              <td class="px-2 py-1 text-center text-gray-800">
                 @if($item->status === "captured")
-                <div class="flex items-center justify-center rounded-full bg-green-500 uppercase px-2 py-1 text-center text-xs font-bold mr-3">
+                <div class="flex items-center justify-center rounded-full bg-green-500 px-2 py-1 text-center text-xs mr-3">
                   {{$item->status}}
                 </div>
                 @elseif($item->status === "failed" || $item->status==='due' )
-                <div class="flex items-center justify-center rounded-full bg-red-500 uppercase px-2 py-1 text-xs text-center font-bold mr-3">
+                <div class="flex items-center justify-center rounded-full bg-red-500 px-2 py-1 text-xs text-center mr-3">
                   {{$item->status}}
                 </div>
                 @else
-                <div class="flex items-center justify-center rounded-full bg-yellow-500 uppercase px-2 py-1 text-center text-xs font-bold mr-3">
+                <div class="flex items-center justify-center rounded-full bg-yellow-500 px-2 py-1 text-center text-xs mr-3">
                   {{$item->status}}
                 </div>
                 @endif
               </td>
-              <td class="py-3 px-4 text-gray-800 text-center">
-                {{ $item->method ?? 'N/A'}}
+              <td class="p-2 text-gray-800 text-center">
+                {{ $item->method ?? null}}
               </td>
-              <td class="py-3 px-4 text-gray-800 text-center">
+              <td class="p-2 text-gray-800 text-center">
                 ₹{{ $item->total_amount }}
               </td>
-              <td class="py-3 px-4 text-gray-800 text-center">
+              <td class="p-2 text-gray-800 text-center">
                 {{ $item->year}}
               </td>
-              <td class="py-3 px-4 text-gray-800 text-left truncate max-w-xs" title="{{ $item->error_reason }}">
-                {{ $item->error_reason }}
-              </td>
-              <td class="py-3 px-4 text-gray-800 text-center">
+
+              <td class="p-2 text-gray-800 text-center">
                 @if($item->status === 'captured')
-                <a href="{{ route('student.viewbilling') }}" class="py-2.5 px-6 text-sm font-semibold text-indigo-500 transition-all duration-500 hover:text-indigo-700">Print Invoice</a>
+                <a href="{{ route('student.viewbilling') }}" class="py-1 px-2 text-xs font-semibold text-indigo-500 transition-all duration-500 hover:text-indigo-700">Print Invoice</a>
                 @elseif($item->status === 'failed')
                 <span class="text-red-500 font-semibold">Failed</span>
-                @elseif($item->status === 'unpaid' || $item->status==='due')
-                <button class="pay-now-button py-2.5 px-6 text-sm bg-green-500 text-white rounded-lg font-semibold shadow-xs transition-all duration-500 hover:bg-green-700"
+                @elseif($item->status === 'unpaid' || $item->status==='overdue')
+                <button class="pay-now-button py-1 px-2 text-xs bg-green-500 text-white rounded-lg font-semibold shadow-xs transition-all duration-500 hover:bg-green-700"
                   data-payment-id="{{ $item->id }}"
                   data-order-id="{{ $item->order_id }}"
                   data-amount="{{ $item->transaction_fee }}"
@@ -202,7 +199,7 @@
                   Pay Now
                 </button>
                 @else
-                <button class="refresh-payment py-2.5 px-6 text-sm bg-indigo-900 text-white rounded-lg font-semibold shadow-xs transition-all duration-500 hover:bg-indigo-700" data-order-id="{{ $item->order_id }}">Refresh</button>
+                <button class="refresh-payment py-1 px-2 text-xs bg-indigo-900 text-white rounded-lg font-semibold shadow-xs transition-all duration-500 hover:bg-indigo-700" data-order-id="{{ $item->order_id }}">Refresh</button>
                 @endif
               </td>
             </tr>
