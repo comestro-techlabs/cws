@@ -14,14 +14,18 @@ class PaymentService
      */
     public function processOverduePayments()
     {
-        // $today = Carbon::parse("2025-04-03 00:00:00");
-        $today = Carbon::today();
+        $today = Carbon::parse("2025-04-17 00:00:00");
+        // $today = Carbon::today();
+        $oneMonthAgo = $today->copy()->subMonth();
         // Fetch all unpaid payments with due dates in the past
         $overduePayments = Payment::whereIn('status', ['unpaid', 'overdue'])
             ->whereDate('due_date', '<', $today)
             ->get();
 
         foreach ($overduePayments as $payment) {
+            if (Carbon::parse($payment->due_date)->lessThan($oneMonthAgo)) {
+                break;
+            }
             $dueDate = Carbon::parse($payment->due_date);
             $daysOverdue = $dueDate->diffInDays($today);
             // Cap overdue days at 15
