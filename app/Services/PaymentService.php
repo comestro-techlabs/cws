@@ -14,54 +14,78 @@ class PaymentService
      */
 
      public function processOverduePayments()
-{
-    $today = Carbon::parse("2025-12-30 00:00:00");
-
-    // Fetch all students who have unpaid or overdue payments
-    $students = Payment::whereIn('status', ['unpaid', 'overdue'])
-        ->pluck('student_id')
-        ->unique();
-
-    foreach ($students as $studentId) {
-        // Get the last paid record for the student
-        $lastPaidPayment = Payment::where('student_id', $studentId)
-            ->whereIn('status', ['paid', 'captured']) // Consider 'paid' or 'captured' as completed payments
-            ->orderBy('due_date', 'desc')
-            ->first();
-
-        if (!$lastPaidPayment) {
-            continue; // Skip if no previous paid record exists
-        }
-
-        $lastPaidDate = Carbon::parse($lastPaidPayment->due_date);
-
-        // Fetch only unpaid payments that are AFTER the last paid date
-        $overduePayments = Payment::where('student_id', $studentId)
-            ->whereIn('status', ['unpaid', 'overdue'])
-            ->whereDate('due_date', '>', $lastPaidDate) // Payments after the last paid month
-            ->whereDate('due_date', '<', $today) // Only overdue payments
-            ->get();
-
-        foreach ($overduePayments as $payment) {
-            $dueDate = Carbon::parse($payment->due_date);
-            $daysOverdue = $dueDate->diffInDays($today);
-            $daysOverdue = min($daysOverdue, 15); // Cap overdue days at 15
-
-            // Calculate late fee (₹10 per day)
-            $lateFee = $daysOverdue * 10;
-
-            // Update payment record
-            $payment->update([
-                'status' => 'overdue',
-                'days_overdue' => $daysOverdue,
-                'late_fee' => $lateFee,
-                'total_amount' => $payment->amount + $lateFee,
-            ]);
-        }
-    }
-
-    return "Overdue payments processed successfully.";
-}
+     {
+        //  $today = Carbon::parse("2025-11-13 00:00:00");
+         $today = Carbon::now();
+     
+         // Fetch all students who have unpaid or overdue payments
+         $students = Payment::whereIn('status', ['unpaid', 'overdue'])
+             ->pluck('student_id')
+             ->unique();
+     
+         foreach ($students as $studentId) {
+             // Check if the student has any existing overdue payments
+             $existingOverdue = Payment::where('student_id', $studentId)
+                 ->where('status', 'overdue')
+                 ->exists();
+     
+             if ($existingOverdue) {
+                 continue; // Skip if the student already has an overdue payment
+             }
+     
+             // Get the last PAID payment record
+             $lastPaidPayment = Payment::where('student_id', $studentId)
+                 ->whereIn('status', ['paid', 'captured'])
+                 ->orderBy('due_date', 'desc')
+                 ->first();
+     
+             if (!$lastPaidPayment) {
+                 continue; // Skip if no previous paid record exists
+             }
+     
+             $lastPaidDate = Carbon::parse($lastPaidPayment->due_date);
+     
+             // Get the NEXT unpaid payment after the last paid date
+             $nextUnpaidPayment = Payment::where('student_id', $studentId)
+                 ->where('status', 'unpaid')
+                 ->whereDate('due_date', '>', $lastPaidDate) // Payments after the last paid month
+                 ->whereDate('due_date', '<', $today) // Only overdue payments
+                 ->orderBy('due_date', 'asc') // Get the oldest unpaid payment
+                 ->first();
+     
+             if ($nextUnpaidPayment) {
+                 $dueDate = Carbon::parse($nextUnpaidPayment->due_date);
+                 $daysOverdue = $dueDate->diffInDays($today);
+     
+                 // **Check if the student is resuming after months of non-payment**
+                 $previousOverduePaid = Payment::where('student_id', $studentId)
+                     ->where('status', 'paid')
+                     ->whereDate('due_date', '<', $nextUnpaidPayment->due_date)
+                     ->exists();
+     
+                 if ($previousOverduePaid) {
+                     // If the student had an overdue payment but has now paid it, restart fresh (no late fee)
+                     continue;
+                 }
+     
+                 if ($daysOverdue >= 15) { // Only mark overdue if past 15 days
+                     $daysOverdue = min($daysOverdue, 15); // Cap at 15 days
+                     $lateFee = $daysOverdue * 10; // Calculate late fee
+     
+                     // Update only this one overdue payment
+                     $nextUnpaidPayment->update([
+                         'status' => 'overdue',
+                         'days_overdue' => $daysOverdue,
+                         'late_fee' => $lateFee,
+                         'total_amount' => $nextUnpaidPayment->amount + $lateFee,
+                     ]);
+                 }
+             }
+         }
+     
+         return "Overdue payments processed successfully.";
+     }
+     
 
     // public function processOverduePayments()
     // {

@@ -201,7 +201,6 @@
                   data-student-id="{{ $item->student_id }}">
                   Pay Now
                 </button>
-                {{$overdueCount}}
                 @if(!$overdueCount)
                    @php $isPayable = false; @endphp
                 @endif
