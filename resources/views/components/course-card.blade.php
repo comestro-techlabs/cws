@@ -46,10 +46,16 @@
               <p class="text-xs capitalize text-gray-700 leading-relaxed mb-2">
                   {{ $course->category->cat_title }}
               </p>
-              <div class="">
-                  <span class="text-green-900 font-medium text-sm">Batch Start:
-                      {{ \Carbon\Carbon::parse($course->batches[0]->start_date)->format('F j, Y') }}</span>
-              </div>
+              @if (!empty($course->batches) && count($course->batches) > 0)
+                <div class="">
+                    <span class="text-green-900 font-medium text-sm">Batch Start:
+                        {{ \Carbon\Carbon::parse($course->batches[0]->start_date)->format('F j, Y') }}</span>
+                </div>
+              @else
+                <div class="text-gray-500 text-sm">
+                    No batch available
+                </div>
+              @endif
               <div class="flex flex-1 justify-center mt-2">
                   @auth
                       <form action="{{ route('public.enrollCourse', ['courseId' => $course->id]) }}" method="POST"

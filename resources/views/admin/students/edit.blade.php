@@ -1,6 +1,6 @@
 @extends('admin.base')
 
-@section('title', 'Edit Student | ')
+@section('title', 'View Student Details | ')
 
 @php
     $fields = ['name', 'email', 'contact', 'gender', 'education_qualification', 'dob', 'profile_picture'];
@@ -29,9 +29,9 @@
     <div class="flex flex-1 w-full px-[2%] py-0 flex-col">
         <div class="flex flex-1 gap-3 my-5 flex-row justify-between items-center">
             <div class="flex flex-1 flex-col border-s-4 border-s-orange-400 pl-3">
-                <h2 class="md:text-xl text-lg font-normal  text-slate-500">Edit Student</h2>
-                <p class="text-sm text-slate-400 font-normal">Please fill {{ $countCompletedFields }} of {{ $totalFields }}
-                    fields</p>
+                <h2 class="md:text-xl text-lg font-normal  text-slate-500"> Student</h2>
+                {{-- <p class="text-sm text-slate-400 font-normal">Please fill {{ $countCompletedFields }} of {{ $totalFields }}
+                    fields</p> --}}
             </div>
         </div>
 
@@ -43,8 +43,8 @@
                             <div class="flex flex-1 justify-between">
                                 <strong
                                     class="text-lg font-normal text-slate-600">{{ ucfirst(str_replace('_', ' ', $field)) }}</strong>
-                                <button onclick="toggleEdit('{{ $field }}')"
-                                    class="bg-teal-600 text-white text-sm px-3 py-1 self-start rounded">Edit</button>
+                                {{-- <button onclick="toggleEdit('{{ $field }}')"
+                                    class="bg-teal-600 text-white text-sm px-3 py-1 self-start rounded">Edit</button> --}}
                             </div>
 
                             <span id="{{ $field }}-value">
