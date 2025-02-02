@@ -73,7 +73,7 @@
 </aside>
 
 
-    <div class="sm:p-0 p-4 sm:ml-0">
+    <div class="sm:p-0 sm:ml-0">
 
         @section('content')
 
