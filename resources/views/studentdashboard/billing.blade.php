@@ -93,7 +93,7 @@
               </td>
               <td class="p-2 text-gray-800 text-center  text-xs">
                 @if($item->status === 'captured')
-                <a href="{{ route('student.viewbilling') }}" class="py-2.5 px-6 text-xs font-semibold text-indigo-500 transition-all duration-500 hover:text-indigo-700">Print Invoice</a>
+                <a href="{{ route('student.viewbilling', $item->id) }}" class="py-2.5 px-6 text-xs font-semibold text-indigo-500 transition-all duration-500 hover:text-indigo-700">Print Invoice</a>
                 @elseif($item->status === 'failed')
                 <span class="text-red-500 font-semibold">Failed</span>
                 @elseif($item->status === 'unpaid')
@@ -184,7 +184,7 @@
 
               <td class="p-2 text-gray-800 text-center">
                 @if($item->status === 'captured')
-                <a href="{{ route('student.viewbilling') }}" class="py-1 px-2 text-xs font-semibold text-indigo-500 transition-all duration-500 hover:text-indigo-700">Print Invoice</a>
+                <a href="{{ route('student.viewbilling', $item->id) }}" class="py-2.5 px-6 text-xs font-semibold text-indigo-500 transition-all duration-500 hover:text-indigo-700">Print Invoice</a>
                 @elseif($item->status === 'failed')
                 <span class="text-red-500 font-semibold">Failed</span>
                 @elseif(($item->status === 'unpaid' || $item->status==='overdue') && $isPayable)
