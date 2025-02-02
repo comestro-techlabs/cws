@@ -61,7 +61,7 @@
                           </button>
                       </form>
                   @else
-                      <a href="{{ route('login') }}"
+                      <a href="{{ route('auth.login') }}"
                           class="w-full py-3.5 px-7 text-center bg-gray-900 text-white rounded-lg text-sm font-bold uppercase shadow-md hover:shadow-lg transition-all">
                           Login to Enroll
                       </a>
