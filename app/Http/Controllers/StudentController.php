@@ -40,17 +40,17 @@ class StudentController extends Controller
             } elseif ($filter == 'user') {
                 $query->where('is_member', 0);
             } elseif ($filter == 'status_active') {
-                $query->where('is_active', 1); 
+                $query->where('is_active', 1);
             } elseif ($filter == 'status_inactive') {
-                $query->where('is_active', 0); 
+                $query->where('is_active', 0);
             }
         }
-    
-    
+
+
         $data['students'] = $query->paginate(10);
         return view('admin.students.manage', $data);
 
-        
+
     }
     public function search(Request $request)
     {
@@ -242,8 +242,7 @@ class StudentController extends Controller
         ]);
     }
 
-    public function updateBatch(Request $request, $courseId)
-    {
+    public function updateBatch(Request $request, $courseId){
         $request->validate([
             'batch_id' => 'required|exists:batches,id',
         ]);
@@ -324,6 +323,8 @@ class StudentController extends Controller
         $studentId = Auth::id();
         $user = User::where('id', $studentId)->first();
 
+        $overdueCount = $this->paymentService->processOverduePayments();
+
         $hasCompleted = $this->hasCompletedExamOrAssignment($studentId);
         $today = Carbon::now(); // Define the current date
         // $today =\Carbon\Carbon::parse('2025-07-15 00:00:00');
@@ -356,8 +357,7 @@ class StudentController extends Controller
 
         $courses = User::find($studentId)->courses()->get();
 
-        $overdueCount = $this->paymentService->processOverduePayments();
-        
+
         return view('studentdashboard.billing', compact('hasCompleted', 'courses', 'paymentsWithWorkshops','overdueCount'));
     }
 
