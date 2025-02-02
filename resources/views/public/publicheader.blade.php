@@ -8,7 +8,7 @@
             </svg>
          </button>
         <a href="{{route("public.index")}}" class="flex ms-2 md:me-24">
-            <img src="{{ asset('assets/LearnSyntax.png') }}" class="h-8" alt="">
+            <img src="{{ asset('assets/LearnSyntax.png') }}" class="h-6 sm:h-8" alt="">
         </a>
       </div>
 
@@ -20,11 +20,6 @@
                     class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 "
                     aria-current="page">Home</a>
             </li>
-            {{-- <li>
-                <a href="{{ route('public.about') }}"
-                    class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 ">About
-                    Us</a>
-            </li> --}}
             <li>
                 <a href="{{ route('public.training') }}"
                     class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 ">Courses</a>
