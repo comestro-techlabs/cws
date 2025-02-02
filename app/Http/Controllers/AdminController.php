@@ -10,21 +10,47 @@ use App\Models\Lesson;
 use App\Models\Enquiry;
 use App\Models\Payment;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
     public function dashboard()
     {
+        $currentYear = Carbon::now()->year;
+        $currentMonth = Carbon::now()->month;
+        $previousYear = Carbon::now()->subMonth()->year;
+        $previousMonth = Carbon::now()->subMonth()->month;
+
+        // $capturedPayments = Payment::where('status', 'captured');
+
         $counts = [
             'studentsCount' => Payment::whereNotNull('course_id')
-                ->where('payment_status', 'completed')
+                ->where('status', 'captured')
                 ->distinct('student_id')
                 ->count('student_id'),
             'coursesCount' => Course::count(),
             'batchesCount' => Batch::count(),
             // 'paymentsCount' => Payment::sum('amount'),
-            'paymentsCount' => Payment::where('payment_status', 'completed')->sum('transaction_fee'),
+            'paymentsCount' => Payment::where('status', 'captured')->sum('total_amount'),
+            'currentMonthAmount' => Payment::where('status', 'captured')
+                ->whereYear('created_at', $currentYear)
+                ->whereMonth('created_at', $currentMonth)
+                ->sum('total_amount'),
+            'previousMonthAmount' => Payment::where('status', 'captured')
+                ->whereYear('created_at', $previousYear)
+                ->whereMonth('created_at', $previousMonth)
+                ->sum('total_amount'),
+            'overdueCount' => Payment::where('status', 'overdue')->sum('total_amount'),
+            'currentMonthOverdue' => Payment::where('status', 'overdue')
+                ->whereYear('created_at', $currentYear)
+                ->whereMonth('created_at', $currentMonth)
+                ->sum('total_amount'),
+            'previousMonthOverdue' => Payment::where('status', 'overdue')
+                ->whereYear('created_at', $previousYear)
+                ->whereMonth('created_at', $previousMonth)
+                ->sum('total_amount'),
+
         ];
         return view('admin.dashboard', $counts);
     }
