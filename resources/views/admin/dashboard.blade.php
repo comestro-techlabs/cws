@@ -3,6 +3,7 @@
 @section('title', 'Dashboard | ')
 
 @section('content')
+<div></div>
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6">
 
 
@@ -71,8 +72,57 @@
             <p class="text-xs font-lighter">₹{{ $previousMonthAmount }}</p>
         </div>
     </div>
+
+</div>
+
+
+</div>
+<div class="flex  items-center mt-6">
+    <div class="w-full h-auto md:w-1/2  bg-white shadow-lg rounded-lg p-4">
+        <canvas id="myChart"></canvas>
+    </div>
 </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+var months = @json($monthlyPaymentsLabels);
+var capturedData = @json($monthlyCapturedValues);
+var overdueData = @json($monthlyOverdueValues);
+
+var ctx = document.getElementById("myChart").getContext("2d");
+new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: months,
+        datasets: [
+            {
+                label: "Overdue Payments",
+                data: overdueData,
+                backgroundColor: "rgba(255, 99, 132, 0.7)",
+                borderColor: "rgba(255, 99, 132, 1)",
+                borderWidth: 1
+            },
+            {
+                label: "Captured Payments",
+                data: capturedData,
+                backgroundColor: "rgba(75, 192, 192, 0.7)",
+                borderColor: "rgba(75, 192, 192, 1)",
+                borderWidth: 1
+            }
+           
+        ]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+</script>
 
 @endsection
