@@ -30,10 +30,27 @@ class StudentController extends Controller
         $this->paymentService = $paymentService;
     }
 
-    public function index()
-    {
-        $data['students'] = User::where('isAdmin', false)->paginate(10);
+
+    public function index(Request $request){
+        $query =user::where('isAdmin',false);
+        if($request->has('filter')){
+            $filter =$request->filter;
+            if ($filter == 'member') {
+                $query->where('is_member', 1);
+            } elseif ($filter == 'user') {
+                $query->where('is_member', 0);
+            } elseif ($filter == 'status_active') {
+                $query->where('is_active', 1); 
+            } elseif ($filter == 'status_inactive') {
+                $query->where('is_active', 0); 
+            }
+        }
+    
+    
+        $data['students'] = $query->paginate(10);
         return view('admin.students.manage', $data);
+
+        
     }
     public function search(Request $request)
     {

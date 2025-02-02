@@ -20,6 +20,21 @@
 
 
                 <div class="inline-flex md:flex-row flex-col  md:items-center gap-2" role="group">
+
+
+                    <form method="GET" action="{{ route('student.manage') }}">
+                        <select name="filter" onchange="this.form.submit()" class="border rounded-lg px-3 py-2">
+                            <option value="">Filter by</option>
+                            <option value="member" {{ request('filter') == 'member' ? 'selected' : '' }}>Member</option>
+                            <option value="user" {{ request('filter') == 'user' ? 'selected' : '' }}>User</option>
+                            <option value="status_active" {{ request('filter') == 'status_active' ? 'selected' : '' }}>Active</option>
+                            <option value="status_inactive" {{ request('filter') == 'status_inactive' ? 'selected' : '' }}>Inactive</option>
+                        </select>
+                    </form>
+
+
+
+                    
                     <form action="{{ route('student.search') }}" method="get" class=" md:max-w-md md:mx-auto">
 
                         <div class="flex border rounded-lg ps-3">
