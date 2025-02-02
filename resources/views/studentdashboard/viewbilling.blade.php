@@ -73,6 +73,9 @@
                             <span class="text-gray-700">Late Fee:</span>
                             <span class="text-gray-700">₹{{ $payment->late_fee }}</span>
                         </div>
+                        @php
+                        $payment->total_amount= $payment->transaction_fee + $payment->late_fee;
+                    @endphp
                     @else
                     <div class="flex justify-between mb-2">
                         <span class="text-gray-700">Fees:</span>
