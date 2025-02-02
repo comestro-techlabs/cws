@@ -68,13 +68,63 @@
     </div> --}}
 
     <!-- Payments Card -->
-     <div class="bg-gradient-to-r bg-slate-100 border-l-4 border-green-800 text-green-800 shadow-xl rounded-lg p-4 flex flex-col justify-between" style="height: 130px;">
+     <!-- <div class="bg-gradient-to-r bg-slate-100 border-l-4 border-green-800 text-green-800 shadow-xl rounded-lg p-4 flex flex-col justify-between" style="height: 130px;">
         <div>
             <p class="text-3xl font-bold">{{ $paymentsCount }}</p>
             <h3 class="text-lg text-green-800 font-semibold">Payments</h3>
         </div>
         <a href="{{route('admin.manage-payment')}}" class="text-sm text-green-800 hover:underline">View Details</a>
-    </div> 
+    </div>  -->
+
+    <div class="bg-gradient-to-r from-slate-100 to-slate-200 border-l-4 border-green-800 text-green-800 shadow-xl rounded-lg p-6 flex flex-col justify-between h-[200px]">
+    <!-- Total Payments at the Top -->
+    <div class="text-center">
+        <h3 class="text-lg font-semibold">Total Payments</h3>
+        <p class="text-4xl font-bold">{{ $paymentsCount }}</p>
+    </div>
+
+    <!-- Current & Previous Month Payments -->
+    <div class="flex justify-between mt-4">
+        <div class="text-left">
+            <h3 class="text-md font-semibold">Current Month</h3>
+            <p class="text-2xl font-bold">{{ $currentMonthAmount }}</p>
+        </div>
+        <div class="text-right">
+            <h3 class="text-md font-semibold">Previous Month</h3>
+            <p class="text-2xl font-bold">{{ $previousMonthAmount }}</p>
+        </div>
+    </div>
+
+    <!-- View Details Link -->
+    <a href="{{ route('admin.manage-payment') }}" class="text-sm font-semibold hover:underline text-right mt-3">
+        View Details →
+    </a>
+</div>
+<!-- total overdue -->
+<div class="bg-gradient-to-r from-slate-100 to-slate-200 border-l-4 border-green-800 text-green-800 shadow-xl rounded-lg p-6 flex flex-col justify-between h-[200px]">
+    <!-- Total overduePayments at the Top -->
+    <div class="text-center">
+        <h3 class="text-lg font-semibold">Total Overdue Payments</h3>
+        <p class="text-4xl font-bold">{{ $overdueCount }}</p>
+    </div>
+
+    <!-- Current & Previous Month Payments -->
+    <div class="flex justify-between mt-4">
+        <div class="text-left">
+            <h3 class="text-md font-semibold">Current Month</h3>
+            <p class="text-2xl font-bold">{{ $currentMonthOverdue }}</p>
+        </div>
+        <div class="text-right">
+            <h3 class="text-md font-semibold">Previous Month</h3>
+            <p class="text-2xl font-bold">{{ $previousMonthAmount }}</p>
+        </div>
+    </div>
+
+    <!-- View Details Link -->
+    <a href="{{ route('admin.manage-payment') }}" class="text-sm font-semibold hover:underline text-right mt-3">
+        View Details →
+    </a>
+</div>
   
     
 
