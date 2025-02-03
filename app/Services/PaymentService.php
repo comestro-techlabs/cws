@@ -15,8 +15,8 @@ class PaymentService
 
      public function processOverduePayments()
      {
-         $today = Carbon::parse("2025-09-15 00:00:00");
-        //  $today = Carbon::now();
+        //  $today = Carbon::parse("2025-09-15 00:00:00");
+         $today = Carbon::now();
 
          // Fetch all students who have unpaid or overdue payments
          $students = Payment::whereIn('status', ['unpaid', 'overdue'])

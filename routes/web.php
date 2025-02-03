@@ -29,7 +29,7 @@
         Route::controller(StudentController::class)->group(function () {
             Route::get('/dashboard', 'dashboard')->name('student.dashboard');
             Route::get('/billing', 'billing')->name('student.billing');
-            Route::get('/viewbilling', 'viewbilling')->name('student.viewbilling');
+            Route::get('/viewbilling/{paymentId}', 'viewbilling')->name('student.viewbilling');
             Route::get('course/quiz', 'courseQuiz')->name('student.course.quiz');
             Route::get('/quiz/{courseId}', 'showquiz')->name('student.quiz');
             Route::post('/quiz/submit',  'storeAnswer')->name('student.storeAnswer');

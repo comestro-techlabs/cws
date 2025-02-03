@@ -11,7 +11,7 @@
     <div class="w-full mt-12">
         <img src="{{ asset('assets/home/banner.png') }}" class="w-full h-full" alt="Banner">
     </div>
-    
+
 
     {{-- latest course --}}
     <div class="">
@@ -30,17 +30,17 @@
 
         </div>
 
-      
+
 
      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:mb-20 mb-10 px-4 lg:px-32">
         @foreach ($courses as $item)
             <div class="max-w-md mx-auto bg-white rounded-lg border overflow-hidden flex flex-col h-full min-h-[450px]">
-              
+
                 <div class="w-full h-60">
                     <img class="w-full h-full object-cover" src="{{ asset('storage/course_images/' . $item->course_image) }}" alt="Course Image">
                 </div>
-    
-             
+
+
                 <div class="p-6 flex flex-col flex-grow">
                     <h2 class="text-xl font-bold text-gray-800 mb-2 line-clamp-1">{{ $item->title }}</h2>
                     <p class="text-gray-600 text-sm mb-4 flex-grow min-h-[60px]">
@@ -50,8 +50,8 @@
                         <p class="text-gray-700 text-sm font-medium">By: {{ $item->instructor }}</p>
                         <span class="text-gray-600 text-sm font-semibold">Duration: {{ $item->duration }} Weeks</span>
                     </div>
-    
-                   
+
+
                     <div class="flex justify-between items-center mt-auto">
                         @if ($item->discounted_fees > 0)
                             <p class="text-sm font-semibold text-primary">
@@ -60,7 +60,7 @@
                         @else
                             <p class="text-green-500 font-bold">Free</p>
                         @endif
-    
+
                         <a href="{{ route('public.courseDetails', ['category_slug' => $item->category->cat_slug, 'slug' => $item->slug]) }}"
                             class="bg-primary text-white font-bold py-2 px-4 rounded shadow focus:outline-none focus:ring hover:bg-primary-dark transition">
                             Enroll Now
@@ -70,7 +70,7 @@
             </div>
         @endforeach
     </div>
-    
+
         <div class="flex justify-center items-center">
 
             <div class="bg-secondary flex items-center py-3 px-6 rounded-lg shadow gap-2 md:mb-20 mb-10">
@@ -86,8 +86,11 @@
         </div>
 
     </div>
+
+    <img src="{{ asset('assets/home/banner1.png') }}" class="w-full object-cover object-left h-[230px] md:h-full" alt="Banner">
+
     {{-- {{static info}} --}}
-    <div class="flex flex-col gap-2 p-8 mt-10 bg-gray-50 rounded-2xl mb-12 items-center md:px-[10%]">
+    <div class="flex flex-col gap-2 p-2 md:p-8 mt-10 bg-gray-50 rounded-2xl mb-12 items-center md:px-[10%]">
         <h2 class="text-lg md:text-xl font-normal max-w-2xl text-gray-900  text-center mb-4 flex flex-col">
             <span class="font-semibold mb-1">Results that Speak for Themselves:</span>
             <span class="md:text-3xl text-xl font-semibold"> We’re a Top Software Devlopment Company in India</span>
@@ -113,7 +116,7 @@
     </div>
 
 
-    <div class="bg-white py-12 mt-20">
+    <div class="bg-white py-12 pt-5 md:mt-20">
         <div class="text-center mb-8 px-4">
             <h2 class="text-3xl md:text-4xl font-bold text-gray-800">
                 Our <span class="text-secondary">Training</span> Services
@@ -142,7 +145,7 @@
                     class="w-full md:w-1/2 object-cover rounded-lg">
                 <div class="mt-4 md:mt-0">
                     <h3 class="text-xl font-semibold text-gray-800">Internships</h3>
-                    <p class="text-gray-600 mt-2">Industry-Mentor Guided Internship.</p>
+                    <p class="text-gray-600 mt-2">Industry-Mentor Guided Internship. with skills trainning</p>
                     <a href="{{ route('public.training') }}" class="text-secondary mt-4 block">View more →</a>
                 </div>
             </div>
@@ -169,12 +172,7 @@
                 </div>
             </div>
         </div>
-        <div class="text-center md:mt-12 mt-8 px-4">
-            <button
-                class="px-6 py-3 bg-secondary text-white rounded-lg shadow-lg hover:bg-blue-700 transition duration-300">
-                Explore Services
-            </button>
-        </div>
+
     </div>
 
 
@@ -208,39 +206,6 @@
         </div>
     </div>
 
-
-
-    {{-- who we are --}}
-    <div class="flex-1 flex flex-col md:flex-row md:px-[8%] gap-10 mt-20 py-12">
-        <div class="flex-1 p-5">
-            <img src="{{ asset('assets/first_image.png') }}" class="w-full rounded-lg shadow-sm ring-slate-600 "
-                alt="">
-        </div>
-        <div class="flex-1 p-5 md:p-10 bg-gray-100 rounded-lg shadow-md">
-            <h2 class="text-4xl font-bold text-gray-800">Who <span class="text-secondary">We</span> Are</h2>
-            <h1 class="text-xl font-bold mb-4">Est. 2011 - Top Web Designing Company</h1>
-            <p class="text-base text-gray-700 mb-6">
-                With more than 15 years of expertise in the field, we've established ourselves as an evolving Software
-                Company. Over the years, we have diversified according to market needs. We optimize website
-                rankings, boost campaign performance, enhance brand names, create quality content, and popularize brands on
-                social media...
-            </p>
-            <a href="#" class="text-gray-800 text-lg hover:underline font-bold mb-4 inline-block">
-                Consider these steps for brand popularity in the Digital World...
-            </a>
-            <ul class="flex flex-col gap-2 text-gray-700">
-                <li><i class="fas fa-check text-primary mr-2"></i><a href="#"
-                        class="text-gray-800 font-semibold hover:text-primary">Define your goals</a></li>
-                <li><i class="fas fa-check text-primary mr-2"></i><a href="#"
-                        class="text-gray-800 font-semibold hover:text-primary">Identify your target audience</a></li>
-                <li><i class="fas fa-check text-primary mr-2"></i><a href="#"
-                        class="text-gray-800 font-semibold hover:text-primary">Choose the right channels</a></li>
-                <li><i class="fas fa-check text-primary mr-2"></i><a href="#"
-                        class="text-gray-800 font-semibold hover:text-primary">Create and implement your campaigns</a>
-                </li>
-            </ul>
-        </div>
-    </div>
 
     {{-- Student List Section --}}
     <div class="flex flex-col items-center mt-20 mb-20 text-center">

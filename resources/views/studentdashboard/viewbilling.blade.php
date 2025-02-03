@@ -5,75 +5,112 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invoice</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  
 </head>
-</body>
-<div class="bg-gray-100  flex justify-center items-center">
-     <div class=" p-8 bg-white  rounded-lg w-90 h-90 mt-5 mb-20 ">
-      
-        <div class="flex justify-between items-center mb-6">
-            <img src="{{ asset('apple-touch-icon.png') }}" alt="Logo" class="h-16">
-            <h1 class="text-2xl font-bold text-gray-800">INVOICE</h1>
-        </div>
-
-        <div class="mb-4">
-            <div class="flex justify-between pb-2 mt-5">
-                <div>
-                    <p class="text-sm text-black font-bold">INVOICE TO:</p>
-                    <p class="text-base text-gray-800">{{ Auth::user()->name }}</p>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-6">
+        <div class="bg-white shadow-lg rounded-lg p-8">
+            <!-- Invoice Header -->
+            <div class="flex justify-between items-center mb-8">
+                <div class="flex items-center justify-between gap-2">
+                    <img src="{{ asset('apple-touch-icon.png') }}" alt="Logo" class="h-12">
+                    <div>
+                    <h1 class="text-3xl font-bold text-gray-800">Invoice</h1>
+                    
+                    </div>
                 </div>
-                <div>
-                    <p class="text-sm text-black font-bold">SEND PAYMENT TO:</p>
-                    <p class="text-base text-gray-800">Learn Syntax</p>
-                </div>
-                <div>
-                    <p class="text-sm text-black font-bold">DATE:</p>
-                    <p class="text-base text-gray-800">{{ now()->format('d M Y') }}</p>
+                <div class="text-right">
+                    <p class="text-gray-600">Date: {{ \Carbon\Carbon::parse($payment->payment_date)->format('d M Y') }}</p>
+                    <p class="text-gray-600">Status: <span class="text-green-500">Paid</span></p>
                 </div>
             </div>
-        </div>
 
-        <table class="w-full h-64  border-collapse border border-gray-300 mt-20 ">
-            <thead class="bg-gray-100">
-                <tr>
-                    <th class="border border-gray-300 px-4 py-2 text-left">Course Name</th>
-                    <th class="border border-gray-300 px-4 py-2 text-center">Order ID</th>
-                    <th class="border border-gray-300 px-4 py-2 text-center">Duration</th>
-                    <th class="border border-gray-300 px-4 py-2 text-center">Amount</th>
-                    <th class="border border-gray-300 px-4 py-2 text-center">Payment Date</th>
-                    <th class="border border-gray-300 px-4 py-2 text-center">Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($payments as $payment)
-                <tr>
-                    <td class="border border-gray-300 px-4 py-2 text-left">{{ $payment->course->title }}</td>
-                    <td class="border border-gray-300 px-4 py-2 text-center">{{ $payment->order_id }}</td>
-                    <td class="border border-gray-300 px-4 py-2 text-center">{{$payment->course->duration}} Week</td>
-                    <td class="border border-gray-300 px-4 py-2 text-center">₹{{ $payment->transaction_fee }}</td>
-                    <td class="border border-gray-300 px-4 py-2 text-center">{{ \Carbon\Carbon::parse($payment->transaction_date)->format('d M Y') }}</td>
-                    @if($payment->status === 'captured')
-                    <td class="border border-gray-300 px-4 py-2 text-center">
-                       <span class="px-2 py-1 rounded-full text-sm bg-green-100 text-green-800">Paid</span>
+            <!-- Invoice Details -->
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Bill To:</h2>
+                <p class="text-gray-700"><strong>Name:</strong> {{ $user->name }}</p>
+                <p class="text-gray-700"><strong>Order ID:</strong> {{ $payment->order_id }}</p>
+            </div>
+
+            <!-- Invoice Items -->
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Invoice Details:</h2>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white">
+                        <thead>
+                            <tr>
+                                <th class="py-2 px-4 bg-gray-100 text-left text-gray-600">Description</th>
+                                <th class="py-2 px-4 bg-gray-100 text-right text-gray-600">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="py-2 px-4 border-b border-gray-200 text-gray-700">
+                                    @if($payment->course)
+                                        {{ $payment->course->title }}
+                                        
+                                       
+                                    @else
+                                        Membership Payment for {{ \Carbon\Carbon::create((int)$payment->year, (int)$payment->month, 1)->format('M Y') }}
+                                    @endif
+                                </td>
+                                <td class="py-2 px-4 border-b border-gray-200 text-right text-gray-700">₹{{ $payment->transaction_fee }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Total Amount -->
+            <div class="flex justify-end mb-8">
+                <div class="w-1/3">
                     
-                    </td>
-                
-                  @endif
-                   
-                </tr>
-                @endforeach
-            </tbody>
-           
-        </table>
-           
-       
-        <div class="mt-10 flex justify-between items-center">
-            <a href="{{route('student.billing')}}" class="text-blue-500 text-sm hover:underline">Go Back</a>
-            <p class="text-black font-bold">THANK YOU</p>
+                    @if(!$payment->course)
+                    <div class="flex justify-between mb-2">
+                        <span class="text-gray-700">Subtotal:</span>
+                        <span class="text-gray-700">₹{{ $payment->transaction_fee }}</span>
+                    </div>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-gray-700">Late Fee:</span>
+                            <span class="text-gray-700">₹{{ $payment->late_fee }}</span>
+                        </div>
+                        @php
+                        $payment->total_amount= $payment->transaction_fee + $payment->late_fee;
+                    @endphp
+                    @else
+                    <div class="flex justify-between mb-2">
+                        <span class="text-gray-700">Fees:</span>
+                        <span class="text-gray-700">₹{{ $payment->course->fees }}</span>
+                    </div>
+                    @php
+                        $discount = $payment->course->fees - $payment->course->discounted_fees;
+                    @endphp
+                        <div class="flex justify-between mb-2">
+                            <span class="text-gray-700">Discount:</span>
+                            <span class="text-gray-700">₹{{ $discount }}</span>
+                        </div>    
+                    @endif
+                    <div class="flex justify-between">
+                        <span class="text-gray-700 font-semibold">Total:</span>
+                        <span class="text-gray-700 font-semibold">₹{{ $payment->total_amount }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="text-center text-gray-600">
+                <p>Thank you </p>
+                <p>If you have any questions, please contact us at info@learnsyntax.com</p>
+            </div>
+
+            <!-- Back Button -->
+            <div class="mt-6">
+                <a href="{{ url()->previous() }}" class="inline-block bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Back</a>
+            </div>
         </div>
-        
-         
     </div>
-</div>
-</html>
 </body>
+</html>
+
+
+
+

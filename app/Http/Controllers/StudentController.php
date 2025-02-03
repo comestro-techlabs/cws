@@ -361,22 +361,17 @@ class StudentController extends Controller
         return view('studentdashboard.billing', compact('hasCompleted', 'courses', 'paymentsWithWorkshops','overdueCount'));
     }
 
-    public function viewbilling()
+    public function viewbilling($paymentId)
     {
         if (!Auth::check()) {
             return redirect()->route('auth.login')->with('error', 'you must be logged in to access this page');
         }
-        $studentId = User::findorFail(Auth::id())->id;
-
-        $datas = [
-            'courses' => User::find(Auth::id())->courses()->get(),
-            'payments' => Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->get(),
-        ];
-        return view("studentdashboard.viewbilling", $datas);
+        $payment = Payment::findOrFail($paymentId);
+        $user = User::findOrFail($payment->student_id);
+        
+        return view('studentdashboard.viewbilling', compact('user', 'payment'));
     }
-
-
-    public function courseQuiz()
+        public function courseQuiz()
     {
         if (!Auth::check()) {
             return redirect()->route('auth.login')->with('error', 'You must be logged in to access this page');
