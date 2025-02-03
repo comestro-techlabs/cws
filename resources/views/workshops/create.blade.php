@@ -2,12 +2,12 @@
 
 @section('title', 'Create Workshop')
 
-@section('content') 
+@section('content')
 
 <div class="max-w-3xl mx-auto bg-white shadow-md rounded-lg p-6 mt-8">
-    
-   
-    
+
+
+
     @if(session('success'))
     <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4" role="alert">
         <p class="font-bold">Success</p>
@@ -47,7 +47,7 @@
             <span class="text-sm text-red-500">{{ $message }}</span>
             @enderror
         </div>
-  
+
 
 
         <div>
@@ -79,11 +79,11 @@
             @enderror
 
             <div id="imagePreviewContainer" class="mt-4">
-                <img 
-                    id="imagePreview" 
-                    src="" 
-                    alt="Image Preview" 
-                    class="hidden max-w-[150px] h-auto rounded-md shadow-md" 
+                <img
+                    id="imagePreview"
+                    src=""
+                    alt="Image Preview"
+                    class="hidden max-w-[150px] h-auto rounded-md shadow-md"
                 />
             </div>
         </div>
@@ -102,8 +102,8 @@
             <span class="text-sm text-red-500">{{ $message }}</span>
             @enderror
         </div>
-        
-       
+
+
 
 
         <div>
@@ -112,7 +112,7 @@
                 name="active"
                 id="active"
                 required
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                class="px-3 py-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             >
                 <option value="1">Yes</option>
                 <option value="0">No</option>`
