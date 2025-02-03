@@ -1,5 +1,5 @@
 
-<nav class="fixed top-0 z-50 w-full  bg-white flex flex-wrap justify-between items-center mx-auto md:px-[2%] shadow-lg py-3 px-4 bg-red border-gray-200">
+<nav class="fixed top-0 z-50 w-full  bg-slate-100 flex flex-wrap justify-between items-center mx-auto md:px-[2%] py-3 px-4 bg-red border-gray-200">
     <div class="flex gap-2 items-center">
         <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200   ">
             <span class="sr-only">Open sidebar</span>

@@ -38,7 +38,9 @@ class PublicController extends Controller
 
     public function training()
     {
-        $courses = Course::where("published", true)->get();
+        $courses = Course::where("published", true)
+        ->whereHas('batches')
+        ->get();
         return view("public.training")->with('courses', $courses);
     }
 
@@ -58,7 +60,7 @@ class PublicController extends Controller
         if ($user->courses()->where('course_id', $courseId)->exists()) {
             return redirect()->back()->with('error', 'You are already enrolled in this course.');
         }
-    
+
         if ($user->is_member) {
             // Find active batches where the user is already enrolled
             $activeFreeCourse = $user->courses()
@@ -70,24 +72,24 @@ class PublicController extends Controller
                 ->pluck('pivot.batch_id')
                 ->filter()
                 ->isNotEmpty();
-    
+
             if ($activeFreeCourse) {
                 // Redirect the member to payment if they have an ongoing free course
                 return redirect()->route('public.courseDetails', [
                     'category_slug' => optional($course->category)->cat_slug, // Use optional() to prevent errors
                     'slug' => $course->slug
                 ])->with('error', 'You can only have one active free course at a time. Complete your current course before enrolling in another for free. You can buy this course now.');
-                
-                
+
+
                 // return redirect()->route('public.courseDetails', ['id' => $courseId])
                 //     ->with('error', 'You can only have one active free course at a time. Complete your current course before enrolling in another for free. You can buy this course now.');
             }
-    
+
             // Find an active batch for the course the member wants to enroll in
             $batch = Batch::where('course_id', $courseId)
                           ->whereDate('end_date', '>=', now())
                           ->first();
-    
+
             if (!$batch) {
                 return redirect()->back()->with('error', 'No active batch available for this course.');
             }
@@ -98,7 +100,7 @@ class PublicController extends Controller
                 'slug' => $course->slug
             ]);
         }
-    
+
         return redirect()->route('public.index')->with('success', 'You have successfully enrolled in the course.');
     }
     public function aboutPage()

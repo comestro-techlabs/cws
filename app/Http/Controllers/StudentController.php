@@ -372,7 +372,7 @@ class StudentController extends Controller
         }
         $payment = Payment::findOrFail($paymentId);
         $user = User::findOrFail($payment->student_id);
-        
+
         return view('studentdashboard.viewbilling', compact('user', 'payment'));
     }
         public function courseQuiz()
@@ -647,6 +647,9 @@ class StudentController extends Controller
                 }
             ])
             ->get();
+            dd($data['courses']);
+
+
 
         return view('studentdashboard.assignments.manageAssignments', $data);
     }

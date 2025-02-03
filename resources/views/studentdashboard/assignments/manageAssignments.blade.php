@@ -5,9 +5,9 @@
 @section('content')
     <div class="container mx-auto py-8 mt-12">
         <h1 class="text-2xl font-bold mb-6 text-gray-800">Manage Assignments</h1>
-
         <!-- Check if Courses Exist -->
         @if ($courses->isNotEmpty())
+
             @foreach ($courses as $course)
                 <div class="mb-8">
                     <!-- Course Title -->

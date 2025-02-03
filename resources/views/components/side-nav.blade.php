@@ -1,4 +1,4 @@
-<div class="py-4 overflow-y-auto">
+<div class="py-4 overflow-y-auto px-2 bg-slate-100">
     <ul class=" font-lighter text-sm flex flex-col">
         {{-- dashboard --}}
         <li>
@@ -189,12 +189,12 @@
                     <a href="{{ route('exam.results') }}"
                     class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 ">
                     Manage Result</a>
-                            
+
                     </a>
                 </li>
             </ul>
         </li>
-      
+
 
         {{-- Portfolio --}}
         <li>
@@ -336,7 +336,7 @@
         <li>
             <a href="{{route('admin.certificate')}}"
                 class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100group">
-               
+
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="size-6">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -346,7 +346,7 @@
                 <span class="flex-1 ms-3 whitespace-nowrap">Certificate</span>
             </a>
         </li>
-{{-- 
+{{--
         <li>
             <a href="{{route('placedStudent.create')}}"
                 class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100group">
@@ -360,7 +360,7 @@
             </a>
         </li>
 
-       
+
          <li>
             <a href="{{route('placedStudent.index')}}"
                 class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100group">
@@ -388,7 +388,7 @@
                     <span class="flex-1 ms-3 whitespace-nowrap">Manage Payments</span>
                 </a>
             </li>
-        
+
 
 
          {{-- Enquiries --}}
@@ -403,9 +403,9 @@
                     <span class="flex-1 ms-3 whitespace-nowrap">Manage Enquiries</span>
                 </a>
                 </li>
-             
-              
-     
+
+
+
 
         {{-- logout --}}
         <li>
