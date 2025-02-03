@@ -112,6 +112,8 @@ class StudentController extends Controller
         }
         // Retrieve the student by ID
         $student = User::findOrFail($id);
+        $today = Carbon::now();
+        // $user = User::where('id', $studentId)->first();
 
         // Retrieve only successful payments and load related course data
         // Assuming 'completed' means successful payment
@@ -122,12 +124,14 @@ class StudentController extends Controller
 
         // Group payments by course if needed
         $paymentsGroupedByCourse = Payment::where('student_id', $id)
-            ->where('payment_status', 'captured') // Filter for successful payments
+            ->where('status', 'captured') // Filter for successful payments
             // ->groupBy('course_id')
             ->get();
 
-        // Pass the data to the view
-        return view('admin.students.edit', compact('student', 'purchasedCourses', 'paymentsGroupedByCourse'));
+        $paymentsWithWorkshops = Payment::where('student_id', $id)->get();
+
+        
+        return view('admin.students.edit', compact('student', 'purchasedCourses', 'paymentsGroupedByCourse','paymentsWithWorkshops'));
     }
 
     public function update(Request $request, $id, $field)
