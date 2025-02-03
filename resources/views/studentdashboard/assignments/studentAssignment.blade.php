@@ -19,8 +19,7 @@
             <div class="bg-gray-50 border border-gray-200 rounded-b-md py-3 px-4 text-gray-800">
                 {!! $assignment->description !!}
             </div>
-
-                    </div>
+        </div>
 
         <!-- Uploaded File Details or Upload Form -->
         @if ($uploadedFile)
@@ -32,8 +31,8 @@
                     <p class="text-gray-800 mt-2"><strong>Status:</strong>
                         <span class="
                             @if($uploadedFile->status == 'submitted') text-green-500
-                            @elseif($uploadedFile->status == 'graded') text-blue-500
-                            @else text-red-500
+                                @elseif($uploadedFile->status == 'graded') text-blue-500
+                                @else text-red-500
                             @endif
                         ">
                             {{ ucfirst($uploadedFile->status) }}
