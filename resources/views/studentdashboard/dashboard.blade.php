@@ -75,9 +75,12 @@
                                             class="text-slate-700 font-semibold text-lg">{{ $payment->course->title }}</span>
                                         <p class="text-sm text-gray-500">Duration: {{ $payment->course->duration }} hours
                                         </p>
-                                        <p class="text-sm text-gray-500">Batch: </p>
+                                        <p class="text-sm text-gray-500">Batchs: {{$payment->course->batches[0]->batch_name ?? "not set"}}
+                                        </p>
                                     </div>
                                 </div>
+
+
 
                                 <!-- Progress Bar -->
                                 <div class="flex flex-col items-end">
@@ -134,14 +137,7 @@
                 <!-- Notifications Section -->
                 <div class="px-6 py-3  rounded-lg border border-slate-200 lg:col-span-1 h-[300px]">
                     <h2 class="text-md font-medium mb-4 text-gray-600">Notifications</h2>
-                    <ul class="space-y-4 overflow-y-scroll">
-                        <li class="bg-gray-50 p-4 rounded-lg text-slate-700">New quiz available for "Data
-                            Structures".</li>
-                        <li class="bg-gray-50 p-4 rounded-lg text-slate-700">Assignment 2 deadline extended.</li>
-                        <li class="bg-gray-50 p-4 rounded-lg text-slate-700">Web Dev project submissions start
-                            next week.</li>
 
-                    </ul>
                 </div>
 
                 <!-- Quiz Scores -->

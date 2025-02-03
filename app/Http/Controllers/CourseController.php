@@ -19,7 +19,7 @@ class CourseController extends Controller
     public function index()
     {
         $data['courses'] = Course::paginate(20);
-        return view("admin.manageCourse",$data);
+        return view("admin.manageCourse", $data);
     }
 
     /**
@@ -41,7 +41,7 @@ class CourseController extends Controller
 
         $course = new Course();
         $course->title = $request->title;
-        $course->course_code = $request->course_code; 
+        $course->course_code = $request->course_code;
         $course->slug = Str::slug($request->title);
         $course->save();
         return redirect()->route('course.show', array('course' => $course));
@@ -53,19 +53,19 @@ class CourseController extends Controller
     public function show(Course $course)
     {
         $courseData = Course::with('features')->findOrFail($course->id);
-        $categories = Category::all();  
+        $categories = Category::all();
         $allFeatures = Feature::all();
-        return view("admin.viewCourse", array("course" => $courseData,'categories' => $categories, "allFeatures" => $allFeatures));
+        return view("admin.viewCourse", array("course" => $courseData, 'categories' => $categories, "allFeatures" => $allFeatures));
     }
 
 
     public function addFeature(Request $request, $id)
-{
-    $course = Course::findOrFail($id);
-    $course->features()->sync($request->input('features'));
+    {
+        $course = Course::findOrFail($id);
+        $course->features()->sync($request->input('features'));
 
-    return redirect()->back()->with('success', 'Features updated successfully');
-}
+        return redirect()->back()->with('success', 'Features updated successfully');
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -81,7 +81,7 @@ class CourseController extends Controller
     public function update(Request $request, $id, $field)
     {
         $course = Course::findOrFail($id);
-        
+
         // Define validation rules
         $rules = [
             'title' => 'required|string|max:255',
@@ -92,9 +92,9 @@ class CourseController extends Controller
             'discounted_fees' => 'nullable|numeric',
             'category_id' => 'nullable|exists:categories,id',
             'course_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'course_code' => 'required|string|unique:courses' 
+            'course_code' => 'required|string|unique:courses'
         ];
-        
+
         // Validate only the field being updated
         if ($field == 'course_image') {
             // Special validation for file upload
@@ -107,7 +107,7 @@ class CourseController extends Controller
                 $field => $rules[$field]
             ]);
         }
-      
+
         // Handle file upload if updating the course_image
         if ($field === 'course_image' && $request->hasFile('course_image')) {
             $image = $request->file('course_image');
@@ -119,13 +119,13 @@ class CourseController extends Controller
             // Update the specific field for non-file inputs
             $course->$field = $request->input($field);
         }
-    
+
         // Save the course with the updated field
         $course->save();
-    
+
         // Define the required fields for publication
         $requiredFields = ['title', 'description', 'duration', 'instructor', 'fees', 'discounted_fees', 'category_id', 'course_image'];
-    
+
         // Check if all required fields are filled
         $allFieldsCompleted = true;
         foreach ($requiredFields as $requiredField) {
@@ -137,51 +137,49 @@ class CourseController extends Controller
                 $allFieldsCompleted = false;
                 break;
             }
-            
         }
-    
+
         // Update the published status
         $course->published = $allFieldsCompleted;
         $course->save();
-    
+
         return redirect()->route('course.show', $course->id)->with('success', ucfirst($field) . ' updated successfully!');
     }
-    
+
 
     public function publish(Course $course)
     {
         // Define the required fields for publication
-    $requiredFields = ['title', 'description', 'duration', 'instructor', 'fees', 'discounted_fees', 'category_id', 'course_image'];
+        $requiredFields = ['title', 'description', 'duration', 'instructor', 'fees', 'discounted_fees', 'category_id', 'course_image'];
 
-    // Check if all required fields are filled
-    $allFieldsCompleted = true;
-    foreach ($requiredFields as $requiredField) {
-        if (is_null($course->$requiredField)) {
-            $allFieldsCompleted = false;
-            break;
+        // Check if all required fields are filled
+        $allFieldsCompleted = true;
+        foreach ($requiredFields as $requiredField) {
+            if (is_null($course->$requiredField)) {
+                $allFieldsCompleted = false;
+                break;
+            }
         }
-        
-    }
 
-    // Check if at least one chapter and one feature is added
-    $hasChapters = $course->chapters()->exists(); // Check if there are any chapters
-    $hasFeatures = $course->features()->exists(); // Check if there are any features
+        // Check if at least one chapter and one feature is added
+        $hasChapters = $course->chapters()->exists(); // Check if there are any chapters
+        $hasFeatures = $course->features()->exists(); // Check if there are any features
 
-    // Update the published status
-    $course->published = $allFieldsCompleted && $hasChapters && $hasFeatures;
-    $course->save();
+        // Update the published status
+        $course->published = $allFieldsCompleted && $hasChapters && $hasFeatures;
+        $course->save();
 
-    return redirect()->route('course.show', $course->id);
+        return redirect()->route('course.show', $course->id);
     }
 
     public function unpublish($id)
-{
-    $course = Course::find($id);
-    $course->published = false;
-    $course->save();
+    {
+        $course = Course::find($id);
+        $course->published = false;
+        $course->save();
 
-    return redirect()->back()->with('success', 'Course unpublished successfully!');
-}
+        return redirect()->back()->with('success', 'Course unpublished successfully!');
+    }
 
     public function destroy(Course $course)
     {
@@ -189,16 +187,17 @@ class CourseController extends Controller
         return redirect()->route('course.index');
     }
 
-    public function batches(Course $course){
+    public function batches(Course $course)
+    {
         $data['batches']  = $course->batches()->withCount('users')->get();
-        $data['course'] = $course; 
-        return view('admin.batches.allBatches',$data);
+        $data['course'] = $course;
+        return view('admin.batches.allBatches', $data);
     }
+
     public function showStudents(Batch $batch)
-{
-    $students = $batch->users; 
-    $course=$batch->course;
-    return view('admin.batches.allStudents', compact('batch', 'students','course'));
-}
-     
+    {
+        $students = $batch->users;
+        $course = $batch->course;
+        return view('admin.batches.allStudents', compact('batch', 'students', 'course'));
+    }
 }
