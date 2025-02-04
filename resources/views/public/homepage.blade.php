@@ -209,36 +209,57 @@
 
     {{-- Student List Section --}}
     <div class="flex flex-col items-center mt-20 mb-20 text-center">
-        <h2 class="text-4xl font-bold text-gray-800">Our <span class="text-secondary">Proud</span> Students</h2>
+        <h2 class="text-4xl font-bold text-gray-800"><span class="text-secondary">Our Alumni</span>  Our Pride</h2>
         <h1 class="text-xl font-semibold text-gray-800 mb-4">Meet Our Achievers</h1>
         <p class="text-base text-gray-700 mb-6 md:mx-64">
             Celebrating the success and dedication of our students who have excelled in their respective fields. With their
             hard work and our expert guidance, they have achieved incredible milestones. Get inspired by their stories!
         </p>
 
+        {{$title}}
         {{-- Student List --}}
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl">
-
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-3 px-24 mx-auto p-4">
             @foreach ($placedStudents as $item)
-                <div class="flex flex-col md:flex-row bg-secondary text-white py-6 px-6  shadow gap-6">
-                    <!-- Student Image -->
-                    <div class="w-full md:w-1/3 flex justify-center items-center">
-                        <img src="{{ asset('storage/' . $item->image) }}" alt="Student 1 Image"
-                            class="rounded-lg shadow-lg w-full md:w-3/4">
+            <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-lg cursor-help" title="{{ $item->content }}">
+                <div class="md:flex flex-col justify-center items-center">
+                    <!-- Image Section -->
+                    <div class="flex justify-center p-4">
+                        <img class="h-24 w-24 object-cover rounded-full border-4 border-gray-200 shadow-md transition-transform duration-300 hover:scale-110"
+                             src="https://loremflickr.com/g/320/240/team"
+                             alt="{{ $item->name }} Image">
                     </div>
-                    <!-- Student Details -->
-                    <div class="w-full md:w-2/3 flex flex-col justify-center items-start text-left">
-                        <h3 class="text-2xl font-bold mb-4">{{ $item->name }}</h3>
-                        <p class="text-base mb-4">
-                            {{ $item->content }}
-                        </p>
-                        <p class="text-base mb-2"><strong></strong>{{ $item->position }}</p>
-                        {{-- <p class="text-base"><strong>Contact:</strong> +1 123 456 7890</p> --}}
+                    <!-- Content Section -->
+                    <div class="px-4 py-3 text-center">
+                        <div class="capitalize tracking-wide text-lg text-gray-800 font-semibold">
+                            {{ $item->name }}
+                        </div>
+                        <span class="block mt-1 text-sm leading-tight text-purple-700">
+                            {{ $item->position }}
+                        </span>
                     </div>
                 </div>
-            @endforeach
+            </div>
 
+                {{-- <div class="flex flex-col bg-secondary text-white shadow-lg rounded-lg overflow-hidden transition-transform transform hover:scale-105 hover:shadow-xl">
+                    <!-- Student Image -->
+                    <div class="w-full h-48 md:h-56 flex justify-center items-center bg-gray-800">
+                        <img src="https://learnsyntax.com/storage/store/Gs8Oegn4Oy6wI5XwkdxEih8kDLeZrJvBznq4V5if.png" alt="{{ $item->name }} Image"
+                            class="h-32 w-32 object-cover rounded-lg">
+                    </div>
+                    <!-- Student Details -->
+                    <div class="p-3 flex flex-col">
+                        <h3 class="text-xl font-bold mb-2">{{ $item->name }}</h3>
+                        <p title="{{ $item->content }}" class="text-xs text-gray-300 mb-4 line-clamp-6">
+
+                        </p>
+                        <p class="text-sm md:text-base font-medium text-gray-100">
+                            <strong>Position:</strong> {{ $item->position }}
+                        </p>
+                    </div>
+                </div> --}}
+            @endforeach
         </div>
+
     </div>
 @endsection
 
