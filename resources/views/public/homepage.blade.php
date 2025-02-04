@@ -218,7 +218,7 @@
 
         {{$title}}
         {{-- Student List --}}
-        <div class="grid grid-cols-1 md:grid-cols-5 gap-3 px-24 mx-auto p-4">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 lg:px-24 mx-auto p-4">
             @foreach ($placedStudents as $item)
             <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-lg cursor-help" title="{{ $item->content }}">
                 <div class="md:flex flex-col justify-center items-center">
