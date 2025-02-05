@@ -47,20 +47,19 @@
             Route::get('/assignments/upload/{id}', 'viewAssignments')->name('student.assignment-upload');
             Route::get('/viewCertificate/{userId}',  'showCertificate')->name('student.viewCertificate');
             Route::get('/certificate/{userId}',  'Certificate')->name('student.certificate');
-
         });
     });
 
     Route::get('/student/messages', [MessageController::class, 'studentMessages'])->name('user.messages');
-Route::get('/student/messages/{message}', [MessageController::class, 'showMessage'])->name('student.messages.show');
+    Route::get('/student/messages/{message}', [MessageController::class, 'showMessage'])->name('student.messages.show');
 
 
 
-        // Route::get('/quiz_instruction', function () {
-        //     return view('studentdashboard.quiz_instruction');
-        // })->name('quiz_instruction');
+    // Route::get('/quiz_instruction', function () {
+    //     return view('studentdashboard.quiz_instruction');
+    // })->name('quiz_instruction');
 
-       // });
+    // });
 
 
 
@@ -182,11 +181,11 @@ Route::get('/student/messages/{message}', [MessageController::class, 'showMessag
                 ->name('admin.viewCertificate');
 
 
-    Route::get('/message/create', [MessageController::class, 'create'])->name('messages.create');
-    Route::post('/message/store', [MessageController::class, 'store'])->name('messages.store');
-    Route::get('/message/manage', [MessageController::class, 'index'])->name('messages.manage');
-    Route::get('/message/show/{message}', [MessageController::class, 'show'])->name('messages.show');
-    Route::delete('/message/delete/{message}', [MessageController::class, 'destroy'])->name('messages.delete');
+            Route::get('/message/create', [MessageController::class, 'create'])->name('messages.create');
+            Route::post('/message/store', [MessageController::class, 'store'])->name('messages.store');
+            Route::get('/message/manage', [MessageController::class, 'index'])->name('messages.manage');
+            Route::get('/message/show/{message}', [MessageController::class, 'show'])->name('messages.show');
+            Route::delete('/message/delete/{message}', [MessageController::class, 'destroy'])->name('messages.delete');
 
             Route::get('/portfolio/create', [PortfolioController::class, 'create'])->name('portfolio.create');
             Route::post('/portfolio/store', [PortfolioController::class, 'store'])->name('portfolio.store');
@@ -204,7 +203,6 @@ Route::get('/student/messages/{message}', [MessageController::class, 'showMessag
             Route::delete('admin/workshop/{id}', [WorkshopController::class, 'destroy'])->name('admin.workshops.destroy');
             Route::resource('placedStudent', PlacedStudentController::class);
             Route::post('/placed-students/{placedStudent}/toggle-status', [PlacedStudentController::class, 'toggleStatus'])->name('placedStudent.toggleStatus');
-          
         });
     });
 
@@ -258,4 +256,3 @@ Route::get('/student/messages/{message}', [MessageController::class, 'showMessag
     Route::get('/portfolio', [PortfolioController::class, 'index'])->name('public.portfolio');
     Route::get('/workshops', [WorkshopController::class, 'index'])->name('public.workshops');
     Route::get('/workshop/{id}/enroll', [WorkshopController::class, 'buyWorkshop'])->name('workshop.enroll');
-

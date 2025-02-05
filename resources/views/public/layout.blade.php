@@ -18,14 +18,35 @@
 </head>
 
 <body>
+    <div class="bg-gradient-to-r  to-purple-100 via-purple-300 from-purple-50">
+        <!-- Fixed Navigation Bar -->
+        <nav id="navbar" class="fixed top-0 z-50 w-full bg-transparent transition-all duration-300">
+          @include('public.publicheader')
+        </nav>
 
+        <!-- Content Section -->
+        <div class="md:py-[80px] bg-cover bg-bottom bg-[url('{{asset('hero-bg.png')}}')]">
+          @if(request()->route()->getName() === 'public.index') <!-- Check if current route is homepage -->
+          <!-- Hero Section with Gradient -->
+          <div class="relative h-full flex items-center md:py-12 pt-10">
+            <div class="md:px-[10%] px-10 py-5 md:py-0 gap-10 flex flex-wrap items-center">
+              <!-- Left Section: Text Content -->
+              <div class="w-full py-5 md:w-4/6">
+                <div class="rounded-2xl px-3">
+                  <h1 class="text-3xl sm:text-3xl md:text-4xl lg:text-6xl font-bold text-slate-800 tracking-tight">
+                    Learn Syntax. <br> Learn Programming
+                  </h2>
+                  <p class="mt-4 text-sm md:font-normal rounded-lg font-semibold bg-white/80 md:bg-transparent p-5 md:p-0 md:text-xl md:w-[90%]">
+                    Transform your passion for coding into a successful career at Learn Syntax, Purnea's most trusted programming center. Join us for hands-on learning, expert guidance, and real-world projects to unlock your true potential!
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          @endif
+        </div>
+      </div>
 
-
-    <nav class="fixed top-0 z-50 w-full bg-white shadow-md ">
-
-        @include('public.publicheader')
-
-    </nav>
 
     <aside id="logo-sidebar"
     class="fixed sm:hidden sm:w-0 top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 "
@@ -103,6 +124,20 @@
     @yield('js')
 
     @livewireScripts
+    <script>
+        window.addEventListener("scroll", () => {
+    const navbar = document.getElementById("navbar");
+
+    // Check if the page is scrolled down more than 50px
+    if (window.scrollY > 50) {
+      navbar.classList.remove("bg-transparent");
+      navbar.classList.add("bg-white", "shadow-md");
+    } else {
+      navbar.classList.remove("bg-white", "shadow-md");
+      navbar.classList.add("bg-transparent");
+    }
+  });
+    </script>
     <script type="module" src="{{ asset('build/assets/app-l0sNRNKZ.js') }}"></script>
 </body>
 

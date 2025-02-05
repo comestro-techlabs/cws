@@ -7,16 +7,20 @@
 @endsection
 
 @section('content')
+
+
+
     {{-- banner --}}
-    <div class="w-full mt-12">
+    {{-- <div class="w-full mt-12">
         <img src="{{ asset('assets/home/banner.png') }}" class="w-full h-full" alt="Banner">
-    </div>
+    </div> --}}
 
 
     {{-- latest course --}}
     <div class="">
         <div class="flex flex-col items-center mt-10 md:mt-20 text-center">
-            <h2 class="text-3xl text-gray-900 font-sans font-bold mb-4">Our <span class="text-secondary">Latest</span> Courses
+            <h2 class="text-3xl text-gray-900 font-sans font-bold mb-4">Our <span class="text-secondary">Latest</span>
+                Courses
             </h2>
             <h1 class="text-xl font-semibold text-gray-800 mb-4">Master the Skills to Build Your Future</h1>
             <p class="text-base text-gray-700 mb-6 md:mx-64">
@@ -88,9 +92,6 @@
         </div>
 
     </div>
-
-    <img src="{{ asset('assets/home/banner1.png') }}" class="w-full object-cover object-left h-[230px] md:h-full"
-        alt="Banner">
 
     {{-- {{static info}} --}}
     <div class="flex flex-col gap-2 p-2 md:p-8 mt-10 bg-gray-50 rounded-2xl mb-12 items-center md:px-[10%]">
@@ -234,9 +235,9 @@
                                 <div class="md:flex flex-col justify-center items-center">
                                     <!-- Image Section -->
                                     <div class="flex justify-center p-4">
-                                        <img class="h-24 w-24 object-cover rounded-full border-4 border-gray-200 shadow-md transition-transform duration-300 hover:scale-110"
-                                            src="{{ asset('storage/' . $item->image) }}"
-                                            alt="{{ $item->name }} Image">
+                                        {{-- <img class="h-24 w-24 object-cover rounded-full border-4 border-gray-200 shadow-md transition-transform duration-300 hover:scale-110" --}}
+                                        {{-- src="{{ asset('storage/' . $item->image) }}"
+                                            alt="{{ $item->name }} Image"> --}}
                                     </div>
                                     <!-- Content Section -->
                                     <div class="px-4 py-3 text-center">
@@ -267,7 +268,7 @@
             type: 'carousel',
             autoplay: 2000,
             animationDuration: 4500,
-            perView:5;
+            perView: 4,
             animationTimingFunc: 'linear',
             classes: {
                 activeNav: '[&>*]:bg-slate-700',
