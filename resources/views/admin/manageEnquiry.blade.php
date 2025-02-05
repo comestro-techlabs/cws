@@ -5,9 +5,8 @@
 @section('content')
     <div class="flex flex-1 flex-col">
         <div class="md:px-[2%] px-5 ">
-            <div class="flex gap-3 flex-col md:flex-row justify-between md:items-center">
 
-                <h2
+            <h2
                     class="md:text-xl capitalize text-lg font-semibold text-slate-500 border-s-4 border-s-orange-400 pl-3">
                     @if (isset($_GET['search']) && $_GET['search'] !== '')
                         {{ $_GET['search'] }}
@@ -15,6 +14,9 @@
                         {{ 'Manage all' }}
                     @endif Enquiries ({{ count($enquiry) }})
                 </h2>
+            <div class="flex gap-3 flex-col md:flex-row justify-between md:items-center">
+
+                
 
                 {{-- search form starts here --}}
 

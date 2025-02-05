@@ -1,9 +1,12 @@
 @extends('admin.base')
 
 @section('content')
+<div class="flex flex-wrap justify-between items-center p-4">
+    <h2 class="md:text-xl text-lg font-semibold  text-slate-500 border-s-4 border-s-orange-400 pl-3 mb-5"> Manage Exams Details</h2>
+   
+</div>
 <div class="max-w-6xl mx-auto mt-10">
-    <h1 class="text-2xl font-bold mb-6">Manage Exam Details</h1>
-
+    
     @if (session('success'))
     <div class="bg-green-100 text-green-700 p-4 rounded mb-4">
         {{ session('success') }}

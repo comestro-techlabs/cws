@@ -3,9 +3,15 @@
 @section('title', 'create placedstudent ')
 
 @section('content')
-    <div class="mx-auto p-3">
-        <h2 class="text-2xl font-bold mb-4">Manage Placed Students</h2>
 
+<div class="flex flex-wrap justify-between items-center p-4">
+    <h2 class="md:text-xl text-lg font-semibold  text-slate-500 border-s-4 border-s-orange-400 pl-3 mb-5">Manage Placed Student</h2>
+    <a href="{{ route('placedStudent.create') }}" class="px-4 py-2 bg-blue-500 text-white  rounded hover:bg-blue-600">
+        Add New Student
+    </a>
+</div>
+    <div class="mx-auto p-3">
+      
         @if (session('success'))
             <div class="mb-4 p-4 text-green-700 bg-green-100 border border-green-400 rounded">
                 {{ session('success') }}

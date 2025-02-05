@@ -1,9 +1,11 @@
 @extends('admin.base')
 @section('content')
+<div class="flex flex-wrap justify-between items-center p-4">
+    <h2 class="md:text-xl text-lg font-semibold  text-slate-500 border-s-4 border-s-orange-400 pl-3 mb-5">Certificate Eligibility</h2>
+</div>
     <div class="container mt-5">
-        <h1 class="text-xl font-bold mb-4">Certificate Eligibility</h1>
-        
-        <table class="table-auto border-collapse border border-gray-300 w-full">
+        <div class="overflow-x-auto">
+        <table class="table-auto border-collapse border border-gray-300 w-full ">
             <thead>
                 <tr class="bg-gray-100">
                     <th class="border border-gray-300 px-4 py-2 text-left">Name</th>
@@ -37,5 +39,6 @@
                 @endforeach
             </tbody>
         </table>
+        </div>
     </div>
 @endsection

@@ -4,15 +4,14 @@
 
 @section('content')
 
+<div class="flex flex-wrap justify-between items-center p-4">
+    <h2 class="md:text-xl text-lg font-semibold  text-slate-500 border-s-4 border-s-orange-400 pl-3 mb-5">Portfolio List</h2>
+    <a href="{{ route('portfolio.create') }}" class="px-4 py-2 bg-blue-500 text-white  rounded hover:bg-blue-600">
+        Add New Portfolio
+    </a>
+</div>
+
 <div class="max-w-5xl mx-auto mt-8">
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold ">Portfolio List</h1>
-        <a href="{{ route('portfolio.create') }}" class="px-4 py-2 bg-blue-500 text-white  rounded hover:bg-blue-600">
-            Add New Portfolio
-        </a>
-    </div>
-
-
 
     @if($portfolios->isEmpty())
         <p class="text-gray-800 " >No portfolios found.</p>
