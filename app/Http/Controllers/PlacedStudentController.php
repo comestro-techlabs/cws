@@ -72,17 +72,37 @@ class PlacedStudentController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(PlacedStudent $placedStudent)
-    {
-        //
-    }
+{
+    return view('admin.placedStudent.edit', compact('placedStudent'));
+}
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, PlacedStudent $placedStudent)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'content' => 'required|string',
+            'position' => 'required|string|max:255',
+            'image' => 'image|mimes:jpeg,png,jpg',
+        ]);
+    
+       
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('store', 'public');
+            $placedStudent->image = $imagePath;
+        }
+    
+        $placedStudent->name = $request->name;
+        $placedStudent->content = $request->content;
+        $placedStudent->position = $request->position;
+        $placedStudent->save();
+    
+        return redirect()->back()->with('success', 'Successfully updated!');
     }
+    
+    
 
     /**
      * Remove the specified resource from storage.
