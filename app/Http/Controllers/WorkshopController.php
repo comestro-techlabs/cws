@@ -8,6 +8,7 @@ use App\Models\Workshop;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
+
 class WorkshopController extends Controller
 {
 
@@ -28,10 +29,55 @@ public function index()
     //     ->whereTime('time', '<=', $endTime->format('H:i'))
     //     ->get();
     $workshops = Workshop::get();
-   
-    
+    $user_id = Auth::id();
+    $userPayments = Payment::where("student_id", $user_id)
+    ->where("status", "captured")
+    ->pluck('workshop_id')
+    ->toArray();
 
-    return view('public.workshop', compact('workshops'));
+    return view('public.workshop', compact('workshops', 'userPayments'));
+}
+
+
+
+
+public function buyWorkshop($id)
+{
+    if (!Auth::check()) {
+        return redirect()->route('auth.login')->with('error', 'You must be logged in to enroll in a workshop.');
+    }
+
+    $workshop = Workshop::findOrFail($id);
+    $user_id = Auth::id();
+    $currentMonth = Carbon::now()->month;
+    $year = Carbon::now()->year;
+    // Check if the user already has a successful payment for this workshop
+    $payment_exist = Payment::where("student_id", $user_id)
+        ->where("workshop_id", $id)
+        ->where("status", "captured")
+        ->exists();
+
+    if ($workshop->fees == 0) {
+        if (!$payment_exist) {
+            // Insert a free payment record
+            Payment::create([
+                'student_id'   => $user_id,
+                'workshop_id'  => $id,
+                'amount'       => 0,
+                'status'       => 'captured',
+                'month' => $currentMonth,
+                'year' => $year,
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ]);
+
+            return redirect()->route('public.workshops')->with('success', 'You have been enrolled in the workshop for free.');
+        }
+
+        return redirect()->route('public.workshops')->with('info', 'You are already enrolled.');
+    }
+
+    return view("public.workshop", compact('workshop', 'payment_exist'));
 }
 
 

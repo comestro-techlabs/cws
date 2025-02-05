@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PublicController extends Controller
 {
@@ -31,8 +32,9 @@ class PublicController extends Controller
         }
         $course = Course::where('slug', $slug)->first(); // replace 1 with course id
         $course_id = $course->id;
-
-        $payment_exist = Payment::where("student_id", Auth::id())->where("course_id", $course_id)->where("status", "captured")->exists();
+        $user_id = Auth::id();
+        $payment_exist = Payment::where("student_id", $user_id)->where("course_id", $course_id)->where("status", "captured")->exists();
+       
         return view("public.course", compact('course', "payment_exist"));
     }
 
@@ -44,65 +46,157 @@ class PublicController extends Controller
         return view("public.training")->with('courses', $courses);
     }
 
+    // public function enrollCourse($courseId)
+    // {
+    //     $user = auth()->user();
+    //     if (!$user->is_active) {
+    //         return redirect()->back()->with('error', 'Your account is inactive. Please contact support.');
+    //     }
+    //     $course = Course::with('category')->where('id', $courseId)->first();
+
+    //     $coursesWithoutBatch = $user->courses()->wherePivot('batch_id', null)->exists();
+
+    //     if ($coursesWithoutBatch) {
+    //         return redirect()->back()->with('error', 'Please update the batch for your existing course before enrolling in a new one.');
+    //     }
+    //     if ($user->courses()->where('course_id', $courseId)->exists()) {
+    //         return redirect()->back()->with('error', 'You are already enrolled in this course.');
+    //     }
+
+    //     if ($user->is_member) {
+    //         // Find active batches where the user is already enrolled
+    //         $activeFreeCourse = $user->courses()
+    //             ->whereHas('batches', function ($query) {
+    //                 $query->whereDate('end_date', '>=', now());
+    //             })
+    //             ->withPivot('batch_id')
+    //             ->get()
+    //             ->pluck('pivot.batch_id')
+    //             ->filter()
+    //             ->isNotEmpty();
+
+    //         if ($activeFreeCourse) {
+    //             // Redirect the member to payment if they have an ongoing free course
+    //             return redirect()->route('public.courseDetails', [
+    //                 'category_slug' => optional($course->category)->cat_slug, // Use optional() to prevent errors
+    //                 'slug' => $course->slug
+    //             ])->with('error', 'You can only have one active free course at a time. Complete your current course before enrolling in another for free. You can buy this course now.');
+
+
+    //             // return redirect()->route('public.courseDetails', ['id' => $courseId])
+    //             //     ->with('error', 'You can only have one active free course at a time. Complete your current course before enrolling in another for free. You can buy this course now.');
+    //         }
+
+    //         // Find an active batch for the course the member wants to enroll in
+    //         $batch = Batch::where('course_id', $courseId)
+    //                       ->whereDate('end_date', '>=', now())
+    //                       ->first();
+
+    //         if (!$batch) {
+    //             return redirect()->back()->with('error', 'No active batch available for this course.');
+    //         }
+    //         $user->courses()->attach($courseId);
+    //     } else {
+    //         return redirect()->route('public.courseDetails', [
+    //             'category_slug' => optional($course->category)->cat_slug, // Use optional() to prevent errors
+    //             'slug' => $course->slug
+    //         ]);
+    //     }
+
+    //     return redirect()->route('public.index')->with('success', 'You have successfully enrolled in the course.');
+    // }
+
     public function enrollCourse($courseId)
-    {
-        $user = auth()->user();
-        if (!$user->is_active) {
-            return redirect()->back()->with('error', 'Your account is inactive. Please contact support.');
-        }
-        $course = Course::with('category')->where('id', $courseId)->first();
+{
+    $user = auth()->user();
 
-        $coursesWithoutBatch = $user->courses()->wherePivot('batch_id', null)->exists();
+    if (!$user->is_active) {
+        return redirect()->back()->with('error', 'Your account is inactive. Please contact support.');
+    }
 
-        if ($coursesWithoutBatch) {
-            return redirect()->back()->with('error', 'Please update the batch for your existing course before enrolling in a new one.');
-        }
-        if ($user->courses()->where('course_id', $courseId)->exists()) {
-            return redirect()->back()->with('error', 'You are already enrolled in this course.');
-        }
+    $course = Course::with('category')->where('id', $courseId)->first();
 
-        if ($user->is_member) {
-            // Find active batches where the user is already enrolled
-            $activeFreeCourse = $user->courses()
-                ->whereHas('batches', function ($query) {
-                    $query->whereDate('end_date', '>=', now());
-                })
-                ->withPivot('batch_id')
-                ->get()
-                ->pluck('pivot.batch_id')
-                ->filter()
-                ->isNotEmpty();
+    if (!$course) {
+        return redirect()->back()->with('error', 'Course not found.');
+    }
 
-            if ($activeFreeCourse) {
-                // Redirect the member to payment if they have an ongoing free course
-                return redirect()->route('public.courseDetails', [
-                    'category_slug' => optional($course->category)->cat_slug, // Use optional() to prevent errors
-                    'slug' => $course->slug
-                ])->with('error', 'You can only have one active free course at a time. Complete your current course before enrolling in another for free. You can buy this course now.');
+    // Check if user has already enrolled in the course
+    if ($user->courses()->where('course_id', $courseId)->exists()) {
+        return redirect()->back()->with('error', 'You are already enrolled in this course.');
+    }
 
+    // Check if the course is free
+    if ($course->discounted_fees == 0) {
+        $alreadyEnrolled = DB::table('course_user')
+            ->where('user_id', $user->id)
+            ->where('course_id', $courseId)
+            ->exists();
 
-                // return redirect()->route('public.courseDetails', ['id' => $courseId])
-                //     ->with('error', 'You can only have one active free course at a time. Complete your current course before enrolling in another for free. You can buy this course now.');
-            }
-
-            // Find an active batch for the course the member wants to enroll in
-            $batch = Batch::where('course_id', $courseId)
-                          ->whereDate('end_date', '>=', now())
-                          ->first();
-
-            if (!$batch) {
-                return redirect()->back()->with('error', 'No active batch available for this course.');
-            }
-            $user->courses()->attach($courseId);
-        } else {
-            return redirect()->route('public.courseDetails', [
-                'category_slug' => optional($course->category)->cat_slug, // Use optional() to prevent errors
-                'slug' => $course->slug
+        if (!$alreadyEnrolled) {
+            DB::table('course_user')->insert([
+                'user_id'    => $user->id,
+                'course_id'  => $courseId,
+                'batch_id'   => null,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
         }
 
-        return redirect()->route('public.index')->with('success', 'You have successfully enrolled in the course.');
+        return redirect()->route('student.dashboard')->with('success', 'You have been enrolled in the course.');
     }
+
+    // Check if the user has a successful payment for this course
+    $paymentExists = Payment::where('student_id', $user->id)
+        ->where('course_id', $courseId)
+        ->where('status', 'captured') // Ensuring successful payment
+        ->exists();
+
+    if (!$paymentExists) {
+        return redirect()->route('public.courseDetails', [
+            'category_slug' => optional($course->category)->cat_slug, // Use optional() to prevent errors
+            'slug' => $course->slug
+        ])->with('error', 'Payment required to access this course.');
+    }
+
+    // Ensure the user is a member and can access one free course at a time
+    if ($user->is_member) {
+        $activeFreeCourse = $user->courses()
+            ->whereHas('batches', function ($query) {
+                $query->whereDate('end_date', '>=', now());
+            })
+            ->withPivot('batch_id')
+            ->get()
+            ->pluck('pivot.batch_id')
+            ->filter()
+            ->isNotEmpty();
+
+        if ($activeFreeCourse) {
+            return redirect()->route('public.courseDetails', [
+                'category_slug' => optional($course->category)->cat_slug,
+                'slug' => $course->slug
+            ])->with('error', 'You can only have one active free course at a time. Complete your current course before enrolling in another for free.');
+        }
+
+        // Find an active batch for the course
+        $batch = Batch::where('course_id', $courseId)
+                      ->whereDate('end_date', '>=', now())
+                      ->first();
+
+        if (!$batch) {
+            return redirect()->back()->with('error', 'No active batch available for this course.');
+        }
+
+        $user->courses()->attach($courseId, ['batch_id' => $batch->id]);
+    } else {
+        return redirect()->route('public.courseDetails', [
+            'category_slug' => optional($course->category)->cat_slug,
+            'slug' => $course->slug
+        ]);
+    }
+
+    return redirect()->route('public.index')->with('success', 'You have successfully enrolled in the course.');
+}
+
     public function aboutPage()
     {
         return view("public.about-us");

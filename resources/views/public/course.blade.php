@@ -96,12 +96,18 @@
                     <p class="text-sm"><a href="{{ route('student.dashboard') }}" class="text-sm underline text-blue-700">Go to Dashboard</a></p>
                 </div>
                 @else
-                <button id="pay-button"
-                class="flex items-center justify-center w-full bg-white text-black  rounded-full mt-2 shadow-xl px-6 py-2  transition duration-300 ease-in-out transform hover:scale-105 space-x-3">
-                    <img src="https://cdn.iconscout.com/icon/free/png-512/free-razorpay-logo-icon-download-in-svg-png-gif-file-formats--payment-gateway-brand-logos-icons-1399875.png?f=webp&w=256"
-                        alt="PhonePe Logo" class="w-12 h-12 object-cover">
-                    <span>Proceed with Razorpay</span>
-                </button>
+                <div class="text-center">
+                <button id="pay-button" class="bg-purple-600 mt-8 text-white font-medium rounded-lg px-4 py-2 hover:bg-purple-700 transition-colors">
+                    <div class="flex gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        class="w-8 h-8 mr-2">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M18 15l4-4m0 0l-4-4m4 4H6"></path>
+                    </svg>
+                    <span>Pay Now</span>
+                </div>
+                </div>
+                </button></div>
                 @endif
                 @endauth
 

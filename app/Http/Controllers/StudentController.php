@@ -328,6 +328,7 @@ class StudentController extends Controller
         $user = User::where('id', $studentId)->first();
 
         $overdueCount = $this->paymentService->processOverduePayments();
+        // dd($overdueCount);
 
         $hasCompleted = $this->hasCompletedExamOrAssignment($studentId);
         $today = Carbon::now(); // Define the current date
@@ -586,9 +587,27 @@ class StudentController extends Controller
 
         $course = Course::findOrFail($id);
         $course_id = $course->id;
+        $user_id = Auth::id();
+        $payment_exist = Payment::where("student_id", $user_id)->where("course_id", $course_id)->where("status", "captured")->exists();
+         // If the course price is 0, enroll the user directly
+        if ($course->discounted_fees == 0) {
+        $already_enrolled = DB::table('course_user')
+            ->where('user_id', $user_id)
+            ->where('course_id', $course_id)
+            ->exists();
 
-        $payment_exist = Payment::where("student_id", Auth::id())->where("course_id", $course_id)->where("status", "captured")->exists();
+        if (!$already_enrolled) {
+            DB::table('course_user')->insert([
+                'user_id'    => $user_id,
+                'course_id'  => $course_id,
+                'batch_id'   => null, // Set batch_id if applicable
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
 
+        return redirect()->route('student.dashboard')->with('success', 'You have been enrolled in the course.');
+    }
         return view("studentdashboard.course.viewCourse", compact('course', 'payment_exist'));
     }
     public function editProfile()
@@ -634,7 +653,7 @@ class StudentController extends Controller
             ->pluck('batch_id', 'course_id'); // Fetch batch_id mapped by course_id
 
         // Fetch courses and filter assignments based on the student's batch
-        $data['courses'] = Course::whereHas('students', function ($query) use ($studentId) {
+        $data['courses'] = Course::whereHas('users', function ($query) use ($studentId) {
             $query->where('user_id', $studentId);
         })
             ->with([
@@ -647,7 +666,7 @@ class StudentController extends Controller
                 }
             ])
             ->get();
-            dd($data['courses']);
+            // dd($data['courses']);
 
 
 
@@ -666,7 +685,7 @@ class StudentController extends Controller
         // Find the assignment with a relationship check for the student's course
         $assignment = Assignments::where('id', $id)
             ->whereHas('course', function ($query) use ($studentId) {
-                $query->whereHas('students', function ($q) use ($studentId) {
+                $query->whereHas('users', function ($q) use ($studentId) {
                     $q->where('user_id', $studentId);
                 });
             })->first();
