@@ -130,11 +130,9 @@ class StudentController extends Controller
 
         $paymentsWithWorkshops = Payment::where('student_id', $id)->get();
 
-        $enrolledCourses = DB::table('course_user')->where('user_id',$id)->get();
-        $courseIds = $enrolledCourses->pluck('course_id'); 
-        $courses = Course::whereIn('id', $courseIds)->get();
-        // dd($courses[0]->title);
-        return view('admin.students.edit', compact('student', 'purchasedCourses', 'paymentsGroupedByCourse','paymentsWithWorkshops','courses','enrolledCourses'));
+        $courses = $student->courses()->withPivot('created_at', 'batch_id')->get();
+        
+        return view('admin.students.edit', compact('student', 'purchasedCourses', 'paymentsGroupedByCourse','paymentsWithWorkshops','courses'));
     }
 
     public function update(Request $request, $id, $field)

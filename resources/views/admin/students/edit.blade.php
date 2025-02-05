@@ -320,20 +320,20 @@ $totalFields = count($fields);
                                     <tr>
                                         <th class="p-2 text-center text-xs font-medium text-gray-600 ">Enrolled Courses</th>
                                         <th class="p-2 text-center text-xs font-medium text-gray-600 ">Enrolling Date</th>
+                                        <th class="p-2 text-center text-xs font-medium text-gray-600 ">Batch</th>
+
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-200">
-                                    @foreach($courses as $course)
-                                    @php
-                                        $enrolling_date = $enrolledCourses->firstWhere('course_id', $course->id)->created_at ?? null;   
-                                        $formattedDate = $enrolling_date ? \Carbon\Carbon::parse($enrolling_date)->format('Y-m-d') : 'N/A';
-                                    @endphp
+                                    @foreach($courses as $course) 
                                 <tr>
                                 <td class="p-2 text-center  text-xs text-gray-800">
                                     {{$course->title}}
                                 </td>
+                                <td class="p-2 text-center  text-xs text-gray-800">{{ \Carbon\Carbon::parse($course->pivot->created_at)->format('d M Y') }}</td>
+                                </td>
                                 <td class="p-2 text-center  text-xs text-gray-800">
-                                {{ $formattedDate}}                                
+                                    {{$course->batch_name}}
                                 </td>
                                 </tr>
                                     @endforeach
