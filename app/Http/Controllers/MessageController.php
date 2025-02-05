@@ -10,47 +10,17 @@ use Illuminate\Support\Facades\Auth;
 
 class MessageController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $messages = Message::all();
-        return view('admin.message.manage',compact('messages'));
+        return view('admin.message.manage', compact('messages'));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         $batches = Batch::with('course')->get();
         $users = User::all();
         return view('admin.message.create', compact('batches', 'users'));
-
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    private function getRecipients(Request $request)
-    {
-        switch ($request->recipient_type) {
-            case 'all_users':
-                return User::pluck('id')->toArray();
-            case 'batch':
-                $batch = Batch::find($request->batch_id);
-                return $batch ? $batch->users->pluck('id')->toArray() : [];
-            case 'single_user':
-                return [$request->user_id];
-            case 'some_users':
-                return array_unique($request->some_user_ids ?? []);
-            default:
-                return [];
-            }
-        }
-
-
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -62,34 +32,31 @@ class MessageController extends Controller
             'some_user_ids.*' => 'exists:users,id',
             'user_id' => 'required_if:recipient_type,single_user|nullable|exists:users,id',
         ]);
-        $recipients = $this->getRecipients($request);
+
+        $recipients = [];
+
         if ($request->recipient_type === 'all_users') {
-            $recipients = User::pluck('id')->toArray();
+            $recipients = User::pluck('id')->map(fn($id) => (int) $id)->toArray();
         } elseif ($request->recipient_type === 'batch' && $request->batch_id) {
             $batch = Batch::find($request->batch_id);
             if ($batch) {
-                $recipients = $batch->users->pluck('id')->toArray();
+                $recipients = $batch->users->pluck('id')->map(fn($id) => (int) $id)->toArray();
             }
         } elseif ($request->recipient_type === 'single_user' && $request->user_id) {
-            $recipients = [$request->user_id];
+            $recipients = [(int) $request->user_id];
         } elseif ($request->recipient_type === 'some_users' && !empty($request->some_user_ids)) {
-            $recipients = array_unique($request->some_user_ids); // Remove duplicates
+            $recipients = array_unique(array_map('intval', $request->some_user_ids));
         }
+
         Message::create([
             'title' => $request->title,
             'content' => $request->content,
             'recipient_type' => $request->recipient_type,
-            'recipients' => $recipients, // No need for json_encode
+            'recipients' => $recipients,
         ]);
 
         return redirect()->route('messages.create')->with('success', 'Message created successfully.');
     }
-
-
-
-    /**
-     * Display the specified resource.
-     */
     public function show(Message $message)
     {
         $recipients = $message->recipients ?? [];
@@ -97,39 +64,27 @@ class MessageController extends Controller
 
         return view('admin.message.view', compact('message', 'recipientDetails'));
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-
-
-
     public function destroy(Message $message)
     {
         $message->delete();
-        return redirect()->route('messages.manage')->with('success','Message Deleted Successfully');
+        return redirect()->route('messages.manage')->with('success', 'Message Deleted Successfully');
     }
 
-    public function userMessages()
+    public function studentMessages()
     {
-        $user = Auth::user();
-
-        $messages = Message::where(function ($query) use ($user) {
-            $query->where('recipient_type', 'all_users')
-                  ->orWhere(function ($query) use ($user) {
-                      $query->where('recipient_type', 'single_user')
-                            ->whereJsonContains('recipients', $user->id);
-                  })
-                  ->orWhere(function ($query) use ($user) {
-                      $query->where('recipient_type', 'some_users')
-                            ->whereJsonContains('recipients', $user->id);
-                  })
-                  ->orWhere(function ($query) use ($user) {
-                      $query->where('recipient_type', 'batch')
-                            ->whereJsonContains('recipients', $user->id);
-                  });
-        })->get();
+        $student = auth()->user();
+        $messages = Message::whereJsonContains('recipients', $student->id)->get();
 
         return view('studentdashboard.notification', compact('messages'));
+    }
+
+    public function showMessage(Message $message)
+    {
+        $student = auth()->user();
+        if (!in_array($student->id, $message->recipients)) {
+            abort(403, 'Unauthorized');
+        }
+
+        return view('studentdashboard.viewMessage', compact('message'));
     }
 }
