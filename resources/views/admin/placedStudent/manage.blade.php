@@ -51,16 +51,19 @@
                                     N/A 
                                 @endif
                             </td>
-                            <td class="border flex items-center gap-2 border-gray-300 px-4 py-2 text-center">
-                                <a href="" class="text-blue-500 hover:underline">Edit</a> |
+                             <td class="border flex items-center gap-2 border-gray-300 px-4 py-2 text-center">
+                                <a href="{{ route('placedStudent.edit', $student->id) }}" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">Edit</a> |
                                 <form action="{{ route('placedStudent.destroy', $student->id) }}" method="POST"
                                     class="inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="text-red-500 hover:underline"
+                                    <button type="submit" class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
                                         onclick="return confirm('Are you sure you want to delete this record?')">Delete</button>
                                 </form>
-                            </td>
+                            </td> 
+
+                           
+                            
                         </tr>
                     @empty
                         <tr>

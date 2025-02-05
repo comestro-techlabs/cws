@@ -374,7 +374,9 @@ class StudentController extends Controller
         if (!Auth::check()) {
             return redirect()->route('auth.login')->with('error', 'you must be logged in to access this page');
         }
-        $payment = Payment::findOrFail($paymentId);
+        $payment = Payment::with(['course', 'workshops'])->findOrFail($paymentId);
+        // $payment = Payment::findOrFail($paymentId);
+        
         $user = User::findOrFail($payment->student_id);
 
         return view('studentdashboard.viewbilling', compact('user', 'payment'));

@@ -40,7 +40,7 @@ class Payment extends Model
         return $this->belongsTo(Course::class, 'course_id');
     }
      public function workshops(){
-        return $this->belongsToMany(workshop::class);
+        return $this->belongsTo(workshop::class, 'workshop_id');
      }
      public function getCourseProgressAttribute()
      {
