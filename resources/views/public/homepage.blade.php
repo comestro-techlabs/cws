@@ -235,9 +235,9 @@
                                 <div class="md:flex flex-col justify-center items-center">
                                     <!-- Image Section -->
                                     <div class="flex justify-center p-4">
-                                        {{-- <img class="h-24 w-24 object-cover rounded-full border-4 border-gray-200 shadow-md transition-transform duration-300 hover:scale-110" --}}
-                                        {{-- src="{{ asset('storage/' . $item->image) }}"
-                                            alt="{{ $item->name }} Image"> --}}
+                                        <img class="h-24 w-24 object-cover rounded-full border-4 border-gray-200 shadow-md transition-transform duration-300 hover:scale-110"
+                                        src="{{ asset('storage/' . $item->image) }}"
+                                            alt="{{ $item->name }} Image">
                                     </div>
                                     <!-- Content Section -->
                                     <div class="px-4 py-3 text-center">
