@@ -51,7 +51,8 @@
         });
     });
 
-    Route::get('/user/messages', [MessageController::class, 'userMessages'])->name('user.messages');
+    Route::get('/student/messages', [MessageController::class, 'studentMessages'])->name('user.messages');
+Route::get('/student/messages/{message}', [MessageController::class, 'showMessage'])->name('student.messages.show');
 
 
 

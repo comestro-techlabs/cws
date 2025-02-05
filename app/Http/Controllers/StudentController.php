@@ -12,6 +12,7 @@ use App\Models\Quiz;
 use App\Models\ExamUser;
 use App\Models\Workshop;
 use App\Models\Batch;
+use App\Models\Message;
 use App\Services\PaymentService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -130,8 +131,9 @@ class StudentController extends Controller
 
         $paymentsWithWorkshops = Payment::where('student_id', $id)->get();
 
+        $courses = $student->courses()->withPivot('created_at', 'batch_id')->get();
         
-        return view('admin.students.edit', compact('student', 'purchasedCourses', 'paymentsGroupedByCourse','paymentsWithWorkshops'));
+        return view('admin.students.edit', compact('student', 'purchasedCourses', 'paymentsGroupedByCourse','paymentsWithWorkshops','courses'));
     }
 
     public function update(Request $request, $id, $field)
@@ -213,7 +215,10 @@ class StudentController extends Controller
         foreach ($payments as $payment) {
             $payment->progress = $payment->course_progress; // Access the computed attribute
         }
-
+        $messages = Message::whereJsonContains('recipients', $studentId)
+        ->orderBy('created_at', 'desc')
+        ->take(3)
+        ->get();
         // Prepare data for the view
         $datas = [
             'hasCompleted' => $hasCompleted,
@@ -223,6 +228,7 @@ class StudentController extends Controller
             'exams' => $exams,
             'first_attempts' => $firstAttempts,
             'second_attempts' => $secondAttempts,
+            'messages' => $messages,
         ];
 
         return view('studentdashboard.dashboard', $datas);

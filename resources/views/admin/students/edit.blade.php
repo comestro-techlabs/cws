@@ -123,7 +123,9 @@ $totalFields = count($fields);
                             <li class="me-2" role="presentation">
                                 <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="dashboard-styled-tab" data-tabs-target="#styled-dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">Membership</button>
                             </li>
-
+                            <li class="me-2" role="presentation">
+                                <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="enrolled-styled-tab" data-tabs-target="#styled-enrolled" type="button" role="tab" aria-controls="dashboard" aria-selected="false">Enrolled Courses</button>
+                            </li>
                         </ul>
                     </div>
                     <div id="default-styled-tab-content">
@@ -308,6 +310,34 @@ $totalFields = count($fields);
                                     @endforeach
                                 </tbody>
                                 @endif
+
+                            </table>
+                        </div>
+                        <!-- here we will show the enrolled courses data -->
+                        <div class="p-4 overflow-x-auto hidden" id="styled-enrolled" role="tabpanel" aria-labelledby="enrolled-styled-tab">
+                        <table class="min-w-full bg-white divide-y divide-gray-200">
+                                <thead class="bg-gray-100">
+                                    <tr>
+                                        <th class="p-2 text-center text-xs font-medium text-gray-600 ">Enrolled Courses</th>
+                                        <th class="p-2 text-center text-xs font-medium text-gray-600 ">Enrolling Date</th>
+                                        <th class="p-2 text-center text-xs font-medium text-gray-600 ">Batch</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200">
+                                    @foreach($courses as $course) 
+                                <tr>
+                                <td class="p-2 text-center  text-xs text-gray-800">
+                                    {{$course->title}}
+                                </td>
+                                <td class="p-2 text-center  text-xs text-gray-800">{{ \Carbon\Carbon::parse($course->pivot->created_at)->format('d M Y') }}</td>
+                                </td>
+                                <td class="p-2 text-center  text-xs text-gray-800">
+                                    {{$course->batch_name}}
+                                </td>
+                                </tr>
+                                    @endforeach
+                                </tbody>
 
                             </table>
                         </div>

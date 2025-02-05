@@ -96,13 +96,8 @@
         </div>
 
         <!-- Pagination -->
-        <div class="container mx-auto mt-8 flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
-            <div class="text-sm text-gray-600">
-                Showing {{ $courses->firstItem() }} - {{ $courses->lastItem() }} of {{ $courses->total() }} courses
-            </div>
-            <div>
-                {{ $courses->links('pagination::bootstrap-4') }}
-            </div>
+        <div class="container mx-auto mt-8 flex flex-col md:flex-row items-center justify-between space-y-4 ">
+                {{ $courses->links() }}
         </div>
     </div>
 @endsection
