@@ -31,6 +31,10 @@
         <div class="mb-4 p-4 mt-5 bg-green-100 text-green-800 rounded-md">
             {{ session('success') }}
         </div>
+    @elseif(session('error'))
+    <div class="mb-4 p-4 mt-5 bg-red-100 text-green-800 rounded-md">
+            {{ session('error') }}
+        </div>
     @endif
 
     <div class="flex px-[2%] py-0 flex-col">
@@ -275,11 +279,10 @@
                                     </span>
                                 </div>
                                 <div class="flex items-center space-x-2">
-                                    @if(\Carbon\Carbon::now()->lt(\Carbon\Carbon::parse($batch->start_date)))
                                     <button onclick="openEditBatchModal({{ $batch->id }})" class="bg-blue-600 text-white text-sm px-3 py-1 rounded">
                                         Edit
                                     </button>
-                                    @endif
+                                    @if(\Carbon\Carbon::now()->lt(\Carbon\Carbon::parse($batch->start_date)))
                                     <form action="{{ route('batches.destroy', $batch->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this batch?');">
                                         @csrf
                                         @method('DELETE')
@@ -287,6 +290,7 @@
                                             Delete
                                         </button>
                                     </form>
+                                    @endif
                                 </div>
                                 <div class="text-sm text-gray-500">
                                     {{ $batch->available_seats }}/{{ $batch->total_seats }} Seats
