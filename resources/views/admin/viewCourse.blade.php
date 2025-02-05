@@ -266,19 +266,47 @@
                     @else
                         <ul class="space-y-2">
                             @foreach ($course->batches as $batch)
-                                <li
-                                    class="flex items-center justify-between p-3 bg-white rounded shadow border border-gray-200">
-                                    <div class="flex flex-col">
-                                        <span class="font-semibold text-gray-800">{{ $batch->batch_name }}</span>
-                                        <span class="text-sm text-gray-600">
-                                            {{ \Carbon\Carbon::parse($batch->start_date)->format('d M, Y') }} to
-                                            {{ \Carbon\Carbon::parse($batch->end_date)->format('d M, Y') }}
-                                        </span>
+                            <li class="flex items-center justify-between p-3 bg-white rounded shadow border border-gray-200">
+                                <div class="flex flex-col">
+                                    <span class="font-semibold text-gray-800">{{ $batch->batch_name }}</span>
+                                    <span class="text-sm text-gray-600">
+                                        {{ \Carbon\Carbon::parse($batch->start_date)->format('d M, Y') }} to
+                                        {{ \Carbon\Carbon::parse($batch->end_date)->format('d M, Y') }}
+                                    </span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    @if(\Carbon\Carbon::now()->lt(\Carbon\Carbon::parse($batch->start_date)))
+                                    <button onclick="openEditBatchModal({{ $batch->id }})" class="bg-blue-600 text-white text-sm px-3 py-1 rounded">
+                                        Edit
+                                    </button>
+                                    @endif
+                                    <form action="{{ route('batches.destroy', $batch->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this batch?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="bg-red-600 text-white text-sm px-3 py-1 rounded">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </div>
+                                <div class="text-sm text-gray-500">
+                                    {{ $batch->available_seats }}/{{ $batch->total_seats }} Seats
+                                </div>
+                            </li>
+
+                                <!-- edit_batch_modal -->
+                                <div id="edit_batch_modal_{{ $batch->id }}" class="hidden fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
+                                    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md mx-4">
+                                        <div class="flex justify-end items-center mb-4">
+                                            <button type="button" onclick="closeBatchModal({{ $batch->id }})" class="text-gray-700 hover:text-gray-900 transition duration-300">&times;</button>
+                                        </div>
+                                        <form action="{{ route('batches.update', $batch->id) }}" method="POST" class="space-y-4">
+                                            @csrf
+                                            @method('PUT')
+                                            <input type="text" name="batch_name" class="form-input block w-full mt-1" value="{{ $batch->batch_name }}">
+                                            <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2.5 px-4 rounded-lg hover:bg-blue-700 transition duration-300">Save Changes</button>
+                                        </form>
                                     </div>
-                                    <div class="text-sm text-gray-500">
-                                        {{ $batch->available_seats }}/{{ $batch->total_seats }} Seats
-                                    </div>
-                                </li>
+                                </div>
                             @endforeach
                         </ul>
                     @endif
@@ -427,5 +455,14 @@
             const form = document.getElementById('addBatchForm');
             form.classList.toggle('hidden');
         }
+    </script>
+    <script>
+        function openEditBatchModal(batchId) {
+    document.getElementById(`edit_batch_modal_${batchId}`).classList.remove('hidden');
+}
+
+function closeBatchModal(batchId) {
+    document.getElementById(`edit_batch_modal_${batchId}`).classList.add('hidden');
+}
     </script>
 @endsection

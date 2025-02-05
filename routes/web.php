@@ -118,6 +118,7 @@
             Route::resource("category", CategoryController::class)->except(['create', 'show']);
             Route::get('/batches', [BatchController::class, 'index'])->name('batches.index');
             Route::post('/batches', [BatchController::class, 'store'])->name('batches.store');
+            Route::put('/batches/update/{batch}', [BatchController::class, 'update'])->name('batches.update');
             Route::delete('batches/{batch}/disable', [BatchController::class, 'destroy'])->name('batches.destroy');
 
             Route::get("/search", [AdminController::class, "searchCourse"])->name('course.search');

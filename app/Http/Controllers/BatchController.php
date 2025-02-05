@@ -17,6 +17,7 @@ class BatchController extends Controller
 
 
 
+
 public function store(Request $request)
 {
     $request->validate([
@@ -59,7 +60,16 @@ public function store(Request $request)
      */
     public function update(Request $request, Batch $batch)
     {
-        //
+        {
+            $request->validate([
+                'batch_name' => 'required|string|max:255',
+            ]);
+    
+            $batch->batch_name = $request->batch_name;
+            $batch->save();
+    
+            return back()->with('success', 'Batch name updated successfully.');
+        }
     }
 
     /**
@@ -74,6 +84,6 @@ public function store(Request $request)
         $batch->delete();
 
         // Redirect back with a success message
-        return redirect()->route('batches.index')->with('success', 'Batch deleted successfully.');
+        return redirect()->back()->with('success', 'Batch deleted successfully.');
     }
 }
