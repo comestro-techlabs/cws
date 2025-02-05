@@ -229,7 +229,7 @@
                     class="whitespace-no-wrap flex-no-wrap [backface-visibility: hidden] [transform-style: preserve-3d] [touch-action: pan-Y] [will-change: transform] relative flex w-full overflow-hidden p-0 pb-12">
                     @foreach ($placedStudents as $item)
                         <li>
-                            <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-lg cursor-help h-full"
+                            <div class=" bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-lg cursor-help h-full"
                                 title="{{ $item->content }}">
                                 <div class="md:flex flex-col justify-center items-center">
                                     <!-- Image Section -->
@@ -265,21 +265,23 @@
     <script>
         var glide09 = new Glide('.glide-09', {
             type: 'carousel',
-            autoplay: 1,
+            autoplay: 2000,
             animationDuration: 4500,
+            perView:5;
             animationTimingFunc: 'linear',
-            perView: 5,
             classes: {
                 activeNav: '[&>*]:bg-slate-700',
             },
             breakpoints: {
-                1024: {
-                    perView: 2
+                240: {
+                    perView: 2, // For very small screens
                 },
                 640: {
-                    perView: 1,
-                    gap: 36
-                }
+                    perView: 4, // Small devices (mobile)
+                },
+                1024: {
+                    perView: 5, // Medium devices (tablets)
+                },
             },
         });
 
