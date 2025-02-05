@@ -204,9 +204,7 @@ Route::get('/student/messages/{message}', [MessageController::class, 'showMessag
             Route::delete('admin/workshop/{id}', [WorkshopController::class, 'destroy'])->name('admin.workshops.destroy');
             Route::resource('placedStudent', PlacedStudentController::class);
             Route::post('/placed-students/{placedStudent}/toggle-status', [PlacedStudentController::class, 'toggleStatus'])->name('placedStudent.toggleStatus');
-
-
-
+          
         });
     });
 
