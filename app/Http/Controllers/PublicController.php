@@ -18,7 +18,7 @@ class PublicController extends Controller
     public function index()
     {
         $data['courses'] = Course::where("published", true)->latest()->take(6)->get();
-        $data['placedStudents'] = PlacedStudent::where('status', 1)->inRandomOrder()->take(20)->get();
+        $data['placedStudents'] = PlacedStudent::where('status', 1)->get();
         $data['title'] = "";
         return view("public.homepage", $data);
     }
