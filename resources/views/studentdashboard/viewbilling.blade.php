@@ -48,8 +48,8 @@
                                 <td class="py-2 px-4 border-b border-gray-200 text-gray-700">
                                     @if($payment->course)
                                         {{ $payment->course->title }}
-                                    @elseif($payment->workshops)
-                                        {{$payment->workshops->title}}
+                                    {{-- @elseif($payment->workshops)
+                                        {{$payment->workshops->title}} --}}
                                     @else
                                         Membership Payment for {{ \Carbon\Carbon::create((int)$payment->year, (int)$payment->month, 1)->format('M Y') }}
                                     @endif
