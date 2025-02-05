@@ -22,10 +22,10 @@ class AdminController extends Controller
         $currentMonth = Carbon::now()->month;
         $previousYear = Carbon::now()->subMonth()->year;
         $previousMonth = Carbon::now()->subMonth()->month;
-    
+
         // Define last 6 months
         $months = collect(range(5, 0))->map(fn ($i) => Carbon::now()->subMonths($i)->format('Y-m'))->toArray();
-    
+
         // Fetch payments grouped by month and status
         $monthlyPayments = Payment::select(
             DB::raw("DATE_FORMAT(created_at, '%Y-%m') as month"),
@@ -36,37 +36,39 @@ class AdminController extends Controller
         ->groupBy(DB::raw("DATE_FORMAT(created_at, '%Y-%m')"))
         ->orderBy('month', 'ASC')
         ->get()
-        ->keyBy('month'); 
-    
+        ->keyBy('month');
+
         $capturedData = [];
         $overdueData = [];
         $labels = [];
-    
+
         foreach ($months as $month) {
             $labels[] = Carbon::createFromFormat('Y-m', $month)->format('M Y'); // Display format
             $capturedData[] = $monthlyPayments[$month]->captured_total ?? 0;
             $overdueData[] = $monthlyPayments[$month]->overdue_total ?? 0;
         }
-    
+
         // Dashboard Stats
-        $counts = [
-            'studentsCount' => Payment::whereNotNull('course_id')->where('status', 'captured')->distinct('student_id')->count('student_id'),
-            'coursesCount' => Course::count(),
-            'batchesCount' => Batch::count(),
-            'paymentsCount' => Payment::where('status', 'captured')->sum('total_amount'),
-            'currentMonthAmount' => Payment::where('status', 'captured')->whereYear('created_at', $currentYear)->whereMonth('created_at', $currentMonth)->sum('total_amount'),
-            'previousMonthAmount' => Payment::where('status', 'captured')->whereYear('created_at', $previousYear)->whereMonth('created_at', $previousMonth)->sum('total_amount'),
-            'overdueCount' => Payment::where('status', 'overdue')->sum('total_amount'),
-            'currentMonthOverdue' => Payment::where('status', 'overdue')->whereYear('created_at', $currentYear)->whereMonth('created_at', $currentMonth)->sum('total_amount'),
-            'previousMonthOverdue' => Payment::where('status', 'overdue')->whereYear('created_at', $previousYear)->whereMonth('created_at', $previousMonth)->sum('total_amount'),
-            'monthlyPaymentsLabels' => $labels,
-            'monthlyCapturedValues' => $capturedData,
-            'monthlyOverdueValues' => $overdueData,
-        ];
-    
-        return view('admin.dashboard', $counts);
-    }
-    
+        $studentsCount = Payment::whereNotNull('course_id')->where('status', 'captured')->distinct('student_id')->count('student_id');
+        $coursesCount = Course::count();
+        $batchesCount = Batch::count();
+        $paymentsCount = Payment::where('status', 'captured')->sum('total_amount');
+        $currentMonthAmount = Payment::where('status', 'captured')->whereYear('created_at', $currentYear)->whereMonth('created_at', $currentMonth)->sum('total_amount');
+        $previousMonthAmount = Payment::where('status', 'captured')->whereYear('created_at', $previousYear)->whereMonth('created_at', $previousMonth)->sum('total_amount');
+        $overdueCount = Payment::where('status', 'overdue')->sum('total_amount');
+        $currentMonthOverdue = Payment::where('status', 'overdue')->whereYear('created_at', $currentYear)->whereMonth('created_at', $currentMonth)->sum('total_amount');
+        $previousMonthOverdue = Payment::where('status', 'overdue')->whereYear('created_at', $previousYear)->whereMonth('created_at', $previousMonth)->sum('total_amount');
+        $monthlyPaymentsLabels = $labels;
+        $monthlyCapturedValues = $capturedData;
+        $monthlyOverdueValues = $overdueData;
+
+        return view('admin.dashboard', compact(
+            'studentsCount', 'coursesCount', 'batchesCount', 'paymentsCount',
+            'currentMonthAmount', 'previousMonthAmount', 'overdueCount',
+            'currentMonthOverdue', 'previousMonthOverdue',
+            'monthlyPaymentsLabels', 'monthlyCapturedValues', 'monthlyOverdueValues'
+        ));    }
+
 
 
     // search Course

@@ -4,10 +4,10 @@
     Contact us
 @endsection
 @section('content')
-    <div class="bg-white 
+    <div class="bg-white
  overflow-x-hidden">
         <livewire:page-heading title="Our Contact"
-        description="We’re here to help with all your software development needs. Whether you have inquiries, require technical support, or want to discuss a project idea, our dedicated team is here to assist you. Reach out to us today and let’s build something exceptional together." 
+        description="We’re here to help with all your software development needs. Whether you have inquiries, require technical support, or want to discuss a project idea, our dedicated team is here to assist you. Reach out to us today and let’s build something exceptional together."
 
             image="about-header.png" />
 
@@ -19,24 +19,25 @@
                         <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mt-2">How To Contact Us?</h2>
                         <p class="text-sm md:text-base mt-4 text-slate-600 font-semibold">We have great, flexible support via live chat, email, and phone.</p>
                     </div>
-                    
+
                     <div class="flex justify-center sm:justify-start my-4">
                         <span class="elementor-divider-separator block w-1/2 sm:w-full"></span>
                     </div>
-                    
+
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 justify-center sm:justify-start">
                         <div class="flex flex-col items-center sm:flex-row sm:items-start space-x-0 sm:space-x-4 text-center sm:text-left">
                             <img src="/assets/location.png" alt="Location Image" class="w-15 h-15 sm:w-15 sm:h-15 mb-4 sm:mb-0">
                             <div>
                                 <p>Visit our Office.</p>
-                                <h1 class="text-md font-bold text-black mt-2">854305, Purnia Thana Chowk</h1>
+                                <h1 class="text-sm text-black mt-2">Ramavtar Market Thana Chowk, near Dog Hospital, Gandhi Nagar, Madhubani, Purnia, Bihar 854301
+                                </h1>
                             </div>
                         </div>
                         <div class="flex flex-col items-center sm:flex-row sm:items-start space-x-0 sm:space-x-4 text-center sm:text-left">
                             <img src="/assets/email.png" alt="Email Image" class="w-15 h-15 sm:w-15 sm:h-15 mb-4 sm:mb-0">
                             <div>
                                 <p>Have a project in mind?<br>Send a message.</p>
-                                <h1 class="text-md font-bold text-black mt-2"> info@LearnSyntax.com</h1>
+                                <h1 class="text-md font-bold text-black mt-2"> info@Learnsyntax.com</h1>
                             </div>
                         </div>
                         <div class="flex flex-col items-center sm:flex-row sm:items-start space-x-0 sm:space-x-4 text-center sm:text-left">
@@ -54,7 +55,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
 
                 </div>
                 <div class="flex items-center justify-center">
@@ -88,38 +89,38 @@
                 <!-- Include SweetAlert2 -->
                 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
             @endonce
-        
+
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
                         html: `{!! implode('', $errors->all('<li>:message</li>')) !!}`,
-                        confirmButtonColor: '#0272bd' 
+                        confirmButtonColor: '#0272bd'
 
                     });
                 });
             </script>
         @endif
-        
+
         @if (session('success'))
             @once
                 <!-- Include SweetAlert2 -->
                 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
             @endonce
-        
+
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
                     Swal.fire({
                         icon: 'success',
                         title: 'Success!',
                         text: @json(session('success')),
-                        confirmButtonColor: '#0272bd' 
+                        confirmButtonColor: '#0272bd'
                     });
                 });
             </script>
         @endif
-        
+
 
             <form action="{{ route('enquiry.store') }}" method="post" class="mt-5">
                 @csrf
@@ -152,9 +153,9 @@
         </section>
 
 
-        
+
 
     </div>
-    
+
 
 @endsection

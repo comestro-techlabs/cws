@@ -19,7 +19,8 @@ class PublicController extends Controller
     public function index()
     {
         $data['courses'] = Course::where("published", true)->latest()->take(6)->get();
-        $data['placedStudents'] = PlacedStudent::where('status', 1)->inRandomOrder()->take(4)->get();
+        $data['placedStudents'] = PlacedStudent::where('status', 1)->get();
+        $data['title'] = "";
         return view("public.homepage", $data);
     }
 
@@ -27,14 +28,20 @@ class PublicController extends Controller
     public function courseDetails($category_slug, $slug)
     {
         $user = auth()->user();
-        if (!$user->is_active) {
-            return redirect()->back()->with('error', 'Your account is inactive. Please contact support.');
+        if (Auth::check()) {
+            if(!$user->is_active){
+                return redirect()->back()->with('error', 'Your account is inactive. Please contact support.');
+            }
         }
+
         $course = Course::where('slug', $slug)->first(); // replace 1 with course id
         $course_id = $course->id;
-        $user_id = Auth::id();
-        $payment_exist = Payment::where("student_id", $user_id)->where("course_id", $course_id)->where("status", "captured")->exists();
-       
+
+        $payment_exist = Payment::where("student_id", Auth::id())
+        ->where("course_id", $course_id)
+        ->where("status", "captured")
+        ->exists();
+
         return view("public.course", compact('course', "payment_exist"));
     }
 

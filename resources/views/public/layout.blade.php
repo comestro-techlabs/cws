@@ -84,62 +84,20 @@
 
 
 
-    <footer class=" bg-secondary text-gray-50 py-10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
-                <!-- About Section -->
-
-                <div>
-
-                    <img src="{{asset('assets/footer_logo.png')}}" alt="" class="lg:h-16 h-11">
-
-                    <p class="text-gray-50 md:text-md text-sm mt-4">
-                        At Learn Syntax, we are committed to providing high-quality programming education that empowers
-                        students to excel in the IT industry. Our hands-on approach and real-world projects ensure that
-                        our students are job-ready.
-                    </p>
-                </div>
-
-                <!-- Links Section -->
-                <div class="md:pl-12">
-                    <h3 class="text-lg font-semibold text-white mb-4">Quick Links</h3>
-                    <ul class="space-y-2">
-                        <li>
-                            <a href="{{ route('public.about') }}" class="">About</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('public.training') }}" class="">Courses</a>
-                        </li>
-
-                        <li>
-                            <a href="{{ route('public.contact') }}" class="">Contact Us</a>
-                        </li>
-
-                        <li>
-                            <a href="{{ route('public.privacy') }}" class="">Privacy & Policy</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('public.terms-conditions') }}" class="">Terms & Conditions</a>
-                        </li>
-                    </ul>
-                </div>
-                <!-- Contact Information -->
-                <div>
-                    <h3 class="text-lg font-semibold text-white mb-4">Contact Us</h3>
-                    <p class="text-gray-100">{{ env('APP_NAME') }} </p>
-                    <p class="text-gray-100">Purnea, Bihar, India</p>
-                    <p class="text-gray-100">Email: info@LearnSyntax.com</p>
-                    <p class="text-gray-100">Phone: +919546805580</p>
-                </div>
-            </div>
-
-            <div class="mt-8 border-t border-gray-50 pt-8 text-center">
-                <p class="text-gray-100 text-sm">
-                    &copy; 2024 {{ env('APP_NAME') }}. All rights reserved.
-                </p>
-            </div>
+    <footer class="bg-secondary text-gray-50 py-4">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <ul class="flex flex-wrap justify-center space-x-4 text-sm">
+                <li><a href="{{ route('public.about') }}" class="hover:underline">About</a></li>
+                <li><a href="{{ route('public.training') }}" class="hover:underline">Courses</a></li>
+                <li><a href="{{ route('public.contact') }}" class="hover:underline">Contact</a></li>
+                <li><a href="{{ route('public.privacy') }}" class="hover:underline">Privacy Policy</a></li>
+                <li><a href="{{ route('public.terms-conditions') }}" class="hover:underline">Terms & Conditions</a></li>
+            </ul>
+            <p class="text-gray-300 text-xs my-2">Learn Syntax is a unit of <strong>Comestro Techlabs Pvt. Ltd.</strong></p>
+            <p class="text-gray-300 text-xs">&copy; 2024 Learn Syntax. All rights reserved.</p>
         </div>
     </footer>
+
 
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
     @yield('js')
