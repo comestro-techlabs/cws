@@ -1,44 +1,34 @@
 @extends('studentdashboard.include.base')
 
 @section('content')
-<div class="container mx-auto px-4 py-6">
-    <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-6">Your Messages</h1>
+<div class="container mx-auto px-6 lg:px-20 py-8">
+    <h1 class="text-3xl font-semibold text-gray-800 mb-6">Your Notifications</h1>
 
-    @if($messages->isEmpty())
-        <div class="bg-gray-100 p-6 rounded-lg text-center">
-            <p class="text-gray-600">You have no messages.</p>
+    @if ($messages->isEmpty())
+        <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 rounded-lg " role="alert">
+            <div class="flex items-center">
+                <svg class="w-6 h-6 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.25 5.75h1.5m-1.5 4.5h1.5m-1.5 4.5h1.5m-7.5-6v7.5c0 1.1.9 2 2 2h9c1.1 0 2-.9 2-2v-7.5c0-1.1-.9-2-2-2h-9c-1.1 0-2 .9-2 2z" />
+                </svg>
+                <p>No new messages at the moment.</p>
+            </div>
         </div>
     @else
         <div class="space-y-4">
-            @foreach($messages as $message)
-                <div class="border border-gray-300 rounded-lg p-6 bg-white hover:bg-gray-50 transition duration-300 ease-in-out">
-                    <h2 class="text-lg sm:text-xl font-semibold text-gray-800 mb-2 leading-tight break-words">
-                        {{ $message->title }}
-                    </h2>
-                    <p class="text-gray-700 mb-4 text-base leading-relaxed break-words">
-                        {{ $message->content }}
-                    </p>
-                    <div class="text-sm text-gray-500">
-                        Sent on: {{ $message->created_at->format('M d, Y H:i') }}
+            @foreach ($messages as $message)
+                <a href="{{ route('student.messages.show', $message) }}" class="block p-6 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition duration-300 ease-in-out">
+                    <div class="flex items-center space-x-3">
+                        <svg class="w-6 h-6 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H7" />
+                        </svg>
+                        <h2 class="text-lg font-semibold text-gray-800">{{ $message->title }}</h2>
                     </div>
-                </div>
+                    <p class="text-gray-600 mt-2">{{ Str::limit($message->content, 100) }}</p>
+                    <p class="text-sm text-gray-500 mt-2">Received on: {{ $message->created_at->format('M d, Y H:i A') }}</p>
+                </a>
             @endforeach
         </div>
     @endif
 </div>
+@endsection
 
-<style>
-   
-    @media (max-width: 640px) {
-        .container {
-            padding: 1rem;
-        }
-        h1 {
-            font-size: 1.5rem;
-        }
-        .text-base {
-            font-size: 0.9rem;
-        }
-    }
-</style>
-@endsection 
