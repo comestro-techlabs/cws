@@ -92,26 +92,26 @@
                         {{$categories->links()}}
                     </div>
                 </div>
-                <div class="w-3/12">
-                    <div class="bg-slate-100 rounded p-3">
+                <div class="w-full sm:w-3/4 md:w-1/2 lg:w-3/12 max-w-md mx-auto px-4">
+                    <div class="bg-slate-100 rounded  p-4 sm:p-6">
                         <form action="{{route('category.store')}}" method="post">
                             @csrf
                             <div class="mb-3 flex flex-col gap-2">
-                                <label for="" class="">Category title</label>
+                                <label for="" class="text-base sm:text-lg">Category title</label>
                                 <input type="text" name="cat_title" value="{{old('cat_title')}}" class="border w-full px-3 py-2 rounded">
                                 @error('cat_title')
                                     <p class="text-xs text-red-600">{{$message}}</p>
                                 @enderror
                             </div>
                             <div class="mb-3 flex flex-col gap-2">
-                                <label for="" class="">Category description</label>
+                                <label for="" class="text-base sm:text-lg">Category description</label>
                                 <textarea rows="5" name="cat_description" class="border w-full px-3 py-2 rounded">{{old('cat_description')}}</textarea>
                                 @error('cat_description')
                                     <p class="text-xs text-red-600">{{$message}}</p>
                                 @enderror
                             </div>
                             <div class="mb-3">
-                                <input type="submit" class="bg-emerald-600 px-3 py-2 text-2xl text-center text-white rounded w-full" value="Create Category">
+                                <input type="submit" class="bg-emerald-600 px-3 py-2 text-2xl text-center text-white rounded w-full sm:text-lg cursor-pointer" value="Create Category">
                             </div>
                         </form>
                     </div>

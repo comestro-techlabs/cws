@@ -3,9 +3,11 @@
 @section('title', 'Add assigment | ')
 
 @section('content')
-<div class="bg-gray-100 py-10 min-h-screen">
+<div class="min-h-screen">
     <div class=" mx-auto px-6">
-        <h2 class="text-4xl font-semibold text-center text-gray-800 mb-8">Create Assignment</h2>
+        <div class="flex flex-wrap justify-between items-center p-4">
+            <h2 class="md:text-xl text-lg font-semibold  text-slate-500 border-s-4 border-s-orange-400 pl-3 mb-5"> Create Assignments</h2>
+        </div>
         <!-- Success and Error Messages -->
         @if (session('success'))
         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-6" role="alert">

@@ -4,8 +4,12 @@
 @section( 'content')
 
 <div class="container mx-auto py-8">
-    <h2 class="md:text-xl text-lg font-semibold  text-slate-500 border-s-4 border-s-blue-800 pl-3">
-        Messages </h2>
+    <div class="flex flex-wrap justify-between items-center p-4">
+        <h2 class="md:text-xl text-lg font-semibold  text-slate-500 border-s-4 border-s-orange-400 pl-3 mb-5">Messages</h2>
+        <a href="{{ route('messages.create') }}" class="px-4 py-2 bg-blue-500 text-white  rounded hover:bg-blue-600">
+            Add New Messages
+        </a>
+    </div>
     @if (session('success'))
         <div class="bg-green-100 text-green-800 p-4 rounded mb-4">
             {{ session('success') }}

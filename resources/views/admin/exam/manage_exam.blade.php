@@ -1,9 +1,19 @@
 @extends('admin.base')
 
 @section('content')
-<div class="max-w-6xl mx-auto mt-10">
-    <h1 class="text-2xl font-bold mb-6">Manage Exam Details</h1>
 
+<div class="flex flex-wrap justify-between items-center p-4">
+    <h2 class="md:text-xl text-lg font-semibold  text-slate-500 border-s-4 border-s-orange-400 pl-3 mb-5"> Manage Exams</h2>
+    <a href="{{ route('exam.create') }}"
+        class="bg-blue-500 text-white px-4 py-2 rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 sm:mb-0">
+        Create New Exam
+        <i class="bi bi-arrow-down-short font-bold"></i>
+    </a>
+</div>
+
+<div class="max-w-6xl mx-auto mt-10">
+   
+   
     @if (session('success'))
     <div class="bg-green-100 text-green-700 p-4 rounded mb-4">
         {{ session('success') }}
@@ -18,7 +28,7 @@
     <form method="GET" class="mb-4">
         <input type="text" name="search" placeholder="Search..." class="border px-3 py-2 rounded w-full" value="{{ request('search') }}">
     </form>
-
+    <div class="overflow-x-auto flex-wrap">
     <table class="w-full border-collapse border">
         <thead>
             <tr>
@@ -60,14 +70,14 @@
                     </td>
                     
                     <td class="border px-4 py-2">
-                        <div class="flex gap-2">
-                        <a href="{{ route('exam.edit', $exam->id) }}" class="bg-blue-500 text-white py-2 px-4 rounded">Edit</a>
-                        <form action="{{ route('exam.destroy', $exam->id) }}" method="POST" class="inline-block">
+                        <div class="flex flex-wrap gap-2">
+                        <a href="{{ route('exam.edit', $exam->id) }}"  class="bg-blue-500 text-white py-2 px-4 rounded w-full sm:w-auto text-center">Edit</a>
+                        <form action="{{ route('exam.destroy', $exam->id) }}" method="POST" class="inline-block w-full sm:w-auto">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="bg-red-500 text-white py-2 px-4 rounded" onclick="return confirm('Are you sure?')">Delete</button>
+                            <button type="submit" class="bg-red-500 text-white py-2 px-4 rounded  w-full sm:w-auto text-center" onclick="return confirm('Are you sure?')">Delete</button>
                         </form>
-                        <a href="{{ route('exam.showQuestions', ['exam' => $exam->id,'course_title'=>$exam->course->title,'exam_name'=>$exam->exam_name]) }}" class="bg-green-500 text-white py-2 px-4 rounded">View Q's</a>
+                        <a href="{{ route('exam.showQuestions', ['exam' => $exam->id,'course_title'=>$exam->course->title,'exam_name'=>$exam->exam_name]) }}" class="bg-green-500 text-white py-2 px-4 rounded w-full sm:w-auto text-center ">View</a>
                     </div>
                     </td>
 
@@ -75,7 +85,7 @@
             @endforeach
         </tbody>
     </table>
-
+    </div>
 
 </div>
 @endsection

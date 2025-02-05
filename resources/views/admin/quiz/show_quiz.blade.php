@@ -1,9 +1,14 @@
 @extends('admin.base')
 
 @section('content')
-<div class="max-w-6xl mx-auto mt-10">
-    <h1 class="text-2xl font-bold mb-6">Manage Quizzes</h1>
 
+<div class="flex flex-wrap justify-between items-center p-4">
+    <h2 class="md:text-xl text-lg font-semibold  text-slate-500 border-s-4 border-s-orange-400 pl-3 mb-5">Manage Quizzes</h2>
+   
+</div>
+
+<div class="max-w-6xl mx-auto mt-10">
+    
     @if (session('success'))
     <div class="bg-green-100 text-green-700 p-4 rounded mb-4">
         {{ session('success') }}
@@ -13,7 +18,7 @@
     <form method="GET" class="mb-4">
         <input type="text" name="search" placeholder="Search..." class="border px-3 py-2 rounded w-full" value="{{ request('search') }}">
     </form>
-
+    <div class="overflow-x-auto flex-wrap">
     <table class="w-full border-collapse border">
         <thead>
             <tr>
@@ -60,6 +65,7 @@
             @endforeach
         </tbody>
     </table>
+    </div>
 
 
 </div>

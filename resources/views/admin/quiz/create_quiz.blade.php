@@ -8,7 +8,10 @@
 @endif
 
 <div class=" mx-auto mt-10 p-6 bg-white rounded shadow-md">
-    <h1 class="text-2xl font-bold mb-6">Add a Quiz Question</h1>
+    <div class="flex flex-wrap justify-between items-center p-4">
+        <h2 class="md:text-xl text-lg font-semibold  text-slate-500 border-s-4 border-s-orange-400 pl-3 mb-5">Add a Quiz Question</h2>
+       
+    </div>
     <form action="{{ route('quiz.store') }}" method="POST" id="quiz-form">
         @csrf
         <div>
@@ -99,7 +102,7 @@
         </div>
     `    </form>
 </div>
->
+
 </div>
 
 <script>

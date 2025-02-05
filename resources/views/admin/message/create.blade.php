@@ -11,7 +11,9 @@
     </div>
     @endif
 <div class="container mx-auto p-6">
-    <h1 class="text-2xl font-semibold text-gray-700">Create a New Message</h1>
+    <div class="flex flex-wrap justify-between items-center p-4">
+        <h2 class="md:text-xl text-lg font-semibold  text-slate-500 border-s-4 border-s-orange-400 pl-3 mb-5">Create New Message</h2>
+    </div>
     <form action="{{ route('messages.store') }}" method="POST" class="mt-6">
         @csrf
 

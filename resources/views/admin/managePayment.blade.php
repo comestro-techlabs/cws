@@ -4,8 +4,9 @@
 
 @section('content')
     <div class="flex flex-1 flex-col p-6 bg-gray-100">
-        <h1 class="text-2xl font-bold mb-4">Manage Fully Paid Students</h1>
-        <!-- Search Form -->
+        <div class="flex flex-wrap justify-between items-center p-4">
+            <h2 class="md:text-xl text-lg font-semibold  text-slate-500 border-s-4 border-s-orange-400 pl-3 mb-5"> Manage Fully Paid Student</h2>
+        </div>
         <form action="{{ route('admin.manage-payment') }}" method="GET" class="mb-4">
             <div class="flex items-center">
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by student name..."
