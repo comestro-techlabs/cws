@@ -29,7 +29,7 @@
                 <p class="text-gray-700"><strong>Name:</strong> {{ $user->name }}</p>
                 <p class="text-gray-700"><strong>Order ID:</strong> {{ $payment->order_id }}</p>
                 <p class="text-gray-700"><strong>Email:</strong> {{ $user->email }}</p>
-                <p class="text-gray-700"><strong>Address:</strong> {{ $user->address }}</p>
+                {{-- <p class="text-gray-700"><strong>Address:</strong> {{ $user->address }}</p> --}}
             </div>
 
             <!-- Invoice Items -->
@@ -48,15 +48,15 @@
                                 <td class="py-2 px-4 border-b border-gray-200 text-gray-700">
                                     @if($payment->course)
                                         {{ $payment->course->title }}
-                                    @elseif($payment->workshops)
-                                        {{$payment->workshops->title}}
+                                        @elseif($payment->workshops)
+                                        {{ $payment->workshops->title }}
                                     @else
                                         Membership Payment for {{ \Carbon\Carbon::create((int)$payment->year, (int)$payment->month, 1)->format('M Y') }}
                                     @endif
                                 </td>
                                 <td class="py-2 px-4 border-b border-gray-200 text-right text-gray-700">₹{{ $payment->transaction_fee }}</td>
                             </tr>
-                            @if(!$payment->course)
+                            @if(!$payment->course  && !$payment->workshops)
                                 <tr>
                                     <td class="py-2 px-4 border-b border-gray-200 text-gray-700">Late Fee</td>
                                     <td class="py-2 px-4 border-b border-gray-200 text-right text-gray-700">₹{{ $payment->late_fee }}</td>
@@ -74,26 +74,31 @@
                     <span class="text-gray-700">Subtotal:</span>
                     <span class="text-gray-700">₹{{ $payment->transaction_fee }}</span>
                 </div>
-                @if(!$payment->course)
-                    <div class="flex justify-between mb-2">
-                        <span class="text-gray-700">Late Fee:</span>
-                        <span class="text-gray-700">₹{{ $payment->late_fee }}</span>
-                    </div>
-                    @php
-                        $payment->total_amount = $payment->transaction_fee + $payment->late_fee;
-                    @endphp
+                @if($payment->course )
+                <div class="flex justify-between mb-2">
+                    <span class="text-gray-700">Course Fees:</span>
+                    <span class="text-gray-700">₹{{ $payment->course->fees }}</span>
+                </div>
+                @php
+                    $discount = $payment->course->fees - $payment->course->discounted_fees;
+                @endphp
+                <div class="flex justify-between mb-2">
+                    <span class="text-gray-700">Discount:</span>
+                    <span class="text-gray-700">₹{{ $discount }}</span>
+                </div>
+                  @elseif($payment->workshops)
+                <div class="flex justify-between mb-2">
+                    <span class="text-gray-700">Workshop Fees:</span>
+                    <span class="text-gray-700">₹{{ $payment->workshops->fees }}</span>
+                </div>  
                 @else
-                    <div class="flex justify-between mb-2">
-                        <span class="text-gray-700">Course Fees:</span>
-                        <span class="text-gray-700">₹{{ $payment->course->fees }}</span>
-                    </div>
-                    @php
-                        $discount = $payment->course->fees - $payment->course->discounted_fees;
-                    @endphp
-                    <div class="flex justify-between mb-2">
-                        <span class="text-gray-700">Discount:</span>
-                        <span class="text-gray-700">₹{{ $discount }}</span>
-                    </div>
+                <div class="flex justify-between mb-2">
+                    <span class="text-gray-700">Late Fee:</span>
+                    <span class="text-gray-700">₹{{ $payment->late_fee }}</span>
+                </div>
+                @php
+                    $payment->total_amount = $payment->transaction_fee + $payment->late_fee;
+                @endphp
                 @endif
                 <div class="flex justify-between">
                     <span class="text-gray-700 font-semibold">Total:</span>
