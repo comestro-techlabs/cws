@@ -122,6 +122,10 @@ class PaymentController extends Controller
             'razorpay_payment_id' => $razorpayPaymentId,
             'razorpay_signature' => $razorpaySignature,
         ];
+// Handle membership for non-course/non-workshop payments
+            // if (is_null($workshopId) && is_null($courseId)) {
+            //     User::findOrFail($studentId)->update(['is_member' => 1]);
+            // }
 
         if (!$this->verifyRazorpaySignature($attributes)) {
             return response()->json([

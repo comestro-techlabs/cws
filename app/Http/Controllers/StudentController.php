@@ -349,10 +349,9 @@ class StudentController extends Controller
                 $workshop = Workshop::find($payment->workshop_id);
                 $workshopTitle = $workshop ? $workshop->title : null;
             }
-
             // Update status to "due" if unpaid and past due date
-            if ($payment->status === 'unpaid' && Carbon::parse($payment->transaction_date)->lt($today)) {
-                $payment->status = 'due';
+            if ($payment->status === 'unpaid' && Carbon::parse($payment->due_date)->lt($today)) {
+                $payment->status = 'overdue';
                 $payment->save();
 
                 if ($user) {
