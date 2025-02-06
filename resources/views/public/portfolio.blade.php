@@ -28,11 +28,8 @@
         </p>
     </div>
 
-
-
-
-    @foreach($portfolios as $portfolio)
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-8 ml-4 md:ml-36">
+         @foreach($portfolios as $portfolio)
             <div class="relative group rounded-lg overflow-hidden">
                 <img src="{{ asset('storage/' . $portfolio->image) }}"
                      alt="{{ $portfolio->title }}"
@@ -49,8 +46,7 @@
                 </div>
             </div>
         @endforeach
-        </div>
-
+        </div> 
 </div>
 
 @endsection
