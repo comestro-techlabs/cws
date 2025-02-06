@@ -255,7 +255,7 @@
                     perView: 2, // For very small screens
                 },
                 640: {
-                    perView: 4, // Small devices (mobile)
+                    perView: 2, // Small devices (mobile)
                 },
                 1024: {
                     perView: 5, // Medium devices (tablets)
