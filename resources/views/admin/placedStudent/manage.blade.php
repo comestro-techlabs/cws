@@ -36,7 +36,7 @@
                         <tr>
                             <td class="border border-gray-300 px-4 py-2">{{ $key + 1 }}</td>
                             <td class="border border-gray-300 px-4 py-2">{{ $student->name }}</td>
-                            <td class="border border-gray-300 px-4 py-2  md:line-clamp-none line-clamp-3">{{ $student->content }}</td>
+                            <td class="border border-gray-300 px-4 py-2 ">{{ $student->content }}</td>
                             <td class="border border-gray-300 px-4 py-2">{{ $student->position }}</td>
                             {{-- <td class="border border-gray-300 px-4 py-2">{{ $student->status }}</td> --}}
                             <td class="border border-gray-300 px-4 py-2 text-center">
@@ -57,7 +57,8 @@
                                     N/A 
                                 @endif
                             </td>
-                             <td class="border flex items-center gap-2 border-gray-300 px-4 py-2 text-center">
+                             <td class=" border border-gray-300  px-4 py-2 text-center">
+                                <div class="flex item-center  gap-2">
                                 <a href="{{ route('placedStudent.edit', $student->id) }}" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">Edit</a> |
                                 <form action="{{ route('placedStudent.destroy', $student->id) }}" method="POST"
                                     class="inline">
@@ -66,6 +67,7 @@
                                     <button type="submit" class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
                                         onclick="return confirm('Are you sure you want to delete this record?')">Delete</button>
                                 </form>
+                            </div>
                             </td> 
 
                            
