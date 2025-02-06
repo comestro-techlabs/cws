@@ -134,7 +134,7 @@
                             // Use the Razorpay order_id received from backend
                             var options = {
                                 "key": "{{ env('RAZORPAY_KEY') }}",
-                                "amount": "{{ $course->discounted_fees }}" * 100, // amount in paise
+                                "amount": total_amount * 100, // amount in paise
                                 "currency": "INR",
                                 "name": "LearnSyntax",
                                 "description": "Processing Fee",
