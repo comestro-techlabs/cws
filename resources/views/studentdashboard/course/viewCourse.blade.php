@@ -105,7 +105,12 @@
                 const payButton = document.getElementById('pay-button');
                 payButton.disabled = true;
                 e.preventDefault();
+                let course_amount = {{$course->discounted_fees}}
+                let plateform_fee = course_amount * 0.02;
+                let gst = plateform_fee * 0.18;
+                let total_amount = course_amount + plateform_fee + gst;
 
+                console.log(course_amount);
                 const receipt_no = `${Date.now()}`;
 
                 // First, initiate payment by sending the details to the backend
@@ -119,7 +124,7 @@
                             student_id: "{{ Auth::id() }}" ?? 99,
                             course_id: "{{ $course->id }}",
                             receipt_no: receipt_no,
-                            amount: "{{ $course->discounted_fees }}",
+                            amount: total_amount * 100,
                             ip_address: "{{ request()->ip() }}",
                         })
                     })
@@ -133,7 +138,7 @@
                                 "currency": "INR",
                                 "name": "LearnSyntax",
                                 "description": "Processing Fee",
-                                "image": "{{ asset('front_assets/img/logo/logo.png') }}",
+                                "image": "{{ asset('assets/img/logo/logo.png') }}",
                                 "order_id": data.order_id, // Razorpay order ID
                                 "handler": function(response) {
                                     // After successful payment, send the payment details to the backend
