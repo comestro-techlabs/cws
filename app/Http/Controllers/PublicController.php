@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class PublicController extends Controller
@@ -19,7 +20,9 @@ class PublicController extends Controller
     public function index()
     {
         $data['courses'] = Course::where("published", true)->latest()->take(6)->get();
-        $data['placedStudents'] = PlacedStudent::where('status', 1)->get();
+        $data['placedStudents'] = Cache::remember('placed_students_active', 60, function () {
+            return PlacedStudent::where('status', 1)->get();
+        });
         $data['title'] = "";
         return view("public.homepage", $data);
     }
