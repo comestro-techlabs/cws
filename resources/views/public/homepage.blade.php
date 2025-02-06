@@ -9,27 +9,11 @@
 @section('content')
 
 
-
-    {{-- banner --}}
-    {{-- <div class="w-full mt-12">
-        <img src="{{ asset('assets/home/banner.png') }}" class="w-full h-full" alt="Banner">
-    </div> --}}
-
-
     {{-- latest course --}}
     <div class="">
-        <div class="flex flex-col items-center mt-10 md:mt-20 text-center">
-            <h2 class="text-3xl text-gray-900 font-sans font-bold mb-4">Our <span class="text-secondary">Latest</span>
-                Courses
-            </h2>
-            <h1 class="text-xl font-semibold text-gray-800 mb-4">Master the Skills to Build Your Future</h1>
-            <p class="text-base text-gray-700 mb-6 md:mx-64">
-                Explore our curated courses designed to provide you with the latest industry insights and practical
-                knowledge.
-                From beginner to advanced levels, we aim to help you excel in your field with expert-led guidance and
-                innovative
-                content. Upgrade your skills and achieve your career goals with us!
-            </p>
+        <div class="flex flex-col items-center mt-10 md:mt-10 text-center px-5 md:px-[10%]">
+            <h2 class="text-3xl text-gray-900 font-sans font-bold mb-4">Our Courses </h2>
+            <p class="text-gray-700 text-lg leading-relaxed mb-6 max-w-3xl"> Discover curated courses that blend industry insights with practical knowledge. From beginner to advanced, upgrade your skills and achieve your career goals with expert-led guidance. </p>
 
 
         </div>
@@ -94,7 +78,7 @@
     </div>
 
     {{-- {{static info}} --}}
-    <div class="flex flex-col gap-2 p-2 md:p-8 mt-10 bg-gray-50 rounded-2xl mb-12 items-center md:px-[10%]">
+    <div class="flex flex-col gap-2 p-4 md:p-8 mt-10 bg-gray-50 rounded-2xl mb-12 items-center md:px-[10%]">
         <h2 class="text-lg md:text-xl font-normal max-w-2xl text-gray-900  text-center mb-4 flex flex-col">
             <span class="font-semibold mb-1">Results that Speak for Themselves:</span>
             <span class="md:text-3xl text-xl font-semibold"> We’re a Top Software Devlopment Company in India</span>
@@ -188,14 +172,7 @@
                 <h2 class="text-3xl md:text-4xl font-bold text-blue-300 mb-4">
                     Corporate <span class="text-white">Software Training</span>
                 </h2>
-                <p class="text-gray-300 text-lg leading-relaxed mb-6">
-                    Empower yourself with coding expertise at Learn Syntax Training Center. Our specialized programs are
-                    designed to help individuals and teams master the art of programming syntax, ensuring efficiency and
-                    accuracy in writing code. Stay ahead in the competitive tech world with our comprehensive, expert-led
-                    training sessions tailored to meet your learning goals.
-                </p>
-                <a href="{{ route('public.contact') }}" class="text-blue-400 hover:underline inline-block mb-4">View more
-                    →</a>
+               <p class="text-gray-300 text-lg leading-relaxed mb-6"> Master coding at Learn Syntax Training Center with expert-led programs designed to enhance your programming skills and stay ahead in the tech world. </p>
                 <div>
                     <button class=" bg-secondary text-white font-semibold py-2 px-4 rounded shadow-lg">
                         <a href="{{ route('public.contact') }}">CONTACT US</a>
