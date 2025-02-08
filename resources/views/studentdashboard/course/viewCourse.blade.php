@@ -106,13 +106,7 @@
                 payButton.disabled = true;
                 e.preventDefault();
                 let course_amount = {{$course->discounted_fees}}
-                let plateform_fee = course_amount * 0.02;
-                let gst = plateform_fee * 0.18;
-                let total_amount = course_amount + plateform_fee + gst;
-
-                console.log(course_amount);
                 const receipt_no = `${Date.now()}`;
-
                 // First, initiate payment by sending the details to the backend
                 fetch("{{ route('store.payment.initiation') }}", {
                         method: "POST",
@@ -124,7 +118,7 @@
                             student_id: "{{ Auth::id() }}" ?? 99,
                             course_id: "{{ $course->id }}",
                             receipt_no: receipt_no,
-                            amount: total_amount * 100,
+                            amount: course_amount,
                             ip_address: "{{ request()->ip() }}",
                         })
                     })
@@ -134,7 +128,7 @@
                             // Use the Razorpay order_id received from backend
                             var options = {
                                 "key": "{{ env('RAZORPAY_KEY') }}",
-                                "amount": total_amount * 100, // amount in paise
+                                "amount": data.amount, // amount in paise
                                 "currency": "INR",
                                 "name": "LearnSyntax",
                                 "description": "Processing Fee",

@@ -268,9 +268,6 @@
         const receipt_no = `${Date.now()}`;
 
         let member_fee = 700;
-        let plateform_fee = member_fee * 0.02;
-        let gst = plateform_fee * 0.18;
-        let total_amount = member_fee + plateform_fee + gst;
 
         // First, initiate payment by sending the details to the backend
         fetch("{{ route('store.payment.initiation') }}", {
@@ -294,7 +291,7 @@
                     // Use the Razorpay order_id received from backend
                     var options = {
                         "key": "{{ env('RAZORPAY_KEY') }}",
-                        "amount": member_fee * 100, // amount in paise
+                        "amount": member_fee, // amount in paise
                         "currency": "INR",
                         "name": "LearnSyntax",
                         "description": "Processing Fee",
