@@ -133,6 +133,13 @@
                         </div>
                     </div>
 
+                    {{-- google-recaptcha --}}
+
+                    <div class="g-recaptcha mt-8 "
+                        data-sitekey="{{ config('services.recaptcha.site_key') }}"></div>
+                    @error('g-recaptcha-response')
+                        <p class="text-xs text-red-500 text-center mt-2">{{ $message }}</p>
+                    @enderror
                     <!-- Loader (Hidden by Default) -->
                     <div id="loader"
                         class="hidden fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-50">
@@ -154,7 +161,8 @@
                 </form>
             </div>
         </div>
-    </div><script>
+    </div>
+    <script>
         document.getElementById('applyForm').addEventListener('submit', function(event) {
             event.preventDefault();
 
@@ -194,5 +202,4 @@
             }
         });
     </script>
-
 @endsection

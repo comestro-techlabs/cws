@@ -8,9 +8,10 @@ use App\Models\User;
 use App\Models\Enquiry;
 use App\Models\Payment;
 use App\Models\PlacedStudent;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -173,7 +174,20 @@ class PublicController extends Controller
         $request->validate([
             'name' => 'required',
             'mobile' => 'required|digits:10|regex:/^[0-9]{10}$/',
+            'g-recaptcha-response' => 'required',
         ]);
+
+        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+            'secret' => config('services.recaptcha.secret_key'),
+            'response' => $request->input('g-recaptcha-response'),
+            'remoteip' => $request->ip(),
+        ]);
+    
+        $responseData = $response->json();
+    
+        if (!$responseData['success']) {
+            return back()->withErrors(['captcha' => 'reCAPTCHA verification failed.']);
+        }
 
         $data = new Enquiry();
         $data->name = $request->name;

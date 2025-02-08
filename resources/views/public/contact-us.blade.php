@@ -143,6 +143,7 @@
                     <textarea id="message" name="message" placeholder="Message (optional)" rows="4"
                         class="mt-1 block w-full p-2 border border-gray-300 rounded-xl shadow-sm focus:ring-blue-500 focus:border-blue-500"></textarea>
                 </div>
+                <div class="g-recaptcha mt-8 flex justify-center" data-sitekey="{{ config('services.recaptcha.site_key') }}"></div>
 
                 <div class="mt-8 flex justify-center">
                     <button type="submit"
@@ -157,5 +158,5 @@
 
     </div>
 
-
+    
 @endsection
