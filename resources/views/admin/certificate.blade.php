@@ -5,6 +5,7 @@
 </div>
     <div class="container mt-5">
         <div class="overflow-x-auto">
+            @if(count($userData)>0)
         <table class="table-auto border-collapse border border-gray-300 w-full ">
             <thead>
                 <tr class="bg-gray-100">
@@ -18,6 +19,7 @@
             </thead>
             <tbody>
                 @foreach ($userData as $data)
+              
                     <tr>
                         <td class="border border-gray-300 px-4 py-2">{{ $data['name'] }}</td>
                         <td class="border border-gray-300 px-4 py-2">{{ $data['examName'] }}</td>
@@ -25,20 +27,20 @@
                         <td class="border border-gray-300 px-4 py-2">{{ $data['examTotal'] }}</td>
                         <td class="border border-gray-300 px-4 py-2">{{ number_format($data['percentage'], 2) }}%</td>
                         <td class="border border-gray-300 px-4 py-2">
-                            @if ($data['percentage'] >= 75)
+                           
                                 <a href="{{ route('admin.viewCertificate', ['userId' => $data['id']]) }}" class="p-2 bg-green-100 text-green-700 rounded inline-block">
                                     🎉 <strong>Eligible</strong>
                                 </a>
-                            @else
-                                <span class="p-2 bg-red-100 text-red-700 rounded inline-block">
-                                    ❌ Not Eligible
-                                </span>
-                            @endif
+                           
                         </td>
                     </tr>
+                   
                 @endforeach
             </tbody>
         </table>
+      @else
+        <p class="text-center text-red-500 mt-4">❌ only eligible candidates found.</P>
+            @endif
         </div>
     </div>
 @endsection

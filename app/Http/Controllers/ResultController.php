@@ -104,7 +104,7 @@ public function Certificate()
 
         $percentage = ($assignmentPercentage + $examPercentage) / 2;
 
-       
+        if ($percentage >= 75) {
         $userData[] = [
             'name' => $user->name,
             'examName' => $examName,
@@ -114,6 +114,7 @@ public function Certificate()
             'id' => $user->id
         ];
     }
+}
 
     return view('admin.certificate', compact('userData'));
 }
