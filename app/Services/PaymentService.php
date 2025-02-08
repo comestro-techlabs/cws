@@ -3,7 +3,9 @@
 namespace App\Services;
 
 use App\Models\Payment;
+use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class PaymentService
 {
@@ -15,8 +17,11 @@ class PaymentService
 
      public function processOverduePayments()
      {
-        //  $today = Carbon::parse("2025-03-15 00:00:00");
-         $today = Carbon::now();
+        //  $today = Carbon::parse("2025-05-10 00:00:00");
+        $today = Carbon::now();
+        
+        $user = User::where('id', Auth::id())->first();
+
 
          // Fetch all students who have unpaid or overdue payments
          $students = Payment::whereIn('status', ['unpaid', 'overdue'])
@@ -87,6 +92,10 @@ class PaymentService
                          'late_fee' => $lateFee,
                          'total_amount' => $nextUnpaidPayment->amount + $lateFee,
                      ]);
+                     if ($user) {
+                        $user->is_active = 0;
+                        $user->save();
+                    }
                  }
              }
          }

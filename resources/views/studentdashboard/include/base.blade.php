@@ -279,7 +279,7 @@
                 body: JSON.stringify({
                     student_id: "{{ Auth::id() }}" ?? 99,
                     receipt_no: receipt_no,
-                    amount: member_fee * 100,
+                    amount: member_fee,
                     ip_address: "{{ request()->ip() }}",
                     workshop_id:  null,
                 })
