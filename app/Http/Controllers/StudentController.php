@@ -215,10 +215,13 @@ class StudentController extends Controller
         foreach ($payments as $payment) {
             $payment->progress = $payment->course_progress; // Access the computed attribute
         }
+        $readMessages = session('read_messages', []);
         $messages = Message::whereJsonContains('recipients', $studentId)
+        ->whereNotIn('id', $readMessages) // Only unread messages
         ->orderBy('created_at', 'desc')
         ->take(3)
         ->get();
+        
         // Prepare data for the view
         $datas = [
             'hasCompleted' => $hasCompleted,
