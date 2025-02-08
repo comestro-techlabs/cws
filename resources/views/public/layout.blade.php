@@ -25,7 +25,7 @@
     <div class="bg-gradient-to-r  to-purple-100 via-purple-300 from-purple-50">
         <!-- Content Section -->
         <div class="md:pt-[30px] ">
-            @if (request()->route()->getName() === 'public.index')
+            @if (request()->route() && request()->route()->getName() === 'public.index')
                 <!-- Check if current route is homepage -->
                 <!-- Hero Section with Gradient -->
                 <div class="relative flex items-center md:pt-12 pt-10">

@@ -3,7 +3,7 @@
 @section('title', 'create placedstudent ')
 
 @section('content')
-<div class="bg-gray-100 py-10 min-h-screen">
+<div class=" py-10 min-h-screen">
     <div class="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md">
         <h2 class="text-2xl font-bold mb-4">Create New Placed Students</h2>
 
@@ -58,10 +58,19 @@
             <div>
                 <label for="image" class="block text-sm font-medium text-gray-700">Image</label>
                 <input type="file" name="image" id="image"
-                       class="mt-1 block w-full text-gray-900 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                       class="mt-1 block w-full text-gray-900 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" onchange="previewImage()">
                 @error('image')
                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
+
+                <div id="imagePreviewContainer" class="mt-4">
+                    <img 
+                        id="imagePreview" 
+                        src="" 
+                        alt="Image Preview" 
+                        class="hidden max-w-[150px] h-auto rounded-md shadow-md" 
+                    />
+                </div>
             </div>
     
             <!-- Submit Button -->
@@ -74,6 +83,25 @@
         </form>
     </div>
 </div>
+<script>
+    function previewImage() {
+        const fileInput = document.getElementById('image');
+        const file = fileInput.files[0];
+        const previewContainer = document.getElementById('imagePreviewContainer');
+        const previewImage = document.getElementById('imagePreview');
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImage.src = e.target.result;
+                previewImage.classList.remove('hidden');
+            }
+            reader.readAsDataURL(file);
+        } else {
+            previewImage.classList.add('hidden');
+        }
+    }
+</script>
 
 
 @endsection 

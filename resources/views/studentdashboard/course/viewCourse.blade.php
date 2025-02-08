@@ -105,9 +105,8 @@
                 const payButton = document.getElementById('pay-button');
                 payButton.disabled = true;
                 e.preventDefault();
-
+                let course_amount = {{$course->discounted_fees}}
                 const receipt_no = `${Date.now()}`;
-
                 // First, initiate payment by sending the details to the backend
                 fetch("{{ route('store.payment.initiation') }}", {
                         method: "POST",
@@ -119,7 +118,7 @@
                             student_id: "{{ Auth::id() }}" ?? 99,
                             course_id: "{{ $course->id }}",
                             receipt_no: receipt_no,
-                            amount: "{{ $course->discounted_fees }}",
+                            amount: course_amount,
                             ip_address: "{{ request()->ip() }}",
                         })
                     })
@@ -129,11 +128,11 @@
                             // Use the Razorpay order_id received from backend
                             var options = {
                                 "key": "{{ env('RAZORPAY_KEY') }}",
-                                "amount": "{{ $course->discounted_fees }}" * 100, // amount in paise
+                                "amount": data.amount, // amount in paise
                                 "currency": "INR",
                                 "name": "LearnSyntax",
                                 "description": "Processing Fee",
-                                "image": "{{ asset('front_assets/img/logo/logo.png') }}",
+                                "image": "{{ asset('assets/img/logo/logo.png') }}",
                                 "order_id": data.order_id, // Razorpay order ID
                                 "handler": function(response) {
                                     // After successful payment, send the payment details to the backend

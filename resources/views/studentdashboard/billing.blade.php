@@ -135,7 +135,7 @@
           <tbody class="divide-y divide-gray-200 text-xs">
             @foreach ($paymentsWithWorkshops as $item)
 
-            @if(empty($item->course_id) && empty($item->workshop_title))
+            @if(empty($item->course_id) && empty($item->workshop_id))
             <tr>
               <td class="px-2 py-1 text-gray-800 text-center">
                 {{ \Carbon\Carbon::parse($item->due_date)->format('d M Y') }}
