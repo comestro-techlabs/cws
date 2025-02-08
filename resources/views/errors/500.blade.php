@@ -20,8 +20,8 @@
         <div class="flex-[1.5] flex flex-col gap-3">
             <img src="{{asset('assets/learnSyntax.png')}}" alt="" class="w-[80%] md:w-[40%]">
              <h1 class="text-xl text-slate-500"><strong class="text-black">500</strong>. That's an error</h1>
-            <p class=" text-2xl">The server encountered an error and could not complete your Request.</p>
-            <p class="text-md md:text-2xl">If the problem persists. please contact care@learnsyntax.com. and report your problem and don't forget to mention this error message & query that caused it. <span class="text-slate-500">Thats all you know</span></p>
+            <p class=" text-sm">The server encountered an error and could not complete your Request.</p>
+            <p class="text-md">If the problem persists. please contact care@learnsyntax.com. and report your problem and don't forget to mention this error message & query that caused it. <span class="text-slate-500">Thats all you know</span></p>
         </div>
         <div class="flex-1">
             <img src="{{asset('assets/404.jpg')}}" alt="" class="">
