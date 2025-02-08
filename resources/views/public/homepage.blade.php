@@ -200,7 +200,7 @@
         {{ $title }}
         {{-- Student List --}}
 
-        <div class="relative overflow-hidden w-full glide-09">
+        {{-- <div class="relative overflow-hidden w-full glide-09">
             <!-- Slides -->
             <div data-glide-el="track">
                 <ul
@@ -231,13 +231,13 @@
                     @endforeach
                 </ul>
             </div>
-        </div>
+        </div> --}}
     </div>
 
     </div>
 @endsection
 
-@section('js')
+{{-- @section('js')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.0.2/glide.js"></script>
 
     <script>
@@ -303,4 +303,4 @@
             });
         });
     </script>
-@endsection
+@endsection --}}

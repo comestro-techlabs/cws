@@ -6,6 +6,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Hash;
 // registration logics here
 use Illuminate\Support\Facades\Validator; // Add this line
@@ -193,6 +194,7 @@ class AuthController extends Controller
             'gender' => 'required|in:male,female,other',
             'education_qualification' => 'required|string|max:255',
             'dob' => 'required|date|before_or_equal:today',
+            'g-recaptcha-response' => 'required',
             // 'password' => 'required|string|min:8|confirmed',
 
         ], [
@@ -201,7 +203,18 @@ class AuthController extends Controller
             'contact.digits' => 'The contact number must be exactly 10 digits.',
             'dob.date' => 'The date of birth must be a valid date.',
         ]);
-
+        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+            'secret' => config('services.recaptcha.secret_key'),
+            'response' => $request->input('g-recaptcha-response'),
+            'remoteip' => $request->ip(),
+        ]);
+    
+        $responseData = $response->json();
+    
+        if (!$responseData['success']) {
+            return back()->withErrors(['g-recaptcha-response' => 'reCAPTCHA verification failed.'])->withInput();
+        }
+        
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;

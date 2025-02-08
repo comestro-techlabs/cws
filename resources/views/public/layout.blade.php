@@ -130,7 +130,8 @@
         </div>
     </footer>
 
-
+    {{-- captcha --}}
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
     @yield('js')
 
