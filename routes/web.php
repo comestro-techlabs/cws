@@ -21,10 +21,12 @@
     use App\Http\Controllers\ExamController;
 use App\Http\Controllers\PostChapterController;
 use App\Http\Controllers\PostCourseController;
+use App\Http\Controllers\PostTopicPostController;
 use App\Http\Middleware\AdminMiddleware;
     use App\Http\Controllers\QuizController;
     use App\Models\PlacedStudent;
-    use App\Models\Workshop;
+use App\Models\PostTopicPost;
+use App\Models\Workshop;
 
 
     Route::prefix("student")->group(function () {
@@ -64,8 +66,10 @@ use App\Http\Middleware\AdminMiddleware;
     // });
 
 //routes for the course
-Route::get('/course/show',[PostCourseController::class,'index'])->name('courses.show');
-Route::get('/course/{course_slug}/chapter/show', [PostChapterController::class, 'index'])->name('courses.show');
+Route::get('/course/show',[PostCourseController::class,'index'])->name('allcourses.show');
+Route::get('/course/{course_id}/chapter/show', [PostChapterController::class, 'index'])->name('courses.show');
+Route::get('/course/chapter/{chapter_id}/show', [PostTopicPostController::class, 'show'])->name('chapters.show');
+
 
     Route::get('/get-access-token', [StudentController::class, 'store']);
     Route::post('/student/assignments/upload/{assignment_id}', [StudentController::class, 'store'])->name('assignments.store');

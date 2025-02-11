@@ -56,15 +56,14 @@ class PostTopicPostController extends Controller
 
 
     //Showing  a specific topic
-    public function show($chapterId, $topicId)
+    public function show($chapterId)
     {
-        $topic = PostTopicPost::where('chapter_id', $chapterId)->where('id', $topicId)->first();
-
-        if (!$topic) {
+        $topics = PostTopicPost::where('post_chapter_id', $chapterId)->get();
+        if (!$topics) {
             return redirect()->route('chapters.show', $chapterId)->with('error', 'Topic not found');
         }
 
-        return view('topics.show', compact('topic'));
+        return view('admin.post.topicWithContent', compact('topics'));
     }
 
 

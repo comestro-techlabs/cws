@@ -43,7 +43,7 @@
                             <td class="px-4 py-2 text-sm text-gray-600">{{ $chapter->chapter_description }}</td>
                             <td class="px-4 py-2 text-sm text-gray-600">{{ $chapter->order ?? 'N/A' }}</td>
                             <td class="px-4 py-2 text-sm">
-                                <a href="{{ route('courses.show', $chapter->id) }}" class="text-white bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-md">View</a>
+                                <a href="{{ route('chapters.show', $chapter->id) }}" class="text-white bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-md">View</a>
                             </td>
                         </tr>
                     @endforeach
