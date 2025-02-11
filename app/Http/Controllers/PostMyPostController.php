@@ -10,9 +10,9 @@ class PostMyPostController extends Controller
 {
     public function index($topicId)
     {
-        $posts = PostMyPost::where('topic_id', $topicId)->get();
+        $posts = PostMyPost::where('post_topic_post_id', $topicId)->get();
 
-        return view('posts.index', compact('posts', 'topicId'));
+        return view('admin.post.topicContent', compact('posts', 'topicId'));
     }
 
 

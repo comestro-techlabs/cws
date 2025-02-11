@@ -32,7 +32,7 @@
                             <td class="px-4 py-2 text-sm text-gray-600">{{ $topic->topic_name }}</td>
                             <td class="px-4 py-2 text-sm text-gray-600">{{ $topic->topic_description }}</td>
                             <td class="px-4 py-2 text-sm">
-                                <a href="" class="text-white bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-md">View</a>
+                                <a href="{{ route('topics.show', $topic->id) }}" class="text-white bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-md">View</a>
                             </td>
                         </tr>
                     @endforeach

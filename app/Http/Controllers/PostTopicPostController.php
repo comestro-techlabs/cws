@@ -70,13 +70,13 @@ class PostTopicPostController extends Controller
     //Showing every topic of chapter
     public function index($chapterId)
     {
-        $topics = PostTopicPost::where('chapter_id', $chapterId)->orderBy('order', 'asc')->get();
+        $topics = PostTopicPost::where('post_chapter_id', $chapterId)->orderBy('order', 'asc')->get();
 
         if ($topics->isEmpty()) {
             return redirect()->route('chapters.show', $chapterId)->with('error', 'No topics found for this chapter');
         }
 
-        return view('topics.index', compact('topics'));
+        return view('admin.post.topicWithContent', compact('topics'));
     }
 
 

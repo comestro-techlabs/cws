@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('post_my_posts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('post_topic_post_id')->constrained('post_topic_posts')->onDelete('cascade')->unique();
+            $table->foreignId('post_topic_post_id')->constrained('post_topic_posts')->onDelete('cascade');
             $table->string('title');
             $table->longText('content');
             $table->string('image_path')->nullable();

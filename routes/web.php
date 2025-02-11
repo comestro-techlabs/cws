@@ -21,6 +21,7 @@
     use App\Http\Controllers\ExamController;
 use App\Http\Controllers\PostChapterController;
 use App\Http\Controllers\PostCourseController;
+use App\Http\Controllers\PostMyPostController;
 use App\Http\Controllers\PostTopicPostController;
 use App\Http\Middleware\AdminMiddleware;
     use App\Http\Controllers\QuizController;
@@ -68,7 +69,8 @@ use App\Models\Workshop;
 //routes for the course
 Route::get('/course/show',[PostCourseController::class,'index'])->name('allcourses.show');
 Route::get('/course/{course_id}/chapter/show', [PostChapterController::class, 'index'])->name('courses.show');
-Route::get('/course/chapter/{chapter_id}/show', [PostTopicPostController::class, 'show'])->name('chapters.show');
+Route::get('/course/chapter/{chapter_id}/show', [PostTopicPostController::class, 'index'])->name('chapters.show');
+Route::get('/course/chapter/topics/{topic_id}/show', [PostMyPostController::class, 'index'])->name('topics.show');
 
 
     Route::get('/get-access-token', [StudentController::class, 'store']);
