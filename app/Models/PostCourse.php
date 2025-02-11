@@ -13,6 +13,7 @@ class PostCourse extends Model
         'title',
         'description',
         'image',
+        'status',
         'course_slug',
 
     ];

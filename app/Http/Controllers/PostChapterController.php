@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PostChapter;
+use App\Models\PostCourse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -15,13 +16,15 @@ class PostChapterController extends Controller
      */
     public function index($courseId)
     {
-        $chapter = PostChapter::all();
+        $chapters = PostChapter::where('post_course_id', $courseId)->get();
 
-        return response()->json([
-            'status' => 200,
-            'data' => $chapter
-        ]);
+        if ($chapters->isEmpty()) {
+            return redirect()->back()->with('error', 'Chapters not found.');
+        }
+
+        return view('admin.post.chapterWithTopic', compact('chapters'));
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -34,43 +37,39 @@ class PostChapterController extends Controller
             'chapter_description' => 'required|string',
             'order' => 'required|integer',
         ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => 422,
-                'errors' => $validator->messages(),
-            ], 422);
-        }
-        $validated = $validator->validated();
-        $validated["chapter_slug"] = Str::slug($validated['chapter_name']);
-        $chapter = PostChapter::create($validated);
-        return response()->json([
-            'message' => 'Chapter Created Successfully',
-            'chapter' => $chapter,
 
-        ], 201);
+        if ($validator->fails()) {
+            return redirect()->route('chapters.create', $request->course_id)
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $validated = $validator->validated();
+
+        $validated["chapter_slug"] = Str::slug($validated['chapter_name']);
+
+        $chapter = PostChapter::create($validated);
+
+        return redirect()->route('courses.show', $validated['course_id'])
+            ->with('success', 'Chapter created successfully.');
     }
+
 
     /**
      * Display the specified resource.
      */
     public function show($id)
-
     {
         $chapter = PostChapter::with(['topics.post'])->find($id);
 
         if (!$chapter) {
-            return response()->json([
-                'message' => 'chapter not found',
-            ], 404);
+            return redirect()->route('chapters.index')->with('error', 'Chapter not found.');
         }
-
-        return response()->json([
-            'message' => 'chapter Fetched Successfully',
-            'data' => $chapter,
-        ], 200);
+        return view('chapters.show', compact('chapter'));
     }
 
-  
+
+
     public function update(Request $request, $course_id, $chapter_id)
     {
         $validatedData = $request->validate([
@@ -82,24 +81,26 @@ class PostChapterController extends Controller
         $chapter = PostChapter::where('course_id', $course_id)->where('id', $chapter_id)->first();
 
         if (!$chapter) {
-            return response()->json(['message' => 'Chapter not found'], 404);
+            return redirect()->route('courses.show', $course_id)->with('error', 'Chapter not found.');
         }
 
         $chapter->update($validatedData);
 
-        return response()->json(['message' => 'Chapter updated successfully', 'data' => $chapter], 200);
+        return redirect()->route('courses.show', $course_id)->with('success', 'Chapter updated successfully.');
     }
 
 
-    public function destroy($chapterId)
+
+    public function destroy($courseId, $chapterId)
     {
-        $chapter = PostChapter::where('id', $chapterId)->first();
+        $chapter = PostChapter::where('course_id', $courseId)->where('id', $chapterId)->first();
+
         if (!$chapter) {
-            return response()->json(['error' => 'Chapter not found'], 404);
+            return redirect()->route('courses.show', $courseId)->with('error', 'Chapter not found.');
         }
-        //delete chapter with all topics and post
+
         $chapter->delete();
-        return response()->json(['message' => 'Chapter and related data deleted successfully.'], 200);
+
+        return redirect()->route('courses.show', $courseId)->with('success', 'Chapter and related data deleted successfully.');
     }
-    
 }

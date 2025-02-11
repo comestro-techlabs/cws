@@ -10,118 +10,88 @@ use Illuminate\Support\Str;
 class PostTopicPostController extends Controller
 {
     public function store(Request $request, $chapterId)
-    {   
-        
+    {
         $validatedData = $request->validate([
-            'topic_name' => 'required|string|max:255', 
+            'topic_name' => 'required|string|max:255',
             'topic_description' => 'nullable|string',
             'order' => 'nullable|integer',
-        ]);     
-        // Create the topic
-        if( $validatedData){
-            $topic = new PostTopicPost();
-            $topic->chapter_id = $chapterId;
-            $topic->topic_name = $validatedData['topic_name'];
-            $topic->topic_description = $validatedData['topic_description'];
-            $topic->order = $validatedData['order'] ?? 0;
-            $topic->topic_slug = Str::slug($validatedData['topic_name']);
-            $topic->save();
-            
-        }
-        return response()->json(['message' => 'Topic added', 'topic' => $topic], 201);
+        ]);
+
+        $topic = new PostTopicPost();
+        $topic->chapter_id = $chapterId;
+        $topic->topic_name = $validatedData['topic_name'];
+        $topic->topic_description = $validatedData['topic_description'];
+        $topic->order = $validatedData['order'] ?? 0;
+        $topic->topic_slug = Str::slug($validatedData['topic_name']);
+        $topic->save();
+
+        return redirect()->route('chapters.show', $chapterId)->with('success', 'Topic added successfully');
     }
+
 
     // Update a topic
-  // Update a topic
-public function update(Request $request, $chapterId, $topicId)
-{
-    // Fetch the topic based on chapter ID and topic ID
-    $topic = PostTopicPost::where('chapter_id', $chapterId)->where('id', $topicId)->first();
+    public function update(Request $request, $chapterId, $topicId)
+    {
+        $topic = PostTopicPost::where('chapter_id', $chapterId)->where('id', $topicId)->first();
 
-    if (!$topic) {
-        return response()->json([
-            'status' => 404,
-            'message' => 'Topic not found',
-        ], 404);
+        if (!$topic) {
+            return redirect()->route('chapters.show', $chapterId)->with('error', 'Topic not found');
+        }
+
+        $validatedData = $request->validate([
+            'topic_name' => 'sometimes|required|string',
+            'topic_description' => 'sometimes|required|string',
+            'order' => 'sometimes|required|integer',
+        ]);
+
+        if (isset($validatedData['topic_name'])) {
+            $validatedData['topic_slug'] = Str::slug($validatedData['topic_name']);
+        }
+
+        $topic->update($validatedData);
+
+        return redirect()->route('chapters.show', $chapterId)->with('success', 'Topic updated successfully');
     }
 
-    // Validate and prepare data for update
-    $validatedData = $request->validate([
-        'chapter_id' => 'sometimes|required|integer',
-        'topic_name' => 'sometimes|required|string',
-        'topic_description' => 'sometimes|required|string',
-        'order' => 'sometimes|required|integer',
-    ]);
-
-    // Add the topic slug if the topic name is being updated
-    if (isset($validatedData['topic_name'])) {
-        $validatedData['topic_slug'] = Str::slug($validatedData['topic_name']);
-    }
-
-    // Check if there's anything to update
-    if (empty($validatedData)) {
-        return response()->json([
-            'status' => 400,
-            'message' => 'No data provided to update the topic.',
-        ], 400);
-    }
-
-    // Perform the update
-    $topic->update($validatedData);
-
-    return response()->json([
-        'status' => 200,
-        'message' => 'Topic updated successfully',
-        'data' => $topic,
-    ]);
-}
 
 
     //Showing  a specific topic
-    public function show($chapterId, $topicId){
+    public function show($chapterId, $topicId)
+    {
         $topic = PostTopicPost::where('chapter_id', $chapterId)->where('id', $topicId)->first();
-        if(!$topic){
-            return response()->json([
-                'status' => 404,
-                'message' =>'topic not Found',
 
-            ],404);
+        if (!$topic) {
+            return redirect()->route('chapters.show', $chapterId)->with('error', 'Topic not found');
         }
-        return response()->json([
-            'status' =>200,
-            'data'=>$topic,
-        ]);
+
+        return view('topics.show', compact('topic'));
     }
+
 
     //Showing every topic of chapter
-    public function index($chapterId){
+    public function index($chapterId)
+    {
         $topics = PostTopicPost::where('chapter_id', $chapterId)->orderBy('order', 'asc')->get();
 
-        // Check if any topics are found
-    if ($topics->isEmpty()) {
-        return response()->json([
-            'status' => 404,
-            'message' => 'No topics found for this chapter',
-        ], 404);
+        if ($topics->isEmpty()) {
+            return redirect()->route('chapters.show', $chapterId)->with('error', 'No topics found for this chapter');
+        }
+
+        return view('topics.index', compact('topics'));
     }
 
-    return response()->json([
-        'status' => 200,
-        'data' => $topics,
-    ], 200);
-    }
 
-     // Delete a topic
+    // Delete a topic
     public function destroy($chapterId, $topicId)
     {
         $topic = PostTopicPost::where('chapter_id', $chapterId)->where('id', $topicId)->first();
 
         if (!$topic) {
-            return response()->json(['error' => 'Topic not found'], 404);
+            return redirect()->route('chapters.show', $chapterId)->with('error', 'Topic not found');
         }
 
         $topic->delete();
 
-        return response()->json(['message' => 'Topic deleted successfully'], 200);
+        return redirect()->route('chapters.show', $chapterId)->with('success', 'Topic deleted successfully');
     }
 }

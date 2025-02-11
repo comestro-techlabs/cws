@@ -202,7 +202,7 @@
 
         <div class="relative overflow-hidden w-full glide-09">
             <!-- Slides -->
-            <div data-glide-el="track">
+            <!-- <div data-glide-el="track">
                 <ul
                     class="whitespace-no-wrap flex-no-wrap [backface-visibility: hidden] [transform-style: preserve-3d] [touch-action: pan-Y] [will-change: transform] relative flex w-full overflow-hidden p-0 pb-12">
                     @foreach ($placedStudents as $item)
@@ -210,13 +210,11 @@
                             <div class=" bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-lg cursor-help h-full"
                                 title="{{ $item->content }}">
                                 <div class="md:flex flex-col justify-center items-center">
-                                    <!-- Image Section -->
                                     <div class="flex justify-center p-4">
                                         <img class="h-24 w-24 object-cover rounded-full border-4 border-gray-200 shadow-md transition-transform duration-300 hover:scale-110"
                                         src="{{ asset('storage/' . $item->image) }}"
                                             alt="{{ $item->name }} Image">
                                     </div>
-                                    <!-- Content Section -->
                                     <div class="px-4 py-3 text-center">
                                         <div class="capitalize tracking-wide text-lg text-gray-800 font-semibold">
                                             {{ $item->name }}
@@ -231,7 +229,7 @@
                     @endforeach
                 </ul>
             </div>
-        </div>
+        </div> -->
     </div>
 
     </div>

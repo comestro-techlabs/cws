@@ -15,17 +15,13 @@ class PostCourseController extends Controller
      */
     public function index()
     {
-        $course = PostCourse::all();
+        $courses = PostCourse::all();
 
-        return response()->json([
-            'status' => 200,
-            'data' => $course,
-        ]);
+        return view('admin.post.dashboard', compact('courses'));
     }
 
     public function store(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
             'description' => 'required|string',
@@ -33,63 +29,45 @@ class PostCourseController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'status' => 422,
-                'errors' => $validator->messages(),
-            ], 422);
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
         $validated = $validator->validated();
+
         if ($request->hasFile('image')) {
             $filePath = $request->file('image')->store('images', 'public');
             $validated['image'] = $filePath;
         } else {
-            $validated['image'] = 'icons/default-icon.png'; // Default icon path
+            $validated['image'] = 'icons/default-icon.png';
         }
-
-       
-
 
         $validated['course_slug'] = Str::slug($validated['title']);
 
         $course = PostCourse::create($validated);
 
-        return response()->json([
-            'status' => 201,
-            'message' => 'Course created successfully.',
-            'data' => $course,
-        ], 201);
+        return redirect()->back()->with('success', 'Course created successfully.');
     }
+
 
     public function show($id)
     {
-
         $course = PostCourse::with('chapters.topics.post')->find($id);
+
         if (!$course) {
-            return response()->json([
-                'message' => 'Course not found',
-            ], 404);
+            return redirect()->back()->with('error', 'Course not found.');
         }
 
-        return response()->json([
-            'message' => 'Course Fetched Successfully',
-            'data' => $course,
-        ], 200);
+        return view('courses.show', compact('course'));
     }
 
 
-    public function update(Request $request, string  $id)
+    public function update(Request $request, $id)
     {
-        $course = PostCourse::where('id', $id)->first();
-
+        $course = PostCourse::find($id);
 
         if (!$course) {
-            return response()->json([
-                'status' => 404,
-                'message' => 'Course not found.',
-            ], 404);
+            return redirect()->route('courses.index')->with('error', 'Course not found.');
         }
-
         $validator = Validator::make($request->all(), [
             'title' => 'sometimes|required|string|max:255',
             'description' => 'sometimes|required|string|max:550',
@@ -97,10 +75,7 @@ class PostCourseController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'status' => 422,
-                'errors' => $validator->messages(),
-            ], 422);
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
         $validated = $validator->validated();
@@ -109,32 +84,26 @@ class PostCourseController extends Controller
             $validated['course_slug'] = Str::slug($validated['title']);
         }
 
-        if ($request->has('image')) {
-            $validated['image'] = $request->input('image'); // Use the input directly
+        if ($request->hasFile('image')) {
+            $validated['image'] = $request->file('image')->store('images', 'public');
         }
 
         $course->update($validated);
 
-        return response()->json([
-            'status' => 200,
-            'message' => 'Course updated successfully.',
-            'data' => $course,
-        ]);
+        return redirect()->route('courses.show', $course->id)->with('success', 'Course updated successfully.');
     }
+
 
     public function destroy($courseId)
     {
-        // Attempt to find the course based on courseId and chapterId
-        $course = PostCourse::where('id', $courseId)->first();
-    
+        $course = PostCourse::find($courseId);
+
         if (!$course) {
-            return response()->json(['error' => 'Course not found'], 404);
+            return redirect()->route('courses.index')->with('error', 'Course not found.');
         }
-    
-        // Delete the course
+
         $course->delete();
-    
-        return response()->json(['message' => 'Course deleted successfully'], 200);
+
+        return redirect()->route('courses.index')->with('success', 'Course deleted successfully.');
     }
-    
 }

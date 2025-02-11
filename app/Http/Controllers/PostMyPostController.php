@@ -8,29 +8,28 @@ use Illuminate\Support\Facades\Validator;
 
 class PostMyPostController extends Controller
 {
-    public function index($topic_id)
+    public function index($topicId)
     {
-        $post = PostMyPost::where('topic_id', $topic_id)->get();
+        $posts = PostMyPost::where('topic_id', $topicId)->get();
 
-        return response()->json([
-            'status' => 200,
-            'data' => $post,
-        ]);
+        return view('posts.index', compact('posts', 'topicId'));
     }
+
 
 
 
     // For displaying specified post
-    public function show($topic_id)
+    public function show($topicId, $postId)
     {
+        $post = PostMyPost::where('topic_id', $topicId)->where('id', $postId)->first();
 
-        $post = PostMyPost::where('topic_id', $topic_id)->get();
         if (!$post) {
-            return response()->json(['message' => 'Posts not found']);
-        } else {
-            return response()->json(['post' => $post]);
+            return redirect()->route('posts.index', $topicId)->with('error', 'Post not found.');
         }
+
+        return view('posts.show', compact('post'));
     }
+
     //for storing the post
     public function store(Request $request, $topicId)
     {
@@ -38,12 +37,11 @@ class PostMyPostController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg', 
-            // 'status' => 'nullable|boolean', 
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            return redirect()->route('posts.index', $topicId)->withErrors($validator)->withInput();
         }
 
         $imagePath = null;
@@ -54,58 +52,64 @@ class PostMyPostController extends Controller
         }
 
         // Create a new post for the given topic ID
-        $post = PostMyPost::create([
+        PostMyPost::create([
             'topic_id' => $topicId, // Link the post to the given topic ID
             'title' => $request->input('title'),
             'content' => $request->input('content'),
             'image_path' => $imagePath, // Save the image path if uploaded
-            // 'status' => $request->input('status', false), // Default to false if not provided
         ]);
 
-        return response()->json([
-            'message' => 'Post created successfully.',
-            'post' => $post,
-        ], 201);
+        return redirect()->route('posts.index', $topicId)->with('success', 'Post created successfully.');
     }
 
 
+
     //for updating the post
-    public function update(Request $request, $topic_id)
+    public function update(Request $request, $topicId, $postId)
     {
+        // Validate the request inputs
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'image' => 'nullable|image',
         ]);
+
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            return redirect()->route('posts.show', [$topicId, $postId])->withErrors($validator)->withInput();
         }
-        $post = PostMyPost::where('topic_id', $topic_id)->first();
+
+        $post = PostMyPost::where('topic_id', $topicId)->where('id', $postId)->first();
+
         if (!$post) {
-            return response()->json(['message' => 'Post not found for the specified topic.'], 404);
+            return redirect()->route('posts.index', $topicId)->with('error', 'Post not found.');
         }
+
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('posts', 'public');
             $post->update(['image_path' => $imagePath]);
         }
+
+        // Update the post
         $post->update([
-            'title' => $request->title,
-            'content' => $request->content
+            'title' => $request->input('title'),
+            'content' => $request->input('content'),
         ]);
 
-        return response()->json(['message' => 'Post updated successfully.', 'post' => $post], 200);
+        return redirect()->route('posts.show', [$topicId, $postId])->with('success', 'Post updated successfully.');
     }
+
     //for deleting the post
-    public function destroy($topic_id)
+    public function destroy($topicId, $postId)
     {
-        $post = PostMyPost::where('topic_id', $topic_id)->first();
-
+        $post = PostMyPost::where('topic_id', $topicId)->where('id', $postId)->first();
+    
         if (!$post) {
-            return response()->json(['message' => 'Post not found for the specified topic.'], 404);
+            return redirect()->route('posts.index', $topicId)->with('error', 'Post not found.');
         }
-
+    
         $post->delete();
-
-        return response()->json(['message' => 'Post deleted successfully.'], 200);
+    
+        return redirect()->route('posts.index', $topicId)->with('success', 'Post deleted successfully.');
     }
+    
 }
