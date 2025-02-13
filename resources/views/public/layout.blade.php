@@ -8,6 +8,7 @@
     <title>@yield('title') {{ env('APP_NAME') }} | Best Programming Training Center in Purnea Bihar</title>
     @yield('meta')
     <script src="https://cdn.tailwindcss.com"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -16,7 +17,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     @livewireStyles
 </head>
-
 <body>
     <!-- Fixed Navigation Bar -->
     <nav id="navbar" class="fixed top-0 z-50 w-full bg-white transition-all duration-300">
@@ -135,8 +135,9 @@
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
     @yield('js')
 
-    @livewireScripts
     <script type="module" src="{{ asset('build/assets/app-l0sNRNKZ.js') }}"></script>
+    
+    @livewireScripts
 </body>
 
 </html>
