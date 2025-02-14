@@ -30,13 +30,14 @@ class Register extends Component
     public $dob="";
 
     
-
+    
     
 
 
 
     public function register()
     {
+        
      
         $this->validate();
 
