@@ -35,7 +35,7 @@
         </li>
          {{-- Category --}}
         <li>
-            <a href="{{ route('category.index') }}"
+            <a href="{{ route('category.form') }}"
                 class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100group">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-square" viewBox="0 0 16 16">
                     <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
