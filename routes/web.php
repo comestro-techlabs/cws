@@ -19,15 +19,14 @@
     use App\Http\Controllers\WorkshopController;
     use Illuminate\Support\Facades\Route;
     use App\Http\Controllers\ExamController;
-use App\Http\Controllers\PostChapterController;
-use App\Http\Controllers\PostCourseController;
-use App\Http\Controllers\PostMyPostController;
-use App\Http\Controllers\PostTopicPostController;
-use App\Http\Middleware\AdminMiddleware;
+    use App\Http\Controllers\PostChapterController;
+    use App\Http\Controllers\PostCourseController;
+    use App\Http\Controllers\PostMyPostController;
+    use App\Http\Controllers\PostTopicPostController;
+    use App\Http\Middleware\AdminMiddleware;
     use App\Http\Controllers\QuizController;
-    use App\Models\PlacedStudent;
-use App\Models\PostTopicPost;
-use App\Models\Workshop;
+    use App\Livewire\Admin\ManageCategory;
+
 
 
     Route::prefix("student")->group(function () {
@@ -66,11 +65,11 @@ use App\Models\Workshop;
 
     // });
 
-//routes for the course
-Route::get('/course/show',[PostCourseController::class,'index'])->name('allcourses.show');
-Route::get('/course/{course_id}/chapter/show', [PostChapterController::class, 'index'])->name('courses.show');
-Route::get('/course/chapter/{chapter_id}/show', [PostTopicPostController::class, 'index'])->name('chapters.show');
-Route::get('/course/chapter/topics/{topic_id}/show', [PostMyPostController::class, 'index'])->name('topics.show');
+    //routes for the course
+    Route::get('/course/show', [PostCourseController::class, 'index'])->name('allcourses.show');
+    Route::get('/course/{course_id}/chapter/show', [PostChapterController::class, 'index'])->name('courses.show');
+    Route::get('/course/chapter/{chapter_id}/show', [PostTopicPostController::class, 'index'])->name('chapters.show');
+    Route::get('/course/chapter/topics/{topic_id}/show', [PostMyPostController::class, 'index'])->name('topics.show');
 
 
     Route::get('/get-access-token', [StudentController::class, 'store']);
@@ -124,7 +123,11 @@ Route::get('/course/chapter/topics/{topic_id}/show', [PostMyPostController::clas
             Route::post('/chapters/{chapter}/lessons', [LessonController::class, 'store'])->name('lessons.store');
 
             Route::patch('courses/{course}/{field}', [CourseController::class, 'update'])->name('course.update');
-            Route::resource("category", CategoryController::class)->except(['create', 'show']);
+           Route::get('/category', ManageCategory::class)->name('category.index');
+           Route::get("/category",function(){
+            return view("admin.manageCategory");
+        })->name("category.form");
+            // Route::resource("category", CategoryController::class)->except(['create', 'show']);
             Route::get('/batches', [BatchController::class, 'index'])->name('batches.index');
             Route::post('/batches', [BatchController::class, 'store'])->name('batches.store');
             Route::put('/batches/update/{batch}', [BatchController::class, 'update'])->name('batches.update');

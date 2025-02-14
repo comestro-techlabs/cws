@@ -5,7 +5,7 @@
 @section('content')
     <div class="flex flex-1 flex-col w-full">
         <div class=" px-5 py-5">
-            <div class="flex gap-3 flex-col md:flex-row justify-between md:items-center">
+            {{-- <div class="flex gap-3 flex-col md:flex-row justify-between md:items-center">
 
                 <h2 class="md:text-xl text-lg font-semibold  text-slate-500 border-s-4 border-s-orange-400 pl-3">@if(isset($_GET['search']) && $_GET['search'] !== "")
                     {{$_GET['search']}}
@@ -13,8 +13,8 @@
                     {{"Manage all"}}
                 @endif Categories ({{count($categories)}})</h2>
 
-            </div>
-            @session('success')
+            </div> --}}
+            {{-- @session('success')
             <div class="p-4 my-4 text-sm text-green-800 rounded-lg bg-green-50 " role="alert">
                 <span class="font-medium">Success!</span> {{session('success')}}
               </div>
@@ -24,8 +24,8 @@
             <div class="p-4 my-4 text-sm text-red-800 rounded-lg bg-red-50 " role="alert">
                 <span class="font-medium">Success!</span> {{session('error')}}
               </div>
-            @endsession
-            <div class="flex flex-1 gap-3  mt-5">
+            @endsession --}}
+            {{-- <div class="flex flex-1 gap-3  mt-5">
                 <div class="w-9/12">
                     <div class="relative overflow-x-auto flex-1 border ">
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500">
@@ -116,7 +116,9 @@
                         </form>
                     </div>
                 </div>
-            </div>
+            </div> --}}
+
+            <livewire:admin.manage-category/>
 
         </div>
     @endsection
