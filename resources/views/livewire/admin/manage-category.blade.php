@@ -1,6 +1,4 @@
-<div>
-    {{-- The Master doesn't talk, he acts. --}}
-    
+<div>   
             <div class="container mx-auto px-4 sm:px-8">
                 <div class="py-8">
                     <h2 class="text-2xl font-semibold leading-tight">Manage Categories</h2>
