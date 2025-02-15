@@ -9,6 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     @livewireStyles
@@ -36,12 +37,22 @@
         @show()
     </div>
 
-
-
-
-
-
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Toastr JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+   
+        <script>
+            document.addEventListener('livewire:initialized', () => {
+                Livewire.on('success', (data) => {
+                    // Accessing the first element of the array to get the message
+                    const message = data[0].message;
+                    toastr.success(message, 'Success');
+                });
+            });
+        </script>
+    @stack('scripts')
+
     @livewireScripts
 </body>
 

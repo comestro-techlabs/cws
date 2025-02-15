@@ -5,15 +5,9 @@
 @section('content')
     <div class="flex flex-1 flex-col w-full">
         <div class=" px-5 py-5">
-            {{-- <div class="flex gap-3 flex-col md:flex-row justify-between md:items-center">
-
-                <h2 class="md:text-xl text-lg font-semibold  text-slate-500 border-s-4 border-s-orange-400 pl-3">@if(isset($_GET['search']) && $_GET['search'] !== "")
-                    {{$_GET['search']}}
-                @else
-                    {{"Manage all"}}
-                @endif Categories ({{count($categories)}})</h2>
-
-            </div> --}}
+            <div class="flex gap-3 flex-col md:flex-row justify-between md:items-center">
+                <h2 class="md:text-xl text-lg font-semibold  text-slate-500 border-s-4 border-s-orange-400 pl-3">Categories</h2>
+            </div>
             {{-- @session('success')
             <div class="p-4 my-4 text-sm text-green-800 rounded-lg bg-green-50 " role="alert">
                 <span class="font-medium">Success!</span> {{session('success')}}
