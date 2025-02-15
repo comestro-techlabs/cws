@@ -30,13 +30,14 @@ class Register extends Component
     public $dob="";
 
     
-
+    
     
 
 
 
     public function register()
     {
+        
      
         $this->validate();
 
@@ -58,8 +59,7 @@ class Register extends Component
         $this->reset();
 
         session()->flash('success', 'Registration successful! A confirmation email has been sent.');
-        
-        return redirect()->route('auth.login');
+        return redirect()->route('auth.login')->with('useremail',$user->email);
     }
 
     public function render()
