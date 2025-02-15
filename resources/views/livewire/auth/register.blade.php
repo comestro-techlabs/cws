@@ -1,4 +1,4 @@
-<div> 
+<div>  
     <form wire:submit.prevent="register" method="POST"
                     class="space-y-3  rounded-lg  p-2" autocomplete="off">
                     @csrf

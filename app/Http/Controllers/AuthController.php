@@ -71,41 +71,41 @@ class AuthController extends Controller
 
         return back()->withErrors(['email' => 'The provided email does not match our records.']);
     }
-    public function verifyOtp(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email',
-            'otp' => 'required|digits:6',
-        ]);
+    // public function verifyOtp(Request $request)
+    // {
+    //     $request->validate([
+    //         'email' => 'required|email',
+    //         'otp' => 'required|digits:6',
+    //     ]);
 
-        $email = $request->input('email');
-        $otp = $request->input('otp');
+    //     $email = $request->input('email');
+    //     $otp = $request->input('otp');
 
-        // Check if the OTP matches
-        $user = User::where('email', $email)->first();
+    //     // Check if the OTP matches
+    //     $user = User::where('email', $email)->first();
 
-        if ($user && $user->otp === $otp && Carbon::now()->lessThan($user->otp_expires_at)) {
-            // OTP verified, log the user in
-            Auth::login($user);
+    //     if ($user && $user->otp === $otp && Carbon::now()->lessThan($user->otp_expires_at)) {
+    //         // OTP verified, log the user in
+    //         Auth::login($user);
 
-            // Update email_verified_at if not already verified
-            if (!$user->hasVerifiedEmail()) {
-                $user->email_verified_at = Carbon::now();
-            }
+    //         // Update email_verified_at if not already verified
+    //         if (!$user->hasVerifiedEmail()) {
+    //             $user->email_verified_at = Carbon::now();
+    //         }
 
-            // Optionally, clear OTP after successful login
-            $user->otp = null;
-            $user->otp_expires_at = null;
-            $user->save();
+    //         // Optionally, clear OTP after successful login
+    //         $user->otp = null;
+    //         $user->otp_expires_at = null;
+    //         $user->save();
 
-            return redirect('/')->with('success', 'Login successful. Email verified.');
-        }
+    //         return redirect('/')->with('success', 'Login successful. Email verified.');
+    //     }
 
-        return redirect()->back()->withInput()->withErrors(['otp' => 'Invalid OTP or OTP has expired.'])->with([
-            'otp_sent'=>true,
-            'email'=>$email,
-        ]);
-    }
+    //     return redirect()->back()->withInput()->withErrors(['otp' => 'Invalid OTP or OTP has expired.'])->with([
+    //         'otp_sent'=>true,
+    //         'email'=>$email,
+    //     ]);
+    // }
 
     public function sendOtp(Request $request)
     {
@@ -176,7 +176,7 @@ class AuthController extends Controller
         return redirect()->back()->withErrors(['email' => 'If the email exists in our system, you will receive an OTP.']);
     }
 
-
+    
 
     // displaying registration form
     public function showRegistrationForm()
@@ -184,55 +184,58 @@ class AuthController extends Controller
         return view('public.register');
     }
 
+    // below commented function is of no use,and  now it's working with livewire
+    // -------------------------------------------------------------------------
 
-    public function register(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|unique:users,email,' . $request->id . ',id',
-            'contact' => 'required|digits:10|unique:users,contact',
-            'gender' => 'required|in:male,female,other',
-            'education_qualification' => 'required|string|max:255',
-            'dob' => 'required|date|before_or_equal:today',
-            'g-recaptcha-response' => 'required',
-            // 'password' => 'required|string|min:8|confirmed',
 
-        ], [
-            'email.unique' => 'The email address is already taken.',
-            'contact.unique' => 'The contact number is already in use.',
-            'contact.digits' => 'The contact number must be exactly 10 digits.',
-            'dob.date' => 'The date of birth must be a valid date.',
-        ]);
-        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-            'secret' => config('services.recaptcha.secret_key'),
-            'response' => $request->input('g-recaptcha-response'),
-            'remoteip' => $request->ip(),
-        ]);
+    // public function register(Request $request)
+    // {
+    //     $request->validate([
+    //         'name' => 'required|string|max:255',
+    //         'email' => 'required|string|email|unique:users,email,' . $request->id . ',id',
+    //         'contact' => 'required|digits:10|unique:users,contact',
+    //         'gender' => 'required|in:male,female,other',
+    //         'education_qualification' => 'required|string|max:255',
+    //         'dob' => 'required|date|before_or_equal:today',
+    //         'g-recaptcha-response' => 'required',
+    //         // 'password' => 'required|string|min:8|confirmed',
+
+    //     ], [
+    //         'email.unique' => 'The email address is already taken.',
+    //         'contact.unique' => 'The contact number is already in use.',
+    //         'contact.digits' => 'The contact number must be exactly 10 digits.',
+    //         'dob.date' => 'The date of birth must be a valid date.',
+    //     ]);
+    //     $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+    //         'secret' => config('services.recaptcha.secret_key'),
+    //         'response' => $request->input('g-recaptcha-response'),
+    //         'remoteip' => $request->ip(),
+    //     ]);
     
-        $responseData = $response->json();
+    //     $responseData = $response->json();
     
-        if (!$responseData['success']) {
-            return back()->withErrors(['g-recaptcha-response' => 'reCAPTCHA verification failed.'])->withInput();
-        }
+    //     if (!$responseData['success']) {
+    //         return back()->withErrors(['g-recaptcha-response' => 'reCAPTCHA verification failed.'])->withInput();
+    //     }
         
-        $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-    //    $user->password = bcrypt($request->password); // Use bcrypt for password hashing
-        $user->contact = $request->contact;
-        $user->dob = $request->dob;
-        $user->gender = $request->gender;
-        $user->education_qualification = $request->education_qualification;
-        $user->save();
+    //     $user = new User();
+    //     $user->name = $request->name;
+    //     $user->email = $request->email;
+    // //    $user->password = bcrypt($request->password); // Use bcrypt for password hashing
+    //     $user->contact = $request->contact;
+    //     $user->dob = $request->dob;
+    //     $user->gender = $request->gender;
+    //     $user->education_qualification = $request->education_qualification;
+    //     $user->save();
 
-        // Send confirmation email
-        Mail::send('emails.registration', ['user' => $user], function ($message) use ($user) {
-            $message->to($user->email)
-                    ->subject('Registration Successful');
-        });
+    //     // Send confirmation email
+    //     Mail::send('emails.registration', ['user' => $user], function ($message) use ($user) {
+    //         $message->to($user->email)
+    //                 ->subject('Registration Successful');
+    //     });
 
-        return redirect()->route('auth.login')->with('success', 'Registration successful. A confirmation email has been sent to your email address.');
-    }
+    //     return redirect()->route('auth.login')->with('success', 'Registration successful. A confirmation email has been sent to your email address.');
+    // }
 
 
 

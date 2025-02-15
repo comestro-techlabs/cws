@@ -29,18 +29,10 @@ class Register extends Component
     #[Validate('required|date|before_or_equal:today')]
     public $dob="";
 
-    
-    
-    
-
-
-
     public function register()
     {
-        
-     
+          
         $this->validate();
-
 
         $user = User::create([
             'name' => $this->name,
