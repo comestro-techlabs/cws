@@ -35,8 +35,9 @@ class ManageCategory extends Component
         ]);
         
         $this->reset(['cat_title', 'cat_description']);
-        // session()->flash('message', 'Category created successfully.');
-        $this->dispatch("showToast", "Category successfully updated!");
+        
+        $this->dispatch('success', ['message' => "Category added successfully!"]);
+
 
     }
     
@@ -49,8 +50,12 @@ class ManageCategory extends Component
     public function destroy($id)
     {
         $category = CategoryModel::find($id);
-        $category->delete();
-        // session()->flash('message', 'Category deleted successfully.');
-        $this->dispatch("showToast", "Category successfully updated!");
+        if ($category) {
+            $category->delete();
+            
+            // Dispatch event with message
+            $this->dispatch('success', ['message' => "Category deleted successfully!"]);
+        }
+        
     }
 }
