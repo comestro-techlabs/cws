@@ -32,6 +32,7 @@ class CreateWorkshop extends Component
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
+
     }
 
     // Handle form submission
@@ -49,7 +50,9 @@ class CreateWorkshop extends Component
         ]);
 
         $this->reset();
-        session()->flash('message', 'Workshop successfully!');
+        // session()->flash('message', 'Workshop successfully!');
+        $this->dispatch('success', ['message' => "Workshop added successfully!"]);
+
     }
 
 

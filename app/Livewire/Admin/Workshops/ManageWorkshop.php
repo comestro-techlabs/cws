@@ -34,7 +34,7 @@ class ManageWorkshop extends Component
         $workshop->active = !$workshop->active;
         $workshop->save();
 
-        session()->flash('message', 'Workshop status updated successfully!');
+        $this->dispatch('success', ['message' => "Workshop status Updated successfully!"]);
     }
 
     // Delete a workshop
@@ -43,7 +43,9 @@ class ManageWorkshop extends Component
         $workshop = Workshop::findOrFail($workshopId);
         $workshop->delete();
 
-        session()->flash('message', 'Workshop deleted successfully!');
+        $this->dispatch('success', ['message' => "Workshop deleted successfully!"]);
+
+
     }
 
 }

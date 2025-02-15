@@ -123,7 +123,7 @@
             Route::post('/chapters/{chapter}/lessons', [LessonController::class, 'store'])->name('lessons.store');
 
             Route::patch('courses/{course}/{field}', [CourseController::class, 'update'])->name('course.update');
-           Route::get('/category', ManageCategory::class)->name('category.index');
+       
            Route::get("/category",function(){
             return view("admin.manageCategory");
         })->name("category.form");
