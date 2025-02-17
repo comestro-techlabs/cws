@@ -337,6 +337,8 @@
       e.preventDefault();
 
       const orderId = e.target.getAttribute('data-order-id');
+
+      // console.log(orderId);
       // Send a request to the backend to refresh the payment status for the given order_id
       fetch("{{ route('refresh.payment.status') }}", {
           method: "POST",

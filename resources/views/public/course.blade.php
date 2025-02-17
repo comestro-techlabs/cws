@@ -370,6 +370,7 @@
                                     "ondismiss": function() {
                                         alert('Payment process was cancelled.');
                                         payButton.disabled = false;
+                                        window.location.href = '/student/billing';
                                         document.forms[0].submit();
                                     }
                                 }

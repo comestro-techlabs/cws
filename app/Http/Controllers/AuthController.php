@@ -26,51 +26,52 @@ class AuthController extends Controller
     }
 
     // login logics
-    public function login(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'nullable', // Password is optional if OTP is used
-        ]);
+    // public function login(Request $request)
+    // {
+    //     $request->validate([
+    //         'email' => 'required|email',
+    //         'password' => 'nullable', // Password is optional if OTP is used
+    //     ]);
 
 
-        // If no password is provided, proceed to send OTP
-        $user = User::where('email', $request->email)->first();
+    //     // If no password is provided, proceed to send OTP
+    //     $user = User::where('email', $request->email)->first();
 
-        if ($user) {
-            // Check if email is verified
-            if (!$user->hasVerifiedEmail()) {
-                return back()->withErrors(['email' => 'Please verify your email first.']);
-            }
+    //     if ($user) {
+    //         // Check if email is verified
+    //         if (!$user->hasVerifiedEmail()) {
+    //             return back()->withErrors(['email' => 'Please verify your email first.']);
+    //         }
 
-            $otp = rand(100000, 999999);
+    //         $otp = rand(100000, 999999);
 
-            // Store OTP in the database (Otp model should be used here)
-            Otp::updateOrCreate(
-                ['email' => $request->email],
-                [
-                    'otp' => $otp,
-                    'otp_expires_at' => Carbon::now()->addMinutes(10),
-                ]
-            );
+    //         // Store OTP in the database (Otp model should be used here)
+    //         Otp::updateOrCreate(
+    //             ['email' => $request->email],
+    //             [
+    //                 'otp' => $otp,
+    //                 'otp_expires_at' => Carbon::now()->addMinutes(10),
+    //             ]
+    //         );
 
-            // Send OTP to the user's email
-            try {
-                Mail::raw("Your OTP is: $otp", function ($message) use ($request) {
-                    $message->to($request->email)
-                        ->subject('Your OTP for Login');
-                });
+    //         // Send OTP to the user's email
+    //         try {
+    //             Mail::raw("Your OTP is: $otp", function ($message) use ($request) {
+    //                 $message->to($request->email)
+    //                     ->subject('Your OTP for Login');
+    //             });
 
-                // Return view to enter OTP
-                return view('auth.verify-otp', ['email' => $request->email])
-                    ->with('success', 'OTP sent successfully. Please check your email.');
-            } catch (\Exception $e) {
-                return back()->with('error', 'Failed to send OTP. Please try again.');
-            }
-        }
+    //             // Return view to enter OTP
+    //             return view('auth.verify-otp', ['email' => $request->email])
+    //                 ->with('success', 'OTP sent successfully. Please check your email.');
+    //         } catch (\Exception $e) {
+    //             return back()->with('error', 'Failed to send OTP. Please try again.');
+    //         }
+    //     }
 
-        return back()->withErrors(['email' => 'The provided email does not match our records.']);
-    }
+    //     return back()->withErrors(['email' => 'The provided email does not match our records.']);
+    // }
+
     // public function verifyOtp(Request $request)
     // {
     //     $request->validate([
@@ -107,36 +108,36 @@ class AuthController extends Controller
     //     ]);
     // }
 
-    public function sendOtp(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email|exists:users,email',
-        ]);
+    // public function sendOtp(Request $request)
+    // {
+    //     $request->validate([
+    //         'email' => 'required|email|exists:users,email',
+    //     ]);
 
-        $email = $request->input('email');
-        $otp = rand(100000, 999999);
+    //     $email = $request->input('email');
+    //     $otp = rand(100000, 999999);
 
-        // Find user and update OTP
-        $user = User::where('email', $email)->first();
-        $user->otp = $otp;
-        $user->otp_expires_at = Carbon::now()->addMinutes(10);
-        $user->save();
+    //     // Find user and update OTP
+    //     $user = User::where('email', $email)->first();
+    //     $user->otp = $otp;
+    //     $user->otp_expires_at = Carbon::now()->addMinutes(10);
+    //     $user->save();
 
-        // Send OTP email
-        try {
+    //     // Send OTP email
+    //     try {
 
 
-            Mail::send('emails.otp', ['otp' => $otp,'user'=>$user], function ($message) use ($user) {
-                $message->to($user->email)
-                    ->subject('Your OTP For Login');
-            });
+    //         Mail::send('emails.otp', ['otp' => $otp,'user'=>$user], function ($message) use ($user) {
+    //             $message->to($user->email)
+    //                 ->subject('Your OTP For Login');
+    //         });
 
-            // Redirect with success message
-            return redirect()->back()->with(['otp_sent' => true, 'email' => $email]);
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to send OTP. Please try again.');
-        }
-    }
+    //         // Redirect with success message
+    //         return redirect()->back()->with(['otp_sent' => true, 'email' => $email]);
+    //     } catch (\Exception $e) {
+    //         return redirect()->back()->with('error', 'Failed to send OTP. Please try again.');
+    //     }
+    // }
 
 
 

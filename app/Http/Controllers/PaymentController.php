@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Course;
+use Illuminate\Support\Facades\Log;
+
 use App\Models\User;
 use App\Models\Payment;
 use App\Models\Workshop;
@@ -31,82 +32,90 @@ class PaymentController extends Controller
         }
     }
 
-    public function initiatePayment(Request $request)
-    {
-        $workshopId = $request->workshop_id ?? null;
-        $courseId = $request->course_id ?? null;
-        $studentId = $request->student_id;
-        $amount = $request->amount;
+        public function initiatePayment(Request $request)
+        {
+            $workshopId = $request->workshop_id ?? null;
+            $courseId = $request->course_id ?? null;
+            $studentId = $request->student_id;
+            $amount = $request->amount;
 
-        $currentMonth = Carbon::now()->month;
-        $year = Carbon::now()->year;
+            $currentMonth = Carbon::now()->month;
+            $year = Carbon::now()->year;
+            $now = Carbon::now()->subMinutes(15);
 
-        // Check for existing pending payment
-        $existingPayment = Payment::where('student_id', $studentId)
-            ->where('amount', $amount)
-            ->whereIn('payment_status', ['initiated', 'captured', 'pending'])
-            ->first();
+            $deleted = Payment::where('student_id', $studentId)
+                ->whereNotNull('course_id')
+                ->where('status', 'pending') 
+                ->where('created_at', '<', $now)
+                ->delete();
 
-        if ($existingPayment) {
-            return response()->json([
-                'success' => false,
-                'message' => 'A similar payment is already in progress.',
-                'payment_id' => $existingPayment->id,
-                'order_id' => $existingPayment->order_id,
-            ], 400);
+
+            // Check for existing pending payment
+            $existingPayment = Payment::where('student_id', $studentId)
+                ->where('amount', $amount)
+                ->whereIn('payment_status', ['initiated', 'captured', 'pending'])
+                ->first();
+
+            if ($existingPayment) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Please wait for 15 minutes to attempt again',
+                    'payment_id' => $existingPayment->id,
+                    'order_id' => $existingPayment->order_id,
+                ], 400);
+            }
+
+            // Create a payment record
+            $payment = Payment::create([
+                'student_id' => $studentId,
+                'course_id' => $courseId,
+                'workshop_id' => $workshopId,
+                'total_amount' => $amount,
+                'amount' => $amount,
+                'receipt_no' => $request->receipt_no,
+                'transaction_fee' => $amount, // You can change this if needed
+                'due_date' => now()->toDateTimeString(),
+                'ip_address' => $request->ip_address,
+                'payment_status' => 'initiated',
+                'month' => $currentMonth,
+                'year' => $year,
+            ]);
+
+            // Initialize Razorpay and create the order
+            try {
+                $api = $this->getRazorpayApi();
+                $orderData = [
+                    'amount' => $amount * 100, // Razorpay expects the amount in paise
+                    'currency' => 'INR',
+                    'receipt' => $payment->receipt_no,
+                    'payment_capture' => 1, // Auto-capture the payment
+                ];
+
+                $order = $api->order->create($orderData);
+
+                // Update the payment with Razorpay order ID
+                $payment->update([
+                    'order_id' => $order->id,
+                ]);
+
+                
+                return response()->json([
+                    'success' => true,
+                    'order_id' => $order->id,
+                    'payment_id' => $payment->id,
+                ]);
+            } catch (\Exception $e) {
+                $payment->update([
+                    'payment_status' => 'failed',
+                    'error_reason' => $e->getMessage(),
+                ]);
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Error creating Razorpay order: ' . $e->getMessage(),
+                ]);
+            }
         }
-
-        // Create a payment record
-        $payment = Payment::create([
-            'student_id' => $studentId,
-            'course_id' => $courseId,
-            'workshop_id' => $workshopId,
-            'total_amount' => $amount,
-            'amount' => $amount,
-            'receipt_no' => $request->receipt_no,
-            'transaction_fee' => $amount, // You can change this if needed
-            'due_date' => now()->toDateTimeString(),
-            'ip_address' => $request->ip_address,
-            'payment_status' => 'initiated',
-            'month' => $currentMonth,
-            'year' => $year,
-        ]);
-
-        // Initialize Razorpay and create the order
-        try {
-            $api = $this->getRazorpayApi();
-            $orderData = [
-                'amount' => $amount * 100, // Razorpay expects the amount in paise
-                'currency' => 'INR',
-                'receipt' => $payment->receipt_no,
-                'payment_capture' => 1, // Auto-capture the payment
-            ];
-
-            $order = $api->order->create($orderData);
-
-            // Update the payment with Razorpay order ID
-            $payment->update([
-                'order_id' => $order->id,
-            ]);
-
-            
-            return response()->json([
-                'success' => true,
-                'order_id' => $order->id,
-                'payment_id' => $payment->id,
-            ]);
-        } catch (\Exception $e) {
-            $payment->update([
-                'payment_status' => 'failed',
-                'error_reason' => $e->getMessage(),
-            ]);
-
-            return response()->json([
-                'success' => false,
-                'message' => 'Error creating Razorpay order: ' . $e->getMessage(),
-            ]);
-        }
-    }
 
     public function handlePaymentResponse(Request $request)
     {
@@ -339,11 +348,14 @@ class PaymentController extends Controller
     public function refreshPaymentStatus(Request $request)
     {
         $orderId = $request->order_id;
+        // dd($orderId);
         try {
             $response = Http::withBasicAuth(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'))
                 ->get("https://api.razorpay.com/v1/orders/{$orderId}/payments");
 
+              
             $paymentData = $response->json();
+dd( $paymentData);
             if (isset($paymentData['items']) && count($paymentData['items']) > 0) {
                 $payment = $paymentData['items'][0];
 
