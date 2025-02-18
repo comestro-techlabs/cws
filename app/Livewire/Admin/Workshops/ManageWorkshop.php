@@ -12,7 +12,7 @@ class ManageWorkshop extends Component
     use WithPagination; // Enable pagination
 
     public $search = '';
-
+    public $imagePath;
     public function render()
     {
         $workshops = Workshop::query()
