@@ -81,7 +81,6 @@
                         @endif
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        <a href="{{ route('admin.workshops.edit', $workshop->id) }}" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">Edit</a>
                         <button
                             wire:click="deleteWorkshop({{ $workshop->id }})"
                             onclick="return confirm('Are you sure you want to delete this workshop?');"

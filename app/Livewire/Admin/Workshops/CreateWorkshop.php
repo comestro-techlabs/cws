@@ -32,7 +32,7 @@ class CreateWorkshop extends Component
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
-
+        $this->dispatch('success', ['message' => "Workshop updated successfully!"]);
     }
 
     // Handle form submission
