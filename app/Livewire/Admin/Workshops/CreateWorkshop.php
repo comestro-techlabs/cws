@@ -8,52 +8,64 @@ use App\Models\Workshop;
 
 class CreateWorkshop extends Component
 {
-    use WithFileUploads; // Enable file uploads
+    use WithFileUploads;
 
-    // Define properties for form fields
-    public $title;
-    public $date;
-    public $time;
-    public $image;
-    public $fees;
-    public $active = 1; // Default value for the dropdown
+    public $title, $date, $time, $fees, $active = 1, $image;
+    public $workshopId; // Used for editing
 
-    // Validation rules
     protected $rules = [
         'title' => 'required|string|min:3',
         'date' => 'required|date',
         'time' => 'required',
-        'image' => 'nullable|image|max:2048', // 2MB max
         'fees' => 'required|numeric',
         'active' => 'required|boolean',
+        'image' => 'nullable|image|max:2048', // Optional image upload
     ];
 
-    // Real-time validation
-    public function updated($propertyName)
+    public function mount($workshop = null)
     {
-        $this->validateOnly($propertyName);
-
+        if ($workshop) {
+            $this->workshopId = $workshop->id;
+            $this->title = $workshop->title;
+            $this->date = $workshop->date;
+            $this->time = $workshop->time;
+            $this->fees = $workshop->fees;
+            $this->active = $workshop->active;
+        }
     }
 
-    // Handle form submission
-    public function submit()
+    public function save()
     {
         $this->validate();
-        $imagePath = $this->image ? $this->image->store('workshops', 'public') : null;
-        Workshop::create([
-            'title' => $this->title,
-            'date' => $this->date,
-            'time' => $this->time,
-            'image' => $imagePath,
-            'fees' => $this->fees,
-            'active' => $this->active,
-        ]);
 
-        $this->reset();
-        // session()->flash('message', 'Workshop successfully!');
-        $this->dispatch('success', ['message' => "Workshop added successfully!"]);
+        if ($this->workshopId) {
+            $workshop = Workshop::findOrFail($this->workshopId);
+            $workshop->update([
+                'title' => $this->title,
+                'date' => $this->date,
+                'time' => $this->time,
+                'fees' => $this->fees,
+                'active' => $this->active,
+                'image' => $this->image ? $this->image->store('workshops', 'public') : $workshop->image,
+            ]);
 
+            session()->flash('message', 'Workshop updated successfully!');
+        } else {
+            Workshop::create([
+                'title' => $this->title,
+                'date' => $this->date,
+                'time' => $this->time,
+                'fees' => $this->fees,
+                'active' => $this->active,
+                'image' => $this->image ? $this->image->store('workshops', 'public') : null,
+            ]);
+
+            session()->flash('message', 'Workshop created successfully!');
+        }
+
+        $this->reset(); // Clear the form after save
     }
+
 
 
     public function render()

@@ -27,7 +27,8 @@
     use App\Http\Controllers\QuizController;
     use App\Livewire\Admin\ManageCategory;
 
-
+    use App\Livewire\Admin\Workshops\CreateWorkshop;
+    use App\Livewire\Admin\Workshops\ManageWorkshop;
 
     Route::prefix("student")->group(function () {
         Route::controller(StudentController::class)->group(function () {
@@ -206,13 +207,13 @@
             Route::put('/portfolio/{id}', [PortfolioController::class, 'update'])->name('portfolio.admin.update');
             Route::delete('/portfolio/{id}', [PortfolioController::class, 'destroy'])->name('portfolio.admin.destroy');
 
-            Route::get('/workshops/create', [WorkshopController::class, 'create'])->name('workshops.create');
-            Route::post('/workshops/store', [WorkshopController::class, 'store'])->name('workshops.store');
-            Route::get('/admin/workshops', [WorkshopController::class, 'show'])->name('workshops.admin.index');
-            Route::patch('/workshops/{id}/toggle-status', [WorkshopController::class, 'toggleStatus'])->name('workshops.toggleStatus');
-            Route::get('/admin/workshops/{id}/edit', [WorkshopController::class, 'edit'])->name('admin.workshops.edit');
-            Route::put('/admin/workshop/{id}', [WorkshopController::class, 'update'])->name('admin.workshops.update');
-            Route::delete('admin/workshop/{id}', [WorkshopController::class, 'destroy'])->name('admin.workshops.destroy');
+            // Route::get('/workshops/create', [WorkshopController::class, 'create'])->name('workshops.create');
+            // Route::post('/workshops/store', [WorkshopController::class, 'store'])->name('workshops.store');
+            // Route::get('/admin/workshops', [WorkshopController::class, 'show'])->name('workshops.admin.index');
+            // Route::patch('/workshops/{id}/toggle-status', [WorkshopController::class, 'toggleStatus'])->name('workshops.toggleStatus');
+            // Route::get('/admin/workshops/{id}/edit', [WorkshopController::class, 'edit'])->name('admin.workshops.edit');
+            // Route::put('/admin/workshop/{id}', [WorkshopController::class, 'update'])->name('admin.workshops.update');
+            // Route::delete('admin/workshop/{id}', [WorkshopController::class, 'destroy'])->name('admin.workshops.destroy');
             Route::resource('placedStudent', PlacedStudentController::class);
             Route::post('/placed-students/{placedStudent}/toggle-status', [PlacedStudentController::class, 'toggleStatus'])->name('placedStudent.toggleStatus');
         });
@@ -268,3 +269,8 @@
     Route::get('/portfolio', [PortfolioController::class, 'index'])->name('public.portfolio');
     Route::get('/workshops', [WorkshopController::class, 'index'])->name('public.workshops');
     Route::get('/workshop/{id}/enroll', [WorkshopController::class, 'buyWorkshop'])->name('workshop.enroll');
+
+   
+
+    Route::get('/admin/workshops/create', CreateWorkshop::class)->name('admin.workshops.create');
+    Route::get('/admin/workshops', ManageWorkshop::class)->name('admin.workshops.index');

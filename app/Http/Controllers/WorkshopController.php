@@ -125,14 +125,21 @@ public function toggleStatus($id)
   public function show()
   {
       $workshops = Workshop::all();
-      return view('workshops.index', compact('workshops'));
+      return view('admin.workshops.index', compact('workshops'));
   }
 
-  public function edit($id){
-    $workshops = Workshop::findOrfail($id);
-    // return $workshops;
-     return view('workshops.edit', compact('workshops'));
-  }
+//   public function edit($id){
+//     $workshops = Workshop::findOrfail($id);
+//     // return $workshops;
+//      return view('workshops.edit', compact('workshops'));
+//   }
+
+  public function edit($id)
+    {
+    $workshop = Workshop::findOrFail($id);
+    return view('admin.workshops.edit', compact('workshop'));
+    }
+
 
 public function update(Request $request, $id)
 {

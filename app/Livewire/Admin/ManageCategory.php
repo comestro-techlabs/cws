@@ -21,10 +21,7 @@ class ManageCategory extends Component
     } 
 
     public function store()
-    {
-
-        
-        
+    {        
         $this->validate();
         // dd("testing");
         

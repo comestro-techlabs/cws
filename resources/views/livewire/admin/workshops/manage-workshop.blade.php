@@ -14,6 +14,9 @@
         <thead class="bg-gray-50">
             <tr>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Id
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Title
                 </th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -43,6 +46,9 @@
             @foreach ($workshops as $workshop)
                 <tr>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        {{ $workshop->id }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                         {{ $workshop->title }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -51,8 +57,8 @@
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {{ \Carbon\Carbon::parse($workshop->time)->format('h:i A') }}
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        <img src="{{ asset('storage/' . $workshop->image) }}" alt="" class="w-16 h-16 object-cover rounded-lg">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"> 
+                        <img src="{{ Storage::url($imagePath) }}" alt="Workshop Image" class="w-16 h-16 object-cover rounded-lg">
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {{ $workshop->fees }}
@@ -81,7 +87,15 @@
                         @endif
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        <a href="{{ route('admin.workshops.edit', $workshop->id) }}" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">Edit</a>
+                     <!-- Edit Button -->
+                        <button
+                            wire:click="editWorkshop({{ $workshop->id }})"
+                            class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 mr-2"
+                     >
+                         Edit
+                        </button>
+
+                        <!-- Delete Button -->
                         <button
                             wire:click="deleteWorkshop({{ $workshop->id }})"
                             onclick="return confirm('Are you sure you want to delete this workshop?');"
@@ -90,6 +104,7 @@
                             Delete
                         </button>
                     </td>
+
                 </tr>
             @endforeach
         </tbody>
