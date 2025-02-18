@@ -1,4 +1,6 @@
+
 <div>
+    
     {{-- The Master doesn't talk, he acts. --}}
     <div class="w-full  max-w-md mx-auto px-4 mt-4">
         <div class="bg-slate-100 rounded  p-4 sm:p-6">

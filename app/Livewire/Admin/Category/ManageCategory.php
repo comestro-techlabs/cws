@@ -1,13 +1,17 @@
 <?php
 
-namespace App\Livewire\Admin;
+namespace App\Livewire\Admin\Category;
 
-use App\Models\Category as CategoryModel;
 use Livewire\Component;
-use Illuminate\Support\Str;
+use App\Models\Category as CategoryModel;
 
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
+
+#[Title('Manage Students')]
 class ManageCategory extends Component
 {
+
     public $cat_title;
     public $cat_slug;
     public $cat_description;
@@ -38,10 +42,11 @@ class ManageCategory extends Component
 
     }
     
+    #[Layout('components.layouts.admin')] 
     public function render()
     {
         $categories = CategoryModel::paginate(4);
-        return view('livewire.admin.manage-category', compact('categories'));
+        return view('livewire.admin.category.manage-category')->with(compact('categories'));
     }
 
     public function destroy($id)
@@ -55,4 +60,5 @@ class ManageCategory extends Component
         }
         
     }
+    
 }
