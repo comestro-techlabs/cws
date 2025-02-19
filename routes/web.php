@@ -27,6 +27,9 @@
     use App\Http\Middleware\AdminMiddleware;
     use App\Http\Controllers\QuizController;
     use App\Livewire\Admin\Category\ManageCategory;
+    use App\Livewire\Admin\PlacedStudent\InsertPlacedStudent;
+    use App\Livewire\Admin\PlacedStudent\CallingPlacedStudent;
+
 
     use App\Livewire\Admin\Workshops\CreateWorkshop;
     use App\Livewire\Admin\Workshops\ManageWorkshop;
@@ -231,7 +234,12 @@ use App\Livewire\Public\Home;
         Route::get('/category', ManageCategory::class)->name('admin.category');
         Route::get('/student', ManageStudent::class)->name('admin.student');
         Route::get('/workshops', CreateWorkshop::class)->name('admin.workshops.create');
+        Route::get('/workshops/{id}', CreateWorkshop::class)->name('admin.workshops.edit');
         Route::get('/workshops/manage', ManageWorkshop::class)->name('admin.workshops.index');
+        Route::get('/placedstudent',InsertPlacedStudent::class)->name('admin.placedstudent.create');
+        Route::get('/placedstudent/{placedStudent?}',InsertPlacedStudent::class)->name('admin.placedstudent.edit');
+        Route::get('/placedstudent/manage',CallingPlacedStudent::class)->name('admin.placedstudent.index');
+
         });
 //working here for public routes
 Route::prefix("public")->group(function () {
