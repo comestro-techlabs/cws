@@ -9,7 +9,7 @@
         @livewireStyles
     </head>
     <body>
-        <h1>public</h1>
+        
         {{ $slot }}
         @livewireScripts
     </body>

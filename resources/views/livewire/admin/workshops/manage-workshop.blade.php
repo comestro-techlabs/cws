@@ -3,7 +3,7 @@
     <div class="mb-4">
         <input
             type="text"
-            wire:model="search"
+            wire:model.live="search"
             placeholder="Search workshops..."
             class="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
         />
