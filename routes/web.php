@@ -30,6 +30,7 @@
 
     use App\Livewire\Admin\Workshops\CreateWorkshop;
     use App\Livewire\Admin\Workshops\ManageWorkshop;
+use App\Livewire\Public\Home;
 
     Route::prefix("student")->group(function () {
         Route::controller(StudentController::class)->group(function () {
@@ -232,8 +233,28 @@
         Route::get('/workshops', CreateWorkshop::class)->name('admin.workshops.create');
         Route::get('/workshops/manage', ManageWorkshop::class)->name('admin.workshops.index');
         });
-        
+//working here for public routes
+Route::prefix("public")->group(function () {
+    Route::get('/', Home::class)->name('public.homepage');
+   
     });
+        // Route::controller(PublicController::class)->group(function () {
+        //     Route::get("/", "index")->name('public.index');
+        //     Route::prefix('training')->group(function () {
+        //         Route::get("/", "training")->name('public.training');
+        //         Route::get("/register/success", "success")->name('public.success');
+        //         Route::get('/courses/{category_slug}/{slug}', 'courseDetails')->name('public.courseDetails');
+        //         Route::post('/courses/{courseId}', 'enrollCourse')->name('public.enrollCourse');
+        //     });
+        //     Route::get('/about', 'aboutPage')->name('public.about');
+        //     Route::get('/contact', 'contactUsPage')->name('public.contact');
+        //     Route::get('/privacy-policy', 'privacyAndPolicy')->name('public.privacy');
+        //     Route::get('/terms-conditions', 'termsAndConditions')->name('public.terms-conditions');
+        //     Route::post('/enquiry-store', 'storeEnquiry')->name('enquiry.store');
+        // });
+    });
+
+
 
 
     // public routes here:
