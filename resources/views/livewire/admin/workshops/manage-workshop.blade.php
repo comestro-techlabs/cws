@@ -43,10 +43,10 @@
             </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
-            @foreach ($workshops as $workshop)
+            @foreach ($workshops as $key => $workshop)
                 <tr>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                        {{ $workshop->id }}
+                        {{ $key + 1 }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                         {{ $workshop->title }}
