@@ -37,10 +37,10 @@
                                 <p class="text-green-500 font-bold">Free</p>
                             @endif
 
-                            <a href="{{ route('public.courseDetails', ['category_slug' => $item->category->cat_slug, 'slug' => $item->slug]) }}"
+                            <button wire:click="courseDetails('{{ $item->slug }}')" 
                                 class="bg-primary text-white font-bold py-2 px-4 rounded shadow focus:outline-none focus:ring hover:bg-primary-dark transition">
                                 Enroll Now
-                            </a>
+                            </button>
                         </div>
                     </div>
                 </div>

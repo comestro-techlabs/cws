@@ -12,35 +12,37 @@ use Livewire\Component;
 
 class Home extends Component
 {
-    //when course detail page will be there then will work on it
-    public function courseDetails($category_slug, $slug)
+    public $courses,$placedStudents,$title;
+
+    
+    public function mount(){
+        
+        $this->courses = Course::where("published", true)->latest()->take(6)->get();
+        $this->placedStudents = Cache::remember('placed_students_active', 60, function () {
+            return PlacedStudent::where('status', 1)->get();
+        });
+        $this->title = "";
+        }
+
+
+    public function courseDetails($slug)
     {
         $user = auth()->user();
+        
         if (Auth::check()) {
             if(!$user->is_active){
                 return redirect()->back()->with('error', 'Your account is inactive. Please contact support.');
-            }
+            }        
         }
-
-        $course = Course::where('slug', $slug)->first(); // replace 1 with course id
-        $course_id = $course->id;
-
-        $payment_exist = Payment::where("student_id", Auth::id())
-        ->where("course_id", $course_id)
-        ->where("status", "captured")
-        ->exists();
-
-        return view("public.course", compact('course', "payment_exist"));
+        return redirect()->route('public.courseDetail',compact('slug'));
     }
+
+
+   
 
     #[Layout('components.layouts.app')]
     public function render()
     {  
-        $courses = Course::where("published", true)->latest()->take(6)->get();
-        $placedStudents = Cache::remember('placed_students_active', 60, function () {
-            return PlacedStudent::where('status', 1)->get();
-        });
-        $title = "";
-        return view('livewire.public.home',compact('courses','placedStudents','title'));
+        return view('livewire.public.home');
     }
 }

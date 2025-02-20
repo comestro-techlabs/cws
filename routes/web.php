@@ -33,7 +33,8 @@
 
     use App\Livewire\Admin\Workshops\CreateWorkshop;
     use App\Livewire\Admin\Workshops\ManageWorkshop;
-use App\Livewire\Public\Home;
+    use App\Livewire\Public\Course\Ourcourses;
+    use App\Livewire\Public\Home;
 
     Route::prefix("student")->group(function () {
         Route::controller(StudentController::class)->group(function () {
@@ -244,8 +245,12 @@ use App\Livewire\Public\Home;
 //working here for public routes
 Route::prefix("public")->group(function () {
     Route::get('/', Home::class)->name('public.homepage');
-   
+    Route::get('/courses/{slug}', Ourcourses::class)->name('public.courseDetail');
+
     });
+
+
+
         // Route::controller(PublicController::class)->group(function () {
         //     Route::get("/", "index")->name('public.index');
         //     Route::prefix('training')->group(function () {
