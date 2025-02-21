@@ -24,12 +24,7 @@ class Home extends Component
         });
         $this->title = "";
     }
-
-    //for viewing all courses from homepage
-    public function viewAllCourses()
-    {
-        $this->redirect("/v2/public/viewallcourses", navigate: true);
-    }
+   
 
     public function courseDetails($slug)
     {
@@ -39,8 +34,8 @@ class Home extends Component
             if (!$user->is_active) {
                 return redirect()->back()->with('error', 'Your account is inactive. Please contact support.');
             }
-        }
-        $this->redirect('/v2/public/courses/' . $slug, navigate: true);
+        } 
+        $this->redirect(route('public.courseDetail', ['slug' => $slug]), navigate: true);
     }
 
 

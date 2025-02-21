@@ -33,9 +33,11 @@
 
     use App\Livewire\Admin\Workshops\CreateWorkshop;
     use App\Livewire\Admin\Workshops\ManageWorkshop;
-    use App\Livewire\Public\Course\Ourcourses;
+use App\Livewire\Public\Contact\ContactPage;
+use App\Livewire\Public\Course\Ourcourses;
     use App\Livewire\Public\Home;
 use App\Livewire\Public\Viewallcourses\AllCourses;
+use App\Livewire\Public\Workshops\Workshop;
 
     Route::prefix("student")->group(function () {
         Route::controller(StudentController::class)->group(function () {
@@ -243,14 +245,16 @@ use App\Livewire\Public\Viewallcourses\AllCourses;
         Route::get('/placedstudent/manage',CallingPlacedStudent::class)->name('admin.placedstudent.index');
 
         });
-//working here for public routes
-Route::prefix("public")->group(function () {
-    Route::get('/', Home::class)->name('public.homepage');
-    Route::get('/viewallcourses', AllCourses::class)->name('public.viewallcourses.all-courses');
+        //working here for public routes
+        Route::prefix("public")->group(function () {
+            Route::get('/', Home::class)->name('public.homepage');
+            Route::get('/viewallcourses', AllCourses::class)->name('public.viewallcourses.all-courses');
+            Route::get('/courses/{slug}', Ourcourses::class)->name('public.courseDetail');
+            Route::get('/contact', ContactPage::class)->name('public.contactUs');
+            Route::get('/workshops', Workshop::class)->name('public.workshop');
 
-    Route::get('/courses/{slug}', Ourcourses::class)->name('public.courseDetail');
 
-    });
+            });
 
 
 
