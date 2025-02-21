@@ -332,5 +332,11 @@ use App\Livewire\Public\Workshops\Workshop;
 
 
     Route::prefix("v3")->group(function(){
-
+        // homepage
+        // view Paid Course
+        // view tutorial online Course
+        // view tutorial online Course Topics
+        // Workshops
+        // view Workshops
+        // Auth works
     });
