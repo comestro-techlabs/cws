@@ -50,7 +50,7 @@
         <div class="flex justify-center items-center">
 
             <div class="bg-secondary flex items-center py-3 px-6 rounded-lg shadow gap-2 md:mb-20 mb-10">
-                <a href="{{ route('public.training') }}" class=" text-white font-bold ">
+                <a wire:click="viewAllCourses" class=" text-white font-bold ">
                     View All Courses
                 </a>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white"

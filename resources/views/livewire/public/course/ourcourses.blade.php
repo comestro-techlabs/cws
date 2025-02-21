@@ -40,7 +40,7 @@
 
         <!-- Right Section (Fixed Card) -->
         <div class="flex-1 md:w-3/12 md:ml-8 relative">
-            <div class="bg-white rounded-lg shadow-lg p-4 md:fixed md:top-32 mt-12 md:mt-0 md:right-32 w-full md:w-96 z-50"
+            <div class="bg-white rounded-lg shadow-lg p-4 md:fixed md:top-32 mt-12 md:mt-0 md:right-32 md:w-96 z-50"
                 style="transform: translateY(-50px);">
                 <!-- Course Preview Image -->
                 <div class="overflow-hidden rounded-lg mb-4">
