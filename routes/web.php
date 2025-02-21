@@ -133,7 +133,7 @@ use App\Livewire\Public\Workshops\Workshop;
             Route::post('/chapters/{chapter}/lessons', [LessonController::class, 'store'])->name('lessons.store');
 
             Route::patch('courses/{course}/{field}', [CourseController::class, 'update'])->name('course.update');
-       
+
         //    Route::get("/category",function(){
         //     return view("admin.manageCategory");
         // })->name("category.form");
@@ -228,7 +228,7 @@ use App\Livewire\Public\Workshops\Workshop;
 
 
             //NEW ROUTES LIVEWIRE
-           
+
         });
     });
 
@@ -326,7 +326,11 @@ use App\Livewire\Public\Workshops\Workshop;
     Route::get('/workshops', [WorkshopController::class, 'index'])->name('public.workshops');
     Route::get('/workshop/{id}/enroll', [WorkshopController::class, 'buyWorkshop'])->name('workshop.enroll');
 
-   
 
-    
-    
+
+
+
+
+    Route::prefix("v3")->group(function(){
+
+    });
