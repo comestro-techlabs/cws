@@ -39,7 +39,9 @@ use App\Livewire\Public\Home;
 use App\Livewire\Public\Viewallcourses\AllCourses;
 use App\Livewire\Public\Workshops\Workshop;
 
-
+// v3
+use App\Livewire\V3\Admin\Dashboard;
+use App\Livewire\V3\Public\NewHome;
 
 Route::prefix("student")->group(function () {
     Route::controller(StudentController::class)->group(function () {
@@ -341,5 +343,6 @@ Route::prefix("v3")->group(function () {
     // Workshops
     // view Workshops
     // Auth works
-    Route::get('/', \App\Livewire\V3\Public\Home::class)->name('public.homepage');
+    Route::get('/', NewHome::class)->name('public.homepage');
+    
 });
