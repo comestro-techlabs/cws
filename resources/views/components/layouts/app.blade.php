@@ -16,7 +16,8 @@
     @livewireStyles
 </head>
 
-<body>
+<body class="flex flex-col min-h-screen">
+
     <nav id="navbar" class="fixed top-0 z-50 w-full bg-white transition-all duration-300">
         <livewire:public.header />
     </nav>
@@ -24,8 +25,9 @@
     <livewire:public.herosection/>
     @endif
     {{ $slot }}
+    <div class="mt-auto">
     <livewire:public.footer />
-    
+    </div>
     @livewireScripts
 </body>
 

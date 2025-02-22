@@ -38,12 +38,14 @@ use App\Livewire\Public\Contact\ContactPage;
 use App\Livewire\Public\Course\Ourcourses;
 use App\Livewire\Public\Header;
 use App\Livewire\Public\Home;
+use App\Livewire\Public\Portfolio\OurPortfolio;
 use App\Livewire\Public\Viewallcourses\AllCourses;
 use App\Livewire\Public\Workshops\Workshop;
 
 // v3
 use App\Livewire\V3\Admin\Dashboard;
 use App\Livewire\V3\Public\NewHome;
+use App\Models\Portfolio;
 
 Route::prefix("student")->group(function () {
     Route::controller(StudentController::class)->group(function () {
@@ -262,6 +264,7 @@ Route::prefix('v2')->group(function () {
         Route::prefix('auth')->group(function () {
             Route::get('/login', Login::class)->name('v2.auth.login');
             Route::get('/logout', Header::class)->name('v2.auth.logout');
+            Route::get('/portfolio', OurPortfolio::class)->name('v2.public.portfolio');
         });
 
 

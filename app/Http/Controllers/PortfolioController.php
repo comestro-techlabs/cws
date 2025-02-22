@@ -82,6 +82,6 @@ class PortfolioController extends Controller
     
          return view('public.portfolio', compact('portfolios'));
     
- 
-}
+    
+    }
 }
