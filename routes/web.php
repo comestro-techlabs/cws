@@ -34,6 +34,7 @@ use App\Livewire\Admin\PlacedStudent\CallingPlacedStudent;
     use App\Livewire\Admin\Workshops\CreateWorkshop;
     use App\Livewire\Admin\Workshops\ManageWorkshop;
 use App\Livewire\Auth\Login;
+use App\Livewire\Auth\Register;
 use App\Livewire\Public\Contact\ContactPage;
 use App\Livewire\Public\Course\Ourcourses;
 use App\Livewire\Public\Header;
@@ -262,6 +263,7 @@ Route::prefix('v2')->group(function () {
             Route::get('/workshops', Workshop::class)->name('v2.public.workshop');
             });
         Route::prefix('auth')->group(function () {
+            Route::get('/register',Register::class )->name('v2.auth.register');
             Route::get('/login', Login::class)->name('v2.auth.login');
             Route::get('/logout', Header::class)->name('v2.auth.logout');
             Route::get('/portfolio', OurPortfolio::class)->name('v2.public.portfolio');

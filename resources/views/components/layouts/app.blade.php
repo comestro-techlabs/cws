@@ -17,7 +17,6 @@
 </head>
 
 <body class="flex flex-col min-h-screen">
-
     <nav id="navbar" class="fixed top-0 z-50 w-full bg-white transition-all duration-300">
         <livewire:public.header />
     </nav>

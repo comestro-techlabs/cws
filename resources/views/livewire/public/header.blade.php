@@ -8,7 +8,7 @@
                         <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
                     </svg>
                 </button>
-                <a href="{{route("public.index")}}" class="flex ms-2 md:me-24">
+                <a href="{{route('public.index')}}" class="flex ms-2 md:me-24">
                     <img src="{{ asset('assets/LearnSyntax.png') }}" class="h-6 sm:h-8" alt="">
                 </a>
             </div>
@@ -95,10 +95,10 @@
                 @endauth
 
                 @guest
-                <a href="{{ route('v2.auth.login') }}"
+                <a href="{{ route('v2.auth.login') }}" wire:navigate
                     class="text-primary hidden md:flex items-center font-light border border-indigo-600 hover:bg-indigo-600 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-sm hover:text-white text-sm px-4  py-2 text-center">
                     Login</a>
-                <a href="{{ route('auth.register') }}"
+                <a href="{{ route('v2.auth.register') }}" wire:navigate
                     class="text-white md:flex items-center font-light bg-primary hover:bg-primary focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-sm text-sm px-4  py-2 text-center">
                     Join Us</a>
                 @endguest
