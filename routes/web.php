@@ -33,9 +33,11 @@
 
     use App\Livewire\Admin\Workshops\CreateWorkshop;
     use App\Livewire\Admin\Workshops\ManageWorkshop;
+use App\Livewire\Auth\Login;
 use App\Livewire\Public\Contact\ContactPage;
 use App\Livewire\Public\Course\Ourcourses;
-    use App\Livewire\Public\Home;
+use App\Livewire\Public\Header;
+use App\Livewire\Public\Home;
 use App\Livewire\Public\Viewallcourses\AllCourses;
 use App\Livewire\Public\Workshops\Workshop;
 
@@ -247,14 +249,16 @@ use App\Livewire\Public\Workshops\Workshop;
         });
         //working here for public routes
         Route::prefix("public")->group(function () {
-            Route::get('/', Home::class)->name('public.homepage');
-            Route::get('/viewallcourses', AllCourses::class)->name('public.viewallcourses.all-courses');
-            Route::get('/courses/{slug}', Ourcourses::class)->name('public.courseDetail');
-            Route::get('/contact', ContactPage::class)->name('public.contactUs');
-            Route::get('/workshops', Workshop::class)->name('public.workshop');
-
-
+            Route::get('/', Home::class)->name('v2.public.homepage');
+            Route::get('/viewallcourses', AllCourses::class)->name('v2.public.viewallcourses.all-courses');
+            Route::get('/courses/{slug}', Ourcourses::class)->name('v2.public.courseDetail');
+            Route::get('/contact', ContactPage::class)->name('v2.public.contactUs');
+            Route::get('/workshops', Workshop::class)->name('v2.public.workshop');
             });
+        Route::prefix('auth')->group(function () {
+            Route::get('/login', Login::class)->name('v2.auth.login');
+            Route::get('/logout', Header::class)->name('v2.auth.logout');
+        });
 
 
 

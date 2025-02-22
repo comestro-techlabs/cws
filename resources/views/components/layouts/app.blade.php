@@ -20,7 +20,7 @@
     <nav id="navbar" class="fixed top-0 z-50 w-full bg-white transition-all duration-300">
         <livewire:public.header />
     </nav>
-    @if(Route::currentRouteName() ==='public.homepage')
+    @if(Route::currentRouteName() ==='v2.public.homepage')
     <livewire:public.herosection/>
     @endif
     {{ $slot }}
