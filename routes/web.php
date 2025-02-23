@@ -25,11 +25,20 @@
     use App\Http\Controllers\PostMyPostController;
     use App\Http\Controllers\PostTopicPostController;
     use App\Http\Middleware\AdminMiddleware;
+   
     use App\Http\Controllers\QuizController;
+
+    use App\Livewire\Student\ExploreCourse;
+    use App\Livewire\Student\ViewCourse;
+    use App\Livewire\Student\MyCourse;
+
     use App\Livewire\Admin\Category\ManageCategory;
+    use App\Livewire\Admin\Portfolio\CreatePortfolio;
+
 
     use App\Livewire\Admin\Workshops\CreateWorkshop;
     use App\Livewire\Admin\Workshops\ManageWorkshop;
+   
 
     Route::prefix("student")->group(function () {
         Route::controller(StudentController::class)->group(function () {
@@ -59,8 +68,7 @@
     Route::get('/student/messages', [MessageController::class, 'studentMessages'])->name('user.messages');
     Route::get('/student/messages/{message}', [MessageController::class, 'showMessage'])->name('student.messages.show');
 
-
-
+  
     // Route::get('/quiz_instruction', function () {
     //     return view('studentdashboard.quiz_instruction');
     // })->name('quiz_instruction');
@@ -231,9 +239,18 @@
         Route::get('/student', ManageStudent::class)->name('admin.student');
         Route::get('/workshops', CreateWorkshop::class)->name('admin.workshops.create');
         Route::get('/workshops/manage', ManageWorkshop::class)->name('admin.workshops.index');
+        Route::get('/portfolio',CreatePortfolio::class)->name('admin.portfolio.create');
+        });
+        
+        Route::prefix("student")->group(function(){
+            Route::get('/explore-courses', ExploreCourse::class)->name('student.exploreCourses');
+            Route::get('/view-courses/{courseId}', ViewCourse::class)->name('student.viewCourses');
+            Route::get('/my-courses', MyCourse::class)->name('student.myCourses');
+
         });
         
     });
+   
 
 
     // public routes here:
