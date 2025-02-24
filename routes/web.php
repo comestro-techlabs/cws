@@ -17,6 +17,10 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\WorkshopController;
+use App\Livewire\Admin\Assignment\CreateAssignment;
+use App\Livewire\Admin\Assignment\EditAssignment;
+use App\Livewire\Admin\Assignment\ManageAssignment;
+use App\Livewire\Admin\Assignment\SingleViewAssignment;
 use App\Livewire\Admin\Student\ManageStudent;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ExamController;
@@ -242,6 +246,10 @@ Route::middleware([AdminMiddleware::class, "auth"])->group(function () {
     Route::prefix('v2')->group(function () {
         Route::prefix("admin")->group(function () {
             Route::get('/category', ManageCategory::class)->name('admin.category');
+            Route::get('/assignment', CreateAssignment::class)->name('admin.assignment');
+            Route::get('/assignment/manage', ManageAssignment::class)->name('admin.assignment.manage');
+            Route::get('/singleViewAssignment/{assignment}', SingleViewAssignment::class)->name('admin.assignment.view');
+            Route::get('/assignment/{assignment}/edit', CreateAssignment::class)->name('admin.assignment.edit');
             Route::get('/student', ManageStudent::class)->name('admin.student');
             Route::get('/workshops', CreateWorkshop::class)->name('admin.workshops.create');
             Route::get('/workshops/{id}', CreateWorkshop::class)->name('admin.workshops.edit');
