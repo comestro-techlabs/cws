@@ -66,11 +66,7 @@
                     @enderror
                 </div>
 
-                <!-- Batch Selection -->
-                <div wire:loading wire:target="updateBatches">
-                    <div class="text-gray-500">Loading batches...</div>
-                </div>
-                <div wire:loading.remove wire:target="updateBatches">
+                <div wire:target="updateBatches">
                     <label for="batch_id" class="block text-sm font-medium text-gray-700 mb-2">Select Batch</label>
                     <select wire:model="batch_id" id="batch_id"
                         class="w-full bg-gray-50 border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent">
