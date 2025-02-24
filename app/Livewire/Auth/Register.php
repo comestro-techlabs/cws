@@ -51,7 +51,7 @@ class Register extends Component
         $this->reset();
 
         session()->flash('success', 'Registration successful! A confirmation email has been sent.');
-        return redirect()->route('auth.login')->with('useremail',$user->email);
+        return redirect()->route('v2.auth.login')->with('useremail',$user->email);
     }
 
     public function render()

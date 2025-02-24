@@ -43,9 +43,11 @@ class ManageStudent extends Component
             $query->where('is_active', 0);
         }
 
-        if (!empty($this->search)) {
-            $query->where('name', 'like', '%' . $this->search . '%');
-        }
+            $query->where(function ($q) {
+                $q->where('name', 'like', '%' . $this->search . '%')
+                  ->orWhere('contact', 'like', '%' . $this->search . '%')
+                  ->orWhere('email', 'like', '%' . $this->search . '%');
+            });
 
         $students = $query->paginate(10);
         return view('livewire.admin.student.manage-student')->with(compact('students'));

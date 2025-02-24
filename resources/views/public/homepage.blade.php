@@ -163,7 +163,7 @@
 
     </div>
 
-
+ 
 
     <div class="bg-gray-900 text-white py-12 md:mt-20 mt-8 px-6">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">

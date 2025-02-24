@@ -1,12 +1,12 @@
 <div class="flex flex-1 flex-col">
     <div class="md:px-[2%] px-5 py-5">
         <div class="flex gap-3 flex-col md:flex-row justify-between md:items-center">
-            <h2 class="md:text-xl text-lg font-semibold text-slate-500 border-s-4 border-s-orange-400 pl-3">
+            <h2 class="md:text-xl text-lg font-semibold text-slate-500 border-s-4 border-s-purple-900 pl-3">
                 {{ $search ? $search : 'Manage all' }} students ({{ $students->total() }})
             </h2>
 
             <div class="inline-flex md:flex-row flex-col md:items-center gap-2" role="group">
-                <select wire:model="filter" class="border rounded-lg px-3 py-2">
+                <select wire:model.live="filter" class="border rounded-lg px-3 py-2">
                     <option value="">Filter by</option>
                     <option value="member">Member</option>
                     <option value="user">User</option>
@@ -15,9 +15,9 @@
                 </select>
 
                 <div class="flex border rounded-lg ps-3">
-                    <input type="search" wire:model.debounce.300ms="search"
+                    <input type="search" wire:model.live="search"
                         class="border-0 focus:outline-none focus:border-none w-full"
-                        placeholder="Search student by name..." />
+                        placeholder="Search student by name, mobile, or email..." />
                     <button class="bg-slate-100 px-3">
                         <svg class="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 20 20">
@@ -60,10 +60,10 @@
                                 </span>
                             </td>
                             <td class="flex gap-2 items-center px-6 py-4">
-                                {{-- <a href="{{ route('student.edit', $student->id) }}"
+                                <a href=""
                                     class="px-3 py-2 text-xs rounded-xl font-medium text-white bg-teal-500">
                                     Show
-                                </a> --}}
+                                </a>
                             </td>
                         </tr>
                     @empty

@@ -15,6 +15,7 @@ class SendOtpForm extends Component
     public $email="";
 
     public function sendotp(){
+        
         $this->validate();
 
         $email = $this->email;
@@ -25,7 +26,7 @@ class SendOtpForm extends Component
         $user->otp = $otp;
         $user->otp_expires_at = Carbon::now()->addMinutes(10);
         $user->save();
-
+        
         try {
 
 
@@ -35,7 +36,9 @@ class SendOtpForm extends Component
             });
 
             // Redirect with success message
-            return redirect()->route('auth.login')->with(['otp_sent' => true, 'email' => $email]);
+            return redirect()->back()->with(['otp_sent' => true, 'email' => $email]);
+
+            // return redirect()->route('auth.login')->with(['otp_sent' => true, 'email' => $email]);
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to send OTP. Please try again.');
         }
