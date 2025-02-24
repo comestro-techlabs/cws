@@ -31,8 +31,8 @@ use App\Livewire\Admin\PlacedStudent\InsertPlacedStudent;
 use App\Livewire\Admin\PlacedStudent\CallingPlacedStudent;
 
 
-    use App\Livewire\Admin\Workshops\CreateWorkshop;
-    use App\Livewire\Admin\Workshops\ManageWorkshop;
+use App\Livewire\Admin\Workshops\CreateWorkshop;
+use App\Livewire\Admin\Workshops\ManageWorkshop;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
 use App\Livewire\Public\Contact\ContactPage;
@@ -242,53 +242,55 @@ Route::middleware([AdminMiddleware::class, "auth"])->group(function () {
 });
 
 
-Route::prefix('v2')->group(function () {
-    Route::prefix("admin")->group(function () {
-        Route::get('/category', ManageCategory::class)->name('admin.category');
-        Route::get('/student', ManageStudent::class)->name('admin.student');
-        Route::get('/workshops', CreateWorkshop::class)->name('admin.workshops.create');
-        Route::get('/workshops/{id}', CreateWorkshop::class)->name('admin.workshops.edit');
-        Route::get('/workshops/manage', ManageWorkshop::class)->name('admin.workshops.index');
-        Route::get('/placedstudent', InsertPlacedStudent::class)->name('admin.placedstudent.create');
-        Route::get('/placedstudent/{placedStudent?}', InsertPlacedStudent::class)->name('admin.placedstudent.edit');
-        Route::get('/placedstudent/manage', CallingPlacedStudent::class)->name('admin.placedstudent.index');
+Route::middleware([AdminMiddleware::class, "auth"])->group(function () {
+
+    Route::prefix('v2')->group(function () {
+        Route::prefix("admin")->group(function () {
+            Route::get('/category', ManageCategory::class)->name('admin.category');
+            Route::get('/student', ManageStudent::class)->name('admin.student');
+            Route::get('/workshops', CreateWorkshop::class)->name('admin.workshops.create');
+            Route::get('/workshops/{id}', CreateWorkshop::class)->name('admin.workshops.edit');
+            Route::get('/workshops/manage', ManageWorkshop::class)->name('admin.workshops.index');
+            Route::get('/placedstudent', InsertPlacedStudent::class)->name('admin.placedstudent.create');
+            Route::get('/placedstudent/{placedStudent?}', InsertPlacedStudent::class)->name('admin.placedstudent.edit');
+            Route::get('/placedstudent/manage', CallingPlacedStudent::class)->name('admin.placedstudent.index');
 
         });
-        //working here for public routes
-        Route::prefix("public")->group(function () {
-            Route::get('/', Home::class)->name('v2.public.homepage');
-            Route::get('/viewallcourses', AllCourses::class)->name('v2.public.viewallcourses.all-courses');
-            Route::get('/courses/{slug}', Ourcourses::class)->name('v2.public.courseDetail');
-            Route::get('/contact', ContactPage::class)->name('v2.public.contactUs');
-            Route::get('/workshops', Workshop::class)->name('v2.public.workshop');
-            });
-        Route::prefix('auth')->group(function () {
-            Route::get('/register',Register::class )->name('v2.auth.register');
-            Route::get('/login', Login::class)->name('v2.auth.login');
-            Route::get('/logout', Header::class)->name('v2.auth.logout');
-            Route::get('/portfolio', OurPortfolio::class)->name('v2.public.portfolio');
-        });
 
+        // Route::controller(PublicController::class)->group(function () {
+        //     Route::get("/", "index")->name('public.index');
+        //     Route::prefix('training')->group(function () {
+        //         Route::get("/", "training")->name('public.training');
+        //         Route::get("/register/success", "success")->name('public.success');
+        //         Route::get('/courses/{category_slug}/{slug}', 'courseDetails')->name('public.courseDetails');
+        //         Route::post('/courses/{courseId}', 'enrollCourse')->name('public.enrollCourse');
+        //     });
+        //     Route::get('/about', 'aboutPage')->name('public.about');
+        //     Route::get('/contact', 'contactUsPage')->name('public.contact');
+        //     Route::get('/privacy-policy', 'privacyAndPolicy')->name('public.privacy');
+        //     Route::get('/terms-conditions', 'termsAndConditions')->name('public.terms-conditions');
+        //     Route::post('/enquiry-store', 'storeEnquiry')->name('enquiry.store');
+        // });
+    });
 
-
-    // Route::controller(PublicController::class)->group(function () {
-    //     Route::get("/", "index")->name('public.index');
-    //     Route::prefix('training')->group(function () {
-    //         Route::get("/", "training")->name('public.training');
-    //         Route::get("/register/success", "success")->name('public.success');
-    //         Route::get('/courses/{category_slug}/{slug}', 'courseDetails')->name('public.courseDetails');
-    //         Route::post('/courses/{courseId}', 'enrollCourse')->name('public.enrollCourse');
-    //     });
-    //     Route::get('/about', 'aboutPage')->name('public.about');
-    //     Route::get('/contact', 'contactUsPage')->name('public.contact');
-    //     Route::get('/privacy-policy', 'privacyAndPolicy')->name('public.privacy');
-    //     Route::get('/terms-conditions', 'termsAndConditions')->name('public.terms-conditions');
-    //     Route::post('/enquiry-store', 'storeEnquiry')->name('enquiry.store');
-    // });
 });
 
-
-
+Route::prefix('v2')->group(function () {
+    Route::prefix('auth')->group(function () {
+        Route::get('/register', Register::class)->name('v2.auth.register');
+        Route::get('/login', Login::class)->name('v2.auth.login');
+        Route::get('/logout', Header::class)->name('v2.auth.logout');
+        Route::get('/portfolio', OurPortfolio::class)->name('v2.public.portfolio');
+    });
+    //working here for public routes
+    Route::prefix("public")->group(function () {
+        Route::get('/', Home::class)->name('v2.public.homepage');
+        Route::get('/viewallcourses', AllCourses::class)->name('v2.public.viewallcourses.all-courses');
+        Route::get('/courses/{slug}', Ourcourses::class)->name('v2.public.courseDetail');
+        Route::get('/contact', ContactPage::class)->name('v2.public.contactUs');
+        Route::get('/workshops', Workshop::class)->name('v2.public.workshop');
+    });
+});
 
 // public routes here:
 Route::controller(PublicController::class)->group(function () {
@@ -353,5 +355,5 @@ Route::prefix("v3")->group(function () {
     // view Workshops
     // Auth works
     Route::get('/', NewHome::class)->name('public.homepage');
-    
+
 });
