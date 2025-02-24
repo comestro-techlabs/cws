@@ -78,7 +78,7 @@
                 @endauth
 
                 @guest
-                    <a href="{{ route('auth.login') }}"
+                    <a href="{{ route('v2.auth.login') }}"
                         class="block bg-indigo-600 text-white text-center py-3 rounded-full hover:bg-indigo-700 font-medium">
                         Proceed Now
                     </a>

@@ -28,20 +28,34 @@ use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\QuizController;
 use App\Livewire\Admin\Category\ManageCategory;
 use App\Livewire\Admin\PlacedStudent\InsertPlacedStudent;
+use App\Livewire\Admin\Student\ViewStudent;
 use App\Livewire\Admin\PlacedStudent\CallingPlacedStudent;
+use App\Livewire\Admin\Course\InsertCourse;
+use App\Livewire\Admin\Course\UpdateCourse;
+use App\Livewire\Student\ExploreCourse;
+    use App\Livewire\Student\ViewCourse;
+    use App\Livewire\Student\MyCourse;
+    use App\Livewire\Admin\Portfolio\CreatePortfolio;
+    use App\Livewire\Admin\Portfolio\ManagePortfolio;
+    use App\Livewire\Admin\Portfolio\EditPortfolio;
 
 
 use App\Livewire\Admin\Workshops\CreateWorkshop;
 use App\Livewire\Admin\Workshops\ManageWorkshop;
+use App\Livewire\Auth\Login;
+use App\Livewire\Auth\Register;
 use App\Livewire\Public\Contact\ContactPage;
 use App\Livewire\Public\Course\Ourcourses;
+use App\Livewire\Public\Header;
 use App\Livewire\Public\Home;
+use App\Livewire\Public\Portfolio\OurPortfolio;
 use App\Livewire\Public\Viewallcourses\AllCourses;
 use App\Livewire\Public\Workshops\Workshop;
 
 // v3
 use App\Livewire\V3\Admin\Dashboard;
 use App\Livewire\V3\Public\NewHome;
+use App\Models\Portfolio;
 
 Route::prefix("student")->group(function () {
     Route::controller(StudentController::class)->group(function () {
@@ -141,6 +155,11 @@ Route::middleware([AdminMiddleware::class, "auth"])->group(function () {
         //    Route::get("/category",function(){
         //     return view("admin.manageCategory");
         // })->name("category.form");
+            Route::resource("category", CategoryController::class)->except(['create', 'show']);
+            Route::get('/batches', [BatchController::class, 'index'])->name('batches.index');
+            Route::post('/batches', [BatchController::class, 'store'])->name('batches.store');
+            Route::put('/batches/update/{batch}', [BatchController::class, 'update'])->name('batches.update');
+            Route::delete('batches/{batch}/disable', [BatchController::class, 'destroy'])->name('batches.destroy');
         // Route::resource("category", CategoryController::class)->except(['create', 'show']);
         Route::get('/batches', [BatchController::class, 'index'])->name('batches.index');
         Route::post('/batches', [BatchController::class, 'store'])->name('batches.store');
@@ -234,52 +253,51 @@ Route::middleware([AdminMiddleware::class, "auth"])->group(function () {
         //NEW ROUTES LIVEWIRE
 
     });
+    Route::prefix('v2')->group(function () {
+       Route::prefix("admin")->group(function () {
+        Route::get('/category', ManageCategory::class)->name('admin.category');
+        Route::get('/student', ManageStudent::class)->name('admin.student');
+        Route::get('/student/{id}',ViewStudent::class)->name('admin.student.view');
+        Route::get('/course',InsertCourse::class)->name('admin.course');
+        Route::get('/course/update/{courseId}',UpdateCourse::class)->name('admin.course.update');
+        Route::get('/workshops', CreateWorkshop::class)->name('admin.workshops.create');
+        Route::get('/workshops/{id}', CreateWorkshop::class)->name('admin.workshops.edit');
+        Route::get('/workshops/manage', ManageWorkshop::class)->name('admin.workshops.index');
+        Route::get('/placedstudent',InsertPlacedStudent::class)->name('admin.placedstudent.create');
+        Route::get('/placedstudent/{placedStudent}',InsertPlacedStudent::class)->name('admin.placedstudent.edit');
+        Route::get('/placedstudent/manage',CallingPlacedStudent::class)->name('admin.placedstudent.index');
+        Route::get('/portfolio',CreatePortfolio::class)->name('admin.portfolio.create');
+        Route::get('/portfolio/manage', ManagePortfolio::class)->name('admin.portfolio.index');
+        Route::get('/portfolio/{id}/edit', EditPortfolio::class)
+        ->name('portfolio.admin.edit');
+        });
+    });
 });
 
 
 Route::prefix('v2')->group(function () {
-    Route::prefix("admin")->group(function () {
-        Route::get('/category', ManageCategory::class)->name('admin.category');
-        Route::get('/student', ManageStudent::class)->name('admin.student');
-        Route::get('/workshops', CreateWorkshop::class)->name('admin.workshops.create');
-        Route::get('/workshops/{id}', CreateWorkshop::class)->name('admin.workshops.edit');
-        Route::get('/workshops/manage', ManageWorkshop::class)->name('admin.workshops.index');
-        Route::get('/placedstudent', InsertPlacedStudent::class)->name('admin.placedstudent.create');
-        Route::get('/placedstudent/{placedStudent?}', InsertPlacedStudent::class)->name('admin.placedstudent.edit');
-        Route::get('/placedstudent/manage', CallingPlacedStudent::class)->name('admin.placedstudent.index');
+    Route::prefix('auth')->group(function () {
+        Route::get('/register', Register::class)->name('v2.auth.register');
+        Route::get('/login', Login::class)->name('v2.auth.login');
+        Route::get('/logout', Header::class)->name('v2.auth.logout');
+        Route::get('/portfolio', OurPortfolio::class)->name('v2.public.portfolio');
+    });
+
+    Route::prefix("student")->group(function(){
+        Route::get('/explore-courses', ExploreCourse::class)->name('student.exploreCourses');
+        Route::get('/view-courses/{courseId}', ViewCourse::class)->name('student.viewCourses');
+        Route::get('/my-courses', MyCourse::class)->name('student.myCourses');
 
     });
     //working here for public routes
     Route::prefix("public")->group(function () {
-        Route::get('/', Home::class)->name('public.homepage');
-        Route::get('/viewallcourses', AllCourses::class)->name('public.viewallcourses.all-courses');
-        Route::get('/courses/{slug}', Ourcourses::class)->name('public.courseDetail');
-        Route::get('/contact', ContactPage::class)->name('public.contactUs');
-        Route::get('/workshops', Workshop::class)->name('public.workshop');
-
-
+        Route::get('/', Home::class)->name('v2.public.homepage');
+        Route::get('/viewallcourses', AllCourses::class)->name('v2.public.viewallcourses.all-courses');
+        Route::get('/courses/{slug}', Ourcourses::class)->name('v2.public.courseDetail');
+        Route::get('/contact', ContactPage::class)->name('v2.public.contactUs');
+        Route::get('/workshops', Workshop::class)->name('v2.public.workshop');
     });
-
-
-
-    // Route::controller(PublicController::class)->group(function () {
-    //     Route::get("/", "index")->name('public.index');
-    //     Route::prefix('training')->group(function () {
-    //         Route::get("/", "training")->name('public.training');
-    //         Route::get("/register/success", "success")->name('public.success');
-    //         Route::get('/courses/{category_slug}/{slug}', 'courseDetails')->name('public.courseDetails');
-    //         Route::post('/courses/{courseId}', 'enrollCourse')->name('public.enrollCourse');
-    //     });
-    //     Route::get('/about', 'aboutPage')->name('public.about');
-    //     Route::get('/contact', 'contactUsPage')->name('public.contact');
-    //     Route::get('/privacy-policy', 'privacyAndPolicy')->name('public.privacy');
-    //     Route::get('/terms-conditions', 'termsAndConditions')->name('public.terms-conditions');
-    //     Route::post('/enquiry-store', 'storeEnquiry')->name('enquiry.store');
-    // });
 });
-
-
-
 
 // public routes here:
 Route::controller(PublicController::class)->group(function () {

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
@@ -16,17 +16,18 @@
     @livewireStyles
 </head>
 
-<body>
+<body class="flex flex-col min-h-screen">
     <nav id="navbar" class="fixed top-0 z-50 w-full bg-white transition-all duration-300">
         <livewire:public.header />
     </nav>
-    @if(Route::currentRouteName() ==='public.homepage')
+    @if(Route::currentRouteName() ==='v2.public.homepage')
     <livewire:public.herosection/>
     @endif
     {{ $slot }}
+    <div class="mt-auto">
     <livewire:public.footer />
-    
+    </div>
     @livewireScripts
-</body>
+</body> 
 
 </html>

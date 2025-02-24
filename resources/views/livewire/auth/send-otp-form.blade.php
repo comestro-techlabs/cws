@@ -1,8 +1,8 @@
 <div>
-
     <div class="flex bg-white rounded-lg md:max-w-3xl mb-28 mt-28 shadow-xl border overflow-hidden mx-auto max-w-sm lg:w-full">
         <div class="hidden lg:block lg:w-1/2 bg-cover bg-center" style="background-image:url('{{ asset('assets/icons/loginimage.png') }}')"></div>
         <div id="otp-form" class="w-full p-8 lg:w-1/2">
+        @if (!session('otp_sent'))
             <form  wire:submit.prevent="sendotp" method="POST" id="send-otp-form" class="space-y-6">
                 
                 <div class="flex flex-col items-center text-center">
@@ -35,6 +35,20 @@
                     Don't have an account? <a href="{{ route('auth.register') }}" class="text-blue-500 font-semibold hover:text-blue-700">Register Here</a>
                 </p>
             </form>
+        @else
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-semibold text-gray-800">Enter OTP</h3>
+        </div>
+        <p class="text-sm text-gray-600 mb-4">An OTP has been sent to your email. Please enter it below:</p>
+            <livewire:auth.otp-modal-form :email="session('email')"/>
+        <form id="resend-otp-form" action="{{ route('auth.resend-otp') }}" method="POST">
+            @csrf
+            <p class="text-sm text-gray-600 mt-4 text-center">
+                Didn't receive the OTP? <button type="submit" class="text-blue-500 font-semibold hover:text-blue-700">Resend OTP</button>
+            </p>
+        </form>
+        @endif
         </div>
     </div>
+        
 </div>

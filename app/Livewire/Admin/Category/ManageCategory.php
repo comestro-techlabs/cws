@@ -7,34 +7,21 @@ use App\Models\Category as CategoryModel;
 
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
+use Livewire\WithPagination;
 
-#[Title('Manage Students')]
 class ManageCategory extends Component
 {
+    use WithPagination;
 
     public $cat_title;
     public $cat_slug;
     public $cat_description;
 
-    public function rules(){
-        return [
-            'cat_title' => 'required|string',
-            'cat_description' => 'required|string',
-        ];
-
-    } 
 
     public function store()
     {        
-        $this->validate();
-        // dd("testing");
-        
-
-        $cat = CategoryModel::create([
-            'cat_title' => $this->cat_title,
-            'cat_description' => $this->cat_description,
-        ]);
-        
+        $data = $this->validate(['cat_title' => 'required|string', 'cat_description' => 'required|string']);
+        CategoryModel::create($data);                    
         $this->reset(['cat_title', 'cat_description']);
         
         $this->dispatch('success', ['message' => "Category added successfully!"]);
@@ -42,7 +29,7 @@ class ManageCategory extends Component
 
     }
     
-    #[Layout('components.layouts.admin')] 
+    
     public function render()
     {
         $categories = CategoryModel::paginate(4);
