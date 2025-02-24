@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Str;
 
 class Course extends Model
 {
@@ -18,11 +19,11 @@ class Course extends Model
         return $this->hasMany(Payment::class);
     }
 
-    // public function students()
-    // {
-    //     return $this->belongsToMany(User::class);
-    // }
-
+    public function setTitleAttribute($value)
+    {
+        $this->attributes['title'] = $value;
+        $this->attributes['slug'] = Str::slug($value);
+    }
     /**
      * Get the user associated with the Course
      *

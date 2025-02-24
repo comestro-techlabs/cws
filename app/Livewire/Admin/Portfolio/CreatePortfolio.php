@@ -4,12 +4,13 @@ namespace App\Livewire\Admin\Portfolio;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\Portfolio;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
+#[Layout('components.layouts.admin')]
+#[Title('Insert Portfolio')]
 
 class CreatePortfolio extends Component
-{
-    use WithFileUploads; 
-
-   
+{  use WithFileUploads; 
     public $title, $image, $url, $description;
    
     protected $rules = [

@@ -32,7 +32,16 @@ use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\QuizController;
 use App\Livewire\Admin\Category\ManageCategory;
 use App\Livewire\Admin\PlacedStudent\InsertPlacedStudent;
+use App\Livewire\Admin\Student\ViewStudent;
 use App\Livewire\Admin\PlacedStudent\CallingPlacedStudent;
+use App\Livewire\Admin\Course\InsertCourse;
+use App\Livewire\Admin\Course\UpdateCourse;
+use App\Livewire\Student\ExploreCourse;
+    use App\Livewire\Student\ViewCourse;
+    use App\Livewire\Student\MyCourse;
+    use App\Livewire\Admin\Portfolio\CreatePortfolio;
+    use App\Livewire\Admin\Portfolio\ManagePortfolio;
+    use App\Livewire\Admin\Portfolio\EditPortfolio;
 
 
 use App\Livewire\Admin\Workshops\CreateWorkshop;
@@ -150,6 +159,11 @@ Route::middleware([AdminMiddleware::class, "auth"])->group(function () {
         //    Route::get("/category",function(){
         //     return view("admin.manageCategory");
         // })->name("category.form");
+            Route::resource("category", CategoryController::class)->except(['create', 'show']);
+            Route::get('/batches', [BatchController::class, 'index'])->name('batches.index');
+            Route::post('/batches', [BatchController::class, 'store'])->name('batches.store');
+            Route::put('/batches/update/{batch}', [BatchController::class, 'update'])->name('batches.update');
+            Route::delete('batches/{batch}/disable', [BatchController::class, 'destroy'])->name('batches.destroy');
         // Route::resource("category", CategoryController::class)->except(['create', 'show']);
         Route::get('/batches', [BatchController::class, 'index'])->name('batches.index');
         Route::post('/batches', [BatchController::class, 'store'])->name('batches.store');
@@ -251,13 +265,18 @@ Route::middleware([AdminMiddleware::class, "auth"])->group(function () {
             Route::get('/singleViewAssignment/{assignment}', SingleViewAssignment::class)->name('admin.assignment.view');
             Route::get('/assignment/{assignment}/edit', CreateAssignment::class)->name('admin.assignment.edit');
             Route::get('/student', ManageStudent::class)->name('admin.student');
+            Route::get('/student/{id}',ViewStudent::class)->name('admin.student.view');
+            Route::get('/course/update/{courseId}',UpdateCourse::class)->name('admin.course.update');
             Route::get('/workshops', CreateWorkshop::class)->name('admin.workshops.create');
             Route::get('/workshops/{id}', CreateWorkshop::class)->name('admin.workshops.edit');
             Route::get('/workshops/manage', ManageWorkshop::class)->name('admin.workshops.index');
             Route::get('/placedstudent', InsertPlacedStudent::class)->name('admin.placedstudent.create');
-            Route::get('/placedstudent/{placedStudent?}', InsertPlacedStudent::class)->name('admin.placedstudent.edit');
+            Route::get('/placedstudent/{placedStudent}', InsertPlacedStudent::class)->name('admin.placedstudent.edit');
             Route::get('/placedstudent/manage', CallingPlacedStudent::class)->name('admin.placedstudent.index');
-
+            Route::get('/portfolio',CreatePortfolio::class)->name('admin.portfolio.create');
+            Route::get('/portfolio/manage', ManagePortfolio::class)->name('admin.portfolio.index');
+            Route::get('/portfolio/{id}/edit', EditPortfolio::class)
+            ->name('portfolio.admin.edit');    
         });
     });
 });
@@ -269,6 +288,13 @@ Route::prefix('v2')->group(function () {
         Route::get('/login', Login::class)->name('v2.auth.login');
         Route::get('/logout', Header::class)->name('v2.auth.logout');
         Route::get('/portfolio', OurPortfolio::class)->name('v2.public.portfolio');
+    });
+
+    Route::prefix("student")->group(function(){
+        Route::get('/explore-courses', ExploreCourse::class)->name('student.exploreCourses');
+        Route::get('/view-courses/{courseId}', ViewCourse::class)->name('student.viewCourses');
+        Route::get('/my-courses', MyCourse::class)->name('student.myCourses');
+
     });
     //working here for public routes
     Route::prefix("public")->group(function () {
