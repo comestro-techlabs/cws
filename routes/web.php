@@ -28,7 +28,10 @@ use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\QuizController;
 use App\Livewire\Admin\Category\ManageCategory;
 use App\Livewire\Admin\PlacedStudent\InsertPlacedStudent;
+use App\Livewire\Admin\Student\ViewStudent;
 use App\Livewire\Admin\PlacedStudent\CallingPlacedStudent;
+use App\Livewire\Admin\Course\InsertCourse;
+use App\Livewire\Admin\Course\UpdateCourse;
 
 
 use App\Livewire\Admin\Workshops\CreateWorkshop;
