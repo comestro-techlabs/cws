@@ -42,7 +42,7 @@ class OtpModalForm extends Component
             $user->otp_expires_at = null;
             $user->save();
 
-            return redirect('/')->with('success', 'Login successful. Email verified.');
+            $this->redirect(route('v2.public.homepage'));;
         }
 
         return redirect()->back()->withInput()->withErrors(['otp' => 'Invalid OTP or OTP has expired.'])->with([
