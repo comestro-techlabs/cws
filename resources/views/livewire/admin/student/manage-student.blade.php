@@ -4,7 +4,6 @@
             <h2 class="md:text-xl text-lg font-semibold text-slate-500 border-s-4 border-s-purple-900 pl-3">
                 {{ $search ? $search : 'Manage all' }} students ({{ $students->total() }})
             </h2>
-
             <div class="inline-flex md:flex-row flex-col md:items-center gap-2" role="group">
                 <select wire:model.live="filter" class="border rounded-lg px-3 py-2">
                     <option value="">Filter by</option>
@@ -60,7 +59,7 @@
                                 </span>
                             </td>
                             <td class="flex gap-2 items-center px-6 py-4">
-                                <a href=""
+                                <a href="{{ route('admin.student.view', ['id' => $student->id]) }}"
                                     class="px-3 py-2 text-xs rounded-xl font-medium text-white bg-teal-500">
                                     Show
                                 </a>

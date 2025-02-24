@@ -27,8 +27,11 @@
     use App\Http\Middleware\AdminMiddleware;
     use App\Http\Controllers\QuizController;
     use App\Livewire\Admin\Category\ManageCategory;
-    use App\Livewire\Admin\PlacedStudent\InsertPlacedStudent;
+use App\Livewire\Admin\Course\InsertCourse;
+use App\Livewire\Admin\Course\UpdateCourse;
+use App\Livewire\Admin\PlacedStudent\InsertPlacedStudent;
     use App\Livewire\Admin\PlacedStudent\CallingPlacedStudent;
+    use App\Livewire\Admin\Student\ViewStudent;
 
 
     use App\Livewire\Admin\Workshops\CreateWorkshop;
@@ -132,7 +135,7 @@
         //    Route::get("/category",function(){
         //     return view("admin.manageCategory");
         // })->name("category.form");
-            // Route::resource("category", CategoryController::class)->except(['create', 'show']);
+            Route::resource("category", CategoryController::class)->except(['create', 'show']);
             Route::get('/batches', [BatchController::class, 'index'])->name('batches.index');
             Route::post('/batches', [BatchController::class, 'store'])->name('batches.store');
             Route::put('/batches/update/{batch}', [BatchController::class, 'update'])->name('batches.update');
@@ -232,11 +235,14 @@
        Route::prefix("admin")->group(function () {
         Route::get('/category', ManageCategory::class)->name('admin.category');
         Route::get('/student', ManageStudent::class)->name('admin.student');
+        Route::get('/student/{id}',ViewStudent::class)->name('admin.student.view');
+        Route::get('/course',InsertCourse::class)->name('admin.course');
+        Route::get('/course/update/{courseId}',UpdateCourse::class)->name('admin.course.update');
         Route::get('/workshops', CreateWorkshop::class)->name('admin.workshops.create');
         Route::get('/workshops/{id}', CreateWorkshop::class)->name('admin.workshops.edit');
         Route::get('/workshops/manage', ManageWorkshop::class)->name('admin.workshops.index');
         Route::get('/placedstudent',InsertPlacedStudent::class)->name('admin.placedstudent.create');
-        Route::get('/placedstudent/{placedStudent?}',InsertPlacedStudent::class)->name('admin.placedstudent.edit');
+        Route::get('/placedstudent/{placedStudent}',InsertPlacedStudent::class)->name('admin.placedstudent.edit');
         Route::get('/placedstudent/manage',CallingPlacedStudent::class)->name('admin.placedstudent.index');
 
         });
