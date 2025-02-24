@@ -1,18 +1,6 @@
 <div>
-  
-   @if (session()->has('success'))
-       <script>
-           Swal.fire({
-               title: 'Success!',
-               text: "{{ session('success') }}",
-               icon: 'success',
-               confirmButtonText: 'OK'
-           });
-       </script>
-   @endif
 
-   
-   <div class="w-full flex-col md:flex-row border-b pb-3 flex justify-between md:items-center px-4 rounded-lg mb-3">
+   <div class="w-full flex-col md:flex-row border-b pb-3 flex justify-between md:items-center px-4 rounded-lg mt-5">
        <h1 class="text-lg font-medium">Explore Courses</h1>
 
     

@@ -1,4 +1,4 @@
-{{-- <!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
@@ -28,6 +28,6 @@
     <livewire:public.footer />
     </div>
     @livewireScripts
-</body>
+</body> 
 
 </html>

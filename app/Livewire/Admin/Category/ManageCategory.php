@@ -29,7 +29,7 @@ class ManageCategory extends Component
 
     }
     
-    #[Layout('components.layouts.admin')] 
+    
     public function render()
     {
         $categories = CategoryModel::paginate(4);

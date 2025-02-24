@@ -273,6 +273,13 @@ Route::prefix('v2')->group(function () {
         Route::get('/logout', Header::class)->name('v2.auth.logout');
         Route::get('/portfolio', OurPortfolio::class)->name('v2.public.portfolio');
     });
+
+    Route::prefix("student")->group(function(){
+        Route::get('/explore-courses', ExploreCourse::class)->name('student.exploreCourses');
+        Route::get('/view-courses/{courseId}', ViewCourse::class)->name('student.viewCourses');
+        Route::get('/my-courses', MyCourse::class)->name('student.myCourses');
+
+    });
     //working here for public routes
     Route::prefix("public")->group(function () {
         Route::get('/', Home::class)->name('v2.public.homepage');
