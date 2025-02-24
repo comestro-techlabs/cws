@@ -17,7 +17,7 @@
                 <ul
                     class="flex flex-col p-4 md:p-0 mt-4 font-normal border border-gray-100 rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 ">
                     <li>
-                        <a href="/"
+                        <a href="{{route('v2.public.homepage')}}" wire:navigate
                             class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 "
                             aria-current="page">Home</a>
                     </li>
