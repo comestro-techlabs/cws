@@ -239,11 +239,6 @@ Route::middleware([AdminMiddleware::class, "auth"])->group(function () {
         //NEW ROUTES LIVEWIRE
 
     });
-});
-
-
-Route::middleware([AdminMiddleware::class, "auth"])->group(function () {
-
     Route::prefix('v2')->group(function () {
         Route::prefix("admin")->group(function () {
             Route::get('/category', ManageCategory::class)->name('admin.category');
@@ -256,24 +251,9 @@ Route::middleware([AdminMiddleware::class, "auth"])->group(function () {
             Route::get('/placedstudent/manage', CallingPlacedStudent::class)->name('admin.placedstudent.index');
 
         });
-
-        // Route::controller(PublicController::class)->group(function () {
-        //     Route::get("/", "index")->name('public.index');
-        //     Route::prefix('training')->group(function () {
-        //         Route::get("/", "training")->name('public.training');
-        //         Route::get("/register/success", "success")->name('public.success');
-        //         Route::get('/courses/{category_slug}/{slug}', 'courseDetails')->name('public.courseDetails');
-        //         Route::post('/courses/{courseId}', 'enrollCourse')->name('public.enrollCourse');
-        //     });
-        //     Route::get('/about', 'aboutPage')->name('public.about');
-        //     Route::get('/contact', 'contactUsPage')->name('public.contact');
-        //     Route::get('/privacy-policy', 'privacyAndPolicy')->name('public.privacy');
-        //     Route::get('/terms-conditions', 'termsAndConditions')->name('public.terms-conditions');
-        //     Route::post('/enquiry-store', 'storeEnquiry')->name('enquiry.store');
-        // });
     });
-
 });
+
 
 Route::prefix('v2')->group(function () {
     Route::prefix('auth')->group(function () {
