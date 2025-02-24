@@ -14,6 +14,8 @@ class ProcessOverduePayments extends Command
     public function handle()
     {
         $today = Carbon::today();
+        // $today = Carbon::parse('2025-03-25');
+
 
         // Get all unpaid payments with due date in the past
         $overduePayments = Payment::whereIn('status', ['unpaid', 'overdue'])

@@ -28,14 +28,11 @@ use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\QuizController;
 use App\Livewire\Admin\Category\ManageCategory;
 use App\Livewire\Admin\PlacedStudent\InsertPlacedStudent;
+use App\Livewire\Admin\Student\ViewStudent;
 use App\Livewire\Admin\PlacedStudent\CallingPlacedStudent;
+use App\Livewire\Admin\Course\InsertCourse;
+use App\Livewire\Admin\Course\UpdateCourse;
 
-use App\Livewire\Student\ExploreCourse;
-    use App\Livewire\Student\ViewCourse;
-    use App\Livewire\Student\MyCourse;
-    use App\Livewire\Admin\Portfolio\CreatePortfolio;
-    use App\Livewire\Admin\Portfolio\ManagePortfolio;
-    use App\Livewire\Admin\Portfolio\EditPortfolio;
 
 use App\Livewire\Admin\Workshops\CreateWorkshop;
 use App\Livewire\Admin\Workshops\ManageWorkshop;
@@ -152,6 +149,11 @@ Route::middleware([AdminMiddleware::class, "auth"])->group(function () {
         //    Route::get("/category",function(){
         //     return view("admin.manageCategory");
         // })->name("category.form");
+            Route::resource("category", CategoryController::class)->except(['create', 'show']);
+            Route::get('/batches', [BatchController::class, 'index'])->name('batches.index');
+            Route::post('/batches', [BatchController::class, 'store'])->name('batches.store');
+            Route::put('/batches/update/{batch}', [BatchController::class, 'update'])->name('batches.update');
+            Route::delete('batches/{batch}/disable', [BatchController::class, 'destroy'])->name('batches.destroy');
         // Route::resource("category", CategoryController::class)->except(['create', 'show']);
         Route::get('/batches', [BatchController::class, 'index'])->name('batches.index');
         Route::post('/batches', [BatchController::class, 'store'])->name('batches.store');
@@ -245,46 +247,24 @@ Route::middleware([AdminMiddleware::class, "auth"])->group(function () {
         //NEW ROUTES LIVEWIRE
 
     });
-});
-
-
-Route::middleware([AdminMiddleware::class, "auth"])->group(function () {
-
     Route::prefix('v2')->group(function () {
-        Route::prefix("admin")->group(function () {
-            Route::get('/category', ManageCategory::class)->name('admin.category');
-            Route::get('/student', ManageStudent::class)->name('admin.student');
-            Route::get('/workshops', CreateWorkshop::class)->name('admin.workshops.create');
-            Route::get('/workshops/{id}', CreateWorkshop::class)->name('admin.workshops.edit');
-            Route::get('/workshops/manage', ManageWorkshop::class)->name('admin.workshops.index');
-            Route::get('/placedstudent', InsertPlacedStudent::class)->name('admin.placedstudent.create');
-            Route::get('/placedstudent/{placedStudent?}', InsertPlacedStudent::class)->name('admin.placedstudent.edit');
-            Route::get('/placedstudent/manage', CallingPlacedStudent::class)->name('admin.placedstudent.index');
-            Route::get('/portfolio',CreatePortfolio::class)->name('admin.portfolio.create');
-            Route::get('/portfolio/manage', ManagePortfolio::class)->name('admin.portfolio.index');
-            Route::get('/portfolio/{id}/edit', EditPortfolio::class)
-            ->name('portfolio.admin.edit');
-        
+       Route::prefix("admin")->group(function () {
+        Route::get('/category', ManageCategory::class)->name('admin.category');
+        Route::get('/student', ManageStudent::class)->name('admin.student');
+        Route::get('/student/{id}',ViewStudent::class)->name('admin.student.view');
+        Route::get('/course',InsertCourse::class)->name('admin.course');
+        Route::get('/course/update/{courseId}',UpdateCourse::class)->name('admin.course.update');
+        Route::get('/workshops', CreateWorkshop::class)->name('admin.workshops.create');
+        Route::get('/workshops/{id}', CreateWorkshop::class)->name('admin.workshops.edit');
+        Route::get('/workshops/manage', ManageWorkshop::class)->name('admin.workshops.index');
+        Route::get('/placedstudent',InsertPlacedStudent::class)->name('admin.placedstudent.create');
+        Route::get('/placedstudent/{placedStudent}',InsertPlacedStudent::class)->name('admin.placedstudent.edit');
+        Route::get('/placedstudent/manage',CallingPlacedStudent::class)->name('admin.placedstudent.index');
 
         });
-
-        // Route::controller(PublicController::class)->group(function () {
-        //     Route::get("/", "index")->name('public.index');
-        //     Route::prefix('training')->group(function () {
-        //         Route::get("/", "training")->name('public.training');
-        //         Route::get("/register/success", "success")->name('public.success');
-        //         Route::get('/courses/{category_slug}/{slug}', 'courseDetails')->name('public.courseDetails');
-        //         Route::post('/courses/{courseId}', 'enrollCourse')->name('public.enrollCourse');
-        //     });
-        //     Route::get('/about', 'aboutPage')->name('public.about');
-        //     Route::get('/contact', 'contactUsPage')->name('public.contact');
-        //     Route::get('/privacy-policy', 'privacyAndPolicy')->name('public.privacy');
-        //     Route::get('/terms-conditions', 'termsAndConditions')->name('public.terms-conditions');
-        //     Route::post('/enquiry-store', 'storeEnquiry')->name('enquiry.store');
-        // });
     });
-
 });
+
 
 Route::prefix('v2')->group(function () {
     Route::prefix('auth')->group(function () {
