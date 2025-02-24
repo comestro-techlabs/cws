@@ -30,6 +30,12 @@ use App\Livewire\Admin\Category\ManageCategory;
 use App\Livewire\Admin\PlacedStudent\InsertPlacedStudent;
 use App\Livewire\Admin\PlacedStudent\CallingPlacedStudent;
 
+use App\Livewire\Student\ExploreCourse;
+    use App\Livewire\Student\ViewCourse;
+    use App\Livewire\Student\MyCourse;
+    use App\Livewire\Admin\Portfolio\CreatePortfolio;
+    use App\Livewire\Admin\Portfolio\ManagePortfolio;
+    use App\Livewire\Admin\Portfolio\EditPortfolio;
 
 use App\Livewire\Admin\Workshops\CreateWorkshop;
 use App\Livewire\Admin\Workshops\ManageWorkshop;
@@ -254,6 +260,11 @@ Route::middleware([AdminMiddleware::class, "auth"])->group(function () {
             Route::get('/placedstudent', InsertPlacedStudent::class)->name('admin.placedstudent.create');
             Route::get('/placedstudent/{placedStudent?}', InsertPlacedStudent::class)->name('admin.placedstudent.edit');
             Route::get('/placedstudent/manage', CallingPlacedStudent::class)->name('admin.placedstudent.index');
+            Route::get('/portfolio',CreatePortfolio::class)->name('admin.portfolio.create');
+            Route::get('/portfolio/manage', ManagePortfolio::class)->name('admin.portfolio.index');
+            Route::get('/portfolio/{id}/edit', EditPortfolio::class)
+            ->name('portfolio.admin.edit');
+        
 
         });
 
@@ -281,6 +292,13 @@ Route::prefix('v2')->group(function () {
         Route::get('/login', Login::class)->name('v2.auth.login');
         Route::get('/logout', Header::class)->name('v2.auth.logout');
         Route::get('/portfolio', OurPortfolio::class)->name('v2.public.portfolio');
+    });
+
+    Route::prefix("student")->group(function(){
+        Route::get('/explore-courses', ExploreCourse::class)->name('student.exploreCourses');
+        Route::get('/view-courses/{courseId}', ViewCourse::class)->name('student.viewCourses');
+        Route::get('/my-courses', MyCourse::class)->name('student.myCourses');
+
     });
     //working here for public routes
     Route::prefix("public")->group(function () {

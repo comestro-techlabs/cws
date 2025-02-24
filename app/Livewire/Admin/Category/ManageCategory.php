@@ -7,7 +7,7 @@ use App\Models\Category as CategoryModel;
 
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
-
+#[Layout('components.layouts.admin')]
 #[Title('Manage Students')]
 class ManageCategory extends Component
 {
@@ -42,7 +42,7 @@ class ManageCategory extends Component
 
     }
     
-    #[Layout('components.layouts.admin')] 
+    
     public function render()
     {
         $categories = CategoryModel::paginate(4);
