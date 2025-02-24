@@ -344,5 +344,5 @@ Route::prefix("v3")->group(function () {
     // view Workshops
     // Auth works
     Route::get('/', NewHome::class)->name('public.homepage');
-    
+
 });
