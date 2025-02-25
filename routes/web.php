@@ -42,9 +42,7 @@ use App\Livewire\Student\ExploreCourse;
     use App\Livewire\Student\MyCourse;
     use App\Livewire\Admin\Portfolio\CreatePortfolio;
     use App\Livewire\Admin\Portfolio\ManagePortfolio;
-    use App\Livewire\Admin\Portfolio\EditPortfolio;
-
-
+    
 use App\Livewire\Admin\Workshops\CreateWorkshop;
 use App\Livewire\Admin\Workshops\ManageWorkshop;
 use App\Livewire\Auth\Login;
@@ -278,6 +276,21 @@ Route::middleware([AdminMiddleware::class, "auth"])->group(function () {
             Route::get('/portfolio',CreatePortfolio::class)->name('admin.portfolio.create');
             Route::get('/portfolio/manage', ManagePortfolio::class)->name('admin.portfolio.index');
             Route::get('/portfolio/{id}/edit', EditPortfolio::class)->name('portfolio.admin.edit');    
+       Route::prefix("admin")->group(function () {
+        Route::get('/category', ManageCategory::class)->name('admin.category');
+        Route::get('/student', ManageStudent::class)->name('admin.student');
+        Route::get('/student/{id}',ViewStudent::class)->name('admin.student.view');
+        Route::get('/course',InsertCourse::class)->name('admin.course');
+        Route::get('/course/update/{courseId}',UpdateCourse::class)->name('admin.course.update');
+        Route::get('/workshops', CreateWorkshop::class)->name('admin.workshops.create');
+        Route::get('/workshops/{id}', CreateWorkshop::class)->name('admin.workshops.edit');
+        Route::get('/workshops/manage', ManageWorkshop::class)->name('admin.workshops.index');
+        Route::get('/placedstudent',InsertPlacedStudent::class)->name('admin.placedstudent.create');
+        Route::get('/placedstudent/{placedStudent}',InsertPlacedStudent::class)->name('admin.placedstudent.edit');
+        Route::get('/placedstudent/manage',CallingPlacedStudent::class)->name('admin.placedstudent.index');
+        Route::get('/portfolio',CreatePortfolio::class)->name('admin.portfolio.create');
+        Route::get('/portfolio/manage', ManagePortfolio::class)->name('admin.portfolio.index');
+       
         });
     });
 });
