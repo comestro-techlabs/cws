@@ -280,10 +280,12 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         // Portfolio Routes
         Route::get('/portfolio', CreatePortfolio::class)->name('admin.portfolio.create');
         Route::get('/portfolio/manage', ManagePortfolio::class)->name('admin.portfolio.index');
-       
+
+       //Message Route
+       Route::get('/message',CreateMessage::class)->name('admin.message.create');
         });
     });
-});
+
 
 Route::prefix('v2')->group(function () {
     Route::prefix('auth')->group(function () {
