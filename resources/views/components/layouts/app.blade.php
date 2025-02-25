@@ -28,6 +28,6 @@
     <livewire:public.footer />
     </div>
     @livewireScripts
-</body>
+</body> 
 
 </html>
