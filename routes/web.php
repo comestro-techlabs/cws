@@ -278,7 +278,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
 
         // Workshop Routes
         Route::get('/workshops', CreateWorkshop::class)->name('admin.workshops.create');
-        Route::get('/workshops/{id}', CreateWorkshop::class)->name('admin.workshops.edit');
+        // Route::get('/workshops/{id}', CreateWorkshop::class)->name('admin.workshops.edit');
         Route::get('/workshops/manage', ManageWorkshop::class)->name('admin.workshops.index');
 
         // Placed Student Routes
