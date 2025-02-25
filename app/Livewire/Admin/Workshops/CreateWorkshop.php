@@ -5,7 +5,10 @@ namespace App\Livewire\Admin\Workshops;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\Workshop;
-
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
+#[Layout('components.layouts.admin')] 
+#[Title('Create Workshop')]
 class CreateWorkshop extends Component
 {
     use WithFileUploads;

@@ -5,8 +5,11 @@ namespace App\Livewire\Admin\Workshops;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Workshop;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 
-
+#[Layout('components.layouts.admin')] 
+#[Title('Manage Workshop')]
 class ManageWorkshop extends Component
 {
     use WithPagination; // Enable pagination

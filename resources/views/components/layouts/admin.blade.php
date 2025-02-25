@@ -6,12 +6,14 @@
         <script src="https://cdn.tailwindcss.com"></script>
 
         <title>{{ $title ?? 'Admin' }}</title>
-        @livewireStyles
+       
     </head>
     <body>
         <h2>admin</h2>
         {{ $slot }}
+        
         <x-admin-header/>
-        @livewireScripts
+        
+        
     </body>
 </html>

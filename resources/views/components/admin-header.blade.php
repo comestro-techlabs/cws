@@ -17,3 +17,4 @@
         <a href="{{ route('auth.logout') }}" class="text-sm  text-white rounded  bg-red-400 px-3 py-2 hover:bg-red-600">Logout</a>
     </div>
 </nav>
+  

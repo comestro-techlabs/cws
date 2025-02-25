@@ -17,6 +17,8 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\WorkshopController;
+use App\Livewire\Admin\Course\ManageCourse;
+use App\Livewire\Admin\Course\ShowCourse;
 use App\Livewire\Admin\Student\ManageStudent;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ExamController;
@@ -254,6 +256,8 @@ Route::middleware([AdminMiddleware::class, "auth"])->group(function () {
         Route::get('/student/{id}',ViewStudent::class)->name('admin.student.view');
         Route::get('/course',InsertCourse::class)->name('admin.course');
         Route::get('/course/update/{courseId}',UpdateCourse::class)->name('admin.course.update');
+        Route::get('/course/show/{courseId}',ShowCourse::class)->name('admin.course.show');
+        Route::get('/course/manage',ManageCourse::class)->name('admin.course.manage');
         Route::get('/workshops', CreateWorkshop::class)->name('admin.workshops.create');
         Route::get('/workshops/{id}', CreateWorkshop::class)->name('admin.workshops.edit');
         Route::get('/workshops/manage', ManageWorkshop::class)->name('admin.workshops.index');
