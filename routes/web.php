@@ -43,6 +43,7 @@ use App\Livewire\Student\ExploreCourse;
     use App\Livewire\Admin\Portfolio\CreatePortfolio;
     use App\Livewire\Admin\Portfolio\ManagePortfolio;
     use App\Livewire\Admin\Message\CreateMessage;
+    use App\Livewire\Admin\Message\ManageMessage;
 use App\Livewire\Admin\Workshops\CreateWorkshop;
 use App\Livewire\Admin\Workshops\ManageWorkshop;
 use App\Livewire\Auth\Login;
@@ -283,6 +284,8 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
 
        //Message Route
        Route::get('/message',CreateMessage::class)->name('admin.message.create');
+       Route::get('/message/manage', ManageMessage::class)->name('admin.message.index');
+
         });
     });
 
