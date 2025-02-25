@@ -42,9 +42,12 @@ use App\Livewire\Student\ExploreCourse;
     use App\Livewire\Student\MyCourse;
     use App\Livewire\Admin\Portfolio\CreatePortfolio;
     use App\Livewire\Admin\Portfolio\ManagePortfolio;
-    
+    use App\Livewire\Admin\Message\CreateMessage;
+    use App\Livewire\Admin\Message\ManageMessage;
 use App\Livewire\Admin\Workshops\CreateWorkshop;
 use App\Livewire\Admin\Workshops\ManageWorkshop;
+use App\Livewire\Admin\Course\ManageCourse;
+use App\Livewire\Admin\Course\ShowCourse;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
 use App\Livewire\Public\Contact\ContactPage;
@@ -256,6 +259,11 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
     Route::prefix('v2/admin')->group(function () {
         Route::get('/category', ManageCategory::class)->name('admin.category');
         Route::get('/student', ManageStudent::class)->name('admin.student');
+        Route::get('/student/{id}',ViewStudent::class)->name('admin.student.view');
+        Route::get('/course',InsertCourse::class)->name('admin.course');
+        Route::get('/course/update/{courseId}',UpdateCourse::class)->name('admin.course.update');
+        Route::get('/course/show/{courseId}',ShowCourse::class)->name('admin.course.show');
+        Route::get('/course/manage',ManageCourse::class)->name('admin.course.manage');
         Route::get('/student/{id}', ViewStudent::class)->name('admin.student.view');
         Route::get('/course', InsertCourse::class)->name('admin.course');
         Route::get('/course/update/{courseId}', UpdateCourse::class)->name('admin.course.update');
@@ -280,8 +288,14 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         // Portfolio Routes
         Route::get('/portfolio', CreatePortfolio::class)->name('admin.portfolio.create');
         Route::get('/portfolio/manage', ManagePortfolio::class)->name('admin.portfolio.index');
+
+       //Message Route
+       Route::get('/message',CreateMessage::class)->name('admin.message.create');
+       Route::get('/message/manage', ManageMessage::class)->name('admin.message.index');
+
+        });
     });
-});
+
 
 Route::prefix('v2')->group(function () {
     Route::prefix('auth')->group(function () {
