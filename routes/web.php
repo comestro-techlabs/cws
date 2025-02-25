@@ -37,9 +37,7 @@ use App\Livewire\Student\ExploreCourse;
     use App\Livewire\Student\MyCourse;
     use App\Livewire\Admin\Portfolio\CreatePortfolio;
     use App\Livewire\Admin\Portfolio\ManagePortfolio;
-    use App\Livewire\Admin\Portfolio\EditPortfolio;
-
-
+    
 use App\Livewire\Admin\Workshops\CreateWorkshop;
 use App\Livewire\Admin\Workshops\ManageWorkshop;
 use App\Livewire\Auth\Login;
@@ -268,8 +266,6 @@ Route::middleware([AdminMiddleware::class, "auth"])->group(function () {
         Route::get('/placedstudent/manage',CallingPlacedStudent::class)->name('admin.placedstudent.index');
         Route::get('/portfolio',CreatePortfolio::class)->name('admin.portfolio.create');
         Route::get('/portfolio/manage', ManagePortfolio::class)->name('admin.portfolio.index');
-        Route::get('/portfolio/{id}/edit', EditPortfolio::class)
-        ->name('portfolio.admin.edit');
         });
     });
 });
