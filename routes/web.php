@@ -17,16 +17,11 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\WorkshopController;
-<<<<<<< HEAD
-use App\Livewire\Admin\Course\ManageCourse;
-use App\Livewire\Admin\Course\ShowCourse;
-=======
 use App\Livewire\Admin\Assignment\AssignmentCourse;
 use App\Livewire\Admin\Assignment\CreateAssignment;
 use App\Livewire\Admin\Assignment\EditAssignment;
 use App\Livewire\Admin\Assignment\ManageAssignment;
 use App\Livewire\Admin\Assignment\SingleViewAssignment;
->>>>>>> c2d3dbe1a930f9a62c329ed5b34a859c4ecf7424
 use App\Livewire\Admin\Student\ManageStudent;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ExamController;
@@ -51,6 +46,8 @@ use App\Livewire\Student\ExploreCourse;
     use App\Livewire\Admin\Message\ManageMessage;
 use App\Livewire\Admin\Workshops\CreateWorkshop;
 use App\Livewire\Admin\Workshops\ManageWorkshop;
+use App\Livewire\Admin\Course\ManageCourse;
+use App\Livewire\Admin\Course\ShowCourse;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
 use App\Livewire\Public\Contact\ContactPage;
