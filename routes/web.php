@@ -17,6 +17,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\WorkshopController;
+use App\Livewire\Admin\Assignment\AssignmentCourse;
 use App\Livewire\Admin\Assignment\CreateAssignment;
 use App\Livewire\Admin\Assignment\EditAssignment;
 use App\Livewire\Admin\Assignment\ManageAssignment;
@@ -263,6 +264,7 @@ Route::middleware([AdminMiddleware::class, "auth"])->group(function () {
             Route::get('/assignment', CreateAssignment::class)->name('admin.assignment');
             Route::get('/assignment/manage', ManageAssignment::class)->name('admin.assignment.manage');
             Route::get('/singleViewAssignment/{assignment}', SingleViewAssignment::class)->name('admin.assignment.view');
+            Route::get('/assignment/course', AssignmentCourse::class)->name('admin.assignment.course');
             Route::get('/assignment/{assignment}/edit', CreateAssignment::class)->name('admin.assignment.edit');
             Route::get('/student', ManageStudent::class)->name('admin.student');
             Route::get('/student/{id}',ViewStudent::class)->name('admin.student.view');
@@ -275,8 +277,7 @@ Route::middleware([AdminMiddleware::class, "auth"])->group(function () {
             Route::get('/placedstudent/manage', CallingPlacedStudent::class)->name('admin.placedstudent.index');
             Route::get('/portfolio',CreatePortfolio::class)->name('admin.portfolio.create');
             Route::get('/portfolio/manage', ManagePortfolio::class)->name('admin.portfolio.index');
-            Route::get('/portfolio/{id}/edit', EditPortfolio::class)
-            ->name('portfolio.admin.edit');    
+            Route::get('/portfolio/{id}/edit', EditPortfolio::class)->name('portfolio.admin.edit');    
         });
     });
 });

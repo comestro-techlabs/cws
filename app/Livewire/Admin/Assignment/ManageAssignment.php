@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\Assignment;
 
 use App\Models\Assignments;
+use App\Models\Batch;
 use App\Models\Course;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
@@ -21,7 +22,7 @@ class ManageAssignment extends Component
         )->with(['course', 'batch'])->get();
 
         $courses = Course::all();
-        $batchs = Course::all(); 
+        $batchs = Batch::all(); 
 
         return view('livewire.admin.assignment.manage-assignment', [
             'assignments' => $assignments,
