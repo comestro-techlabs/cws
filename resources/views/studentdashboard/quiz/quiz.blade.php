@@ -63,8 +63,9 @@
                                     @endif
                                 @endforeach
                             @endif
+                            <input type="hidden" name="exam_id" value="{{ $exam->id }}">
                         @endforeach
-                        <input type="hidden" name="exam_id" value="{{ $exam->id }}">
+                      
                     </div>
 
                     <div class="mt-6 flex justify-between">

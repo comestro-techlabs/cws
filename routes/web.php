@@ -48,6 +48,7 @@ use App\Livewire\Admin\Workshops\CreateWorkshop;
 use App\Livewire\Admin\Workshops\ManageWorkshop;
 use App\Livewire\Admin\Course\ManageCourse;
 use App\Livewire\Admin\Course\ShowCourse;
+use App\Livewire\Admin\Certificate\CertificateEligibility;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
 use App\Livewire\Public\Contact\ContactPage;
@@ -277,7 +278,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
 
         // Workshop Routes
         Route::get('/workshops', CreateWorkshop::class)->name('admin.workshops.create');
-        Route::get('/workshops/{id}', CreateWorkshop::class)->name('admin.workshops.edit');
+        // Route::get('/workshops/{id}', CreateWorkshop::class)->name('admin.workshops.edit');
         Route::get('/workshops/manage', ManageWorkshop::class)->name('admin.workshops.index');
 
         // Placed Student Routes
@@ -292,7 +293,9 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
        //Message Route
        Route::get('/message',CreateMessage::class)->name('admin.message.create');
        Route::get('/message/manage', ManageMessage::class)->name('admin.message.index');
-
+        
+    //    certificate
+    Route::get('/certificate',CertificateEligibility::class)->name('admin.certificate');
         });
     });
 
