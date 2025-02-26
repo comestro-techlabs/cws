@@ -300,6 +300,9 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
 
         //    certificate
         Route::get('/certificate', CertificateEligibility::class)->name('admin.certificate');
+
+        // payment 
+        Route::get('/payment', ManagePayment::class)->name('admin.paymnet-manage');
     });
 });
 
