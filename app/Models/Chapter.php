@@ -19,4 +19,15 @@ class Chapter extends Model
     {
         return $this->belongsTo(Course::class);
     }
+
+    public function hasLessons()
+    {
+        return $this->lessons()->count() > 0;
+    }
+
+    // Get lesson count
+    public function getLessonCount()
+    {
+        return $this->lessons()->count();
+    }
 }

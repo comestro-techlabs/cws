@@ -4,15 +4,22 @@ namespace App\Livewire\Admin\Course;
 
 use Livewire\Component;
 use App\Models\Course;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.admin')]
 class ShowCourse extends Component
 {
     public $course;
+    public $batches;
+    public $chapters;
 
     public function mount($courseId)
     {
-       $this->course = Course::findOrFail($courseId);
+        $this->course = Course::with(['batches', 'chapters.lessons'])->findOrFail($courseId);
+        $this->batches = $this->course->batches;
+        $this->chapters = $this->course->chapters;
     }
+
     public function render()
     {
         return view('livewire.admin.course.show-course');

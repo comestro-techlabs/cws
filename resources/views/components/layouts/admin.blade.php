@@ -152,7 +152,7 @@
                     <!-- Manage Portfolio: Briefcase -->
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                     </svg>
                     Manage Portfolio
                 </div>
@@ -251,7 +251,7 @@
                     <!-- Certificate: Award badge -->
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 3c-2.616 0-5.03.815-7.018 2.198m12.636 0l1.382-1.382a1 1 0 011.414 0l1.414 1.414a1 1 0 010 1.414l-1.414 1.414M3 3l1.382 1.382A11.955 11.955 0 013 12c0 2.616.815 5.03 2.198 7.018m0-14.036l-1.414 1.414a1 1 0 000 1.414l1.414 1.414M12 21a9 9 0 01-6.364-2.636" />
+                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 3c-2.616 0-5.03.815-7.018 2.198m12.636 0l1.382-1.382a1 1 0 011.414 0l1.414 1.414a1 1 0 010 1.414l-1.414 1.414M3 3l3 3m0 0l3-3m-3 3v12" />
                     </svg>
                     Certificate
                 </div>
@@ -300,7 +300,7 @@
                 <!-- Help: Lifebuoy -->
                 <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
+                        d="M18.364 5.636l-3-3a2 2 0 01.586-2.828L15 12l-3-3a2 2 0 012.828-.586l3 3a2 2 0 010 2.828l-3 3a2 2 0 01-2.828.586zM3 3l3 3m0 0l3-3m-3 3v12" />
                 </svg>
                 Help
             </a>
