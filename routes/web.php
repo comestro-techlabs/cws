@@ -38,17 +38,18 @@ use App\Livewire\Admin\PlacedStudent\CallingPlacedStudent;
 use App\Livewire\Admin\Course\InsertCourse;
 use App\Livewire\Admin\Course\UpdateCourse;
 use App\Livewire\Student\ExploreCourse;
-    use App\Livewire\Student\ViewCourse;
-    use App\Livewire\Student\MyCourse;
-    use App\Livewire\Admin\Portfolio\CreatePortfolio;
-    use App\Livewire\Admin\Portfolio\ManagePortfolio;
-    use App\Livewire\Admin\Message\CreateMessage;
-    use App\Livewire\Admin\Message\ManageMessage;
+use App\Livewire\Student\ViewCourse;
+use App\Livewire\Student\MyCourse;
+use App\Livewire\Admin\Portfolio\CreatePortfolio;
+use App\Livewire\Admin\Portfolio\ManagePortfolio;
+use App\Livewire\Admin\Message\CreateMessage;
+use App\Livewire\Admin\Message\ManageMessage;
 use App\Livewire\Admin\Workshops\CreateWorkshop;
 use App\Livewire\Admin\Workshops\ManageWorkshop;
 use App\Livewire\Admin\Course\ManageCourse;
 use App\Livewire\Admin\Course\ShowCourse;
 use App\Livewire\Admin\Certificate\CertificateEligibility;
+use App\Livewire\Admin\Course\LessonManager;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
 use App\Livewire\Public\Contact\ContactPage;
@@ -261,15 +262,16 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
     Route::prefix('v2/admin')->group(function () {
         Route::get('/category', ManageCategory::class)->name('admin.category');
         Route::get('/student', ManageStudent::class)->name('admin.student');
-        Route::get('/student/{id}',ViewStudent::class)->name('admin.student.view');
-        Route::get('/course',InsertCourse::class)->name('admin.course');
-        Route::get('/course/update/{courseId}',UpdateCourse::class)->name('admin.course.update');
-        Route::get('/course/show/{courseId}',ShowCourse::class)->name('admin.course.show');
-        Route::get('/course/manage',ManageCourse::class)->name('admin.course.manage');
         Route::get('/student/{id}', ViewStudent::class)->name('admin.student.view');
         Route::get('/course', InsertCourse::class)->name('admin.course');
         Route::get('/course/update/{courseId}', UpdateCourse::class)->name('admin.course.update');
-        
+        Route::get('/course/show/{courseId}', ShowCourse::class)->name('admin.course.show');
+        Route::get('/course/manage', ManageCourse::class)->name('admin.course.manage');
+        Route::get('/student/{id}', ViewStudent::class)->name('admin.student.view');
+        Route::get('/course', InsertCourse::class)->name('admin.course');
+        Route::get('/course/update/{courseId}', UpdateCourse::class)->name('admin.course.update');
+        Route::get('/admin/courses/{chapter}/lessons', LessonManager::class)->name('admin.courses.chapters.lessons');
+
         // Assignment Routes
         Route::get('/assignment', CreateAssignment::class)->name('admin.assignment');
         Route::get('/assignment/manage', ManageAssignment::class)->name('admin.assignment.manage');
@@ -291,14 +293,14 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/portfolio', CreatePortfolio::class)->name('admin.portfolio.create');
         Route::get('/portfolio/manage', ManagePortfolio::class)->name('admin.portfolio.index');
 
-       //Message Route
-       Route::get('/message',CreateMessage::class)->name('admin.message.create');
-       Route::get('/message/manage', ManageMessage::class)->name('admin.message.index');
-        
-    //    certificate
-    Route::get('/certificate',CertificateEligibility::class)->name('admin.certificate');
-        });
+        //Message Route
+        Route::get('/message', CreateMessage::class)->name('admin.message.create');
+        Route::get('/message/manage', ManageMessage::class)->name('admin.message.index');
+
+        //    certificate
+        Route::get('/certificate', CertificateEligibility::class)->name('admin.certificate');
     });
+});
 
 
 Route::prefix('v2')->group(function () {
@@ -315,7 +317,6 @@ Route::prefix('v2')->group(function () {
         Route::get('/explore-courses', ExploreCourse::class)->name('student.exploreCourses');
         Route::get('/view-courses/{courseId}', ViewCourse::class)->name('student.viewCourses');
         Route::get('/my-courses', MyCourse::class)->name('student.myCourses');
-
     });
     //working here for public routes
     Route::prefix("public")->group(function () {
@@ -390,5 +391,4 @@ Route::prefix("v3")->group(function () {
     // view Workshops
     // Auth works
     Route::get('/', NewHome::class)->name('public.homepage');
-
 });
