@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Livewire\Admin\Course;
+
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\Course;
@@ -8,15 +10,25 @@ use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 
-#[Layout('components.layouts.admin')] 
-#[Title('Manage Students')]
-class UpdateCourse extends Component{
+#[Layout('components.layouts.admin')]
+#[Title('Update Course')]
+class UpdateCourse extends Component
+{
     use WithFileUploads;
 
     public Course $course;
-    public $title, $course_code, $description, $duration, $instructor, $fees, $discounted_fees, $category_id, $tempImage;
-    public $categories=[];
-    public $isPublished = false;
+    public string $title;
+    public string $description;
+    public int $duration;
+    public string $instructor;
+    public float $fees;
+    public float $discounted_fees;
+    public string $course_code;
+    public int $category_id;
+    public $tempImage;
+    public $categories;
+    public bool $isPublished = false;
+    public $previewImage = null;
 
     protected $rules = [
         'title' => 'required',
@@ -26,7 +38,8 @@ class UpdateCourse extends Component{
         'fees' => 'required|numeric|min:0',
         'discounted_fees' => 'required|numeric|min:0',
         'category_id' => 'required|exists:categories,id',
-        'tempImage' => 'nullable|image|max:2048'
+        'course_code' => 'required',
+        'tempImage' => 'nullable|image|max:2048',
     ];
 
     public function mount($courseId)
@@ -37,22 +50,40 @@ class UpdateCourse extends Component{
         $this->categories = Category::all();
     }
 
+    public function updatedTempImage()
+    {
+        try {
+            $this->validateOnly('tempImage');
+            $this->previewImage = $this->tempImage->temporaryUrl();
+        } catch (\Exception $e) {
+            $this->previewImage = null;
+        }
+    }
+
     public function saveField($field)
     {
         $this->validateOnly($field);
 
-        if ($field === 'tempImage' && $this->tempImage) {
-            if ($this->course->course_image) {
-                Storage::disk('public')->delete($this->course->course_image);
+        if ($field === 'tempImage') {
+            if ($this->tempImage) {
+                if ($this->course->course_image) {
+                    Storage::disk('public')->delete($this->course->course_image);
+                }
+                $filePath = $this->tempImage->store('course_images', 'public');
+                $this->course->update(['course_image' => $filePath]);
+                $this->previewImage = null; // Reset preview
+                session()->flash('message', 'Course image updated successfully.');
             }
-            $filePath = $this->tempImage->store('course_images', 'public');
-            $this->course->update(['course_image' => $filePath]);
         } else {
             $this->course->update([$field => $this->$field]);
+            session()->flash('message', ucfirst($field) . ' updated successfully.');
+            
+            if ($field === 'description') {
+                $this->dispatch('descriptionSaved');
+            }
         }
+        
         $this->checkAndPublish();
-        session()->flash('message', ucfirst($field) . ' updated successfully.');
-     
     }
 
     public function checkAndPublish()
@@ -65,6 +96,7 @@ class UpdateCourse extends Component{
             $this->course->fees &&
             $this->course->discounted_fees &&
             $this->course->category_id &&
+            $this->course->course_code &&
             $this->course->course_image
         ) {
             $this->course->update(['published' => true]);
@@ -76,6 +108,12 @@ class UpdateCourse extends Component{
     {
         $this->course->update(['published' => !$this->course->published]);
         $this->isPublished = !$this->isPublished;
+        
+        if ($this->isPublished) {
+            session()->flash('message', 'Course published successfully.');
+        } else {
+            session()->flash('message', 'Course unpublished successfully.');
+        }
     }
 
     public function render()
@@ -83,6 +121,3 @@ class UpdateCourse extends Component{
         return view('livewire.admin.course.update-course');
     }
 }
-
-
-
