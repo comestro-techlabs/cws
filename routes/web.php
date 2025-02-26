@@ -22,6 +22,7 @@ use App\Livewire\Admin\Assignment\CreateAssignment;
 use App\Livewire\Admin\Assignment\EditAssignment;
 use App\Livewire\Admin\Assignment\ManageAssignment;
 use App\Livewire\Admin\Assignment\SingleViewAssignment;
+use App\Livewire\Admin\ManagePayment;
 use App\Livewire\Admin\Student\ManageStudent;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ExamController;
@@ -293,6 +294,9 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
        //Message Route
        Route::get('/message',CreateMessage::class)->name('admin.message.create');
        Route::get('/message/manage', ManageMessage::class)->name('admin.message.index');
+
+       //payment Routes
+         Route::get('/payment', ManagePayment::class)->name('admin.manage-payment');
         
     //    certificate
     Route::get('/certificate',CertificateEligibility::class)->name('admin.certificate');
