@@ -7,6 +7,7 @@ use Livewire\WithPagination;
 use App\Models\Course;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Layout;
 
 class ExploreCourse extends Component
 {
@@ -28,7 +29,7 @@ class ExploreCourse extends Component
     }
     
 
-
+    #[Layout('components.layouts.student')]
     public function mount()
     {
         $userId = Auth::id();

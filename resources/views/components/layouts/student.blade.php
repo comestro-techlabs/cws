@@ -10,7 +10,7 @@
     @livewireStyles
 </head>
 
-<body>
+<body >
     <div class="drawer lg:drawer-open">
         <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
         <div class="drawer-content flex flex-col items-center justify-center">
@@ -18,14 +18,13 @@
             <label for="my-drawer-2" class="btn btn-primary drawer-button lg:hidden">
                 Open drawer
             </label>
+            {{ $slot }}
         </div>
         <div class="drawer-side">
             <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label>
             <aside id="default-sidebar"
                 class="fixed top-0 bg-gray-50 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
                 aria-label="Sidebar">
-
-
                 <div class=" bg-gray-50">
 
                     <div class="flex flex-col items-center pb-2 mt-3">
@@ -62,7 +61,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('student.course') }}"
+                            <a href="{{ route('student.exploreCourses') }}" wire:navigate
                                 class="flex items-center p-2 text-gray-900 hover:text-indigo-900 bg-transparent rounded-sm hover:bg-blue-200 group">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                     class="size-6 fill-sky-600">
@@ -238,11 +237,13 @@
                         </li>
                     </ul>
                 </div>
-
             </aside>
+            
         </div>
+    
     </div>
-    {{ $slot }}
+
+
     @livewireScripts
 </body>
 
