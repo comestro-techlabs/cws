@@ -59,7 +59,7 @@ use App\Livewire\Public\Home;
 use App\Livewire\Public\Portfolio\OurPortfolio;
 use App\Livewire\Public\Viewallcourses\AllCourses;
 use App\Livewire\Public\Workshops\Workshop;
-
+use App\Livewire\Student\Dashboard\StudentDashboard;
 // v3
 use App\Livewire\V3\Admin\Dashboard;
 use App\Livewire\V3\Public\NewHome;
@@ -310,7 +310,8 @@ Route::prefix('v2')->group(function () {
         Route::get('/portfolio', OurPortfolio::class)->name('v2.public.portfolio');
     });
 
-    Route::prefix("student")->group(function () {
+    Route::prefix("student")->group(function(){
+        Route::get('/dashboard',StudentDashboard::class )->name('v2.student.dashboard');
         Route::get('/explore-courses', ExploreCourse::class)->name('student.exploreCourses');
         Route::get('/view-courses/{courseId}', ViewCourse::class)->name('student.viewCourses');
         Route::get('/my-courses', MyCourse::class)->name('student.myCourses');
