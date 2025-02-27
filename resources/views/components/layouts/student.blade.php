@@ -11,19 +11,46 @@
 </head>
 
 <body >
+   
+
     <div class="drawer lg:drawer-open">
-        <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
-        <div class="drawer-content flex flex-col items-center justify-center">
-            <!-- Page content here -->
-            <label for="my-drawer-2" class="btn btn-primary drawer-button lg:hidden">
-                Open drawer
-            </label>
-            {{ $slot }}
-        </div>
-        <div class="drawer-side">
-            <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label>
-            <aside id="default-sidebar"
-                class="fixed top-0 bg-gray-50 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+  <input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
+  <div class="drawer-content flex flex-col">
+    <!-- Navbar -->
+    <div class="navbar bg-base-300 w-full">
+      <div class="flex-none lg:hidden">
+        <label for="my-drawer-3" aria-label="open sidebar" class="btn btn-square btn-ghost">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            class="inline-block h-6 w-6 stroke-current">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </label>
+      </div>
+      <div class="mx-2 flex-1 px-2">Navbar Title</div>
+      <div class="hidden flex-none lg:block">
+        <ul class="menu menu-horizontal">
+          <!-- Navbar menu content here -->
+          <li><a>Navbar Item 1</a></li>
+          <li><a>Navbar Item 2</a></li>
+        </ul>
+      </div>
+    </div>
+    <!-- Page content here -->
+    {{ $slot }}
+  </div>
+  <div class="drawer-side">
+    <label for="my-drawer-3" aria-label="close sidebar" class="drawer-overlay"></label>
+    <ul class="menu bg-base-200 min-h-full w-80 p-4">
+      <!-- Sidebar content here -->
+      <aside id="default-sidebar"
+                class="fixed top-0 bg-gray-50 left-0 z-40 w-80 h-screen transition-transform -translate-x-full sm:translate-x-0"
                 aria-label="Sidebar">
                 <div class=" bg-gray-50">
 
@@ -61,7 +88,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('student.exploreCourses') }}" wire:navigate
+                            <a href="{{ route('v2.student.exploreCourses') }}" wire:navigate
                                 class="flex items-center p-2 text-gray-900 hover:text-indigo-900 bg-transparent rounded-sm hover:bg-blue-200 group">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                     class="size-6 fill-sky-600">
@@ -80,7 +107,7 @@
 
 
                         <li>
-                            <a href="{{ route('student.billing') }}"
+                            <a href="{{ route('v2.student.billing') }}" wire:navigate
                                 class="flex items-center p-2 text-gray-900 hover:text-indigo-900 bg-transparent rounded-sm hover:bg-blue-200 group">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                     class="size-6 fill-amber-600">
@@ -238,10 +265,9 @@
                     </ul>
                 </div>
             </aside>
-            
-        </div>
-    
-    </div>
+    </ul>
+  </div>
+</div>
 
 
     @livewireScripts

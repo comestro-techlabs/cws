@@ -5,6 +5,7 @@ use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Course;
 use App\Models\Batch;
+use Livewire\Attributes\Layout;
 
 class MyCourse extends Component
 {
@@ -27,7 +28,7 @@ class MyCourse extends Component
         $this->mount(); 
         session()->flash('success', 'Batch updated successfully!');
     }
-
+    #[Layout('components.layouts.student')]
     public function render()
     {
         return view('livewire.student.my-course');

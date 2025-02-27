@@ -83,7 +83,7 @@
 
                     <div class="dropdown-menu absolute hidden bg-white shadow-lg rounded-md mt-1 w-48 ring-1 ring-black ring-opacity-5 focus:outline-none" aria-labelledby="menu-button">
                         <div class="py-1">
-                            <a href="{{ route('student.dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">My Learning</a>
+                            <a href="{{ route('v2.student.dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">My Learning</a>
                             <a wire:click="logout"  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</a>
                         </div>
                     </div>
