@@ -17,6 +17,8 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\WorkshopController;
+
+
 use App\Livewire\Admin\Assignment\AssignmentCourse;
 use App\Livewire\Admin\Assignment\CreateAssignment;
 use App\Livewire\Admin\Assignment\EditAssignment;
@@ -50,6 +52,13 @@ use App\Livewire\Admin\Course\ManageCourse;
 use App\Livewire\Admin\Course\ShowCourse;
 use App\Livewire\Admin\Certificate\CertificateEligibility;
 use App\Livewire\Admin\Course\LessonManager;
+use App\Livewire\Admin\Exam\ManageExam;
+use App\Livewire\Admin\Exam\ExamQuestions;
+use App\Livewire\Admin\Quiz\ManageQuiz;
+use App\Livewire\Admin\Result\ShowExams;
+use App\Livewire\Admin\Result\ShowExamUser;
+use App\Livewire\Admin\Result\AttemptResults;
+use App\Livewire\Admin\Result\AttemptDetails;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
 use App\Livewire\Public\Contact\ContactPage;
@@ -257,11 +266,15 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::post('/placed-students/{placedStudent}/toggle-status', [PlacedStudentController::class, 'toggleStatus'])->name('placedStudent.toggleStatus');
     });
 
+   
+
     // Version 2 Routes (Livewire)
     Route::prefix('v2/admin')->group(function () {
         Route::get('/category', ManageCategory::class)->name('admin.category');
         Route::get('/student', ManageStudent::class)->name('admin.student');
         Route::get('/student/{id}', ViewStudent::class)->name('admin.student.view');
+
+        //course routes
         Route::get('/course', InsertCourse::class)->name('admin.course');
         Route::get('/course/update/{courseId}', UpdateCourse::class)->name('admin.course.update');
         Route::get('/course/show/{courseId}', ShowCourse::class)->name('admin.course.show');
@@ -271,6 +284,17 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/course/update/{courseId}', UpdateCourse::class)->name('admin.course.update');
         Route::get('/admin/courses/{chapter}/lessons', LessonManager::class)->name('admin.courses.chapters.lessons');
 
+        //exam routes
+        Route::get('/exam', ManageExam::class)->name('admin.exam');
+        Route::get('/exam/{examId}/questions', ExamQuestions::class)->name('admin.exam.questions');
+        Route::get('/quiz', ManageQuiz::class)->name(name: 'admin.quiz');
+
+        //result routes
+        Route::get('/results/exams', ShowExams::class)->name('admin.results.exams');
+        Route::get('/results/exam-user/{examId}', ShowExamUser::class)->name('admin.results.exam-user');
+        Route::get('/results/attempts/{examId}/{userId}', AttemptResults::class)->name('admin.results.attempts');
+        Route::get('/results/attempt-details/{examId}/{userId}/{attempt}', AttemptDetails::class)->name('admin.results.attempt-details');  
+        
         // Assignment Routes
         Route::get('/assignment', CreateAssignment::class)->name('admin.assignment');
         Route::get('/assignment/manage', ManageAssignment::class)->name('admin.assignment.manage');
