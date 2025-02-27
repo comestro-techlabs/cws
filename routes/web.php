@@ -24,6 +24,8 @@ use App\Livewire\Admin\Assignment\CreateAssignment;
 use App\Livewire\Admin\Assignment\EditAssignment;
 use App\Livewire\Admin\Assignment\ManageAssignment;
 use App\Livewire\Admin\Assignment\SingleViewAssignment;
+use App\Livewire\Admin\ManagePayment;
+use App\Livewire\Admin\ManageEnquiry;
 use App\Livewire\Admin\Student\ManageStudent;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ExamController;
@@ -68,6 +70,8 @@ use App\Livewire\Public\Home;
 use App\Livewire\Public\Portfolio\OurPortfolio;
 use App\Livewire\Public\Viewallcourses\AllCourses;
 use App\Livewire\Public\Workshops\Workshop;
+use App\Livewire\Student\Billing\ViewBilling;
+use App\Livewire\Student\Dashboard\ManageAssignments;
 use App\Livewire\Student\Dashboard\StudentDashboard;
 // v3
 use App\Livewire\V3\Admin\Dashboard;
@@ -322,6 +326,10 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
 
         //    certificate
         Route::get('/certificate', CertificateEligibility::class)->name('admin.certificate');
+        //enquiry
+        Route::get('/enquiry', ManageEnquiry::class)->name('admin.manage.enquiry');
+        // payment 
+        Route::get('/payment', ManagePayment::class)->name('admin.paymnet-manage');
     });
 });
 
@@ -335,10 +343,13 @@ Route::prefix('v2')->group(function () {
     });
 
     Route::prefix("student")->group(function(){
+        Route::get('/billing',ViewBilling::class )->name('v2.student.billing');
         Route::get('/dashboard',StudentDashboard::class )->name('v2.student.dashboard');
+        Route::get('/assignments/view', ManageAssignments::class)->name('v2.student.assignments-view');
+
         Route::get('/explore-courses', ExploreCourse::class)->name('student.exploreCourses');
         Route::get('/view-courses/{courseId}', ViewCourse::class)->name('student.viewCourses');
-        Route::get('/my-courses', MyCourse::class)->name('student.myCourses');
+        Route::get('/my-courses', MyCourse::class)->name('v2.student.mycourses');
     });
     //working here for public routes
     Route::prefix("public")->group(function () {

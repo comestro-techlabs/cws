@@ -329,7 +329,7 @@ class StudentController extends Controller
         return redirect()->route('student.dashboard')->with('success', 'You have successfully enrolled in the course.');
     }
     public function billing()
-    {
+    { 
         if (!Auth::check()) {
             return redirect()->route('auth.login')->with('error', 'You must be logged in to access this page');
         }
