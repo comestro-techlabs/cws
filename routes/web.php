@@ -62,6 +62,7 @@ use App\Livewire\Public\Portfolio\OurPortfolio;
 use App\Livewire\Public\Viewallcourses\AllCourses;
 use App\Livewire\Public\Workshops\Workshop;
 use App\Livewire\Student\Billing\ViewBilling;
+use App\Livewire\Student\Dashboard\ManageAssignments;
 use App\Livewire\Student\Dashboard\StudentDashboard;
 // v3
 use App\Livewire\V3\Admin\Dashboard;
@@ -320,6 +321,8 @@ Route::prefix('v2')->group(function () {
     Route::prefix("student")->group(function(){
         Route::get('/billing',ViewBilling::class )->name('v2.student.billing');
         Route::get('/dashboard',StudentDashboard::class )->name('v2.student.dashboard');
+        Route::get('/assignments/view', ManageAssignments::class)->name('v2.student.assignments-view');
+
         Route::get('/explore-courses', ExploreCourse::class)->name('student.exploreCourses');
         Route::get('/view-courses/{courseId}', ViewCourse::class)->name('student.viewCourses');
         Route::get('/my-courses', MyCourse::class)->name('student.myCourses');
