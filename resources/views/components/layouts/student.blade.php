@@ -135,7 +135,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('student.coursePurchase') }}"
+                            <a href="{{ route('v2.student.mycourses') }}" wire:navigate
                                 class="flex items-center p-2 text-gray-900 hover:text-indigo-900 bg-transparent rounded-sm hover:bg-blue-200 group">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                     class="size-6 fill-teal-600">
@@ -152,7 +152,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('student.assignments-view') }}"
+                            <a href="{{ route('v2.student.assignments-view') }}" wire:navigate
                                 class="flex items-center p-2 text-gray-900 hover:text-indigo-900 bg-transparent rounded-sm hover:bg-blue-200 group">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                     class="size-6 fill-emerald-600">

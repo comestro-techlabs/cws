@@ -325,7 +325,7 @@ Route::prefix('v2')->group(function () {
 
         Route::get('/explore-courses', ExploreCourse::class)->name('student.exploreCourses');
         Route::get('/view-courses/{courseId}', ViewCourse::class)->name('student.viewCourses');
-        Route::get('/my-courses', MyCourse::class)->name('student.myCourses');
+        Route::get('/my-courses', MyCourse::class)->name('v2.student.mycourses');
     });
     //working here for public routes
     Route::prefix("public")->group(function () {
