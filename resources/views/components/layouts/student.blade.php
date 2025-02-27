@@ -182,7 +182,7 @@
                         </li>
                         @endif
                         <li>
-                            <a href="{{ route('student.course.quiz') }}"
+                            <a href="{{ route('v2.student.takeExam') }}" wire:navigate
                                 class="flex items-center p-2 text-gray-900 hover:text-indigo-900 bg-transparent rounded-sm hover:bg-blue-200 group">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                     class="size-6 fill-pink-600">

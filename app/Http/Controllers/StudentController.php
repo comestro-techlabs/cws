@@ -387,7 +387,7 @@ class StudentController extends Controller
         return view('studentdashboard.viewbilling', compact('user', 'payment'));
     }
         public function courseQuiz()
-    {
+    { 
         if (!Auth::check()) {
             return redirect()->route('auth.login')->with('error', 'You must be logged in to access this page');
         }

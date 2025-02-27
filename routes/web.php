@@ -73,6 +73,7 @@ use App\Livewire\Public\Workshops\Workshop;
 use App\Livewire\Student\Billing\ViewBilling;
 use App\Livewire\Student\Dashboard\ManageAssignments;
 use App\Livewire\Student\Dashboard\StudentDashboard;
+use App\Livewire\Student\Dashboard\Takeexam\Exam;
 // v3
 use App\Livewire\V3\Admin\Dashboard;
 use App\Livewire\V3\Public\NewHome;
@@ -346,6 +347,7 @@ Route::prefix('v2')->group(function () {
         Route::get('/billing',ViewBilling::class )->name('v2.student.billing');
         Route::get('/dashboard',StudentDashboard::class )->name('v2.student.dashboard');
         Route::get('/assignments/view', ManageAssignments::class)->name('v2.student.assignments-view');
+        Route::get('/take-exam', Exam::class)->name('v2.student.takeExam');
 
         Route::get('/explore-courses', ExploreCourse::class)->name('student.exploreCourses');
         Route::get('/view-courses/{courseId}', ViewCourse::class)->name('student.viewCourses');
