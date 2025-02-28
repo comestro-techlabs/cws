@@ -77,7 +77,6 @@ use App\Livewire\Student\Dashboard\ManageAssignments;
 use App\Livewire\Student\Dashboard\StudentDashboard;
 use App\Livewire\Student\Dashboard\Takeexam\Exam;
 // v3
-use App\Livewire\V3\Admin\Dashboard;
 use App\Livewire\V3\Public\NewHome;
 use App\Models\Portfolio;
 
@@ -278,10 +277,10 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
     // Version 2 Routes (Livewire)
     Route::prefix('v2/admin')->group(function () {
         Route::get('/dashboard', Dashboad::class)->name('admin.dashboard');
+        Route::get('/logout', [Dashboad::class, 'logout'])->name('admin.logout');
         Route::get('/category', ManageCategory::class)->name('admin.category');
         Route::get('/student', ManageStudent::class)->name('admin.student');
         Route::get('/student/{id}', ViewStudent::class)->name('admin.student.view');
-
         //course routes
         Route::get('/course', InsertCourse::class)->name('admin.course');
         Route::get('/course/update/{courseId}', UpdateCourse::class)->name('admin.course.update');
