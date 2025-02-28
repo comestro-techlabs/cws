@@ -23,6 +23,7 @@ class InsertPlacedStudent extends Component
         'position' => 'required|string|max:255',
         'image' => 'nullable|image|max:2048', // 2MB max
     ];
+    #[Layout('components.layouts.admin')]
 
     public function mount(?PlacedStudent $placedStudent = null)
     {

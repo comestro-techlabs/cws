@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\PlacedStudent;
 
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 use App\Models\PlacedStudent;
 use Livewire\WithPagination;
@@ -15,6 +16,8 @@ class CallingPlacedStudent extends Component
     public $perPage = 10;
 
     // Toggle status
+    #[Layout('components.layouts.admin')]
+
     public function toggleStatus($id)
     {
         try {

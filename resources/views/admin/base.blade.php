@@ -15,27 +15,19 @@
     @livewireStyles
 </head>
 
-<body class="">
-
-
-    <x-admin-header />
-
-    <aside id="logo-sidebar"
-        class="fixed top-0 left-0 z-40 w-64 h-screen pt-12 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0"
-        aria-label="Sidebar">
-        <div class="h-full pb-4 overflow-y-auto bg-white ">
-            <x-side-nav />
-        </div>
-    </aside>
-
-    <div class="p-4 sm:ml-64">
-        <br>
-        <br>
-        <br>
-        @section('content')
-
-        @show()
+<body x-data="{ sidebarOpen: true }">
+<div :class="sidebarOpen ? 'block' : 'hidden' "
+class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 bg-white p-4 border-r">
+        <x-side-nav />
     </div>
+    
+<main :class="{'sm:ml-64': sidebarOpen, 'ml-0': !sidebarOpen}" class="flex-1  p-4 transition-all duration-300 p-4 sm:ml-64">
+
+<x-admin-header />
+
+@section('content')
+@show
+</main>
 
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

@@ -25,6 +25,7 @@ class ManagePortfolio extends Component
     public $description;
     public $isEditing = false;
 
+    #[Layout('components.layouts.admin')]
     public function mount()
     {
         $this->portfolios = Portfolio::all();
