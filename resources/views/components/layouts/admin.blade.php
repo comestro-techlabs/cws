@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite('resources/css/app.css')
     <title>{{ $title ?? 'Admin Dashboard' }}</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     @livewireStyles
     <!-- Added basic styles -->
    
@@ -318,7 +317,7 @@
         </div>
     </div>
 
-    <main :class="{'sm:ml-64': sidebarOpen, 'ml-0': !sidebarOpen}" class="flex-1 p-4 transition-all duration-300 sm:ml-64">
+    <main :class="{'sm:ml-64': sidebarOpen, 'ml-0': !sidebarOpen}" class="flex-1 p-4 transition-all duration-300 sm:ml-72">
         <!-- component -->
         <x-admin-header />
 
