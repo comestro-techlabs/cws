@@ -30,5 +30,10 @@
     </div>
     @livewireScripts
 </body>
-
+<script>
+    document.getElementById('menu-button').addEventListener('click', function() {
+        const dropdown = document.querySelector('.dropdown-menu');
+        dropdown.classList.toggle('hidden');
+    });
+</script>
 </html>
