@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Layout;
 
 
 
@@ -45,6 +46,7 @@ class EditProfile extends Component
 
         session()->flash('success', 'Profile updated successfully!');
     }
+    #[Layout('components.layouts.student')]
     public function render()
     {
         return view('livewire.student.edit-profile');

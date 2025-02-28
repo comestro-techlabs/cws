@@ -353,7 +353,7 @@ Route::prefix('v2')->group(function () {
         Route::get('/explore-courses', ExploreCourse::class)->name('student.exploreCourses');
         Route::get('/view-courses/{courseId}', ViewCourse::class)->name('student.viewCourses');
         Route::get('/my-courses', MyCourse::class)->name('v2.student.mycourses');
-        Route::get('/edit-profile', EditProfile::class)->name('edit.profile');
+        Route::get('/edit-profile', EditProfile::class)->name('student.v2edit.profile');
         
     });
     //working here for public routes
