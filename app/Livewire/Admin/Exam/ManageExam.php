@@ -6,6 +6,7 @@ use App\Models\Batch;
 use App\Models\Course;
 use App\Models\Exam;
 use Illuminate\Support\Facades\Mail;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -32,6 +33,7 @@ class ManageExam extends Component
         'exam_date' => 'required|date|after_or_equal:today',
         'status' => 'nullable|boolean'
     ];
+    #[Layout('components.layouts.admin')]
 
     public function mount()
     {

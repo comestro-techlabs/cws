@@ -24,6 +24,7 @@ use App\Livewire\Admin\Assignment\CreateAssignment;
 use App\Livewire\Admin\Assignment\EditAssignment;
 use App\Livewire\Admin\Assignment\ManageAssignment;
 use App\Livewire\Admin\Assignment\SingleViewAssignment;
+use App\Livewire\Admin\Dashboad;
 use App\Livewire\Admin\ManagePayment;
 use App\Livewire\Admin\ManageEnquiry;
 use App\Livewire\Admin\Student\ManageStudent;
@@ -276,6 +277,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
 
     // Version 2 Routes (Livewire)
     Route::prefix('v2/admin')->group(function () {
+        Route::get('/dashboard', Dashboad::class)->name('admin.dashboard');
         Route::get('/category', ManageCategory::class)->name('admin.category');
         Route::get('/student', ManageStudent::class)->name('admin.student');
         Route::get('/student/{id}', ViewStudent::class)->name('admin.student.view');
