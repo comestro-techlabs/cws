@@ -41,7 +41,7 @@ class PaymentController extends Controller
 
             $currentMonth = Carbon::now()->month;
             $year = Carbon::now()->year;
-            $now = Carbon::now()->subMinutes(15);
+            $now = Carbon::now()->subMinutes(2);
 
             $deleted = Payment::where('student_id', $studentId)
                 ->whereNotNull('course_id')
@@ -59,7 +59,7 @@ class PaymentController extends Controller
             if ($existingPayment) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Please wait for 15 minutes to attempt again',
+                    'message' => 'Please wait for 2 minutes to attempt again',
                     'payment_id' => $existingPayment->id,
                     'order_id' => $existingPayment->order_id,
                 ], 400);
