@@ -8,18 +8,23 @@ use App\Models\Course;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
-
+#[Layout('components.layouts.admin')]
+#[Title('Manage Assignments')]
 class ManageAssignment extends Component
 {
     public $course_id = '';
-
-    #[Layout('components.layouts.admin')]
+    public $search = '';
+    public $perPage = 10 ;
+    protected $paginationTheme = 'tailwind';
     public function render()
     {
         $assignments = Assignments::when($this->course_id, fn ($query) => 
             $query->where('course_id', $this->course_id)
-        )->with(['course', 'batch'])->get();
+        )->when($this->search, fn ($query) => 
+        $query->where('title', 'like', '%' . $this->search . '%')
+    )->with(['course', 'batch'])->paginate($this->perPage);
 
         $courses = Course::all();
         $batchs = Batch::all(); 
@@ -57,6 +62,7 @@ class ManageAssignment extends Component
     public function clearFilter()
     {
         $this->course_id = '';
+        $this->search = '';
     }
 
     private function notifyStudents(Assignments $assignment)

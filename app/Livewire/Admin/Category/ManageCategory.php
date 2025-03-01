@@ -21,7 +21,7 @@ class ManageCategory extends Component
     public $cat_description = '';
     public $isModalOpen = false;
 
-    public $perPage = 10;
+    public $perPage = 10 ;
     protected $paginationTheme = 'tailwind';
     public function store()
     {        

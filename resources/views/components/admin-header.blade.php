@@ -1,11 +1,16 @@
 <nav
     class="font-sans flex text-center content-center sm:flex-row sm:text-left sm:justify-between py-2 px-6 bg-white shadow sm:items-baseline w-full rounded-full">
-    <div class="mb-2 sm:mb-0 flex flex-row items-center">
-        <button @click="sidebarOpen = !sidebarOpen" class="lg:hidden p-2 focus:outline-none">
-            <img class="h-8 w-8 self-center " src="{{asset('apple-touch-icon.png')}}" />
-        </button>
-        <div class="hidden md:block">
-            <img class="h-4 w-28 self-center " src="{{asset('assets/LearnSyntax.png')}}" />
+    <div class="mb-2 sm:mb-0 flex flex-row items-center">       
+
+            <div class="mb-2 sm:mb-0 flex flex-row">
+                <!-- Hamburger button (only on small screens) -->
+                <button @click="sidebarOpen = !sidebarOpen" class=" p-2 focus:outline-none">
+                <img class="h-8 w-8 self-center " src="{{asset('apple-touch-icon.png')}}" />
+
+                </button>
+                <img class="h-4 w-28 self-center hidden md:block" src="{{asset('assets/LearnSyntax.png')}}" />
+                
+            </div>
 
         </div>
     </div>

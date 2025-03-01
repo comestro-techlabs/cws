@@ -315,9 +315,9 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/workshops/manage', ManageWorkshop::class)->name('admin.workshops.index');
 
         // Placed Student Routes
-        Route::get('/placedstudent', InsertPlacedStudent::class)->name('admin.placedstudent.create');
-        Route::get('/placedstudent/{placedStudent}', InsertPlacedStudent::class)->name('admin.placedstudent.edit');
+        // Route::get('/placedstudent/create', InsertPlacedStudent::class)->name('admin.placedstudent.create');
         Route::get('/placedstudent/manage', CallingPlacedStudent::class)->name('admin.placedstudent.index');
+        Route::get('/placedstudent/{placedStudent?}', InsertPlacedStudent::class)->name('admin.placedstudent.edit')->whereNumber("placedStudent");
 
         // Portfolio Routes
         Route::get('/portfolio', CreatePortfolio::class)->name('admin.portfolio.create');

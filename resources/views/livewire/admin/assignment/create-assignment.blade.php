@@ -1,7 +1,7 @@
 <div class="min-h-screen">
-    <div class="mx-auto px-6">
+    <div class="mx-auto p-6">
         <div class="flex flex-wrap justify-between items-center p-4">
-            <h2 class="md:text-xl text-lg font-semibold text-slate-500 border-s-4 border-s-orange-400 pl-3 mb-5">
+            <h2 class="md:text-xl text-lg font-semibold text-slate-500 border-s-4 border-s-purple-800 pl-3 mb-5">
                 {{ $assignment ? 'Edit Assignment' : 'Create Assignment' }}
             </h2>
         </div>
@@ -82,12 +82,15 @@
 
           
 
-                <div class="text-center">
+                <div class="flex justify-end text-center gap-2">
                     <button type="submit" wire:loading.attr="disabled"
-                        class="bg-blue-500 text-white px-6 py-3 rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50">
+                        class="bg-purple-800 text-white px-6 py-3 rounded-md shadow hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50">
                         <span wire:loading.remove>{{ $assignment ? 'Update Assignment' : 'Create Assignment' }}</span>
                         <span wire:loading>{{ $assignment ? 'Updating...' : 'Creating...' }}</span>
                     </button>
+                   <a href="{{ route('admin.assignment.manage') }}" wire:navigate class="bg-gray-800 text-white px-6 py-3 rounded-md shadow hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50">
+                        Cancel</a> 
+                    
                 </div>
             </form>
         </div>
