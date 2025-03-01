@@ -346,15 +346,15 @@ Route::prefix('v2')->group(function () {
     });
 
     Route::prefix("student")->group(function(){
-        Route::get('/billing',ViewBilling::class )->name('v2.student.billing');
-        Route::get('/dashboard',StudentDashboard::class )->name('v2.student.dashboard');
-        Route::get('/assignments/view', ManageAssignments::class)->name('v2.student.assignments-view');
-        Route::get('/take-exam', Exam::class)->name('v2.student.takeExam');
+        Route::get('/billing',ViewBilling::class )->name('student.billing');
+        Route::get('/dashboard',StudentDashboard::class )->name('student.dashboard');
+        Route::get('/assignments/view', ManageAssignments::class)->name('student.assignments-view');
+        Route::get('/take-exam', Exam::class)->name('student.takeExam');
 
         Route::get('/explore-courses', ExploreCourse::class)->name('student.exploreCourses');
         Route::get('/view-courses/{courseId}', ViewCourse::class)->name('student.viewCourses');
-        Route::get('/my-courses', MyCourse::class)->name('v2.student.mycourses');
-        Route::get('/edit-profile', EditProfile::class)->name('student.v2edit.profile');
+        Route::get('/my-courses', MyCourse::class)->name('student.mycourses');
+        Route::get('/edit-profile', EditProfile::class)->name('student.edit.profile');
         
     });
     //working here for public routes

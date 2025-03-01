@@ -20,7 +20,7 @@
     <!-- Sidebar -->
     <div x-show="sidebarOpen"
          :class="{'translate-x-0': sidebarOpen, '-translate-x-full': !sidebarOpen}"
-         class="fixed top-0 left-0 z-40 w-64 h-screen bg-white p-4 border-r overflow-x-hidden transform transition-transform duration-300 ease-in-out sm:translate-x-0 sm:block">
+         class="fixed top-0 left-0 z-40 w-64 h-screen bg-gray p-4 border-r overflow-x-hidden transform transition-transform duration-300 ease-in-out sm:translate-x-0 sm:block">
         <x-side-nav/>
     </div>
 
