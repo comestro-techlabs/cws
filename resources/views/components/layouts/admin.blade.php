@@ -31,9 +31,60 @@
         {{ $slot }}
     </main>
 
+    {{-- toastr --}}
+    {{-- <div class="flex justify-end items-center ">
+        <div
+            x-data="noticesHandler()"
+            class="fixed top-5 right-5 flex flex-col items-end space-y-3 p-4 z-50"
+            @notice.window="add($event.detail)"
+            style="pointer-events:none">
+            <template x-for="notice in notices" :key="notice.id">
+                <div
+                    x-show="visible.includes(notice)"
+                    x-transition:enter="transition ease-in duration-200"
+                    x-transition:enter-start="transform opacity-0 translate-x-5"
+                    x-transition:enter-end="transform opacity-100 translate-x-0"
+                    x-transition:leave="transition ease-out duration-500"
+                    x-transition:leave-start="transform opacity-100 translate-x-0"
+                    x-transition:leave-end="transform opacity-0 translate-x-5"
+                    @click="remove(notice.id)"
+                    class="rounded-lg px-4 py-3 w-72 bg-slate-100  shadow-lg text-black font-medium text-sm cursor-pointer flex items-center justify-between"
+                   
+                    style="pointer-events:all">
+                    <span x-text="notice.text"></span>
+                    <button @click="remove(notice.id)" class="ml-2 text-white font-bold">×</button>
+                </div>
+            </template>
+        </div>
+    </div> --}}
+
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    {{-- toastr --}}
+    {{-- <script>
+        function noticesHandler() {
+            return {
+                notices: [],
+                visible: [],
+                add(notice) {
+                    notice.id = Date.now();
+                    this.notices.push(notice);
+                    this.fire(notice.id);
+                },
+                fire(id) {
+                    this.visible.push(this.notices.find(notice => notice.id === id));
+                    setTimeout(() => {
+                        this.remove(id);
+                    }, 1000);
+                },
+                remove(id) {
+                    this.visible = this.visible.filter(notice => notice.id !== id);
+                },
+            };
+        }
+    </script> --}}
 
     <script>
         document.addEventListener('livewire:initialized', () => {

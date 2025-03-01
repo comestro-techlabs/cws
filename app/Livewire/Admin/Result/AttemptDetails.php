@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Admin\Result;
 
-use Livewire\Attributes\Layout;
+
 use Livewire\Component;
 use App\Models\Answer;
 use App\Models\Exam;

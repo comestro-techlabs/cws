@@ -4,33 +4,52 @@ namespace App\Livewire\Admin\Category;
 
 use Livewire\Component;
 use App\Models\Category as CategoryModel;
-
+use Livewire\Attributes\Validate;
 use Livewire\WithPagination;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 #[Layout('components.layouts.admin')]
-#[Title('Manage Category')]   
+#[Title('Single View Assignment')]   
 class ManageCategory extends Component
 {
     use WithPagination;
 
-    public $cat_title;
-    public $cat_slug;
-    public $cat_description;
+    #[Validate('required|string')]
+    public $cat_title = '';
 
+    #[Validate('required|string')]
+    public $cat_description = '';
+    public $isModalOpen = false;
 
+    public $perPage = 10;
+    protected $paginationTheme = 'tailwind';
     public function store()
     {        
-        $data = $this->validate(['cat_title' => 'required|string', 'cat_description' => 'required|string']);
-        CategoryModel::create($data);                    
+        $data = $this->validate();
+        CategoryModel::create([
+            'cat_title' => $this->cat_title,
+            'cat_description' => $this->cat_description,
+        ]);                    
         $this->reset(['cat_title', 'cat_description']);
-        $this->dispatch('notice', type: 'info', text: 'Category added successfully!');
+        $this->isModalOpen = false;
+        $this->dispatch('success', ['message' => "Category added successfully!"]);
+
+
     }
-    
+    public function openModal()
+    {
+        $this->isModalOpen = true;
+    }
+
+    public function closeModal()
+    {
+        $this->isModalOpen = false;
+        $this->reset(['cat_title', 'cat_description']);
+    }
     
     public function render()
     {
-        $categories = CategoryModel::paginate(4);
+        $categories = CategoryModel::paginate($this->perPage);
         return view('livewire.admin.category.manage-category')->with(compact('categories'));
     }
 
@@ -39,8 +58,6 @@ class ManageCategory extends Component
         $category = CategoryModel::find($id);
         if ($category) {
             $category->delete();
-            
-            // Dispatch event with message
             $this->dispatch('success', ['message' => "Category deleted successfully!"]);
         }
         
