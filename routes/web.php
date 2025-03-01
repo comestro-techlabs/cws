@@ -63,6 +63,7 @@ use App\Livewire\Admin\Result\ShowExams;
 use App\Livewire\Admin\Result\ShowExamUser;
 use App\Livewire\Admin\Result\AttemptResults;
 use App\Livewire\Admin\Result\AttemptDetails;
+use App\Livewire\Admin\Student\AttendanceScanner;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
 use App\Livewire\Public\Contact\ContactPage;
@@ -272,7 +273,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::post('/placed-students/{placedStudent}/toggle-status', [PlacedStudentController::class, 'toggleStatus'])->name('placedStudent.toggleStatus');
     });
 
-   
+
 
     // Version 2 Routes (Livewire)
     Route::prefix('v2/admin')->group(function () {
@@ -300,8 +301,8 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/results/exams', ShowExams::class)->name('admin.results.exams');
         Route::get('/results/exam-user/{examId}', ShowExamUser::class)->name('admin.results.exam-user');
         Route::get('/results/attempts/{examId}/{userId}', AttemptResults::class)->name('admin.results.attempts');
-        Route::get('/results/attempt-details/{examId}/{userId}/{attempt}', AttemptDetails::class)->name('admin.results.attempt-details');  
-        
+        Route::get('/results/attempt-details/{examId}/{userId}/{attempt}', AttemptDetails::class)->name('admin.results.attempt-details');
+
         // Assignment Routes
         Route::get('/assignment', CreateAssignment::class)->name('admin.assignment');
         Route::get('/assignment/manage', ManageAssignment::class)->name('admin.assignment.manage');
@@ -331,7 +332,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/certificate', CertificateEligibility::class)->name('admin.certificate');
         //enquiry
         Route::get('/enquiry', ManageEnquiry::class)->name('admin.manage.enquiry');
-        // payment 
+        // payment
         Route::get('/payment', ManagePayment::class)->name('admin.paymnet-manage');
     });
 });
@@ -355,7 +356,7 @@ Route::prefix('v2')->group(function () {
         Route::get('/view-courses/{courseId}', ViewCourse::class)->name('student.viewCourses');
         Route::get('/my-courses', MyCourse::class)->name('v2.student.mycourses');
         Route::get('/edit-profile', EditProfile::class)->name('student.v2edit.profile');
-        
+
     });
     //working here for public routes
     Route::prefix("public")->group(function () {
@@ -431,3 +432,6 @@ Route::prefix("v3")->group(function () {
     // Auth works
     Route::get('/', NewHome::class)->name('public.homepage');
 });
+
+
+Route::get("/admin/attendace", AttendanceScanner::class);
