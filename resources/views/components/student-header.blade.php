@@ -10,9 +10,6 @@
         <nav id="navMenu" class="hidden md:flex space-x-6">
             <a href="#" class="hover:text-gray-200">Profile</a>
         </nav>
-
-        
-
        
         <button id="menuBtn" class="md:hidden text-white focus:outline-none">
             ☰
