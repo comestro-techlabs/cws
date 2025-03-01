@@ -8,22 +8,22 @@
     <title>{{ $title ?? 'Student' }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     @livewireStyles
+    
 </head>
-
-<body x-data="{ sidebarOpen: true }" class="bg-gray-100">  
- <!-- Overlay for mobile -->
- <div x-show="sidebarOpen" @click="sidebarOpen = false"
+<body x-data="{ sidebarOpen: false }" class="bg-gray-100">  
+    <!-- Overlay for mobile -->
+    <div x-show="sidebarOpen" @click="sidebarOpen = false"
          class="fixed inset-0 z-30 transition-opacity duration-300 sm:hidden"
          :class="{'opacity-50': sidebarOpen, 'opacity-0': !sidebarOpen}">
     </div>
 
     <!-- Sidebar -->
     <div x-show="sidebarOpen"
-     :class="{': sidebarOpen, : !sidebarOpen}"
-     class="fixed top-0 left-0 z-40 w-64 h-screen bg-gray-50 border-r overflow-x-hidden transform transition-transform duration-300 ease-in-out sm:translate-x-0 sm:block"
-     style="overflow: hidden;">
-    <x-student-navbar/>
-</div>
+         :class="{'translate-x-0': sidebarOpen, '-translate-x-full': !sidebarOpen}"
+         class="fixed top-0 left-0 z-40 w-64 h-screen bg-gray-50 border-r overflow-x-hidden transform transition-transform duration-300 ease-in-out sm:translate-x-0 sm:block"
+         style="overflow: hidden;">
+        <x-student-navbar/>
+    </div>
 
     <!-- Main content -->
     <main :class="{'sm:ml-64': sidebarOpen, 'ml-0': !sidebarOpen}"
@@ -34,6 +34,7 @@
 
     @livewireScripts
 </body>
+
 <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 @auth

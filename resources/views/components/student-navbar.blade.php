@@ -1,7 +1,7 @@
 <aside id="default-sidebar ">
         <div class=" bg-gray-50">
-            <div class="flex flex-col items-center bg-gray-50 pb-2 mt-5">
-                <img class="w-24 h-24 mb-3 rounded-full shadow-lg" src="{{ asset('user.png') }}" alt="Bonnie image" />
+        <div class="flex flex-col items-center pb-2 mt-5 ">
+        <img class="w-24 h-24 mb-3 border-2 border-purple-600 rounded-full shadow-lg " src="{{ asset('user.png') }}" alt="Bonnie image" />
                 <h5 class="mb-1 text-xl text-lighter uppercase text-gray-900">
                     @if (auth()->check())
                         {{ auth()->user()->name }}
@@ -68,7 +68,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('user.messages') }}"
+                    <a wire:navigate href="{{ route('student.messages') }}"
                         class="flex items-center p-2 text-gray-900 hover:text-indigo-900 bg-transparent rounded-sm hover:bg-blue-200 group">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                             class="size-6 fill-purple-600">
@@ -81,7 +81,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('student.coursePurchase') }}"
+                    <a wire:navigate href="{{ route('v2.student.mycourses') }}"
                         class="flex items-center p-2 text-gray-900 hover:text-indigo-900 bg-transparent rounded-sm hover:bg-blue-200 group">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                             class="size-6 fill-teal-600">
@@ -115,7 +115,7 @@
                 </li>
                 @if (isset($hasCompleted) && $hasCompleted)
                     <li>
-                        <a href="{{ route('student.course.result') }}"
+                        <a wire:navigate href="{{ route('student.course.result') }}"
                             class="flex items-center p-2 text-gray-900 hover:text-indigo-900 bg-transparent rounded-sm hover:bg-blue-200 group">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -128,7 +128,7 @@
                     </li>
                 @endif
                 <li>
-                    <a href="{{ route('student.course.quiz') }}"
+                    <a wire:navigate href="{{ route('student.takeExam') }}"
                         class="flex items-center p-2 text-gray-900 hover:text-indigo-900 bg-transparent rounded-sm hover:bg-blue-200 group">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                             class="size-6 fill-pink-600">
@@ -159,7 +159,7 @@
                 @endif
 
                 <li>
-                    <a href="{{ route('student.editProfile') }}"
+                    <a wire:navigate href="{{ route('student.v2edit.profile') }}"
                         class="flex items-center p-2 text-gray-900 hover:text-indigo-900 bg-transparent rounded-sm hover:bg-blue-200 group">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                             class="size-6 fill-blue-600">
@@ -194,7 +194,7 @@
                     </li>
                 @endif
                 <li>
-                    <a href="{{ route('auth.logout') }}"
+                    <a wire:navigate href="{{ route('auth.logout') }}"
                         class="flex items-center p-2 text-gray-900 hover:text-indigo-900 bg-transparent rounded-sm hover:bg-blue-200 group">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                             class="size-6 fill-red-600">

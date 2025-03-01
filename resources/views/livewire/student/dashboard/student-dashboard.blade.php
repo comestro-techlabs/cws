@@ -2,15 +2,15 @@
     <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
         <!-- If No Courses -->
         @if ($courses->isEmpty())
-            <div class="col-span-3 flex flex-col items-center justify-center mt-10 p-8 bg-white shadow-lg rounded-xl text-center">
-                <h2 class="text-3xl font-bold text-gray-800">🎉 Welcome to Learn Syntax!</h2>
+            <div class="col-span-3 flex flex-col items-center justify-center mt-10 p-8  text-center">
+                <h2 class="text-5xl font-bold text-gray-800">🎉 Welcome to Learn Syntax!</h2>
                 <p class="text-gray-600 mt-2 text-lg">Get access to premium courses and start learning today!</p>
                 <h3 class="text-xl font-semibold mt-5">🔥 Exclusive Membership Offer!</h3>
                 <p class="text-gray-600 mt-2 text-lg">
                     Get <strong>unlimited access</strong> to <strong>any course</strong> for just
                     <span class="text-2xl font-bold text-red-600">₹700/month</span>!
                 </p>
-                <a href="{{ route('student.course') }}" class="mt-6">
+                <a wire:navigate href="{{ route('student.exploreCourses') }}" class="mt-6">
                     <button class="px-6 py-3 bg-blue-600 text-white text-lg font-semibold rounded-lg hover:bg-blue-700 transition-all">
                         Explore Courses
                     </button>

@@ -28,6 +28,7 @@ use App\Livewire\Admin\Dashboad;
 use App\Livewire\Admin\ManagePayment;
 use App\Livewire\Admin\ManageEnquiry;
 use App\Livewire\Admin\Student\ManageStudent;
+use App\Livewire\Student\Messages;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\PostChapterController;
@@ -346,12 +347,12 @@ Route::prefix('v2')->group(function () {
         Route::get('/portfolio', OurPortfolio::class)->name('v2.public.portfolio');
     });
 
-    Route::prefix("student")->group(function(){
-        Route::get('/billing',ViewBilling::class )->name('student.billing');
-        Route::get('/dashboard',StudentDashboard::class )->name('student.dashboard');
+    Route::prefix("student")->group(function () {
+        Route::get('/billing', ViewBilling::class)->name('student.billing');
+        Route::get('/dashboard', StudentDashboard::class)->name('student.dashboard');
         Route::get('/assignments/view', ManageAssignments::class)->name('student.assignments-view');
         Route::get('/take-exam', Exam::class)->name('student.takeExam');
-
+        Route::get('/notifications', Messages::class)->name('student.messages');
         Route::get('/explore-courses', ExploreCourse::class)->name('student.exploreCourses');
         Route::get('/view-courses/{courseId}', ViewCourse::class)->name('student.viewCourses');
         Route::get('/my-courses', MyCourse::class)->name('v2.student.mycourses');
