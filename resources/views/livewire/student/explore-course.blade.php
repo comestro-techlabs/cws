@@ -39,7 +39,7 @@
                                Enroll now
                            </button>
                        @else
-                           <a href="{{ route('student.viewCourses', ['courseId' => $course->id]) }}"
+                           <a wire:navigate href="{{ route('student.viewCourses', ['courseId' => $course->id]) }}"
                                class="bg-blue-600 text-white font-medium rounded-lg px-4 py-2 hover:bg-blue-700 transition-colors">
                                <div class="flex gap-2">
                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
