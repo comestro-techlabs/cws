@@ -347,9 +347,9 @@ Route::prefix('v2')->group(function () {
         Route::get('/portfolio', OurPortfolio::class)->name('v2.public.portfolio');
     });
 
-    Route::prefix("student")->group(function () {
-        Route::get('/billing', ViewBilling::class)->name('student.billing');
-        Route::get('/dashboard', StudentDashboard::class)->name('student.dashboard');
+    Route::prefix("student")->group(function(){
+        Route::get('/billing',ViewBilling::class )->name('student.billing');
+        Route::get('/dashboard',StudentDashboard::class )->name('v2.student.dashboard');
         Route::get('/assignments/view', ManageAssignments::class)->name('student.assignments-view');
         Route::get('/take-exam', Exam::class)->name('student.takeExam');
         Route::get('/notifications', Messages::class)->name('student.messages');
