@@ -7,6 +7,7 @@ use Livewire\Component;
 
 class Header extends Component
 {
+    public $isDropdownOpen = false;
 
     public function logout()
     {
@@ -14,7 +15,11 @@ class Header extends Component
         $this->redirect(route('v2.auth.login'), navigate: true);
 
     }
-    //here logout and logic will be placed
+    public function toggleDropdown()
+    {
+        $this->isDropdownOpen = !$this->isDropdownOpen;
+        $this->dispatch('dropdownToggled', ['isOpen' => $this->isDropdownOpen]);
+    }
     public function render()
     {
         return view('livewire.public.header');
