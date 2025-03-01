@@ -6,9 +6,14 @@ use App\Models\Batch;
 use App\Models\Course;
 use App\Models\Exam;
 use Illuminate\Support\Facades\Mail;
+use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\Attributes\Title;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.admin')]
+#[Title('Manage Exams')]
 class ManageExam extends Component
 {
     use WithPagination;

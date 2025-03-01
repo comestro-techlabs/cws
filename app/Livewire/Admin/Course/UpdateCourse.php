@@ -6,9 +6,11 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\Course;
 use App\Models\Category;
+use App\Models\Feature;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
+use Livewire\Attributes\Validate;
 
 #[Layout('components.layouts.admin')]
 #[Title('Update Course')]
@@ -17,102 +19,182 @@ class UpdateCourse extends Component
     use WithFileUploads;
 
     public Course $course;
-    public string $title;
-    public string $description;
-    public int $duration;
-    public string $instructor;
-    public float $fees;
-    public float $discounted_fees;
-    public string $course_code;
-    public int $category_id;
+    
+    #[Validate('required|string|max:255')]
+    public $title;
+    
+    #[Validate('required|string')]
+    public $description;
+    
+    #[Validate('required|numeric|min:0')]
+    public $duration;
+    
+    #[Validate('required|string|max:255')]
+    public $instructor;
+    
+    #[Validate('required|numeric|min:0')]
+    public $fees;
+    
+    #[Validate('required|numeric|min:0')]
+    public $discounted_fees;
+    
+    #[Validate('required|string|max:100')]
+    public $course_code = '';
+    
+    #[Validate('required|exists:categories,id')]
+    public $category_id;
+    
+    #[Validate('nullable|image|max:2048')]
     public $tempImage;
+    
+    // Feature-related properties
+    public $allFeatures;
+    #[Validate('array')]
+    public $selectedFeatures = [];
+    
     public $categories;
-    public bool $isPublished = false;
+    public $isPublished = false;
     public $previewImage = null;
-
-    protected $rules = [
-        'title' => 'required',
-        'description' => 'required',
-        'duration' => 'required|numeric|min:0',
-        'instructor' => 'required',
-        'fees' => 'required|numeric|min:0',
-        'discounted_fees' => 'required|numeric|min:0',
-        'category_id' => 'required|exists:categories,id',
-        'course_code' => 'required',
-        'tempImage' => 'nullable|image|max:2048',
-    ];
 
     public function mount($courseId)
     {
-        $this->course = Course::findOrFail((int) $courseId);
-        $this->fill($this->course->toArray());
-        $this->isPublished = $this->course->published ?? false;
+        $this->course = Course::with('features')->findOrFail((int) $courseId);
+        $this->fill($this->course->only([
+            'title',
+            'description',
+            'duration',
+            'instructor',
+            'fees',
+            'discounted_fees',
+            'course_code',
+            'category_id'
+        ]));
+        $this->isPublished = (bool) $this->course->published;
         $this->categories = Category::all();
+        $this->allFeatures = Feature::all();
+        $this->selectedFeatures = $this->course->features->pluck('id')->toArray();
     }
 
     public function updatedTempImage()
     {
+        // Validate the image
+        $this->validate([
+            'tempImage' => 'nullable|image|max:2048',
+        ]);
+
+        // Try generating a temporary preview URL
         try {
-            $this->validateOnly('tempImage');
             $this->previewImage = $this->tempImage->temporaryUrl();
         } catch (\Exception $e) {
-            $this->previewImage = null;
+            $this->reset('previewImage');
+            $this->addError('tempImage', 'Unable to generate preview.');
         }
     }
 
     public function saveField($field)
     {
-        $this->validateOnly($field);
+        try {
+            $this->validateOnly($field);
 
-        if ($field === 'tempImage') {
-            if ($this->tempImage) {
-                if ($this->course->course_image) {
-                    Storage::disk('public')->delete($this->course->course_image);
+            if ($field === 'tempImage' && $this->tempImage) {
+                $this->handleImageUpload();
+            } elseif ($this->$field !== null) {
+                $this->course->update([$field => $this->$field]);
+                session()->flash('message', ucfirst($field) . ' updated successfully.');
+                
+                if ($field === 'description') {
+                    $this->dispatch('descriptionSaved');
                 }
-                $filePath = $this->tempImage->store('course_images', 'public');
-                $this->course->update(['course_image' => $filePath]);
-                $this->previewImage = null; // Reset preview
-                session()->flash('message', 'Course image updated successfully.');
             }
-        } else {
-            $this->course->update([$field => $this->$field]);
-            session()->flash('message', ucfirst($field) . ' updated successfully.');
-            
-            if ($field === 'description') {
-                $this->dispatch('descriptionSaved');
-            }
+
+            $this->checkAndPublish();
+        } catch (\Exception $e) {
+            $this->addError($field, 'Failed to update ' . $field);
         }
-        
-        $this->checkAndPublish();
+    }
+
+    public function updateFeatures()
+    {
+        try {
+            $this->validateOnly('selectedFeatures');
+            $this->course->features()->sync($this->selectedFeatures);
+            session()->flash('message', 'Features updated successfully');
+            $this->dispatch('features-updated');
+        } catch (\Exception $e) {
+            $this->addError('selectedFeatures', 'Failed to update features');
+        }
+    }
+
+    private function handleImageUpload()
+    {
+        // Validate the image
+        $this->validate([
+            'tempImage' => 'nullable|image|max:2048',
+        ]);
+
+        // Delete old image if it exists
+        if ($this->course->course_image) {
+            Storage::disk('public')->delete($this->course->course_image);
+        }
+
+        // Define a unique filename with the course ID and timestamp
+        $filename = 'course_' . $this->course->id . '_' . time() . '.' . $this->tempImage->getClientOriginalExtension();
+
+        // Store the file using 'storeAs'
+        $filePath = $this->tempImage->storeAs('course_images', $filename, 'public');
+
+        // Update course record with new image path
+        $this->course->update(['course_image' => $filePath]);
+
+        // Reset temp data
+        $this->reset('tempImage', 'previewImage');
+
+        // Show success message
+        session()->flash('message', 'Course image updated successfully.');
     }
 
     public function checkAndPublish()
     {
-        if (
-            $this->course->title &&
-            $this->course->description &&
-            $this->course->duration &&
-            $this->course->instructor &&
-            $this->course->fees &&
-            $this->course->discounted_fees &&
-            $this->course->category_id &&
-            $this->course->course_code &&
-            $this->course->course_image
-        ) {
+        $requiredFields = [
+            'title',
+            'description',
+            'duration',
+            'instructor',
+            'fees',
+            'discounted_fees',
+            'category_id',
+            'course_code',
+            'course_image'
+        ];
+
+        $allFieldsFilled = collect($requiredFields)
+            ->every(fn($field) => !empty($this->course->$field));
+
+        if ($allFieldsFilled && !$this->isPublished) {
             $this->course->update(['published' => true]);
             $this->isPublished = true;
+            session()->flash('message', 'Course published successfully.');
         }
     }
 
     public function togglePublish()
     {
-        $this->course->update(['published' => !$this->course->published]);
         $this->isPublished = !$this->isPublished;
+        $this->course->update(['published' => $this->isPublished]);
         
-        if ($this->isPublished) {
-            session()->flash('message', 'Course published successfully.');
-        } else {
-            session()->flash('message', 'Course unpublished successfully.');
+        session()->flash('message', 
+            $this->isPublished 
+                ? 'Course published successfully.' 
+                : 'Course unpublished successfully.'
+        );
+    }
+
+    public function deleteImage()
+    {
+        if ($this->course->course_image) {
+            Storage::disk('public')->delete($this->course->course_image);
+            $this->course->update(['course_image' => null]);
+            session()->flash('message', 'Course image removed successfully.');
         }
     }
 

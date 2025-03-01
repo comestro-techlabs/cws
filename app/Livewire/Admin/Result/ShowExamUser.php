@@ -5,7 +5,12 @@ namespace App\Livewire\Admin\Result;
 use Livewire\Component;
 use App\Models\Exam;
 use App\Models\ExamUser;
+use Livewire\Attributes\Title;
+use Livewire\Attributes\Layout;
 
+
+#[Layout('components.layouts.admin')]
+#[Title('Manage Exam Users')]
 class ShowExamUser extends Component
 {
     public $examId;

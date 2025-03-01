@@ -5,10 +5,11 @@ namespace App\Livewire\Admin\Category;
 use Livewire\Component;
 use App\Models\Category as CategoryModel;
 
+use Livewire\WithPagination;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
-use Livewire\WithPagination;
-
+#[Layout('components.layouts.admin')]
+#[Title('Manage Category')]   
 class ManageCategory extends Component
 {
     use WithPagination;
@@ -23,10 +24,7 @@ class ManageCategory extends Component
         $data = $this->validate(['cat_title' => 'required|string', 'cat_description' => 'required|string']);
         CategoryModel::create($data);                    
         $this->reset(['cat_title', 'cat_description']);
-        
-        $this->dispatch('success', ['message' => "Category added successfully!"]);
-
-
+        $this->dispatch('notice', type: 'info', text: 'Category added successfully!');
     }
     
     

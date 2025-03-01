@@ -16,7 +16,8 @@ class ManageStudent extends Component
 
     public $filter = '';
     public $search = '';
-
+    public $perPage = 10;
+    protected $paginationTheme = 'tailwind';
     protected $queryString = ['filter', 'search'];
 
     public function updatingFilter()
@@ -48,8 +49,8 @@ class ManageStudent extends Component
                   ->orWhere('contact', 'like', '%' . $this->search . '%')
                   ->orWhere('email', 'like', '%' . $this->search . '%');
             });
-
-        $students = $query->paginate(10);
+        
+        $students = $query->paginate($this->perPage);
         return view('livewire.admin.student.manage-student')->with(compact('students'));
     }
 }

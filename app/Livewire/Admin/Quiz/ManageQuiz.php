@@ -6,7 +6,11 @@ use App\Models\Quiz;
 use App\Models\Exam;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\Attributes\Title;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.admin')]
+#[Title('Manage Quiz')]
 class ManageQuiz extends Component
 {
     use WithPagination;
