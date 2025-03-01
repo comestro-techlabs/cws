@@ -1,5 +1,5 @@
 <div>
-<div class="">
+    <div class="">
         <div class="flex flex-col items-center mt-10 md:mt-10 text-center px-5 md:px-[10%]">
             <h2 class="text-3xl text-gray-900 font-sans font-bold mb-4">Our Courses </h2>
             <p class="text-gray-700 text-lg leading-relaxed mb-6 max-w-3xl"> Discover curated courses that blend industry insights with practical knowledge. From beginner to advanced, upgrade your skills and achieve your career goals with expert-led guidance. </p>
@@ -7,52 +7,59 @@
 
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:mb-20 mb-10 px-4 lg:px-32">
-            @foreach ($courses as $item)
-                <div class="max-w-md mx-auto bg-white rounded-lg border overflow-hidden flex flex-col h-full min-h-[450px]">
 
-                    <div class="w-full h-60">
-                        <img class="w-full h-full object-cover"
-                            src="{{ asset('storage/course_images/' . $item->course_image) }}" alt="Course Image">
+            @foreach ($courses as $item)
+
+            <div class=" bg-gray-100 flex items-center justify-center p-4">
+                <div class="max-w-sm w-full bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all">
+                    <div class="relative">
+                        <img
+                            src="{{ asset('storage/course_images/' . $item->course_image) }}" alt="Course Image"
+                            class="w-full h-52 object-cover" />
+                        <span class="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                            Sale
+                        </span>
                     </div>
 
-
-                    <div class="p-6 flex flex-col flex-grow">
-                        <h2 class="text-xl font-bold text-gray-800 mb-2 line-clamp-1">{{ $item->title }}</h2>
-                        <p class="text-gray-600 text-sm mb-4 flex-grow min-h-[60px]">
-                            {{ Str::limit($item->description, 122) }}
-                        </p>
-                        <div class="mb-4">
-                            <p class="text-gray-700 text-sm font-medium">By: {{ $item->instructor }}</p>
-                            <span class="text-gray-600 text-sm font-semibold">Duration: {{ $item->duration }} Weeks</span>
+                    <div class="p-5 space-y-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-900">{{ $item->title }}</h3>
+                            <p class="text-gray-500 mt-1">{{ Str::limit($item->description, 122) }}</p>
+                            <p class="font-bold text-gray-400 mt-1">Duration: {{ $item->duration }} Weeks</p>
                         </div>
 
+                        <div class="flex justify-between items-center">
 
-                        <div class="flex justify-between items-center mt-auto">
-                            @if ($item->discounted_fees > 0)
-                                <p class="text-sm font-semibold text-primary">
-                                    Fees: Rs. <span class="text-gray-600 line-through">{{ $item->fees }}</span>
-                                    {{ $item->discounted_fees }}
-                                </p>
-                            @else
+
+                            <div class="space-y-1">
+                                @if ($item->discounted_fees > 0)
+                                <p class="text-2xl font-bold text-gray-900">Rs {{ $item->fees }}</p>
+                                <p class="text-sm text-gray-500 line-through">Rs {{ $item->discounted_fees }}</p>
+                                @else
                                 <p class="text-green-500 font-bold">Free</p>
-                            @endif
-                            
-                            <a href="{{route('v2.public.courseDetail', ['slug' => $item->slug])}}" wire:navigate>
-                            <button  
-                                class="bg-primary text-white font-bold py-2 px-4 rounded shadow focus:outline-none focus:ring hover:bg-primary-dark transition">
+                                @endif
+                            </div>
+
+                            <div class="flex items-center gap-1">
+                                <div class="text-yellow-400">★★★★★</div>
+                            </div>
+                        </div>
+                        <a href="{{route('v2.public.courseDetail', ['slug' => $item->slug])}}" wire:navigate>
+                            <button class="w-full mt-2 bg-primary hover:bg-indigo-700 text-white font-medium py-3 rounded-lg transition-colors">
                                 Enroll Now
                             </button>
-                            </a>
-                        </div>
+                        </a>
                     </div>
                 </div>
+            </div>
+
             @endforeach
         </div>
 
         <div class="flex justify-center items-center">
 
             <div class="bg-secondary flex items-center py-3 px-6 rounded-lg shadow gap-2 md:mb-20 mb-10">
-                <a  href="{{route('v2.public.viewallcourses.all-courses')}}" wire:navigate class=" text-white font-bold ">
+                <a href="{{route('v2.public.viewallcourses.all-courses')}}" wire:navigate class=" text-white font-bold ">
                     View All Courses
                 </a>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white"
@@ -160,7 +167,7 @@
                 <h2 class="text-3xl md:text-4xl font-bold text-blue-300 mb-4">
                     Corporate <span class="text-white">Software Training</span>
                 </h2>
-               <p class="text-gray-300 text-lg leading-relaxed mb-6"> Master coding at Learn Syntax Training Center with expert-led programs designed to enhance your programming skills and stay ahead in the tech world. </p>
+                <p class="text-gray-300 text-lg leading-relaxed mb-6"> Master coding at Learn Syntax Training Center with expert-led programs designed to enhance your programming skills and stay ahead in the tech world. </p>
                 <div>
                     <button class=" bg-secondary text-white font-semibold py-2 px-4 rounded shadow-lg">
                         <a href="{{route('v2.public.contactUs')}}" wire:navigate>CONTACT US</a>
@@ -218,8 +225,8 @@
                 </ul>
             </div>
         </div> -->
-    </div>
+        </div>
 
     </div>
-    
+
 </div>
