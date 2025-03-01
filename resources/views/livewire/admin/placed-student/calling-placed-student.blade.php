@@ -3,7 +3,7 @@
         <h2 class="md:text-xl text-lg font-semibold text-slate-500 border-s-4 border-s-orange-400 pl-3 mb-5">
             Manage Placed Student
         </h2>
-        <a href="{{ route('placedStudent.create') }}" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+        <a href="{{ route('admin.placedstudent.edit') }}" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
             Add New Student
         </a>
     </div>
