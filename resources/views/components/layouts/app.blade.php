@@ -17,10 +17,11 @@
 </head>
 
 <body class="flex flex-col min-h-screen">
+    @if(Route::currentRouteName() !='v2.public.homepage')
     <nav id="navbar" class="sticky  top-2 max-w-7xl mx-auto  bottom-auto z-40 w-full  transition-all duration-300  rounded-xl ">
         <livewire:public.header />
     </nav>
-    
+    @endif
     @if(Route::currentRouteName() === 'v2.public.homepage')
         <livewire:public.herosection />
     @endif
@@ -36,4 +37,6 @@
         dropdown.classList.toggle('hidden');
     });
 </script>
+ 
+
 </html>

@@ -8,22 +8,27 @@
             </button>
         </div>
 
-        <div class="sm:mb-0 self-center ml-auto relative">
-            @auth
+        </div>
+    </div>
+
+    <div class="sm:mb-0 self-center ml-auto relative">
+        @auth
             <button id="avatarButton" class="flex items-center space-x-2 p-2 focus:outline-none">
                 <img class="w-8 h-8 rounded-full" src="{{ asset('assets/sadique.jpg') }}" alt="User Avatar">
                 <span class="hidden text-gray-700">{{ auth()->user()->name }}</span>
             </button>
 
-            <div id="dropdownMenu" class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-10 hidden">
+            <div id="dropdownMenu"
+                class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-10 hidden">
                 <div class="py-2 px-4 text-sm text-gray-700">
                     <span class="block font-semibold">{{ auth()->user()->email }}</span>
                 </div>
-                <a wire:navigate href="{{ route('admin.logout') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-b-lg">Logout</a>
+                <a wire:navigate href="{{ route('admin.logout') }}"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-b-lg">Logout</a>
             </div>
-            @endauth
-        </div>
-    </nav>
+        @endauth
+    </div>
+</nav>
 <script>
     const avatarButton = document.getElementById('avatarButton');
     const dropdownMenu = document.getElementById('dropdownMenu');

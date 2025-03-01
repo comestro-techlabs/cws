@@ -10,40 +10,50 @@ class Herosection extends Component
     {
         return <<<'HTML'
             <div>
-                <div class="bg-gradient-to-r  to-purple-100 via-purple-300 from-purple-50">
-                <!-- Content Section -->
-                <div class="md:pt-[30px] ">
-                    <!-- Check if current route is homepage -->
-                    <!-- Hero Section with Gradient -->
-                    <div class="relative flex items-center md:pt-12 pt-10">
-                        <div class="lg:px-[10%] w-full px-3 pt-5 md:py-0 gap-10 flex flex-col md:flex-row items-center">
-                            <!-- Left Section: Text Content -->
-                            <div
-                                class="flex-1 pt-10 lg:py-10 lg:w-1/2  bg-cover bg-bottom lg:bg-none bg-[url('{{ asset('hero-bg.png') }}')] w-full">
-                                <div class="rounded-2xl px-3 pb-5">
-                                    <h1
-                                        class="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold text-slate-800 tracking-tight">
-                                        Learn Syntax. <br> Learn Programming
-                                    </h1>
-                                    <p class="mt-2 w-[60%] text-md md:p-0 lg:hidden">Transform your passion for coding into a successful career </p>
-                                    <p class="hidden lg:flex mt-5 w-[60%] text-lg md:p-0 lg:w-[90%]"> Transform your passion for coding into a successful career at Learn Syntax, Purnea's
-                                        most trusted programming center. Join us for hands-on learning, expert guidance,
-                                        and
-                                        real-world projects to unlock your true potential!
-                                    </p>
-                                    </span>
-                                    </p>
-                                </div>
-                            </div>
+            <div class="bg-gradient-to-r to-purple-100 via-purple-300 from-purple-50">
+                    <nav id="navbar" class="sticky top-4 max-w-7xl mx-auto bottom-auto z-40 w-full transition-all duration-300 rounded-xl">
+                        <livewire:public.header />
+                    </nav>
 
-                            <div
-                                class="w-full py-5 lg:w-1/2 hidden lg:flex bg-cover h-[400px] bg-right-bottom bg-[url('{{ asset('hero-bg.png') }}')]">
+                    <!-- Content Section -->
+                    <div class="relative md:pt-[30px] overflow-hidden">
+                        <div class="absolute inset-0">
+                            <svg class="w-full h-full" viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="#4f46e5" fill-opacity="0.3" d="M0,256L48,245.3C96,235,192,213,288,218.7C384,224,480,256,576,245.3C672,235,768,181,864,144C960,107,1056,85,1152,101.3C1248,117,1344,171,1392,197.3L1440,224L1440,320L0,320Z"></path>
+                            </svg>
+                        </div>
+
+                        <div class="relative flex items-center justify-center md:pt-12 pt-10">
+                            <div class="relative z-10 w-full px-3 pt-5 md:py-0 flex flex-col md:flex-row items-center gap-10">
+                                
+                                <div class="flex-1 pt-10 lg:py-10 w-full lg:w-1/2">
+                                    <div class="p-8 md:p-10 lg:p-12 text-white">
+                                        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-gray-900">
+                                            Learn Syntax.<br>Learn <span class="text-primary">Programming</span>
+                                        </h1>
+                                        <p class="mt-7 text-md md:text-lg text-gray-700">
+                                            Transform your passion for coding into a successful career.
+                                            Join Learn Syntax, Purnea’s most trusted programming center for hands-on learning,
+                                            expert guidance, and real-world projects to unlock your true potential!
+                                        </p>
+                                        <div class="mt-10">
+                                            <a href="#courses" class="px-6 py-3 bg-primary text-white font-semibold rounded-md shadow-md hover:bg-indigo-600 transition-all">
+                                                Explore Courses
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="w-full lg:w-1/2 hidden md:flex ">
+                                    <img src="{{ asset('hero-bg.png') }}" class="w-[98%] lg:w-[98%] h-[400px] md:h-[450px] lg:h-[500px] object-cover rounded-lg shadow-2xl flex justify-start items-center">
+                                </div>
+
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            </div>
+            
         HTML;
     }
 }
