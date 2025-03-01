@@ -4,27 +4,28 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    @vite('resources/css/app.css')
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+
     <title>{{ $title ?? 'Admin Dashboard' }}</title>
     @livewireStyles
 </head>
 
-<body x-data="{ sidebarOpen: false }"> 
+<body x-data="{ sidebarOpen: true }" class="bg-gray-100">
     <!-- Overlay for mobile -->
-    <div x-show="sidebarOpen" @click="sidebarOpen = false" 
+    <div x-show="sidebarOpen" @click="sidebarOpen = false"
          class="fixed inset-0 z-30 transition-opacity duration-300 sm:hidden"
          :class="{'opacity-50': sidebarOpen, 'opacity-0': !sidebarOpen}">
     </div>
 
     <!-- Sidebar -->
-    <div x-show="sidebarOpen" 
-         :class="{'translate-x-0': sidebarOpen, '-translate-x-full': !sidebarOpen}" 
+    <div x-show="sidebarOpen"
+         :class="{'translate-x-0': sidebarOpen, '-translate-x-full': !sidebarOpen}"
          class="fixed top-0 left-0 z-40 w-64 h-screen bg-white p-4 border-r overflow-x-hidden transform transition-transform duration-300 ease-in-out sm:translate-x-0 sm:block">
         <x-side-nav/>
     </div>
 
     <!-- Main content -->
-    <main :class="{'sm:ml-64': sidebarOpen, 'ml-0': !sidebarOpen}" 
+    <main :class="{'sm:ml-64': sidebarOpen, 'ml-0': !sidebarOpen}"
           class="flex-1 p-4 transition-all duration-300 sm:ml-64">
         <x-admin-header />
         {{ $slot }}
@@ -42,7 +43,7 @@
             });
         });
 
-    
+
         // Avatar Dropdown Script
         const avatarButton = document.getElementById('avatarButton');
         const dropdownMenu = document.getElementById('dropdownMenu');

@@ -8,7 +8,6 @@ use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\Title;
-use Livewire\Attributes\Layout;
 
 #[Layout('components.layouts.admin')]
 #[Title('Manage Quiz')]

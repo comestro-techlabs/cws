@@ -1,39 +1,36 @@
-
-<div>
+<div class="container mx-auto px-4 sm:px-8 py-8 bg-gray-100">
     @if($isEditing)
-        <div class="max-w-5xl mx-auto mt-8">
-            <h2 class="text-xl font-semibold text-slate-500 border-s-4 border-s-orange-400 pl-3 mb-5">
-                Edit Enquiry
-            </h2>
+        <div class="max-w-5xl mx-auto mt-8 bg-white shadow-md rounded-lg p-6">
+            <h2 class="text-xl font-semibold text-gray-700 mb-4 border-b pb-2">Edit Enquiry</h2>
 
-            <form wire:submit="save" class="space-y-4 mb-8">
+            <form wire:submit.prevent="save" class="space-y-4 mb-8">
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Name</label>
-                    <input type="text" wire:model="name" class="mt-1 block w-full rounded-md border-gray-300">
+                    <input type="text" wire:model="name" class="mt-1 block w-full border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm px-4 py-2">
                     @error('name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Contact</label>
-                    <input type="text" wire:model="mobile" class="mt-1 block w-full rounded-md border-gray-300">
+                    <input type="text" wire:model="mobile" class="mt-1 block w-full border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm px-4 py-2">
                     @error('mobile') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Email</label>
-                    <input type="email" wire:model="email" class="mt-1 block w-full rounded-md border-gray-300">
+                    <input type="email" wire:model="email" class="mt-1 block w-full border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm px-4 py-2">
                     @error('email') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Message</label>
-                    <textarea wire:model="message" class="mt-1 block w-full rounded-md border-gray-300"></textarea>
+                    <textarea wire:model="message" class="mt-1 block w-full border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm px-4 py-2"></textarea>
                     @error('message') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Status</label>
-                    <select wire:model="status" class="mt-1 block w-full rounded-md border-gray-300">
+                    <select wire:model="status" class="mt-1 block w-full border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm px-4 py-2">
                         <option value="0">Pending</option>
                         <option value="1">Approved</option>
                         <option value="2">Closed</option>
@@ -59,23 +56,23 @@
 
     <div class="flex flex-1 flex-col">
         <div class="md:px-[2%] px-5">
-            <h2 class="md:text-xl capitalize text-lg font-semibold text-slate-500 border-s-4 border-s-orange-400 pl-3">
+            <h2 class="md:text-xl capitalize text-lg font-semibold text-gray-700 border-b pb-2 mb-4">
                 {{ $search ? $search : 'Manage all' }} Enquiries ({{ $enquiry->total() }})
             </h2>
 
-            <div class="flex gap-3 flex-col md:flex-row justify-between md:items-center">
+            <div class="flex gap-3 flex-col md:flex-row justify-between md:items-center mb-4">
                 <div class="inline-flex md:flex-row flex-col md:items-center gap-2" role="group">
-                    <div class="md:max-w-xl md:mx-auto mt-20">
+                    <div class="md:max-w-xl md:mx-auto">
                         <div class="flex border rounded-lg ps-3">
-                            <input 
-                                wire:model.live="search" 
-                                type="search" 
-                                id="default-search" 
-                                class="border-0 focus:outline-none focus:border-none w-full" 
-                                placeholder="Search Enquiry by name..." 
+                            <input
+                                wire:model.live="search"
+                                type="search"
+                                id="default-search"
+                                class="border-0 focus:outline-none focus:border-none w-full"
+                                placeholder="Search Enquiry by name..."
                                 size="30"
                             />
-                            <button class="bg-slate-100 px-3">
+                            <button class="bg-gray-100 px-3">
                                 <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                                 </svg>
@@ -85,7 +82,7 @@
                 </div>
             </div>
 
-            <div class="relative overflow-x-auto flex-1 border mt-5">
+            <div class="relative overflow-x-auto flex-1 border bg-white shadow-md rounded-lg">
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                         <tr>
@@ -126,8 +123,8 @@
                                     @endif
                                 </td>
                                 <td class="flex gap-2 items-center px-6 py-4">
-                                    <button 
-                                        wire:click="edit({{ $data->id }})" 
+                                    <button
+                                        wire:click="edit({{ $data->id }})"
                                         class="px-3 py-2 text-xs rounded-xl font-medium text-white bg-teal-500 hover:bg-teal-600">
                                         Edit
                                     </button>

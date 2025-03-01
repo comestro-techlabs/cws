@@ -1,4 +1,4 @@
-<div>
+<div class="container mx-auto px-4 sm:px-8 py-8 bg-gray-100">
     <div class="flex flex-wrap justify-between items-center p-4">
         <h2 class="md:text-xl text-lg font-semibold text-slate-500 border-s-4 border-s-orange-400 pl-3 mb-5">
             Manage Assignments
@@ -20,11 +20,9 @@
                             class="w-full sm:w-64 mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-transparent">
                             <option value="">Select a course</option>
                             @foreach ($courses as $course)
-
                                 <option value="{{ $course->id }}" {{ $this->course_id == $course->id ? 'selected' : '' }}>
                                     {{ $course->title }}
                                 </option>
-
                             @endforeach
                         </select>
                         @if($course_id)

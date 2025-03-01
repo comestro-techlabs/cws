@@ -8,7 +8,6 @@ use App\Models\Answer;
 use App\Models\Exam;
 use App\Models\User;
 use Livewire\Attributes\Title;
-use Livewire\Attributes\Layout;
 
 
 #[Layout('components.layouts.admin')]
