@@ -1,13 +1,13 @@
 <div>
     <div class="">
-        <div class="flex flex-col items-center mt-10 md:mt-10 text-center px-5 md:px-[10%]">
-            <h2 class="text-3xl text-gray-900 font-sans font-bold mb-4">Our Courses </h2>
-            <p class="text-gray-700 text-lg leading-relaxed mb-6 max-w-3xl"> Discover curated courses that blend industry insights with practical knowledge. From beginner to advanced, upgrade your skills and achieve your career goals with expert-led guidance. </p>
-
-
+        <div class="flex flex-col items-center mt-10 md:mt-12 text-center px-5 md:px-[10%]">
+            <h2 class="text-2xl md:text-5xl text-gray-900 font-sans font-extrabold mb-4 tracking-tight">Our <span class="text-primary">Courses</span></h2>
+            <p class="text-gray-700 text-md md:text-lg leading-relaxed mb-6 max-w-3xl">
+                Discover curated courses that blend industry insights with practical knowledge.
+                From beginner to advanced, upgrade your skills and achieve your career goals with expert-led guidance.
+            </p>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:mb-20 mb-10 px-4 lg:px-32">
-
             @foreach ($courses as $item)
 
             <div class=" bg-gray-100 flex items-center justify-center p-4">
@@ -33,8 +33,8 @@
 
                             <div class="space-y-1">
                                 @if ($item->discounted_fees > 0)
-                                <p class="text-2xl font-bold text-gray-900">Rs {{ $item->fees }}</p>
-                                <p class="text-sm text-gray-500 line-through">Rs {{ $item->discounted_fees }}</p>
+                                <p class="text-2xl font-bold text-gray-900">Rs {{ $item->discounted_fees }}</p>
+                                <p class="text-sm text-gray-500 line-through">Rs {{ $item->fees }}</p>
                                 @else
                                 <p class="text-green-500 font-bold">Free</p>
                                 @endif
@@ -58,7 +58,7 @@
 
         <div class="flex justify-center items-center">
 
-            <div class="bg-secondary flex items-center py-3 px-6 rounded-lg shadow gap-2 md:mb-20 mb-10">
+            <div class="bg-primary flex items-center py-3 px-6 rounded-lg shadow gap-2 md:mb-20 mb-10">
                 <a href="{{route('v2.public.viewallcourses.all-courses')}}" wire:navigate class=" text-white font-bold ">
                     View All Courses
                 </a>
@@ -73,32 +73,83 @@
     </div>
 
     {{-- {{static info}} --}}
-    <div class="flex flex-col gap-2 p-4 md:p-8 mt-10 bg-gray-50 rounded-2xl mb-12 items-center md:px-[10%]">
-        <h2 class="text-lg md:text-xl font-normal max-w-2xl text-gray-900  text-center mb-4 flex flex-col">
-            <span class="font-semibold mb-1">Results that Speak for Themselves:</span>
-            <span class="md:text-3xl text-xl font-semibold"> We’re a Top Software Devlopment Company in India</span>
+    <div class="bg-gradient-to-r from-purple-50 via-purple-300 to-purple-100  py-12">
+        <!-- <div class="flex flex-col gap-2 p-4 md:p-8 mt-10 bg-gray-50 rounded-2xl mb-12 items-center md:px-[10%] shadow-lg bg-gradient-to-r from-purple-50 via-purple-300 to-purple-100">
+            <h2 class="text-lg md:text-xl font-normal max-w-2xl text-gray-900 text-center mb-4 flex flex-col">
+                <span class="font-semibold mb-1">Results that Speak for Themselves:</span>
+                <span class="md:text-3xl text-xl font-semibold">We’re a Top <span class="text-primary">Software Development</span> Company in India</span>
+            </h2>
+
+            <div class="flex flex-col md:flex-row w-full gap-8">
+                <div class="flex-1 p-6 text-primary rounded-lg shadow-md ring ring-slate-600 transform transition-transform duration-300">
+                    <h3 class="count-number text-3xl md:text-5xl font-bold" data-target="600">0</h3>
+                    <p class="stat-title text-lg mt-4 text-gray-900">Total Projects</p>
+                </div>
+                <div class="flex-1 p-6 text-primary rounded-lg shadow-md ring ring-slate-600 transform transition-transform duration-300">
+                    <h3 class="count-number text-3xl md:text-5xl font-bold" data-target="200000">0</h3>
+                    <p class="stat-title text-lg mt-4 text-gray-900">Web Pages</p>
+                </div>
+                <div class="flex-1 p-6 text-primary rounded-lg shadow-md ring ring-slate-600 transform transition-transform duration-300">
+                    <h3 class="count-number text-3xl md:text-5xl font-bold" data-target="100">0</h3>
+                    <p class="stat-title text-lg mt-4 text-gray-900">Technologies We Use</p>
+                </div>
+            </div>
+        </div> -->
+        <div class="dark:bg-gray-900 ">
+  <div class="pt-12 bg-gray-50 dark:bg-gray-900 sm:pt-20 bg-gradient-to-r from-purple-50 via-purple-300 to-purple-100">
+    <div class="max-w-screen-xl px-4 mx-auto sm:px-6 lg:px-8 ">
+      <div class="max-w-4xl mx-auto text-center">
+        <h2 class="text-3xl font-extrabold leading-9 text-gray-900 dark:text-white sm:text-4xl sm:leading-10">
+          Why we’re a Top Software Development Company
         </h2>
-
-        <div class="flex flex-col md:flex-row w-full gap-8">
-            <div
-                class="flex-1 p-6 text-orange-600 rounded-lg shadow-sm ring ring-slate-600  transform  transition-transform duration-300">
-                <h3 class="count-number text-3xl md:text-5xl font-bold" data-target="600">0</h3>
-                <p class="stat-title text-lg mt-4 text-gray-900">Total Projects</p>
-            </div>
-            <div
-                class="flex-1 p-6  text-pink-700 rounded-lg shadow-sm ring ring-slate-600  transform  transition-transform duration-300">
-                <h3 class="count-number text-3xl md:text-5xl font-bold" data-target="200000">0</h3>
-                <p class="stat-title text-lg mt-4 text-gray-900">Web Pages</p>
-            </div>
-            <div
-                class="flex-1 p-6 text-green-700 rounded-lg shadow-sm ring ring-slate-600  transform  transition-transform duration-300">
-                <h3 class="count-number text-3xl md:text-5xl font-bold" data-target="100">0</h3>
-                <p class="stat-title text-lg mt-4 text-gray-900">Technologies We Use</p>
-            </div>
-        </div>
+        <p class="mt-3 text-xl leading-7 text-gray-600 dark:text-gray-400 sm:mt-4">
+        Results that Speak for Themselves        </p>
+      </div>
     </div>
-
-
+    <div class="pb-12 mt-10 dark:bg-gray-900 sm:pb-16 bg-gradient-to-r from-purple-50 via-purple-300 to-purple-100">
+      <div class="relative">
+        <div class="absolute inset-0 h-1/2  dark:bg-gray-900 bg-gradient-to-r from-purple-50 via-purple-300 to-purple-100"></div>
+        <div class="relative max-w-screen-xl px-4 mx-auto sm:px-6 lg:px-8">
+          <div class="max-w-4xl mx-auto">
+            <dl class="bg-white dark:bg-gray-800 rounded-lg shadow-lg sm:grid sm:grid-cols-3 bg-gradient-to-r from-purple-50 via-purple-300 to-purple-100">
+              <div
+                class="flex flex-col p-6 text-center border-b border-gray-100 dark:border-gray-700 sm:border-0 sm:border-r ">
+                <dt class="order-2 mt-2 text-lg font-medium leading-6 text-gray-500 dark:text-gray-400" id="item-1">
+                Total Projects
+                </dt>
+                <dd class="order-1 text-5xl font-extrabold leading-none text-indigo-600 dark:text-indigo-100"
+                  aria-describedby="item-1" id="totalprojects">
+                  0
+                </dd>
+              </div>
+              <div
+                class="flex flex-col p-6 text-center border-t border-b border-gray-100 dark:border-gray-700 sm:border-0 sm:border-l sm:border-r">
+                <dt class="order-2 mt-2 text-lg font-medium leading-6 text-gray-500 dark:text-gray-400">
+                Web Pages
+                </dt>
+                <dd class="order-1 text-5xl font-extrabold leading-none text-indigo-600 dark:text-indigo-100"
+                  id="webpages">
+                  0
+                </dd>
+              </div>
+              <div
+                class="flex flex-col p-6 text-center border-t border-gray-100 dark:border-gray-700 sm:border-0 sm:border-l">
+                <dt class="order-2 mt-2 text-lg font-medium leading-6 text-gray-500 dark:text-gray-400">
+                Technologies We Use
+                </dt>
+                <dd class="order-1 text-5xl font-extrabold leading-none text-indigo-600 dark:text-indigo-100"
+                  id="technologies">
+                  0
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    </div>
     <div class="bg-white py-12 pt-5 md:mt-20">
         <div class="text-center mb-8 px-4">
             <h2 class="text-3xl md:text-4xl font-bold text-gray-800">
@@ -228,5 +279,36 @@
         </div>
 
     </div>
+    <script>
+  const targets = [
+    { element: document.getElementById('totalprojects'), count: 600, suffix: '+' },
+    { element: document.getElementById('webpages'), count: 20000, suffix: '+' },
+    { element: document.getElementById('technologies'), count: 50, suffix: '+' }
+  ];
 
+  // Find the maximum count among all targets
+  const maxCount = Math.max(...targets.map(target => target.count));
+
+  // Function to animate count-up effect
+  function animateCountUp(target, duration) {
+    let currentCount = 0;
+    const increment = Math.ceil(target.count / (duration / 10));
+
+    const interval = setInterval(() => {
+      currentCount += increment;
+      if (currentCount >= target.count) {
+        clearInterval(interval);
+        currentCount = target.count;
+        target.element.textContent = currentCount + target.suffix;
+      } else {
+        target.element.textContent = currentCount;
+      }
+    }, 10);
+  }
+
+  // Animate count-up for each target with adjusted duration
+  targets.forEach(target => {
+    animateCountUp(target, maxCount / 100); // Adjust duration based on max count
+  });
+</script>
 </div>
