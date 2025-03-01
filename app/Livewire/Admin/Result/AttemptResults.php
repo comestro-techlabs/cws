@@ -7,7 +7,12 @@ use App\Models\Exam;
 use App\Models\User;
 use App\Models\Answer;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Title;
+use Livewire\Attributes\Layout;
 
+
+#[Layout('components.layouts.admin')]
+#[Title('Manage Attempt Results')]
 class AttemptResults extends Component
 {
     public $examId, $userId;

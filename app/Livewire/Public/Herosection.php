@@ -11,9 +11,11 @@ class Herosection extends Component
         return <<<'HTML'
             <div>
                 <div class="bg-gradient-to-r  to-purple-100 via-purple-300 from-purple-50">
+                <nav id="navbar" class="sticky  top-4 max-w-7xl mx-auto  bottom-auto z-40 w-full  transition-all duration-300  rounded-xl ">
+                    <livewire:public.header />
+                </nav>
                 <!-- Content Section -->
                 <div class="md:pt-[30px] ">
-                    <!-- Check if current route is homepage -->
                     <!-- Hero Section with Gradient -->
                     <div class="relative flex items-center md:pt-12 pt-10">
                         <div class="lg:px-[10%] w-full px-3 pt-5 md:py-0 gap-10 flex flex-col md:flex-row items-center">
@@ -44,6 +46,7 @@ class Herosection extends Component
                 </div>
             </div>
             </div>
+            
         HTML;
     }
 }
