@@ -2,12 +2,16 @@
 
 namespace App\Livewire\Admin\Result;
 
-use Livewire\Attributes\Layout;
+
 use Livewire\Component;
 use App\Models\Answer;
 use App\Models\Exam;
 use App\Models\User;
+use Livewire\Attributes\Title;
 
+
+#[Layout('components.layouts.admin')]
+#[Title('Manage Attempt Results Details')]
 class AttemptDetails extends Component
 {
     public $examId, $userId, $attempt;

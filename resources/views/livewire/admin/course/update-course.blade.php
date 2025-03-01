@@ -37,22 +37,25 @@
             
             {{-- Course Image Upload --}}
             <div class="mb-4">
-                <label class="block font-semibold">Course Image</label>
-                <input type="file" wire:model.live="tempImage" accept="image/*" class="w-full p-2 border rounded">
-                @error('tempImage') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-    
-                {{-- Image Preview --}}
-                <div class="mt-2">
-                    @if ($previewImage)
-                        <img src="{{ $previewImage }}" class="w-32 h-32 object-cover mt-2 rounded" alt="Preview">
-                    @elseif ($tempImage)
-                        <img src="{{ $tempImage->temporaryUrl() }}" class="w-32 h-32 object-cover mt-2 rounded" alt="Preview">
-                    @elseif ($course->course_image)
-                        <img src="{{ asset('storage/' . $course->course_image) }}" class="w-32 h-32 object-cover rounded" alt="Current Image">
-                    @endif
-                </div>
-    
-                <button wire:click="saveField('tempImage')" class="mt-2 px-4 py-2 bg-blue-600 text-white rounded">Update Image</button>
+                <label>Course Image:</label>
+        
+                {{-- Show Preview --}}
+                @if ($previewImage)
+                    <img src="{{ $previewImage }}" class="img-preview" alt="Preview" width="150">
+                @elseif ($course->course_image)
+                    <img src="{{ asset('storage/' . $course->course_image) }}" class="img-preview" alt="Course Image" width="150">
+                @endif
+        
+                {{-- Upload Field --}}
+                <input type="file" wire:model="tempImage">
+                @error('tempImage') <span class="text-danger">{{ $message }}</span> @enderror
+        
+                {{-- Buttons --}}
+                <button wire:click="saveField('tempImage')" class="btn btn-primary">Upload</button>
+        
+                @if ($course->course_image)
+                    <button wire:click="deleteImage" class="btn btn-danger">Remove</button>
+                @endif
             </div>
     
             {{-- Publish / Unpublish Button --}}
@@ -65,7 +68,43 @@
             </div>
         </form>
     </div>
+    <div class="form-group mt-4">
+        <h4>Course Features</h4>
+        <form wire:submit.prevent="updateFeatures">
+            @foreach($allFeatures as $feature)
+                <div class="form-check">
+                    <input 
+                        type="checkbox"
+                        class="form-check-input"
+                        wire:model="selectedFeatures"
+                        value="{{ $feature->id }}"
+                        id="feature-{{ $feature->id }}"
+                    >
+                    <label class="form-check-label" for="feature-{{ $feature->id }}">
+                        {{ $feature->name }}
+                    </label>
+                </div>
+            @endforeach
+            @error('selectedFeatures') <span class="text-danger">{{ $message }}</span> @enderror
+            <button 
+                type="submit" 
+                class="btn btn-primary mt-2"
+                wire:loading.attr="disabled"
+            >
+                <span wire:loading.remove>Update Features</span>
+                <span wire:loading>Updating...</span>
+            </button>
+        </form>
 
+        <div class="mt-3">
+            <h5>Current Features:</h5>
+            <ul>
+                @foreach($course->features as $feature)
+                    <li>{{ $feature->name }}</li>
+                @endforeach
+            </ul>
+        </div>
+    </div>
     <!-- Course Content Management -->
     <div class="mt-8 max-w-7xl mx-auto px-4">
         <h2 class="text-2xl font-bold mb-6">Manage Course Content</h2>

@@ -5,7 +5,12 @@ namespace App\Livewire\Admin\Result;
 use Livewire\Component;
 use App\Models\Exam;
 use Livewire\WithPagination;
+use Livewire\Attributes\Title;
+use Livewire\Attributes\Layout;
 
+
+#[Layout('components.layouts.admin')]
+#[Title('Manage Exam Results')]
 class ShowExams extends Component
 {
     use WithPagination;
