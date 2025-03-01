@@ -10,7 +10,7 @@
     @livewireStyles
 </head>
 
-<body >
+<body>
 
     <div class="drawer lg:drawer-open">
   <input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
@@ -42,9 +42,10 @@
       </div>
     </div>
     <!-- Page content here -->
-    {{ $slot }}
   </div>
-  <div class="drawer-side">
+  <div class="flex">
+  <div class="w-3/12">
+    <div class="drawer-side">
     <label for="my-drawer-3" aria-label="close sidebar" class="drawer-overlay"></label>
     <ul class="menu bg-base-200 min-h-full w-80 p-4">
       <!-- Sidebar content here -->
@@ -115,8 +116,6 @@
                                         d="M22.5 9.75h-21v7.5a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3v-7.5Zm-18 3.75a.75.75 0 0 1 .75-.75h6a.75.75 0 0 1 0 1.5h-6a.75.75 0 0 1-.75-.75Zm.75 2.25a.75.75 0 0 0 0 1.5h3a.75.75 0 0 0 0-1.5h-3Z"
                                         clip-rule="evenodd" />
                                 </svg>
-
-
                                 <span class="flex-1 ms-3 whitespace-nowrap">Billing</span>
                             </a>
                         </li>
@@ -145,8 +144,6 @@
                                     <path
                                         d="M4.462 19.462c.42-.419.753-.89 1-1.395.453.214.902.435 1.347.662a6.742 6.742 0 0 1-1.286 1.794.75.75 0 0 1-1.06-1.06Z" />
                                 </svg>
-
-
                                 <span class="flex-1 ms-3 whitespace-nowrap">My Courses</span>
                             </a>
                         </li>
@@ -265,11 +262,16 @@
                 </div>
             </aside>
     </ul>
+    </div>
+  </div>
+  <div class="w-9/12">
+  {{ $slot }}
+  </div>
   </div>
 </div>
 
 
-    @livewireScripts
+@livewireScripts
 </body>
 <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
