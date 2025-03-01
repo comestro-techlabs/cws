@@ -1,13 +1,13 @@
 <div>
     <div class="">
-        <div class="flex flex-col items-center mt-10 md:mt-10 text-center px-5 md:px-[10%]">
-            <h2 class="text-3xl text-gray-900 font-sans font-bold mb-4">Our Courses </h2>
-            <p class="text-gray-700 text-lg leading-relaxed mb-6 max-w-3xl"> Discover curated courses that blend industry insights with practical knowledge. From beginner to advanced, upgrade your skills and achieve your career goals with expert-led guidance. </p>
-
-
+        <div class="flex flex-col items-center mt-10 md:mt-12 text-center px-5 md:px-[10%]">
+            <h2 class="text-2xl md:text-5xl text-gray-900 font-sans font-extrabold mb-4 tracking-tight">Our Courses</h2>
+            <p class="text-gray-700 text-md md:text-lg leading-relaxed mb-6 max-w-3xl">
+                Discover curated courses that blend industry insights with practical knowledge.
+                From beginner to advanced, upgrade your skills and achieve your career goals with expert-led guidance.
+            </p>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:mb-20 mb-10 px-4 lg:px-32">
-
             @foreach ($courses as $item)
 
             <div class=" bg-gray-100 flex items-center justify-center p-4">
@@ -33,8 +33,8 @@
 
                             <div class="space-y-1">
                                 @if ($item->discounted_fees > 0)
-                                <p class="text-2xl font-bold text-gray-900">Rs {{ $item->fees }}</p>
-                                <p class="text-sm text-gray-500 line-through">Rs {{ $item->discounted_fees }}</p>
+                                <p class="text-2xl font-bold text-gray-900">Rs {{ $item->discounted_fees }}</p>
+                                <p class="text-sm text-gray-500 line-through">Rs {{ $item->fees }}</p>
                                 @else
                                 <p class="text-green-500 font-bold">Free</p>
                                 @endif
@@ -58,7 +58,7 @@
 
         <div class="flex justify-center items-center">
 
-            <div class="bg-secondary flex items-center py-3 px-6 rounded-lg shadow gap-2 md:mb-20 mb-10">
+            <div class="bg-primary flex items-center py-3 px-6 rounded-lg shadow gap-2 md:mb-20 mb-10">
                 <a href="{{route('v2.public.viewallcourses.all-courses')}}" wire:navigate class=" text-white font-bold ">
                     View All Courses
                 </a>
