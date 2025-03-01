@@ -24,6 +24,7 @@ use App\Livewire\Admin\Assignment\CreateAssignment;
 use App\Livewire\Admin\Assignment\EditAssignment;
 use App\Livewire\Admin\Assignment\ManageAssignment;
 use App\Livewire\Admin\Assignment\SingleViewAssignment;
+use App\Livewire\Admin\Dashboad;
 use App\Livewire\Admin\ManagePayment;
 use App\Livewire\Admin\ManageEnquiry;
 use App\Livewire\Admin\Student\ManageStudent;
@@ -44,6 +45,7 @@ use App\Livewire\Admin\Course\UpdateCourse;
 use App\Livewire\Student\ExploreCourse;
 use App\Livewire\Student\ViewCourse;
 use App\Livewire\Student\MyCourse;
+use App\Livewire\Student\EditProfile;
 use App\Livewire\Admin\Portfolio\CreatePortfolio;
 use App\Livewire\Admin\Portfolio\ManagePortfolio;
 use App\Livewire\Admin\Message\CreateMessage;
@@ -75,7 +77,6 @@ use App\Livewire\Student\Dashboard\ManageAssignments;
 use App\Livewire\Student\Dashboard\StudentDashboard;
 use App\Livewire\Student\Dashboard\Takeexam\Exam;
 // v3
-use App\Livewire\V3\Admin\Dashboard;
 use App\Livewire\V3\Public\NewHome;
 use App\Models\Portfolio;
 
@@ -275,10 +276,11 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
 
     // Version 2 Routes (Livewire)
     Route::prefix('v2/admin')->group(function () {
+        Route::get('/dashboard', Dashboad::class)->name('admin.dashboard');
+        Route::get('/logout', [Dashboad::class, 'logout'])->name('admin.logout');
         Route::get('/category', ManageCategory::class)->name('admin.category');
         Route::get('/student', ManageStudent::class)->name('admin.student');
         Route::get('/student/{id}', ViewStudent::class)->name('admin.student.view');
-
         //course routes
         Route::get('/course', InsertCourse::class)->name('admin.course');
         Route::get('/course/update/{courseId}', UpdateCourse::class)->name('admin.course.update');
@@ -352,6 +354,8 @@ Route::prefix('v2')->group(function () {
         Route::get('/explore-courses', ExploreCourse::class)->name('student.exploreCourses');
         Route::get('/view-courses/{courseId}', ViewCourse::class)->name('student.viewCourses');
         Route::get('/my-courses', MyCourse::class)->name('v2.student.mycourses');
+        Route::get('/edit-profile', EditProfile::class)->name('student.v2edit.profile');
+        
     });
     //working here for public routes
     Route::prefix("public")->group(function () {

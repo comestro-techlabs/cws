@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\Result;
 
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 use App\Models\Answer;
 use App\Models\Exam;
@@ -15,6 +16,7 @@ use Livewire\Attributes\Layout;
 class AttemptDetails extends Component
 {
     public $examId, $userId, $attempt;
+    #[Layout('components.layouts.admin')]
 
     public function mount($examId, $userId, $attempt)
     {

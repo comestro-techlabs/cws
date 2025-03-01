@@ -11,7 +11,8 @@ class Header extends Component
     public function logout()
     {
         Auth::logout();
-        return redirect()->route('v2.auth.login')->with('success', 'You have been logged out.');
+        $this->redirect(route('v2.auth.login'), navigate: true);
+
     }
     //here logout and logic will be placed
     public function render()

@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Quiz;
 
 use App\Models\Quiz;
 use App\Models\Exam;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\Title;
@@ -40,6 +41,7 @@ class ManageQuiz extends Component
         'status' => 'nullable|boolean'
     ];
 
+    #[Layout('components.layouts.admin')]
     public function mount()
     {
         $this->exams = Exam::all();

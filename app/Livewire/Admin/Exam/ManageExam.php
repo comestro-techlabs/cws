@@ -37,6 +37,7 @@ class ManageExam extends Component
         'exam_date' => 'required|date|after_or_equal:today',
         'status' => 'nullable|boolean'
     ];
+    #[Layout('components.layouts.admin')]
 
     public function mount()
     {
