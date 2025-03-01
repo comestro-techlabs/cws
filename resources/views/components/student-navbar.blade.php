@@ -19,7 +19,7 @@
         <div class="px-3 py-4 bg-gray-50">
             <ul class="space-y-2 font-light">
                 <li>
-                    <a wire:navigate href="{{ route('student.dashboard') }}"
+                    <a wire:navigate href="{{ route('v2.student.dashboard') }}"
                         class="flex items-center p-2 text-gray-900 hover:text-indigo-900 bg-transparent rounded-sm hover:bg-blue-200 group">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                             class="size-6 fill-yellow-600">
