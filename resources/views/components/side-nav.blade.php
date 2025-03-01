@@ -31,8 +31,7 @@
                     </svg>
                 </span>
                 <span class="ml-2 text-sm tracking-wide truncate">Manage Category</span>
-                <span
-                    class="px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-indigo-500 bg-indigo-50 rounded-full">New</span>
+                
             </a>
         </li>
         <li>
@@ -47,8 +46,7 @@
                 </svg>
                 </span>
                 <span class="ml-2 text-sm tracking-wide truncate">Manage Student</span>
-                <span
-                    class="px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-indigo-500 bg-indigo-50 rounded-full">New</span>
+                
             </a>
         </li>
         <li>
