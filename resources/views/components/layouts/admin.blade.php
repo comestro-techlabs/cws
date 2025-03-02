@@ -28,7 +28,9 @@
     <main :class="{'sm:ml-64': sidebarOpen, 'ml-0': !sidebarOpen}"
           class="flex-1 p-4 transition-all duration-300 sm:ml-64">
         <x-admin-header />
+        <div class="mt-8">
         {{ $slot }}
+        </div>
     </main>
 
     {{-- toastr --}}
