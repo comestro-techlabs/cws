@@ -15,11 +15,7 @@
                     class="max-w-sm w-full bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all">
                     <div>
                         <img src="{{ asset('storage/course_images/' . $item->course_image) }}" alt="Course Image"
-                            class="w-full h-52 object-cover" />
-                        <span
-                            class="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-                            Sale
-                        </span>
+                            class="w-full h-52 object-cover" />                      
                     </div>
 
                     <div class="p-5 space-y-4">
