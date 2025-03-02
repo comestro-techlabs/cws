@@ -1,4 +1,4 @@
-<div class="overflow-y-auto overflow-x-hidden flex-grow">
+<div class="overflow-y-auto overflow-x-hidden flex-grow bg-gray-100">
     <ul class="flex flex-col py-4 space-y-1">
         <li class="px-5">
             <div class="flex flex-row items-center h-8">
