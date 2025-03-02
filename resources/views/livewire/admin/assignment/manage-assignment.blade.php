@@ -1,4 +1,4 @@
-<div class="container mx-auto px-4 sm:px-8 py-8 bg-gray-100">
+<div class="container mx-auto px-4 sm:px-8 py-8">
     <div class="flex flex-col gap-8">
         <div class="w-full mb-8">
             <div class="bg-white shadow-md rounded-lg p-6">
@@ -8,7 +8,7 @@
                         Manage Assignments
                     </h2>
                     <div class="flex gap-5">
-                        <a wire:navigate href="{{ route('assignment.course') }}"
+                        <a wire:navigate href="{{ route('admin.assignment.course') }}"
                             class="bg-purple-800 text-white px-4 py-2 rounded-md shadow hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-blue-300 sm:mb-0 flex items-center gap-1">
                             View Course
                             <i class="bi bi-arrow-down-short font-bold text-xl"></i>
@@ -145,57 +145,5 @@
         </div>
     </div>
 
-    <div class="min-h-screen flex items-center justify-center p-4">
-        <div class="bg-white rounded-lg shadow-lg max-w-2xl w-full p-6">
-            <!-- Header -->
-            <div class="border-b pb-4 mb-4">
-                <h1 class="text-2xl font-bold text-gray-800">Assignment Details</h1>
-                <p class="text-sm text-gray-500">Due: March 15, 2025</p>
-            </div>
-
-            <!-- Assignment Info -->
-            <div class="space-y-4">
-                <div>
-                    <h2 class="text-lg font-semibold text-gray-700">Title</h2>
-                    <p class="text-gray-600">Create a Responsive Web Page</p>
-                </div>
-                <div>
-                    <h2 class="text-lg font-semibold text-gray-700">Subject</h2>
-                    <p class="text-gray-600">Web Development</p>
-                </div>
-                <div>
-                    <h2 class="text-lg font-semibold text-gray-700">Status</h2>
-                    <span class="inline-block px-3 py-1 text-sm font-medium text-green-700 bg-green-100 rounded-full">In
-                        Progress</span>
-                </div>
-            </div>
-
-            <!-- Description -->
-            <div class="mt-6">
-                <h2 class="text-lg font-semibold text-gray-700">Description</h2>
-                <p class="text-gray-600 mt-2">
-                    Design and develop a responsive web page using HTML, CSS, and Tailwind CSS. The page should include
-                    a header, content section, and footer. Ensure it is mobile-friendly and follows best practices for
-                    accessibility.
-                </p>
-            </div>
-
-            <!-- Submission Section -->
-            <div class="mt-6">
-                <h2 class="text-lg font-semibold text-gray-700">Submit Your Work</h2>
-                <div class="mt-4 space-y-4">
-                    <input type="file"
-                        class="w-full text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
-                    <button
-                        class="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition duration-200">Submit
-                        Assignment</button>
-                </div>
-            </div>
-
-            <!-- Back Button -->
-            <div class="mt-6">
-                <a href="#" class="text-blue-600 hover:underline">← Back to Assignments</a>
-            </div>
-        </div>
-    </div>
+    
 </div>
