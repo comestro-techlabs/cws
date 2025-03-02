@@ -122,11 +122,7 @@ Route::get('/student/messages/{message}', [MessageController::class, 'showMessag
 
 // });
 
-//routes for the course
-Route::get('/course/show', [PostCourseController::class, 'index'])->name('allcourses.show');
-Route::get('/course/{course_id}/chapter/show', [PostChapterController::class, 'index'])->name('courses.show');
-Route::get('/course/chapter/{chapter_id}/show', [PostTopicPostController::class, 'index'])->name('chapters.show');
-Route::get('/course/chapter/topics/{topic_id}/show', [PostMyPostController::class, 'index'])->name('topics.show');
+
 
 
 Route::get('/get-access-token', [StudentController::class, 'store']);
@@ -403,6 +399,12 @@ Route::prefix('v2')->group(function () {
         Route::get('/courses/{slug}', Ourcourses::class)->name('v2.public.courseDetail');
         Route::get('/contact', ContactPage::class)->name('v2.public.contactUs');
         Route::get('/workshops', Workshop::class)->name('v2.public.workshop');
+
+        //routes for the free course
+        // Route::get('/course/show', [PostCourseController::class, 'index'])->name('allcourses.show');
+        Route::get('/course/{course_id}/chapter/show', [PostChapterController::class, 'index'])->name('courses.show');
+        Route::get('/course/chapter/{chapter_id}/show', [PostTopicPostController::class, 'index'])->name('chapters.show');
+        Route::get('/course/chapter/topics/{topic_id}/show', [PostMyPostController::class, 'index'])->name('topics.show');
     });
 });
 

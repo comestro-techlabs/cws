@@ -1,6 +1,6 @@
 <div>
     <!-- Navbar -->
-    <div class="shadow-2xl w-[85%] ml-[7.5%] flex top-[20px] fixed justify-between items-center mx-auto px-8 py-3 rounded-full backdrop-blur bg-opacity-20">
+    <div class="shadow-2xl w-[85%] ml-[7.5%] flex top-[20px] fixed justify-between items-center mx-auto px-8 py-3 rounded-full backdrop-blur bg-opacity-40">
 
         <!-- Hamburger Menu Button (Only Visible on Small Screens) -->
         <button id="menu-toggle" class="md:hidden focus:outline-none">
