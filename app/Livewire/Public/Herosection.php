@@ -11,7 +11,7 @@ class Herosection extends Component
         return <<<'HTML'
             <div>
             <div class="bg-gradient-to-r to-purple-100 via-purple-300 from-purple-50">
-                    <nav id="navbar" class="sticky top-4 lg:max-w-7xl md:max-w-3xl sm:max-w-xl mx-auto bottom-auto z-40 w-full transition-all duration-300 rounded-xl">
+                    <nav id="navbar" class="sticky top-4 lg:max-w-7xl md:max-w-3xl sm:max-w-xl  bottom-auto z-40 w-full transition-all duration-300 rounded-xl px-4">
                         <livewire:public.header />
                     </nav>
 

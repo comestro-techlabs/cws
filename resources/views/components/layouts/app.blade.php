@@ -18,7 +18,7 @@
 
 <body class="flex flex-col min-h-screen">
     @if(Route::currentRouteName() !='v2.public.homepage')
-    <nav id="navbar" class="sticky  top-2 lg:max-w-7xl md:max-w-3xl sm:max-w-xl mx-auto  bottom-auto z-40 w-full  transition-all duration-300  rounded-xl ">
+    <nav id="navbar" class="sticky  top-2 lg:max-w-7xl md:max-w-3xl sm:max-w-xl  bottom-auto z-40 w-full  transition-all duration-300  rounded-xl px-4 ">
         <livewire:public.header />
     </nav>
     @endif
