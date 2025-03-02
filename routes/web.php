@@ -23,6 +23,7 @@ use App\Livewire\Admin\Assignment\AssignmentCourse;
 use App\Livewire\Admin\Assignment\CreateAssignment;
 use App\Livewire\Admin\Assignment\EditAssignment;
 use App\Livewire\Admin\Assignment\ManageAssignment;
+use App\Livewire\Admin\Assignment\AssignmentUpload;
 use App\Livewire\Admin\Assignment\SingleViewAssignment;
 use App\Livewire\Admin\Dashboad;
 use App\Livewire\Admin\ManagePayment;
@@ -306,9 +307,22 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/assignment', CreateAssignment::class)->name('admin.assignment');
         Route::get('/assignment/manage', ManageAssignment::class)->name('admin.assignment.manage');
         Route::get('/singleViewAssignment/{assignment}', SingleViewAssignment::class)->name('admin.assignment.view');
-        Route::get('/assignment/course', AssignmentCourse::class)->name('admin.assignment.course');
+        // Route::get('/assignment/course', AssignmentCourse::class)->name('admin.assignment.course');
         Route::get('/assignment/{assignment}/edit', CreateAssignment::class)->name('admin.assignment.edit');
+       // Index: All Assignment Uploads
+    Route::get('/assignments', AssignmentUpload::class)->name('assignments.index');
 
+    // Assignment Courses
+    Route::get('/assignment/course', AssignmentUpload::class)->name('assignment.course');
+
+    // Assignment Review (requires course slug)
+    Route::get('/assignment/review/{slug}', AssignmentUpload::class)->name('assignment.review');
+
+    // Single Student Assignments (requires student ID)
+    Route::get('/assignment/student/{id}', AssignmentUpload::class)->name('assignment.student');
+
+    // Review Work for a Specific Assignment (requires assignment ID)
+    Route::get('/assignment/review-work/{id}', AssignmentUpload::class)->name('assignment.reviewWork');
         // Workshop Routes
         Route::get('/workshops', CreateWorkshop::class)->name('admin.workshops.create');
         // Route::get('/workshops/{id}', CreateWorkshop::class)->name('admin.workshops.edit');
