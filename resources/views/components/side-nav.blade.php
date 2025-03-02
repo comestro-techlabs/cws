@@ -29,8 +29,8 @@
                         </path>
                     </svg>
                 </span>
-                <span class="ml-2 text-sm tracking-wide truncate">Message</span>                
-            </a>            
+                <span class="ml-2 text-sm tracking-wide truncate">Message</span>
+            </a>
         </li>
         <li class="px-3">
             <div class="flex flex-row items-center h-5">
@@ -62,8 +62,8 @@
                             d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0V12a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 12V5.25" />
                     </svg>
                 </span>
-                <span class="ml-2 text-sm tracking-wide truncate">Manage Courses</span>                
-            </a>            
+                <span class="ml-2 text-sm tracking-wide truncate">Manage Courses</span>
+            </a>
         </li>
         <li>
             <a wire:navigate href="{{ route('admin.assignment.manage') }}"
@@ -129,8 +129,8 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 8.25h6M9 12h6M9 15.75h3" />
                     </svg>
                 </span>
-                <span class="ml-2 text-sm tracking-wide truncate">Manage Exam</span>                
-            </a>            
+                <span class="ml-2 text-sm tracking-wide truncate">Manage Exam</span>
+            </a>
         </li>
         <li>
             <a wire:navigate href="{{route('admin.quiz')}}"
@@ -144,8 +144,8 @@
                     </svg>
                 </span>
                 <span class="ml-2 text-sm tracking-wide truncate">Manage Quiz</span>
-                
-            </a>           
+
+            </a>
         </li>
         <li>
             <a wire:navigate href="{{ route('admin.workshops.index') }}"
@@ -158,15 +158,15 @@
                             d="M3.5 2A1.5 1.5 0 0 0 2 3.5v11A1.5 1.5 0 0 0 3.5 16h6.086a1.5 1.5 0 0 0 1.06-.44l4.915-4.914A1.5 1.5 0 0 0 16 9.586V3.5A1.5 1.5 0 0 0 14.5 2zM3 3.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 .5.5V9h-4.5A1.5 1.5 0 0 0 9 10.5V15H3.5a.5.5 0 0 1-.5-.5zm7 11.293V10.5a.5.5 0 0 1 .5-.5h4.293z" />
                     </svg>
                 </span>
-                <span class="ml-2 text-sm tracking-wide truncate">Manage Workshop</span>                
-            </a>            
+                <span class="ml-2 text-sm tracking-wide truncate">Manage Workshop</span>
+            </a>
         </li>
 
         <li class="px-3">
             <div class="flex flex-row items-center h-5">
                 <div class="text-sm font-light tracking-wide text-gray-500">Notifications</div>
             </div>
-        </li>  
+        </li>
         <li>
             <a wire:navigate href="{{ route('admin.paymnet-manage') }}"
                 class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 w-full">
@@ -209,6 +209,27 @@
                     </svg>
                 </span>
                 <span class="ml-2 text-sm tracking-wide truncate">Logout</span>
+            </a>
+        </li>
+
+
+        <li class="px-3">
+            <div class="flex flex-row items-center h-5">
+                <div class="text-sm font-light tracking-wide text-gray-500">Blog</div>
+            </div>
+        </li>
+        <li>
+            <a wire:navigate href="{{ route('admin.blog.post-course') }}"
+                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 w-full">
+                <span class="inline-flex justify-center items-center ml-4">
+                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M15 8.25H9m6 3H9m3 6-3-3h1.5a3 3 0 1 0 0-6M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
+
+                </span>
+                <span class="ml-2 text-sm tracking-wide truncate">Manage Post Course</span>
             </a>
         </li>
     </ul>
