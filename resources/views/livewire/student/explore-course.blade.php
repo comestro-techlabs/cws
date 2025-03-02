@@ -5,7 +5,7 @@
 
     
        <div class="flex items-center bg-white border border-gray-300 rounded-lg shadow-sm">
-           <input type="text" placeholder="Search for courses..." wire:model.live="search"
+           <input type="text" placeholder="Search for courses..." wire:model.live.debounce.500ms="search"
                class="w-full px-4 py-2 text-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none rounded-l-lg">
            <button type="button" class="p-2 bg-blue-600 text-white rounded-r-lg hover:bg-blue-700 transition-colors">
                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -16,7 +16,7 @@
            </button>
        </div>
    </div>
-   <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
+   <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3">
        @foreach ($courses as $course)
            <div
                class="bg-white flex-1 border border-gray-200 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">

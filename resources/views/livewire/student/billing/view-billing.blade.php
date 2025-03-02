@@ -1,7 +1,7 @@
 <div>
 
 
-<div class="md:flex">
+<div class="md:flex mt-8">
     <div class="p-6 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full">
        
     <div class="container mx-auto px-4 py-4">

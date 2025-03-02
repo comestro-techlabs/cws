@@ -1,8 +1,35 @@
 <div class="page mt-16 min-h-screen">
     
+@if(session('success'))
+    <script>
+        Swal.fire({
+            title: 'Success!',
+            text: "{{ session('success') }}",
+            icon: 'success',
+            confirmButtonText: 'OK'
+        });
+    </script>
+@endif
+
+@if(session('error'))
+    <script>
+        Swal.fire({
+            title: 'Error!',
+            text: "{{ session('error') }}",
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
+    </script>
+@endif
+<div class="page mt-16  min-h-screen">
+    <!-- Page Heading -->
     <div class="border-b border-gray-300 py-4">
         <div class="container mx-auto px-6 flex items-center">
             <h1 class="text-2xl font-bold text-gray-800">My Courses</h1>
+            <a wire:navigate href="{{ route('student.exploreCourses') }}"
+                class="ml-auto bg-indigo-600 hover:bg-indigo-500 text-white py-2 px-4 rounded flex items-center shadow">
+                New Course
+            </a>
         </div>
     </div>
 
