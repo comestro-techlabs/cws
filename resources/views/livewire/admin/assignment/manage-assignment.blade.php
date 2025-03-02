@@ -1,86 +1,67 @@
-<div>
-    <div class="flex flex-wrap justify-between items-center p-4">
-        <h2 class="md:text-xl text-lg font-semibold text-slate-500 border-s-4 border-s-orange-400 pl-3 mb-5">
-            Manage Assignments
-        </h2>
-        <a wire:navigate href="{{ route('admin.assignment') }}"
-            class="bg-blue-500 text-white px-4 py-2 rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 sm:mb-0 flex items-center gap-1">
-            Create New Assignment
-            <i class="bi bi-arrow-down-short font-bold"></i>
-        </a>
-    </div>
-
-    <div class="flex justify-between p-2">
-        <div class="w-full bg-white p-6 shadow-md rounded-lg">
-            <div class="flex flex-col sm:flex-row sm:justify-between gap-4">
-                <div>
-                    <label for="course_id" class="block text-sm font-medium text-gray-700 mb-1">Filter by Course</label>
-                    <div class="flex items-center gap-2">
+<div class="container mx-auto px-4 sm:px-8 py-8 bg-gray-100">
+    <div class="flex flex-col gap-8">
+        <div class="w-full mb-8">
+            <div class="bg-white shadow-md rounded-lg p-6">
+                <div class="flex flex-wrap justify-between items-center p-4">
+                    <h2 class="md:text-xl text-lg font-semibold text-slate-500 border-s-4 border-s-purple-800 pl-3 mb-5">
+                        Manage Assignments
+                    </h2>
+                    <a wire:navigate href="{{ route('admin.assignment') }}"
+                        class="bg-purple-800 text-white px-4 py-2 rounded-md shadow hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-blue-300 sm:mb-0 flex items-center gap-1">
+                        Create New Assignment
+                        <i class="bi bi-arrow-down-short font-bold text-xl"></i>
+                    </a>
+                </div>
+                <div class="flex flex-col md:flex-row gap-4 mb-4">
+                    <div class="flex-1">
+                        <input type="search" wire:model.live="search"  class="w-full border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm px-4 py-2" placeholder="Search by name...">
+                    </div>
+                    <div class="flex-1">
                         <select wire:model.live="course_id" id="course_id"
-                            class="w-full sm:w-64 mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-transparent">
+                        class="w-full border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm px-4 py-2">
                             <option value="">Select a course</option>
                             @foreach ($courses as $course)
-
                                 <option value="{{ $course->id }}" {{ $this->course_id == $course->id ? 'selected' : '' }}>
                                     {{ $course->title }}
                                 </option>
-
                             @endforeach
+                            
+                       
                         </select>
-                        @if($course_id)
-                            <button wire:click="clearFilter" class="text-red-500 hover:text-red-700">
-                                <i class="bi bi-x-circle"></i>X
-                            </button>
-                        @endif
+                       
                     </div>
                 </div>
-            </div>
-
-            <!-- Messages -->
-            @if (session('success'))
-                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mt-4" role="alert">
-                    <strong class="font-bold">Success!</strong>
-                    <span class="block sm:inline">{{ session('success') }}</span>
-                    <span class="absolute top-0 bottom-0 right-0 px-4 py-3 cursor-pointer" wire:click="$refresh">
-                        <svg class="fill-current h-6 w-6 text-green-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M14.348 14.849a1 1 0 11-1.414-1.414L10.414 10l2.52-2.52a1 1 0 011.414 1.414L12.828 10l1.52 1.52zM5.652 5.151a1 1 0 011.414 1.414L9.586 10l-2.52 2.52a1 1 0 01-1.414-1.414L7.172 10 5.652 8.565z"/></svg>
-                    </span>
-                </div>
-            @endif
-
-            <!-- Table -->
-            <div class="overflow-x-auto flex-wrap mt-4" wire:loading.class="opacity-50">
-                <div wire:loading wire:target="course_id" class="absolute inset-0 flex items-center justify-center bg-gray-100 bg-opacity-50">
-                    <span class="text-gray-500">Filtering...</span>
-                </div>
-                <table class="min-w-full table-auto">
-                    <thead>
-                        <tr>
-                            <th class="px-4 py-2 text-left border">Title</th>
-                            <th class="px-4 py-2 text-left border">isPublished</th>
-                            <th class="px-4 py-2 text-left border">Status</th>
-                            <th class="px-4 py-2 text-left border">Course</th>
-                            <th class="px-4 py-2 text-left border">Batch</th>
-                            <th class="px-4 py-2 text-left border">Date</th>
-                            <th class="px-4 py-2 text-left border">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($assignments as $assignment)
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
                             <tr>
-                                <td class="px-4 py-2 truncate max-w-64 border">{{ $assignment->title }}</td>
-                                <td class="px-4 py-2 border">{{ $assignment->status ? 'Published' : 'Unpublished' }}</td>
-                                <td class="border px-4 py-2">
-                                    <label class="relative inline-flex items-center cursor-pointer">
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Course</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Batch</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Is Published</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            @forelse ($assignments as $assignment)
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $assignment->title }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $assignment->course->title }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $assignment->batch->batch_name }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        <label class="relative inline-flex items-center cursor-pointer">
                                         <input type="checkbox" wire:change="toggleStatus({{ $assignment->id }})"
                                             class="sr-only peer" {{ $assignment->status ? 'checked' : '' }}>
                                         <div class="w-11 h-6 bg-gray-200 rounded-full peer-focus:ring-4 peer-focus:ring-green-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
                                     </label>
-                                </td>
-                                <td class="px-4 py-2 truncate max-w-80 border">{{ $assignment->course->title }}</td>
-                                <td class="px-4 py-2 truncate max-w-80 border">{{ $assignment->batch->batch_name }}</td>
-                                <td class="px-4 py-2 border">{{ $assignment->created_at->format('Y-m-d') }}</td>
-                                <td class="px-4 py-2 border">
-                                    <div class="flex flex-wrap gap-2">
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $assignment->status ? 'Published' : 'Unpublished' }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $assignment->created_at->format('Y-m-d') }}</td>
+                                   
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                       <div class="flex flex-wrap gap-2">
                                         <a wire:navigate href="{{ route('admin.assignment.view', $assignment->id) }}"
                                             class="px-3 py-2 text-xs rounded-xl font-medium text-white bg-teal-500 transition flex items-center gap-1">
                                             View <i class="bi bi-eye-fill font-bold"></i>
@@ -94,18 +75,97 @@
                                             Delete <i class="bi bi-trash3-fill font-bold"></i>
                                         </button>
                                     </div>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="7" class="px-4 py-2 text-center border">No assignments found.</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="8" class="px-6 py-4 text-center text-sm text-gray-500">No Assignments found.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+                <div class="flex justify-between items-center px-4 py-3">
+                    <div class="text-sm text-gray-500">
+                        Showing
+                        <b>{{ $assignments->firstItem() }}-{{ $assignments->lastItem() }}</b>
+                        of {{ $assignments->total() }}
+                    </div>
+                    <div class="flex space-x-1">
+                        <button
+                            wire:click="previousPage"
+                            wire:loading.attr="disabled"
+                            class="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-gray-500 bg-white border border-gray-200 rounded hover:bg-gray-50 hover:border-gray-400 transition duration-200 ease {{ $assignments->onFirstPage() ? 'opacity-50 cursor-not-allowed' : '' }}"
+                        >
+                            Prev
+                        </button>
+                        @foreach($assignments->getUrlRange(1, $assignments->lastPage()) as $page => $url)
+                            <button
+                                wire:click="gotoPage({{ $page }})"
+                                class="px-3 py-1 min-w-9 min-h-9 text-sm font-normal {{ $assignments->currentPage() === $page ? 'text-white bg-gray-800 border-gray-800 hover:bg-gray-600 hover:border-gray-600' : 'text-gray-500 bg-white border-gray-200 hover:bg-gray-50 hover:border-gray-400' }} border rounded transition duration-200 ease"
+                            >
+                                {{ $page }}
+                            </button>
+                        @endforeach
+                        <button
+                            wire:click="nextPage"
+                            wire:loading.attr="disabled"
+                            class="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-gray-500 bg-white border border-gray-200 rounded hover:bg-gray-50 hover:border-gray-400 transition duration-200 ease {{ $assignments->onLastPage() ? 'opacity-50 cursor-not-allowed' : '' }}"
+                        >
+                            Next
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-   
+    <div class="min-h-screen flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-lg max-w-2xl w-full p-6">
+            <!-- Header -->
+            <div class="border-b pb-4 mb-4">
+                <h1 class="text-2xl font-bold text-gray-800">Assignment Details</h1>
+                <p class="text-sm text-gray-500">Due: March 15, 2025</p>
+            </div>
+
+            <!-- Assignment Info -->
+            <div class="space-y-4">
+                <div>
+                    <h2 class="text-lg font-semibold text-gray-700">Title</h2>
+                    <p class="text-gray-600">Create a Responsive Web Page</p>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold text-gray-700">Subject</h2>
+                    <p class="text-gray-600">Web Development</p>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold text-gray-700">Status</h2>
+                    <span class="inline-block px-3 py-1 text-sm font-medium text-green-700 bg-green-100 rounded-full">In Progress</span>
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div class="mt-6">
+                <h2 class="text-lg font-semibold text-gray-700">Description</h2>
+                <p class="text-gray-600 mt-2">
+                    Design and develop a responsive web page using HTML, CSS, and Tailwind CSS. The page should include a header, content section, and footer. Ensure it is mobile-friendly and follows best practices for accessibility.
+                </p>
+            </div>
+
+            <!-- Submission Section -->
+            <div class="mt-6">
+                <h2 class="text-lg font-semibold text-gray-700">Submit Your Work</h2>
+                <div class="mt-4 space-y-4">
+                    <input type="file" class="w-full text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                    <button class="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition duration-200">Submit Assignment</button>
+                </div>
+            </div>
+
+            <!-- Back Button -->
+            <div class="mt-6">
+                <a href="#" class="text-blue-600 hover:underline">← Back to Assignments</a>
+            </div>
+        </div>
+    </div>
 </div>
+
