@@ -1,7 +1,7 @@
 <div>
     @if($isEditing)
     <div class="max-w-5xl mx-auto mt-8">
-        <h2 class="text-xl font-semibold text-slate-500 border-s-4 border-s-orange-400 pl-3 mb-5">
+        <h2 class="text-xl font-semibold text-slate-500 border-s-4 border-s-purole-400 pl-3 mb-5">
            Edit Workshop
         </h2>
 
@@ -74,7 +74,7 @@
     @endif
 
     <div class="max-w-5xl mx-auto">
-        <h2 class="md:text-xl text-lg font-semibold text-slate-500 border-s-4 border-s-orange-400 pl-3 mb-5">Manage Workshops</h2>
+        <h2 class="md:text-xl text-lg font-semibold text-slate-500 border-s-4 border-s-purple-800 pl-3 mb-5">Manage Workshops</h2>
 
         @if($workshops->isEmpty())
             <p class="text-gray-800">No workshops found.</p>

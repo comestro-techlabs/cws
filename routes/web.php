@@ -40,6 +40,9 @@ use App\Http\Controllers\PostMyPostController;
 use App\Http\Controllers\PostTopicPostController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\QuizController;
+use App\Livewire\Admin\Blog\PostCourse;
+use App\Livewire\Admin\Blog\ManageChapter;
+use App\Livewire\Admin\Blog\ManageTopic;
 use App\Livewire\Admin\Category\ManageCategory;
 use App\Livewire\Admin\PlacedStudent\InsertPlacedStudent;
 use App\Livewire\Admin\Student\ViewStudent;
@@ -279,6 +282,9 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
 
 
 
+});
+
+
     // Version 2 Routes (Livewire)
     Route::prefix('v2/admin')->group(function () {
         Route::get('/dashboard', Dashboad::class)->name('admin.dashboard');
@@ -292,7 +298,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/course/show/{courseId}', ShowCourse::class)->name('admin.course.show');
         Route::get('/course/manage', ManageCourse::class)->name('admin.course.manage');
         Route::get('/student/{id}', ViewStudent::class)->name('admin.student.view');
-        Route::get('/course', InsertCourse::class)->name('admin.course');
+        
         Route::get('/course/update/{courseId}', UpdateCourse::class)->name('admin.course.update');
         Route::get('/admin/courses/{chapter}/lessons', LessonManager::class)->name('admin.courses.chapters.lessons');
 
@@ -325,7 +331,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/workshops/manage', ManageWorkshop::class)->name('admin.workshops.index');
 
         // Placed Student Routes
-        // Route::get('/placedstudent/create', InsertPlacedStudent::class)->name('admin.placedstudent.create');
+        Route::get('/placedstudent/create', InsertPlacedStudent::class)->name('admin.placedstudent.create');
         Route::get('/placedstudent/manage', CallingPlacedStudent::class)->name('admin.placedstudent.index');
         Route::get('/placedstudent/{placedStudent?}', InsertPlacedStudent::class)->name('admin.placedstudent.edit')->whereNumber("placedStudent");
 
@@ -343,8 +349,25 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/enquiry', ManageEnquiry::class)->name('admin.manage.enquiry');
         // payment
         Route::get('/payment', ManagePayment::class)->name('admin.paymnet-manage');
+
+        //blog
+        Route::get("/blog/post-course", PostCourse::class)->name('admin.blog.post-course');
+
+        Route::prefix('blog')->name('blog.')->group(function () {
+
+            // Chapter Routes
+            Route::get('/courses/{course}/chapters', ManageChapter::class)->name('chapters');
+
+            // You might want to add these optional routes for better organization
+            Route::get('/courses/create', [PostCourse::class, 'create'])->name('courses.create');
+            Route::get('/courses/{course}/edit', [PostCourse::class, 'edit'])->name('courses.edit');
+            Route::get('/chapters/create/{course}', [ManageChapter::class, 'create'])->name('chapters.create');
+            Route::get('/chapters/{chapter}/edit', [ManageChapter::class, 'edit'])->name('chapters.edit');
+
+            // Topic Routes
+            Route::get('/chapters/{chapter}/topics', ManageTopic::class)->name('topics');
+        });
     });
-});
 
 
 Route::prefix('v2')->group(function () {

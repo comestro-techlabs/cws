@@ -11,9 +11,9 @@
 
         <!-- Logo -->
         <div class="inline-flex">
-            <a class="_o6689fn" href="/">
+            <a class="_o6689fn" >
                 <div class="hidden md:block">
-                    <a href="{{route('public.index')}}" class="flex ms-2 md:me-24">
+                    <a href="{{route('v2.public.homepage')}}" wire:navigate class="flex ms-2 md:me-24">
                         <img src="{{ asset('assets/LearnSyntax.png') }}" class="h-6 sm:h-8" alt="">
                     </a>
                 </div>
@@ -24,21 +24,8 @@
 
         <!-- Menu Items (Hidden on Small Screens) -->
         <div class="hidden md:flex space-x-4">
-            <a class="py-2 px-3 hover:bg-gray-200 rounded-full" href="{{route('v2.public.homepage')}}" wire:navigate >Home</a>
-            <a class="py-2 px-3 hover:bg-gray-200 rounded-full" href="{{route('v2.public.workshop')}}" wire:navigate>Workshop</a>
-            <div class="relative group">
-                <button wire:click="toggleDropdown" class="py-2 px-3 hover:bg-gray-200 rounded-full flex items-center">
-                    Courses
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M6.293 9.293a1 1 0 011.414 0L10 11.586l2.293-2.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
-                    </svg>
-                </button>
-
-                <div id="dropdown-menu" class="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 {{ $isDropdownOpen ? '' : 'hidden' }}">
-                    <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" href="#">Free Courses</a>
-                    <a href="{{route('v2.public.viewallcourses.all-courses')}}" wire:navigate class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Pro Courses</a>
-                </div>
-            </div>
+            <a class="py-2 px-3 hover:bg-gray-200 rounded-full" href="{{route('v2.public.viewallcourses.all-courses')}}" wire:navigate >Paid Courses</a>
+            <a class="py-2 px-3 hover:bg-gray-200 rounded-full" href="{{route('v2.public.viewallcourses.all-courses')}}" wire:navigate >Free Courses</a>
         </div>
 
         <!-- Login/Signup (Always Visible) -->
@@ -98,17 +85,6 @@
             document.getElementById("sidebar").classList.add("-translate-x-full");
         });
     </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            Livewire.on('dropdownToggled', (data) => {
-                let dropdownMenu = document.getElementById('dropdown-menu');
-                if (data.isOpen) {
-                    dropdownMenu.classList.remove('hidden');
-                } else {
-                    dropdownMenu.classList.add('hidden');
-                }
-            });
-        });
-    </script>
+   
 
 </div>

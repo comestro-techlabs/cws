@@ -3,9 +3,6 @@
 
         <h2 class="md:text-xl text-lg font-semibold  text-slate-500 border-s-4 border-s-purple-800 pl-3">
             Insert Course</h2>
-
-        
-
     </div>
     <div class="flex flex-1 flex-col px-[2%] w-full justify-center items-center">
        
