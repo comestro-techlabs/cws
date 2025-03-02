@@ -33,7 +33,7 @@
                             <td class="px-4 py-2 text-sm text-gray-600">{{ $course->status ? 'Active' : 'Inactive' }}</td>
                             <td class="px-4 py-2 text-sm">
                                 <a href="{{ route('courses.show', $course->id) }}" class="text-white bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-md">View</a>
-                            </td>
+                            </td> 
                         </tr>
                     @endforeach
                 </tbody>
