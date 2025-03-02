@@ -251,6 +251,9 @@
 
     </div>
     <script>
+
+document.addEventListener('livewire:navigated', () => {
+
         const targets = [{
                 element: document.getElementById('totalprojects'),
                 count: 600,
@@ -292,5 +295,7 @@
         targets.forEach(target => {
             animateCountUp(target, maxCount / 100); // Adjust duration based on max count
         });
+
+    })
     </script>
 </div>
