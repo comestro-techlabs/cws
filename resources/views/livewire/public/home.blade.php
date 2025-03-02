@@ -208,11 +208,10 @@
 
     {{-- Student List Section --}}
     <div class="flex flex-col items-center mt-20 mb-5 text-center">
-        <h2 class="text-4xl font-bold text-gray-800"><span class="text-secondary">Our Alumni</span> Our Pride</h2>
+        <h2 class="text-4xl font-bold text-gray-800">Our<span class="text-primary">Alumni</span> Our Pride</h2>
         <h1 class="text-xl font-semibold text-gray-800 mb-4">Meet Our Achievers</h1>
-        <p class="text-base text-gray-700 mb-6 md:mx-64">
-            Celebrating the success and dedication of our students who have excelled in their respective fields. With their
-            hard work and our expert guidance, they have achieved incredible milestones. Get inspired by their stories!
+        <p class="mt-3 text-xl leading-7 text-gray-600 dark:text-gray-400 sm:mt-4">
+            Celebrating the success and dedication of our students who have excelled in their respective fields.
         </p>
 
         {{ $title }}

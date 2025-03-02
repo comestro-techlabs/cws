@@ -11,7 +11,7 @@ class Herosection extends Component
         return <<<'HTML'
             <div>
             <div class="bg-gradient-to-r to-purple-100 via-purple-300 from-purple-50">
-                    <nav id="navbar" class="sticky top-4 max-w-7xl mx-auto bottom-auto z-40 w-full transition-all duration-300 rounded-xl">
+                    <nav id="navbar" class="sticky top-4 lg:max-w-7xl md:max-w-3xl sm:max-w-xl mx-auto bottom-auto z-40 w-full transition-all duration-300 rounded-xl">
                         <livewire:public.header />
                     </nav>
 
@@ -23,7 +23,7 @@ class Herosection extends Component
                             </svg>
                         </div>
 
-                        <div class="relative flex items-center justify-center md:pt-12 pt-10">
+                        <div class="relative flex items-center justify-center md:pt-12 pt-10 lg:mx-20">
                             <div class="relative z-10 w-full px-3 pt-5 md:py-0 flex flex-col md:flex-row items-center gap-10">
                                 
                                 <div class="flex-1 pt-10 lg:py-10 w-full lg:w-1/2">
