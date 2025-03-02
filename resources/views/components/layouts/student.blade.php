@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite('resources/css/app.css')
     <title>{{ $title ?? 'Student' }}</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     @livewireStyles
-    
 </head>
 <body x-data="{ sidebarOpen: false }" class="bg-gray-100">  
     <!-- Overlay for mobile -->
@@ -34,12 +34,72 @@
 
     @livewireScripts
 </body>
+</html>
 
 <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 @auth
     <script>
 
+        // Handle session-based alerts on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof Swal === 'undefined') {
+                console.error('SweetAlert2 is not loaded.');
+                return;
+            }
+
+            @if(session('success'))
+                Swal.fire({
+                    title: 'Success!',
+                    text: "{{ session('success') }}",
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+            @endif
+
+            @if(session('error'))
+                Swal.fire({
+                    title: 'Error!',
+                    text: "{{ session('error') }}",
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            @endif
+        });
+
+        // Function to register Livewire alert listener
+        function registerLivewireAlertListener() {
+            if (typeof Livewire === 'undefined') {
+                console.warn('Livewire is not loaded. Real-time alerts will not work.');
+                return;
+            }
+
+            Livewire.on('show-alert', (event) => {                
+                const courseNames = event.courses && event.courses.length > 0 
+                    ? event.courses.map(course => course.title || course).join(', ')
+                    : 'No courses specified';
+                Swal.fire({
+                    title: 'Reminder',
+                    text: `The following courses do not have a batch selected: ${courseNames}`,
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                });
+            });
+        }
+
+        document.addEventListener('livewire:load', function () {
+            registerLivewireAlertListener();
+        });
+
+        document.addEventListener('livewire:navigated', function () {
+            registerLivewireAlertListener();
+        });
+
+        if (window.Livewire) {
+            registerLivewireAlertListener();
+        }
         document.getElementById('membership-pay-button').onclick = function (e) {
             const payButton = document.getElementById('membership-pay-button');
             payButton.disabled = true;
