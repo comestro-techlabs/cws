@@ -90,7 +90,7 @@
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Title</label>
                                 <input type="text" wire:model="title"
-                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500">
+                                    class="mt-1 py-3 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500">
                                 @error('title') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
                             </div>
 

@@ -32,6 +32,7 @@ use App\Livewire\Admin\ManagePayment;
 use App\Livewire\Admin\ManageEnquiry;
 use App\Livewire\Admin\Student\ManageStudent;
 use App\Livewire\Student\Messages;
+use App\Livewire\Student\MessageView;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\PostChapterController;
@@ -298,6 +299,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         
         Route::get('/course/update/{courseId}', UpdateCourse::class)->name('admin.course.update');
         Route::get('/admin/courses/{chapter}/lessons', LessonManager::class)->name('admin.courses.chapters.lessons');
+        Route::get("/admin/attendace", AttendanceScanner::class)->name('admin.attendance');
 
         //exam routes
         Route::get('/exam', ManageExam::class)->name('admin.exam');
@@ -381,6 +383,7 @@ Route::prefix('v2')->group(function () {
         Route::get('/notifications', Messages::class)->name('student.messages');
         Route::get('/explore-courses', ExploreCourse::class)->name('student.exploreCourses');
         Route::get('/view-courses/{courseId}', ViewCourse::class)->name('student.viewCourses');
+        Route::get('/student/{message}', MessageView::class)->name('v2.student.message.view');
         Route::get('/my-courses', MyCourse::class)->name('v2.student.mycourses');
         Route::get('/edit-profile', EditProfile::class)->name('student.v2edit.profile');
     });
@@ -466,4 +469,3 @@ Route::prefix("v3")->group(function () {
 });
 
 
-Route::get("/admin/attendace", AttendanceScanner::class);
