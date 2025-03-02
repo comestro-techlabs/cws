@@ -9,7 +9,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:mb-20 mb-10 px-4 lg:px-32">
             @foreach ($courses as $item)
 
-            <div class=" bg-gray-100 flex items-center justify-center p-4">
+            <div class=" bg-white flex items-center justify-center p-4">
                 <div class="max-w-sm w-full bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all">
                     <div class="relative">
                         <img
@@ -80,50 +80,50 @@
                         <h2 class="text-3xl font-extrabold leading-9 text-gray-900 dark:text-white sm:text-4xl sm:leading-10">
                             Why we’re a Top <span class="text-primary">Software Development</span> Company
                         </h2>
-                        <p class="mt-3 text-xl leading-7 text-gray-600 dark:text-gray-400 sm:mt-4">
-                            Results that Speak for Themselves </p>
+                        
                     </div>
                 </div>
-                <div class="pb-12 mt-10 dark:bg-gray-900 sm:pb-16 bg-gradient-to-r from-purple-50 via-purple-300 to-purple-100">
-                    <div class="relative">
-                        <div class="absolute inset-0 h-1/2  dark:bg-gray-900 bg-gradient-to-r from-purple-50 via-purple-300 to-purple-100"></div>
-                        <div class="relative max-w-screen-xl px-4 mx-auto sm:px-6 lg:px-8">
-                            <div class="max-w-4xl mx-auto">
-                                <dl class="bg-white dark:bg-gray-800 rounded-lg shadow-lg sm:grid sm:grid-cols-3 bg-gradient-to-r from-purple-50 via-purple-300 to-purple-100">
-                                    <div
-                                        class="flex flex-col p-6 text-center border-b border-gray-100 dark:border-gray-700 sm:border-0 sm:border-r ">
-                                        <dt class="order-2 mt-2 text-lg font-medium leading-6 text-gray-500 dark:text-gray-400" id="item-1">
-                                            Total Projects
-                                        </dt>
-                                        <dd class="order-1 text-5xl font-extrabold leading-none text-indigo-600 dark:text-indigo-100"
-                                            aria-describedby="item-1" id="totalprojects">
-                                            0
-                                        </dd>
-                                    </div>
-                                    <div
-                                        class="flex flex-col p-6 text-center border-t border-b border-gray-100 dark:border-gray-700 sm:border-0 sm:border-l sm:border-r">
-                                        <dt class="order-2 mt-2 text-lg font-medium leading-6 text-gray-500 dark:text-gray-400">
-                                            Web Pages
-                                        </dt>
-                                        <dd class="order-1 text-5xl font-extrabold leading-none text-indigo-600 dark:text-indigo-100"
-                                            id="webpages">
-                                            0
-                                        </dd>
-                                    </div>
-                                    <div
-                                        class="flex flex-col p-6 text-center border-t border-gray-100 dark:border-gray-700 sm:border-0 sm:border-l">
-                                        <dt class="order-2 mt-2 text-lg font-medium leading-6 text-gray-500 dark:text-gray-400">
-                                            Technologies We Use
-                                        </dt>
-                                        <dd class="order-1 text-5xl font-extrabold leading-none text-indigo-600 dark:text-indigo-100"
-                                            id="technologies">
-                                            0
-                                        </dd>
-                                    </div>
-                                </dl>
+
+                <div class="h-full w-full  pt-12 px-8">
+                    <div class="w-[85%] ml-[7.5%] grid gap-14 md:grid-cols-3 md:gap-5">
+                        <div class="rounded-xl bg-white p-6 text-center shadow-xl">
+                            <div
+                                class="mx-auto flex h-16 w-16 -translate-y-12 transform items-center justify-center rounded-full bg-white shadow-lg shadow-indigo-500/40">
+                                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z" />
+                                </svg>
+
                             </div>
+                            <h1 class="text-darken mb-3 text-xl font-medium lg:px-14">Code with Passion
+                            </h1>
+                            <p class="px-4 text-gray-500">We're not just instructors—we're developers who write the code we teach. Every lesson is built from real-world experience, crafted to help you learn faster and smarter.</p>
+                        </div>
+                        <div data-aos-delay="150" class="rounded-xl bg-white p-6 text-center shadow-xl">
+                            <div
+                                class="mx-auto flex h-16 w-16 -translate-y-12 transform items-center justify-center rounded-full shadow-lg bg-white shadow-indigo-500/40">
+                                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.7141 15h4.268c.4043 0 .732-.3838.732-.8571V3.85714c0-.47338-.3277-.85714-.732-.85714H6.71411c-.55228 0-1 .44772-1 1v4m10.99999 7v-3h3v3h-3Zm-3 6H6.71411c-.55228 0-1-.4477-1-1 0-1.6569 1.34315-3 3-3h2.99999c1.6569 0 3 1.3431 3 3 0 .5523-.4477 1-1 1Zm-1-9.5c0 1.3807-1.1193 2.5-2.5 2.5s-2.49999-1.1193-2.49999-2.5S8.8334 9 10.2141 9s2.5 1.1193 2.5 2.5Z" />
+                                </svg>
+
+
+                            </div>
+                            <h1 class="text-darken mb-3 text-xl font-medium lg:px-14 ">Mastering Code Takes Effort
+                            </h1>
+                            <p class="px-4 text-gray-500">We focus on real, hands-on learning. Be ready to challenge yourself, write tons of code, and develop the skills that truly matter in the tech industry.</p>
+                        </div>
+                        <div data-aos-delay="300" class="rounded-xl bg-white p-6 text-center shadow-xl">
+                            <div
+                                class="mx-auto flex h-16 w-16 -translate-y-12 transform items-center justify-center rounded-full shadow-lg bg-white shadow-indigo-500/40">
+                                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 8-4 4 4 4m8 0 4-4-4-4m-2-3-4 14" />
+                                </svg>
+
+                            </div>
+                            <h1 class="text-darken mb-3 text-xl font-medium lg:px-14">Code in Action</h1>
+                            <p class="px-4 text-gray-500">Learning isn't just about theory. Every concept comes with real, working code that you can run, tweak, and apply to your own projects.</p>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -139,69 +139,69 @@
             </p>
         </div>
         <div class="flex flex-col sm:flex-row gap-6 max-w-7xl mx-auto px-4 justify-center items-center">
-    <div class="relative flex flex-col justify-center overflow-hidden bg-gray-50 py-6 sm:py-12 w-full sm:w-auto">
-        <div class="group relative cursor-pointer overflow-hidden bg-white px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:mx-auto sm:max-w-sm sm:rounded-lg sm:px-10">
-            <span class="absolute top-10 z-0 h-20 w-20 rounded-full bg-primary transition-all duration-300 group-hover:scale-[10]"></span>
-            <div class="relative z-10 mx-auto max-w-md">
-                <span class="grid h-20 w-20 place-items-center rounded-full bg-primary transition-all duration-300 group-hover:bg-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-10 w-10 text-white transition-all">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
-                    </svg>
-                </span>
-                <div class="space-y-6 pt-5 text-base leading-7 text-gray-600 transition-all duration-300 group-hover:text-white/90">
-                    <p>Learn by Doing: Real-World Projects for Practical Mastery.</p>
-                </div>
-                <div class="pt-5 text-base font-semibold leading-7">
-                    <p>
-                        <a href="#" class="text-primary transition-all duration-300 group-hover:text-white">Read the docs &rarr;</a>
-                    </p>
+            <div class="relative flex flex-col justify-center overflow-hidden bg-gray-50 py-6 sm:py-12 w-full sm:w-auto">
+                <div class="group relative cursor-pointer overflow-hidden bg-white px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:mx-auto sm:max-w-sm sm:rounded-lg sm:px-10">
+                    <span class="absolute top-10 z-0 h-20 w-20 rounded-full bg-primary transition-all duration-300 group-hover:scale-[10]"></span>
+                    <div class="relative z-10 mx-auto max-w-md">
+                        <span class="grid h-20 w-20 place-items-center rounded-full bg-primary transition-all duration-300 group-hover:bg-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-10 w-10 text-white transition-all">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+                            </svg>
+                        </span>
+                        <div class="space-y-6 pt-5 text-base leading-7 text-gray-600 transition-all duration-300 group-hover:text-white/90">
+                            <p>Learn by Doing: Real-World Projects for Practical Mastery.</p>
+                        </div>
+                        <div class="pt-5 text-base font-semibold leading-7">
+                            <p>
+                                <a href="#" class="text-primary transition-all duration-300 group-hover:text-white">Read the docs &rarr;</a>
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div class="relative flex flex-col justify-center overflow-hidden bg-gray-50 py-6 sm:py-12 w-full sm:w-auto">
-        <div class="group relative cursor-pointer overflow-hidden bg-white px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:mx-auto sm:max-w-sm sm:rounded-lg sm:px-10">
-            <span class="absolute top-10 z-0 h-20 w-20 rounded-full bg-primary transition-all duration-300 group-hover:scale-[10]"></span>
-            <div class="relative z-10 mx-auto max-w-md">
-                <span class="grid h-20 w-20 place-items-center rounded-full bg-primary transition-all duration-300 group-hover:bg-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-10 w-10 text-white transition-all">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
-                    </svg>
-                </span>
-                <div class="space-y-6 pt-5 text-base leading-7 text-gray-600 transition-all duration-300 group-hover:text-white/90">
-                    <p>Industry-Mentor Guided Internship with skills training.</p>
-                </div>
-                <div class="pt-5 text-base font-semibold leading-7">
-                    <p>
-                        <a href="#" class="text-primary transition-all duration-300 group-hover:text-white">Read the docs &rarr;</a>
-                    </p>
+            <div class="relative flex flex-col justify-center overflow-hidden bg-gray-50 py-6 sm:py-12 w-full sm:w-auto">
+                <div class="group relative cursor-pointer overflow-hidden bg-white px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:mx-auto sm:max-w-sm sm:rounded-lg sm:px-10">
+                    <span class="absolute top-10 z-0 h-20 w-20 rounded-full bg-primary transition-all duration-300 group-hover:scale-[10]"></span>
+                    <div class="relative z-10 mx-auto max-w-md">
+                        <span class="grid h-20 w-20 place-items-center rounded-full bg-primary transition-all duration-300 group-hover:bg-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-10 w-10 text-white transition-all">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+                            </svg>
+                        </span>
+                        <div class="space-y-6 pt-5 text-base leading-7 text-gray-600 transition-all duration-300 group-hover:text-white/90">
+                            <p>Industry-Mentor Guided Internship with skills training.</p>
+                        </div>
+                        <div class="pt-5 text-base font-semibold leading-7">
+                            <p>
+                                <a href="#" class="text-primary transition-all duration-300 group-hover:text-white">Read the docs &rarr;</a>
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div class="relative flex flex-col justify-center overflow-hidden bg-gray-50 py-6 sm:py-12 w-full sm:w-auto">
-        <div class="group relative cursor-pointer overflow-hidden bg-white px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:mx-auto sm:max-w-sm sm:rounded-lg sm:px-10">
-            <span class="absolute top-10 z-0 h-20 w-20 rounded-full bg-primary transition-all duration-300 group-hover:scale-[10]"></span>
-            <div class="relative z-10 mx-auto max-w-md">
-                <span class="grid h-20 w-20 place-items-center rounded-full bg-primary transition-all duration-300 group-hover:bg-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-10 w-10 text-white transition-all">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
-                    </svg>
-                </span>
-                <div class="space-y-6 pt-5 text-base leading-7 text-gray-600 transition-all duration-300 group-hover:text-white/90">
-                    <p>Unlocking IT Excellence: Join Our Transformative Workshops.</p>
-                </div>
-                <div class="pt-5 text-base font-semibold leading-7">
-                    <p>
-                        <a href="#" class="text-primary transition-all duration-300 group-hover:text-white">Read the docs &rarr;</a>
-                    </p>
+            <div class="relative flex flex-col justify-center overflow-hidden bg-gray-50 py-6 sm:py-12 w-full sm:w-auto">
+                <div class="group relative cursor-pointer overflow-hidden bg-white px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:mx-auto sm:max-w-sm sm:rounded-lg sm:px-10">
+                    <span class="absolute top-10 z-0 h-20 w-20 rounded-full bg-primary transition-all duration-300 group-hover:scale-[10]"></span>
+                    <div class="relative z-10 mx-auto max-w-md">
+                        <span class="grid h-20 w-20 place-items-center rounded-full bg-primary transition-all duration-300 group-hover:bg-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-10 w-10 text-white transition-all">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+                            </svg>
+                        </span>
+                        <div class="space-y-6 pt-5 text-base leading-7 text-gray-600 transition-all duration-300 group-hover:text-white/90">
+                            <p>Unlocking IT Excellence: Join Our Transformative Workshops.</p>
+                        </div>
+                        <div class="pt-5 text-base font-semibold leading-7">
+                            <p>
+                                <a href="#" class="text-primary transition-all duration-300 group-hover:text-white">Read the docs &rarr;</a>
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
 
     </div>
@@ -251,51 +251,50 @@
 
     </div>
     <script>
+        document.addEventListener('livewire:navigated', () => {
 
-document.addEventListener('livewire:navigated', () => {
-
-        const targets = [{
-                element: document.getElementById('totalprojects'),
-                count: 600,
-                suffix: '+'
-            },
-            {
-                element: document.getElementById('webpages'),
-                count: 20000,
-                suffix: '+'
-            },
-            {
-                element: document.getElementById('technologies'),
-                count: 50,
-                suffix: '+'
-            }
-        ];
-
-        // Find the maximum count among all targets
-        const maxCount = Math.max(...targets.map(target => target.count));
-
-        // Function to animate count-up effect
-        function animateCountUp(target, duration) {
-            let currentCount = 0;
-            const increment = Math.ceil(target.count / (duration / 10));
-
-            const interval = setInterval(() => {
-                currentCount += increment;
-                if (currentCount >= target.count) {
-                    clearInterval(interval);
-                    currentCount = target.count;
-                    target.element.textContent = currentCount + target.suffix;
-                } else {
-                    target.element.textContent = currentCount;
+            const targets = [{
+                    element: document.getElementById('totalprojects'),
+                    count: 600,
+                    suffix: '+'
+                },
+                {
+                    element: document.getElementById('webpages'),
+                    count: 20000,
+                    suffix: '+'
+                },
+                {
+                    element: document.getElementById('technologies'),
+                    count: 50,
+                    suffix: '+'
                 }
-            }, 10);
-        }
+            ];
 
-        // Animate count-up for each target with adjusted duration
-        targets.forEach(target => {
-            animateCountUp(target, maxCount / 100); // Adjust duration based on max count
-        });
+            // Find the maximum count among all targets
+            const maxCount = Math.max(...targets.map(target => target.count));
 
-    })
+            // Function to animate count-up effect
+            function animateCountUp(target, duration) {
+                let currentCount = 0;
+                const increment = Math.ceil(target.count / (duration / 10));
+
+                const interval = setInterval(() => {
+                    currentCount += increment;
+                    if (currentCount >= target.count) {
+                        clearInterval(interval);
+                        currentCount = target.count;
+                        target.element.textContent = currentCount + target.suffix;
+                    } else {
+                        target.element.textContent = currentCount;
+                    }
+                }, 10);
+            }
+
+            // Animate count-up for each target with adjusted duration
+            targets.forEach(target => {
+                animateCountUp(target, maxCount / 100); // Adjust duration based on max count
+            });
+
+        })
     </script>
 </div>
