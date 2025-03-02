@@ -1,5 +1,5 @@
 <div>
-    <div class="flex flex-1 flex-col p-6 bg-gray-100">
+    <div class="flex flex-1 flex-col p-6 bg-gray-100 mt-8">
         <div class="flex flex-wrap justify-between items-center p-4">
             <h2 class="md:text-xl text-lg font-semibold text-slate-500 border-s-4 border-s-orange-400 pl-3 mb-5">
                 Manage Fully Paid Students
