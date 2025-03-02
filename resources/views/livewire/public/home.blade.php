@@ -1,58 +1,64 @@
 <div>
-<div class="">
-        <div class="flex flex-col items-center mt-10 md:mt-10 text-center px-5 md:px-[10%]">
-            <h2 class="text-3xl text-gray-900 font-sans font-bold mb-4">Our Courses </h2>
-            <p class="text-gray-700 text-lg leading-relaxed mb-6 max-w-3xl"> Discover curated courses that blend industry insights with practical knowledge. From beginner to advanced, upgrade your skills and achieve your career goals with expert-led guidance. </p>
-
-
+    <div class="">
+        <div class="flex flex-col items-center mt-10 md:mt-12 text-center px-5 md:px-[10%]">
+            <h2 class="text-2xl md:text-5xl text-gray-900 font-sans font-extrabold mb-4 tracking-tight">Our <span class="text-primary">Courses</span></h2>
+            <p class="mt-3 mb-6 text-xl leading-7 text-gray-600 dark:text-gray-400 sm:mt-4">
+                Discover curated courses that blend industry insights with practical knowledge.
+            </p>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:mb-20 mb-10 px-4 lg:px-32">
             @foreach ($courses as $item)
-                <div class="max-w-md mx-auto bg-white rounded-lg border overflow-hidden flex flex-col h-full min-h-[450px]">
 
-                    <div class="w-full h-60">
-                        <img class="w-full h-full object-cover"
-                            src="{{ asset('storage/course_images/' . $item->course_image) }}" alt="Course Image">
+            <div class=" bg-gray-100 flex items-center justify-center p-4">
+                <div class="max-w-sm w-full bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all">
+                    <div class="relative">
+                        <img
+                            src="{{ asset('storage/course_images/' . $item->course_image) }}" alt="Course Image"
+                            class="w-full h-52 object-cover" />
+                        <span class="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                            Sale
+                        </span>
                     </div>
 
-
-                    <div class="p-6 flex flex-col flex-grow">
-                        <h2 class="text-xl font-bold text-gray-800 mb-2 line-clamp-1">{{ $item->title }}</h2>
-                        <p class="text-gray-600 text-sm mb-4 flex-grow min-h-[60px]">
-                            {{ Str::limit($item->description, 122) }}
-                        </p>
-                        <div class="mb-4">
-                            <p class="text-gray-700 text-sm font-medium">By: {{ $item->instructor }}</p>
-                            <span class="text-gray-600 text-sm font-semibold">Duration: {{ $item->duration }} Weeks</span>
+                    <div class="p-5 space-y-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-900">{{ $item->title }}</h3>
+                            <p class="text-gray-500 mt-1">{{ Str::limit($item->description, 122) }}</p>
+                            <p class="font-bold text-gray-400 mt-1">Duration: {{ $item->duration }} Weeks</p>
                         </div>
 
+                        <div class="flex justify-between items-center">
 
-                        <div class="flex justify-between items-center mt-auto">
-                            @if ($item->discounted_fees > 0)
-                                <p class="text-sm font-semibold text-primary">
-                                    Fees: Rs. <span class="text-gray-600 line-through">{{ $item->fees }}</span>
-                                    {{ $item->discounted_fees }}
-                                </p>
-                            @else
+
+                            <div class="space-y-1">
+                                @if ($item->discounted_fees > 0)
+                                <p class="text-2xl font-bold text-gray-900">Rs {{ $item->discounted_fees }}</p>
+                                <p class="text-sm text-gray-500 line-through">Rs {{ $item->fees }}</p>
+                                @else
                                 <p class="text-green-500 font-bold">Free</p>
-                            @endif
-                            
-                            <a href="{{route('v2.public.courseDetail', ['slug' => $item->slug])}}" wire:navigate>
-                            <button  
-                                class="bg-primary text-white font-bold py-2 px-4 rounded shadow focus:outline-none focus:ring hover:bg-primary-dark transition">
+                                @endif
+                            </div>
+
+                            <div class="flex items-center gap-1">
+                                <div class="text-yellow-400">★★★★★</div>
+                            </div>
+                        </div>
+                        <a href="{{route('v2.public.courseDetail', ['slug' => $item->slug])}}" wire:navigate>
+                            <button class="w-full mt-2 bg-primary hover:bg-indigo-700 text-white font-medium py-3 rounded-lg transition-colors">
                                 Enroll Now
                             </button>
-                            </a>
-                        </div>
+                        </a>
                     </div>
                 </div>
+            </div>
+
             @endforeach
         </div>
 
         <div class="flex justify-center items-center">
 
-            <div class="bg-secondary flex items-center py-3 px-6 rounded-lg shadow gap-2 md:mb-20 mb-10">
-                <a  href="{{route('v2.public.viewallcourses.all-courses')}}" wire:navigate class=" text-white font-bold ">
+            <div class="bg-primary flex items-center py-3 px-6 rounded-lg shadow gap-2 md:mb-20 mb-10">
+                <a href="{{route('v2.public.viewallcourses.all-courses')}}" wire:navigate class=" text-white font-bold ">
                     View All Courses
                 </a>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white"
@@ -66,123 +72,146 @@
     </div>
 
     {{-- {{static info}} --}}
-    <div class="flex flex-col gap-2 p-4 md:p-8 mt-10 bg-gray-50 rounded-2xl mb-12 items-center md:px-[10%]">
-        <h2 class="text-lg md:text-xl font-normal max-w-2xl text-gray-900  text-center mb-4 flex flex-col">
-            <span class="font-semibold mb-1">Results that Speak for Themselves:</span>
-            <span class="md:text-3xl text-xl font-semibold"> We’re a Top Software Devlopment Company in India</span>
-        </h2>
-
-        <div class="flex flex-col md:flex-row w-full gap-8">
-            <div
-                class="flex-1 p-6 text-orange-600 rounded-lg shadow-sm ring ring-slate-600  transform  transition-transform duration-300">
-                <h3 class="count-number text-3xl md:text-5xl font-bold" data-target="600">0</h3>
-                <p class="stat-title text-lg mt-4 text-gray-900">Total Projects</p>
-            </div>
-            <div
-                class="flex-1 p-6  text-pink-700 rounded-lg shadow-sm ring ring-slate-600  transform  transition-transform duration-300">
-                <h3 class="count-number text-3xl md:text-5xl font-bold" data-target="200000">0</h3>
-                <p class="stat-title text-lg mt-4 text-gray-900">Web Pages</p>
-            </div>
-            <div
-                class="flex-1 p-6 text-green-700 rounded-lg shadow-sm ring ring-slate-600  transform  transition-transform duration-300">
-                <h3 class="count-number text-3xl md:text-5xl font-bold" data-target="100">0</h3>
-                <p class="stat-title text-lg mt-4 text-gray-900">Technologies We Use</p>
+    <div class="bg-gradient-to-r from-purple-50 via-purple-300 to-purple-100  py-12">
+        <div class="dark:bg-gray-900 ">
+            <div class="pt-12 bg-gray-50 dark:bg-gray-900 sm:pt-20 bg-gradient-to-r from-purple-50 via-purple-300 to-purple-100">
+                <div class="max-w-screen-xl px-4 mx-auto sm:px-6 lg:px-8 ">
+                    <div class="max-w-4xl mx-auto text-center">
+                        <h2 class="text-3xl font-extrabold leading-9 text-gray-900 dark:text-white sm:text-4xl sm:leading-10">
+                            Why we’re a Top <span class="text-primary">Software Development</span> Company
+                        </h2>
+                        <p class="mt-3 text-xl leading-7 text-gray-600 dark:text-gray-400 sm:mt-4">
+                            Results that Speak for Themselves </p>
+                    </div>
+                </div>
+                <div class="pb-12 mt-10 dark:bg-gray-900 sm:pb-16 bg-gradient-to-r from-purple-50 via-purple-300 to-purple-100">
+                    <div class="relative">
+                        <div class="absolute inset-0 h-1/2  dark:bg-gray-900 bg-gradient-to-r from-purple-50 via-purple-300 to-purple-100"></div>
+                        <div class="relative max-w-screen-xl px-4 mx-auto sm:px-6 lg:px-8">
+                            <div class="max-w-4xl mx-auto">
+                                <dl class="bg-white dark:bg-gray-800 rounded-lg shadow-lg sm:grid sm:grid-cols-3 bg-gradient-to-r from-purple-50 via-purple-300 to-purple-100">
+                                    <div
+                                        class="flex flex-col p-6 text-center border-b border-gray-100 dark:border-gray-700 sm:border-0 sm:border-r ">
+                                        <dt class="order-2 mt-2 text-lg font-medium leading-6 text-gray-500 dark:text-gray-400" id="item-1">
+                                            Total Projects
+                                        </dt>
+                                        <dd class="order-1 text-5xl font-extrabold leading-none text-indigo-600 dark:text-indigo-100"
+                                            aria-describedby="item-1" id="totalprojects">
+                                            0
+                                        </dd>
+                                    </div>
+                                    <div
+                                        class="flex flex-col p-6 text-center border-t border-b border-gray-100 dark:border-gray-700 sm:border-0 sm:border-l sm:border-r">
+                                        <dt class="order-2 mt-2 text-lg font-medium leading-6 text-gray-500 dark:text-gray-400">
+                                            Web Pages
+                                        </dt>
+                                        <dd class="order-1 text-5xl font-extrabold leading-none text-indigo-600 dark:text-indigo-100"
+                                            id="webpages">
+                                            0
+                                        </dd>
+                                    </div>
+                                    <div
+                                        class="flex flex-col p-6 text-center border-t border-gray-100 dark:border-gray-700 sm:border-0 sm:border-l">
+                                        <dt class="order-2 mt-2 text-lg font-medium leading-6 text-gray-500 dark:text-gray-400">
+                                            Technologies We Use
+                                        </dt>
+                                        <dd class="order-1 text-5xl font-extrabold leading-none text-indigo-600 dark:text-indigo-100"
+                                            id="technologies">
+                                            0
+                                        </dd>
+                                    </div>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
-
     <div class="bg-white py-12 pt-5 md:mt-20">
         <div class="text-center mb-8 px-4">
             <h2 class="text-3xl md:text-4xl font-bold text-gray-800">
-                Our <span class="text-secondary">Training</span> Services
+                Our <span class="text-primary">Training</span> Services
             </h2>
-            <p class="text-gray-600 mt-2">
+            <p class="mt-3 text-xl leading-7 text-gray-600 dark:text-gray-400 sm:mt-4">
                 From Basic to Advanced...<br>We Offer Classroom, Online, Weekend, and Corporate Training on a Wide Range of
                 Software Courses.
             </p>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-7xl mx-auto px-4">
-            <!-- Real-Time Projects -->
-            <div
-                class="flex flex-col md:flex-row items-center md:items-start md:space-x-6 border border-gray-400 rounded-lg p-4">
-                <img src="{{ asset('assets/home/real_time.png') }}" alt="Real-Time Projects"
-                    class="w-full md:w-1/2 object-cover rounded-lg">
-                <div class="mt-4 md:mt-0">
-                    <h3 class="text-xl font-semibold text-gray-800">Real-Time Projects</h3>
-                    <p class="text-gray-600 mt-2">Learn by Doing: Real-World Projects for Practical Mastery.</p>
-                    <a href="{{ route('public.training') }}" class="text-secondary mt-4 block">View more →</a>
+        <div class="flex flex-col sm:flex-row gap-6 max-w-7xl mx-auto px-4 justify-center items-center">
+    <div class="relative flex flex-col justify-center overflow-hidden bg-gray-50 py-6 sm:py-12 w-full sm:w-auto">
+        <div class="group relative cursor-pointer overflow-hidden bg-white px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:mx-auto sm:max-w-sm sm:rounded-lg sm:px-10">
+            <span class="absolute top-10 z-0 h-20 w-20 rounded-full bg-primary transition-all duration-300 group-hover:scale-[10]"></span>
+            <div class="relative z-10 mx-auto max-w-md">
+                <span class="grid h-20 w-20 place-items-center rounded-full bg-primary transition-all duration-300 group-hover:bg-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-10 w-10 text-white transition-all">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+                    </svg>
+                </span>
+                <div class="space-y-6 pt-5 text-base leading-7 text-gray-600 transition-all duration-300 group-hover:text-white/90">
+                    <p>Learn by Doing: Real-World Projects for Practical Mastery.</p>
                 </div>
-            </div>
-            <!-- Internships -->
-            <div
-                class="flex flex-col md:flex-row items-center md:items-start md:space-x-6 border border-gray-400 rounded-lg p-4">
-                <img src="{{ asset('assets/home/intern.jpg') }}" alt="Internships"
-                    class="w-full md:w-1/2 object-cover rounded-lg">
-                <div class="mt-4 md:mt-0">
-                    <h3 class="text-xl font-semibold text-gray-800">Internships</h3>
-                    <p class="text-gray-600 mt-2">Industry-Mentor Guided Internship. with skills trainning</p>
-                    <a href="{{ route('public.training') }}" class="text-secondary mt-4 block">View more →</a>
+                <div class="pt-5 text-base font-semibold leading-7">
+                    <p>
+                        <a href="#" class="text-primary transition-all duration-300 group-hover:text-white">Read the docs &rarr;</a>
+                    </p>
                 </div>
-            </div>
-            <!-- Workshops -->
-            <div
-                class="flex flex-col md:flex-row items-center md:items-start md:space-x-6 border border-gray-400 rounded-lg p-4">
-                <img src="{{ asset('assets/home/workshop.png') }}" alt="Workshops"
-                    class="w-full md:w-1/2 object-cover rounded-lg">
-                <div class="mt-4 md:mt-0">
-                    <h3 class="text-xl font-semibold text-gray-800">Workshops</h3>
-                    <p class="text-gray-600 mt-2">Unlocking IT Excellence: Join Our Transformative Workshops.</p>
-                    <a href="{{ route('public.training') }}" class="text-secondary mt-4 block">View more →</a>
-                </div>
-            </div>
-            <!-- Weekend Training -->
-            <div
-                class="flex flex-col md:flex-row items-center md:items-start md:space-x-6 border border-gray-400 rounded-lg p-4">
-                <img src="{{ asset('assets/home/Weekend.jpg') }}" alt="Weekend Training"
-                    class="w-full md:w-1/2 object-cover rounded-lg">
-                <div class="mt-4 md:mt-0">
-                    <h3 class="text-xl font-semibold text-gray-800">Weekend Training</h3>
-                    <p class="text-gray-600 mt-2">Supercharge Your Weekends with Our Training Programs.</p>
-                    <a href="{{ route('public.training') }}" class="text-secondary mt-4 block">View more →</a>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-
-
-    <div class="bg-gray-900 text-white py-12 md:mt-20 mt-8 px-6">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-            <!-- Text Section -->
-            <div>
-                <h2 class="text-3xl md:text-4xl font-bold text-blue-300 mb-4">
-                    Corporate <span class="text-white">Software Training</span>
-                </h2>
-               <p class="text-gray-300 text-lg leading-relaxed mb-6"> Master coding at Learn Syntax Training Center with expert-led programs designed to enhance your programming skills and stay ahead in the tech world. </p>
-                <div>
-                    <button class=" bg-secondary text-white font-semibold py-2 px-4 rounded shadow-lg">
-                        <a href="{{route('v2.public.contactUs')}}" wire:navigate>CONTACT US</a>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Image Section -->
-            <div class="">
-                <img src="{{ asset('assets/home/banner-r.png') }}" alt="Corporate Training" class="">
             </div>
         </div>
     </div>
 
+    <div class="relative flex flex-col justify-center overflow-hidden bg-gray-50 py-6 sm:py-12 w-full sm:w-auto">
+        <div class="group relative cursor-pointer overflow-hidden bg-white px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:mx-auto sm:max-w-sm sm:rounded-lg sm:px-10">
+            <span class="absolute top-10 z-0 h-20 w-20 rounded-full bg-primary transition-all duration-300 group-hover:scale-[10]"></span>
+            <div class="relative z-10 mx-auto max-w-md">
+                <span class="grid h-20 w-20 place-items-center rounded-full bg-primary transition-all duration-300 group-hover:bg-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-10 w-10 text-white transition-all">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+                    </svg>
+                </span>
+                <div class="space-y-6 pt-5 text-base leading-7 text-gray-600 transition-all duration-300 group-hover:text-white/90">
+                    <p>Industry-Mentor Guided Internship with skills training.</p>
+                </div>
+                <div class="pt-5 text-base font-semibold leading-7">
+                    <p>
+                        <a href="#" class="text-primary transition-all duration-300 group-hover:text-white">Read the docs &rarr;</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="relative flex flex-col justify-center overflow-hidden bg-gray-50 py-6 sm:py-12 w-full sm:w-auto">
+        <div class="group relative cursor-pointer overflow-hidden bg-white px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:mx-auto sm:max-w-sm sm:rounded-lg sm:px-10">
+            <span class="absolute top-10 z-0 h-20 w-20 rounded-full bg-primary transition-all duration-300 group-hover:scale-[10]"></span>
+            <div class="relative z-10 mx-auto max-w-md">
+                <span class="grid h-20 w-20 place-items-center rounded-full bg-primary transition-all duration-300 group-hover:bg-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-10 w-10 text-white transition-all">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+                    </svg>
+                </span>
+                <div class="space-y-6 pt-5 text-base leading-7 text-gray-600 transition-all duration-300 group-hover:text-white/90">
+                    <p>Unlocking IT Excellence: Join Our Transformative Workshops.</p>
+                </div>
+                <div class="pt-5 text-base font-semibold leading-7">
+                    <p>
+                        <a href="#" class="text-primary transition-all duration-300 group-hover:text-white">Read the docs &rarr;</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    </div>
 
     {{-- Student List Section --}}
     <div class="flex flex-col items-center mt-20 mb-5 text-center">
-        <h2 class="text-4xl font-bold text-gray-800"><span class="text-secondary">Our Alumni</span> Our Pride</h2>
+        <h2 class="text-4xl font-bold text-gray-800">Our<span class="text-primary">Alumni</span> Our Pride</h2>
         <h1 class="text-xl font-semibold text-gray-800 mb-4">Meet Our Achievers</h1>
-        <p class="text-base text-gray-700 mb-6 md:mx-64">
-            Celebrating the success and dedication of our students who have excelled in their respective fields. With their
-            hard work and our expert guidance, they have achieved incredible milestones. Get inspired by their stories!
+        <p class="mt-3 text-xl leading-7 text-gray-600 dark:text-gray-400 sm:mt-4">
+            Celebrating the success and dedication of our students who have excelled in their respective fields.
         </p>
 
         {{ $title }}
@@ -218,8 +247,55 @@
                 </ul>
             </div>
         </div> -->
-    </div>
+        </div>
 
     </div>
-    
+    <script>
+
+document.addEventListener('livewire:navigated', () => {
+
+        const targets = [{
+                element: document.getElementById('totalprojects'),
+                count: 600,
+                suffix: '+'
+            },
+            {
+                element: document.getElementById('webpages'),
+                count: 20000,
+                suffix: '+'
+            },
+            {
+                element: document.getElementById('technologies'),
+                count: 50,
+                suffix: '+'
+            }
+        ];
+
+        // Find the maximum count among all targets
+        const maxCount = Math.max(...targets.map(target => target.count));
+
+        // Function to animate count-up effect
+        function animateCountUp(target, duration) {
+            let currentCount = 0;
+            const increment = Math.ceil(target.count / (duration / 10));
+
+            const interval = setInterval(() => {
+                currentCount += increment;
+                if (currentCount >= target.count) {
+                    clearInterval(interval);
+                    currentCount = target.count;
+                    target.element.textContent = currentCount + target.suffix;
+                } else {
+                    target.element.textContent = currentCount;
+                }
+            }, 10);
+        }
+
+        // Animate count-up for each target with adjusted duration
+        targets.forEach(target => {
+            animateCountUp(target, maxCount / 100); // Adjust duration based on max count
+        });
+
+    })
+    </script>
 </div>

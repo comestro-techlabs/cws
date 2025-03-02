@@ -1,18 +1,21 @@
 <nav
-    class="font-sans flex text-center content-center sm:flex-row sm:text-left sm:justify-between py-2 px-6 bg-white shadow sm:items-baseline w-full rounded-full">
-    <div class="mb-2 sm:mb-0 flex flex-row items-center">       
+    class="flex justify-between items-center py-2 px-6 bg-white shadow w-full rounded-full">
+    <div class="flex items-center justify-start w-full">
+        <div class="flex flex-row items-center">
+            <!-- Hamburger button (only on small screens) -->
+            <button @click="sidebarOpen = !sidebarOpen" class=" p-2 focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
 
-            <div class="mb-2 sm:mb-0 flex flex-row">
-                <!-- Hamburger button (only on small screens) -->
-                <button @click="sidebarOpen = !sidebarOpen" class=" p-2 focus:outline-none">
-                <img class="h-8 w-8 self-center " src="{{asset('apple-touch-icon.png')}}" />
+            </button>
 
-                </button>
-                <img class="h-4 w-28 self-center hidden md:block" src="{{asset('assets/LearnSyntax.png')}}" />
-                
-            </div>
-
+            <!-- Logo (visible on larger screens) -->
+            <img class="h-6 w-38 hidden sm:block" src="{{ asset('assets/LearnSyntax.png') }}" />
         </div>
+    </div>
     </div>
 
     <div class="sm:mb-0 self-center ml-auto relative">

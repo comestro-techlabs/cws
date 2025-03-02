@@ -10,7 +10,7 @@
     @livewireStyles
 </head>
 
-<body x-data="{ sidebarOpen: true }" class="bg-gray-100">
+<body x-data="{ sidebarOpen: true }" class="bg-gray-50">
     <!-- Overlay for mobile -->
     <div x-show="sidebarOpen" @click="sidebarOpen = false"
          class="fixed inset-0 z-30 transition-opacity duration-300 sm:hidden"
@@ -20,7 +20,7 @@
     <!-- Sidebar -->
     <div x-show="sidebarOpen"
          :class="{'translate-x-0': sidebarOpen, '-translate-x-full': !sidebarOpen}"
-         class="fixed top-0 left-0 z-40 w-64 h-screen bg-white p-4 border-r overflow-x-hidden transform transition-transform duration-300 ease-in-out sm:translate-x-0 sm:block">
+         class="fixed top-0 left-0 z-40 w-64 h-screen overflow-x-hidden transform transition-transform duration-300 ease-in-out sm:translate-x-0 sm:block">
         <x-side-nav/>
     </div>
 
@@ -28,7 +28,9 @@
     <main :class="{'sm:ml-64': sidebarOpen, 'ml-0': !sidebarOpen}"
           class="flex-1 p-4 transition-all duration-300 sm:ml-64">
         <x-admin-header />
+        <div class="mt-8">
         {{ $slot }}
+        </div>
     </main>
 
     {{-- toastr --}}

@@ -71,18 +71,18 @@ class MessageController extends Controller
     }
 
     public function studentMessages()
-{
-    $student = auth()->user();
-    $messages = Message::whereJsonContains('recipients', $student->id)->get();
-    $readMessages = session('read_messages', []);
-    $sortmessages = $messages->sortBy(function ($message) use ($readMessages) {
-        return in_array($message->id, $readMessages) ? 1 : 0;
-    });
-    $unreadCount = $sortmessages->whereNotIn('id', $readMessages)->count();
+    {
+        $student = auth()->user();
+        $messages = Message::whereJsonContains('recipients', $student->id)->get();
+        $readMessages = session('read_messages', []);
+        $sortmessages = $messages->sortBy(function ($message) use ($readMessages) {
+            return in_array($message->id, $readMessages) ? 1 : 0;
+        });
+        $unreadCount = $sortmessages->whereNotIn('id', $readMessages)->count();
 
-    return view('studentdashboard.notification', compact('sortmessages', 'readMessages', 'unreadCount'));
-}
-    
+        return view('studentdashboard.notification', compact('sortmessages', 'readMessages', 'unreadCount'));
+    }
+
     public function showMessage(Message $message)
     {
         $student = auth()->user();
@@ -94,7 +94,7 @@ class MessageController extends Controller
             $readMessages[] = $message->id;
             session(['read_messages' => $readMessages]);
         }
-    
+
         return view('studentdashboard.viewMessage', compact('message'));
     }
 }

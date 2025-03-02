@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Quiz;
 
 use App\Models\Quiz;
 use App\Models\Exam;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\Title;

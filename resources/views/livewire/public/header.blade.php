@@ -1,7 +1,15 @@
 <div>
-    <!-- component -->
-    <div class=" shadow-2xl border-2 border-primary  w-full flex relative justify-between items-center mx-auto px-8 h-20 rounded-full backdrop-blur bg-white bg-opacity-20 ">
-        <!-- logo -->
+    <!-- Navbar -->
+    <div class="shadow-2xl w-[85%] ml-[7.5%] flex top-[20px] fixed justify-between items-center mx-auto px-8 py-3 rounded-full backdrop-blur bg-opacity-20">
+
+        <!-- Hamburger Menu Button (Only Visible on Small Screens) -->
+        <button id="menu-toggle" class="md:hidden focus:outline-none">
+            <svg class="w-8 h-8 text-gray-800" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
+
+        <!-- Logo -->
         <div class="inline-flex">
             <a class="_o6689fn" href="/">
                 <div class="hidden md:block">
@@ -12,48 +20,28 @@
             </a>
         </div>
 
-        <!-- end logo -->
 
-        <!-- menu items -->
-        <div class="flex-initial">
-            <div class="flex justify-center items-center ">
-                <div class="flex mr-4 items-center">
-                    <a class="inline-block py-2 px-3 hover:bg-gray-200 rounded-full" href="{{route('v2.public.homepage')}}" wire:navigate>
-                        <div class="flex items-center relative cursor-pointer whitespace-nowrap">Home</div>
-                    </a>
-                </div>
-                <div class="flex mr-4 items-center">
-                    <a class="inline-block py-2 px-3 hover:bg-gray-200 rounded-full" href="{{route('v2.public.workshop')}}" wire:navigate>
-                        <div class="flex items-center relative cursor-pointer whitespace-nowrap">Workshop</div>
-                    </a>
-                </div>
-                <div class="flex mr-4 items-center">
-                    
-                <div class="relative inline-block text-left">
-    <button wire:click="toggleDropdown" class="inline-flex justify-center w-full px-4 py-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 hover:bg-gray-200">
-        Courses
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-2 -mr-1" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M6.293 9.293a1 1 0 011.414 0L10 11.586l2.293-2.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
-        </svg>
-    </button>
 
-    <div id="dropdown-menu" class="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 {{ $isDropdownOpen ? '' : 'hidden' }}">
-        <div class="py-2 p-2">
-            <a class="flex block rounded-md px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Free Courses</a>
-            <a href="{{route('v2.public.viewallcourses.all-courses')}}" wire:navigate class="flex block rounded-md px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18px" class="mr-2">
-                    <path fill="gold" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.86L12 17.77 5.82 21l1.18-6.86-5-4.87 6.91-1.01L12 2z"></path>
-                </svg> Pro Courses
-            </a>
-        </div>
-    </div>
-</div>
+        <!-- Menu Items (Hidden on Small Screens) -->
+        <div class="hidden md:flex space-x-4">
+            <a class="py-2 px-3 hover:bg-gray-200 rounded-full" href="{{route('v2.public.homepage')}}" wire:navigate >Home</a>
+            <a class="py-2 px-3 hover:bg-gray-200 rounded-full" href="{{route('v2.public.workshop')}}" wire:navigate>Workshop</a>
+            <div class="relative group">
+                <button wire:click="toggleDropdown" class="py-2 px-3 hover:bg-gray-200 rounded-full flex items-center">
+                    Courses
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M6.293 9.293a1 1 0 011.414 0L10 11.586l2.293-2.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+
+                <div id="dropdown-menu" class="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 {{ $isDropdownOpen ? '' : 'hidden' }}">
+                    <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" href="#">Free Courses</a>
+                    <a href="{{route('v2.public.viewallcourses.all-courses')}}" wire:navigate class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Pro Courses</a>
                 </div>
             </div>
         </div>
-        <!-- end menu items -->
 
-        <!-- login -->
+        <!-- Login/Signup (Always Visible) -->
         <div class="flex md:order-2 space-x-2 md:space-x-1 rtl:space-x-reverse">
             @auth
             @if (Auth::user()->isAdmin)
@@ -80,30 +68,47 @@
             </div>
             @endif
             @endauth
-
             @guest
-            <a href="{{ route('v2.auth.login') }}" wire:navigate
-                class="text-primary hidden md:flex items-center font-light border border-indigo-600 hover:bg-indigo-600 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-sm hover:text-white text-sm px-4  py-2 text-center">
-                Login</a>
-            <a href="{{ route('v2.auth.register') }}" wire:navigate
-                class="text-white md:flex items-center font-light bg-primary hover:bg-primary focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-sm text-sm px-4  py-2 text-center">
-                Join Us</a>
+            <a href="{{ route('v2.auth.login') }}" wire:navigate class="text-primary  md:flex items-center font-light border border-indigo-600 hover:bg-indigo-600 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-sm hover:text-white text-sm px-4  py-2 text-center">Login</a>
+            <a href="{{ route('v2.auth.register') }}" wire:navigate class="text-white md:flex items-center font-light bg-primary hover:bg-primary focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-sm text-sm px-4  py-2 text-center">Join Us</a>
             @endguest
-
         </div>
-
-        <!-- end login -->
     </div>
+
+    <!-- Sidebar (Hidden by Default) -->
+    <div id="sidebar" class="fixed top-0 left-0 w-64 h-full bg-white shadow-lg transform -translate-x-full transition-transform duration-300 z-50">
+        <button id="close-sidebar" class="absolute top-4 right-4 text-gray-800">
+            ✖
+        </button>
+        <div class="flex flex-col space-y-4 p-4">
+            <a class="py-2 px-3 hover:bg-gray-200 rounded" href="{{route('v2.public.homepage')}}" wire:navigate>Home</a>
+            <a class="py-2 px-3 hover:bg-gray-200 rounded" href="{{route('v2.public.workshop')}}" wire:navigate>Workshop</a>
+            <a class="py-2 px-3 hover:bg-gray-200 rounded" href="" wire:navigate>Free Courses</a>
+            <a class="py-2 px-3 hover:bg-gray-200 rounded" href="{{route('v2.public.viewallcourses.all-courses')}}" wire:navigate>Pro Courses</a>
+        </div>
+    </div>
+
+    <!-- JavaScript for Sidebar Toggle -->
     <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        Livewire.on('dropdownToggled', (data) => {
-            let dropdownMenu = document.getElementById('dropdown-menu');
-            if (data.isOpen) {
-                dropdownMenu.classList.remove('hidden');
-            } else {
-                dropdownMenu.classList.add('hidden');
-            }
+        document.getElementById("menu-toggle").addEventListener("click", function() {
+            document.getElementById("sidebar").classList.remove("-translate-x-full");
         });
-    });
-</script>
+
+        document.getElementById("close-sidebar").addEventListener("click", function() {
+            document.getElementById("sidebar").classList.add("-translate-x-full");
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            Livewire.on('dropdownToggled', (data) => {
+                let dropdownMenu = document.getElementById('dropdown-menu');
+                if (data.isOpen) {
+                    dropdownMenu.classList.remove('hidden');
+                } else {
+                    dropdownMenu.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+
 </div>

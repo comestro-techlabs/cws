@@ -8,7 +8,7 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 
 
-#[Layout('components.layouts.admin')] 
+#[Layout('components.layouts.admin')]
 #[Title('Manage Students')]
 class ManageStudent extends Component
 {
@@ -17,6 +17,8 @@ class ManageStudent extends Component
     public $filter = '';
     public $search = '';
     public $perPage = 10;
+    public $barcode;
+    public $showBarcodeModal = false;
     protected $paginationTheme = 'tailwind';
     protected $queryString = ['filter', 'search'];
 
@@ -28,6 +30,21 @@ class ManageStudent extends Component
     public function updatingSearch()
     {
         $this->resetPage();
+    }
+
+    public function generateBarcode($studentId)
+    {
+        $student = User::find($studentId);
+        $this->barcode = 'STU' . str_pad($studentId, 8, '0', STR_PAD_LEFT);
+        $student->barcode = $this->barcode;
+        $student->save();
+        $this->showBarcodeModal = true;
+    }
+
+    public function closeBarcodeModal()
+    {
+        $this->showBarcodeModal = false;
+        $this->barcode = null;
     }
 
     public function render()
@@ -49,7 +66,7 @@ class ManageStudent extends Component
                   ->orWhere('contact', 'like', '%' . $this->search . '%')
                   ->orWhere('email', 'like', '%' . $this->search . '%');
             });
-        
+
         $students = $query->paginate($this->perPage);
         return view('livewire.admin.student.manage-student')->with(compact('students'));
     }
