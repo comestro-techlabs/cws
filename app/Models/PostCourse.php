@@ -18,8 +18,8 @@ class PostCourse extends Model
 
     ];
 
-    public function postChapters()
-{
-    return $this->hasMany(PostChapter::class);
-}
+    public function chapters()
+    {
+        return $this->hasMany(PostChapter::class);
+    }
 }

@@ -28,16 +28,13 @@ class PostChapter extends Model
 
     public function course()
     {
-        return $this->belongsTo(PostCourse::class, 'post_course_id');
+        return $this->belongsTo(PostCourse::class);
     }
 
-    public function postCourse()
+    public function topics()
     {
-        return $this->belongsTo(PostCourse::class, 'post_course_id', 'id');
+        return $this->hasMany(PostTopicPost::class);
     }
 
-    public function postTopicPosts()
-    {
-        return $this->hasMany(PostTopicPost::class, 'post_chapter_id', 'id');
-    }
+   
 }

@@ -73,6 +73,7 @@ use App\Livewire\Admin\Result\AttemptDetails;
 use App\Livewire\Admin\Student\AttendanceScanner;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
+use App\Livewire\Public\Blog\CourseWithChapterAndTopic;
 use App\Livewire\Public\Contact\ContactPage;
 use App\Livewire\Public\Course\Ourcourses;
 use App\Livewire\Public\Header;
@@ -393,7 +394,7 @@ Route::prefix('v2')->group(function () {
 
         //routes for the free course
         // Route::get('/course/show', [PostCourseController::class, 'index'])->name('allcourses.show');
-        Route::get('/course/{course_id}/chapter/show', [PostChapterController::class, 'index'])->name('courses.show');
+        Route::get('/course/{course_id}/chapter/show',CourseWithChapterAndTopic::class)->name('v2.courses.show');
         Route::get('/course/chapter/{chapter_id}/show', [PostTopicPostController::class, 'index'])->name('chapters.show');
         Route::get('/course/chapter/topics/{topic_id}/show', [PostMyPostController::class, 'index'])->name('topics.show');
     });

@@ -25,12 +25,8 @@ class PostTopicPost extends Model
         });
     }
 
-    public function postChapter()
+    public function chapter()
     {
-        return $this->belongsTo(PostChapter::class,'post_chapter_id', 'id');
-    }
-
-    public function postMyPosts(){
-        return $this->hasMany(PostMyPost::class,'post_topic_post_id', 'id');
+        return $this->belongsTo(PostChapter::class);
     }
 }
