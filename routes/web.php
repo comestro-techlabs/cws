@@ -290,7 +290,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/course/show/{courseId}', ShowCourse::class)->name('admin.course.show');
         Route::get('/course/manage', ManageCourse::class)->name('admin.course.manage');
         Route::get('/student/{id}', ViewStudent::class)->name('admin.student.view');
-        Route::get('/course', InsertCourse::class)->name('admin.course');
+        
         Route::get('/course/update/{courseId}', UpdateCourse::class)->name('admin.course.update');
         Route::get('/admin/courses/{chapter}/lessons', LessonManager::class)->name('admin.courses.chapters.lessons');
 
@@ -331,7 +331,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/workshops/manage', ManageWorkshop::class)->name('admin.workshops.index');
 
         // Placed Student Routes
-        // Route::get('/placedstudent/create', InsertPlacedStudent::class)->name('admin.placedstudent.create');
+        Route::get('/placedstudent/create', InsertPlacedStudent::class)->name('admin.placedstudent.create');
         Route::get('/placedstudent/manage', CallingPlacedStudent::class)->name('admin.placedstudent.index');
         Route::get('/placedstudent/{placedStudent?}', InsertPlacedStudent::class)->name('admin.placedstudent.edit')->whereNumber("placedStudent");
 
