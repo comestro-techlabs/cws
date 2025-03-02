@@ -24,7 +24,7 @@
 
         <!-- Menu Items (Hidden on Small Screens) -->
         <div class="hidden md:flex space-x-4">
-            <a class="py-2 px-3 hover:bg-gray-200 rounded-full" href="{{route('v2.public.homepage')}}" wire:navigate>Home</a>
+            <a class="py-2 px-3 hover:bg-gray-200 rounded-full" href="{{route('v2.public.homepage')}}" wire:navigate >Home</a>
             <a class="py-2 px-3 hover:bg-gray-200 rounded-full" href="{{route('v2.public.workshop')}}" wire:navigate>Workshop</a>
             <div class="relative group">
                 <button wire:click="toggleDropdown" class="py-2 px-3 hover:bg-gray-200 rounded-full flex items-center">
@@ -83,24 +83,8 @@
         <div class="flex flex-col mt-16 space-y-4 p-4">
             <a class="py-2 px-3 hover:bg-gray-200 rounded" href="{{route('v2.public.homepage')}}" wire:navigate>Home</a>
             <a class="py-2 px-3 hover:bg-gray-200 rounded" href="{{route('v2.public.workshop')}}" wire:navigate>Workshop</a>
-            <div class="relative">
-                <button id="courses-dropdown-toggle" class="w-full flex justify-between items-center py-2 px-3 hover:bg-gray-200 rounded">
-                    Courses
-                    <svg id="dropdown-arrow" class="w-5 h-5 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                    </svg>
-                </button>
-
-                <!-- Dropdown Menu -->
-                <div id="courses-dropdown" class="hidden flex flex-col space-y-2 mt-2 bg-gray-100 rounded shadow-md p-2">
-                    <a class="py-2 px-3 hover:bg-gray-300 rounded" href="#">Free Courses</a>
-                    <a class="py-2 px-3 hover:bg-gray-300 rounded" href="{{route('v2.public.viewallcourses.all-courses')}}" wire:navigate>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18px" class="inline-block mr-2">
-                            <path fill="gold" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.86L12 17.77 5.82 21l1.18-6.86-5-4.87 6.91-1.01L12 2z"></path>
-                        </svg> Pro Courses
-                    </a>
-                </div>
-            </div>
+            <a class="py-2 px-3 hover:bg-gray-200 rounded" href="" wire:navigate>Free Courses</a>
+            <a class="py-2 px-3 hover:bg-gray-200 rounded" href="{{route('v2.public.viewallcourses.all-courses')}}" wire:navigate>Pro Courses</a>
         </div>
     </div>
 
@@ -126,16 +110,5 @@
             });
         });
     </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const dropdownToggle = document.getElementById("courses-dropdown-toggle");
-            const dropdownMenu = document.getElementById("courses-dropdown");
-            const dropdownArrow = document.getElementById("dropdown-arrow");
-
-            dropdownToggle.addEventListener("click", function() {
-                dropdownMenu.classList.toggle("hidden");
-                dropdownArrow.classList.toggle("rotate-180"); // Rotates arrow when clicked
-            });
-        });
-    </script>
+   
 </div>
