@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Livewire\Admin\Assignment;
-
+use Livewire\Component;
 use App\Models\Assignments;
 use App\Models\Batch;
 use App\Models\Course;
@@ -9,7 +9,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
-use Livewire\Component;
+
 #[Layout('components.layouts.admin')]
 #[Title('Manage Assignments')]
 class ManageAssignment extends Component

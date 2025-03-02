@@ -7,9 +7,12 @@ use App\Models\Batch;
 use App\Models\Course;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
-use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 
+#[Layout('components.layouts.admin')]
+#[Title('Manage Assignments')]
 class CreateAssignment extends Component
 {
     public $assignment;
@@ -20,7 +23,7 @@ class CreateAssignment extends Component
     public $status = false;
     public $batches = [];
 
-    #[Layout('components.layouts.admin')]
+
     public function render()
     {
         return view('livewire.admin.assignment.create-assignment', [
