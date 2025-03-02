@@ -7,12 +7,12 @@
 
     <div class="container mx-auto p-6">
         <div class="flex flex-wrap justify-between items-center p-4">
-            <h2 class="md:text-xl text-lg font-semibold text-slate-500 border-s-4 border-s-orange-400 pl-3 mb-5">
+            <h2 class="md:text-xl text-lg font-semibold text-slate-500 border-s-4 border-s-purple-600 pl-3 mb-2">
                 Create New Message
             </h2>
         </div>
 
-        <form wire:submit.prevent="save" class="mt-6">
+        <form wire:submit.prevent="save" class="mt-4">
            
             <div class="mb-4">
                 <label for="title" class="block text-gray-700">Title</label>
@@ -20,7 +20,7 @@
                     type="text" 
                     id="title" 
                     wire:model="title"
-                    class="w-full border-gray-300 rounded p-2 @error('title') border-red-500 @enderror"
+                    class="w-full border border-gray-300 rounded p-2 @error('title') border-red-500 @enderror"
                     required
                 >
                 @error('title')
@@ -35,7 +35,7 @@
                     id="content" 
                     wire:model="content"
                     rows="5" 
-                    class="w-full border-gray-300 rounded p-2 @error('content') border-red-500 @enderror"
+                    class="w-full border border-gray-300 rounded p-2 @error('content') border-red-500 @enderror"
                     required
                 ></textarea>
                 @error('content')
@@ -49,7 +49,7 @@
                 <select 
                     id="recipient_type" 
                     wire:model="recipient_type"
-                    class="w-full border-gray-300 rounded p-2"
+                    class="w-full border border-gray-300 rounded p-2"
                     required
                 >
                     <option value="all_users">All Users</option>

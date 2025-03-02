@@ -23,7 +23,7 @@
                         $isFirstUnread = !$isRead && $loop->first;
                     @endphp
 
-                    <a href="{{ route('student.messages.show', $message) }}"
+                    <a href="{{ route('student.messages.show', $message->id) }}"
                         class="block p-6 border border-gray-200 rounded-lg hover:bg-gray-50 transition duration-300 ease-in-out
                         {{ $isRead ? 'bg-white' : 'bg-blue-50 border-blue-200' }}
                         {{ $isFirstUnread ? 'ring-2 ring-blue-500' : '' }}">

@@ -1,11 +1,11 @@
 <div>
     <div class="container mx-auto py-8">
         <div class="flex flex-wrap justify-between items-center p-4">
-            <h2 class="md:text-xl text-lg font-semibold text-slate-500 border-s-4 border-s-orange-400 pl-3 mb-5">
+            <h2 class="md:text-xl text-lg font-semibold text-slate-500 border-s-4 border-s-purple-600 pl-3 mb-5">
                 Messages
             </h2>
             <a href="{{route('admin.message.create')}}" 
-               class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+               class="px-4 py-2 bg-purple-800 text-white rounded hover:bg-purple-900">
                 Add New Messages
             </a>
         </div>
