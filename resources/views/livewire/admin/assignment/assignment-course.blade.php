@@ -1,51 +1,18 @@
-
-<div>
-    <div class="col-span-1 md:col-span-6">
-        @forelse ($courses as $course)
-            <div class="bg-white border shadow-lg mb-10 rounded-xl overflow-hidden">
-                <div class="p-4">
-                    <div class="flex flex-col sm:flex-row">
-                        <a href="{{ route('assignments.review', $course->slug) }}" class="flex-shrink-0 mb-3 sm:mb-0 sm:mr-4">
-                            <img src="{{ asset('storage/course_images/' . $course->course_image) }}" alt="{{ $course->title }}"
-                                class="w-32 h-32 rounded-lg object-cover">
-                        </a>
-
-                        <div class="flex flex-col justify-between flex-grow min-w-[200px]">
-                            <div>
-                                <h4 class="text-lg font-semibold mb-2">
-                                    <a href="{{ route('assignments.review', $course->slug) }}"
-                                        class="hover:text-blue-600">{{ $course->title }}</a>
-                                </h4>
-                                <p class="text-gray-600 text-sm mb-4">
-                                    Total Assignments: {{ $course->assignments->count() }}
-                                </p>
-                            </div>
-                            <div>
-                                <div class="flex justify-between items-center mt-2">
-                                    <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">
-                                        {{ $course->unique_user_count ?? 0 }}
-                                        {{ Str::plural('Student', $course->unique_user_count ?? 0) }}
-                                    </span>
-                                    <span class="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded">
-                                        Total Users Purchased: {{ $course->total_users }}
-                                    </span>
-                                </div>
-                                <!-- Optional: Show published status -->
-                                @if($course->is_published) <!-- Adjust based on your column name -->
-                                    <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded mt-2 inline-block">
-                                        Published
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold mb-6 text-gray-800">Courses Overview</h1>
+    
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        @foreach($courses as $course)
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-xl font-semibold mb-4">{{ $course->title }}</h2>
+                <p class="text-gray-600">Assignments: {{ $course->assignments->count() }}</p>
+                <p class="text-gray-600">Total Students: {{ $course->total_users }}</p>
+                <p class="text-gray-600">Submitted: {{ $course->unique_user_count }}</p>
+                <a href="{{ route('assignment.review', $course->slug) }}" 
+                   class="mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                    Review
+                </a>
             </div>
-        @empty
-            <div class="text-center py-4">
-                <p class="text-gray-600">No published courses found.</p>
-            </div>
-        @endforelse
+        @endforeach
     </div>
-
 </div>

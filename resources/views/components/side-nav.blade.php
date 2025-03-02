@@ -61,6 +61,19 @@
                 <span class="ml-2 text-sm tracking-wide truncate">Assignment</span>
             </a>
         </li>
+        <li>
+            <a wire:navigate href="{{ route('admin.assignment.course') }}"
+                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 w-full">
+                <span class="inline-flex justify-center items-center ml-4">
+                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M15.75 9V5.25a3.75 3.75 0 1 0-7.5 0V9M3 9h18m-2.25 0a2.25 2.25 0 0 1 2.25 2.25v8.25a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 19.5v-8.25A2.25 2.25 0 0 1 5.25 9h13.5Z" />
+                    </svg>
+                </span>
+                <span class="ml-2 text-sm tracking-wide truncate">View Assignment</span>
+            </a>
+        </li>
         <li class="px-3">
             <div class="flex flex-row items-center h-5">
                 <div class="text-sm font-light tracking-wide text-gray-500">Students</div>

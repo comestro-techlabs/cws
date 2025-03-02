@@ -21,10 +21,12 @@ use App\Http\Controllers\WorkshopController;
 
 use App\Livewire\Admin\Assignment\AssignmentCourse;
 use App\Livewire\Admin\Assignment\CreateAssignment;
-use App\Livewire\Admin\Assignment\EditAssignment;
 use App\Livewire\Admin\Assignment\ManageAssignment;
-use App\Livewire\Admin\Assignment\AssignmentUpload;
+use App\Livewire\Admin\Assignment\ReviewWork;
+use App\Livewire\Admin\Assignment\AssignmentReview;
+
 use App\Livewire\Admin\Assignment\SingleViewAssignment;
+
 use App\Livewire\Admin\Dashboad;
 use App\Livewire\Admin\ManagePayment;
 use App\Livewire\Admin\ManageEnquiry;
@@ -123,11 +125,7 @@ Route::get('/student/messages/{message}', [MessageController::class, 'showMessag
 
 // });
 
-//routes for the course
-Route::get('/course/show', [PostCourseController::class, 'index'])->name('allcourses.show');
-Route::get('/course/{course_id}/chapter/show', [PostChapterController::class, 'index'])->name('courses.show');
-Route::get('/course/chapter/{chapter_id}/show', [PostTopicPostController::class, 'index'])->name('chapters.show');
-Route::get('/course/chapter/topics/{topic_id}/show', [PostMyPostController::class, 'index'])->name('topics.show');
+
 
 
 Route::get('/get-access-token', [StudentController::class, 'store']);
@@ -317,22 +315,14 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/assignment', CreateAssignment::class)->name('admin.assignment');
         Route::get('/assignment/manage', ManageAssignment::class)->name('admin.assignment.manage');
         Route::get('/singleViewAssignment/{assignment}', SingleViewAssignment::class)->name('admin.assignment.view');
-        // Route::get('/assignment/course', AssignmentCourse::class)->name('admin.assignment.course');
+        Route::get('/assignment/course', AssignmentCourse::class)->name('admin.assignment.course');
         Route::get('/assignment/{assignment}/edit', CreateAssignment::class)->name('admin.assignment.edit');
-       // Index: All Assignment Uploads
-    Route::get('/assignments', AssignmentUpload::class)->name('assignments.index');
-
-    // Assignment Courses
-    Route::get('/assignment/course', AssignmentUpload::class)->name('assignment.course');
-
-    // Assignment Review (requires course slug)
-    Route::get('/assignment/review/{slug}', AssignmentUpload::class)->name('assignment.review');
-
-    // Single Student Assignments (requires student ID)
-    Route::get('/assignment/student/{id}', AssignmentUpload::class)->name('assignment.student');
-
-    // Review Work for a Specific Assignment (requires assignment ID)
-    Route::get('/assignment/review-work/{id}', AssignmentUpload::class)->name('assignment.reviewWork');
+        //upload assignment routes
+       
+        Route::get('/assignments/course', AssignmentCourse::class)->name('admin.assignment.course'); //u
+        Route::get('/assignments/review/{slug}', AssignmentReview::class)->name('assignment.review'); //u
+       
+        Route::get('/assignments/review-work/{id}', ReviewWork::class)->name('assignment.reviewWork');//u
         // Workshop Routes
         Route::get('/workshops', CreateWorkshop::class)->name('admin.workshops.create');
         // Route::get('/workshops/{id}', CreateWorkshop::class)->name('admin.workshops.edit');
@@ -343,9 +333,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/placedstudent/manage', CallingPlacedStudent::class)->name('admin.placedstudent.index');
         Route::get('/placedstudent/{placedStudent?}', InsertPlacedStudent::class)->name('admin.placedstudent.edit')->whereNumber("placedStudent");
 
-        // Portfolio Routes
-        Route::get('/portfolio', CreatePortfolio::class)->name('admin.portfolio.create');
-        Route::get('/portfolio/manage', ManagePortfolio::class)->name('admin.portfolio.index');
+        
 
         //Message Route
         Route::get('/message', CreateMessage::class)->name('admin.message.create');
@@ -386,9 +374,9 @@ Route::prefix('v2')->group(function () {
         Route::get('/portfolio', OurPortfolio::class)->name('v2.public.portfolio');
     });
 
-    Route::prefix("student")->group(function(){
-        Route::get('/billing',ViewBilling::class )->name('student.billing');
-        Route::get('/dashboard',StudentDashboard::class )->name('v2.student.dashboard');
+    Route::prefix("student")->group(function () {
+        Route::get('/billing', ViewBilling::class)->name('student.billing');
+        Route::get('/dashboard', StudentDashboard::class)->name('v2.student.dashboard');
         Route::get('/assignments/view', ManageAssignments::class)->name('student.assignments-view');
         Route::get('/take-exam', Exam::class)->name('student.takeExam');
         Route::get('/notifications', Messages::class)->name('student.messages');
@@ -397,7 +385,6 @@ Route::prefix('v2')->group(function () {
         Route::get('/student/{message}', MessageView::class)->name('v2.student.message.view');
         Route::get('/my-courses', MyCourse::class)->name('v2.student.mycourses');
         Route::get('/edit-profile', EditProfile::class)->name('student.v2edit.profile');
-
     });
     //working here for public routes
     Route::prefix("public")->group(function () {
@@ -406,6 +393,12 @@ Route::prefix('v2')->group(function () {
         Route::get('/courses/{slug}', Ourcourses::class)->name('v2.public.courseDetail');
         Route::get('/contact', ContactPage::class)->name('v2.public.contactUs');
         Route::get('/workshops', Workshop::class)->name('v2.public.workshop');
+
+        //routes for the free course
+        // Route::get('/course/show', [PostCourseController::class, 'index'])->name('allcourses.show');
+        Route::get('/course/{course_id}/chapter/show', [PostChapterController::class, 'index'])->name('courses.show');
+        Route::get('/course/chapter/{chapter_id}/show', [PostTopicPostController::class, 'index'])->name('chapters.show');
+        Route::get('/course/chapter/topics/{topic_id}/show', [PostMyPostController::class, 'index'])->name('topics.show');
     });
 });
 
