@@ -1,6 +1,7 @@
 <?php
 namespace App\Livewire\Student;
 
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 use App\Models\Course;
 use Illuminate\Support\Facades\Auth;
@@ -12,6 +13,7 @@ class ViewCourse extends Component
     // public $payment_exist = false;
 
    
+    #[Layout('components.layouts.student')]
 
     public function mount($courseId)
     {

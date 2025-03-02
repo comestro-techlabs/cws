@@ -2,7 +2,7 @@
 <div>
     @if($isEditing)
         <div class="max-w-5xl mx-auto mt-8">
-            <h2 class="text-xl font-semibold text-slate-500 border-s-4 border-s-orange-400 pl-3 mb-5">
+            <h2 class="text-xl font-semibold text-slate-500 border-s-4 border-s-purple-800 pl-3 mb-5">
                 Edit Enquiry
             </h2>
 
@@ -59,33 +59,28 @@
 
     <div class="flex flex-1 flex-col">
         <div class="md:px-[2%] px-5">
-            <h2 class="md:text-xl capitalize text-lg font-semibold text-slate-500 border-s-4 border-s-orange-400 pl-3">
+            <h2 class="md:text-xl capitalize text-lg font-semibold text-slate-500 border-s-4 border-s-purple-600 pl-3">
                 {{ $search ? $search : 'Manage all' }} Enquiries ({{ $enquiry->total() }})
             </h2>
 
             <div class="flex gap-3 flex-col md:flex-row justify-between md:items-center">
                 <div class="inline-flex md:flex-row flex-col md:items-center gap-2" role="group">
-                    <div class="md:max-w-xl md:mx-auto mt-20">
-                        <div class="flex border rounded-lg ps-3">
+                    <div class="md:max-w-xl md:mx-auto mt-8">
+                        <div class="flex border border-gray-500 rounded-lg ps-3">
                             <input 
-                                wire:model.live="search" 
+                                wire:model.live.devounce.500ms="search" 
                                 type="search" 
                                 id="default-search" 
-                                class="border-0 focus:outline-none focus:border-none w-full" 
+                                class="border-0 focus:outline-none focus:border-none px-2 py-3 w-full" 
                                 placeholder="Search Enquiry by name..." 
                                 size="30"
-                            />
-                            <button class="bg-slate-100 px-3">
-                                <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                                </svg>
-                            </button>
+                            />                            
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="relative overflow-x-auto flex-1 border mt-5">
+            <div class="relative overflow-x-auto flex-1 border border-gray-300 mt-5">
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                         <tr>
