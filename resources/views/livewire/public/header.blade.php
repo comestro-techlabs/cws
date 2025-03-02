@@ -1,6 +1,6 @@
 <div>
     <!-- Navbar -->
-    <div class="shadow-2xl  w-full flex relative justify-between items-center mx-auto px-8 py-3 rounded-full backdrop-blur bg-white bg-opacity-20">
+    <div class="shadow-2xl w-[85%] ml-[7.5%] flex top-[20px] fixed justify-between items-center mx-auto px-8 py-3 rounded-full backdrop-blur bg-opacity-20">
 
         <!-- Hamburger Menu Button (Only Visible on Small Screens) -->
         <button id="menu-toggle" class="md:hidden focus:outline-none">
@@ -80,7 +80,7 @@
         <button id="close-sidebar" class="absolute top-4 right-4 text-gray-800">
             ✖
         </button>
-        <div class="flex flex-col mt-16 space-y-4 p-4">
+        <div class="flex flex-col space-y-4 p-4">
             <a class="py-2 px-3 hover:bg-gray-200 rounded" href="{{route('v2.public.homepage')}}" wire:navigate>Home</a>
             <a class="py-2 px-3 hover:bg-gray-200 rounded" href="{{route('v2.public.workshop')}}" wire:navigate>Workshop</a>
             <a class="py-2 px-3 hover:bg-gray-200 rounded" href="" wire:navigate>Free Courses</a>
