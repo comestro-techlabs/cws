@@ -2,7 +2,7 @@
         <div class=" bg-gray-50">
         <div class="flex flex-col items-center pb-2 mt-5 ">
         <img class="w-24 h-24 mb-3 border-2 border-purple-600 rounded-full shadow-lg " src="{{ asset('user.png') }}" alt="Bonnie image" />
-                <h5 class="mb-1 text-xl text-lighter uppercase text-gray-900">
+                <h5 class="mb-1 text-sm text-lighter captialize text-gray-900">
                     @if (auth()->check())
                         {{ auth()->user()->name }}
                     @endif
