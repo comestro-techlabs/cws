@@ -143,21 +143,7 @@
                 <span class="ml-2 text-sm tracking-wide truncate">Manage Exam</span>
             </a>
         </li>
-        <li>
-            <a wire:navigate href="{{route('admin.quiz')}}"
-                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 w-full">
-                <span class="inline-flex justify-center items-center ml-4">
-                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                        stroke-width="1.5" stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M12 18.75v1.5M12 6.75a3 3 0 0 0-3 3h1.5a1.5 1.5 0 1 1 3 0c0 1.5-3 2.25-3 4.5h1.5m.75-1.5v3" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9 9 0 1 1 9-9 9 9 0 0 1-9 9Z" />
-                    </svg>
-                </span>
-                <span class="ml-2 text-sm tracking-wide truncate">Manage Quiz</span>
-
-            </a>
-        </li>
+       
         <li>
             <a wire:navigate href="{{ route('admin.workshops.index') }}"
                 class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 w-full">

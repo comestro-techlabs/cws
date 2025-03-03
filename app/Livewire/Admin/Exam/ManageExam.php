@@ -37,7 +37,7 @@ class ManageExam extends Component
         'exam_date' => 'required|date|after_or_equal:today',
         'status' => 'nullable|boolean'
     ];
-    #[Layout('components.layouts.admin')]
+    
 
     public function mount()
     {
@@ -72,7 +72,9 @@ class ManageExam extends Component
         ]);
 
         $this->reset(['exam_name', 'course_id', 'batch_id', 'exam_date', 'status']);
-        session()->flash('success', 'Exam created successfully.');
+        
+        $this->dispatch('notice', type: 'info', text: 'Exam created successfully!');
+
     }
 
     public function edit(Exam $exam)
@@ -100,13 +102,14 @@ class ManageExam extends Component
         ]);
 
         $this->reset(['exam_name', 'course_id', 'batch_id', 'exam_date', 'status', 'isEditing', 'editingExamId']);
-        session()->flash('success', 'Exam updated successfully.');
+        $this->dispatch('notice', type: 'info', text: 'Exam updated successfully!');
+
     }
 
     public function delete(Exam $exam)
     {
         $exam->delete();
-        session()->flash('success', 'Exam deleted successfully.');
+        $this->dispatch('notice', type: 'info', text: 'Exam deleted successfully!');
     }
 
     public function toggleStatus(Exam $exam)
@@ -118,8 +121,10 @@ class ManageExam extends Component
             if ($exam->status) {
                 $this->notifyUsers($exam);
             }
-            session()->flash('success', 'Exam status updated successfully!');
+            $this->dispatch('notice', type: 'info', text: 'Exam status updated successfully!');
+
         } else {
+            $this->dispatch('notice', type: 'error', text: 'Exam must have at least 10 quizzes to activate.');
             session()->flash('error', 'Exam must have at least 10 quizzes to activate.');
         }
     }
@@ -156,5 +161,5 @@ class ManageExam extends Component
         ]);
     }
 
-    protected $listeners = ['refreshComponent' => '$refresh'];
+    // protected $listeners = ['refreshComponent' => '$refresh'];
 }
