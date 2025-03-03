@@ -17,6 +17,7 @@ class ManageQuiz extends Component
 
     public $search = '';
     public $exam_id;
+    public $exam_name;
     public $question;
     public $option1;
     public $option2;
@@ -27,7 +28,7 @@ class ManageQuiz extends Component
     public $exams;
     public $isEditing = false;
     public $editingQuizId;
-    public $showForm = false;
+    // public $showForm = false;
 
     protected $rules = [
         'exam_id' => 'required|exists:exams,id',
@@ -40,10 +41,12 @@ class ManageQuiz extends Component
         'status' => 'nullable|boolean'
     ];
 
-    #[Layout('components.layouts.admin')]
-    public function mount()
+    public function mount($examId)
     {
-        $this->exams = Exam::all();
+        $exam = Exam::findOrFail($examId);
+        $this->exams = $exam;
+        $this->exam_id = $examId;
+        $this->exam_name = $exam->name;
     }
 
     public function create()
@@ -62,7 +65,7 @@ class ManageQuiz extends Component
         ]);
 
         $this->reset(['question', 'option1', 'option2', 'option3', 'option4', 'correct_answer', 'status']);
-        session()->flash('success', 'Quiz question created successfully.');
+        $this->dispatch('notice', type: 'info', text: 'Quiz question created successfully!');
     }
 
     public function edit(Quiz $quiz)
@@ -77,7 +80,7 @@ class ManageQuiz extends Component
         $this->option4 = $quiz->option4;
         $this->correct_answer = $quiz->correct_answer;
         $this->status = $quiz->status;
-        $this->showForm = true;
+        // $this->showForm = true;
     }
 
     public function update()
@@ -96,26 +99,26 @@ class ManageQuiz extends Component
             'status' => $this->status
         ]);
 
-        $this->reset(['question', 'option1', 'option2', 'option3', 'option4', 'correct_answer', 'status', 'isEditing', 'editingQuizId', 'showForm']);
-        session()->flash('success', 'Quiz question updated successfully.');
+        $this->reset(['question', 'option1', 'option2', 'option3', 'option4', 'correct_answer', 'status', 'isEditing', 'editingQuizId']);
+        $this->dispatch('notice', type: 'info', text: 'Quiz question updated successfully!');
     }
 
     public function delete(Quiz $quiz)
     {
         $quiz->delete();
-        session()->flash('success', 'Quiz question deleted successfully.');
+        $this->dispatch('notice', type: 'info', text: 'Quiz question deleted successfully!');
     }
 
     public function toggleStatus(Quiz $quiz)
     {
         $quiz->status = !$quiz->status;
         $quiz->save();
-        session()->flash('success', 'Quiz status updated successfully.');
+        $this->dispatch('notice', type: 'info', text: 'Quiz status successfully!');
     }
 
     public function render()
     {
-        $quizzes = Quiz::with('exam')
+        $quizzes = Quiz::where('exam_id', $this->exam_id)
             ->when($this->search, function($query) {
                 $query->where('question', 'like', '%' . $this->search . '%');
             })

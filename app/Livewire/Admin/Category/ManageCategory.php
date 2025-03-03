@@ -32,7 +32,7 @@ class ManageCategory extends Component
         ]);                    
         $this->reset(['cat_title', 'cat_description']);
         $this->isModalOpen = false;
-        $this->dispatch('success', ['message' => "Category added successfully!"]);
+        $this->dispatch('notice', type: 'info', text: 'Category added successfully!');
 
 
     }
@@ -58,7 +58,7 @@ class ManageCategory extends Component
         $category = CategoryModel::find($id);
         if ($category) {
             $category->delete();
-            $this->dispatch('success', ['message' => "Category deleted successfully!"]);
+            $this->dispatch('notice', type: 'info', text: 'Category deleted successfully!');
         }
         
     }

@@ -53,6 +53,7 @@
 
             @endforeach
         </div>
+        ￼
 
         <div class="flex justify-center items-center">
 
@@ -241,10 +242,9 @@
                                         <div class="font-display text-base text-slate-900">{{ $student->position }}
                                         </div>
                                     </div>
-                                    <div class="overflow-hidden rounded-full bg-slate-500 h-14 w-14">
-                                    <img alt="{{ $student->name }}" class="h-14 w-14 object-cover" style="color:transparent"
-                                     src="{{ asset('storage/placedstudent/' . $student->image) }}"/>
-
+                                    <div class="overflow-hidden rounded-full bg-slate-50 h-14 w-14">
+                                        <img alt="" class="h-14 w-14 object-cover" style="color:transparent"
+                                            src="{{ asset('storage/placedstudent/' . $student->image) }}" />
                                     </div>
                                 </figcaption>
                             </figure>

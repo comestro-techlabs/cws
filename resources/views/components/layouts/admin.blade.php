@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <title>{{ $title ?? 'Admin Dashboard' }}</title>
     @livewireStyles
@@ -34,7 +35,7 @@
     </main>
 
     {{-- toastr --}}
-    {{-- <div class="flex justify-end items-center ">
+    <div class="flex justify-end items-center ">
         <div
             x-data="noticesHandler()"
             class="fixed top-5 right-5 flex flex-col items-end space-y-3 p-4 z-50"
@@ -50,7 +51,7 @@
                     x-transition:leave-start="transform opacity-100 translate-x-0"
                     x-transition:leave-end="transform opacity-0 translate-x-5"
                     @click="remove(notice.id)"
-                    class="rounded-lg px-4 py-3 w-72 bg-slate-100  shadow-lg text-black font-medium text-sm cursor-pointer flex items-center justify-between"
+                    class="rounded-lg px-4 py-3 w-72 bg-gray-400  shadow-lg text-black font-medium text-sm cursor-pointer flex items-center justify-between"
                    
                     style="pointer-events:all">
                     <span x-text="notice.text"></span>
@@ -58,14 +59,14 @@
                 </div>
             </template>
         </div>
-    </div> --}}
+    </div>
 
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     {{-- toastr --}}
-    {{-- <script>
+    <script>
         function noticesHandler() {
             return {
                 notices: [],
@@ -86,7 +87,7 @@
                 },
             };
         }
-    </script> --}}
+    </script>
 
     <script>
         document.addEventListener('livewire:initialized', () => {

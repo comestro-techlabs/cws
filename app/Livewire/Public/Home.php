@@ -17,8 +17,11 @@ class Home extends Component
     {
         $this->courses = Course::where("published", true)->latest()->take(6)->get();
         $this->placedStudents = Cache::remember('placed_students_active_homepage', 60, function () {
-            return PlacedStudent::where('status', 1)->latest()->take(6)->get(); // Limit to 6 students
-        });
+            return PlacedStudent::where('status', 1)
+            ->inRandomOrder() // Fetch records in random order
+            ->take(6) // Limit to 6 students
+            ->get();
+    });
         $this->title = "";
     }
 
