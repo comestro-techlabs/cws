@@ -1,31 +1,4 @@
 <div class="page mt-16 min-h-screen">
-    <!-- Success/Error Alerts -->
-    @if(session('success'))
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                Swal.fire({
-                    title: 'Success!',
-                    text: "{{ session('success') }}",
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                });
-            });
-        </script>
-    @endif
-
-    @if(session('error'))
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                Swal.fire({
-                    title: 'Error!',
-                    text: "{{ session('error') }}",
-                    icon: 'error',
-                    confirmButtonText: 'OK'
-                });
-            });
-        </script>
-    @endif
-
     <!-- Page Heading -->
     <div class="border-b border-gray-300 py-4">
         <div class="container mx-auto px-6 flex items-center">
@@ -79,7 +52,7 @@
                                                 <strong>Batch:</strong> {{ $selectedBatch['batch_name'] }}
                                             </div>
                                         @endif
-                                    @else
+                                    @elseif (!empty($course['batches']))
                                         <form wire:submit.prevent="updateBatch({{ $course['id'] }}, $event.target.batch_id.value)">
                                             <select name="batch_id" 
                                                     class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none">
