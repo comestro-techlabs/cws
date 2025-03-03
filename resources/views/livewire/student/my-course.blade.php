@@ -42,34 +42,37 @@
                                 </div>
 
                                 <!-- Batch Section -->
-                                <div class="mt-4">
-                                    @if (!empty($course['pivot']['batch_id']) && !empty($course['batches']))
-                                        @php
-                                            $selectedBatch = collect($course['batches'])->firstWhere('id', $course['pivot']['batch_id']);
-                                        @endphp
-                                        @if($selectedBatch)
-                                            <div class="text-sm text-gray-700">
-                                                <strong>Batch:</strong> {{ $selectedBatch['batch_name'] }}
-                                            </div>
-                                        @endif
-                                    @elseif (!empty($course['batches']))
-                                        <form wire:submit.prevent="updateBatch({{ $course['id'] }}, $event.target.batch_id.value)">
-                                            <select name="batch_id" 
-                                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none">
+                                    <div class="mt-4">
+                                        @if (!empty($course['pivot']['batch_id']) && !empty($course['batches']))
+                                            @php
+                                                $selectedBatch = collect($course['batches'])->firstWhere('id', $course['pivot']['batch_id']);
+                                            @endphp
+                                            @if($selectedBatch)
+                                                <div class="text-sm text-gray-700">
+                                                    <strong>Batch:</strong> {{ $selectedBatch['batch_name'] }}
+                                                </div>
+                                            @endif
+                                        @elseif (!empty($course['batches']))
+                                            <select wire:change.live="updateBatch({{ $course->id }}, $event.target.value)"
+                                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none">
                                                 <option value="">-- Select a Batch --</option>
-                                                @foreach ($course['batches'] as $batch)
-                                                    <option value="{{ $batch['id'] }}">
-                                                        {{ $batch['batch_name'] }}
+                                                @foreach ($course->batches as $batch)
+                                                    <option value="{{ $batch->id }}"
+                                                        {{ $course->pivot && $course->pivot->batch_id == $batch->id ? 'selected' : '' }}>
+                                                        {{ $batch->batch_name }}
                                                     </option>
                                                 @endforeach
                                             </select>
                                             <button type="submit"
-                                                    class="mt-3 w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-500 transition-colors duration-200">
+                                                class="mt-3 w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-500 transition-colors duration-200">
                                                 Update Batch
                                             </button>
-                                        </form>
-                                    @endif
-                                </div>
+                                        @else
+                                            <div class="text-sm text-red-600">
+                                                <strong>You don’t have any batches available.</strong>
+                                            </div>
+                                        @endif
+                                    </div>
                             </div>
                         </div>
                     </div>
