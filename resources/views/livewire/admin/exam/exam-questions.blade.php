@@ -1,7 +1,7 @@
 <div>
     <div class="p-6 bg-white rounded-lg shadow-md mt-12">
         <div class="mb-6">
-            <h2 class="text-2xl font-semibold text-gray-800">{{ $exam->exam_name }} Questions</h2>
+            <h2 class="md:text-xl text-lg font-semibold text-slate-500 border-s-4 border-s-purple-800 pl-3 mb-5">{{ $exam->exam_name }} Questions</h2>
             <p class="text-gray-600">Course: {{ $exam->course->title }}</p>
         </div>
 
@@ -11,7 +11,7 @@
                 <input wire:model.live="search" type="text" placeholder="Search questions..." 
                     class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
-            <a href="{{ route('admin.quiz', ['exam_id' => $exam->id]) }}" 
+            <a href="{{ route('admin.quiz', ['examId' => $exam->id]) }}" 
                 class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
                 Add New Question
             </a>

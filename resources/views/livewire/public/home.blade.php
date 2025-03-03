@@ -10,12 +10,12 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:mb-20 mb-10 px-4 lg:px-32">
             @foreach ($courses as $item)
 
-            <div class=" bg-gray-100 flex items-center justify-center p-4">
+            <div class=" flex items-center justify-center flex-1 p-4">
                 <div
                     class="max-w-sm w-full bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all">
                     <div>
                         <img src="{{ asset('storage/course_images/' . $item->course_image) }}" alt="Course Image"
-                            class="w-full h-52 object-cover" />                      
+                            class="w-full h-52 object-cover" />
                     </div>
 
                     <div class="p-5 space-y-4">
@@ -53,6 +53,7 @@
 
             @endforeach
         </div>
+        ￼
 
         <div class="flex justify-center items-center">
 
@@ -82,7 +83,7 @@
                             class="text-3xl font-extrabold leading-9 text-gray-900 dark:text-white sm:text-4xl sm:leading-10">
                             Why we’re a Top <span class="text-primary">Software Development</span> Company
                         </h2>
-                        
+
                     </div>
                 </div>
 
@@ -142,7 +143,7 @@
             </p>
         </div>
         <div class="flex flex-col sm:flex-row gap-6 max-w-7xl mx-auto px-4 justify-center items-center">
-            <div class="relative flex flex-col justify-center overflow-hidden bg-gray-50 py-6 sm:py-12 w-full sm:w-auto">
+            <div class="relative flex flex-col justify-center overflow-hidden  py-6 sm:py-12 w-full sm:w-auto">
                 <div class="group relative cursor-pointer overflow-hidden bg-white px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:mx-auto sm:max-w-sm sm:rounded-lg sm:px-10">
                     <span class="absolute top-10  h-20 w-20 rounded-full bg-primary transition-all duration-300 group-hover:scale-[10]"></span>
                     <div class="relative mx-auto max-w-md">
@@ -163,7 +164,7 @@
                 </div>
             </div>
 
-            <div class="relative flex flex-col justify-center overflow-hidden bg-gray-50 py-6 sm:py-12 w-full sm:w-auto">
+            <div class="relative flex flex-col justify-center overflow-hidden  py-6 sm:py-12 w-full sm:w-auto">
                 <div class="group relative cursor-pointer overflow-hidden bg-white px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:mx-auto sm:max-w-sm sm:rounded-lg sm:px-10">
                     <span class="absolute top-10  h-20 w-20 rounded-full bg-primary transition-all duration-300 group-hover:scale-[10]"></span>
                     <div class="relative  mx-auto max-w-md">
@@ -184,7 +185,7 @@
                 </div>
             </div>
 
-            <div class="relative flex flex-col justify-center overflow-hidden bg-gray-50 py-6 sm:py-12 w-full sm:w-auto">
+            <div class="relative flex flex-col justify-center overflow-hidden py-6 sm:py-12 w-full sm:w-auto">
                 <div class="group relative cursor-pointer overflow-hidden bg-white px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:mx-auto sm:max-w-sm sm:rounded-lg sm:px-10">
                     <span class="absolute top-10  h-20 w-20 rounded-full bg-primary transition-all duration-300 group-hover:scale-[10]"></span>
                     <div class="relative mx-auto max-w-md">
@@ -241,10 +242,9 @@
                                         <div class="font-display text-base text-slate-900">{{ $student->position }}
                                         </div>
                                     </div>
-                                    <div class="overflow-hidden rounded-full bg-slate-500 h-14 w-14">
-                                    <img alt="{{ $student->name }}" class="h-14 w-14 object-cover" style="color:transparent"
-                                     src="{{ asset('storage/placedstudent/' . $student->image) }}"/>
-
+                                    <div class="overflow-hidden rounded-full bg-slate-50 h-14 w-14">
+                                        <img alt="" class="h-14 w-14 object-cover" style="color:transparent"
+                                            src="{{ asset('storage/placedstudent/' . $student->image) }}" />
                                     </div>
                                 </figcaption>
                             </figure>
