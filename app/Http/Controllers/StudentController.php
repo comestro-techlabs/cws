@@ -32,10 +32,11 @@ class StudentController extends Controller
     }
 
 
-    public function index(Request $request){
-        $query =user::where('isAdmin',false);
-        if($request->has('filter')){
-            $filter =$request->filter;
+    public function index(Request $request)
+    {
+        $query = user::where('isAdmin', false);
+        if ($request->has('filter')) {
+            $filter = $request->filter;
             if ($filter == 'member') {
                 $query->where('is_member', 1);
             } elseif ($filter == 'user') {
@@ -132,8 +133,8 @@ class StudentController extends Controller
         $paymentsWithWorkshops = Payment::where('student_id', $id)->get();
 
         $courses = $student->courses()->withPivot('created_at', 'batch_id')->get();
-        
-        return view('admin.students.edit', compact('student', 'purchasedCourses', 'paymentsGroupedByCourse','paymentsWithWorkshops','courses'));
+
+        return view('admin.students.edit', compact('student', 'purchasedCourses', 'paymentsGroupedByCourse', 'paymentsWithWorkshops', 'courses'));
     }
 
     public function update(Request $request, $id, $field)
@@ -217,11 +218,11 @@ class StudentController extends Controller
         }
         $readMessages = session('read_messages', []);
         $messages = Message::whereJsonContains('recipients', $studentId)
-        ->whereNotIn('id', $readMessages) // Only unread messages
-        ->orderBy('created_at', 'desc')
-        ->take(3)
-        ->get();
-        
+            ->whereNotIn('id', $readMessages) // Only unread messages
+            ->orderBy('created_at', 'desc')
+            ->take(3)
+            ->get();
+
         // Prepare data for the view
         $datas = [
             'hasCompleted' => $hasCompleted,
@@ -255,7 +256,8 @@ class StudentController extends Controller
         ]);
     }
 
-    public function updateBatch(Request $request, $courseId){
+    public function updateBatch(Request $request, $courseId)
+    {
         $request->validate([
             'batch_id' => 'required|exists:batches,id',
         ]);
@@ -283,20 +285,25 @@ class StudentController extends Controller
     public function enrollCourse($courseId)
     {
         $user = auth()->user();
+
+        // Check if account is active
         if (!$user->is_active) {
             return redirect()->back()->with('error', 'Your account is inactive. Please contact support.');
         }
 
+        // Check for courses without batch
         $coursesWithoutBatch = $user->courses()->wherePivot('batch_id', null)->exists();
-
         if ($coursesWithoutBatch) {
             return redirect()->back()->with('error', 'Please update the batch for your existing course before enrolling in a new one.');
         }
+
+        // Check if already enrolled
         if ($user->courses()->where('course_id', $courseId)->exists()) {
             return redirect()->back()->with('error', 'You are already enrolled in this course.');
         }
 
         if ($user->is_member) {
+            // Check for active free courses
             $activeFreeCourse = $user->courses()
                 ->whereHas('batches', function ($query) {
                     $query->whereDate('end_date', '>=', now());
@@ -308,12 +315,11 @@ class StudentController extends Controller
                 ->isNotEmpty();
 
             if ($activeFreeCourse) {
-                // Redirect the member to payment if they have an ongoing free course
                 return redirect()->route('student.buyCourse', ['id' => $courseId])
-                    ->with('error', 'You can only have one active free course at a time. Complete your current course before enrolling in another for free. You can buy this course now.');
+                    ->with('error', 'You can only have one active free course at a time...');
             }
 
-            // Find an active batch for the course the member wants to enroll in
+            // Find active batch
             $batch = Batch::where('course_id', $courseId)
                 ->whereDate('end_date', '>=', now())
                 ->first();
@@ -321,6 +327,7 @@ class StudentController extends Controller
             if (!$batch) {
                 return redirect()->back()->with('error', 'No active batch available for this course.');
             }
+
             $user->courses()->attach($courseId);
         } else {
             return redirect()->route('student.buyCourse', ['id' => $courseId]);
@@ -329,7 +336,7 @@ class StudentController extends Controller
         return redirect()->route('student.dashboard')->with('success', 'You have successfully enrolled in the course.');
     }
     public function billing()
-    { 
+    {
         if (!Auth::check()) {
             return redirect()->route('auth.login')->with('error', 'You must be logged in to access this page');
         }
@@ -340,8 +347,7 @@ class StudentController extends Controller
         // dd($overdueCount);
 
         $hasCompleted = $this->hasCompletedExamOrAssignment($studentId);
-        $today = Carbon::now(); // Define the current date
-        // $today =\Carbon\Carbon::parse('2025-07-15 00:00:00');
+        $today = Carbon::now();
         $payments = Payment::where('student_id', $studentId)->orderBy('created_at', 'ASC')->get();
 
         $paymentsWithWorkshops = $payments->map(function ($payment) use ($today, $user) { // Pass $today inside use()
@@ -371,7 +377,7 @@ class StudentController extends Controller
         $courses = User::find($studentId)->courses()->get();
 
 
-        return view('studentdashboard.billing', compact('hasCompleted', 'courses', 'paymentsWithWorkshops','overdueCount'));
+        return view('studentdashboard.billing', compact('hasCompleted', 'courses', 'paymentsWithWorkshops', 'overdueCount'));
     }
 
     public function viewbilling($paymentId)
@@ -381,13 +387,13 @@ class StudentController extends Controller
         }
         $payment = Payment::with(['course', 'workshops'])->findOrFail($paymentId);
         // $payment = Payment::findOrFail($paymentId);
-        
+
         $user = User::findOrFail($payment->student_id);
 
         return view('studentdashboard.viewbilling', compact('user', 'payment'));
     }
-        public function courseQuiz()
-    { 
+    public function courseQuiz()
+    {
         if (!Auth::check()) {
             return redirect()->route('auth.login')->with('error', 'You must be logged in to access this page');
         }
@@ -599,25 +605,25 @@ class StudentController extends Controller
         $course_id = $course->id;
         $user_id = Auth::id();
         $payment_exist = Payment::where("student_id", $user_id)->where("course_id", $course_id)->where("status", "captured")->exists();
-         // If the course price is 0, enroll the user directly
+        // If the course price is 0, enroll the user directly
         if ($course->discounted_fees == 0) {
-        $already_enrolled = DB::table('course_user')
-            ->where('user_id', $user_id)
-            ->where('course_id', $course_id)
-            ->exists();
+            $already_enrolled = DB::table('course_user')
+                ->where('user_id', $user_id)
+                ->where('course_id', $course_id)
+                ->exists();
 
-        if (!$already_enrolled) {
-            DB::table('course_user')->insert([
-                'user_id'    => $user_id,
-                'course_id'  => $course_id,
-                'batch_id'   => null, // Set batch_id if applicable
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+            if (!$already_enrolled) {
+                DB::table('course_user')->insert([
+                    'user_id' => $user_id,
+                    'course_id' => $course_id,
+                    'batch_id' => null, // Set batch_id if applicable
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+
+            return redirect()->route('student.dashboard')->with('success', 'You have been enrolled in the course.');
         }
-
-        return redirect()->route('student.dashboard')->with('success', 'You have been enrolled in the course.');
-    }
         return view("studentdashboard.course.viewCourse", compact('course', 'payment_exist'));
     }
     public function editProfile()
@@ -676,7 +682,7 @@ class StudentController extends Controller
                 }
             ])
             ->get();
-            // dd($data['courses']);
+        // dd($data['courses']);
 
 
 
@@ -758,10 +764,10 @@ class StudentController extends Controller
             'Authorization' => 'Bearer ' . $accessToken,
             'Content-Type' => 'application/json',
         ])->post('https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable', [
-            'name' => $fileName,
-            'mimeType' => $mimeType,
-            'parents' => [config('services.google.folder_id')],
-        ]);
+                    'name' => $fileName,
+                    'mimeType' => $mimeType,
+                    'parents' => [config('services.google.folder_id')],
+                ]);
 
         if (!$metadataResponse->successful()) {
             return response('Failed to initialize upload', 500);

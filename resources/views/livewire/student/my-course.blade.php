@@ -1,4 +1,24 @@
 <div class="page mt-16 min-h-screen">
+    @if (session('success'))
+            <script>
+                Swal.fire({
+                    title: 'Success!',
+                    text: "{{ session('success') }}",
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+            </script>
+        @endif
+        @if (session('error'))
+            <script>
+                Swal.fire({
+                    title: 'Error!',
+                    text: "{{ session('error') }}",
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            </script>
+        @endif
     <!-- Page Heading -->
     <div class="border-b border-gray-300 py-4">
         <div class="container mx-auto px-6 flex items-center">
