@@ -67,10 +67,7 @@
                                                 class="mt-3 w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-500 transition-colors duration-200">
                                                 Update Batch
                                             </button>
-                                        @else
-                                            <div class="text-sm text-red-600">
-                                                <strong>You don’t have any batches available.</strong>
-                                            </div>
+                                        
                                         @endif
                                     </div>
                             </div>
