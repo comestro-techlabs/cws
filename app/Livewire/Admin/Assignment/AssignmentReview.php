@@ -23,7 +23,7 @@ class AssignmentReview extends Component
         $course = Course::with(['assignments', 'assignments.uploads.user'])
             ->where('slug', $this->slug)
             ->firstOrFail();
-
+            $batchName = $course->assignments->first()?->batch->batch_name ?? 'No Batch Assigned';
         $students = Assignment_upload::whereIn('assignment_id', $course->assignments->pluck('id'))
             ->with('user')
             ->get()
@@ -38,7 +38,8 @@ class AssignmentReview extends Component
         return view('livewire.admin.assignment.assignment-review', [
             'course' => $course,
             'students' => $students,
-            'assignments' => $course->assignments
+            'assignments' => $course->assignments,
+            'batchName' => $batchName
         ]);
     }
 }

@@ -58,7 +58,6 @@ use App\Livewire\Admin\Portfolio\CreatePortfolio;
 use App\Livewire\Admin\Portfolio\ManagePortfolio;
 use App\Livewire\Admin\Message\CreateMessage;
 use App\Livewire\Admin\Message\ManageMessage;
-use App\Livewire\Admin\Workshops\CreateWorkshop;
 use App\Livewire\Admin\Workshops\ManageWorkshop;
 use App\Livewire\Admin\Course\ManageCourse;
 use App\Livewire\Admin\Course\ShowCourse;
@@ -326,9 +325,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
        
         Route::get('/assignments/review-work/{id}', ReviewWork::class)->name('assignment.reviewWork');//u
         // Workshop Routes
-        Route::get('/workshops', CreateWorkshop::class)->name('admin.workshops.create');
-        // Route::get('/workshops/{id}', CreateWorkshop::class)->name('admin.workshops.edit');
-        Route::get('/workshops/manage', ManageWorkshop::class)->name('admin.workshops.index');
+        Route::get('/workshops', ManageWorkshop::class)->name('admin.workshops.index');
 
         // Placed Student Routes
         Route::get('/placedstudent/create', InsertPlacedStudent::class)->name('admin.placedstudent.create');

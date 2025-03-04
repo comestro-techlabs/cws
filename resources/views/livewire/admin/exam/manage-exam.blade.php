@@ -52,6 +52,7 @@
                                             class="mt-1 p-2 block w-full rounded-md border border-gray-300 "
                                             {{ !$course_id ? 'disabled' : '' }}>
                                             <option value="">Select Batch</option>
+                                           
                                             @foreach ($batches as $batch)
                                                 <option value="{{ $batch->id }}">{{ $batch->batch_name }}</option>
                                             @endforeach
@@ -59,11 +60,7 @@
                                         @error('batch_id')
                                             <span class="text-red-500 text-sm">{{ $message }}</span>
                                         @enderror
-                                        {{-- @if (!$course_id)
-                            <p class="mt-1 text-sm text-gray-500">Please select a course first</p>
-                        @elseif($course->batches->isEmpty())
-                            <p class="mt-1 text-sm text-red-500">No batches available for this course</p>
-                        @endif --}}
+                                   
                                     </div>
 
                                     <div>
@@ -206,7 +203,6 @@
 <script>
     document.addEventListener('livewire:initialized', () => {
         @this.on('batches-updated', () => {
-            // Optional: Add any client-side logic here
         });
     });
 </script>
