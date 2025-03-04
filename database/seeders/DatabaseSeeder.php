@@ -15,12 +15,18 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::create([
-            'name' => 'Test User new shaique',
-            'email' => 'testnewshaique@example.com',
-            'contact'=> 123456787,
-            'gender'=>'male',
-            'education_qualification'=>'BCA'            
+        // User::create([
+        //     'name' => 'Test User new shaique',
+        //     'email' => 'testnewshaique@example.com',
+        //     'contact'=> 123456787,
+        //     'gender'=>'male',
+        //     'education_qualification'=>'BCA'            
+        // ]);
+        $this->call([
+            PostCourseSeeder::class,
+            PostChapterSeeder::class,
+            PostTopicPostSeeder::class,
+            PostMyPostSeeder::class,
         ]);
     }
 }

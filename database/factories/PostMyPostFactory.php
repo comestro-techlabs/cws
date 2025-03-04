@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\PostMyPost;
+use App\Models\PostTopicPost;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -11,19 +12,24 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class PostMyPostFactory extends Factory
 {
     /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = PostMyPost::class;
+
+    /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
      */
-    protected $model = PostMyPost::class;
-
     public function definition(): array
     {
         return [
-            'post_topic_post_id'=> $this->faker->numberBetween(101, 150),
-            'title'=> $this->faker->sentence,
-            'content'=>$this->faker->paragraph, 
-            'image_path'=>$this->faker->imageUrl()
+            'post_topic_post_id' => PostTopicPost::factory(),
+            'title' => $this->faker->sentence,
+            'content' => $this->faker->paragraph,
+            'image_path' => $this->faker->imageUrl(),
         ];
     }
 }
