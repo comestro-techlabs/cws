@@ -100,6 +100,22 @@
         if (window.Livewire) {
             registerLivewireAlertListener();
         }
+
+
+        document.addEventListener('livewire:initialized', () => {
+            Livewire.on('alert', (icon, title, text, redirect) => {
+                Swal.fire({
+                    icon: icon,
+                    title: title,
+                    text: text,
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed && redirect) {
+                        window.location.href = redirect;
+                    }
+                });
+            });
+        });
         document.getElementById('membership-pay-button').onclick = function (e) {
             const payButton = document.getElementById('membership-pay-button');
             payButton.disabled = true;
