@@ -1,5 +1,5 @@
 <div>
-    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 mt-10">
         <!-- If No Courses -->
         @if ($courses->isEmpty())
             <div class="col-span-3 flex flex-col items-center justify-center mt-10 p-8  text-center">

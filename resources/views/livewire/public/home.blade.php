@@ -279,7 +279,7 @@
                                     </div>
                                     <div class="overflow-hidden rounded-full bg-slate-50 h-14 w-14">
                                         <img alt="" class="h-14 w-14 object-cover" style="color:transparent"
-                                            src="{{ asset('storage/placedstudent/' . $student->image) }}" />
+                                            src="{{ asset('/storage/placedstudent/' . $student->image) }}" />
                                     </div>
                                 </figcaption>
                             </figure>

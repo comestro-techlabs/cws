@@ -47,6 +47,8 @@ use App\Livewire\Student\ExploreCourse;
 use App\Livewire\Student\ViewCourse;
 use App\Livewire\Student\MyCourse;
 use App\Livewire\Student\EditProfile;
+use App\Livewire\Student\Dashboard\ViewAssigment;
+
 use App\Livewire\Admin\Portfolio\CreatePortfolio;
 use App\Livewire\Admin\Portfolio\ManagePortfolio;
 use App\Livewire\Admin\Message\CreateMessage;
@@ -357,6 +359,10 @@ Route::prefix('v2')->group(function () {
         Route::get('/view-courses/{courseId}', ViewCourse::class)->name('student.viewCourses');
         Route::get('/my-courses', MyCourse::class)->name('v2.student.mycourses');
         Route::get('/edit-profile', EditProfile::class)->name('student.v2edit.profile');
+        Route::get('/view-assigment', ViewAssigment::class)->name('student.v2view.assigment');
+        Route::get('/view-assigment/{id}', ViewAssigment::class)->name('student.v2view.assigment');
+
+
 
     });
     //working here for public routes
