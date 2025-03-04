@@ -1,28 +1,6 @@
-        <!-- Header Layout Content -->
-    @if (session('success'))
-        <script>
-            Swal.fire({
-                title: 'Success!',
-                text: "{{ session('success') }}",
-                icon: 'success',
-                confirmButtonText: 'OK'
-            });
-        </script>
-    @endif
-
-    @if (session('error'))
-        <script>
-            Swal.fire({
-                title: 'Error!',
-                text: "{{ session('error') }}",
-                icon: 'error',
-                confirmButtonText: 'OK'
-            });
-        </script>
-    @endif
-    <div class="mdk-header-layout__content mdk-header-layout__content--fullbleed mdk-header-layout__content--scrollable page "
-        style="">
-
+<div>
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 mt-10">
+        <!-- If No Courses -->
         @if ($courses->isEmpty())
             <div class="flex flex-col items-center justify-center md:mt-16 lg:mt-20 px-6 md:px-4 space-y-6 ">
 

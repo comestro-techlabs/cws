@@ -54,11 +54,12 @@ use App\Livewire\Student\ExploreCourse;
 use App\Livewire\Student\ViewCourse;
 use App\Livewire\Student\MyCourse;
 use App\Livewire\Student\EditProfile;
+use App\Livewire\Student\Dashboard\ViewAssigment;
+
 use App\Livewire\Admin\Portfolio\CreatePortfolio;
 use App\Livewire\Admin\Portfolio\ManagePortfolio;
 use App\Livewire\Admin\Message\CreateMessage;
 use App\Livewire\Admin\Message\ManageMessage;
-use App\Livewire\Admin\Workshops\CreateWorkshop;
 use App\Livewire\Admin\Workshops\ManageWorkshop;
 use App\Livewire\Admin\Course\ManageCourse;
 use App\Livewire\Admin\Course\ShowCourse;
@@ -75,6 +76,7 @@ use App\Livewire\Admin\Student\AttendanceScanner;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
 use App\Livewire\Public\Blog\CourseWithChapterAndTopic;
+use App\Livewire\Public\Blog\TopicWithPostContent;
 use App\Livewire\Public\Contact\ContactPage;
 use App\Livewire\Public\Course\Ourcourses;
 use App\Livewire\Public\Header;
@@ -325,9 +327,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
        
         Route::get('/assignments/review-work/{id}', ReviewWork::class)->name('assignment.reviewWork');//u
         // Workshop Routes
-        Route::get('/workshops', CreateWorkshop::class)->name('admin.workshops.create');
-        // Route::get('/workshops/{id}', CreateWorkshop::class)->name('admin.workshops.edit');
-        Route::get('/workshops/manage', ManageWorkshop::class)->name('admin.workshops.index');
+        Route::get('/workshops', ManageWorkshop::class)->name('admin.workshops.index');
 
         // Placed Student Routes
         Route::get('/placedstudent/create', InsertPlacedStudent::class)->name('admin.placedstudent.create');
@@ -386,6 +386,11 @@ Route::prefix('v2')->group(function () {
         Route::get('/student/{message}', MessageView::class)->name('v2.student.message.view');
         Route::get('/my-courses', MyCourse::class)->name('v2.student.mycourses');
         Route::get('/edit-profile', EditProfile::class)->name('student.v2edit.profile');
+        Route::get('/view-assigment', ViewAssigment::class)->name('student.v2view.assigment');
+        Route::get('/view-assigment/{id}', ViewAssigment::class)->name('student.v2view.assigment');
+
+
+
     });
     //working here for public routes
     Route::prefix("public")->group(function () {
@@ -396,10 +401,9 @@ Route::prefix('v2')->group(function () {
         Route::get('/workshops', Workshop::class)->name('v2.public.workshop');
 
         //routes for the free course
-        // Route::get('/course/show', [PostCourseController::class, 'index'])->name('allcourses.show');
         Route::get('/course/{course_id}/chapter/show',CourseWithChapterAndTopic::class)->name('v2.courses.show');
-        Route::get('/course/chapter/{chapter_id}/show', [PostTopicPostController::class, 'index'])->name('chapters.show');
-        Route::get('/course/chapter/topics/{topic_id}/show', [PostMyPostController::class, 'index'])->name('topics.show');
+        Route::get('/course/{course_id}/chapter/{chapter_id?}/topic/{topic_id?}/show',TopicWithPostContent::class)->name('v2.topics.show');
+        // Route::get('/course/chapter/{chapter_id}/show', [PostTopicPostController::class, 'index'])->name('chapters.show');
     });
 });
 

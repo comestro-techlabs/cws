@@ -18,7 +18,7 @@ class PostMyPost extends Model
 
     ];
 
-    public function postTopicPost() {
+    public function topic() {
         return $this->belongsTo(PostTopicPost::class);
     }
 }

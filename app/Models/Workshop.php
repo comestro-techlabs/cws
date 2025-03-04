@@ -8,8 +8,21 @@ class Workshop extends Model
 {
     //
 
-    protected $guarded = [];
+    protected $fillable = [
+        'title',
+        'date',
+        'time',
+        'image',
+        'active',
+        'fees',
+        'status'
+    ];
 
+    protected $dates = ['date']; // Add this
+    protected $casts = [
+        'active' => 'boolean',
+        'date' => 'date:Y-m-d', // Ensure proper date casting
+    ];
     public function payment()
     {
         return $this->hasOne(Payment::class);
