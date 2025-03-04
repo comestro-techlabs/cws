@@ -58,7 +58,7 @@
                         <div x-show="open === {{ $chapter->id }}" class="mt-2 pl-4">
                             @foreach($chapter->topics as $topic)
                                 <div class="bg-gray-100 p-2 rounded-lg mb-2">
-                                    <a href="{{ route('v2.topics.show', ['course_id' => $course->id, 'chapter_id' => $chapter->id, 'topic_id' => $topic->id]) }}">
+                                    <a href="{{ route('v2.topics.show', ['course_id' => $course->id, 'chapter_id' => $chapter->id, 'topic_id' => $topic->id]) }}" wire:navigate>
                                         {{ $topic->topic_name }}
                                     </a>
                                 </div>
