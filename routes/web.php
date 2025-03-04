@@ -41,6 +41,7 @@ use App\Http\Controllers\PostMyPostController;
 use App\Http\Controllers\PostTopicPostController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\QuizController;
+use App\Http\Livewire\Public\Blog\TopicWithPostContent;
 use App\Livewire\Admin\Blog\PostCourse;
 use App\Livewire\Admin\Blog\ManageChapter;
 use App\Livewire\Admin\Blog\ManageTopic;
@@ -396,10 +397,9 @@ Route::prefix('v2')->group(function () {
         Route::get('/workshops', Workshop::class)->name('v2.public.workshop');
 
         //routes for the free course
-        // Route::get('/course/show', [PostCourseController::class, 'index'])->name('allcourses.show');
         Route::get('/course/{course_id}/chapter/show',CourseWithChapterAndTopic::class)->name('v2.courses.show');
-        Route::get('/course/chapter/{chapter_id}/show', [PostTopicPostController::class, 'index'])->name('chapters.show');
-        Route::get('/course/chapter/topics/{topic_id}/show', [PostMyPostController::class, 'index'])->name('topics.show');
+        // Route::get('/course/chapter/{chapter_id}/show', [PostTopicPostController::class, 'index'])->name('chapters.show');
+         Route::get('/course/{course_id}/chapter/{chapter_id?}/topic/{topic_id?}/show',TopicWithPostContent::class)->name('v2.topics.show');
     });
 });
 

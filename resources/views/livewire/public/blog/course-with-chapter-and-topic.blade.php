@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-white mt-24 pt-6">
+<div class="min-h-screen bg-white mt-24 pt-6 px-4">
     <!-- Header and Course Title -->
     <header class="bg-primary shadow">
         <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 ">
@@ -52,6 +52,7 @@
                     <div x-show="open === {{ $chapter->id }}" class="mt-2 pl-4">
                         @foreach($chapter->topics as $topic)
                         <div class="bg-gray-100 p-2 rounded-lg mb-2">
+                        <a href="{{ route('v2.topics.show', ['course_id' => $course->id, 'chapter_id' => $chapter->id, 'topic_id' => $topic->id]) }}">
                             {{ $topic->topic_name }}
                         </div>
                         @endforeach
