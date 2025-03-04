@@ -22,23 +22,6 @@ class ExploreCourse extends Component
         $this->resetPage();
     }
 
-    public function enroll($courseId)
-    {
-        $user = Auth::user();
-        if (!$user->is_member) {
-            return redirect()->route('student.viewCourse', ['courseId' => $courseId]);
-        }
-
-        try {
-            $this->enrollCourse($courseId);
-        } catch (\Exception $e) {
-            $this->dispatch('show-alert', [
-                'title' => 'Error!',
-                'message' => 'Failed to enroll: ' . $e->getMessage(),
-                'type' => 'error'
-            ]);
-        }
-    }
 
     public function mount()
     {
@@ -48,35 +31,22 @@ class ExploreCourse extends Component
             ->toArray();
     }
 
-    public function enrollCourse($courseId)
+    public function enroll($courseId)
     {
-        $user = Auth::user();
-
+        $user = auth()->user();
+        
         if (!$user->is_active) {
-            $this->dispatch('show-alert', [
-                'title' => 'Error!',
-                'message' => 'Your account is inactive. Please contact support.',
-                'type' => 'error'
-            ]);
-            return;
+            return redirect()->back()->with('error', 'Your account is inactive. Please contact support.');
         }
 
-        if ($user->courses()->wherePivot('batch_id', null)->exists()) {
-            $this->dispatch('show-alert', [
-                'title' => 'Error!',
-                'message' => 'Please update the batch for your existing course before enrolling in a new one.',
-                'type' => 'error'
-            ]);
-            return;
+        $coursesWithoutBatch = $user->courses()->wherePivot('batch_id', null)->exists();
+
+        if ($coursesWithoutBatch) {
+            return redirect()->back()->with('error', 'Please update the batch for your existing course before enrolling in a new one.');
         }
 
         if ($user->courses()->where('course_id', $courseId)->exists()) {
-            $this->dispatch('show-alert', [
-                'title' => 'Error!',
-                'message' => 'You are already enrolled in this course.',
-                'type' => 'error'
-            ]);
-            return;
+            return redirect()->back()->with('error', 'You are already enrolled in this course.');
         }
 
         if ($user->is_member) {
@@ -91,12 +61,8 @@ class ExploreCourse extends Component
                 ->isNotEmpty();
 
             if ($activeFreeCourse) {
-                $this->dispatch('show-alert', [
-                    'title' => 'Error!',
-                    'message' => 'You can only have one active free course at a time. Complete your current course or buy this one.',
-                    'type' => 'error'
-                ]);
-                return redirect()->route('student.buyCourse', ['id' => $courseId]);
+                return redirect()->route('student.viewCourses', ['courseId' => $courseId])
+                    ->with('error', 'You can only have one active free course at a time. Complete your current course before enrolling in another for free. You can buy this course now.');
             }
 
             $batch = Batch::where('course_id', $courseId)
@@ -104,25 +70,15 @@ class ExploreCourse extends Component
                 ->first();
 
             if (!$batch) {
-                $this->dispatch('show-alert', [
-                    'title' => 'Error!',
-                    'message' => 'No active batch available for this course.',
-                    'type' => 'error'
-                ]);
-                return;
+                return redirect()->back()->with('error', 'No active batch available for this course.');
             }
 
             $user->courses()->attach($courseId, ['batch_id' => $batch->id]);
-            $this->enrolledCourses[] = $courseId; // Update enrolled courses locally
-            $this->dispatch('show-alert', [
-                'title' => 'Success!',
-                'message' => 'You have successfully enrolled in the course.',
-                'type' => 'success'
-            ]);
-            return redirect()->route('student.dashboard');
+        } else {
+            return redirect()->route('student.viewCourses', ['courseId' => $courseId]);
         }
 
-        return redirect()->route('student.buyCourse', ['id' => $courseId]);
+        return redirect()->route('v2.student.dashboard')->with('success', 'You have successfully enrolled in the course.');
     }
 
     public function render()
