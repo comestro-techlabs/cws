@@ -1,5 +1,5 @@
 <div class="container mx-auto px-4 py-8">
-    <h1 class="text-2xl font-bold mb-6 text-gray-800">Courses Overview</h1>
+    <h1 class="md:text-xl text-lg font-semibold text-slate-500 border-s-4 border-s-purple-800 pl-3 mb-6">Courses Overview</h1>
     
     <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         @foreach($courses as $course)

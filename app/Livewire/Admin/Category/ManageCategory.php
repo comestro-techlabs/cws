@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\Category as CategoryModel;
 use Livewire\Attributes\Validate;
 use Livewire\WithPagination;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 #[Layout('components.layouts.admin')]
@@ -26,6 +27,7 @@ class ManageCategory extends Component
     public function store()
     {        
         $data = $this->validate();
+        try {
         CategoryModel::create([
             'cat_title' => $this->cat_title,
             'cat_description' => $this->cat_description,
@@ -33,6 +35,9 @@ class ManageCategory extends Component
         $this->reset(['cat_title', 'cat_description']);
         $this->isModalOpen = false;
         $this->dispatch('notice', type: 'info', text: 'Category added successfully!');
+    } catch (UniqueConstraintViolationException $e) {
+        $this->dispatch('notice', type: 'error', text: 'A category with this title already exists!');
+    }
 
 
     }

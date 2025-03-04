@@ -47,7 +47,7 @@ class Course extends Model
 
     public function batches()
     {
-        return $this->hasMany(Batch::class);
+        return $this->belongsTo(Batch::class, 'batch_id');
     }
 
     public function quizzes()
