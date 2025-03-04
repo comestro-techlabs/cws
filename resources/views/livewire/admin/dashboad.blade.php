@@ -1,11 +1,10 @@
 <main class="mt-5">
-
     <!-- Left Column -->
     <div class="col-span-12 space-y-6 xl:col-span-7">
         <!-- Metric Group -->
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6">
-            <div
-                class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6">
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 md:gap-6">
+            <!-- Student Card -->
+            <div class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6">
                 <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-gray-100">
                     <svg class="fill-gray-800" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
@@ -17,7 +16,7 @@
                 <div class="mt-5 flex items-end justify-between">
                     <div>
                         <span class="text-sm text-gray-500">Student</span>
-                        <h4 class="mt-2 text-xl font-bold text-gray-800">3,782</h4>
+                        <h4 class="mt-2 text-xl font-bold text-gray-800">{{ $totalStudents }}</h4>
                     </div>
                     <span
                         class="flex items-center gap-1 rounded-full bg-green-100 py-0.5 pl-2 pr-2.5 text-sm font-medium text-green-600">
@@ -32,8 +31,8 @@
                 </div>
             </div>
 
-            <div
-                class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6">
+            <!-- Batches Card -->
+            <div class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6">
                 <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-gray-100">
                     <svg class="fill-gray-800" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
@@ -45,7 +44,7 @@
                 <div class="mt-5 flex items-end justify-between">
                     <div>
                         <span class="text-sm text-gray-500">Batches</span>
-                        <h4 class="mt-2 text-xl font-bold text-gray-800">5,359</h4>
+                        <h4 class="mt-2 text-xl font-bold text-gray-800">{{ $totalBatches }}</h4>
                     </div>
                     <span
                         class="flex items-center gap-1 rounded-full bg-red-50 py-0.5 pl-2 pr-2.5 text-sm font-medium text-red-600">
@@ -59,5 +58,217 @@
                     </span>
                 </div>
             </div>
+
+            <!-- Total Payments Card -->
+            <div class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6">
+                <div class="flex justify-between">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-gray-100">
+                        <svg class="fill-gray-800" width="24" height="24" viewBox="0 0 24 24">
+                            <path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/>
+                        </svg>
+                    </div>
+                    <button class="text-gray-500 hover:text-gray-700" wire:click="togglePaymentVisibility">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            @if($showPayment)
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                            @else
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
+                            @endif
+                        </svg>
+                    </button>
+                </div>
+                <div class="mt-5">
+                    <span class="text-sm text-gray-500">Total Payments</span>
+                    <h4 class="mt-2 text-xl font-bold text-gray-800">
+                        @if($showPayment)
+                            ₹{{ number_format($totalPayments, 2) }}
+                        @else
+                            ●●●●●●
+                        @endif
+                    </h4>
+                    <div class="mt-2">
+                        <span class="text-sm text-gray-500">Previous Month Amount: </span>
+                        <span class="text-sm font-medium text-gray-800">
+                            ₹{{ number_format($previousMonthPayments, 2) }}
+                        </span>
+                        <span class="text-sm font-medium {{ $paymentGrowth > 0 ? 'text-green-600' : 'text-red-600' }}">
+                            ({{ $paymentGrowth }}%)
+                        </span>
+                    </div>
+                </div>
+            </div>
         </div>
+
+            <!-- Header -->
+
+            <!-- Main Content Area -->
+            <main class="p-6">
+                <!-- Metrics Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                    <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                        <div class="flex items-center">
+                            <i class="fas fa-users text-3xl text-indigo-600 mr-4"></i>
+                            <div>
+                                <h3 class="text-gray-500">Total Investors</h3>
+                                <p class="text-2xl font-bold">120</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                        <div class="flex items-center">
+                            <i class="fas fa-money-bill-wave text-3xl text-green-600 mr-4"></i>
+                            <div>
+                                <h3 class="text-gray-500">Total Investments</h3>
+                                <p class="text-2xl font-bold">₹50,00,000</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                        <div class="flex items-center">
+                            <i class="fas fa-project-diagram text-3xl text-blue-600 mr-4"></i>
+                            <div>
+                                <h3 class="text-gray-500">Active Projects</h3>
+                                <p class="text-2xl font-bold">15</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                        <div class="flex items-center">
+                            <i class="fas fa-clock text-3xl text-yellow-600 mr-4"></i>
+                            <div>
+                                <h3 class="text-gray-500">Pending Approvals</h3>
+                                <p class="text-2xl font-bold">5</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Financial Analytics -->
+                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-bold">Financial Overview</h2>
+                        <select class="border rounded-md px-3 py-2">
+                            <option>Last 7 Days</option>
+                            <option>Last Month</option>
+                            <option>Last Year</option>
+                        </select>
+                    </div>
+                    <div class="h-64 bg-gray-100 rounded-lg"><!-- Chart Placeholder --></div>
+                </div>
+
+                <!-- Recent Activities & Investor Management -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h2 class="text-xl font-bold mb-4">Recent Activities</h2>
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead>
+                                    <tr class="border-b">
+                                        <th class="text-left py-2">Action</th>
+                                        <th class="text-left py-2">Time</th>
+                                        <th class="text-left py-2">Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b hover:bg-gray-50">
+                                        <td class="py-2">New Investor Added</td>
+                                        <td class="py-2">10:00 AM</td>
+                                        <td class="py-2">Rajesh Kumar - ₹1,00,000</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h2 class="text-xl font-bold mb-4">Manage Investors</h2>
+                        <div class="mb-4">
+                            <input type="text" placeholder="Search investors..." class="w-full border rounded-md px-3 py-2">
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead>
+                                    <tr class="border-b">
+                                        <th class="text-left py-2">Name</th>
+                                        <th class="text-left py-2">Investment</th>
+                                        <th class="text-left py-2">Status</th>
+                                        <th class="text-left py-2">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b hover:bg-gray-50">
+                                        <td class="py-2">Rajesh Kumar</td>
+                                        <td class="py-2">₹1,00,000</td>
+                                        <td class="py-2"><span class="bg-green-100 text-green-800 px-2 py-1 rounded">Active</span></td>
+                                        <td class="py-2">
+                                            <button class="text-blue-600 hover:text-blue-800 mr-2">Edit</button>
+                                            <button class="text-red-600 hover:text-red-800">Delete</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notifications & Quick Links -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h2 class="text-xl font-bold mb-4">Notifications</h2>
+                        <div class="space-y-4">
+                            <div class="flex items-center p-3 bg-yellow-50 rounded-lg">
+                                <i class="fas fa-bell text-yellow-600 mr-3"></i>
+                                <p class="text-yellow-800">Investment request pending approval</p>
+                            </div>
+                            <div class="flex items-center p-3 bg-green-50 rounded-lg">
+                                <i class="fas fa-check-circle text-green-600 mr-3"></i>
+                                <p class="text-green-800">New investor registration completed</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h2 class="text-xl font-bold mb-4">Quick Links</h2>
+                        <div class="grid grid-cols-2 gap-4">
+                            <button class="bg-gray-100 hover:bg-gray-200 p-4 rounded-lg text-center">
+                                <i class="fas fa-users mb-2"></i>
+                                <p>View All Investors</p>
+                            </button>
+                            <button class="bg-gray-100 hover:bg-gray-200 p-4 rounded-lg text-center">
+                                <i class="fas fa-plus-circle mb-2"></i>
+                                <p>Add New Project</p>
+                            </button>
+                            <button class="bg-gray-100 hover:bg-gray-200 p-4 rounded-lg text-center">
+                                <i class="fas fa-file-alt mb-2"></i>
+                                <p>Generate Reports</p>
+                            </button>
+                            <button class="bg-gray-100 hover:bg-gray-200 p-4 rounded-lg text-center">
+                                <i class="fas fa-cog mb-2"></i>
+                                <p>Settings</p>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Footer -->
+            <footer class="bg-white shadow-md mt-6 p-4">
+                <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
+                    <div class="text-gray-600 mb-4 md:mb-0">
+                        <p>© 2024  Admin Dashboard</p>
+                    </div>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-600 hover:text-indigo-600">Need Help?</a>
+                        <a href="#" class="text-gray-600 hover:text-indigo-600">Terms of Service</a>
+                        <a href="#" class="text-gray-600 hover:text-indigo-600">Privacy Policy</a>
+                    </div>
+                </div>
+            </footer>
+
+
+
+
+
 </main>

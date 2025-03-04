@@ -96,12 +96,6 @@
                         </div>
                     @endif
 
-                    <!-- Flash Messages -->
-                    @if (session()->has('success'))
-                        <div class="mb-4 p-4 bg-green-100 text-green-700 rounded-lg">
-                            {{ session('success') }}
-                        </div>
-                    @endif
 
                     @if (session()->has('error'))
                         <div class="mb-4 p-4 bg-red-100 text-red-700 rounded-lg">
@@ -161,6 +155,8 @@
                                                 onclick="return confirm('Are you sure you want to delete this exam?')">
                                                 Delete <i class="bi bi-trash3-fill font-bold"></i>
                                             </button>
+                                        <a href="{{route('admin.exam.questions', ['examId' => $exam->id])}}" class="px-3 py-2 text-xs rounded-xl font-medium text-white bg-blue-500 transition flex items-center gap-1">Questions <i class="bi bi-pencil-square')}}"></a>
+                                           
                                         </td>
 
                                     </tr>

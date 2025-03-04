@@ -305,7 +305,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         //exam routes
         Route::get('/exam', ManageExam::class)->name('admin.exam');
         Route::get('/exam/{examId}/questions', ExamQuestions::class)->name('admin.exam.questions');
-        Route::get('/quiz', ManageQuiz::class)->name(name: 'admin.quiz');
+        Route::get('/quiz/{examId}/questions', ManageQuiz::class)->name(name: 'admin.quiz');
 
         //result routes
         Route::get('/results/exams', ShowExams::class)->name('admin.results.exams');

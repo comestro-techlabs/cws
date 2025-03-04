@@ -10,7 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     @livewireStyles
 </head>
-<body x-data="{ sidebarOpen: false }" class="bg-gray-100">  
+<body x-data="{ sidebarOpen: true }" class="bg-gray-100">
     <!-- Overlay for mobile -->
     <div x-show="sidebarOpen" @click="sidebarOpen = false"
          class="fixed inset-0 z-30 transition-opacity duration-300 sm:hidden"
@@ -76,8 +76,8 @@
                 return;
             }
 
-            Livewire.on('show-alert', (event) => {                
-                const courseNames = event.courses && event.courses.length > 0 
+            Livewire.on('show-alert', (event) => {
+                const courseNames = event.courses && event.courses.length > 0
                     ? event.courses.map(course => course.title || course).join(', ')
                     : 'No courses specified';
                 Swal.fire({
