@@ -32,7 +32,7 @@
                     </span>
                 @endif
             </button>
-            <div class="relative">
+            {{-- <div class="relative">
                 <button id="avatarButton"
                     class="flex items-center space-x-2 text-gray-700 hover:text-purple-600 focus:outline-none transition border border-gray-200 px-3 py-1 rounded-full"
                     type="button">
@@ -40,8 +40,8 @@
                         <span class="text-sm">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</span>
                     </div>
                     <div class="hidden md:flex flex-col items-start">
-                        <span class="font-medium">{{ auth()->user()->name }}</span>
-                        <span class="text-sm text-gray-500 -mt-1">{{ auth()->user()->email }}</span>
+                        <span class="font-medium text-xs">{{ auth()->user()->name }}</span>
+                        <span class="text-xs text-gray-500 -mt-1">{{ auth()->user()->email }}</span>
                     </div>
                 </button>
 
@@ -54,7 +54,7 @@
                     <a wire:navigate href="{{ route('admin.logout') }}"
                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-100 hover:text-purple-600 transition">Logout</a>
                 </div>
-            </div>
+            </div> --}}
         @endauth
     </div>
 </nav>
@@ -65,7 +65,7 @@
         const dropdownMenu = document.getElementById('dropdownMenu');
 
         avatarButton.addEventListener('click', (e) => {
-            e.stopPropagation(); 
+            e.stopPropagation();
             dropdownMenu.classList.toggle('hidden');
         });
 

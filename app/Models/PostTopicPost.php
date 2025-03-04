@@ -29,4 +29,7 @@ class PostTopicPost extends Model
     {
         return $this->belongsTo(PostChapter::class);
     }
+    public function posts(){
+        return $this->hasMany(PostMyPost::class);
+    }
 }
