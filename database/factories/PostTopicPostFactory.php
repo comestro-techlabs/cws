@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\PostTopicPost;
 use App\Models\PostChapter;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class PostTopicPostFactory extends Factory
 {
@@ -22,12 +23,14 @@ class PostTopicPostFactory extends Factory
      */
     public function definition()
     {
+        $title = $this->faker->unique()->sentence;
+
         return [
-            'post_chapter_id' => $this->faker->numberBetween(1, 20),
-            'topic_name' => $this->faker->sentence,
+            'post_chapter_id' => PostChapter::factory(),
+            'topic_name' => $title,
             'topic_description' => $this->faker->paragraph,
             'order' => $this->faker->numberBetween(1, 10),
-            'topic_slug' => $this->faker->slug,
+            'topic_slug' => Str::slug($title) . '-' . Str::random(5), // Ensure unique slug
         ];
     }
 }
