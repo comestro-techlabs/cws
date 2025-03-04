@@ -41,7 +41,6 @@ use App\Http\Controllers\PostMyPostController;
 use App\Http\Controllers\PostTopicPostController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\QuizController;
-use App\Http\Livewire\Public\Blog\TopicWithPostContent;
 use App\Livewire\Admin\Blog\PostCourse;
 use App\Livewire\Admin\Blog\ManageChapter;
 use App\Livewire\Admin\Blog\ManageTopic;
@@ -76,6 +75,7 @@ use App\Livewire\Admin\Student\AttendanceScanner;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
 use App\Livewire\Public\Blog\CourseWithChapterAndTopic;
+use App\Livewire\Public\Blog\TopicWithPostContent;
 use App\Livewire\Public\Contact\ContactPage;
 use App\Livewire\Public\Course\Ourcourses;
 use App\Livewire\Public\Header;
@@ -398,8 +398,8 @@ Route::prefix('v2')->group(function () {
 
         //routes for the free course
         Route::get('/course/{course_id}/chapter/show',CourseWithChapterAndTopic::class)->name('v2.courses.show');
+        Route::get('/course/{course_id}/chapter/{chapter_id?}/topic/{topic_id?}/show',TopicWithPostContent::class)->name('v2.topics.show');
         // Route::get('/course/chapter/{chapter_id}/show', [PostTopicPostController::class, 'index'])->name('chapters.show');
-         Route::get('/course/{course_id}/chapter/{chapter_id?}/topic/{topic_id?}/show',TopicWithPostContent::class)->name('v2.topics.show');
     });
 });
 
