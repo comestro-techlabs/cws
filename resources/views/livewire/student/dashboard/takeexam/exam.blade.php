@@ -19,13 +19,20 @@
                                         $attemptCount = $attempts[$exam->id] ?? 0;
                                         $maxAttemptsReached = $attemptCount >= 2;
                                     @endphp
-                                    <a wire:navigate href="{{ route('v2.student.quiz', ['courseId' => $course->id]) }}">
+                                    @if(!$maxAttemptsReached)
+                                        <a wire:navigate href="{{ route('v2.student.quiz', ['courseId' => $course->id]) }}">
+                                            <button id="start-quiz-btn"
+                                                    class="bg-blue-500 text-white font-medium px-4 py-2 rounded-lg shadow hover:bg-blue-600 transition">
+                                                Take Quiz
+                                            </button>
+                                        </a>
+                                    @else
                                         <button id="start-quiz-btn"
-                                                class="bg-blue-500 text-white font-medium px-4 py-2 rounded-lg shadow transition {{ $maxAttemptsReached ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-600' }}"
-                                                @if($maxAttemptsReached) disabled @endif>
-                                            {{ $maxAttemptsReached ? 'Max Attempts' : 'Take Quiz' }}
+                                                class="bg-blue-200 text-gray-500 font-medium px-4 py-2 rounded-lg shadow cursor-not-allowed"
+                                                disabled>
+                                            Max Attempts
                                         </button>
-                                    </a>
+                                    @endif
                                     @break
                                 @endif
                             @endforeach
