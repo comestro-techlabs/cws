@@ -21,7 +21,7 @@ class PostTopicPostSeeder extends Seeder
         $chapters = PostChapter::all();
 
         foreach ($chapters as $chapter) {
-            PostTopicPost::factory(4)->create([
+            PostTopicPost::factory(10)->create([
                 'post_chapter_id' => $chapter->id,
             ]); // Creates 4 topics per chapter
         }
