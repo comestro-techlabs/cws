@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\Models\Assignments;
 use App\Models\Assignment_upload;
+use Livewire\Attributes\Layout;
+
 
 class ViewAssigment extends Component
 {
@@ -125,7 +127,7 @@ class ViewAssigment extends Component
 
         throw new \Exception('Failed to fetch access token');
     }
-
+    #[Layout('components.layouts.student')]
     public function render()
     {
         return view('livewire.student.dashboard.view-assigment');
