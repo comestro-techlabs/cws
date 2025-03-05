@@ -1,5 +1,4 @@
-        <!-- Header Layout Content -->
-    @if (session('success'))
+@if (session('success'))
         <script>
             Swal.fire({
                 title: 'Success!',
@@ -20,11 +19,11 @@
             });
         </script>
     @endif
-    <div class="mdk-header-layout__content mdk-header-layout__content--fullbleed mdk-header-layout__content--scrollable page "
+    <div class="mdk-header-layout__content mdk-header-layout__content--fullbleed mdk-header-layout__content--scrollable page"
         style="">
 
         @if ($courses->isEmpty())
-            <div class="flex flex-col items-center justify-center md:mt-16 lg:mt-20 px-6 md:px-4 space-y-6 ">
+            <div class="flex flex-col items-center justify-center md:mt-16 lg:mt-20 px-6 md:px-4 space-y-6">
 
                 <!-- Card Container -->
                 <div class="bg-white rounded-lg p-6 md:p-8 w-full text-center">
@@ -46,7 +45,7 @@
                     </p>
 
                     <!-- Call-to-Action Button -->
-                    <a href="{{ route('student.course') }}" class="mt-4 inline-block">
+                    <a wire:navigate href="{{ route('v2.student.mycourses') }}" class="mt-4 inline-block">
                         <button
                             class="px-6 py-3 bg-sky-700 text-white text-md font-semibold rounded-lg hover:bg-purple-700 transition-all duration-500">
                             Explore Courses
@@ -57,7 +56,7 @@
         @else
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
                 <!-- Courses Section -->
-                <div class="px-6 py-3 rounded-lg border border-slate-200 lg:col-span-2  bg-white">
+                <div class="px-6 py-3 rounded-lg border border-slate-200 lg:col-span-2 bg-white">
                     <h2 class="text-md font-medium mb-4 text-gray-600">My Courses</h2>
                     <ul class="space-y-4">
                         @foreach ($payments as $payment)
@@ -98,7 +97,7 @@
 
 
                 <!-- Assignments Section -->
-                <div class="border border-slate-200 px-6 py-3  bg-white rounded-lg lg:col-span-1">
+                <div class="border border-slate-200 px-6 py-3 rounded-lg lg:col-span-1 bg-white">
                     <h2 class="text-md font-medium mb-4 text-gray-600">Assignments</h2>
                     <ul class="space-y-4">
                         @if ($assignments->isNotEmpty())
@@ -133,14 +132,14 @@
 
 
                 <!-- Notifications Section -->
-                <div class="px-6 py-3  bg-white rounded-lg border border-slate-200 lg:col-span-1 h-[300px]">
+                <div class="px-6 py-3 bg-white rounded-lg border border-slate-200 lg:col-span-1 h-[300px]">
                     <h2 class="text-md font-medium mb-4 text-gray-600">Notifications</h2>
                     @if($messages->isEmpty())
                     <p class="text-gray-600">No new messages.</p>
                 @else
                     <div class="space-y-4">
                         @foreach($messages as $message)
-                            <a wire:navigate href="{{ route('v2.student.message.view',$message) }}" class="flex items-center bg-gray-50 p-4 rounded-lg  hover:bg-gray-100 transition duration-300">
+                            <a wire:navigate href="{{ route('v2.student.message.view', $message) }}" class="flex items-center bg-gray-50 p-4 rounded-lg  hover:bg-gray-100 transition duration-300">
                                 <svg class="w-6 h-6 mr-4 {{ $message->type == 'info' ? 'text-blue-500' : ($message->type == 'warning' ? 'text-yellow-500' : 'text-red-500') }}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 22c2.21 0 4-1.79 4-4H8c0 2.21 1.79 4 4 4zm6-6V9c0-3.07-2.24-5.64-5.21-5.93A3.992 3.992 0 0012 3a3.992 3.992 0 00-5.79 0C8.24 3.36 6 5.93 6 9v7l-2 2v1h16v-1l-2-2z" />
                                 </svg>
@@ -152,7 +151,7 @@
                 </div>
 
                 <!-- Quiz Scores -->
-                <div class="text-gray-700 px-6  bg-white py-3 rounded-lg border border-slate-200 lg:col-span-1">
+                <div class="text-gray-700 px-6 bg-white py-3 rounded-lg border border-slate-200 lg:col-span-1">
                     <h2 class="text-md font-medium mb-4 text-gray-600">Last Quiz Scores</h2>
                     <ul class="space-y-4">
                         @forelse ($exams as $exam)

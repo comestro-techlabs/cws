@@ -1,26 +1,7 @@
 <div>
     <div class="mt-10">
         <!-- Success/Error Alerts -->
-        @if (session('success'))
-            <script>
-                Swal.fire({
-                    title: 'Success!',
-                    text: "{{ session('success') }}",
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                });
-            </script>
-        @endif
-        @if (session('error'))
-            <script>
-                Swal.fire({
-                    title: 'Error!',
-                    text: "{{ session('error') }}",
-                    icon: 'error',
-                    confirmButtonText: 'OK'
-                });
-            </script>
-        @endif
+        
 
         <!-- Header and Search -->
         <div class="w-full flex-col md:flex-row border-b pb-3 flex justify-between md:items-center px-4 rounded-lg mb-3">
@@ -49,7 +30,7 @@
                         <div class="flex justify-between items-center">
                             <span class="text-lg font-semibold text-gray-900">₹ {{ $course->discounted_fees }}</span>
                             @if (auth()->user() && auth()->user()->is_member)
-                                <button wire:click="enroll({{ $course->id }})" wire:loading.attr="disabled"
+                                <button wire:click="enrollCourse({{ $course->id }})" wire:loading.attr="disabled"
                                     class="bg-purple-600 text-white font-medium rounded-lg px-4 py-2 hover:bg-purple-700 transition-colors">
                                     Enroll Now
                                 </button>

@@ -1,17 +1,21 @@
 <div class="overflow-y-auto overflow-x-hidden flex-grow bg-gray-100 h-screen">
-
-            <a wire:navigate href="{{ route('admin.dashboard') }}"
-                class="relative flex flex-row items-center mb-2 py-3 focus:outline-none bg-purple-800 hover:bg-purple-900 text-gray-200 border-l-4 border-transparent  pr-6">
-                <span class="inline-flex justify-center items-center ml-4">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
-                        </path>
-                    </svg>
-                </span>
-                <span class="ml-2 text-lg tracking-wide truncate">Dashboard</sp>
-            </a>
+    @php
+        $categoryCount = App\Models\Category::get()->count();
+        $courseCount = App\Models\Course::get()->count();
+        $assignmentCount = App\Models\Assignments::get()->count();
+    @endphp
+    <a wire:navigate href="{{ route('admin.dashboard') }}"
+        class="relative flex flex-row items-center mb-2 py-3 focus:outline-none bg-purple-800 hover:bg-purple-900 text-gray-200 border-l-4 border-transparent  pr-6">
+        <span class="inline-flex justify-center items-center ml-4">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                </path>
+            </svg>
+        </span>
+        <span class="ml-2 text-lg tracking-wide truncate">Dashboard</sp>
+    </a>
 
 
     <ul class="flex flex-col space-y-1">
@@ -21,8 +25,9 @@
             </div>
         </li>
         <li>
-            <a wire:navigate href="{{route('admin.category')}}"
+            <a wire:navigate href="{{ route('admin.category') }}"
                 class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
+
                 <span class="inline-flex justify-center items-center ml-4">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg">
@@ -31,10 +36,22 @@
                         </path>
                     </svg>
                 </span>
-                <span class="ml-2 text-sm tracking-wide truncate">Manage Category</span>
+
+                <div class="flex items-center justify-between w-full">
+                    <span class="ml-2 text-sm tracking-wide truncate">Manage Category</span>
+
+                    @if ($categoryCount > 0)
+                        <span
+                            class="ml-2 text-sm tracking-wide truncate bg-purple-400 hover:bg-purple-500 text-white py-1 px-3 rounded-full">
+                            {{ $categoryCount}}
+                        </span>
+                    @endif
+
+                </div>
 
             </a>
         </li>
+
         <li>
             <a wire:navigate href="{{ route('admin.course.manage') }}"
                 class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 w-full">
@@ -45,7 +62,15 @@
                             d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0V12a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 12V5.25" />
                     </svg>
                 </span>
-                <span class="ml-2 text-sm tracking-wide truncate">Manage Courses</span>
+                <div class="flex justify-between">
+                    <span class="ml-2 text-sm tracking-wide truncate">Manage Courses</span>
+                    @if ($courseCount > 0)
+                        <span
+                            class="ml-2 text-sm tracking-wide truncate bg-purple-400 hover:bg-purple-500 text-white py-1 px-3 rounded-full">
+                            {{ $courseCount}}
+                        </span>
+                    @endif
+                </div>
             </a>
         </li>
         <li>
@@ -58,7 +83,15 @@
                             d="M15.75 9V5.25a3.75 3.75 0 1 0-7.5 0V9M3 9h18m-2.25 0a2.25 2.25 0 0 1 2.25 2.25v8.25a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 19.5v-8.25A2.25 2.25 0 0 1 5.25 9h13.5Z" />
                     </svg>
                 </span>
+                <div class="flex justify-between">
                 <span class="ml-2 text-sm tracking-wide truncate">Assignment</span>
+                @if ($assignmentCount > 0)
+                <span
+                            class="ml-2 text-sm tracking-wide truncate bg-purple-400 hover:bg-purple-500 text-white py-1 px-3 rounded-full">
+                            {{ $assignmentCount}}
+                        </span>
+                @endif
+                </div>
             </a>
         </li>
         <li>
@@ -143,7 +176,7 @@
                 <span class="ml-2 text-sm tracking-wide truncate">Manage Exam</span>
             </a>
         </li>
-       
+
         <li>
             <a wire:navigate href="{{ route('admin.workshops.index') }}"
                 class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 w-full">

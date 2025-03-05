@@ -2,32 +2,24 @@
 
 namespace Database\Factories;
 
-use App\Models\PostCourse;
 use App\Models\PostChapter;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class PostChapterFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
     protected $model = PostChapter::class;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition()
     {
+        $title = $this->faker->unique()->sentence;
+
         return [
-            'post_course_id' => PostCourse::factory(),  // Creating a related PostCourse model
-            'chapter_name' => $this->faker->word,
+            'post_course_id' => \App\Models\PostCourse::factory(),
+            'chapter_name' => $title,
             'chapter_description' => $this->faker->paragraph,
-            'chapter_slug' => $this->faker->slug,
-            'order' => $this->faker->randomDigitNotNull(),
+            'chapter_slug' => Str::slug($title) . '-' . Str::random(5), // Ensure unique slug
+            'order' => $this->faker->numberBetween(1, 10),
         ];
     }
 }

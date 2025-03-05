@@ -46,7 +46,7 @@
                                             @endif
                                         </td>
                                         <td class="py-4 px-6 text-center">
-                                            <a wire:navigate href="{{ route('student.assignment-upload', $assignment->id) }}"
+                                            <a href="{{ route('student.v2view.assigment', $assignment->id) }}"
                                                class="inline-block text-blue-600 hover:text-blue-800 font-medium">
                                                 View
                                             </a>
