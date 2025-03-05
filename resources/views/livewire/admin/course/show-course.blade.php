@@ -1,14 +1,11 @@
 <div>
     <div class="p-6 bg-white shadow-lg rounded-lg">
-        {{-- Header with Back Button --}}
         <div class="flex justify-between items-center mb-6">
-            <h1 class="text-2xl font-bold text-gray-800">Course Details</h1>
+            <h1 class="md:text-xl text-lg font-semibold text-slate-500 border-s-4 border-s-purple-800 pl-3 mb-5">Course Details</h1>
             <a href="{{ route('admin.course.manage') }}" class="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 transition-colors">
                 <i class="fas fa-arrow-left mr-2"></i>Back to Courses
             </a>
         </div>
-
-        {{-- Course Information --}}
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
             <div class="bg-gray-50 p-4 rounded-lg">
                 <h3 class="font-semibold text-gray-700">Title</h3>
@@ -28,11 +25,11 @@
             </div>
             <div class="bg-gray-50 p-4 rounded-lg">
                 <h3 class="font-semibold text-gray-700">Fees</h3>
-                <p>₹{{ number_format($course->fees, 2) }}</p>
+                <p>₹{{ ($course->fees)}}</p>
             </div>
             <div class="bg-gray-50 p-4 rounded-lg">
                 <h3 class="font-semibold text-gray-700">Discounted Fees</h3>
-                <p>₹{{ number_format($course->discounted_fees, 2) }}</p>
+                <p>₹{{ ($course->discounted_fees) }}</p>
             </div>
         </div>
 
@@ -71,8 +68,8 @@
                             @foreach($batches as $batch)
                             <tr class="hover:bg-gray-50">
                                 <td class="py-3 px-4">{{ $batch->batch_name }}</td>
-                                <td class="py-3 px-4">{{ $batch->start_date->format('M d, Y') }}</td>
-                                <td class="py-3 px-4">{{ $batch->end_date->format('M d, Y') }}</td>
+                                <td class="py-3 px-4">{{ $batch->start_date }}</td>
+                                <td class="py-3 px-4">{{ $batch->end_date }}</td>
                                 <td class="py-3 px-4">{{ $batch->total_seats }}</td>
                                 <td class="py-3 px-4">{{ $batch->available_seats }}</td>
                             </tr>

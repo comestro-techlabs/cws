@@ -5,36 +5,31 @@ use App\Models\Message;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
+use Livewire\WithPagination;
+
 #[Layout('components.layouts.admin')]
 #[Title('Insert Message')]
-
-
 class ManageMessage extends Component
 {
-    public $messages;
+    use WithPagination;
+    
     public $selectedMessage = null;
-    public function mount()
-    {
-        $this->loadMessages();
-    }
-
-    public function loadMessages()
-    {
-        $this->messages = Message::all();
-    }
-
+    public $perPage = 10;
+    
     public function deleteMessage($messageId)
     {
         $message = Message::findOrFail($messageId);
         $message->delete();
         
-        $this->loadMessages(); 
         $this->selectedMessage = null;
-        session()->flash('success', 'Message Deleted Successfully');
+        $this->dispatch('notice', type: 'info', text: 'Message Deleted Successfully!');
+        $this->resetPage(); // Reset pagination after deletion
     }
+
     public function render()
     {
-        return view('livewire.admin.message.manage-message');
+        return view('livewire.admin.message.manage-message', [
+            'messages' => Message::paginate($this->perPage)
+        ]);
     }
-    
 }
