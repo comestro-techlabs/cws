@@ -29,7 +29,7 @@
                             <span class="text-sm text-gray-500 italic">No quiz available today</span>
                         @endif
 
-                        <a href="{{ route('student.allAttempts', $course->id) }}">
+                        <a wire:navigate href="{{ route('v2.student.allAttempts', $course->id) }}">
                             <button class="bg-green-600 text-white font-medium px-4 py-2 rounded-lg shadow hover:bg-green-700 transition">
                                 See Results
                             </button>

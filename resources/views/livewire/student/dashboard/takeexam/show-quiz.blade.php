@@ -67,7 +67,6 @@
 <script>
     // Function to initialize quiz functionality
     function initializeQuiz() {
-        console.log('Attempting to initialize quiz...');
 
         const fullscreenBtn = document.getElementById('fullscreen-btn');
         const quizzesContainer = document.getElementById('quizzes');
