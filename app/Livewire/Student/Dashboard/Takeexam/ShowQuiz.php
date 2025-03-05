@@ -130,13 +130,13 @@ class ShowQuiz extends Component
             session()->flash('obtained_marks', $obtainedMarks);
             session()->flash('exam_id', $this->examId);
 
-            return redirect()->route('student.examResult', $this->examId)->with('success', 'Answers submitted successfully!');
+            return redirect()->route('v2.student.examResult', $this->examId)->with('success', 'Answers submitted successfully!');
         }
 
         $examUser->total_marks = 0;
         $examUser->save();
 
-        return redirect()->route('student.examResult', $this->examId)->with('success', 'No answers submitted, attempt recorded.');
+        return redirect()->route('v2.student.examResult', $this->examId)->with('success', 'No answers submitted, attempt recorded.');
     }
 
     public function render()
