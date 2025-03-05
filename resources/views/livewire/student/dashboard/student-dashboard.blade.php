@@ -76,9 +76,6 @@
                                         </p>
                                     </div>
                                 </div>
-
-
-
                                 <!-- Progress Bar -->
                                 <div class="flex flex-col items-end">
                                     <div class="w-40 bg-gray-200 rounded-full overflow-hidden h-4">

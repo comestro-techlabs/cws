@@ -3,6 +3,16 @@
         $categoryCount = App\Models\Category::get()->count();
         $courseCount = App\Models\Course::get()->count();
         $assignmentCount = App\Models\Assignments::get()->count();
+        $assignmentUploadCount = App\Models\Assignment_upload::get()->count();
+        $studentCount = App\Models\User::where('isAdmin', 0)->count();
+        $placestudentCount = App\Models\PlacedStudent::get()->count();
+        $examCount = App\Models\Exam::get()->count();
+        $workshopCount = App\Models\Workshop::get()->count();
+        $messageCount = App\Models\Message::get()->count();
+        $notificationCount = App\Models\Enquiry::get()->count();
+        $paymentCount = App\Models\Payment::with(['student', 'course'])
+        ->where('status', 'captured')->count();
+
     @endphp
     <a wire:navigate href="{{ route('admin.dashboard') }}"
         class="relative flex flex-row items-center mb-2 py-3 focus:outline-none bg-purple-800 hover:bg-purple-900 text-gray-200 border-l-4 border-transparent  pr-6">
@@ -26,8 +36,7 @@
         </li>
         <li>
             <a wire:navigate href="{{ route('admin.category') }}"
-                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
-
+                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 w-full">
                 <span class="inline-flex justify-center items-center ml-4">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg">
@@ -36,19 +45,15 @@
                         </path>
                     </svg>
                 </span>
-
                 <div class="flex items-center justify-between w-full">
                     <span class="ml-2 text-sm tracking-wide truncate">Manage Category</span>
-
                     @if ($categoryCount > 0)
                         <span
-                            class="ml-2 text-sm tracking-wide truncate bg-purple-400 hover:bg-purple-500 text-white py-1 px-3 rounded-full">
-                            {{ $categoryCount}}
+                            class="text-sm tracking-wide truncate bg-purple-400 hover:bg-purple-500 text-white py-1 px-3 rounded-full">
+                            {{ $categoryCount }}
                         </span>
                     @endif
-
                 </div>
-
             </a>
         </li>
 
@@ -62,69 +67,87 @@
                             d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0V12a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 12V5.25" />
                     </svg>
                 </span>
-                <div class="flex justify-between">
+                <div class="flex items-center justify-between w-full">
                     <span class="ml-2 text-sm tracking-wide truncate">Manage Courses</span>
                     @if ($courseCount > 0)
                         <span
-                            class="ml-2 text-sm tracking-wide truncate bg-purple-400 hover:bg-purple-500 text-white py-1 px-3 rounded-full">
-                            {{ $courseCount}}
+                            class="text-sm tracking-wide truncate bg-purple-400 hover:bg-purple-500 text-white py-1 px-3 rounded-full">
+                            {{ $courseCount }}
                         </span>
                     @endif
                 </div>
             </a>
         </li>
+
         <li>
             <a wire:navigate href="{{ route('admin.assignment.manage') }}"
                 class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 w-full">
                 <span class="inline-flex justify-center items-center ml-4">
                     <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                        stroke-width="1.5" stroke="currentColor" class="size-6">
+                        stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="M15.75 9V5.25a3.75 3.75 0 1 0-7.5 0V9M3 9h18m-2.25 0a2.25 2.25 0 0 1 2.25 2.25v8.25a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 19.5v-8.25A2.25 2.25 0 0 1 5.25 9h13.5Z" />
                     </svg>
                 </span>
-                <div class="flex justify-between">
-                <span class="ml-2 text-sm tracking-wide truncate">Assignment</span>
-                @if ($assignmentCount > 0)
-                <span
-                            class="ml-2 text-sm tracking-wide truncate bg-purple-400 hover:bg-purple-500 text-white py-1 px-3 rounded-full">
-                            {{ $assignmentCount}}
+                <div class="flex items-center justify-between w-full">
+                    <span class="ml-2 text-sm tracking-wide truncate">Assignment</span>
+                    @if ($assignmentCount > 0)
+                        <span
+                            class="text-sm tracking-wide truncate bg-purple-400 hover:bg-purple-500 text-white py-1 px-3 rounded-full">
+                            {{ $assignmentCount }}
                         </span>
-                @endif
+                    @endif
                 </div>
             </a>
         </li>
+
         <li>
             <a wire:navigate href="{{ route('admin.assignment.course') }}"
                 class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 w-full">
                 <span class="inline-flex justify-center items-center ml-4">
                     <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                        stroke-width="1.5" stroke="currentColor" class="size-6">
+                        stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="M15.75 9V5.25a3.75 3.75 0 1 0-7.5 0V9M3 9h18m-2.25 0a2.25 2.25 0 0 1 2.25 2.25v8.25a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 19.5v-8.25A2.25 2.25 0 0 1 5.25 9h13.5Z" />
                     </svg>
                 </span>
-                <span class="ml-2 text-sm tracking-wide truncate">View Assignment</span>
+                <div class="flex items-center justify-between w-full">
+                    <span class="ml-2 text-sm tracking-wide truncate">View Assignment</span>
+                    @if ($assignmentUploadCount > 0)
+                        <span
+                            class="text-sm tracking-wide truncate bg-purple-400 hover:bg-purple-500 text-white py-1 px-3 rounded-full">
+                            {{ $assignmentUploadCount }}
+                        </span>
+                    @endif
+                </div>
             </a>
         </li>
+
         <li class="px-3">
             <div class="flex flex-row items-center h-5">
                 <div class="text-sm font-light tracking-wide text-gray-500">Students</div>
             </div>
         </li>
+
         <li>
-            <a wire:navigate href="{{route('admin.student')}}"
-                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
+            <a wire:navigate href="{{ route('admin.student') }}"
+                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 w-full">
                 <span class="inline-flex justify-center items-center ml-4">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="size-6">
-                        quiz
+                        stroke="currentColor" class="w-5 h-5">
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
                     </svg>
                 </span>
-                <span class="ml-2 text-sm tracking-wide truncate">Manage Student</span>
-
+                <div class="flex items-center justify-between w-full">
+                    <span class="ml-2 text-sm tracking-wide truncate">Manage Student</span>
+                    @if ($studentCount > 0)
+                        <span
+                            class="text-sm tracking-wide truncate bg-purple-400 hover:bg-purple-500 text-white py-1 px-3 rounded-full">
+                            {{ $studentCount }}
+                        </span>
+                    @endif
+                </div>
             </a>
         </li>
         <li>
@@ -152,7 +175,15 @@
                             d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0M12 12.75h.008v.008H12v-.008Z" />
                     </svg>
                 </span>
-                <span class="ml-2 text-sm tracking-wide truncate">Placed Student</span>
+                <div class="flex justify-between items-center w-full">
+                    <span class="ml-2 text-sm tracking-wide truncate">Placed Student</span>
+                    @if ($placestudentCount>0)
+                    <span
+                            class="text-sm tracking-wide truncate bg-purple-400 hover:bg-purple-500 text-white py-1 px-3 rounded-full">
+                            {{ $placestudentCount }}
+                        </span>
+                    @endif
+                </div>
             </a>
         </li>
 
@@ -173,7 +204,15 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 8.25h6M9 12h6M9 15.75h3" />
                     </svg>
                 </span>
-                <span class="ml-2 text-sm tracking-wide truncate">Manage Exam</span>
+                <div class="flex justify-between items-center w-full">
+                    <span class="ml-2 text-sm tracking-wide truncate">Manage Exam</span>
+                    @if ($examCount>0)
+                    <span
+                            class="text-sm tracking-wide truncate bg-purple-400 hover:bg-purple-500 text-white py-1 px-3 rounded-full">
+                            {{ $examCount }}
+                        </span>
+                    @endif
+                </div>
             </a>
         </li>
 
@@ -188,7 +227,16 @@
                             d="M3.5 2A1.5 1.5 0 0 0 2 3.5v11A1.5 1.5 0 0 0 3.5 16h6.086a1.5 1.5 0 0 0 1.06-.44l4.915-4.914A1.5 1.5 0 0 0 16 9.586V3.5A1.5 1.5 0 0 0 14.5 2zM3 3.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 .5.5V9h-4.5A1.5 1.5 0 0 0 9 10.5V15H3.5a.5.5 0 0 1-.5-.5zm7 11.293V10.5a.5.5 0 0 1 .5-.5h4.293z" />
                     </svg>
                 </span>
+                
+                <div class="flex justify-between items-center w-full">
                 <span class="ml-2 text-sm tracking-wide truncate">Manage Workshop</span>
+                    @if ($workshopCount>0)
+                    <span
+                            class="text-sm tracking-wide truncate bg-purple-400 hover:bg-purple-500 text-white py-1 px-3 rounded-full">
+                            {{ $workshopCount }}
+                        </span>
+                    @endif
+                </div>
             </a>
         </li>
 
@@ -208,7 +256,15 @@
                     </svg>
 
                 </span>
-                <span class="ml-2 text-sm tracking-wide truncate">Payment</span>
+                <div class="flex justify-between items-center w-full">
+                    <span class="ml-2 text-sm tracking-wide truncate">Payment</span>
+                    @if ($paymentCount>0)
+                    <span
+                            class="text-sm tracking-wide truncate bg-purple-400 hover:bg-purple-500 text-white py-1 px-3 rounded-full">
+                            {{ $paymentCount }}
+                        </span>
+                    @endif
+                </div>
             </a>
         </li>
         <li>
@@ -221,7 +277,15 @@
                         </path>
                     </svg>
                 </span>
-                <span class="ml-2 text-sm tracking-wide truncate">Message</span>
+                <div class="flex justify-between items-center w-full">
+                    <span class="ml-2 text-sm tracking-wide truncate">Message</span>
+                    @if ($messageCount>0)
+                    <span
+                            class="text-sm tracking-wide truncate bg-purple-400 hover:bg-purple-500 text-white py-1 px-3 rounded-full">
+                            {{ $messageCount }}
+                        </span>
+                    @endif
+                </div>
             </a>
         </li>
         <li>
@@ -235,8 +299,15 @@
                         </path>
                     </svg>
                 </span>
-                <span class="ml-2 text-sm tracking-wide truncate">Notifications</span>
-
+                <div class="flex justify-between items-center w-full">
+                    <span class="ml-2 text-sm tracking-wide truncate">Notifications</span>
+                    @if ($notificationCount>0)
+                    <span
+                            class="text-sm tracking-wide truncate bg-purple-400 hover:bg-purple-500 text-white py-1 px-3 rounded-full">
+                            {{ $notificationCount }}
+                        </span>
+                    @endif
+                </div>
             </a>
         </li>
 
