@@ -34,15 +34,15 @@
         @if(empty($courses))
             <p class="text-gray-600">No courses found.</p>
         @else
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                 @foreach ($courses as $course)
-                    <div class="bg-white shadow-md rounded-lg overflow-hidden">
+                    <div class="bg-white shadow-lg border rounded-lg overflow-hidden">
                         <div class="flex md:flex-col">
                             <!-- Course Image -->
                             <div class="basis-1/3">
                                 <img src="{{ asset('storage/course_images/' . $course['course_image']) }}"
                                     alt="{{ $course['title'] }}"
-                                    class="w-full h-full object-cover">
+                                    class="w-full h-52 object-cover">
                             </div>
                             <!-- Course Details -->
                             <div class="basis-2/3 p-6 flex flex-col">

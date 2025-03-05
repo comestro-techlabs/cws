@@ -7,7 +7,7 @@
             @foreach ($courses as $course)
                 <div class="mb-8">
                     <!-- Course Title -->
-                    <div class="bg-teal-600 text-white px-6 py-4 rounded-t-lg">
+                    <div class="bg-purple-400 text-white px-6 py-4 rounded-t-lg">
                         <h2 class="text-lg font-semibold">{{ $course->title }}</h2>
                     </div>
 
