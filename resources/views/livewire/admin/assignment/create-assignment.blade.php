@@ -6,26 +6,7 @@
             </h2>
         </div>
 
-        <!-- Messages -->
-        @if (session('success'))
-            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-6" role="alert">
-                <strong class="font-bold">Success!</strong>
-                <span class="block sm:inline">{{ session('success') }}</span>
-                <span class="absolute top-0 bottom-0 right-0 px-4 py-3 cursor-pointer" wire:click="$refresh">
-                    <svg class="fill-current h-6 w-6 text-green-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M14.348 14.849a1 1 0 11-1.414-1.414L10.414 10l2.52-2.52a1 1 0 011.414 1.414L12.828 10l1.52 1.52zM5.652 5.151a1 1 0 011.414 1.414L9.586 10l-2.52 2.52a1 1 0 01-1.414-1.414L7.172 10 5.652 8.565z"/></svg>
-                </span>
-            </div>
-        @endif
-
-        @if (session('error'))
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6" role="alert">
-                <strong class="font-bold">Error!</strong>
-                <span class="block sm:inline">{{ session('error') }}</span>
-                <span class="absolute top-0 bottom-0 right-0 px-4 py-3 cursor-pointer" wire:click="$refresh">
-                    <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M14.348 14.849a1 1 0 11-1.414-1.414L10.414 10l2.52-2.52a1 1 0 011.414 1.414L12.828 10l1.52 1.52zM5.652 5.151a1 1 0 011.414 1.414L9.586 10l-2.52 2.52a1 1 0 01-1.414-1.414L7.172 10 5.652 8.565z"/></svg>
-                </span>
-            </div>
-        @endif
+    
 
         <div class="bg-white shadow-lg rounded-lg p-8">
             <form wire:submit.prevent="save" class="space-y-6">

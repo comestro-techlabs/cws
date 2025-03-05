@@ -5,12 +5,6 @@
                 {{ $placedStudent ? 'Edit Placed Student' : 'Create New Placed Student' }}
             </h2>
 
-            @if (session('success'))
-                <div class="mb-4 p-4 text-green-700 bg-green-100 border border-green-400 rounded">
-                    {{ session('success') }}
-                </div>
-            @endif
-
             <form wire:submit.prevent="save" class="space-y-4">
                 <!-- Name -->
                 <div>

@@ -6,7 +6,9 @@ use Livewire\Attributes\Layout;
 use Livewire\Component;
 use App\Models\Payment;
 use Livewire\WithPagination;
-
+use Livewire\Attributes\Title;
+#[Layout('components.layouts.admin')]
+#[Title('Manage Payment')]
 class ManagePayment extends Component
 {
     use WithPagination;
@@ -18,7 +20,7 @@ class ManagePayment extends Component
         $this->resetPage(); // Reset pagination when search changes
     }
 
-    #[Layout('components.layouts.admin')]
+   
     public function render()
     {
         $query = Payment::with(['student', 'course'])

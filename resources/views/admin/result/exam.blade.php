@@ -7,11 +7,7 @@
 </div>
 <div class="max-w-6xl mx-auto mt-10">
     
-    @if (session('success'))
-    <div class="bg-green-100 text-green-700 p-4 rounded mb-4">
-        {{ session('success') }}
-    </div>
-    @endif
+   
  
     <form method="GET" class="mb-4">
         <input type="text" name="search" placeholder="Search..." class="border px-3 py-2 rounded w-full" value="{{ request('search') }}">

@@ -83,8 +83,7 @@ class CreateMessage extends Component
         ]);
 
         $this->reset(['title', 'content', 'recipient_type', 'batch_id', 'some_user_ids', 'user_id']);
-        session()->flash('success', 'Message created successfully.');
-    }
+        $this->dispatch('notice', type: 'info', text: 'Message Created Successfully!');    }
 
     public function render()
     {

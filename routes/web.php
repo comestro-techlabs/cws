@@ -280,13 +280,8 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::post('/placed-students/{placedStudent}/toggle-status', [PlacedStudentController::class, 'toggleStatus'])->name('placedStudent.toggleStatus');
     });
 
-
-
-});
-
-
-    // Version 2 Routes (Livewire)
-    Route::prefix('v2/admin')->group(function () {
+     // Version 2 Routes (Livewire)
+     Route::prefix('v2/admin')->group(function () {
         Route::get('/dashboard', Dashboad::class)->name('admin.dashboard');
         Route::get('/logout', [Dashboad::class, 'logout'])->name('admin.logout');
         Route::get('/category', ManageCategory::class)->name('admin.category');
@@ -365,6 +360,11 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
             Route::get('/chapters/{chapter}/topics', ManageTopic::class)->name('topics');
         });
     });
+
+});
+
+
+   
 
 
 Route::prefix('v2')->group(function () {

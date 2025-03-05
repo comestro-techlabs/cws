@@ -12,11 +12,7 @@
 </div>
     <div class="mx-auto p-3">
       
-        @if (session('success'))
-            <div class="mb-4 p-4 text-green-700 bg-green-100 border border-green-400 rounded">
-                {{ session('success') }}
-            </div>
-        @endif
+      
 
         <div class="overflow-x-auto">
             <table class="w-full border-collapse border text-sm border-gray-300">
