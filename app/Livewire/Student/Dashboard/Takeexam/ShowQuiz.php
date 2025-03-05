@@ -45,18 +45,19 @@ class ShowQuiz extends Component
         }
 
         // Set the first active exam ID (assuming one exam per quiz session)
-        $this->examId = $this->courses->exams->first()->id;
-
         $attempt = ExamUser::where('user_id', $user->id)
-            ->where('exam_id', $this->examId)
+            ->whereHas('exam', function ($query) use ($courseId) {
+                $query->where('course_id', $courseId);
+            })
             ->first();
 
-        $attempts = $attempt ? $attempt->attempts : 0;
+        $value = $attempt ? $attempt->attempts : 0;
 
-        if ($attempts >= 2) {
-            return redirect()->route('v2.student.quiz')->with('error', 'You have reached the maximum number of attempts.');
+        // Allow a maximum of 2 attempts
+        if ($value >= 2) {
+            return redirect()->route('v2.student.quiz')
+                             ->with('error', 'You have reached the maximum number of attempts.');
         }
-
         $this->quizzes = $this->courses->exams
             ->flatMap(fn($exam) => $exam->quizzes->where('status', true))
             ->shuffle()
