@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Livewire\Student\Dashboard\Takeexam;
 
 use App\Models\Answer;
@@ -16,7 +15,7 @@ class ShowQuiz extends Component
     public $quizzes = null;
     public $courseId = null;
     public $examId = null;
-    public $selectedOptions = []; // To store quiz answers
+    public $selectedOptions = [];
 
     public function mount($courseId)
     {
@@ -44,7 +43,9 @@ class ShowQuiz extends Component
             return redirect()->route('v2.student.quiz')->with('error', 'Course not found or no active exams available.');
         }
 
-        // Set the first active exam ID (assuming one exam per quiz session)
+        // Set examId from the first active exam
+        $this->examId = $this->courses->exams->first()->id;
+
         $attempt = ExamUser::where('user_id', $user->id)
             ->whereHas('exam', function ($query) use ($courseId) {
                 $query->where('course_id', $courseId);
@@ -53,11 +54,10 @@ class ShowQuiz extends Component
 
         $value = $attempt ? $attempt->attempts : 0;
 
-        // Allow a maximum of 2 attempts
         if ($value >= 2) {
-            return redirect()->route('v2.student.quiz')
-                             ->with('error', 'You have reached the maximum number of attempts.');
+            return redirect()->route('v2.student.quiz')->with('error', 'You have reached the maximum number of attempts.');
         }
+
         $this->quizzes = $this->courses->exams
             ->flatMap(fn($exam) => $exam->quizzes->where('status', true))
             ->shuffle()
@@ -75,7 +75,15 @@ class ShowQuiz extends Component
         $totalMarks = 0;
         $obtainedMarks = 0;
 
-        // Find or create ExamUser record
+        // Ensure examId is set before proceeding
+        if (!$this->examId) {
+            // Fallback: Fetch the first active exam for the course if not set
+            $this->showquiz($this->courseId); // Re-run showquiz to set examId
+            if (!$this->examId) {
+                return redirect()->route('v2.student.quiz')->with('error', 'No valid exam found for this course.');
+            }
+        }
+
         $examUser = ExamUser::where('user_id', $user->id)
             ->where('exam_id', $this->examId)
             ->first();
@@ -101,7 +109,6 @@ class ShowQuiz extends Component
 
                 if ($quiz) {
                     $totalMarks += $quiz->marks;
-
                     $isCorrect = $selectedOption === $quiz->correct_answer;
                     $marks = $isCorrect ? $quiz->marks : 0;
                     $obtainedMarks += $marks;
@@ -126,7 +133,6 @@ class ShowQuiz extends Component
             return redirect()->route('student.examResult', $this->examId)->with('success', 'Answers submitted successfully!');
         }
 
-        // If no options selected, still record the attempt
         $examUser->total_marks = 0;
         $examUser->save();
 
