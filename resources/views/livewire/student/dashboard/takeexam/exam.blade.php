@@ -16,7 +16,7 @@
                                 @php
                                     $quizAvailable = true;
                                 @endphp
-                                <a href="{{ route('student.quiz', ['courseId' => $course->id]) }}">
+                                <a wire:navigate href="{{ route('v2.student.quiz', ['courseId' => $course->id]) }}">
                                     <button id="start-quiz-btn" class="bg-blue-500 text-white font-medium px-4 py-2 rounded-lg shadow hover:bg-blue-600 transition">
                                         Take Quiz
                                     </button>
