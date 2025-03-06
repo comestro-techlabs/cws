@@ -46,6 +46,7 @@ use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\QuizController;
 use App\Livewire\Admin\Blog\PostCourse;
 use App\Livewire\Admin\Blog\ManageChapter;
+use App\Livewire\Admin\Blog\ManagePost;
 use App\Livewire\Admin\Blog\ManageTopic;
 use App\Livewire\Admin\Category\ManageCategory;
 use App\Livewire\Admin\PlacedStudent\InsertPlacedStudent;
@@ -361,6 +362,8 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
 
             // Topic Routes
             Route::get('/chapters/{chapter}/topics', ManageTopic::class)->name('topics');
+            //post routes
+            Route::get('/topics/{topic}/posts', ManagePost::class)->name('posts');
         });
     });
 
