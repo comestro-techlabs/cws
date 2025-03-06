@@ -28,7 +28,7 @@ class PostChapter extends Model
 
     public function course()
     {
-        return $this->belongsTo(PostCourse::class);
+        return $this->belongsTo(PostCourse::class,'post_course_id');
     }
 
     public function topics()
