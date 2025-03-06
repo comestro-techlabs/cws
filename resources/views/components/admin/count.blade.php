@@ -1,3 +1,11 @@
 <div>
-    <!-- Act only according to that maxim whereby you can, at the same time, will that it should become a universal law. - Immanuel Kant -->
+    @php
+        $classes = "text-sm tracking-wide truncate bg-{$bgColor} hover:bg-{$hoverColor} text-white py-1 px-3 rounded-full";
+    @endphp
+
+    @if ($count > 0)
+        <span class="{{ $classes }}">
+            {{ $count }}
+        </span>
+    @endif
 </div>
