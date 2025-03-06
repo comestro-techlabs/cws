@@ -3,7 +3,7 @@
         <div class="flex flex-col gap-8">
             <div class="w-full mb-8">
                 <div class="bg-white shadow-md rounded-lg p-6">
-                    <h2 class="text-xl font-semibold text-gray-700 mb-4">Manage exams</h2>
+                    <h2 class="md:text-xl text-lg font-semibold text-slate-500 border-s-4 border-s-purple-800 pl-3 mb-5">Manage exams</h2>
                     <!-- Search and Create Section -->
                     <div class="flex flex-col md:flex-row justify-between items-center mb-6 space-y-4  ">
                         <div class="w-full md:w-1/2 ">
@@ -85,7 +85,7 @@
                                     <button type="button" wire:click="toggleForm"
                                         class="px-4 py-2 border rounded-lg hover:bg-gray-100">Cancel</button>
                                     <button type="submit"
-                                        class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                                        class="px-4 py-2 bg-purple-800 text-white rounded-lg hover:bg-blue-600">
                                         {{ $isEditing ? 'Update' : 'Create' }}
                                     </button>
                                 </div>
@@ -152,7 +152,7 @@
                                                 onclick="return confirm('Are you sure you want to delete this exam?')">
                                                 Delete <i class="bi bi-trash3-fill font-bold"></i>
                                             </button>
-                                        <a href="{{route('admin.exam.questions', ['examId' => $exam->id])}}" class="px-3 py-2 text-xs rounded-xl font-medium text-white bg-blue-500 transition flex items-center gap-1">Questions <i class="bi bi-pencil-square')}}"></a>
+                                        <a href="{{route('admin.exam.questions', ['examId' => $exam->id])}}" wire:navigate class="px-3 py-2 text-xs rounded-xl font-medium text-white bg-purple-800 transition flex items-center gap-1">Questions <i class="bi bi-pencil-square')}}"></a>
                                            
                                         </td>
 

@@ -8,7 +8,7 @@
         <div class="space-y-4">
             <div>
                 <label class="block text-sm font-medium text-gray-700">Lesson Title</label>
-                <input type="text" wire:model="lessonTitle" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                <input type="text" wire:model="lessonTitle" class="mt-1 p-2 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                 @error('lessonTitle') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
             </div>
             
@@ -27,7 +27,7 @@
                     <form wire:submit="updateLesson" class="flex items-center space-x-2">
                         <input type="text" 
                                wire:model="editedTitle" 
-                               class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                               class="flex-1 p-2 rounded-md border border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                         <button type="submit" class="text-green-600 hover:text-green-800">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
