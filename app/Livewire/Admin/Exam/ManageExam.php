@@ -80,6 +80,7 @@ class ManageExam extends Component
     public function edit(Exam $exam)
     {
         $this->isEditing = true;
+        $this->showForm=true;
         $this->editingExamId = $exam->id;
         $this->exam_name = $exam->exam_name;
         $this->course_id = $exam->course_id;

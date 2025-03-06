@@ -11,8 +11,8 @@
                 <input wire:model.live="search" type="text" placeholder="Search questions..." 
                     class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
-            <a href="{{ route('admin.quiz', ['examId' => $exam->id]) }}" 
-                class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+            <a href="{{ route('admin.quiz', ['examId' => $exam->id]) }}" wire:navigate
+                class="px-4 py-2 bg-purple-800 text-white rounded-lg hover:bg-purple-600">
                 Add New Question
             </a>
         </div>

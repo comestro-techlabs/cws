@@ -65,14 +65,16 @@ class BatchManager extends Component
         ]);
 
         $this->reset(['batchName', 'startDate', 'endDate', 'totalSeats', 'availableSeats']);
-        $this->dispatch('alert', 'Batch added successfully.');
+       
+        $this->dispatch('notice', type: 'info', text: 'Batch added successfully!');
+
     }
 
     public function deleteBatch($batchId)
     {
         $batch = Batch::find($batchId);
         if (!$batch) {
-            $this->dispatch('alert', 'Batch not found.', 'error');
+            $this->dispatch('notice', type: 'info', text: 'Batch not found!');
             return;
         }
 
@@ -80,12 +82,12 @@ class BatchManager extends Component
         $usersAssigned = DB::table('course_user')->where('batch_id', $batch->id)->exists();
 
         if ($usersAssigned) {
-            $this->dispatch('alert', 'This batch cannot be deleted because users are assigned to it.', 'error');
+            $this->dispatch('notice',type:'info', text: 'This batch cannot be deleted because users are assigned to it.');
             return;
         }
 
         $batch->delete();
-        $this->dispatch('alert', 'Batch deleted successfully.');
+        $this->dispatch('notice',type:'info', text: 'Batch Updated Successfully!');
     }
 
     public function render()

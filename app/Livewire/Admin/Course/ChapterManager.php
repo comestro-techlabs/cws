@@ -40,7 +40,7 @@ class ChapterManager extends Component
         ]);
 
         $this->reset('chapterTitle');
-        $this->dispatch('alert', 'Chapter added successfully.');
+        $this->dispatch('notice', type: 'info', text: 'Chapter added successfully!');
     }
 
     public function deleteChapter($chapterId)
@@ -50,7 +50,8 @@ class ChapterManager extends Component
             $chapter->lessons()->delete(); // Delete associated lessons first
             $chapter->delete();
             $this->selectedChapter = null;
-            $this->dispatch('alert', 'Chapter deleted successfully.');
+            $this->dispatch('notice', type: 'info', text: 'Chapter deleted successfully!');
+
         }
     }
 
@@ -75,7 +76,8 @@ class ChapterManager extends Component
         ]);
 
         $this->reset('lessonTitle');
-        $this->dispatch('alert', 'Lesson added successfully.');
+        $this->dispatch('notice', type: 'info', text: 'Lesson added successfully!');
+
     }
 
     public function startEditing(Lesson $lesson)
@@ -106,7 +108,7 @@ class ChapterManager extends Component
 
         $this->editingLesson = null;
         $this->editedTitle = '';
-        $this->dispatch('alert', 'Lesson updated successfully.');
+        $this->dispatch('notice', type: 'info', text: 'Lesson updated successfully!');
     }
 
     public function deleteLesson($lessonId)
@@ -114,7 +116,8 @@ class ChapterManager extends Component
         $lesson = Lesson::find($lessonId);
         if ($lesson) {
             $lesson->delete();
-            $this->dispatch('alert', 'Lesson deleted successfully.');
+
+            $this->dispatch('notice', type: 'info', text: 'Lesson deleted successfully!');
         }
     }
 

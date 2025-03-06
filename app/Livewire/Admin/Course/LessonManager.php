@@ -36,7 +36,7 @@ class LessonManager extends Component
         ]);
 
         $this->reset('lessonTitle');
-        $this->dispatch('alert', 'Lesson added successfully.');
+        $this->dispatch('notice', type: 'info', text: 'Lesson added successfully!');
     }
 
     public function startEditing(Lesson $lesson)
@@ -67,7 +67,7 @@ class LessonManager extends Component
 
         $this->editingLesson = null;
         $this->editedTitle = '';
-        $this->dispatch('alert', 'Lesson updated successfully.');
+        $this->dispatch('notice', type: 'info', text: 'Lesson updated successfully!');
     }
 
     public function deleteLesson($lessonId)

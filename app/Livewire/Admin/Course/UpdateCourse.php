@@ -51,7 +51,7 @@ class UpdateCourse extends Component
     public $allFeatures;
     #[Validate('array')]
     public $selectedFeatures = [];
-    
+    public $showFeaturesModal = false;
     public $categories;
     public $isPublished = false;
     public $previewImage = null;
@@ -100,8 +100,8 @@ class UpdateCourse extends Component
                 $this->handleImageUpload();
             } elseif ($this->$field !== null) {
                 $this->course->update([$field => $this->$field]);
-                session()->flash('message', ucfirst($field) . ' updated successfully.');
                 
+                $this->dispatch('notice', type: 'info', text: ucfirst($field) . ' updated successfully.');
                 if ($field === 'description') {
                     $this->dispatch('descriptionSaved');
                 }
@@ -112,16 +112,25 @@ class UpdateCourse extends Component
             $this->addError($field, 'Failed to update ' . $field);
         }
     }
+    public function openFeaturesModal()
+    {
+        $this->showFeaturesModal = true;
+    }
 
+    public function closeFeaturesModal()
+    {
+        $this->showFeaturesModal = false;
+    }
     public function updateFeatures()
     {
         try {
             $this->validateOnly('selectedFeatures');
             $this->course->features()->sync($this->selectedFeatures);
-            session()->flash('message', 'Features updated successfully');
-            $this->dispatch('features-updated');
+            $this->closeFeaturesModal();
+            $this->dispatch('notice', type: 'info', text: 'Features Updated Successfully!');
+            
         } catch (\Exception $e) {
-            $this->addError('selectedFeatures', 'Failed to update features');
+            $this->dispatch('notice', type: 'info', text: 'Failed to update features!');
         }
     }
 
@@ -150,7 +159,8 @@ class UpdateCourse extends Component
         $this->reset('tempImage', 'previewImage');
 
         // Show success message
-        session()->flash('message', 'Course image updated successfully.');
+        $this->dispatch('notice', type: 'info', text: 'Course image updated successfully!');
+        
     }
 
     public function checkAndPublish()
@@ -173,7 +183,7 @@ class UpdateCourse extends Component
         if ($allFieldsFilled && !$this->isPublished) {
             $this->course->update(['published' => true]);
             $this->isPublished = true;
-            session()->flash('message', 'Course published successfully.');
+            $this->dispatch('notice', type: 'info', text: 'Course published successfully!');
         }
     }
 
@@ -181,12 +191,9 @@ class UpdateCourse extends Component
     {
         $this->isPublished = !$this->isPublished;
         $this->course->update(['published' => $this->isPublished]);
-        
-        session()->flash('message', 
-            $this->isPublished 
-                ? 'Course published successfully.' 
-                : 'Course unpublished successfully.'
-        );
+        $this->dispatch('notice', type: 'info', text: $this->isPublished 
+        ? 'Course published successfully.' 
+        : 'Course unpublished successfully.');
     }
 
     public function deleteImage()
@@ -194,7 +201,8 @@ class UpdateCourse extends Component
         if ($this->course->course_image) {
             Storage::disk('public')->delete($this->course->course_image);
             $this->course->update(['course_image' => null]);
-            session()->flash('message', 'Course image removed successfully.');
+            $this->dispatch('notice', type: 'info', text: 'Course image removed successfully!');
+
         }
     }
 
