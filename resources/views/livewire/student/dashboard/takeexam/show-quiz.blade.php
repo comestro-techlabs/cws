@@ -34,16 +34,19 @@
                                         <p class="text-gray-700">{{ $quiz->question }}</p>
                                     </div>
                                     @for ($i = 1; $i <= 4; $i++)
-                                        <div class="mb-2">
-                                            <input type="radio" id="option{{ $i }}-{{ $quiz->id }}"
-                                                   name="selected_option[{{ $quiz->id }}]"
-                                                   value="option{{ $i }}" class="hidden peer quiz-option">
-                                            <label for="option{{ $i }}-{{ $quiz->id }}"
-                                                   class="inline-flex items-center gap-3 w-full px-4 py-2 text-sm font-medium border rounded-lg cursor-pointer bg-gray-50 border-gray-300 peer-checked:bg-blue-500 peer-checked:text-white">
-                                                {{ $quiz->{'option' . $i} ?? 'N/A' }}
-                                            </label>
-                                        </div>
-                                    @endfor
+                                    <div class="mb-2">
+                                        <input type="radio" 
+                                            id="option{{ $i }}-{{ $quiz->id }}"
+                                            name="selectedOptions[{{ $quiz->id }}]"
+                                            value="option{{ $i }}"
+                                            wire:model="selectedOptions.{{ $quiz->id }}"
+                                            class="hidden peer quiz-option">
+                                        <label for="option{{ $i }}-{{ $quiz->id }}"
+                                            class="inline-flex items-center gap-3 w-full px-4 py-2 text-sm font-medium border rounded-lg cursor-pointer bg-gray-50 border-gray-300 peer-checked:bg-blue-500 peer-checked:text-white">
+                                            {{ $quiz->{'option' . $i} ?? 'N/A' }}
+                                        </label>
+                                    </div>
+                                @endfor
                                 </div>
                             @endforeach
                         @else
