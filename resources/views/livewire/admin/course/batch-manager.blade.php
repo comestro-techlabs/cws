@@ -9,13 +9,13 @@
         <div class="space-y-4">
             <div>
                 <label class="block text-sm font-medium text-gray-700">Batch Name</label>
-                <input type="text" wire:model="batchName" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                <input type="text" wire:model="batchName" class="mt-1 p-2 block w-full rounded-md border border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                 @error('batchName') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
             </div>
             
             <div>
                 <label class="block text-sm font-medium text-gray-700">Start Date</label>
-                <input type="date" wire:model.live="startDate" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                <input type="date" wire:model.live="startDate" class="mt-1 p-2 block w-full rounded-md border border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                 @error('startDate') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
             </div>
             
@@ -26,18 +26,18 @@
 
             <div>
                 <label class="block text-sm font-medium text-gray-700">End Date (Auto-calculated)</label>
-                <input type="date" wire:model="endDate" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" readonly>
+                <input type="date" wire:model="endDate" class="mt-1 p-2 block w-full rounded-md border border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" readonly>
             </div>
             
             <div>
                 <label class="block text-sm font-medium text-gray-700">Total Seats</label>
-                <input type="number" wire:model="totalSeats" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                <input type="number" wire:model="totalSeats" class="mt-1 p-2 block w-full rounded-md border border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                 @error('totalSeats') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
             </div>
             
             <div>
                 <label class="block text-sm font-medium text-gray-700">Available Seats</label>
-                <input type="number" wire:model="availableSeats" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                <input type="number" wire:model="availableSeats" class="mt-1 p-2 block w-full rounded-md border border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                 @error('availableSeats') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
             </div>
             

@@ -13,11 +13,18 @@
                     </span>
                 @endif
 
+                @if(auth()->check() && auth()->user()->barcode)
+                    <div class="p-4">
+                        <img src="data:image/png;base64,{{ DNS1D::getBarcodePNG(auth()->user()->barcode, 'C128') }}"
+                        alt="barcode">
+                    </div>
+                @endif
+
             </div>
         </div>
 
-        <div class="px-3 py-4 bg-gray-50">
-            <ul class="space-y-2 font-light">
+        <div class="px-3 bg-gray-50">
+            <ul class="space-y font-light">
                 <li>
                     <a wire:navigate href="{{ route('v2.student.dashboard') }}"
                         class="flex items-center p-2 text-gray-900 hover:text-indigo-900 bg-transparent rounded-sm hover:bg-blue-200 group">

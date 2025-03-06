@@ -12,7 +12,7 @@
         $notificationCount = App\Models\Enquiry::get()->count();
         $paymentCount = App\Models\Payment::with(['student', 'course'])
         ->where('status', 'captured')->count();
-
+        $postCourseCount = App\Models\PostCourse::get()->count();
     @endphp
     <a wire:navigate href="{{ route('admin.dashboard') }}"
         class="relative flex flex-row items-center mb-2 py-3 focus:outline-none bg-purple-800 hover:bg-purple-900 text-gray-200 border-l-4 border-transparent  pr-6">
@@ -47,12 +47,7 @@
                 </span>
                 <div class="flex items-center justify-between w-full">
                     <span class="ml-2 text-sm tracking-wide truncate">Manage Category</span>
-                    @if ($categoryCount > 0)
-                        <span
-                            class="text-sm tracking-wide truncate bg-purple-400 hover:bg-purple-500 text-white py-1 px-3 rounded-full">
-                            {{ $categoryCount }}
-                        </span>
-                    @endif
+                    <x-admin.count :count="$categoryCount" />
                 </div>
             </a>
         </li>
@@ -69,12 +64,7 @@
                 </span>
                 <div class="flex items-center justify-between w-full">
                     <span class="ml-2 text-sm tracking-wide truncate">Manage Courses</span>
-                    @if ($courseCount > 0)
-                        <span
-                            class="text-sm tracking-wide truncate bg-purple-400 hover:bg-purple-500 text-white py-1 px-3 rounded-full">
-                            {{ $courseCount }}
-                        </span>
-                    @endif
+                    <x-admin.count :count="$courseCount"/>
                 </div>
             </a>
         </li>
@@ -91,12 +81,7 @@
                 </span>
                 <div class="flex items-center justify-between w-full">
                     <span class="ml-2 text-sm tracking-wide truncate">Assignment</span>
-                    @if ($assignmentCount > 0)
-                        <span
-                            class="text-sm tracking-wide truncate bg-purple-400 hover:bg-purple-500 text-white py-1 px-3 rounded-full">
-                            {{ $assignmentCount }}
-                        </span>
-                    @endif
+                    <x-admin.count :count="$assignmentCount"/>
                 </div>
             </a>
         </li>
@@ -113,12 +98,7 @@
                 </span>
                 <div class="flex items-center justify-between w-full">
                     <span class="ml-2 text-sm tracking-wide truncate">View Assignment</span>
-                    @if ($assignmentUploadCount > 0)
-                        <span
-                            class="text-sm tracking-wide truncate bg-purple-400 hover:bg-purple-500 text-white py-1 px-3 rounded-full">
-                            {{ $assignmentUploadCount }}
-                        </span>
-                    @endif
+                    <x-admin.count :count="$assignmentUploadCount"/>
                 </div>
             </a>
         </li>
@@ -141,12 +121,7 @@
                 </span>
                 <div class="flex items-center justify-between w-full">
                     <span class="ml-2 text-sm tracking-wide truncate">Manage Student</span>
-                    @if ($studentCount > 0)
-                        <span
-                            class="text-sm tracking-wide truncate bg-purple-400 hover:bg-purple-500 text-white py-1 px-3 rounded-full">
-                            {{ $studentCount }}
-                        </span>
-                    @endif
+                    <x-admin.count :count="$studentCount"/>
                 </div>
             </a>
         </li>
@@ -177,12 +152,7 @@
                 </span>
                 <div class="flex justify-between items-center w-full">
                     <span class="ml-2 text-sm tracking-wide truncate">Placed Student</span>
-                    @if ($placestudentCount>0)
-                    <span
-                            class="text-sm tracking-wide truncate bg-purple-400 hover:bg-purple-500 text-white py-1 px-3 rounded-full">
-                            {{ $placestudentCount }}
-                        </span>
-                    @endif
+                    <x-admin.count :count="$placestudentCount"/>
                 </div>
             </a>
         </li>
@@ -206,12 +176,7 @@
                 </span>
                 <div class="flex justify-between items-center w-full">
                     <span class="ml-2 text-sm tracking-wide truncate">Manage Exam</span>
-                    @if ($examCount>0)
-                    <span
-                            class="text-sm tracking-wide truncate bg-purple-400 hover:bg-purple-500 text-white py-1 px-3 rounded-full">
-                            {{ $examCount }}
-                        </span>
-                    @endif
+                    <x-admin.count :count="$examCount"/>
                 </div>
             </a>
         </li>
@@ -227,15 +192,10 @@
                             d="M3.5 2A1.5 1.5 0 0 0 2 3.5v11A1.5 1.5 0 0 0 3.5 16h6.086a1.5 1.5 0 0 0 1.06-.44l4.915-4.914A1.5 1.5 0 0 0 16 9.586V3.5A1.5 1.5 0 0 0 14.5 2zM3 3.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 .5.5V9h-4.5A1.5 1.5 0 0 0 9 10.5V15H3.5a.5.5 0 0 1-.5-.5zm7 11.293V10.5a.5.5 0 0 1 .5-.5h4.293z" />
                     </svg>
                 </span>
-                
+
                 <div class="flex justify-between items-center w-full">
                 <span class="ml-2 text-sm tracking-wide truncate">Manage Workshop</span>
-                    @if ($workshopCount>0)
-                    <span
-                            class="text-sm tracking-wide truncate bg-purple-400 hover:bg-purple-500 text-white py-1 px-3 rounded-full">
-                            {{ $workshopCount }}
-                        </span>
-                    @endif
+                    <x-admin.count :count="$workshopCount"/>
                 </div>
             </a>
         </li>
@@ -258,12 +218,7 @@
                 </span>
                 <div class="flex justify-between items-center w-full">
                     <span class="ml-2 text-sm tracking-wide truncate">Payment</span>
-                    @if ($paymentCount>0)
-                    <span
-                            class="text-sm tracking-wide truncate bg-purple-400 hover:bg-purple-500 text-white py-1 px-3 rounded-full">
-                            {{ $paymentCount }}
-                        </span>
-                    @endif
+                    <x-admin.count :count="$paymentCount"/>
                 </div>
             </a>
         </li>
@@ -279,12 +234,7 @@
                 </span>
                 <div class="flex justify-between items-center w-full">
                     <span class="ml-2 text-sm tracking-wide truncate">Message</span>
-                    @if ($messageCount>0)
-                    <span
-                            class="text-sm tracking-wide truncate bg-purple-400 hover:bg-purple-500 text-white py-1 px-3 rounded-full">
-                            {{ $messageCount }}
-                        </span>
-                    @endif
+                    <x-admin.count :count="$messageCount"/>
                 </div>
             </a>
         </li>
@@ -301,12 +251,7 @@
                 </span>
                 <div class="flex justify-between items-center w-full">
                     <span class="ml-2 text-sm tracking-wide truncate">Notifications</span>
-                    @if ($notificationCount>0)
-                    <span
-                            class="text-sm tracking-wide truncate bg-purple-400 hover:bg-purple-500 text-white py-1 px-3 rounded-full">
-                            {{ $notificationCount }}
-                        </span>
-                    @endif
+                    <x-admin.count :count="$notificationCount"/>
                 </div>
             </a>
         </li>
@@ -343,7 +288,10 @@
                     </svg>
 
                 </span>
+                <div class="flex justify-between items-center w-full">
                 <span class="ml-2 text-sm tracking-wide truncate">Manage Post Course</span>
+                <x-admin.count :count="$postCourseCount"/>
+                </div>
             </a>
         </li>
     </ul>
