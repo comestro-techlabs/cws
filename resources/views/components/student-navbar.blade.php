@@ -13,6 +13,13 @@
                     </span>
                 @endif
 
+                @if(auth()->check() && auth()->user()->barcode)
+                    <div class="p-4">
+                        <img src="data:image/png;base64,{{ DNS1D::getBarcodePNG(auth()->user()->barcode, 'C128') }}"
+                        alt="barcode">
+                    </div>
+                @endif
+
             </div>
         </div>
 
