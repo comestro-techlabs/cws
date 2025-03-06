@@ -12,6 +12,6 @@ class PostCourseSeeder extends Seeder
      */
     public function run()
     {
-        PostCourse::factory(10)->create(); // Creates 10 courses
+        PostCourse::factory(15)->create(); // Creates 10 courses
     }
 }

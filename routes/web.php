@@ -31,6 +31,9 @@ use App\Livewire\Admin\Dashboad;
 use App\Livewire\Admin\ManagePayment;
 use App\Livewire\Admin\ManageEnquiry;
 use App\Livewire\Admin\Student\ManageStudent;
+use App\Livewire\Student\Dashboard\Takeexam\Result;
+use App\Livewire\Student\Dashboard\Takeexam\ShowAllAttempt;
+use App\Livewire\Student\Dashboard\Takeexam\ShowQuiz;
 use App\Livewire\Student\Messages;
 use App\Livewire\Student\MessageView;
 use Illuminate\Support\Facades\Route;
@@ -388,6 +391,9 @@ Route::prefix('v2')->group(function () {
         Route::get('/edit-profile', EditProfile::class)->name('student.v2edit.profile');
         Route::get('/view-assigment', ViewAssigment::class)->name('student.v2view.assigment');
         Route::get('/view-assigment/{id}', ViewAssigment::class)->name('student.v2view.assigment');
+        Route::get('/show-quiz/{courseId}', ShowQuiz::class)->name('v2.student.quiz');
+        Route::get('/show-all-attempt/{course_id}', ShowAllAttempt::class)->name('v2.student.allAttempts');
+        Route::get('show-quiz/result/{exam_id}', Result::class)->name('v2.student.examResult');
 
 
 

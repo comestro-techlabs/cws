@@ -27,7 +27,7 @@ class PostChapterSeeder extends Seeder
         $courses = PostCourse::all();
 
         foreach ($courses as $course) {
-            PostChapter::factory(3)->create([
+            PostChapter::factory(10)->create([
                 'post_course_id' => $course->id,
             ]); // Creates 3 chapters per course
         }
