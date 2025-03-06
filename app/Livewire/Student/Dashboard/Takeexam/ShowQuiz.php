@@ -6,6 +6,7 @@ use App\Models\ExamUser;
 use App\Models\Quiz;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 #[Layout('components.layouts.student')]
@@ -15,10 +16,10 @@ class ShowQuiz extends Component
     public $quizzes = null;
     public $courseId = null;
     public $examId = null;
-    public $selectedOptions = [];
+    public $selectedOptions = []; // Holds user-selected answers
     public $obtainedMarks = null;
-    public $totalMarks = null; 
-    public $submitted = false; 
+    public $totalMarks = null;
+    public $submitted = false;
 
     public function mount($courseId)
     {
@@ -69,6 +70,8 @@ class ShowQuiz extends Component
         $this->totalMarks = $this->quizzes->sum('marks');
     }
 
+    // ***** HANDLES FORM SUBMISSION FROM JAVASCRIPT *****
+    #[On('submitQuiz')]
     public function storeAnswer()
     {
         if (!Auth::check()) {
@@ -121,16 +124,13 @@ class ShowQuiz extends Component
 
             session()->flash('obtained_marks', $this->obtainedMarks);
             session()->flash('exam_id', $this->examId);
-
-            return redirect()->route('v2.student.examResult', $this->examId)->with([
-                'success' => 'Answer submitted successfully!',
-                'exam_id' => $this->examId,
-            ]);
+        } else {
+            // If no answers are submitted (e.g., due to tab-switching), save with 0 marks
+            $examUser->total_marks = 0;
+            $examUser->save();
         }
 
-        // If no answers are submitted, still save the attempt
-        $examUser->total_marks = 0;
-        $examUser->save();
+        $this->submitted = true;
 
         return redirect()->route('v2.student.examResult', $this->examId)->with([
             'success' => 'Answer submitted successfully!',
