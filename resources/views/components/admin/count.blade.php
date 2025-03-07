@@ -1,6 +1,6 @@
 <div>
     @php
-        $classes = "text-sm tracking-wide truncate bg-{$bgColor} hover:bg-{$hoverColor} text-white py-1 px-3 rounded-full";
+        $classes = "text-md tracking-wide truncate bg-{$bgColor} text-gray-400 px-3 py-1 rounded-full";
     @endphp
 
     @if ($count > 0)
