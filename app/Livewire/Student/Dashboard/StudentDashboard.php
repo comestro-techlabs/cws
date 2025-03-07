@@ -37,7 +37,6 @@ class StudentDashboard extends Component
 
         $this->hasCompleted = $this->hasCompletedExamOrAssignment($studentId);
 
-        // Fetch attempts with error handling
         try {
             $this->firstAttempts = Answer::where('user_id', $studentId)
                 ->where('attempt', 1)
@@ -67,11 +66,13 @@ class StudentDashboard extends Component
         } catch (\Exception $e) {
             $this->firstAttempts = [];
             $this->secondAttempts = [];
-            // Log the error if needed: \Log::error('Error fetching attempts: ' . $e->getMessage());
         }
 
-        // Fetch user-related data with proper relationships
-        $this->courses = $user->courses()->take(2)->get();
+        // Fetch only the logged-in student's courses
+        $this->courses = Course::whereHas('students', function ($query) use ($studentId) {
+            $query->where('user_id', $studentId);
+        })->take(2)->get();
+
         $this->payments = Payment::where('student_id', $studentId)
             ->whereNotNull('course_id')
             ->orderBy('created_at', 'ASC')
@@ -79,25 +80,31 @@ class StudentDashboard extends Component
             ->get();
 
         $courseIds = $this->courses->pluck('id')->toArray();
+        $batchIds = $user->courses()->pluck('course_user.batch_id')->toArray();
         
+        // Fetch assignments only for the logged-in student's courses and batches
         $this->assignments = Assignments::whereIn('course_id', $courseIds)
+            ->whereHas('batch', function ($query) use ($batchIds) {
+                $query->whereIn('id', $batchIds);
+            })
             ->latest()
             ->take(4)
             ->get();
 
-        // Fixed: Using course_ids correctly for exams
+        // Fetch only exams for logged-in student's courses
         $this->exams = ExamUser::where('user_id', $studentId)
-            ->whereIn('exam_id', $courseIds)
+            ->whereHas('exam', function ($query) use ($courseIds) {
+                $query->whereIn('course_id', $courseIds);
+            })
             ->take(4)
             ->get();
 
-        // Calculate progress with null checking
         foreach ($this->payments as $payment) {
             $payment->progress = $payment->course_progress ?? 0;
         }
 
         $readMessages = session('read_messages', []);
-        $this->messages = Message::whereJsonContains('recipients', (string)$studentId) // Cast to string for JSON
+        $this->messages = Message::whereJsonContains('recipients', (string)$studentId)
             ->whereNotIn('id', $readMessages)
             ->orderBy('created_at', 'desc')
             ->take(3)
