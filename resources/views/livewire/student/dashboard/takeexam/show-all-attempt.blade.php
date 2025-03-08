@@ -6,7 +6,9 @@
             @forelse($attempts_data as $data)
                 <div class="card bg-white rounded-lg shadow-md p-4">
                     <div class="card-body">
-                        <h5 class="text-lg font-semibold mb-2">Attempt {{ $data['attempt'] }}</h5>
+                        <h5 class="text-lg font-semibold mb-2">Attempt: {{ $data['attempt'] }}</h5>
+                        <h5 class="text-lg font-semibold mb-2">Total Question: {{ $data['questions'] }}</h5>
+                       
                         <p class="text-md mb-2">
                             <strong>Total Marks Scored:</strong> {{ $data['total_marks'] }}
                         </p>
