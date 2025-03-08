@@ -15,7 +15,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@@300;400;600&display=swap" rel="stylesheet">
-
+    @livewireStyles
 </head>
 
 <body class="flex flex-col min-h-screen">
@@ -28,6 +28,10 @@
     <div class="mt-auto">
         <livewire:public.footer />
     </div>
+
+    @livewireScripts
+
+    
 </body>
 
 

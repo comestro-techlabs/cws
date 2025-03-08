@@ -19,9 +19,8 @@ class Login extends Component
 
     public $isSendOtp = false;
 
-    public function sendotp()
+    public function save()
     {
-        dd("tsti");
         $this->validate(['email' => 'required|email|exists:users,email']);
 
         $email = $this->email;
@@ -32,7 +31,7 @@ class Login extends Component
         $user->otp = $otp;
         $user->otp_expires_at = Carbon::now()->addMinutes(10);
         $user->save();
-        
+
         try {
             // Send OTP email with correct template and data
             $data = ['user' => $user, 'otp' => $otp];
@@ -40,12 +39,12 @@ class Login extends Component
                 $message->to($user->email)
                     ->subject('Your Login OTP Code');
             });
-            
+
             $this->isSendOtp = true;
-            
+
             // Flash success message without redirect
             session()->flash('success', 'OTP sent to your email.');
-            
+
             // Dispatch event to trigger UI update
             $this->dispatch('otp-sent')->self();
         } catch (\Exception $e) {
