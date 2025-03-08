@@ -346,6 +346,9 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         // payment
         Route::get('/payment', ManagePayment::class)->name('admin.paymnet-manage');
 
+        //offline payments
+        // Route::get('/offline-payment', ManageOfflinePayment::class)->name('admin.offline-payment');
+
         //blog
         Route::get("/blog/post-course", PostCourse::class)->name('admin.blog.post-course');
 
@@ -359,7 +362,6 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
             Route::get('/courses/{course}/edit', [PostCourse::class, 'edit'])->name('courses.edit');
             Route::get('/chapters/create/{course}', [ManageChapter::class, 'create'])->name('chapters.create');
             Route::get('/chapters/{chapter}/edit', [ManageChapter::class, 'edit'])->name('chapters.edit');
-
             // Topic Routes
             Route::get('/chapters/{chapter}/topics', ManageTopic::class)->name('topics');
             //post routes

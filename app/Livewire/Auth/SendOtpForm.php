@@ -28,21 +28,16 @@ class SendOtpForm extends Component
         $user->save();
         
         try {
-
-
-            Mail::send('emails.otp', ['otp' => $otp,'user'=>$user], function ($message) use ($user) {
+            $data = ['user' => $user, 'amount' => $this->amount];
+            Mail::send('emails.payment', $data, function ($message) use ($user) {
                 $message->to($user->email)
-                    ->subject('Your OTP For Login');
+                    ->subject('Congratulations! Payment Successful');
             });
-
-            // Redirect with success message
-            return redirect()->back()->with(['otp_sent' => true, 'email' => $email]);
-
-            // return redirect()->route('auth.login')->with(['otp_sent' => true, 'email' => $email]);
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to send OTP. Please try again.');
+            return redirect()->back()->with('error', 'Failed to send email. Please try again.');
         }
     }
+
 
     public function render()
     {
