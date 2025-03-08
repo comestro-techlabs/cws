@@ -1,4 +1,4 @@
-<div class="overflow-y-auto overflow-x-hidden flex-grow bg-gray-100 h-screen">
+<div class="overflow-y-auto overflow-x-hidden flex-grow bg-gray-50 h-screen">
     @php
         $categoryCount = App\Models\Category::get()->count();
         $courseCount = App\Models\Course::get()->count();
@@ -15,28 +15,27 @@
         $postCourseCount = App\Models\PostCourse::get()->count();
     @endphp
     <a wire:navigate href="{{ route('admin.dashboard') }}"
-        class="relative flex flex-row items-center mb-2 py-3 focus:outline-none bg-purple-800 hover:bg-purple-900 text-gray-200 border-l-4 border-transparent  pr-6">
+        class="relative flex flex-row items-center h-12 focus:outline-none bg-purple-700 hover:bg-purple-800 text-white border-l-4 border-transparent pr-6 transition duration-200">
         <span class="inline-flex justify-center items-center ml-4">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
                 </path>
             </svg>
         </span>
-        <span class="ml-2 text-lg tracking-wide truncate">Dashboard</span>
+        <span class="ml-2 text-sm font-medium tracking-wide truncate">Dashboard</span>
     </a>
 
-
-    <ul class="flex flex-col space-y-1">
-        <li class="px-3">
-            <div class="flex flex-row items-center h-5">
-                <div class="text-sm font-light tracking-wide text-gray-500">Courses</div>
+    <ul class="flex flex-col py-4 space-y-1">
+        <li class="px-5">
+            <div class="flex flex-row items-center h-8">
+                <div class="text-sm font-semibold tracking-wide text-purple-700">Courses</div>
             </div>
         </li>
         <li>
             <a wire:navigate href="{{ route('admin.category') }}"
-                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-purple-500 pr-6 w-full">
+                class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-purple-50 text-gray-600 hover:text-purple-700 border-l-4 border-transparent hover:border-purple-700 pr-6 transition duration-200">
                 <span class="inline-flex justify-center items-center ml-4">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg">
@@ -46,7 +45,7 @@
                     </svg>
                 </span>
                 <div class="flex items-center justify-between w-full">
-                    <span class="ml-2 text-sm tracking-wide truncate">Manage Category</span>
+                    <span class="ml-2 text-sm font-medium tracking-wide truncate">Manage Category</span>
                     <x-admin.count :count="$categoryCount" />
                 </div>
             </a>
@@ -54,7 +53,7 @@
 
         <li>
             <a wire:navigate href="{{ route('admin.course.manage') }}"
-                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-purple-500 pr-6 w-full">
+                class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-purple-50 text-gray-600 hover:text-purple-700 border-l-4 border-transparent hover:border-purple-700 pr-6 transition duration-200">
                 <span class="inline-flex justify-center items-center ml-4">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-5 h-5">
@@ -63,7 +62,7 @@
                     </svg>
                 </span>
                 <div class="flex items-center justify-between w-full">
-                    <span class="ml-2 text-sm tracking-wide truncate">Manage Courses</span>
+                    <span class="ml-2 text-sm font-medium tracking-wide truncate">Manage Courses</span>
                     <x-admin.count :count="$courseCount"/>
                 </div>
             </a>
@@ -71,7 +70,7 @@
 
         <li>
             <a wire:navigate href="{{ route('admin.assignment.manage') }}"
-                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-purple-500 pr-6 w-full">
+                class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-purple-50 text-gray-600 hover:text-purple-700 border-l-4 border-transparent hover:border-purple-700 pr-6 transition duration-200">
                 <span class="inline-flex justify-center items-center ml-4">
                     <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke-width="1.5" stroke="currentColor">
@@ -80,7 +79,7 @@
                     </svg>
                 </span>
                 <div class="flex items-center justify-between w-full">
-                    <span class="ml-2 text-sm tracking-wide truncate">Assignment</span>
+                    <span class="ml-2 text-sm font-medium tracking-wide truncate">Assignment</span>
                     <x-admin.count :count="$assignmentCount"/>
                 </div>
             </a>
@@ -88,7 +87,7 @@
 
         <li>
             <a wire:navigate href="{{ route('admin.assignment.course') }}"
-                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-purple-500 pr-6 w-full">
+                class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-purple-50 text-gray-600 hover:text-purple-700 border-l-4 border-transparent hover:border-purple-700 pr-6 transition duration-200">
                 <span class="inline-flex justify-center items-center ml-4">
                     <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke-width="1.5" stroke="currentColor">
@@ -97,21 +96,21 @@
                     </svg>
                 </span>
                 <div class="flex items-center justify-between w-full">
-                    <span class="ml-2 text-sm tracking-wide truncate">View Assignment</span>
+                    <span class="ml-2 text-sm font-medium tracking-wide truncate">View Assignment</span>
                     <x-admin.count :count="$assignmentUploadCount"/>
                 </div>
             </a>
         </li>
 
-        <li class="px-3">
-            <div class="flex flex-row items-center h-5">
-                <div class="text-sm font-light tracking-wide text-gray-500">Students</div>
+        <li class="px-5">
+            <div class="flex flex-row items-center h-8">
+                <div class="text-sm font-semibold tracking-wide text-purple-700">Students</div>
             </div>
         </li>
 
         <li>
             <a wire:navigate href="{{ route('admin.student') }}"
-                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-purple-500 pr-6 w-full">
+                class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-purple-50 text-gray-600 hover:text-purple-700 border-l-4 border-transparent hover:border-purple-700 pr-6 transition duration-200">
                 <span class="inline-flex justify-center items-center ml-4">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-5 h-5">
@@ -120,14 +119,14 @@
                     </svg>
                 </span>
                 <div class="flex items-center justify-between w-full">
-                    <span class="ml-2 text-sm tracking-wide truncate">Manage Student</span>
+                    <span class="ml-2 text-sm font-medium tracking-wide truncate">Manage Student</span>
                     <x-admin.count :count="$studentCount"/>
                 </div>
             </a>
         </li>
         <li>
             <a wire:navigate href="{{route('admin.attendance')}}"
-                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-purple-500 pr-6">
+                class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-purple-50 text-gray-600 hover:text-purple-700 border-l-4 border-transparent hover:border-purple-700 pr-6 transition duration-200">
                 <span class="inline-flex justify-center items-center ml-4">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-6">
@@ -136,13 +135,13 @@
                             d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
                     </svg>
                 </span>
-                <span class="ml-2 text-sm tracking-wide truncate">Attendence</span>
+                <span class="ml-2 text-sm font-medium tracking-wide truncate">Attendence</span>
 
             </a>
         </li>
         <li>
             <a wire:navigate href="{{ route('admin.placedstudent.index') }}"
-                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-purple-500 pr-6 w-full">
+                class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-purple-50 text-gray-600 hover:text-purple-700 border-l-4 border-transparent hover:border-purple-700 pr-6 transition duration-200">
                 <span class="inline-flex justify-center items-center ml-4">
                     <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -151,21 +150,21 @@
                     </svg>
                 </span>
                 <div class="flex justify-between items-center w-full">
-                    <span class="ml-2 text-sm tracking-wide truncate">Placed Student</span>
+                    <span class="ml-2 text-sm font-medium tracking-wide truncate">Placed Student</span>
                     <x-admin.count :count="$placestudentCount"/>
                 </div>
             </a>
         </li>
 
-        <li class="px-3">
-            <div class="flex flex-row items-center h-5">
-                <div class="text-sm font-light tracking-wide text-gray-500">Exams</div>
+        <li class="px-5">
+            <div class="flex flex-row items-center h-8">
+                <div class="text-sm font-semibold tracking-wide text-purple-700">Exams</div>
             </div>
         </li>
 
         <li>
             <a wire:navigate href="{{ route('admin.exam') }}"
-                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-purple-500 pr-6 w-full">
+                class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-purple-50 text-gray-600 hover:text-purple-700 border-l-4 border-transparent hover:border-purple-700 pr-6 transition duration-200">
                 <span class="inline-flex justify-center items-center ml-4">
                     <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -175,7 +174,7 @@
                     </svg>
                 </span>
                 <div class="flex justify-between items-center w-full">
-                    <span class="ml-2 text-sm tracking-wide truncate">Manage Exam</span>
+                    <span class="ml-2 text-sm font-medium tracking-wide truncate">Manage Exam</span>
                     <x-admin.count :count="$examCount"/>
                 </div>
             </a>
@@ -183,7 +182,7 @@
 
         <li>
             <a wire:navigate href="{{ route('admin.workshops.index') }}"
-                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-purple-500 pr-6 w-full">
+                class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-purple-50 text-gray-600 hover:text-purple-700 border-l-4 border-transparent hover:border-purple-700 pr-6 transition duration-200">
                 <span class="inline-flex justify-center items-center ml-4">
                     <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="14" height="16" fill="currentColor"
                         class="bi bi-stickies" viewBox="0 0 16 16">
@@ -194,20 +193,20 @@
                 </span>
 
                 <div class="flex justify-between items-center w-full">
-                <span class="ml-2 text-sm tracking-wide truncate">Manage Workshop</span>
+                <span class="ml-2 text-sm font-medium tracking-wide truncate">Manage Workshop</span>
                     <x-admin.count :count="$workshopCount"/>
                 </div>
             </a>
         </li>
 
-        <li class="px-3">
-            <div class="flex flex-row items-center h-5">
-                <div class="text-sm font-light tracking-wide text-gray-500">Notifications</div>
+        <li class="px-5">
+            <div class="flex flex-row items-center h-8">
+                <div class="text-sm font-semibold tracking-wide text-purple-700">Notifications</div>
             </div>
         </li>
         <li>
             <a wire:navigate href="{{ route('admin.paymnet-manage') }}"
-                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-purple-500 pr-6 w-full">
+                class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-purple-50 text-gray-600 hover:text-purple-700 border-l-4 border-transparent hover:border-purple-700 pr-6 transition duration-200">
                 <span class="inline-flex justify-center items-center ml-4">
                     <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -217,14 +216,14 @@
 
                 </span>
                 <div class="flex justify-between items-center w-full">
-                    <span class="ml-2 text-sm tracking-wide truncate">Payment</span>
+                    <span class="ml-2 text-sm font-medium tracking-wide truncate">Payment</span>
                     <x-admin.count :count="$paymentCount"/>
                 </div>
             </a>
         </li>
         <li>
             <a wire:navigate href="{{ route('admin.message.index') }}"
-                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-purple-500 pr-6 w-full">
+                class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-purple-50 text-gray-600 hover:text-purple-700 border-l-4 border-transparent hover:border-purple-700 pr-6 transition duration-200">
                 <span class="inline-flex justify-center items-center ml-4">
                     <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 48 48">
                         <path
@@ -233,14 +232,14 @@
                     </svg>
                 </span>
                 <div class="flex justify-between items-center w-full">
-                    <span class="ml-2 text-sm tracking-wide truncate">Message</span>
+                    <span class="ml-2 text-sm font-medium tracking-wide truncate">Message</span>
                     <x-admin.count :count="$messageCount"/>
                 </div>
             </a>
         </li>
         <li>
             <a wire:navigate href="{{route('admin.manage.enquiry')}}"
-                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-purple-500 pr-6">
+                class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-purple-50 text-gray-600 hover:text-purple-700 border-l-4 border-transparent hover:border-purple-700 pr-6 transition duration-200">
                 <span class="inline-flex justify-center items-center ml-4">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg">
@@ -250,7 +249,7 @@
                     </svg>
                 </span>
                 <div class="flex justify-between items-center w-full">
-                    <span class="ml-2 text-sm tracking-wide truncate">Notifications</span>
+                    <span class="ml-2 text-sm font-medium tracking-wide truncate">Notifications</span>
                     <x-admin.count :count="$notificationCount"/>
                 </div>
             </a>
@@ -258,7 +257,7 @@
 
         <li>
             <a wire:navigate href="{{ route('admin.logout') }}"
-                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-purple-500 pr-6">
+                class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-purple-50 text-gray-600 hover:text-purple-700 border-l-4 border-transparent hover:border-purple-700 pr-6 transition duration-200">
                 <span class="inline-flex justify-center items-center ml-4">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg">
@@ -267,19 +266,18 @@
                         </path>
                     </svg>
                 </span>
-                <span class="ml-2 text-sm tracking-wide truncate">Logout</span>
+                <span class="ml-2 text-sm font-medium tracking-wide truncate">Logout</span>
             </a>
         </li>
 
-
-        <li class="px-3">
-            <div class="flex flex-row items-center h-5">
-                <div class="text-sm font-light tracking-wide text-gray-500">Blog</div>
+        <li class="px-5">
+            <div class="flex flex-row items-center h-8">
+                <div class="text-sm font-semibold tracking-wide text-purple-700">Blog</div>
             </div>
         </li>
         <li>
             <a wire:navigate href="{{ route('admin.blog.post-course') }}"
-                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-purple-500 pr-6 w-full">
+                class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-purple-50 text-gray-600 hover:text-purple-700 border-l-4 border-transparent hover:border-purple-700 pr-6 transition duration-200">
                 <span class="inline-flex justify-center items-center ml-4">
                     <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -289,7 +287,7 @@
 
                 </span>
                 <div class="flex justify-between items-center w-full">
-                <span class="ml-2 text-sm tracking-wide truncate">Manage Post Course</span>
+                <span class="ml-2 text-sm font-medium tracking-wide truncate">Manage Post Course</span>
                 <x-admin.count :count="$postCourseCount"/>
                 </div>
             </a>
