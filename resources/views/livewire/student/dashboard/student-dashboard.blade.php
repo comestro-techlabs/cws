@@ -22,7 +22,7 @@
     </script>
 @endif
 
-<div class="mdk-header-layout__content mdk-header-layout__content--fullbleed mdk-header-layout__content--scrollable page bg-gray-50 pt-6 pb-12">
+<div class="mdk-header-layout__content mdk-header-layout__content--fullbleed mdk-header-layout__content--scrollable page pt-6 pb-12">
     @if ($courses->isEmpty())
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-white rounded-lg shadow-md overflow-hidden">
@@ -53,12 +53,6 @@
         </div>
     @else
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- Welcome Header -->
-            <div class="mb-8">
-                <h1 class="text-2xl font-bold text-gray-900">Welcome back, {{ auth()->user()->name }}!</h1>
-                <p class="text-gray-600 mt-1">Here's an overview of your learning progress</p>
-            </div>
-            
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Courses Section -->
                 <div class="lg:col-span-2 bg-white rounded-lg shadow-sm overflow-hidden">
