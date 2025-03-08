@@ -221,23 +221,7 @@
                 <div class="text-sm font-semibold tracking-wide text-purple-700">Notifications</div>
             </div>
         </li>
-        <li>
-            <a wire:navigate href="{{ route('admin.paymnet-manage') }}"
-                class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-purple-50 text-gray-600 hover:text-purple-700 border-l-4 border-transparent hover:border-purple-700 pr-6 transition duration-200">
-                <span class="inline-flex justify-center items-center ml-4">
-                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                        stroke-width="1.5" stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M15 8.25H9m6 3H9m3 6-3-3h1.5a3 3 0 1 0 0-6M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                    </svg>
-
-                </span>
-                <div class="flex justify-between items-center w-full">
-                    <span class="ml-2 text-sm font-medium tracking-wide truncate">Payment</span>
-                    <x-admin.count :count="$paymentCount"/>
-                </div>
-            </a>
-        </li>
+        
         <li>
             <a wire:navigate href="{{ route('admin.message.index') }}"
                 class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-purple-50 text-gray-600 hover:text-purple-700 border-l-4 border-transparent hover:border-purple-700 pr-6 transition duration-200">
