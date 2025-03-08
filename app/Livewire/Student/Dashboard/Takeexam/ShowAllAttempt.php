@@ -38,6 +38,7 @@ class ShowAllAttempt extends Component
         $this->attempts_data = $attempts->map(function ($answers, $attempt) {
             return [
                 'attempt' => $attempt,
+                'questions' => $answers->count(),
                 'total_marks' => $answers->sum('obtained_marks'),
             ];
         })->values();

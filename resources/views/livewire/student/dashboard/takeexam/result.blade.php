@@ -14,6 +14,7 @@
     <!-- Header Section -->
     <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
         <h2 class="text-3xl font-bold text-gray-800 mb-2">Result for Attempt {{ $attempt }}</h2>
+        <h2 class="text-3xl font-bold text-gray-800 mb-2">Total Question {{ $totalQuestions }}</h2>
         <p class="text-lg text-gray-600"><strong class="text-gray-900">Total Marks:</strong> <span class="text-indigo-600 font-semibold">{{ $totalMarks }}</span></p>
     </div>
 

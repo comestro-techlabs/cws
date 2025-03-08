@@ -74,6 +74,7 @@ class Result extends Component
             'results' => $this->results,
             'totalMarks' => $this->totalMarks,
             'attempt' => $this->attempt,
+            'totalQuestions' => $this->results->count(),
         ]);
     }
 }

@@ -1,10 +1,8 @@
-<div>
-    @php
-        $classes = "text-sm tracking-wide truncate bg-{$bgColor} hover:bg-{$hoverColor} text-white py-1 px-3 rounded-full";
-    @endphp
+@props(['count' => 0])
 
+<div>
     @if ($count > 0)
-        <span class="{{ $classes }}">
+        <span class="inline-flex items-center justify-center px-2 py-0.5 text-xs font-medium text-white bg-purple-700 rounded-full">
             {{ $count }}
         </span>
     @endif

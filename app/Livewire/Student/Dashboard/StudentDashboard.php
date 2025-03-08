@@ -14,6 +14,8 @@ use App\Models\ExamUser;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use App\Livewire\Student\Messages;
+
 
 class StudentDashboard extends Component
 {
@@ -103,12 +105,17 @@ class StudentDashboard extends Component
             $payment->progress = $payment->course_progress ?? 0;
         }
 
-        $readMessages = session('read_messages', []);
-        $this->messages = Message::whereJsonContains('recipients', (string)$studentId)
-            ->whereNotIn('id', $readMessages)
-            ->orderBy('created_at', 'desc')
-            ->take(3)
-            ->get();
+        //$readMessages = session('read_messages', []);
+        // $this->messages = Message::whereJsonContains('recipients', (string)$studentId)
+        //     ->whereNotIn('id', $readMessages)
+        //     ->orderBy('created_at', 'desc')
+        //     ->take(3)
+        //     ->get();
+        $messageComponent = new Messages();
+        $messageComponent->mount();
+        $this->messages = $messageComponent->sortmessages->take(3);
+        $this->unreadCount = $messageComponent->unreadCount;
+            
     }
 
     public function hasCompletedExamOrAssignment($userId)

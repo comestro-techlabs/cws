@@ -1,90 +1,147 @@
 <div>
     <!-- Navbar -->
-    <div class="shadow-2xl w-[85%] ml-[7.5%] flex top-[20px] fixed justify-between items-center mx-auto px-8 py-3 rounded-full backdrop-blur bg-opacity-40 z-50">
+    <div class="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 lg:px-8 py-3">
+        <div class="max-w-7xl mx-auto">
+            <div class="bg-white/80 backdrop-blur-lg rounded-2xl shadow-lg px-4 sm:px-6 py-3 flex items-center justify-between">
+                <!-- Hamburger Menu Button (Mobile) -->
+                <button id="menu-toggle" class="lg:hidden focus:outline-none group">
+                    <div class="relative w-8 h-8 flex items-center justify-center">
+                        <svg class="w-6 h-6 text-gray-700 group-hover:text-blue-600 transition-colors duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </div>
+                </button>
 
-        <!-- Hamburger Menu Button (Only Visible on Small Screens) -->
-        <button id="menu-toggle" class="md:hidden focus:outline-none">
-            <svg class="w-8 h-8 text-gray-800" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-        </button>
-
-        <!-- Logo -->
-        <div class="inline-flex">
-            <a class="_o6689fn" >
-                <div class="hidden md:block">
-                    <a href="{{route('v2.public.homepage')}}" wire:navigate class="flex ms-2 md:me-24">
-                        <img src="{{ asset('assets/LearnSyntax.png') }}" class="h-6 sm:h-8" alt="">
+                <!-- Logo -->
+                <div class="flex-shrink-0">
+                    <a href="{{route('v2.public.homepage')}}" wire:navigate class="flex items-center">
+                        <img src="{{ asset('assets/LearnSyntax.png') }}" class="h-8 sm:h-9" alt="Learn Syntax Logo">
                     </a>
                 </div>
-            </a>
-        </div>
 
+                <!-- Desktop Navigation -->
+                <nav class="hidden lg:flex items-center space-x-1">
+                    <a href="{{route('v2.public.homepage')}}" wire:navigate 
+                        class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 rounded-lg hover:bg-blue-50 transition-colors duration-200">
+                        Home
+                    </a>
+                    <a href="{{route('v2.public.viewallcourses.all-courses')}}" wire:navigate 
+                        class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 rounded-lg hover:bg-blue-50 transition-colors duration-200">
+                        Free Courses
+                    </a>
+                    <a href="{{route('v2.public.viewallcourses.all-courses')}}" wire:navigate 
+                        class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 rounded-lg hover:bg-blue-50 transition-colors duration-200">
+                        Pro Courses
+                    </a>
+                    <a href="{{route('v2.public.workshop')}}" wire:navigate 
+                        class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 rounded-lg hover:bg-blue-50 transition-colors duration-200">
+                        Workshop
+                    </a>
+                </nav>
 
-
-        <!-- Menu Items (Hidden on Small Screens) -->
-        <div class="hidden md:flex space-x-4">
-            <a class="py-2 px-3 hover:bg-gray-200 rounded-full" href="{{route('v2.public.viewallcourses.all-courses')}}" wire:navigate >Paid Courses</a>
-            <a class="py-2 px-3 hover:bg-gray-200 rounded-full" href="{{route('v2.public.viewallcourses.all-courses')}}" wire:navigate >Free Courses</a>
-        </div>
-
-        <!-- Login/Signup (Always Visible) -->
-        <div class="flex md:order-2 space-x-2 md:space-x-1 rtl:space-x-reverse">
-            @auth
-            @if (Auth::user()->isAdmin)
-            <a href="{{ route('admin.dashboard') }}" wire:navigate
-                class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 text-center ">Admin
-                Panel</a>
-            @else
-            <div class="relative inline-block text-left">
-                <div>
-                    <button type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100" id="menu-button" aria-expanded="true" aria-haspopup="true">
-                        {{ Auth::user()->name }}
-                        <svg class="ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" stroke="currentColor" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="dropdown-menu absolute hidden bg-white shadow-lg rounded-md mt-1 w-48 ring-1 ring-black ring-opacity-5 focus:outline-none" aria-labelledby="menu-button">
-                    <div class="py-1">
-                        <a href="{{ route('v2.student.dashboard') }}" wire:navigate class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">My Learning</a>
-                        <a wire:click="logout" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</a>
-                    </div>
+                <!-- Auth Buttons -->
+                <div class="flex items-center space-x-3">
+                    @auth
+                        @if (Auth::user()->isAdmin)
+                            <a href="{{ route('admin.dashboard') }}" wire:navigate
+                                class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                                Admin Panel
+                            </a>
+                        @else
+                            <div class="relative" x-data="{ open: false }">
+                                <button @click="open = !open" @click.away="open = false" 
+                                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
+                                    <span>{{ Auth::user()->name }}</span>
+                                    <svg class="w-5 h-5 ml-2 -mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+                                <div x-show="open" 
+                                    class="absolute right-0 w-48 mt-2 origin-top-right bg-white rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                                    x-transition:enter="transition ease-out duration-100"
+                                    x-transition:enter-start="transform opacity-0 scale-95"
+                                    x-transition:enter-end="transform opacity-100 scale-100"
+                                    x-transition:leave="transition ease-in duration-75"
+                                    x-transition:leave-start="transform opacity-100 scale-100"
+                                    x-transition:leave-end="transform opacity-0 scale-95">
+                                    <div class="py-1">
+                                        <a href="{{ route('v2.student.dashboard') }}" wire:navigate 
+                                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                                            My Learning
+                                        </a>
+                                        <button wire:click="logout" 
+                                            class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                                            Logout
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                    @endauth
+                    @guest
+                        <a href="{{ route('v2.auth.login') }}" wire:navigate 
+                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-600 bg-white border border-blue-600 rounded-lg hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
+                            Login
+                        </a>
+                        <a href="{{ route('v2.auth.register') }}" wire:navigate 
+                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
+                            Join Us
+                        </a>
+                    @endguest
                 </div>
             </div>
-            @endif
-            @endauth
-            @guest
-            <a href="{{ route('v2.auth.login') }}" wire:navigate class="text-primary  md:flex items-center font-light border border-indigo-600 hover:bg-indigo-600 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-sm hover:text-white text-sm px-4  py-2 text-center">Login</a>
-            <a href="{{ route('v2.auth.register') }}" wire:navigate class="text-white md:flex items-center font-light bg-primary hover:bg-primary focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-sm text-sm px-4  py-2 text-center">Join Us</a>
-            @endguest
         </div>
     </div>
 
-    <!-- Sidebar (Hidden by Default) -->
-    <div id="sidebar" class="fixed top-0 left-0 w-64 h-full bg-white shadow-lg transform -translate-x-full transition-transform duration-300 z-50">
-        <button id="close-sidebar" class="absolute top-4 right-4 text-gray-800">
-            ✖
-        </button>
-        <div class="flex flex-col space-y-4 p-4">
-            <a class="py-2 px-3 hover:bg-gray-200 rounded" href="{{route('v2.public.homepage')}}" wire:navigate>Home</a>
-            <a class="py-2 px-3 hover:bg-gray-200 rounded" href="{{route('v2.public.workshop')}}" wire:navigate>Workshop</a>
-            <a class="py-2 px-3 hover:bg-gray-200 rounded" href="" wire:navigate>Free Courses</a>
-            <a class="py-2 px-3 hover:bg-gray-200 rounded" href="{{route('v2.public.viewallcourses.all-courses')}}" wire:navigate>Pro Courses</a>
+    <!-- Mobile Sidebar -->
+    <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-full sm:w-64 bg-white transform -translate-x-full transition-transform duration-300 ease-in-out overflow-y-auto">
+        <div class="p-6">
+            <div class="flex items-center justify-between mb-8">
+                <img src="{{ asset('assets/LearnSyntax.png') }}" class="h-8" alt="Learn Syntax Logo">
+                <button id="close-sidebar" class="text-gray-500 hover:text-gray-700 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <nav class="space-y-2">
+                <a href="{{route('v2.public.homepage')}}" wire:navigate 
+                    class="block px-4 py-2 text-base font-medium text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200">
+                    Home
+                </a>
+                <a href="{{route('v2.public.viewallcourses.all-courses')}}" wire:navigate 
+                    class="block px-4 py-2 text-base font-medium text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200">
+                    Free Courses
+                </a>
+                <a href="{{route('v2.public.viewallcourses.all-courses')}}" wire:navigate 
+                    class="block px-4 py-2 text-base font-medium text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200">
+                    Pro Courses
+                </a>
+                <a href="{{route('v2.public.workshop')}}" wire:navigate 
+                    class="block px-4 py-2 text-base font-medium text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200">
+                    Workshop
+                </a>
+            </nav>
         </div>
     </div>
 
-    <!-- JavaScript for Sidebar Toggle -->
+    <!-- AlpineJS for Dropdown -->
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- Sidebar Toggle Script -->
     <script>
-        document.getElementById("menu-toggle").addEventListener("click", function() {
-            document.getElementById("sidebar").classList.remove("-translate-x-full");
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.remove('-translate-x-full');
+            document.body.style.overflow = 'hidden';
         });
 
-        document.getElementById("close-sidebar").addEventListener("click", function() {
-            document.getElementById("sidebar").classList.add("-translate-x-full");
+        document.getElementById('close-sidebar').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.add('-translate-x-full');
+            document.body.style.overflow = '';
         });
     </script>
-
-
 </div>

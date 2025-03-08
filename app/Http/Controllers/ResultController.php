@@ -133,7 +133,7 @@ public function index($userId)
     $examName = $examUser ? $examUser->exam->exam_name : 'N/A';
 
     $maxAssignmentMarks = 100;
-    $maxExamMarks = 20;
+    $maxExamMarks = 10;
 
   
     $assignmentPercentage = ($assignmentTotal / $maxAssignmentMarks) * 100;

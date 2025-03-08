@@ -58,14 +58,14 @@
                     This certificate is awarded to  <strong class="text-black">{{ $user->name }}</strong> for achieving a score of 
                     <strong class="text-black">{{ number_format($percentage, 2) }}%</strong> 
                     in recognition of their performance in the final examination, viva voce, and project evaluation for the course titled 
-                    <strong class="text-black">{{ $examName }}</strong>, conducted by <strong>Comestro Techlabs Pvt Ltd.</strong>
+                    <strong class="text-black">course_title</strong>, conducted by <strong>Comestro Techlabs Pvt Ltd.</strong>
                 </p>
             </div>
 
 
           
             <div class="absolute top-[330px]  right-[-75px]  transform rotate-90 text-gray-800 font-semibold text-lg tracking-wider">
-                Certificate No: LS/DBMS/{{ $year }}/0077
+                Certificate No: LS/course_code/{{ $year }}/0077
             </div> 
 
             <div class="absolute bottom-[25px] left-[510px]">
