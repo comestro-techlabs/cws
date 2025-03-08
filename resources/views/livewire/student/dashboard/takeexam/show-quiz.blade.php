@@ -129,38 +129,8 @@
                 console.warn('Zoom level changed:', currentZoom);
                 alert('Warning: Zooming is not allowed during the exam.');
                 document.body.style.zoom = `${initialZoomLevel * 100}%`;
-                blockKeyboardAndTabSwitching();
             }
         });
-
-        function blockKeyboardAndTabSwitching() {
-            // Block common keyboard shortcuts
-            document.addEventListener('keydown', preventDefaultKeyActions, { passive: false });
-            window.addEventListener('keydown', preventDefaultKeyActions, { passive: false });
-            window.addEventListener('blur', preventFocusChange, true); // Block focus change on blur (alt-tab, window switching)
-
-            // Block window focus change (Alt+Tab, Window+Tab)
-            function preventFocusChange(event) {
-                event.preventDefault();
-                event.stopImmediatePropagation();
-                return false;
-            }
-
-            function preventDefaultKeyActions(e) {
-                // List of key combinations to prevent
-                const blockedKeys = [
-                    'Alt', 'Tab', 'Control', 'Shift', 'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12',
-                    'Escape', 'Window', 'd'
-                ];
-                
-                // If one of the blocked keys or key combinations is pressed
-                if (e.key && blockedKeys.includes(e.key) || e.keyCode === 9 || e.keyCode === 91) { // 9 -> Tab, 91 -> Windows key
-                    e.preventDefault();
-                    e.stopImmediatePropagation();
-                    console.log('Blocked key or tab switch');
-                }
-            }
-        }
 
         function updateNavButtonStatus(index) {
             const button = navButtons[index];
@@ -225,6 +195,19 @@
             }
         });
 
+        function submitQuiz() {
+            if (isSubmitting) {
+                console.log('Submission already in progress, ignoring.');
+                return;
+            }
+            isSubmitting = true;
+            examCompleted = true;
+            console.log('Submitting quiz...');
+            Livewire.dispatch('submitQuiz'); // Dispatch Livewire event
+            submitBtn.disabled = true; // Disable button to prevent further clicks
+            alert('Exam submitted successfully!');
+        }
+
         // Debounced tab switch handler
         let tabSwitchTimeout;
         document.addEventListener('visibilitychange', () => {
@@ -238,21 +221,14 @@
                         alert('Too many tab switches. Submitting exam now.');
                         submitQuiz();
                     }
-                }, 300); // Debounce by 300ms to avoid rapid-fire events
+                }, 300); // Debounce by 300ms
             }
         });
 
-        window.onbeforeunload = () => examCompleted ? null : 'Are you sure you want to leave the exam?';
+        window.onbeforeunload = () => (examCompleted || isSubmitting) ? null : 'Are you sure you want to leave the exam?';
 
-        function submitQuiz() {
-            if (isSubmitting) return; // Prevent multiple submissions
-            isSubmitting = true;
-            examCompleted = true;
-            console.log('Submitting quiz...');
-            Livewire.dispatch('submitQuiz');
-        }
-
-        submitBtn.addEventListener('click', () => {
+        submitBtn.addEventListener('click', (e) => {
+            e.preventDefault(); // Prevent any default form submission
             if (!isSubmitting && confirm('Are you sure you want to submit the exam?')) {
                 submitQuiz();
             }
