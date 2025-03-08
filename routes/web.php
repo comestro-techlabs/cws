@@ -28,7 +28,6 @@ use App\Livewire\Admin\Assignment\AssignmentReview;
 use App\Livewire\Admin\Assignment\SingleViewAssignment;
 
 use App\Livewire\Admin\Dashboad;
-use App\Livewire\Admin\ManagePayment;
 use App\Livewire\Admin\ManageEnquiry;
 use App\Livewire\Admin\Student\ManageStudent;
 use App\Livewire\Student\Dashboard\Takeexam\Result;
@@ -75,6 +74,8 @@ use App\Livewire\Admin\Result\ShowExams;
 use App\Livewire\Admin\Result\ShowExamUser;
 use App\Livewire\Admin\Result\AttemptResults;
 use App\Livewire\Admin\Result\AttemptDetails;
+use App\Livewire\Admin\Result\ManageResult;
+
 use App\Livewire\Admin\Student\AttendanceScanner;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
@@ -93,7 +94,7 @@ use App\Livewire\Student\Dashboard\StudentDashboard;
 use App\Livewire\Student\Dashboard\Takeexam\Exam;
 // v3
 use App\Livewire\V3\Public\NewHome;
-use App\Models\Portfolio;
+
 
 Route::prefix("student")->group(function () {
     Route::controller(StudentController::class)->group(function () {
@@ -307,10 +308,9 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/quiz/{examId}/questions', ManageQuiz::class)->name(name: 'admin.quiz');
 
         //result routes
-        Route::get('/results/exams', ShowExams::class)->name('admin.results.exams');
-        Route::get('/results/exam-user/{examId}', ShowExamUser::class)->name('admin.results.exam-user');
-        Route::get('/results/attempts/{examId}/{userId}', AttemptResults::class)->name('admin.results.attempts');
-        Route::get('/results/attempt-details/{examId}/{userId}/{attempt}', AttemptDetails::class)->name('admin.results.attempt-details');
+       
+        Route::get('/results', ManageResult::class)->name('results');
+
 
         // Assignment Routes
         Route::get('/assignment', CreateAssignment::class)->name('admin.assignment');
@@ -324,6 +324,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/assignments/review/{slug}', AssignmentReview::class)->name('assignment.review'); //u
        
         Route::get('/assignments/review-work/{id}', ReviewWork::class)->name('assignment.reviewWork');//u
+
         // Workshop Routes
         Route::get('/workshops', ManageWorkshop::class)->name('admin.workshops.index');
 
@@ -342,8 +343,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/certificate', CertificateEligibility::class)->name('admin.certificate');
         //enquiry
         Route::get('/enquiry', ManageEnquiry::class)->name('admin.manage.enquiry');
-        // payment
-        Route::get('/payment', ManagePayment::class)->name('admin.paymnet-manage');
+        
 
         //blog
         Route::get("/blog/post-course", PostCourse::class)->name('admin.blog.post-course');
