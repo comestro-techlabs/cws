@@ -179,6 +179,23 @@
                 </div>
             </a>
         </li>
+        <li>
+            <a wire:navigate href="{{ route('results') }}"
+                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 w-full">
+                <span class="inline-flex justify-center items-center ml-4">
+                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M4.5 3h15a1.5 1.5 0 011.5 1.5v15a1.5 1.5 0 01-1.5 1.5h-15a1.5 1.5 0 01-1.5-1.5v-15A1.5 1.5 0 014.5 3z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 8.25h6M9 12h6M9 15.75h3" />
+                    </svg>
+                </span>
+                <div class="flex justify-between items-center w-full">
+                    <span class="ml-2 text-sm tracking-wide truncate">Manage Result</span>
+                    
+                </div>
+            </a>
+        </li>
 
         <li>
             <a wire:navigate href="{{ route('admin.workshops.index') }}"
@@ -204,23 +221,7 @@
                 <div class="text-sm font-semibold tracking-wide text-purple-700">Notifications</div>
             </div>
         </li>
-        <li>
-            <a wire:navigate href="{{ route('admin.paymnet-manage') }}"
-                class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-purple-50 text-gray-600 hover:text-purple-700 border-l-4 border-transparent hover:border-purple-700 pr-6 transition duration-200">
-                <span class="inline-flex justify-center items-center ml-4">
-                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                        stroke-width="1.5" stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M15 8.25H9m6 3H9m3 6-3-3h1.5a3 3 0 1 0 0-6M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                    </svg>
-
-                </span>
-                <div class="flex justify-between items-center w-full">
-                    <span class="ml-2 text-sm font-medium tracking-wide truncate">Payment</span>
-                    <x-admin.count :count="$paymentCount"/>
-                </div>
-            </a>
-        </li>
+        
         <li>
             <a wire:navigate href="{{ route('admin.message.index') }}"
                 class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-purple-50 text-gray-600 hover:text-purple-700 border-l-4 border-transparent hover:border-purple-700 pr-6 transition duration-200">

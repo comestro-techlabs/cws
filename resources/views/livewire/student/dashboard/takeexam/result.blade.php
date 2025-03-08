@@ -66,75 +66,28 @@
             </div>
         </div>
 
-        <!-- Detailed Feedback Section -->
-        <div class="bg-white border border-gray-200 rounded-lg p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">Feedback & Recommendations</h3>
-            
-            <div class="border-l-4 border-blue-500 pl-4 py-2 mb-4">
-                @if ($attempt == 1)
-                    <p class="text-gray-700">
-                        <span class="font-medium">First attempt completed.</span> 
-                        @if ($totalMarks >= 70)
-                            Great job on passing your first attempt! You can still take your second attempt to improve your score.
-                        @else
-                            You have one more attempt available. Review your answers and try again to improve your score.
-                        @endif
-                    </p>
-                @else
-                    <p class="text-gray-700">
-                        <span class="font-medium">Final attempt completed.</span> 
-                        @if ($totalMarks >= 70)
-                            Congratulations on passing the quiz! Continue to the next section of your course.
-                        @else
-                            We recommend reviewing the course material again before moving forward.
-                        @endif
-                    </p>
-                @endif
-            </div>
-            
-            <!-- Study Recommendations -->
-            <div class="mt-6">
-                <h4 class="text-sm font-medium text-gray-900 mb-3">Study Recommendations</h4>
-                <ul class="space-y-2">
-                    <li class="flex items-start">
-                        <svg class="h-5 w-5 text-blue-500 mr-2 mt-0.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                        </svg>
-                        <span class="text-gray-700">Review course materials for any topics you struggled with</span>
-                    </li>
-                    <li class="flex items-start">
-                        <svg class="h-5 w-5 text-blue-500 mr-2 mt-0.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                        <span class="text-gray-700">Schedule time to practice with additional exercises</span>
-                    </li>
-                    <li class="flex items-start">
-                        <svg class="h-5 w-5 text-blue-500 mr-2 mt-0.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
-                        </svg>
-                        <span class="text-gray-700">Reach out to your instructor if you have specific questions</span>
-                    </li>
-                </ul>
-            </div>
-            
-            <!-- Action Buttons -->
-            <div class="mt-8 flex flex-col sm:flex-row sm:space-x-4">
-                @if ($attempt == 1)
-                    <a href="{{ route('v2.student.quiz', ['courseId' => request()->route('courseId')]) }}" class="w-full sm:w-auto mb-3 sm:mb-0 inline-flex justify-center items-center px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                        </svg>
-                        Take Second Attempt
-                    </a>
-                @endif
-                
-                <a href="{{ route('v2.student.allAttempts', request()->route('courseId')) }}" class="w-full sm:w-auto inline-flex justify-center items-center px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                    </svg>
-                    View All Attempts
-                </a>
-            </div>
+    <!-- Header Section -->
+    <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+        <h2 class="text-3xl font-bold text-gray-800 mb-2">Result for Attempt {{ $attempt }}</h2>
+        <h2 class="text-3xl font-bold text-gray-800 mb-2">Total Question {{ $totalQuestions }}</h2>
+        <p class="text-lg text-gray-600"><strong class="text-gray-900">Total Marks:</strong> <span class="text-indigo-600 font-semibold">{{ $totalMarks }}</span></p>
+    </div>
+
+    <!-- Detailed Feedback Section -->
+    <div class="bg-white rounded-xl shadow-lg p-6">
+        <h4 class="text-xl font-semibold text-gray-800 mb-4">Detailed Feedback</h4>
+        <div class="p-4 bg-gray-50 rounded-lg border-l-4 border-indigo-500">
+            @if ($attempt == 1)
+                <p class="text-lg text-gray-700">
+                    <strong class="text-indigo-600">Your first attempt was evaluated.</strong> 
+                    <span class="text-gray-500">Good luck on your second attempt!</span>
+                </p>
+            @else
+                <p class="text-lg text-gray-700">
+                    <strong class="text-indigo-600">We recommend reviewing your results.</strong> 
+                    <span class="text-gray-500">Please check for any improvement areas.</span>
+                </p>
+            @endif
         </div>
     </div>
 </div>
