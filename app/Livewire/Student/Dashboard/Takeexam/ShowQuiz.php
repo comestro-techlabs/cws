@@ -6,6 +6,7 @@ use App\Models\ExamUser;
 use App\Models\Quiz;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 #[Layout('components.layouts.student')]
@@ -15,7 +16,10 @@ class ShowQuiz extends Component
     public $quizzes = null;
     public $courseId = null;
     public $examId = null;
-    public $selectedOptions = [];
+    public $selectedOptions = []; // Holds user-selected answers
+    public $obtainedMarks = null;
+    public $totalMarks = null;
+    public $submitted = false;
 
     public function mount($courseId)
     {
@@ -43,7 +47,6 @@ class ShowQuiz extends Component
             return redirect()->route('v2.student.quiz')->with('error', 'Course not found or no active exams available.');
         }
 
-        // Set examId from the first active exam
         $this->examId = $this->courses->exams->first()->id;
 
         $attempt = ExamUser::where('user_id', $user->id)
@@ -63,39 +66,30 @@ class ShowQuiz extends Component
             ->shuffle()
             ->take(10)
             ->values();
+
+        $this->totalMarks = $this->quizzes->sum('marks');
     }
 
+    // ***** HANDLES FORM SUBMISSION FROM JAVASCRIPT *****
+    #[On('submitQuiz')]
     public function storeAnswer()
     {
         if (!Auth::check()) {
-            return redirect()->route('auth.login');
+            return redirect()->route('auth.login')->with('error', 'You must be logged in to access this page');
         }
 
-        $user = Auth::user();
-        $totalMarks = 0;
-        $obtainedMarks = 0;
+        $this->totalMarks = 0; // Maximum possible marks
+        $this->obtainedMarks = 0; // User's score
 
-        // Ensure examId is set before proceeding
-        if (!$this->examId) {
-            // Fallback: Fetch the first active exam for the course if not set
-            $this->showquiz($this->courseId); // Re-run showquiz to set examId
-            if (!$this->examId) {
-                return redirect()->route('v2.student.quiz')->with('error', 'No valid exam found for this course.');
-            }
-        }
-
-        $examUser = ExamUser::where('user_id', $user->id)
+        $examUser = ExamUser::where('user_id', Auth::id())
             ->where('exam_id', $this->examId)
             ->first();
 
         if ($examUser) {
-            if ($examUser->attempts >= 2) {
-                return redirect()->route('v2.student.quiz')->with('error', 'Maximum attempts reached.');
-            }
             $examUser->attempts += 1;
         } else {
             $examUser = ExamUser::create([
-                'user_id' => $user->id,
+                'user_id' => Auth::id(),
                 'exam_id' => $this->examId,
                 'attempts' => 1,
             ]);
@@ -108,35 +102,40 @@ class ShowQuiz extends Component
                 $quiz = Quiz::find($quizId);
 
                 if ($quiz) {
-                    $totalMarks += $quiz->marks;
-                    $isCorrect = $selectedOption === $quiz->correct_answer;
-                    $marks = $isCorrect ? $quiz->marks : 0;
-                    $obtainedMarks += $marks;
+                    $this->totalMarks += $quiz->marks;
+
+                    if ($selectedOption == $quiz->correct_answer) {
+                        $this->obtainedMarks += $quiz->marks;
+                    }
 
                     Answer::create([
-                        'user_id' => $user->id,
+                        'user_id' => Auth::id(),
                         'quiz_id' => $quizId,
                         'exam_id' => $this->examId,
                         'selected_option' => $selectedOption,
-                        'obtained_marks' => $marks,
+                        'obtained_marks' => ($selectedOption == $quiz->correct_answer) ? $quiz->marks : 0,
                         'attempt' => $currentAttempt,
                     ]);
                 }
             }
 
-            $examUser->total_marks = $obtainedMarks;
+            $examUser->total_marks = $this->obtainedMarks; // Store user's score
             $examUser->save();
 
-            session()->flash('obtained_marks', $obtainedMarks);
+            session()->flash('obtained_marks', $this->obtainedMarks);
             session()->flash('exam_id', $this->examId);
-
-            return redirect()->route('v2.student.examResult', $this->examId)->with('success', 'Answers submitted successfully!');
+        } else {
+            // If no answers are submitted (e.g., due to tab-switching), save with 0 marks
+            $examUser->total_marks = 0;
+            $examUser->save();
         }
 
-        $examUser->total_marks = 0;
-        $examUser->save();
+        $this->submitted = true;
 
-        return redirect()->route('v2.student.examResult', $this->examId)->with('success', 'No answers submitted, attempt recorded.');
+        return redirect()->route('v2.student.examResult', $this->examId)->with([
+            'success' => 'Answer submitted successfully!',
+            'exam_id' => $this->examId,
+        ]);
     }
 
     public function render()
@@ -147,6 +146,7 @@ class ShowQuiz extends Component
         return view('livewire.student.dashboard.takeexam.show-quiz', [
             'courses' => $this->courses,
             'quizzes' => $this->quizzes ?? collect(),
+            'totalMarks' => $this->totalMarks,
         ]);
     }
 }

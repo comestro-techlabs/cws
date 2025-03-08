@@ -82,7 +82,7 @@ class ManageTopic extends Component
 
         $this->closeModal();
         session()->flash('message', 'Topic updated successfully.');
-    }
+    } 
 
     public function delete($id)
     {

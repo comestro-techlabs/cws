@@ -1,5 +1,5 @@
 <div>
-    <button id="fullscreen-btn" class="bg-gray-800 text-white p-2 rounded-lg fixed top-18 right-4 z-50">
+    <button id="fullscreen-btn" class="bg-gray-800 text-white mt-5 p-2 rounded-lg fixed top-18 right-4 z-50">
         Fullscreen
     </button>
 
@@ -34,16 +34,19 @@
                                         <p class="text-gray-700">{{ $quiz->question }}</p>
                                     </div>
                                     @for ($i = 1; $i <= 4; $i++)
-                                        <div class="mb-2">
-                                            <input type="radio" id="option{{ $i }}-{{ $quiz->id }}"
-                                                   name="selected_option[{{ $quiz->id }}]"
-                                                   value="option{{ $i }}" class="hidden peer quiz-option">
-                                            <label for="option{{ $i }}-{{ $quiz->id }}"
-                                                   class="inline-flex items-center gap-3 w-full px-4 py-2 text-sm font-medium border rounded-lg cursor-pointer bg-gray-50 border-gray-300 peer-checked:bg-blue-500 peer-checked:text-white">
-                                                {{ $quiz->{'option' . $i} ?? 'N/A' }}
-                                            </label>
-                                        </div>
-                                    @endfor
+                                    <div class="mb-2">
+                                        <input type="radio" 
+                                            id="option{{ $i }}-{{ $quiz->id }}"
+                                            name="selectedOptions[{{ $quiz->id }}]"
+                                            value="option{{ $i }}"
+                                            wire:model="selectedOptions.{{ $quiz->id }}"
+                                            class="hidden peer quiz-option">
+                                        <label for="option{{ $i }}-{{ $quiz->id }}"
+                                            class="inline-flex items-center gap-3 w-full px-4 py-2 text-sm font-medium border rounded-lg cursor-pointer bg-gray-50 border-gray-300 peer-checked:bg-blue-500 peer-checked:text-white">
+                                            {{ $quiz->{'option' . $i} ?? 'N/A' }}
+                                        </label>
+                                    </div>
+                                @endfor
                                 </div>
                             @endforeach
                         @else
@@ -65,9 +68,7 @@
     </div>
 </div>
 <script>
-    // Function to initialize quiz functionality
     function initializeQuiz() {
-
         const fullscreenBtn = document.getElementById('fullscreen-btn');
         const quizzesContainer = document.getElementById('quizzes');
         const questions = document.querySelectorAll('.quiz-question');
@@ -80,112 +81,68 @@
         let currentQuestionIndex = 0;
         let tabSwitchCount = 0;
         let examCompleted = false;
+        let isSubmitting = false; // Prevent multiple submissions
+        let initialZoomLevel = window.devicePixelRatio || 1;
 
-        // Check if critical elements are available
-        if (!fullscreenBtn || !quizzesContainer) {
-            console.error('Fullscreen button or quizzes container not found yet.');
-            return false; // Signal initialization failed
+        if (!fullscreenBtn || !quizzesContainer || !quizForm) {
+            console.error('Critical elements not found.');
+            return false;
         }
 
-        console.log('Elements found, setting up quiz...');
+        console.log('Quiz elements found, initializing...');
 
-        // Initially hide quiz content and disable navigation
         quizzesContainer.style.display = 'none';
         navButtons.forEach(button => {
             button.setAttribute('disabled', 'true');
             button.classList.add('disabled');
         });
 
-        // Fullscreen toggle functionality
         fullscreenBtn.addEventListener('click', () => {
-            console.log('Fullscreen button clicked');
             if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().then(() => {
-                    console.log('Fullscreen enabled successfully');
-                }).catch(err => {
-                    console.error(`Failed to enable fullscreen: ${err.message}`);
-                });
+                document.documentElement.requestFullscreen()
+                    .then(() => console.log('Fullscreen enabled'))
+                    .catch(err => console.error(`Failed to enable fullscreen: ${err.message}`));
             } else {
-                document.exitFullscreen().then(() => {
-                    console.log('Fullscreen exited successfully');
-                }).catch(err => {
-                    console.error(`Failed to exit fullscreen: ${err.message}`);
-                });
+                document.exitFullscreen()
+                    .then(() => console.log('Fullscreen exited'))
+                    .catch(err => console.error(`Failed to exit fullscreen: ${err.message}`));
             }
         });
 
-        // Handle fullscreen change
         document.addEventListener('fullscreenchange', () => {
-            console.log('Fullscreen state changed:', !!document.fullscreenElement);
-            if (document.fullscreenElement) {
-                quizzesContainer.style.display = 'block';
-                navButtons.forEach(button => {
-                    button.removeAttribute('disabled');
-                    button.classList.remove('disabled');
-                });
-                if (questions.length > 0 && questions[currentQuestionIndex].classList.contains('hidden')) {
-                    questions[currentQuestionIndex].classList.remove('hidden');
-                }
-                toggleButtonsVisibility();
-            } else {
-                quizzesContainer.style.display = 'none';
-                navButtons.forEach(button => {
-                    button.setAttribute('disabled', 'true');
-                    button.classList.add('disabled');
-                });
-            }
-        });
-
-        // Check initial fullscreen state
-        if (document.fullscreenElement) {
-            console.log('Page loaded in fullscreen mode');
-            quizzesContainer.style.display = 'block';
+            const isFullscreen = !!document.fullscreenElement;
+            console.log('Fullscreen state:', isFullscreen);
+            quizzesContainer.style.display = isFullscreen ? 'block' : 'none';
             navButtons.forEach(button => {
-                button.removeAttribute('disabled');
-                button.classList.remove('disabled');
+                button.toggleAttribute('disabled', !isFullscreen);
+                button.classList.toggle('disabled', !isFullscreen);
             });
-            if (questions.length > 0) {
+            if (isFullscreen && questions.length > 0) {
                 questions[currentQuestionIndex].classList.remove('hidden');
-            }
-            toggleButtonsVisibility();
-        }
-
-        // Ensure the fullscreen state is correct when the page is refreshed
-        document.addEventListener('DOMContentLoaded', () => {
-            if (document.fullscreenElement) {
-                quizzesContainer.style.display = 'block';
-                navButtons.forEach(button => {
-                    button.removeAttribute('disabled');
-                    button.classList.remove('disabled');
-                });
-                if (questions.length > 0) {
-                    questions[currentQuestionIndex].classList.remove('hidden');
-                }
                 toggleButtonsVisibility();
-            } else {
-                quizzesContainer.style.display = 'none';
-                navButtons.forEach(button => {
-                    button.setAttribute('disabled', 'true');
-                    button.classList.add('disabled');
-                });
             }
         });
 
-        // Navigation and quiz logic (unchanged from previous)
+        window.addEventListener('resize', () => {
+            const currentZoom = window.devicePixelRatio || 1;
+            if (Math.abs(currentZoom - initialZoomLevel) > 0.1 && !examCompleted) {
+                console.warn('Zoom level changed:', currentZoom);
+                alert('Warning: Zooming is not allowed during the exam.');
+                document.body.style.zoom = `${initialZoomLevel * 100}%`;
+            }
+        });
+
         function updateNavButtonStatus(index) {
             const button = navButtons[index];
             const answered = isQuestionAnswered(index);
-            if (answered) {
-                button.classList.add('bg-green-500', 'text-white');
-                button.classList.remove('bg-gray-50', 'bg-red-500');
-            } else {
-                button.classList.add('bg-red-500', 'text-white');
-                button.classList.remove('bg-gray-50', 'bg-green-500');
-            }
+            button.classList.toggle('bg-green-500', answered);
+            button.classList.toggle('bg-red-500', !answered);
+            button.classList.toggle('text-white', true);
+            button.classList.remove('bg-gray-50');
         }
 
         function isQuestionAnswered(index) {
-            return questions[index].querySelector('input[type="radio"]:checked') !== null;
+            return !!questions[index].querySelector('input[type="radio"]:checked');
         }
 
         function toggleButtonsVisibility() {
@@ -194,9 +151,9 @@
             submitBtn.classList.toggle('hidden', currentQuestionIndex < questions.length - 1);
         }
 
-        document.addEventListener('cut', e => e.preventDefault());
-        document.addEventListener('copy', e => e.preventDefault());
-        document.addEventListener('paste', e => e.preventDefault());
+        ['cut', 'copy', 'paste'].forEach(event => {
+            document.addEventListener(event, e => e.preventDefault());
+        });
 
         options.forEach(option => {
             option.addEventListener('change', () => {
@@ -238,58 +195,67 @@
             }
         });
 
+        function submitQuiz() {
+            if (isSubmitting) {
+                console.log('Submission already in progress, ignoring.');
+                return;
+            }
+            isSubmitting = true;
+            examCompleted = true;
+            console.log('Submitting quiz...');
+            Livewire.dispatch('submitQuiz'); // Dispatch Livewire event
+            submitBtn.disabled = true; // Disable button to prevent further clicks
+            alert('Exam submitted successfully!');
+        }
+
+        // Debounced tab switch handler
+        let tabSwitchTimeout;
         document.addEventListener('visibilitychange', () => {
-            if (document.hidden && !examCompleted) {
+            if (document.hidden && !examCompleted && !isSubmitting) {
                 tabSwitchCount++;
-                if (tabSwitchCount < 2) {
-                    alert('Warning: Do not switch tabs during the exam.');
-                } else {
-                    alert('You have switched tabs too many times. The exam will be submitted now.');
-                    examCompleted = true;
-                    quizForm.submit();
-                }
+                clearTimeout(tabSwitchTimeout);
+                tabSwitchTimeout = setTimeout(() => {
+                    if (tabSwitchCount === 1) {
+                        alert('Warning: Do not switch tabs during the exam.');
+                    } else if (tabSwitchCount >= 2) {
+                        alert('Too many tab switches. Submitting exam now.');
+                        submitQuiz();
+                    }
+                }, 300); // Debounce by 300ms
             }
         });
 
-        window.onbeforeunload = () => {
-            if (!examCompleted) {
-                return "You are in the middle of the exam. Are you sure you want to leave?";
-            }
-        };
+        window.onbeforeunload = () => (examCompleted || isSubmitting) ? null : 'Are you sure you want to leave the exam?';
 
-        submitBtn.addEventListener('click', () => {
-            examCompleted = true;
-            alert("You have completed the exam.");
+        submitBtn.addEventListener('click', (e) => {
+            e.preventDefault(); // Prevent any default form submission
+            if (!isSubmitting && confirm('Are you sure you want to submit the exam?')) {
+                submitQuiz();
+            }
         });
 
         toggleButtonsVisibility();
-        return true; // Signal initialization succeeded
+        return true;
     }
 
-    // Poll until elements are ready or Livewire initializes
     function waitForElements() {
-        const maxAttempts = 10;
+        const maxAttempts = 2;
         let attempts = 0;
 
         const interval = setInterval(() => {
             attempts++;
             console.log(`Attempt ${attempts} to initialize quiz...`);
-
             if (initializeQuiz()) {
                 clearInterval(interval);
                 console.log('Quiz initialized successfully');
             } else if (attempts >= maxAttempts) {
                 clearInterval(interval);
-                console.error('Failed to initialize quiz after max attempts. Elements not found.');
+                console.error('Failed to initialize quiz after max attempts.');
             }
-        }, 500); // Check every 500ms
+        }, 500);
     }
 
-    document.addEventListener('livewire:init', () => {
-        setTimeout(() => initializeQuiz(), 100);
-    });
-
-    document.addEventListener('livewire:navigated', () => {
-        setTimeout(() => initializeQuiz(), 100);
-    });
+    document.addEventListener('livewire:init', () => setTimeout(initializeQuiz, 100));
+    document.addEventListener('livewire:navigated', () => setTimeout(initializeQuiz, 100));
+    document.addEventListener('DOMContentLoaded', waitForElements);
 </script>

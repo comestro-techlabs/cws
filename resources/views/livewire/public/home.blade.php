@@ -1,317 +1,238 @@
 <div>
-    <div class="">
-        <div class="flex flex-col items-center mt-10 md:mt-12 text-center px-5 md:px-[10%]">
-            <h2 class="text-2xl md:text-5xl text-gray-900 font-sans font-extrabold mb-4 tracking-tight">Our <span
-                    class="text-primary">Courses</span></h2>
-            <p class="mt-3 mb-6 text-xl leading-7 text-gray-600 dark:text-gray-400 sm:mt-4">
-                Discover curated courses that blend industry insights with practical knowledge.
-            </p>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:mb-20 mb-10 px-4 lg:px-32">
-            @foreach ($courses as $item)
-
-            <div class=" flex items-center justify-center flex-1 p-4">
-                <div
-                    class="max-w-sm w-full bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all">
-                    <div>
-                        <img src="{{ asset('storage/course_images/' . $item->course_image) }}" alt="Course Image"
+    <!-- Course Section -->
+    <div class="pt-24 pb-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h2 class="text-3xl sm:text-4xl font-bold text-gray-900">Our <span class="text-[#662d91]">Courses</span></h2>
+                <p class="mt-4 text-xl text-gray-600 max-w-2xl mx-auto">
+                    Discover curated courses that blend industry insights with practical knowledge.
+                </p>
+            </div>
+            
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                @foreach ($courses as $item)
+                <div class="flex flex-col bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
+                    <div class="relative">
+                        <img src="{{ asset('storage/course_images/' . $item->course_image) }}" alt="{{ $item->title }}"
                             class="w-full h-52 object-cover" />
+                        <div class="absolute top-4 right-4 flex items-center space-x-1">
+                            <div class="px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-sm font-medium text-[#662d91] flex items-center">
+                                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                </svg>
+                                5.0
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="p-5 space-y-4">
+                    <div class="flex-1 p-6 space-y-4">
                         <div>
-                            <h3 class="text-xl font-bold text-gray-900">{{ $item->title }}</h3>
-                            <p class="text-gray-500 mt-1">{{ Str::limit($item->description, 122) }}</p>
-                            <p class="font-bold text-gray-400 mt-1">Duration: {{ $item->duration }} Weeks</p>
+                            <h3 class="text-xl font-bold text-gray-900 line-clamp-1">{{ $item->title }}</h3>
+                            <p class="mt-2 text-gray-600 line-clamp-2">{{ $item->description }}</p>
                         </div>
 
-                        <div class="flex justify-between items-center">
-
-
-                            <div class="space-y-1">
-                                @if ($item->discounted_fees > 0)
-                                <p class="text-2xl font-bold text-gray-900">Rs {{ $item->discounted_fees }}</p>
-                                <p class="text-sm text-gray-500 line-through">Rs {{ $item->fees }}</p>
-                                @else
-                                <p class="text-green-500 font-bold">Free</p>
-                                @endif
+                        <div class="space-y-4">
+                            <div class="flex items-center text-sm text-gray-500">
+                                <svg class="w-5 h-5 mr-2 text-[#662d91]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                {{ $item->duration }} Weeks
                             </div>
 
-                            <div class="flex items-center gap-1">
-                                <div class="text-yellow-400">★★★★★</div>
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    @if ($item->discounted_fees > 0)
+                                        <p class="text-2xl font-bold text-gray-900">₹{{ $item->discounted_fees }}</p>
+                                        <p class="text-sm text-gray-500 line-through">₹{{ $item->fees }}</p>
+                                    @else
+                                        <p class="text-lg font-bold text-green-600">Free</p>
+                                    @endif
+                                </div>
                             </div>
-                        </div>
-                        <a href="{{route('v2.public.courseDetail', ['slug' => $item->slug])}}" wire:navigate>
-                            <button
-                                class="w-full mt-2 bg-primary hover:bg-indigo-700 text-white font-medium py-3 rounded-lg transition-colors">
+
+                            <a href="{{route('v2.public.courseDetail', ['slug' => $item->slug])}}" wire:navigate
+                                class="block w-full px-4 py-3 text-center font-medium text-white bg-[#662d91] rounded-lg hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors duration-200">
                                 Enroll Now
-                            </button>
-                        </a>
+                            </a>
+                        </div>
                     </div>
                 </div>
+                @endforeach
             </div>
 
-            @endforeach
-        </div>
-        ￼
-
-        <div class="flex justify-center items-center">
-
-            <div class="bg-primary flex items-center py-3 px-6 rounded-lg shadow gap-2 md:mb-20 mb-10">
+            <div class="mt-12 text-center">
                 <a href="{{route('v2.public.viewallcourses.all-courses')}}" wire:navigate
-                    class=" text-white font-bold ">
+                    class="inline-flex items-center px-6 py-3 text-base font-medium text-white bg-[#662d91] rounded-lg hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors duration-200">
                     View All Courses
+                    <svg class="ml-2 -mr-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                    </svg>
                 </a>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-arrow-right"
-                    viewBox="0 0 16 16">
-                    <path fill-rule="evenodd"
-                        d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8" />
-                </svg>
             </div>
         </div>
-
     </div>
 
-    {{-- {{static info}} --}}
-    <div class="bg-gradient-to-r from-purple-50 via-purple-300 to-purple-100  py-12">
-        <div class="dark:bg-gray-900 ">
-            <div
-                class="pt-12 bg-gray-50 dark:bg-gray-900 sm:pt-20 bg-gradient-to-r from-purple-50 via-purple-300 to-purple-100">
-                <div class="max-w-screen-xl px-4 mx-auto sm:px-6 lg:px-8 ">
-                    <div class="max-w-4xl mx-auto text-center">
-                        <h2
-                            class="text-3xl font-extrabold leading-9 text-gray-900 dark:text-white sm:text-4xl sm:leading-10">
-                            Why we’re a Top <span class="text-primary">Software Development</span> Company
-                        </h2>
+    <!-- Categories Section -->
+    <div class="bg-gradient-to-b from-gray-50 to-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h2 class="text-3xl sm:text-4xl font-bold text-gray-900">Popular Course <span class="text-[#662d91]">Categories</span></h2>
+                <p class="mt-4 text-xl text-gray-600 max-w-2xl mx-auto">
+                    Find the perfect path for your programming journey
+                </p>
+            </div>
 
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-white rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-all duration-300">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-purple-100 mb-6">
+                        <svg class="w-8 h-8 text-[#662d91]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+                        </svg>
                     </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Web Development</h3>
+                    <p class="text-gray-600">HTML, CSS, JavaScript, React, Angular, Vue</p>
                 </div>
 
-                <div class="h-full w-full  pt-12 px-8">
-                    <div class="w-[85%] ml-[7.5%] grid gap-14 md:grid-cols-3 md:gap-5">
-                        <div class="rounded-xl bg-white p-6 text-center shadow-xl">
-                            <div
-                                class="mx-auto flex h-16 w-16 -translate-y-12 transform items-center justify-center rounded-full bg-white shadow-lg shadow-indigo-500/40">
-                                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z" />
-                                </svg>
-
-                            </div>
-                            <h1 class="text-darken mb-3 text-xl font-medium lg:px-14">Code with Passion
-                            </h1>
-                            <p class="px-4 text-gray-500">We're not just instructors—we're developers who write the code we teach. Every lesson is built from real-world experience, crafted to help you learn faster and smarter.</p>
-                        </div>
-                        <div data-aos-delay="150" class="rounded-xl bg-white p-6 text-center shadow-xl">
-                            <div
-                                class="mx-auto flex h-16 w-16 -translate-y-12 transform items-center justify-center rounded-full shadow-lg bg-white shadow-indigo-500/40">
-                                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.7141 15h4.268c.4043 0 .732-.3838.732-.8571V3.85714c0-.47338-.3277-.85714-.732-.85714H6.71411c-.55228 0-1 .44772-1 1v4m10.99999 7v-3h3v3h-3Zm-3 6H6.71411c-.55228 0-1-.4477-1-1 0-1.6569 1.34315-3 3-3h2.99999c1.6569 0 3 1.3431 3 3 0 .5523-.4477 1-1 1Zm-1-9.5c0 1.3807-1.1193 2.5-2.5 2.5s-2.49999-1.1193-2.49999-2.5S8.8334 9 10.2141 9s2.5 1.1193 2.5 2.5Z" />
-                                </svg>
-
-
-                            </div>
-                            <h1 class="text-darken mb-3 text-xl font-medium lg:px-14 ">Mastering Code Takes Effort
-                            </h1>
-                            <p class="px-4 text-gray-500">We focus on real, hands-on learning. Be ready to challenge yourself, write tons of code, and develop the skills that truly matter in the tech industry.</p>
-                        </div>
-                        <div data-aos-delay="300" class="rounded-xl bg-white p-6 text-center shadow-xl">
-                            <div
-                                class="mx-auto flex h-16 w-16 -translate-y-12 transform items-center justify-center rounded-full shadow-lg bg-white shadow-indigo-500/40">
-                                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 8-4 4 4 4m8 0 4-4-4-4m-2-3-4 14" />
-                                </svg>
-
-                            </div>
-                            <h1 class="text-darken mb-3 text-xl font-medium lg:px-14">Code in Action</h1>
-                            <p class="px-4 text-gray-500">Learning isn't just about theory. Every concept comes with real, working code that you can run, tweak, and apply to your own projects.</p>
-                        </div>
+                <div class="bg-white rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-all duration-300">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-purple-100 mb-6">
+                        <svg class="w-8 h-8 text-[#662d91]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                        </svg>
                     </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Mobile Development</h3>
+                    <p class="text-gray-600">Android, iOS, React Native, Flutter</p>
+                </div>
 
+                <div class="bg-white rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-all duration-300">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-purple-100 mb-6">
+                        <svg class="w-8 h-8 text-[#662d91]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Data Science</h3>
+                    <p class="text-gray-600">Python, R, SQL, Machine Learning</p>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-all duration-300">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-purple-100 mb-6">
+                        <svg class="w-8 h-8 text-[#662d91]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Cybersecurity</h3>
+                    <p class="text-gray-600">Network Security, Ethical Hacking</p>
                 </div>
             </div>
         </div>
     </div>
-    <div class="bg-white py-12 pt-5 md:mt-20">
-        <div class="text-center mb-8 px-4">
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-800">
-                Our <span class="text-primary">Training</span> Services
+
+    <!-- CTA Section -->
+    <div class="bg-gradient-to-r from-[#662d91] to-purple-800 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl sm:text-4xl font-bold text-white">
+                Ready to Start Your Coding Journey?
             </h2>
-            <p class="mt-3 text-xl leading-7 text-gray-600 dark:text-gray-400 sm:mt-4">
-                From Basic to Advanced...<br>We Offer Classroom, Online, Weekend, and Corporate Training on a Wide Range
-                of
-                Software Courses.
+            <p class="mt-4 text-xl text-blue-100 max-w-2xl mx-auto">
+                Join thousands of students who have transformed their careers through our programming courses.
             </p>
-        </div>
-        <div class="flex flex-col sm:flex-row gap-6 max-w-7xl mx-auto px-4 justify-center items-center">
-            <div class="relative flex flex-col justify-center overflow-hidden  py-6 sm:py-12 w-full sm:w-auto">
-                <div class="group relative cursor-pointer overflow-hidden bg-white px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:mx-auto sm:max-w-sm sm:rounded-lg sm:px-10">
-                    <span class="absolute top-10  h-20 w-20 rounded-full bg-primary transition-all duration-300 group-hover:scale-[10]"></span>
-                    <div class="relative mx-auto max-w-md">
-                        <span class="grid h-20 w-20 place-items-center rounded-full bg-primary transition-all duration-300 group-hover:bg-primary">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-10 w-10 text-white transition-all">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
-                            </svg>
-                        </span>
-                        <div class="space-y-6 pt-5 text-base leading-7 text-gray-600 transition-all duration-300 group-hover:text-white/90">
-                            <p>Learn by Doing: Real-World Projects for Practical Mastery.</p>
-                        </div>
-                        <div class="pt-5 text-base font-semibold leading-7">
-                            <p>
-                                <a href="#" class="text-primary transition-all duration-300 group-hover:text-white">Read the docs &rarr;</a>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="relative flex flex-col justify-center overflow-hidden  py-6 sm:py-12 w-full sm:w-auto">
-                <div class="group relative cursor-pointer overflow-hidden bg-white px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:mx-auto sm:max-w-sm sm:rounded-lg sm:px-10">
-                    <span class="absolute top-10  h-20 w-20 rounded-full bg-primary transition-all duration-300 group-hover:scale-[10]"></span>
-                    <div class="relative  mx-auto max-w-md">
-                        <span class="grid h-20 w-20 place-items-center rounded-full bg-primary transition-all duration-300 group-hover:bg-primary">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-10 w-10 text-white transition-all">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
-                            </svg>
-                        </span>
-                        <div class="space-y-6 pt-5 text-base leading-7 text-gray-600 transition-all duration-300 group-hover:text-white/90">
-                            <p>Industry-Mentor Guided Internship with skills training.</p>
-                        </div>
-                        <div class="pt-5 text-base font-semibold leading-7">
-                            <p>
-                                <a href="#" class="text-primary transition-all duration-300 group-hover:text-white">Read the docs &rarr;</a>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="relative flex flex-col justify-center overflow-hidden py-6 sm:py-12 w-full sm:w-auto">
-                <div class="group relative cursor-pointer overflow-hidden bg-white px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl sm:mx-auto sm:max-w-sm sm:rounded-lg sm:px-10">
-                    <span class="absolute top-10  h-20 w-20 rounded-full bg-primary transition-all duration-300 group-hover:scale-[10]"></span>
-                    <div class="relative mx-auto max-w-md">
-                        <span class="grid h-20 w-20 place-items-center rounded-full bg-primary transition-all duration-300 group-hover:bg-primary">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-10 w-10 text-white transition-all">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
-                            </svg>
-                        </span>
-                        <div class="space-y-6 pt-5 text-base leading-7 text-gray-600 transition-all duration-300 group-hover:text-white/90">
-                            <p>Unlocking IT Excellence: Join Our Transformative Workshops.</p>
-                        </div>
-                        <div class="pt-5 text-base font-semibold leading-7">
-                            <p>
-                                <a href="#" class="text-primary transition-all duration-300 group-hover:text-white">Read the docs &rarr;</a>
-                            </p>
-                        </div>
-                    </div>
-                </div>
+            <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#" class="inline-flex items-center justify-center px-6 py-3 text-base font-medium rounded-lg text-[#662d91] bg-white hover:bg-purple-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors duration-200">
+                    Get Started Today
+                </a>
+                <a href="#" class="inline-flex items-center justify-center px-6 py-3 text-base font-medium rounded-lg text-white bg-purple-500 bg-opacity-30 hover:bg-opacity-40 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors duration-200">
+                    Browse All Courses
+                </a>
             </div>
         </div>
-
-
     </div>
 
-    {{-- Student List Section --}}
-    <div class="flex flex-col items-center mt-10 mb-5 text-center">
-        <h1 class="text-xl font-semibold text-gray-800 mb-4">Meet Our Achievers</h1>
-        <section id="testimonials" aria-label="What our customers are saying" class="bg-purple-50 py-2 sm:py-32 w-full">
-            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div class="mx-auto max-w-2xl md:text-center">
-                    <!-- <h2 class="font-display text-3xl tracking-tight text-slate-900 sm:text-4xl">What Our Customers Are
-                        Saying</h2> -->
-                    <h2 class="text-4xl font-bold text-gray-800">Our<span class="text-primary">Alumni</span> Our Pride
-                    </h2>
+    <!-- Alumni Section -->
+    <div class="relative bg-gradient-to-b from-gray-50 to-white py-24">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-5">
+            <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=\'30\' height=\'30\' viewBox=\'0 0 30 30\' fill=\'none\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M1.22676 0C1.91374 0 2.45351 0.539773 2.45351 1.22676C2.45351 1.91374 1.91374 2.45351 1.22676 2.45351C0.539773 2.45351 0 1.91374 0 1.22676C0 0.539773 0.539773 0 1.22676 0Z\' fill=\'rgba(0,0,0,0.07)\'/%3E%3C/svg%3E')"></div>
+        </div>
+        
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto">
+                <h2 class="text-3xl sm:text-4xl font-bold text-gray-900">Our <span class="text-[#662d91]">Alumni</span> Success Stories</h2>
+                <p class="mt-4 text-xl text-gray-600">
+                    Join the ranks of our successful graduates who have transformed their careers through our programming courses
+                </p>
+            </div>
 
-                </div>
-                <div>
-                    <ul role="list"
-                        class="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:gap-8 lg:mt-20 lg:max-w-none lg:grid-cols-3">
-                        @if ($placedStudents->isNotEmpty())
-                        @foreach ($placedStudents as $student)
-                        <li>
-                            <figure
-                                class="relative h-full rounded-2xl bg-white p-6 shadow-xl shadow-slate-900/10 flex flex-col">
-                                <blockquote class="flex-grow">
-                                    <p class="text-lg tracking-tight text-slate-900">{{ $student->content }}</p>
-                                </blockquote>
-                                <figcaption
-                                    class="relative mt-6 flex items-center justify-between border-t border-slate-100 pt-6">
-                                    <div>
-                                        <div class="font-display text-base text-slate-900">{{ $student->name }}</div>
+            @if ($placedStudents->isNotEmpty())
+            <div class="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                @foreach ($placedStudents as $student)
+                <div class="relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300">
+                    <!-- Quote Icon -->
+                    <div class="absolute -top-4 left-6">
+                        <div class="w-8 h-8 bg-[#662d91] rounded-full flex items-center justify-center">
+                            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="relative">
+                        <div class="h-40 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-purple-200 scrollbar-track-transparent">
+                            <p class="text-gray-600 italic leading-relaxed">{{ $student->content }}</p>
+                        </div>
+
+                        <!-- Student Info -->
+                        <div class="mt-6 pt-6 border-t border-gray-100">
+                            <div class="flex items-center">
+                                @if($student->image)
+                                    <img src="{{ asset('/storage/placedstudent/' . $student->image) }}" 
+                                        alt="{{ $student->name }}" 
+                                        class="h-14 w-14 rounded-full object-cover border-2 border-purple-50"
+                                    />
+                                @else
+                                    <div class="h-14 w-14 rounded-full bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center">
+                                        <span class="text-xl font-bold text-white">{{ substr($student->name, 0, 1) }}</span>
                                     </div>
-                                    <div>
-                                        <div class="font-display text-base text-slate-900">{{ $student->position }}
+                                @endif
+                                <div class="ml-4">
+                                    <h4 class="text-lg font-semibold text-gray-900">{{ $student->name }}</h4>
+                                    <div class="flex items-center mt-1">
+                                        <div class="flex-shrink-0">
+                                            <svg class="h-5 w-5 text-[#662d91]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                            </svg>
                                         </div>
+                                        <p class="ml-2 text-sm text-gray-600">{{ $student->position }}</p>
                                     </div>
-                                    <div class="overflow-hidden rounded-full bg-slate-50 h-14 w-14">
-                                        <img alt="" class="h-14 w-14 object-cover" style="color:transparent"
-                                            src="{{ asset('/storage/placedstudent/' . $student->image) }}" />
-                                    </div>
-                                </figcaption>
-                            </figure>
-                        </li>
-                        @endforeach
-                        @else
-                        <p class="text-center text-slate-500">No students found.</p>
-                        @endif
-                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+            @else
+                <div class="mt-16 text-center text-gray-500">No alumni stories available at the moment.</div>
+            @endif
+
+            <!-- Stats -->
+            <div class="mt-20 grid grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-white rounded-xl p-6 text-center shadow-lg">
+                    <div class="text-3xl font-bold text-[#662d91]">95%</div>
+                    <div class="mt-2 text-sm text-gray-600">Placement Rate</div>
+                </div>
+                <div class="bg-white rounded-xl p-6 text-center shadow-lg">
+                    <div class="text-3xl font-bold text-[#662d91]">500+</div>
+                    <div class="mt-2 text-sm text-gray-600">Alumni Network</div>
+                </div>
+                <div class="bg-white rounded-xl p-6 text-center shadow-lg">
+                    <div class="text-3xl font-bold text-[#662d91]">50+</div>
+                    <div class="mt-2 text-sm text-gray-600">Partner Companies</div>
+                </div>
+                <div class="bg-white rounded-xl p-6 text-center shadow-lg">
+                    <div class="text-3xl font-bold text-[#662d91]">₹12L</div>
+                    <div class="mt-2 text-sm text-gray-600">Avg. Package</div>
                 </div>
             </div>
-        </section>
-        <p class="mt-3 text-xl leading-7 text-gray-600 dark:text-gray-400 sm:mt-4">
-            Celebrating the success and dedication of our students who have excelled in their respective fields.
-        </p>
-
-        {{ $title }}
-        {{-- Student List --}}
-
-
-
+        </div>
     </div>
-    <script>
-        document.addEventListener('livewire:navigated', () => {
-
-            const targets = [{
-                    element: document.getElementById('totalprojects'),
-                    count: 600,
-                    suffix: '+'
-                },
-                {
-                    element: document.getElementById('webpages'),
-                    count: 20000,
-                    suffix: '+'
-                },
-                {
-                    element: document.getElementById('technologies'),
-                    count: 50,
-                    suffix: '+'
-                }
-            ];
-
-            // Find the maximum count among all targets
-            const maxCount = Math.max(...targets.map(target => target.count));
-
-            // Function to animate count-up effect
-            function animateCountUp(target, duration) {
-                let currentCount = 0;
-                const increment = Math.ceil(target.count / (duration / 10));
-
-                const interval = setInterval(() => {
-                    currentCount += increment;
-                    if (currentCount >= target.count) {
-                        clearInterval(interval);
-                        currentCount = target.count;
-                        target.element.textContent = currentCount + target.suffix;
-                    } else {
-                        target.element.textContent = currentCount;
-                    }
-                }, 10);
-            }
-
-            // Animate count-up for each target with adjusted duration
-            targets.forEach(target => {
-                animateCountUp(target, maxCount / 100); // Adjust duration based on max count
-            });
-
-        })
-    </script>
 </div>

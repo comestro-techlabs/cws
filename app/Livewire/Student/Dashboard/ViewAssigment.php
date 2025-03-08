@@ -102,7 +102,7 @@ class ViewAssigment extends Component
             $uploadedFile->save();
 
             // Flash a success message
-            session()->flash('msg', 'File uploaded to Google Drive successfully.');
+            session()->flash('msg', 'Your file has been uploaded successfully.');
         } else {
             $this->addError('file', 'Failed to upload file to Google Drive.');
         }

@@ -31,4 +31,5 @@ class Message extends Model
         // Decode JSON into an array when accessed
         return json_decode($value, true);
     }
+    
 }

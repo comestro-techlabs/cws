@@ -10,212 +10,87 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     @livewireStyles
 </head>
-<body x-data="{ sidebarOpen: true }" class="bg-gray-100">
-    <!-- Overlay for mobile -->
-    <div x-show="sidebarOpen" @click="sidebarOpen = false"
-         class="fixed inset-0 z-30 transition-opacity duration-300 sm:hidden"
-         :class="{'opacity-50': sidebarOpen, 'opacity-0': !sidebarOpen}">
-    </div>
-
-    <!-- Sidebar -->
-    <div x-show="sidebarOpen"
-         :class="{'translate-x-0': sidebarOpen, '-translate-x-full': !sidebarOpen}"
-         class="fixed top-0 left-0 z-40 w-64 h-screen bg-gray-50 border-r overflow-x-hidden transform transition-transform duration-300 ease-in-out sm:translate-x-0 sm:block"
-         style="overflow: hidden;">
-        <x-student-navbar/>
-    </div>
-
-    <!-- Main content -->
-    <main :class="{'sm:ml-64': sidebarOpen, 'ml-0': !sidebarOpen}"
-          class="flex-1 p-4 transition-all duration-300 sm:ml-64">
-        <x-student-header />
-        {{ $slot }}
-    </main>
+<body class="bg-gray-100">
+    <x-student-navbar>
+        <x-slot:main>
+            <x-student-header />
+            {{ $slot }}
+        </x-slot>
+    </x-student-navbar>
 
     @livewireScripts
-</body>
-</html>
+    @stack('scripts')
 
-<script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    @auth
+        <script>
+            // Handle session-based alerts on page load
+            document.addEventListener('DOMContentLoaded', function () {
+                if (typeof Swal === 'undefined') {
+                    console.error('SweetAlert2 is not loaded.');
+                    return;
+                }
 
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-@auth
-    <script>
+                @if (session('success'))
+                    Swal.fire({
+                        title: 'Success!',
+                        text: "{{ session('success') }}",
+                        icon: 'success',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#662d91'
+                    });
+                @endif
 
-        // Handle session-based alerts on page load
-        document.addEventListener('DOMContentLoaded', function () {
-            if (typeof Swal === 'undefined') {
-                console.error('SweetAlert2 is not loaded.');
-                return;
-            }
-
-            @if(session('success'))
-                Swal.fire({
-                    title: 'Success!',
-                    text: "{{ session('success') }}",
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                });
-            @endif
-
-            @if(session('error'))
-                Swal.fire({
-                    title: 'Error!',
-                    text: "{{ session('error') }}",
-                    icon: 'error',
-                    confirmButtonText: 'OK'
-                });
-            @endif
-        });
-
-        // Function to register Livewire alert listener
-        function registerLivewireAlertListener() {
-            if (typeof Livewire === 'undefined') {
-                console.warn('Livewire is not loaded. Real-time alerts will not work.');
-                return;
-            }
-
-            Livewire.on('show-alert', (event) => {
-                const courseNames = event.courses && event.courses.length > 0
-                    ? event.courses.map(course => course.title || course).join(', ')
-                    : 'No courses specified';
-                Swal.fire({
-                    title: 'Reminder',
-                    text: `The following courses do not have a batch selected: ${courseNames}`,
-                    icon: 'warning',
-                    confirmButtonText: 'OK'
-                });
+                @if (session('error'))
+                    Swal.fire({
+                        title: 'Error!',
+                        text: "{{ session('error') }}",
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#662d91'
+                    });
+                @endif
             });
-        }
 
-        document.addEventListener('livewire:load', function () {
-            registerLivewireAlertListener();
-        });
+            // Membership payment handling
+            document.getElementById('membership-pay-button')?.addEventListener('click', function(e) {
+                e.preventDefault();
+                this.disabled = true;
 
-        document.addEventListener('livewire:navigated', function () {
-            registerLivewireAlertListener();
-        });
-
-        if (window.Livewire) {
-            registerLivewireAlertListener();
-        }
-
-
-        document.addEventListener('livewire:initialized', () => {
-            Livewire.on('alert', (icon, title, text, redirect) => {
-                Swal.fire({
-                    icon: icon,
-                    title: title,
-                    text: text,
-                    confirmButtonText: 'OK'
-                }).then((result) => {
-                    if (result.isConfirmed && redirect) {
-                        window.location.href = redirect;
+                fetch('/student/membership/checkout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                     }
-                });
-            });
-        });
-        document.getElementById('membership-pay-button').onclick = function (e) {
-            const payButton = document.getElementById('membership-pay-button');
-            payButton.disabled = true;
-            e.preventDefault();
-
-            const receipt_no = `${Date.now()}`;
-
-            let member_fee = 700;
-
-            // First, initiate payment by sending the details to the backend
-            fetch("{{ route('store.payment.initiation') }}", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                },
-                body: JSON.stringify({
-                    student_id: "{{ Auth::id() }}" ?? 99,
-                    receipt_no: receipt_no,
-                    amount: member_fee,
-                    ip_address: "{{ request()->ip() }}",
-                    workshop_id: null,
                 })
-            })
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        // console.log("check wp and crs id",data.workshop_id,data.course_id);
-                        // Use the Razorpay order_id received from backend
-                        var options = {
-                            "key": "{{ env('RAZORPAY_KEY') }}",
-                            "amount": member_fee, // amount in paise
-                            "currency": "INR",
-                            "name": "LearnSyntax",
-                            "description": "Processing Fee",
-                            "image": "{{ asset('front_assets/img/logo/logo.png') }}",
-                            "order_id": data.order_id, // Razorpay order ID
-                            "handler": function (response) {
-                                // After successful payment, send the payment details to the backend
-                                fetch("{{ route('handle.payment.response') }}", {
-                                    method: "POST",
-                                    headers: {
-                                        "Content-Type": "application/json",
-                                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                                    },
-                                    body: JSON.stringify({
-                                        payment_id: data.payment_id, // Payment ID created in the backend
-                                        razorpay_payment_id: response.razorpay_payment_id,
-                                        razorpay_order_id: response.razorpay_order_id,
-                                        razorpay_signature: response.razorpay_signature,
-                                    })
-                                })
-                                    .then(response => {
-                                        return response.json();
-                                    })
-                                    .then(data => {
-                                        if (data.success) {
-                                            alert('Payment processed successfully');
-                                            window.location.href = '/student/billing';
-                                        } else {
-                                            alert('Payment failed: ' + data.message);
-                                            payButton.disabled = false;
-                                        }
-                                    })
-                                    .catch(error => {
-                                        console.error("Error in updating payment:", error);
-                                        payButton.disabled = false;
-                                    });
-                            },
-                            "prefill": {
-                                "name": "{{ Auth::user()->name }}",
-                                "email": "{{ Auth::user()->email }}"
-                            },
-                            "theme": {
-                                "color": "#0a64a3"
-                            },
-                            "modal": {
-                                "ondismiss": function () {
-                                    alert('Payment process was cancelled.');
-                                    payButton.disabled = false;
-                                    document.forms[0].submit();
-                                }
-                            }
-                        };
-
-                        // Open the Razorpay payment modal
-                        var rzp1 = new Razorpay(options);
-                        rzp1.open();
-
+                        window.location.href = data.redirect_url;
                     } else {
-                        alert("Error initiating payment: " + data.message);
-                        payButton.disabled = false;
+                        Swal.fire({
+                            title: 'Error!',
+                            text: data.message || 'Something went wrong',
+                            icon: 'error',
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#662d91'
+                        });
+                        this.disabled = false;
                     }
                 })
                 .catch(error => {
-                    console.error("Error initiating payment:", error);
-                    payButton.disabled = false;
+                    console.error('Error:', error);
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Something went wrong',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#662d91'
+                    });
+                    this.disabled = false;
                 });
-        };
-    </script>
-@endauth
-
+            });
+        </script>
+    @endauth
+</body>
 </html>

@@ -48,6 +48,8 @@
                             <td class="px-6 py-4 space-x-2">
                                 <button wire:click="edit({{ $topic->id }})"
                                     class="text-blue-600 hover:text-blue-900">Edit</button>
+                                    <a href="{{ route('blog.posts', $topic->id) }}"
+                                    class="text-green-600 hover:text-green-900">Post</a>
                                 <button wire:click="delete({{ $topic->id }})"
                                     wire:confirm="Are you sure you want to delete this topic?"
                                     class="text-red-600 hover:text-red-900">Delete</button>

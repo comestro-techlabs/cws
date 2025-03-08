@@ -15,11 +15,10 @@ class Count extends Component
     public $bgColor;
     public $hoverColor;
 
-    public function __construct($count, $bgColor = 'purple-400', $hoverColor = 'purple-500')
+    public function __construct($count, $bgColor = 'gray-300')
     {
         $this->count = $count;
         $this->bgColor = $bgColor;
-        $this->hoverColor = $hoverColor;
     }
 
     /**
