@@ -24,7 +24,7 @@
                 </path>
             </svg>
         </span>
-        <span class="ml-2 text-lg tracking-wide truncate">Dashboard</sp>
+        <span class="ml-2 text-lg tracking-wide truncate">Dashboard</span>
     </a>
 
 
@@ -36,7 +36,7 @@
         </li>
         <li>
             <a wire:navigate href="{{ route('admin.category') }}"
-                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 w-full">
+                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-purple-500 pr-6 w-full">
                 <span class="inline-flex justify-center items-center ml-4">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg">
@@ -54,7 +54,7 @@
 
         <li>
             <a wire:navigate href="{{ route('admin.course.manage') }}"
-                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 w-full">
+                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-purple-500 pr-6 w-full">
                 <span class="inline-flex justify-center items-center ml-4">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-5 h-5">
@@ -71,7 +71,7 @@
 
         <li>
             <a wire:navigate href="{{ route('admin.assignment.manage') }}"
-                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 w-full">
+                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-purple-500 pr-6 w-full">
                 <span class="inline-flex justify-center items-center ml-4">
                     <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke-width="1.5" stroke="currentColor">
@@ -88,7 +88,7 @@
 
         <li>
             <a wire:navigate href="{{ route('admin.assignment.course') }}"
-                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 w-full">
+                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-purple-500 pr-6 w-full">
                 <span class="inline-flex justify-center items-center ml-4">
                     <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke-width="1.5" stroke="currentColor">
@@ -111,7 +111,7 @@
 
         <li>
             <a wire:navigate href="{{ route('admin.student') }}"
-                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 w-full">
+                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-purple-500 pr-6 w-full">
                 <span class="inline-flex justify-center items-center ml-4">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-5 h-5">
@@ -127,7 +127,7 @@
         </li>
         <li>
             <a wire:navigate href="{{route('admin.attendance')}}"
-                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
+                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-purple-500 pr-6">
                 <span class="inline-flex justify-center items-center ml-4">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-6">
@@ -142,7 +142,7 @@
         </li>
         <li>
             <a wire:navigate href="{{ route('admin.placedstudent.index') }}"
-                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 w-full">
+                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-purple-500 pr-6 w-full">
                 <span class="inline-flex justify-center items-center ml-4">
                     <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -165,7 +165,7 @@
 
         <li>
             <a wire:navigate href="{{ route('admin.exam') }}"
-                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 w-full">
+                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-purple-500 pr-6 w-full">
                 <span class="inline-flex justify-center items-center ml-4">
                     <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -183,11 +183,11 @@
 
         <li>
             <a wire:navigate href="{{ route('admin.workshops.index') }}"
-                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 w-full">
+                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-purple-500 pr-6 w-full">
                 <span class="inline-flex justify-center items-center ml-4">
                     <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="14" height="16" fill="currentColor"
                         class="bi bi-stickies" viewBox="0 0 16 16">
-                        <path d="M1.5 0A1.5 1.5 0 0 0 0 1.5V13a1 1 0 0 0 1 1V1.5a.5.5 0 0 1 .5-.5H14a1 1 0 0 0-1-1z" />
+                        <path d="M1.5 0A1.5 1.5 0 0 0 0 1.5V13a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1z" />
                         <path
                             d="M3.5 2A1.5 1.5 0 0 0 2 3.5v11A1.5 1.5 0 0 0 3.5 16h6.086a1.5 1.5 0 0 0 1.06-.44l4.915-4.914A1.5 1.5 0 0 0 16 9.586V3.5A1.5 1.5 0 0 0 14.5 2zM3 3.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 .5.5V9h-4.5A1.5 1.5 0 0 0 9 10.5V15H3.5a.5.5 0 0 1-.5-.5zm7 11.293V10.5a.5.5 0 0 1 .5-.5h4.293z" />
                     </svg>
@@ -207,7 +207,7 @@
         </li>
         <li>
             <a wire:navigate href="{{ route('admin.paymnet-manage') }}"
-                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 w-full">
+                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-purple-500 pr-6 w-full">
                 <span class="inline-flex justify-center items-center ml-4">
                     <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -224,7 +224,7 @@
         </li>
         <li>
             <a wire:navigate href="{{ route('admin.message.index') }}"
-                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 w-full">
+                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-purple-500 pr-6 w-full">
                 <span class="inline-flex justify-center items-center ml-4">
                     <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 48 48">
                         <path
@@ -240,7 +240,7 @@
         </li>
         <li>
             <a wire:navigate href="{{route('admin.manage.enquiry')}}"
-                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
+                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-purple-500 pr-6">
                 <span class="inline-flex justify-center items-center ml-4">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg">
@@ -258,7 +258,7 @@
 
         <li>
             <a wire:navigate href="{{ route('admin.logout') }}"
-                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
+                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-purple-500 pr-6">
                 <span class="inline-flex justify-center items-center ml-4">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg">
@@ -279,7 +279,7 @@
         </li>
         <li>
             <a wire:navigate href="{{ route('admin.blog.post-course') }}"
-                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 w-full">
+                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-purple-500 pr-6 w-full">
                 <span class="inline-flex justify-center items-center ml-4">
                     <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke-width="1.5" stroke="currentColor" class="size-6">

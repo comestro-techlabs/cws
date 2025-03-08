@@ -1,376 +1,324 @@
 <div>
-<div class="flex justify-center from-indigo-500 to-blue-700 bg-gradient-to-l px-3 py-8 mt-0 relative">
-    <div class="md:w-10/12 w-full flex items-center flex-col-reverse pt-16 md:flex-row">
-        <!-- Left Section (Course Details) -->
-        <div class="md:w-8/12 w-full text-white">
-            <!-- Breadcrumb -->
-            <nav class="text-sm mb-4">
-                <ol class="list-reset flex text-gray-200">
-                    <li>
-                        <a href="{{ route('public.index') }}" class="hover:text-gray-300">Home</a>
-                    </li>
-                    <li><span class="mx-2">&raquo;</span></li>
-                    <li>
-                        <a href="#" class="hover:text-gray-300">{{ $course->category->cat_title }}</a>
-                    </li>
-                    <li><span class="mx-2">&raquo;</span></li>
-                    <li class="text-gray-300 ">{{ $course->title }}</li>
-                </ol>
-            </nav>
+    <!-- Course Header Section with Theme Color -->
+    <div class="bg-[#662d91] text-white pt-28 pb-12 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-start">
+                <!-- Left Section (Course Details) -->
+                <div class="md:w-7/12 w-full pr-0 md:pr-8">
+                    <!-- Breadcrumb -->
+                    <nav class="text-sm mb-6">
+                        <ol class="list-reset flex text-purple-200">
+                            <li>
+                                <a href="{{ route('public.index') }}" class="hover:text-white transition duration-200">Home</a>
+                            </li>
+                            <li><span class="mx-2">&raquo;</span></li>
+                            <li>
+                                <a href="#" class="hover:text-white transition duration-200">{{ $course->category->cat_title }}</a>
+                            </li>
+                            <li><span class="mx-2">&raquo;</span></li>
+                            <li class="text-white">{{ $course->title }}</li>
+                        </ol>
+                    </nav>
 
-            <!-- Course Title and Description -->
-            <h1 class="text-4xl font-bold text-white mb-4 capitalize">{{ $course->title }}</h1>
-            <p class="text-lg text-gray-200 mb-4">{{ $course->description }}</p>
+                    <!-- Course Title and Description -->
+                    <h1 class="text-3xl md:text-4xl font-bold text-white mb-4 capitalize">{{ $course->title }}</h1>
+                    <p class="text-lg text-purple-50 mb-6">{{ $course->description }}</p>
 
-            <!-- Instructor and Ratings -->
-            <div class="flex items-center mb-4">
-                <div class="mr-6">
-                    <span class="text-gray-100">Created by</span>
-                    <a href="#" class="text-yellow-300 hover:underline">{{ $course->instructor }}</a>
-                </div>
-            </div>
-
-            <!-- Last Updated and Language -->
-            <div class="text-sm text-gray-300">
-                <span>Last updated {{ \Carbon\Carbon::parse($course->updated_at)->format('m/Y') }}</span>
-                <span class="mx-2">•</span>
-                <span>Duration: {{ $course->duration }} Weeks</span>
-            </div>
-        </div>
-
-        <!-- Right Section (Fixed Card) -->
-        <div class="flex-1 md:w-3/12 md:ml-8 relative">
-            <div class="bg-white rounded-lg shadow-lg p-4 md:fixed md:top-32 mt-12 md:mt-0 md:right-32 md:w-96 z-50"
-                style="transform: translateY(-50px);">
-                <!-- Course Preview Image -->
-                <div class="overflow-hidden rounded-lg mb-4">
-                    <img src="{{ asset('storage/course_images/' . $course->course_image) }}"
-                        alt="{{ $course->title }}" class="w-full h-auto object-cover rounded-lg">
-                </div>
-
-                <!-- Course Price -->
-                <div class="text-center mb-4">
-                    @if ($course->discounted_fees > 0)
-                        <span class="text-3xl font-bold text-gray-900">₹{{ $course->discounted_fees }}</span>
-                        <span class="text-gray-500 line-through ml-2">₹{{ $course->fees }}</span>
-                        <span
-                            class="text-green-600 ml-2">({{ round((($course->fees - $course->discounted_fees) / $course->fees) * 100, 2) }}%
-                            off)</span>
-                    @else
-                        <p class="text-green-600 font-semibold text-lg">Free</p>
-                    @endif
-                </div>
-
-                @auth
-                    @if ($payment_exist)
-                        <div class="bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3 flex flex-col items-center justify-center"
-                            role="alert">
-                            <p class="font-bold">Already Enrolled</p>
-                            <p class="text-sm"><a href="{{ route('student.dashboard') }}"
-                                    class="text-sm underline text-blue-700">Go to Dashboard</a></p>
-                        </div>
-                    @else
-                        <button id="pay-button"
-                            class="flex items-center justify-center w-full bg-blue-600 text-white font-medium rounded-full mt-2 shadow-lg px-6 py-3 transition duration-300 ease-in-out transform hover:scale-105 hover:bg-blue-700">
-                            <span class="text-lg">Enroll Now</span>
-                        </button>
-                    @endif
-                @endauth
-
-                @guest
-                    <a href="{{ route('v2.auth.login') }}"
-                        class="block bg-indigo-600 text-white text-center py-3 rounded-full hover:bg-indigo-700 font-medium">
-                        Proceed Now
-                    </a>
-                   
-                @endguest
-
-                <!-- 30-Day Money-Back Guarantee -->
-                <div class="flex flex-col justify-between items-center">
-                    <p class="text-gray-600 text-sm text-center mt-4">30-Day Money-Back Guarantee</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-    <div class="flex  md:px-[10%] bg-white">
-        <div class="md:w-8/12 p-4 flex  flex-col gap-6">
-            <!-- Features Card -->
-            <div class="bg-white  rounded-lg p-6 border-l-4 border-t border-b border-r border-slate-300">
-                <h2 class="text-2xl font-bold text-purple-600 mb-4">This Course include:</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                    <!-- Feature Item 1 -->
-                    @foreach ($course->features as $feature)
-                        <div class="flex items-center space-x-1">
-                            <svg class="w-5 h-5 text-purple-500 mr-1" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24">
-                                <path
-                                    d="M10 15.172l-3.707-3.707a1 1 0 00-1.414 1.414l4.414 4.414a1 1 0 001.414 0l8.414-8.414a1 1 0 10-1.414-1.414L10 15.172z">
-                                </path>
+                    <!-- Instructor and Ratings -->
+                    <div class="flex items-center mb-6">
+                        <div class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-orange-400 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
                             </svg>
-                            <span class="text-gray-700">{{ $feature->name }}</span>
+                            <span class="text-purple-100">Created by</span>
+                            <a href="#" class="text-orange-300 hover:text-orange-200 ml-2 font-medium">{{ $course->instructor }}</a>
                         </div>
-                    @endforeach
+                    </div>
 
-                </div>
-            </div>
-
-            <div class="bg-white  rounded-lg p-6 border-l-4 border-t border-b border-r border-slate-300">
-                <h2 class="text-2xl font-bold text-purple-600 mb-4">Course Content</h2>
-                <div id="accordion-open" data-accordion="collapse">
-                    @foreach ($course->chapters as $chapter)
-                        <h2 id="accordion-open-heading-{{ $loop->index }}">
-                            <button type="button"
-                                class="flex items-center justify-between w-full p-5 font-medium  text-gray-800 border border-b-0 border-gray-200 bg-slate-200   {{ $loop->index == 0 ? 'rounded-t-xl' : '' }} gap-3"
-                                data-accordion-target="#accordion-open-body-{{ $loop->index }}" aria-expanded="true"
-                                aria-controls="accordion-open-body-{{ $loop->index }}">
-                                <span class="flex items-center">{{ $chapter->title }}</span>
-                                <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2" d="M9 5 5 1 1 5" />
-                                </svg>
-                            </button>
-                        </h2>
-                        <div id="accordion-open-body-{{ $loop->index }}" class="hidden"
-                            aria-labelledby="accordion-open-heading-{{ $loop->index }}">
-
-                            <div class="w-full px-5 text-sm font-normal text-gray-900 border  bg-white">
-
-                                @foreach ($chapter->lessons as $lesson)
-                                    <a href="#" class="flex gap-2  items-center w-full px-4 py-2 ">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor" class="size-4 text-slate-400">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5" />
-                                        </svg>
-                                        {{ $lesson->title }}
-                                    </a>
-                                @endforeach
-
-
-                            </div>
-
+                    <!-- Last Updated and Language -->
+                    <div class="flex items-center text-sm text-purple-100 space-x-4">
+                        <div class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            <span>Last updated {{ \Carbon\Carbon::parse($course->updated_at)->format('m/Y') }}</span>
                         </div>
-                    @endforeach
-
-
-                </div>
-
-            </div>
-
-            <div class="bg-gray-50">
-                <!-- Course Batches Section -->
-                <div class="bg-white  rounded-lg p-6 mb-4 border-l-4 border-t border-b border-r border-slate-300">
-                    <h2 class="text-2xl font-bold text-purple-600 mb-4">Course Batches</h2>
-                    @if ($course->batches->isNotEmpty())
-                        <ul class="space-y-2">
-                            @foreach ($course->batches as $batch)
-                                <li
-                                    class="flex items-center justify-between p-3 bg-white rounded shadow border border-gray-200">
-                                    <div class="flex flex-col">
-                                        <span class="font-semibold text-gray-800">{{ $batch->batch_name }}</span>
-                                        <span class="text-sm text-gray-600">
-                                            {{ \Carbon\Carbon::parse($batch->start_date)->format('d M, Y') }} to
-                                            {{ \Carbon\Carbon::parse($batch->end_date)->format('d M, Y') }}
-                                        </span>
-                                    </div>
-                                    <div class="text-sm text-gray-500">
-                                        {{ $batch->available_seats }}/{{ $batch->total_seats }} Seats
-                                    </div>
-                                </li>
-                            @endforeach
-                        </ul>
-                    @else
-                        <p class="text-gray-500 ">No batches available for this course.</p>
-                    @endif
-                </div>
-            </div>
-            <div class="bg-gray-50">
-                <!-- Course Batches Section -->
-                <div class="bg-white  rounded-lg p-6 mb-4 border-l-4 border-t border-b border-r border-slate-300">
-                    <h2 class="text-2xl font-bold text-purple-600 mb-4">Requirements</h2>
-                    <ul class="space-y-1 text-sm list-disc list-inside">
-                        <li class="">No programming experience needed - I'll teach you everything you need to know
-                        </li>
-                        <li class="">A computer with access to the internet</li>
-                        <li class="">No paid software required</li>
-                        <li class="">I'll walk you through, step-by-step how to get all the software installed and
-                            set
-                            up</li>
-
-                    </ul>
-                </div>
-            </div>
-
-            <div class="bg-white p-6 rounded-lg  border-t-4 border-x border-b border-gray-300">
-                <!-- Instructor Header -->
-                <div class="flex items-center mb-6">
-                    <a href="/user/4b4368a3-b5c8-4529-aa65-2056ec31f37e/" class="flex-shrink-0">
-                        <img src="{{ asset('assets/sadique.jpg') }}" alt="Syed Sadique Hussain"
-                            class="w-16 h-16 rounded-full shadow-md" loading="lazy">
-                    </a>
-                    <div class="ml-4">
-                        <h2 class="text-2xl font-bold text-purple-600">
-                            <a href="/user/4b4368a3-b5c8-4529-aa65-2056ec31f37e/" class="hover:underline">Syed Sadique
-                                Hussain</a>
-                        </h2>
-                        <p class="text-purple-400 font-medium">Developer and Lead Instructor</p>
+                        <div class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span>Duration: {{ $course->duration }} Weeks</span>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Instructor Stats -->
-                <ul class="flex flex-wrap space-x-4 mb-6">
-                    <li class="flex items-center gap-1 text-purple-800">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="size-4">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
-                        </svg>
+                <!-- Right Section (Course Card) -->
+                <div class="md:w-5/12 w-full mt-8 md:mt-0">
+                    <div class="bg-white rounded-xl shadow-xl overflow-hidden">
+                        <!-- Course Preview Image -->
+                        <div class="overflow-hidden">
+                            <img src="{{ asset('storage/course_images/' . $course->course_image) }}"
+                                alt="{{ $course->title }}" class="w-full h-56 object-cover">
+                        </div>
 
-                        <span>4.9 Instructor Rating</span>
-                    </li>
+                        <div class="p-6">
+                            <!-- Course Price -->
+                            <div class="mb-6">
+                                @if ($course->discounted_fees > 0)
+                                    <div class="flex items-center justify-center">
+                                        <span class="text-3xl font-bold text-gray-900">₹{{ $course->discounted_fees }}</span>
+                                        <span class="text-gray-500 line-through ml-2">₹{{ $course->fees }}</span>
+                                        <span class="text-green-600 ml-2 text-sm font-medium">({{ round((($course->fees - $course->discounted_fees) / $course->fees) * 100, 2) }}% off)</span>
+                                    </div>
+                                @else
+                                    <p class="text-green-600 font-semibold text-xl text-center">Free</p>
+                                @endif
+                            </div>
 
-                    <li class="flex items-center text-purple-800 gap-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="size-4">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
-                        </svg>
+                            @auth
+                                @if ($payment_exist)
+                                    <div class="bg-purple-50 border-l-4 border-[#662d91] text-purple-900 p-4 mb-4 rounded" role="alert">
+                                        <p class="font-bold">Already Enrolled</p>
+                                        <p class="text-sm mt-1">
+                                            <a href="{{ route('student.dashboard') }}" class="text-[#662d91] font-medium hover:underline">
+                                                Go to Dashboard
+                                            </a>
+                                        </p>
+                                    </div>
+                                @else
+                                    <button id="pay-button"
+                                        class="flex items-center justify-center w-full bg-orange-500 text-white font-medium rounded-lg py-3 px-6 transition duration-200 hover:bg-orange-600 focus:ring-2 focus:ring-orange-400 focus:ring-offset-2">
+                                        <span class="mr-2">Enroll Now</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                        </svg>
+                                    </button>
+                                @endif
+                            @endauth
 
-                        <span>9650+ Students</span>
-                    </li>
-                    <li class="flex items-center text-purple-800 gap-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="size-4">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" />
-                        </svg>
+                            @guest
+                                <a href="{{ route('v2.auth.login') }}"
+                                    class="flex items-center justify-center w-full bg-[#662d91] text-white font-medium rounded-lg py-3 px-6 transition duration-200 hover:bg-purple-800 focus:ring-2 focus:ring-purple-400 focus:ring-offset-2">
+                                    <span class="mr-2">Sign in to Enroll</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 001 1h12a1 1 0 001-1V7.414l-4-4H3zm7 2a1 1 0 00-1 1v1H5a1 1 0 100 2h4v1a1 1 0 102 0V9h4a1 1 0 100-2h-4V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                    </svg>
+                                </a>
+                            @endguest
 
-                        <span>19 Courses</span>
-                    </li>
-                </ul>
-
-                <!-- Instructor Description -->
-                <div class="text-gray-700">
-                    <p class="mb-4">I'm <strong>Sadique Hassain</strong>, a passionate developer, educator, and entrepreneur dedicated to shaping the future of programming education. I am the <strong>Founder & Director</strong> of <strong>Comestro Techlabs Pvt. Ltd.</strong>, a premier IT training and development company based in Purnea, Bihar.</p>
-
-                    <p class="mb-4">At <strong>Comestro Techlabs</strong>, we specialize in software development, web development, and industry-focused training. Our mission is to bridge the gap between theoretical knowledge and practical implementation, helping students and professionals excel in the ever-evolving tech industry.</p>
-
-                    <p class="mb-4">I started my programming journey at the age of 16, building my first HTML-based web pages. Over the years, I have developed <strong>hundreds of websites, applications, and software solutions</strong> for various industries. However, I discovered that my greatest passion lies in teaching and mentoring aspiring developers.</p>
-
-                    <p class="mb-4">Through Code with SadiQ, I have trained and mentored over <strong>10,000 students</strong>, many of whom are now working in top IT companies across India and abroad. We take pride in offering high-quality courses in <strong>web development, programming languages, database management, and emerging technologies</strong>, ensuring our students gain real-world skills.</p>
-
-                    <p class="mb-4">At Comestro Techlabs, we believe in making <strong>learning to code fun and accessible</strong>. I constantly research and implement innovative teaching techniques to simplify complex concepts. My goal is to provide an engaging learning experience filled with <strong>hands-on projects, geeky humor, and deep explanations</strong>.</p>
-
-                    <p><strong>Join me on this journey, and let’s build something incredible together!</strong></p>
+                            <!-- Money-Back Guarantee -->
+                            <div class="flex items-center justify-center mt-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                </svg>
+                                <p class="text-gray-600 text-sm">30-Day Money-Back Guarantee</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-@auth
 
-    <script>
-        document.getElementById('pay-button').onclick = function(e) {
-            const payButton = document.getElementById('pay-button');
-            payButton.disabled = true;
-            e.preventDefault();
+    <!-- Course Content Section -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Left Column (Course Content) -->
+            <div class="md:col-span-2 space-y-8">
+                <!-- Features Card -->
+                <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-[#662d91]">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">This Course Includes:</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        @foreach ($course->features as $feature)
+                            <div class="flex items-center">
+                                <svg class="w-5 h-5 text-[#662d91] mr-3" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path d="M10 15.172l-3.707-3.707a1 1 0 00-1.414 1.414l4.414 4.414a1 1 0 001.414 0l8.414-8.414a1 1 0 10-1.414-1.414L10 15.172z"></path>
+                                </svg>
+                                <span class="text-gray-700">{{ $feature->name }}</span>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
 
-            const receipt_no = `${Date.now()}`;
+                <!-- Course Content Accordion -->
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                    <div class="border-b border-gray-200 p-6">
+                        <h2 class="text-2xl font-bold text-gray-900">Course Content</h2>
+                    </div>
+                    
+                    <div id="accordion-open" data-accordion="collapse">
+                        @foreach ($course->chapters as $chapter)
+                            <div class="border-b border-gray-200 last:border-b-0">
+                                <h2 id="accordion-open-heading-{{ $loop->index }}">
+                                    <button type="button"
+                                        class="flex items-center justify-between w-full p-5 font-medium text-gray-800 hover:bg-gray-50 transition duration-200"
+                                        data-accordion-target="#accordion-open-body-{{ $loop->index }}" aria-expanded="{{ $loop->index == 0 ? 'true' : 'false' }}"
+                                        aria-controls="accordion-open-body-{{ $loop->index }}">
+                                        <span class="flex items-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#662d91] mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                                <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
+                                            </svg>
+                                            {{ $chapter->title }}
+                                        </span>
+                                        <svg data-accordion-icon class="w-4 h-4 shrink-0 transition-transform duration-200" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="2" d="M9 5 5 1 1 5" />
+                                        </svg>
+                                    </button>
+                                </h2>
+                                <div id="accordion-open-body-{{ $loop->index }}" class="{{ $loop->index == 0 ? '' : 'hidden' }}"
+                                    aria-labelledby="accordion-open-heading-{{ $loop->index }}">
+                                    <div class="border-t border-gray-100 bg-gray-50">
+                                        @foreach ($chapter->lessons as $lesson)
+                                            <a href="#" class="flex items-center p-4 hover:bg-gray-100 transition duration-200 border-b border-gray-100 last:border-b-0">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500 mr-3" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+                                                </svg>
+                                                <span class="text-gray-700">{{ $lesson->title }}</span>
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
 
-            // First, initiate payment by sending the details to the backend
-            fetch("{{ route('store.payment.initiation') }}", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                    },
-                    body: JSON.stringify({
-                        student_id: "{{ Auth::id() }}" ?? 99,
-                        course_id: "{{ $course->id }}",
-                        receipt_no: receipt_no,
-                        amount: "{{ $course->discounted_fees }}",
-                        ip_address: "{{ request()->ip() }}",
+            <!-- Right Column (Course Batches) -->
+            <div class="space-y-8">
+                <!-- Course Batches Section -->
+                <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-[#662d91]">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">Course Batches</h2>
+                    @if ($course->batches->isNotEmpty())
+                        <div class="space-y-3">
+                            @foreach ($course->batches as $batch)
+                                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition duration-200">
+                                    <div class="flex flex-col">
+                                        <span class="font-semibold text-gray-800 mb-1">{{ $batch->batch_name }}</span>
+                                        <div class="flex items-center text-sm text-gray-600">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 text-[#662d91]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                            </svg>
+                                            <span>
+                                                {{ \Carbon\Carbon::parse($batch->start_date)->format('d M, Y') }} to
+                                                {{ \Carbon\Carbon::parse($batch->end_date)->format('d M, Y') }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <p class="text-gray-600">No batches available at the moment.</p>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    @auth
+
+        <script>
+            document.getElementById('pay-button').onclick = function(e) {
+                const payButton = document.getElementById('pay-button');
+                payButton.disabled = true;
+                e.preventDefault();
+
+                const receipt_no = `${Date.now()}`;
+
+                // First, initiate payment by sending the details to the backend
+                fetch("{{ route('store.payment.initiation') }}", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                        },
+                        body: JSON.stringify({
+                            student_id: "{{ Auth::id() }}" ?? 99,
+                            course_id: "{{ $course->id }}",
+                            receipt_no: receipt_no,
+                            amount: "{{ $course->discounted_fees }}",
+                            ip_address: "{{ request()->ip() }}",
+                        })
                     })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Use the Razorpay order_id received from backend
-                        var options = {
-                            "key": "{{ env('RAZORPAY_KEY') }}",
-                            "amount": "{{ $course->discounted_fees }}" * 100, // amount in paise
-                            "currency": "INR",
-                            "name": "LearnSyntax",
-                            "description": "Processing Fee",
-                            "image": "{{ asset('front_assets/img/logo/logo.png') }}",
-                            "order_id": data.order_id, // Razorpay order ID
-                            "handler": function(response) {
-                                // After successful payment, send the payment details to the backend
-                                fetch("{{ route('handle.payment.response') }}", {
-                                        method: "POST",
-                                        headers: {
-                                            "Content-Type": "application/json",
-                                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                                        },
-                                        body: JSON.stringify({
-                                            payment_id: data
-                                            .payment_id, // Payment ID created in the backend
-                                            razorpay_payment_id: response.razorpay_payment_id,
-                                            razorpay_order_id: response.razorpay_order_id,
-                                            razorpay_signature: response.razorpay_signature,
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Use the Razorpay order_id received from backend
+                            var options = {
+                                "key": "{{ env('RAZORPAY_KEY') }}",
+                                "amount": "{{ $course->discounted_fees }}" * 100, // amount in paise
+                                "currency": "INR",
+                                "name": "LearnSyntax",
+                                "description": "Processing Fee",
+                                "image": "{{ asset('front_assets/img/logo/logo.png') }}",
+                                "order_id": data.order_id, // Razorpay order ID
+                                "handler": function(response) {
+                                    // After successful payment, send the payment details to the backend
+                                    fetch("{{ route('handle.payment.response') }}", {
+                                            method: "POST",
+                                            headers: {
+                                                "Content-Type": "application/json",
+                                                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                                            },
+                                            body: JSON.stringify({
+                                                payment_id: data
+                                                .payment_id, // Payment ID created in the backend
+                                                razorpay_payment_id: response.razorpay_payment_id,
+                                                razorpay_order_id: response.razorpay_order_id,
+                                                razorpay_signature: response.razorpay_signature,
+                                            })
                                         })
-                                    })
-                                    .then(response => response.json())
-                                    .then(data => {
-                                        if (data.success) {
-                                            alert('Payment processed successfully');
-                                            window.location.href = '/student/billing';
-                                        } else {
-                                            alert('Payment failed: ' + data.message);
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            if (data.success) {
+                                                alert('Payment processed successfully');
+                                                window.location.href = '/student/billing';
+                                            } else {
+                                                alert('Payment failed: ' + data.message);
+                                                payButton.disabled = false;
+                                            }
+                                        })
+                                        .catch(error => {
+                                            console.error("Error in updating payment:", error);
                                             payButton.disabled = false;
-                                        }
-                                    })
-                                    .catch(error => {
-                                        console.error("Error in updating payment:", error);
+                                        });
+                                },
+                                "prefill": {
+                                    "name": "{{ Auth::user()->name }}",
+                                    "email": "{{ Auth::user()->email }}"
+                                },
+                                "theme": {
+                                    "color": "#0a64a3"
+                                },
+                                "modal": {
+                                    "ondismiss": function() {
+                                        alert('Payment process was cancelled.');
                                         payButton.disabled = false;
-                                    });
-                            },
-                            "prefill": {
-                                "name": "{{ Auth::user()->name }}",
-                                "email": "{{ Auth::user()->email }}"
-                            },
-                            "theme": {
-                                "color": "#0a64a3"
-                            },
-                            "modal": {
-                                "ondismiss": function() {
-                                    alert('Payment process was cancelled.');
-                                    payButton.disabled = false;
-                                    window.location.href = '/student/billing';
-                                    document.forms[0].submit();
+                                        window.location.href = '/student/billing';
+                                        document.forms[0].submit();
+                                    }
                                 }
-                            }
-                        };
+                            };
 
-                        // Open the Razorpay payment modal
-                        var rzp1 = new Razorpay(options);
-                        rzp1.open();
+                            // Open the Razorpay payment modal
+                            var rzp1 = new Razorpay(options);
+                            rzp1.open();
 
-                    } else {
-                        alert("Error initiating payment: " + data.message);
+                        } else {
+                            alert("Error initiating payment: " + data.message);
+                            payButton.disabled = false;
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error initiating payment:", error);
                         payButton.disabled = false;
-                    }
-                })
-                .catch(error => {
-                    console.error("Error initiating payment:", error);
-                    payButton.disabled = false;
-                });
-        };
-    </script>
-@endauth
+                    });
+            };
+        </script>
+    @endauth
 </div>

@@ -8,7 +8,7 @@
                     @endif
                 </h5>
                 @if (auth()->check() && auth()->user()->is_member)
-                    <span class="px-3 py-1 text-sm font-semibold text-blue-700 bg-blue-200 rounded-full">
+                    <span class="px-3 py-1 text-sm font-semibold text-purple-700 bg-purple-200 rounded-full">
                         Member
                     </span>
                 @endif
@@ -27,7 +27,7 @@
             <ul class="space-y font-light">
                 <li>
                     <a wire:navigate href="{{ route('v2.student.dashboard') }}"
-                        class="flex items-center p-2 text-gray-900 hover:text-indigo-900 bg-transparent rounded-sm hover:bg-blue-200 group">
+                        class="flex items-center p-2 text-gray-900 hover:text-purple-900 bg-transparent rounded-sm hover:bg-purple-100 group">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                             class="size-6 fill-yellow-600">
                             <path
@@ -42,7 +42,7 @@
                 </li>
                 <li>
                     <a wire:navigate href="{{ route('student.exploreCourses') }}"
-                        class="flex items-center p-2 text-gray-900 hover:text-indigo-900 bg-transparent rounded-sm hover:bg-blue-200 group">
+                        class="flex items-center p-2 text-gray-900 hover:text-purple-900 bg-transparent rounded-sm hover:bg-purple-100 group">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                             class="size-6 fill-sky-600">
                             <path
@@ -61,7 +61,7 @@
 
                 <li>
                     <a wire:navigate href="{{ route('student.billing') }}"
-                        class="flex items-center p-2 text-gray-900 hover:text-indigo-900 bg-transparent rounded-sm hover:bg-blue-200 group">
+                        class="flex items-center p-2 text-gray-900 hover:text-purple-900 bg-transparent rounded-sm hover:bg-purple-100 group">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                             class="size-6 fill-amber-600">
                             <path d="M4.5 3.75a3 3 0 0 0-3 3v.75h21v-.75a3 3 0 0 0-3-3h-15Z" />
@@ -76,7 +76,7 @@
                 </li>
                 <li>
                     <a wire:navigate href="{{ route('student.messages') }}"
-                        class="flex items-center p-2 text-gray-900 hover:text-indigo-900 bg-transparent rounded-sm hover:bg-blue-200 group">
+                        class="flex items-center p-2 text-gray-900 hover:text-purple-900 bg-transparent rounded-sm hover:bg-purple-100 group">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                             class="size-6 fill-purple-600">
                             <path fill-rule="evenodd"
@@ -89,7 +89,7 @@
                 </li>
                 <li>
                     <a wire:navigate href="{{ route('v2.student.mycourses') }}"
-                        class="flex items-center p-2 text-gray-900 hover:text-indigo-900 bg-transparent rounded-sm hover:bg-blue-200 group">
+                        class="flex items-center p-2 text-gray-900 hover:text-purple-900 bg-transparent rounded-sm hover:bg-purple-100 group">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                             class="size-6 fill-teal-600">
                             <path
@@ -106,7 +106,7 @@
                 </li>
                 <li>
                     <a wire:navigate href="{{ route('student.assignments-view') }}"
-                        class="flex items-center p-2 text-gray-900 hover:text-indigo-900 bg-transparent rounded-sm hover:bg-blue-200 group">
+                        class="flex items-center p-2 text-gray-900 hover:text-purple-900 bg-transparent rounded-sm hover:bg-purple-100 group">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                             class="size-6 fill-emerald-600">
                             <path fill-rule="evenodd"
@@ -123,7 +123,7 @@
                 @if (isset($hasCompleted) && $hasCompleted)
                     <li>
                         <a wire:navigate href="{{ route('v2.student.examResult') }}"
-                            class="flex items-center p-2 text-gray-900 hover:text-indigo-900 bg-transparent rounded-sm hover:bg-blue-200 group">
+                            class="flex items-center p-2 text-gray-900 hover:text-purple-900 bg-transparent rounded-sm hover:bg-purple-100 group">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor" class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -136,7 +136,7 @@
                 @endif
                 <li>
                     <a wire:navigate href="{{ route('student.takeExam') }}"
-                        class="flex items-center p-2 text-gray-900 hover:text-indigo-900 bg-transparent rounded-sm hover:bg-blue-200 group">
+                        class="flex items-center p-2 text-gray-900 hover:text-purple-900 bg-transparent rounded-sm hover:bg-purple-100 group">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                             class="size-6 fill-pink-600">
                             <path fill-rule="evenodd"
@@ -167,7 +167,7 @@
 
                 <li>
                     <a wire:navigate href="{{ route('student.v2edit.profile') }}"
-                        class="flex items-center p-2 text-gray-900 hover:text-indigo-900 bg-transparent rounded-sm hover:bg-blue-200 group">
+                        class="flex items-center p-2 text-gray-900 hover:text-purple-900 bg-transparent rounded-sm hover:bg-purple-100 group">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                             class="size-6 fill-blue-600">
                             <path fill-rule="evenodd"
@@ -202,7 +202,7 @@
                 @endif
                 <li>
                     <a wire:navigate href="{{ route('auth.logout') }}"
-                        class="flex items-center p-2 text-gray-900 hover:text-indigo-900 bg-transparent rounded-sm hover:bg-blue-200 group">
+                        class="flex items-center p-2 text-gray-900 hover:text-purple-900 bg-transparent rounded-sm hover:bg-purple-100 group">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                             class="size-6 fill-red-600">
                             <path fill-rule="evenodd"
