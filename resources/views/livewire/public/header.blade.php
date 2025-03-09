@@ -21,19 +21,19 @@
 
                 <!-- Desktop Navigation -->
                 <nav class="hidden lg:flex items-center space-x-1">
-                    <a href="{{route('v2.public.homepage')}}" wire:navigate 
+                    <a href="{{route('v2.public.homepage')}}" wire:navigate
                         class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 rounded-lg hover:bg-blue-50 transition-colors duration-200">
                         Home
                     </a>
-                    <a href="{{route('v2.public.viewallcourses.all-courses')}}" wire:navigate 
+                    <a href="{{route('v2.public.viewallcourses.all-courses')}}" wire:navigate
                         class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 rounded-lg hover:bg-blue-50 transition-colors duration-200">
                         Free Courses
                     </a>
-                    <a href="{{route('v2.public.viewallcourses.all-courses')}}" wire:navigate 
+                    <a href="{{route('v2.public.viewallcourses.all-courses')}}" wire:navigate
                         class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 rounded-lg hover:bg-blue-50 transition-colors duration-200">
                         Pro Courses
                     </a>
-                    <a href="{{route('v2.public.workshop')}}" wire:navigate 
+                    <a href="{{route('v2.public.workshop')}}" wire:navigate
                         class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 rounded-lg hover:bg-blue-50 transition-colors duration-200">
                         Workshop
                     </a>
@@ -53,14 +53,14 @@
                             </a>
                         @else
                             <div class="relative" x-data="{ open: false }">
-                                <button @click="open = !open" @click.away="open = false" 
+                                <button @click="open = !open" @click.away="open = false"
                                     class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
                                     <span>{{ Auth::user()->name }}</span>
                                     <svg class="w-5 h-5 ml-2 -mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                                     </svg>
                                 </button>
-                                <div x-show="open" 
+                                <div x-show="open"
                                     class="absolute right-0 w-48 mt-2 origin-top-right bg-white rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                                     x-transition:enter="transition ease-out duration-100"
                                     x-transition:enter-start="transform opacity-0 scale-95"
@@ -69,11 +69,11 @@
                                     x-transition:leave-start="transform opacity-100 scale-100"
                                     x-transition:leave-end="transform opacity-0 scale-95">
                                     <div class="py-1">
-                                        <a href="{{ route('v2.student.dashboard') }}" wire:navigate 
+                                        <a href="{{ route('v2.student.dashboard') }}" wire:navigate
                                             class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">
                                             My Learning
                                         </a>
-                                        <button wire:click="logout" 
+                                        <button wire:click="logout"
                                             class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">
                                             Logout
                                         </button>
@@ -83,11 +83,11 @@
                         @endif
                     @endauth
                     @guest
-                        <a href="{{ route('v2.auth.login') }}" wire:navigate 
+                        <a href="{{ route('v2.auth.login') }}" wire:navigate
                             class="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-600 bg-white border border-blue-600 rounded-lg hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
                             Login
                         </a>
-                        <a href="{{ route('v2.auth.register') }}" wire:navigate 
+                        <a href="{{ route('v2.auth.register') }}" wire:navigate
                             class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
                             Join Us
                         </a>
@@ -109,19 +109,19 @@
                 </button>
             </div>
             <nav class="space-y-2">
-                <a href="{{route('v2.public.homepage')}}" wire:navigate 
+                <a href="{{route('v2.public.homepage')}}" wire:navigate
                     class="block px-4 py-2 text-base font-medium text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200">
                     Home
                 </a>
-                <a href="{{route('v2.public.viewallcourses.all-courses')}}" wire:navigate 
+                <a href="{{route('v2.public.viewallcourses.all-courses')}}" wire:navigate
                     class="block px-4 py-2 text-base font-medium text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200">
                     Free Courses
                 </a>
-                <a href="{{route('v2.public.viewallcourses.all-courses')}}" wire:navigate 
+                <a href="{{route('v2.public.viewallcourses.all-courses')}}" wire:navigate
                     class="block px-4 py-2 text-base font-medium text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200">
                     Pro Courses
                 </a>
-                <a href="{{route('v2.public.workshop')}}" wire:navigate 
+                <a href="{{route('v2.public.workshop')}}" wire:navigate
                     class="block px-4 py-2 text-base font-medium text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200">
                     Workshop
                 </a>
@@ -129,11 +129,8 @@
         </div>
     </div>
 
-    <!-- AlpineJS for Dropdown -->
-    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    
     <!-- Sidebar Toggle Script -->
-    <script>
+    {{-- <script>
         document.getElementById('menu-toggle').addEventListener('click', function() {
             document.getElementById('sidebar').classList.remove('-translate-x-full');
             document.body.style.overflow = 'hidden';
@@ -143,5 +140,5 @@
             document.getElementById('sidebar').classList.add('-translate-x-full');
             document.body.style.overflow = '';
         });
-    </script>
+    </script> --}}
 </div>

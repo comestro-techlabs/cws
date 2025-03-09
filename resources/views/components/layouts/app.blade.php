@@ -5,7 +5,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite('resources/css/app.css')
-    <script src="https://cdn.tailwindcss.com"></script>
 
     <title>{{ $title ?? 'public' }}</title>
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -16,7 +15,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@@300;400;600&display=swap" rel="stylesheet">
-
     @livewireStyles
 </head>
 
@@ -30,14 +28,12 @@
     <div class="mt-auto">
         <livewire:public.footer />
     </div>
+
     @livewireScripts
+
+    
 </body>
-<script>
-    document.getElementById('menu-button').addEventListener('click', function() {
-        const dropdown = document.querySelector('.dropdown-menu');
-        dropdown.classList.toggle('hidden');
-    });
-</script>
+
 
 
 </html>
