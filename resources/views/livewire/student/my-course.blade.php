@@ -88,64 +88,64 @@
                                                 </div>
                                             @endif
 
-                                            <div class="mt-3" wire:key="batch-actions-{{ $course->id }}">
-                                                <button wire:click.prevent="toggleEdit['id' => {{ $course->id }}]"
-                                                    
-                                                    wire:key="edit-button-{{ $course->id }}"
-                                                    class="inline-flex items-center px-3 py-1.5 border border-gray-200 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                                    </svg>
-                                                    {{ $editingCourseId === $course->id ? 'Cancel Edit' : 'Edit Batch' }}
-                                                </button>
+                                          <!-- Replace the button and its surrounding edit logic -->
+<div class="mt-3" wire:key="batch-actions-{{ $course->id }}">
+    <button wire:click.prevent="toggleEdit({{ $course->id }})"
+            wire:key="edit-button-{{ $course->id }}"
+            class="inline-flex items-center px-3 py-1.5 border border-gray-200 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+        </svg>
+        {{ $editingCourseId === $course->id ? 'Cancel Edit' : 'Edit Batch' }}
+    </button>
 
-                                                @if($editingCourseId === $course->id)
-                                                    <div wire:key="edit-form-{{ $course->id }}" class="mt-3 space-y-3">
-                                                        <div class="relative">
-                                                            <select wire:model.live="selectedBatch.{{ $course->id }}"
-                                                                wire:key="select-{{ $course->id }}"
-                                                                class="w-full px-3 py-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition duration-200 appearance-none pr-10">
-                                                                <option value="">-- Select a Batch --</option>
-                                                                @foreach ($course->batches as $batch)
-                                                                    <option value="{{ $batch->id }}">{{ $batch->batch_name }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                            <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                                                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                                                </svg>
-                                                            </div>
-                                                        </div>
+    @if($editingCourseId === $course->id)
+        <div wire:key="edit-form-{{ $course->id }}" class="mt-3 space-y-3">
+            <div class="relative">
+                <select wire:model.live="selectedBatch.{{ $course->id }}"
+                        wire:key="select-{{ $course->id }}"
+                        class="w-full px-3 py-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition duration-200 appearance-none pr-10">
+                    <option value="">-- Select a Batch --</option>
+                    @foreach ($course->batches as $batch)
+                        <option value="{{ $batch->id }}">{{ $batch->batch_name }}</option>
+                    @endforeach
+                </select>
+                <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </div>
+            </div>
 
-                                                        <button wire:click="updateBatch({{ $course->id }}, '{{ $selectedBatch[$course->id] }}')"
-                                                            wire:key="update-{{ $course->id }}"
-                                                            class="w-full inline-flex items-center justify-center px-3 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                                            </svg>
-                                                            Update Batch
-                                                        </button>
-                                                    </div>
-                                                @endif
+            <button wire:click="updateBatch({{ $course->id }}, '{{ $selectedBatch[$course->id] }}')"
+                    wire:key="update-{{ $course->id }}"
+                    class="w-full inline-flex items-center justify-center px-3 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                Update Batch
+            </button>
+        </div>
+    @endif
 
-                                                @if($editingCourseId !== $course->id)
-                                                    <div class="mt-3 flex space-x-2">
-                                                        <a href="#" class="inline-flex items-center px-3 py-1.5 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                                            </svg>
-                                                            View Course
-                                                        </a>
-                                                        <button class="inline-flex items-center px-3 py-1.5 border border-gray-200 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                                            </svg>
-                                                            Schedule
-                                                        </button>
-                                                    </div>
-                                                @endif
-                                            </div>
+    @if($editingCourseId !== $course->id)
+        <div class="mt-3 flex space-x-2">
+            <a href="#" class="inline-flex items-center px-3 py-1.5 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+                View Course
+            </a>
+            <button class="inline-flex items-center px-3 py-1.5 border border-gray-200 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                Schedule
+            </button>
+        </div>
+    @endif
+</div>
 
                                         @else
                                             <div wire:key="no-batch-{{ $course->id }}" class="space-y-3">
@@ -194,29 +194,5 @@
     }
     </style>
 
-    @script
-    <script>
-        document.addEventListener('livewire:init', () => {
-            Livewire.on('show-alert', (event) => {
-                Swal.fire({
-                    icon: event.icon,
-                    title: event.title,
-                    text: event.text,
-                    confirmButtonText: 'OK'
-                });
-            });
-
-            @foreach($courses as $course)
-                Livewire.on('show-alert-{{ $course->id }}', (event) => {
-                    Swal.fire({
-                        icon: event.icon,
-                        title: event.title,
-                        text: event.text,
-                        confirmButtonText: 'OK'
-                    });
-                });
-            @endforeach
-        });
-    </script>
-    @endscript
+    
 </div>

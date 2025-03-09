@@ -62,11 +62,12 @@ class MyCourse extends Component
     }
 
     public function toggleEdit($courseId)
-    {
-        // Ensure only one course is edited at a time
-        $this->editingCourseId = $this->editingCourseId === $courseId ? null : $courseId;
-        \Log::info("toggleEdit called for courseId: {$courseId}, editingCourseId set to: " . ($this->editingCourseId ?? 'null'));
-    }
+{
+    \Log::info("Toggling edit for courseId: {$courseId}, current editingCourseId: {$this->editingCourseId}");
+    $this->editingCourseId = $this->editingCourseId === $courseId ? null : $courseId;
+    \Log::info("New editingCourseId: " . ($this->editingCourseId ?? 'null'));
+    $this->dispatch('refresh'); // Force a re-render
+}
 
     public function updateBatch($courseId, $batchId)
     {
