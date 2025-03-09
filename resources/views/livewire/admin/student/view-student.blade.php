@@ -98,32 +98,51 @@
         <table class="min-w-full bg-white border border-gray-200">
             <thead>
                 <tr class="bg-gray-200">
-                    <th class="px-4 py-2 border">Membership Status</th>
+                    <!-- <th class="px-4 py-2 border">Membership Status</th>
                     <th class="px-4 py-2 border">Active</th>
                     <th class="px-4 py-2 border">Last Payment</th>
                     <th class="px-4 py-2 border">Payment Due</th>
-                    <th class="px-4 py-2 border">Overdue Days</th>
+                    <th class="px-4 py-2 border">Overdue Days</th> -->
+                    <th class="px-4 py-2 border">Due Date</th>
+                    <th class="px-4 py-2 border">Month</th>
+                    <th class="px-4 py-2 border">Amount</th>
+                    <th class="px-4 py-2 border">Method</th>
+                    <th class="px-4 py-2 border">Status</th>
+                    <th class="px-4 py-2 border">Action</th>
+
                 </tr>
             </thead>
             <tbody>
                 @if($isMember)
-                <tr>
-                    <td class="px-4 py-2 border text-green-500">
-                        {{ $isMember ? 'Member' : 'Not a Member' }}
+                @foreach($lastPayment as $payment)
+                <tr class="hover:bg-gray-50 transition-colors">
+                    <td class="px-4 py-3 border-b text-sm text-gray-700 text-center">{{ $payment->due_date }}</td>
+                    <td class="px-4 py-3 border-b text-sm font-medium text-center">{{ \Carbon\Carbon::create((int)$payment->year, (int)$payment->month, 1)->format('M Y') }}</td>
+                    <td class="px-4 py-3 border-b text-sm font-semibold text-center">{{ $payment->total_amount }}</td>
+                    <td class="px-4 py-3 border-b text-sm text-center">
+                        <span class="px-2 py-1 bg-gray-100 rounded-full text-xs">{{ $payment->method }}</span>
                     </td>
-                    <td class="px-4 py-2 border text-green-500">
-                        {{ $isActive ? 'Active' : 'Inactive' }}
+                    <td class="px-4 py-3 border-b text-center">
+                        @if($payment->status == 'captured')
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            {{ $payment->status }}
+                        </span>
+                        @else
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                            {{ $payment->status }}
+                        </span>
+                        @endif
                     </td>
-                    <td class="px-4 py-2 border">
-                        {{ $lastPayment ? $lastPayment->payment_date : 'No Payments' }}
-                    </td>
-                    <td class="px-4 py-2 border text-red-500">
-                        {{ $isPaymentDue ? 'Payment Due' : 'No Dues' }}
-                    </td>
-                    <td class="px-4 py-2 border text-red-500">
-                        {{ $isPaymentDue ? $overdueDays . ' days' : 'N/A' }}
+                    <td class="px-4 py-3 border-b text-center">
+                        @if($payment->status != 'captured')
+                        <button wire:click="payWithCash({{ $payment->id }})" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-md shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                            Pay with cash
+                        </button>
+                        @endif
                     </td>
                 </tr>
+                @endforeach
+                
                 @else
                 <tr>
                     <td colspan="6" class="px-4 py-2 text-center">Not a member</td>
