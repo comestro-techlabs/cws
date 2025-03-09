@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Livewire\Student;
 
 use Livewire\Component;
@@ -11,63 +12,112 @@ class MyCourse extends Component
 {
     public $courses;
     public $coursesWithoutBatch = [];
+    public $selectedBatch = [];
+    public $editingCourseId = null;
 
     public function mount()
     {
         $this->loadCourses();
+        $this->initializeBatchSelections();
     }
 
     private function loadCourses()
     {
-        $this->courses = Auth::user()->courses()->with('batches')->get();
-        $this->coursesWithoutBatch = $this->courses->filter(function ($course) {
-            return !$course->pivot->batch_id;
-        })->values();
+        try {
+            $this->courses = Auth::user()->courses()
+                ->with(['batches' => function ($query) {
+                    $query->orderBy('batch_name');
+                }])
+                ->get();
 
-        if ($this->coursesWithoutBatch->isNotEmpty()) {
-            $courses = $this->coursesWithoutBatch->pluck('title')->toArray();
-            \Log::info('Emitting alert with courses: ' . implode(', ', $courses));
+            $this->coursesWithoutBatch = $this->courses->filter(function ($course) {
+                return !$course->pivot || empty($course->pivot->batch_id);
+            })->values();
+
+            if ($this->coursesWithoutBatch->isNotEmpty()) {
+                $courseTitles = $this->coursesWithoutBatch->pluck('title')->implode(', ');
+                $this->dispatch('show-alert', [
+                    'icon' => 'warning',
+                    'title' => 'Reminder',
+                    'text' => "The following courses need a batch selection: {$courseTitles}",
+                ]);
+            }
+        } catch (\Exception $e) {
             $this->dispatch('show-alert', [
-                'icon' => 'warning',
-                'title' => 'Reminder',
-                'text' => 'The following courses do not have a batch selected: ' . implode(', ', $courses),
+                'icon' => 'error',
+                'title' => 'Error Loading Courses',
+                'text' => 'Unable to load your courses. Please try again later.',
             ]);
+            $this->courses = collect();
+            $this->coursesWithoutBatch = collect();
         }
+    }
+
+    private function initializeBatchSelections()
+    {
+        foreach ($this->courses as $course) {
+            $this->selectedBatch[$course->id] = $course->pivot ? ($course->pivot->batch_id ?? '') : '';
+        }
+        $this->editingCourseId = null;
+    }
+
+    public function toggleEdit($courseId)
+    {
+        // Ensure only one course is edited at a time
+        $this->editingCourseId = $this->editingCourseId === $courseId ? null : $courseId;
+        \Log::info("toggleEdit called for courseId: {$courseId}, editingCourseId set to: " . ($this->editingCourseId ?? 'null'));
     }
 
     public function updateBatch($courseId, $batchId)
     {
-        $user = Auth::user();
-        $course = $this->courses->firstWhere('id', $courseId);
+        try {
+            $user = Auth::user();
+            $course = $this->courses->firstWhere('id', $courseId);
 
-        // Check if the course has any batches
-        if ($course->batches->isEmpty()) {
-            $this->dispatch('show-alert', [
-                'icon' => 'error',
-                'title' => 'No Batches Available',
-                'text' => 'You don’t have any batches available for this course.',
+            if (!$course) {
+                $this->dispatch("show-alert-{$courseId}", [
+                    'icon' => 'error',
+                    'title' => 'Course Not Found',
+                    'text' => 'The selected course could not be found.',
+                ]);
+                return;
+            }
+
+            if ($course->batches->isEmpty()) {
+                $this->dispatch("show-alert-{$courseId}", [
+                    'icon' => 'warning',
+                    'title' => 'No Batches Available',
+                    'text' => "No batches are available for {$course->title}.",
+                ]);
+                return;
+            }
+
+            if ($batchId && !$course->batches->contains('id', $batchId)) {
+                $this->dispatch("show-alert-{$courseId}", [
+                    'icon' => 'error',
+                    'title' => 'Invalid Batch',
+                    'text' => 'Please select a valid batch from the available options.',
+                ]);
+                return;
+            }
+
+            $user->courses()->updateExistingPivot($courseId, ['batch_id' => $batchId ?: null]);
+            $this->selectedBatch[$courseId] = $batchId;
+            $this->editingCourseId = null;
+            $this->loadCourses();
+
+            $this->dispatch("show-alert-{$courseId}", [
+                'icon' => 'success',
+                'title' => 'Batch Updated',
+                'text' => "Batch for {$course->title} updated successfully!",
             ]);
-            return;
-        }
-
-        // Check if batchId is empty or invalid
-        if (empty($batchId) || !$course->batches->contains('id', $batchId)) {
-            $this->dispatch('show-alert', [
+        } catch (\Exception $e) {
+            $this->dispatch("show-alert-{$courseId}", [
                 'icon' => 'error',
-                'title' => 'Invalid Batch',
-                'text' => 'Please select a valid batch.',
+                'title' => 'Update Failed',
+                'text' => 'An error occurred while updating the batch: ' . $e->getMessage(),
             ]);
-            return;
         }
-
-        // Update the batch
-        $user->courses()->updateExistingPivot($courseId, ['batch_id' => $batchId]);
-        $this->loadCourses();
-        $this->dispatch('show-alert', [
-            'icon' => 'success',
-            'title' => 'Success',
-            'text' => 'Batch updated successfully!',
-        ]);
     }
 
     #[Layout('components.layouts.student')]
