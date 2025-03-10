@@ -113,47 +113,54 @@
                     </div>
 
                     <div class="p-6">
-                        <ul class="space-y-3">
+                        
+                         <ul class="space-y-3">
                             @if ($assignments->isNotEmpty())
-                                        @foreach ($assignments as $assignment)
-                                                    <li
-                                                        class="p-3 rounded-lg border border-gray-100 hover:border-purple-200 transition duration-200">
-                                                        <div class="flex justify-between items-center">
-                                                            <!-- Assignment Title -->
-                                                            <div class="flex items-center">
-                                                                <span class="text-purple-700 mr-2">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                                                                        viewBox="0 0 24 24" stroke="currentColor">
-                                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                                                    </svg>
-                                                                </span>
-                                                                <span class="text-gray-800 font-medium">{{ $assignment->title }}</span>
-                                                            </div>
+                                    @foreach ($assignments->groupBy('batch_name') as $batch_name => $batchAssignments)
+                                            <div class="border-b border-gray-300 pb-4">
+                                                <h2 class="text-lg font-semibold text-purple-700">Batch {{ $batch_name }}</h2>
+                                                <ul class="space-y-3 mt-2">
+                                                    @foreach ($batchAssignments as $assignment)
+                                                        <li
+                                                            class="p-3 rounded-lg border border-gray-100 hover:border-purple-200 transition duration-200">
+                                                            <div class="flex justify-between items-center">
+                                                                 <div class="flex items-center">
+                                                                    <span class="text-purple-700 mr-2">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                                                            viewBox="0 0 24 24" stroke="currentColor">
+                                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                                 stroke-width="2"
+                                                                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                                         </svg>
+                                                                     </span>
+                                                                                <span class="text-gray-800 font-medium">{{ $assignment->title }}</span>
+                                                                </div>
 
-                                                            <!-- Upload Status -->
-                                                            <div>
-                                                                @if ($assignment->uploads->isNotEmpty())
-                                                                    @php
-                                                                        $latestUpload = $assignment->uploads->sortByDesc('submitted_at')->first();
-                                                                     @endphp
-                                                                     <span
-                                                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                                                                            @if ($latestUpload->status == 'submitted') bg-green-100 text-green-800
-                                                                            @elseif($latestUpload->status == 'graded') bg-blue-100 text-blue-800
-                                                                            @else bg-gray-100 text-gray-800 @endif">
-                                                                        {{ ucfirst($latestUpload->status) }}
-                                                                    </span>
-                                                                @else
-                                                                    <span
-                                                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                                                        Pending
-                                                                    </span>
-                                                                @endif
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                        @endforeach
+                                                                 <div>
+                                                                    @if ($assignment->uploads->isNotEmpty())
+                                                                         @php
+                                                                             $latestUpload = $assignment->uploads->sortByDesc('submitted_at')->first();
+                                                                        @endphp
+                                                                        <span
+                                                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                                                                                 @if ($latestUpload->status == 'submitted') bg-green-100 text-green-800
+                                                                                @elseif($latestUpload->status == 'graded') bg-blue-100 text-blue-800
+                                                                                 @else bg-gray-100 text-gray-800 @endif">
+                                                                            {{ ucfirst($latestUpload->status) }}
+                                                                        </span>
+                                                                    @else
+                                                                        <span
+                                                                             class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                                                             Pending
+                                                                        </span>
+                                                                    @endif
+                                                                </div>
+                                                             </div>
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                    @endforeach
                             @else
                                 <div class="text-center py-6 text-gray-500">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-400" fill="none"
@@ -165,6 +172,7 @@
                                 </div>
                             @endif
                         </ul>
+
                     </div>
                 </div>
 
@@ -245,7 +253,7 @@
                                                         <div>
                                                             <span
                                                                 class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                                                                                                                                                    {{ $exam->total_marks >= 70 ? 'bg-green-100 text-green-800' :
+                                                                                                                                                                                                    {{ $exam->total_marks >= 70 ? 'bg-green-100 text-green-800' :
                                         ($exam->total_marks >= 40 ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800') }}">
                                                                 {{ $exam->total_marks }}%
                                                             </span>
