@@ -83,11 +83,22 @@ class StudentDashboard extends Component
 
         $courseIds = $this->courses->pluck('id')->toArray();
         $batchIds = $user->courses()->pluck('course_user.batch_id')->toArray();
-        
+
         // Fetch assignments only for the logged-in student's courses and batches
+        // $this->assignments = Assignments::whereIn('course_id', $courseIds)
+        //     ->whereHas('batch', function ($query) use ($batchIds) {
+        //         $query->whereIn('id', $batchIds);
+        //     })
+        //     ->latest()
+        //     ->take(4)
+        //     ->get();
+
         $this->assignments = Assignments::whereIn('course_id', $courseIds)
             ->whereHas('batch', function ($query) use ($batchIds) {
                 $query->whereIn('id', $batchIds);
+            })
+            ->whereHas('assignmentUploads', function ($query) use ($studentId) {
+                $query->where('student_id', $studentId);
             })
             ->latest()
             ->take(4)
@@ -115,12 +126,12 @@ class StudentDashboard extends Component
         $messageComponent->mount();
         $this->messages = $messageComponent->sortmessages->take(3);
         $this->unreadCount = $messageComponent->unreadCount;
-            
+
     }
 
     public function hasCompletedExamOrAssignment($userId)
     {
-        return ExamUser::where('user_id', $userId)->exists() 
+        return ExamUser::where('user_id', $userId)->exists()
             || Assignment_upload::where('student_id', $userId)->exists();
     }
 
