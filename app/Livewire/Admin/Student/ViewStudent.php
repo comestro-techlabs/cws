@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Livewire\Admin\Student;
+
+use App\Livewire\Student\Course;
+use App\Models\Course as ModelsCourse;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -25,6 +28,10 @@ class ViewStudent extends Component
     public $studentId;
     public $activeTab = 'courses';
     public $dueDate;
+    public $isModalOpen = false;
+    public $availableCourses = [];
+
+
     // protected $listeners = ['paymentUpdated' => 'fetchPayments'];
 
     public function mount($id)
@@ -61,6 +68,29 @@ class ViewStudent extends Component
 
             $this->fetchPayments();
 
+            $this->availableCourses = ModelsCourse::all()->except($this->purchasedCourses->pluck('course_id')->toArray());
+            // dd($this->availableCourses);
+    }
+    
+
+    public function enrollCourse($course_id){
+        $course_data = ModelsCourse::find($course_id);
+        $add_data_to_payments = Payment::create([
+            'student_id' => $this->studentId,
+            'course_id' => $course_id,
+            'status' => 'captured',
+            'payment_id' => 'cash_payment',
+            'payment_status' => 'completed',
+            'method' => 'cash',
+            'month'=> now()->month,
+            'year' => now()->year,
+            'amount' => $course_data->discounted_fees,
+            'total_amount' => $course_data->discounted_fees,
+            'payment_date' => now(),
+        ]);
+    }
+    public function enrollButton(){
+        $this->isModalOpen = true;
     }
     #[On('paymentUpdated')] 
     public function fetchPayments()

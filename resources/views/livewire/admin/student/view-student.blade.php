@@ -33,6 +33,7 @@
             <strong class="block text-lg font-semibold text-slate-600">DOB</strong>
             <span class="text-slate-500">{{ $student->dob }}</span>
         </div>
+        
 
     </div>
     <!-- Tabs -->
@@ -52,6 +53,11 @@
     </div>
     <!-- Courses Table -->
     @if($activeTab === 'courses')
+    <div>
+        <button class="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline" wire:click="enrollButton">
+            Enroll in new course +
+        </button>
+    </div>
     <div class="mt-4">
         <h3 class="text-lg font-semibold">Purchased Courses</h3>
         <table class="min-w-full bg-white border border-gray-200">
@@ -66,6 +72,7 @@
                     <th class="p-2 text-center text-xs font-medium text-gray-600 border">Payment Date</th>
                     <th class="p-2 text-center text-xs font-medium text-gray-600 border">Payment Month</th>
                     <th class="p-2 text-center text-xs font-medium text-gray-600 border">Payment Year</th>
+
                 </tr>
 
             </thead>
@@ -180,6 +187,30 @@
                 @endforelse
             </tbody>
         </table>
+    </div>
+    @endif
+    <!-- modal -->
+    @if($isModalOpen)
+    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 overflow-y-auto h-full w-full flex items-center justify-center">
+        <div class="w-full max-w-lg bg-white rounded-2xl shadow-xl p-8">
+            <h2 class="text-xl font-bold mb-4">Enroll in New Course</h2>
+            <input type="text" wire:model="searchTerm" placeholder="Search courses..." class="w-full mb-4 p-2 border rounded">
+            <ul>
+                @forelse($availableCourses as $course)
+                <li class="mb-2 flex justify-between items-center">
+                    <span>{{ $course->title }}</span>
+                    <button wire:click="enrollCourse({{ $course->id }})" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded-full focus:outline-none focus:shadow-outline">
+                        Enroll Now
+                    </button>
+                </li>
+                @empty
+                <li>No courses available.</li>
+                @endforelse
+            </ul>
+            <button wire:click="closeModal" class="mt-4 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline">
+                Cancel
+            </button>
+        </div>
     </div>
     @endif
 </div>
