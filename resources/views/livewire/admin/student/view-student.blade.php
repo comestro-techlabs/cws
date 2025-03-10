@@ -53,7 +53,7 @@
     </div>
     <!-- Courses Table -->
     @if($activeTab === 'courses')
-    <div class="flex justify-end">
+    <div class="flex justify-center">
         <button class="group relative mt-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-medium py-2.5 px-5 rounded-lg shadow-lg hover:shadow-blue-500/30 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" wire:click="enrollButtonOpenModal">
             <span class="flex items-center">
                 <span>Enroll in new course</span>
@@ -124,6 +124,7 @@
             <tbody>
                 @if($isMember)
                 @foreach($lastPayment as $payment)
+                @if(empty($payment->course_id) && empty($payment->workshop_id))
                 <tr class="hover:bg-gray-50 transition-colors">
                     <td class="px-4 py-3 border-b text-sm text-gray-700 text-center">{{ $payment->due_date }}</td>
                     <td class="px-4 py-3 border-b text-sm font-medium text-center">{{ \Carbon\Carbon::create((int)$payment->year, (int)$payment->month, 1)->format('M Y') }}</td>
@@ -156,6 +157,7 @@
                         @endif
                     </td>
                 </tr>
+                @endif
                 @endforeach
 
                 @else
@@ -220,10 +222,23 @@
             <div class="max-h-64 overflow-y-auto pr-1 mb-6">
                 <ul class="space-y-3">
                     @forelse($availableCourses as $course)
-                    <li class="p-3 border border-gray-100 rounded-lg hover:bg-gray-50 transition-colors flex justify-between items-center">
-                        <span class="text-gray-800 font-medium">{{ $course->title }}</span>
-                        <button wire:click="enrollCourse({{ $course->id }})" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium py-2 px-4 rounded-lg shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-                            Enroll
+                    
+                    <li class="p-4 bg-white border border-gray-100 rounded-xl hover:shadow-md hover:border-blue-100 transition-all duration-200 flex flex-wrap md:flex-nowrap justify-between items-center gap-3">
+                        <div class="flex-grow">
+                            <h3 class="text-gray-800 font-semibold">{{ $course->title }}</h3>
+                            <div class="mt-1 flex items-center">
+                                <span class="bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-700 font-medium px-3 py-1 rounded-lg flex items-center">
+                                    ₹ {{ $course->discounted_fees }}
+                                </span>
+                            </div>
+                        </div>
+                        <button wire:click="enrollCourse({{ $course->id }})" class="relative overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium py-2 px-5 rounded-lg shadow-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                            <span class="relative z-10 flex items-center">
+                                <span>Enroll</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                                </svg>
+                            </span>
                         </button>
                     </li>
                     @empty

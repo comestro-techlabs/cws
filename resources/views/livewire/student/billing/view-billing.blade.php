@@ -98,7 +98,7 @@
                             <div class="flex flex-wrap items-center justify-between gap-4">
                                 <div class="flex-1 min-w-[200px]">
                                     <h3 class="font-medium text-gray-900">Membership Payment</h3>
-                                    <p class="text-sm text-gray-500"> 
+                                    <p class="text-sm text-gray-500">
                                         Due Date: {{ \Carbon\Carbon::parse($item->due_date)->format('d M Y') }}
                                     </p>
                                     <p class="text-sm text-gray-500">
