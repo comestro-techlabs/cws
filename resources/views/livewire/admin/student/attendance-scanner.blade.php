@@ -64,7 +64,7 @@
 
         <!-- Link to Attendance Calendar -->
         <div class="mt-8">
-            <a href="{{ route('admin.student.attendance.calendar', ['studentId' => $student->id]) }}"
+            <a wire:navigate href="{{ route('admin.student.attendance.calendar', ['studentId' => $student->id]) }}"
                class="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 transition ease-in-out duration-300">
                 View Attendance Calendar
             </a>
