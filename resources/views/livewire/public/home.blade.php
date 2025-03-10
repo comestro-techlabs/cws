@@ -8,7 +8,7 @@
                     Discover curated courses that blend industry insights with practical knowledge.
                 </p>
             </div>
-            
+
             <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 @foreach ($courses as $item)
                 <div class="flex flex-col bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
@@ -50,7 +50,7 @@
                                 </div>
                             </div>
 
-                            <a href="{{route('v2.public.courseDetail', ['slug' => $item->slug])}}" wire:navigate
+                            <a href="{{route('public.courseDetail', ['slug' => $item->slug])}}" wire:navigate
                                 class="block w-full px-4 py-3 text-center font-medium text-white bg-[#662d91] rounded-lg hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors duration-200">
                                 Enroll Now
                             </a>
@@ -61,7 +61,7 @@
             </div>
 
             <div class="mt-12 text-center">
-                <a href="{{route('v2.public.viewallcourses.all-courses')}}" wire:navigate
+                <a href="{{route('public.viewallcourses.all-courses')}}" wire:navigate
                     class="inline-flex items-center px-6 py-3 text-base font-medium text-white bg-[#662d91] rounded-lg hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors duration-200">
                     View All Courses
                     <svg class="ml-2 -mr-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -152,7 +152,7 @@
         <div class="absolute inset-0 opacity-5">
             <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=\'30\' height=\'30\' viewBox=\'0 0 30 30\' fill=\'none\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M1.22676 0C1.91374 0 2.45351 0.539773 2.45351 1.22676C2.45351 1.91374 1.91374 2.45351 1.22676 2.45351C0.539773 2.45351 0 1.91374 0 1.22676C0 0.539773 0.539773 0 1.22676 0Z\' fill=\'rgba(0,0,0,0.07)\'/%3E%3C/svg%3E')"></div>
         </div>
-        
+
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto">
                 <h2 class="text-3xl sm:text-4xl font-bold text-gray-900">Our <span class="text-[#662d91]">Alumni</span> Success Stories</h2>
@@ -184,8 +184,8 @@
                         <div class="mt-6 pt-6 border-t border-gray-100">
                             <div class="flex items-center">
                                 @if($student->image)
-                                    <img src="{{ asset('/storage/placedstudent/' . $student->image) }}" 
-                                        alt="{{ $student->name }}" 
+                                    <img src="{{ asset('/storage/placedstudent/' . $student->image) }}"
+                                        alt="{{ $student->name }}"
                                         class="h-14 w-14 rounded-full object-cover border-2 border-purple-50"
                                     />
                                 @else

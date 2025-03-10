@@ -14,26 +14,26 @@
 
                 <!-- Logo -->
                 <div class="flex-shrink-0">
-                    <a href="{{route('v2.public.homepage')}}" wire:navigate class="flex items-center">
+                    <a href="{{route('public.index')}}" wire:navigate class="flex items-center">
                         <img src="{{ asset('assets/LearnSyntax.png') }}" class="h-8 sm:h-9" alt="Learn Syntax Logo">
                     </a>
                 </div>
 
                 <!-- Desktop Navigation -->
                 <nav class="hidden lg:flex items-center space-x-1">
-                    <a href="{{route('v2.public.homepage')}}" wire:navigate
+                    <a href="{{route('public.index')}}" wire:navigate
                         class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 rounded-lg hover:bg-blue-50 transition-colors duration-200">
                         Home
                     </a>
-                    <a href="{{route('v2.public.viewallcourses.all-courses')}}" wire:navigate
+                    <a href="{{route('public.viewallcourses.all-courses')}}" wire:navigate
                         class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 rounded-lg hover:bg-blue-50 transition-colors duration-200">
                         Free Courses
                     </a>
-                    <a href="{{route('v2.public.viewallcourses.all-courses')}}" wire:navigate
+                    <a href="{{route('public.viewallcourses.all-courses')}}" wire:navigate
                         class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 rounded-lg hover:bg-blue-50 transition-colors duration-200">
                         Pro Courses
                     </a>
-                    <a href="{{route('v2.public.workshop')}}" wire:navigate
+                    <a href="{{route('public.workshop')}}" wire:navigate
                         class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 rounded-lg hover:bg-blue-50 transition-colors duration-200">
                         Workshop
                     </a>
@@ -83,11 +83,11 @@
                         @endif
                     @endauth
                     @guest
-                        <a href="{{ route('v2.auth.login') }}" wire:navigate
+                        <a href="{{ route('auth.login') }}" wire:navigate
                             class="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-600 bg-white border border-blue-600 rounded-lg hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
                             Login
                         </a>
-                        <a href="{{ route('v2.auth.register') }}" wire:navigate
+                        <a href="{{ route('auth.register') }}" wire:navigate
                             class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
                             Join Us
                         </a>
@@ -109,19 +109,19 @@
                 </button>
             </div>
             <nav class="space-y-2">
-                <a href="{{route('v2.public.homepage')}}" wire:navigate
+                <a href="{{route('public.index')}}" wire:navigate
                     class="block px-4 py-2 text-base font-medium text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200">
                     Home
                 </a>
-                <a href="{{route('v2.public.viewallcourses.all-courses')}}" wire:navigate
+                <a href="{{route('public.viewallcourses.all-courses')}}" wire:navigate
                     class="block px-4 py-2 text-base font-medium text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200">
                     Free Courses
                 </a>
-                <a href="{{route('v2.public.viewallcourses.all-courses')}}" wire:navigate
+                <a href="{{route('public.viewallcourses.all-courses')}}" wire:navigate
                     class="block px-4 py-2 text-base font-medium text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200">
                     Pro Courses
                 </a>
-                <a href="{{route('v2.public.workshop')}}" wire:navigate
+                <a href="{{route('public.workshop')}}" wire:navigate
                     class="block px-4 py-2 text-base font-medium text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200">
                     Workshop
                 </a>
