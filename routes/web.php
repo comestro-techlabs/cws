@@ -29,6 +29,7 @@ use App\Livewire\Admin\Assignment\SingleViewAssignment;
 
 use App\Livewire\Admin\Dashboad;
 use App\Livewire\Admin\ManageEnquiry;
+use App\Livewire\Admin\Student\AttendanceCalendar;
 use App\Livewire\Admin\Student\ManageStudent;
 use App\Livewire\Student\Dashboard\Takeexam\Result;
 use App\Livewire\Student\Dashboard\Takeexam\ShowAllAttempt;
@@ -399,7 +400,7 @@ Route::prefix('v2')->group(function () {
         Route::get('/show-quiz/{courseId}', ShowQuiz::class)->name('v2.student.quiz');
         Route::get('/show-all-attempt/{course_id}', ShowAllAttempt::class)->name('v2.student.allAttempts');
         Route::get('show-quiz/result/{exam_id}', Result::class)->name('v2.student.examResult');
-
+        Route::get('/admin/student/attendance/calendar/{studentId}', AttendanceCalendar::class)->name('admin.student.attendance.calendar');
 
 
     });

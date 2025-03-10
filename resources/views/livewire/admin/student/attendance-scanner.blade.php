@@ -1,4 +1,4 @@
-<div class="container min-w-full mx-auto max-w-4xl p-8   rounded-xl  mt-8">
+<div class="container min-w-full mx-auto max-w-4xl p-8 rounded-xl mt-8">
     <h2 class="text-3xl font-extrabold text-center mb-8">Student Attendance Tracker</h2>
 
     <!-- Barcode Input Section -->
@@ -14,7 +14,7 @@
         </div>
     </div>
 
-    <!-- Message Display (Success/Error) -->
+    <!-- Message Display -->
     @if($message)
         <div class="mt-4 p-4 bg-teal-100 border border-teal-300 text-teal-800 rounded-lg">
             <i class="fas fa-info-circle"></i> {{ $message }}
@@ -51,17 +51,23 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Example Row (Replace with dynamic data) -->
                         <tr class="border-t">
                             <td class="py-4 px-6">{{ $student->name }}</td>
                             <td class="py-4 px-6">{{ $student->barcode }}</td>
                             <td class="py-4 px-6">{{ now()->format('H:i:s') }}</td>
                             <td class="py-4 px-6 text-green-600">Present</td>
                         </tr>
-                        <!-- More rows can be dynamically added -->
                     </tbody>
                 </table>
             </div>
+        </div>
+
+        <!-- Link to Attendance Calendar -->
+        <div class="mt-8">
+            <a href="{{ route('admin.student.attendance.calendar', ['studentId' => $student->id]) }}"
+               class="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 transition ease-in-out duration-300">
+                View Attendance Calendar
+            </a>
         </div>
     @endif
 </div>
