@@ -16,11 +16,23 @@ class Assignment_upload extends Model
     {
         return $this->belongsTo(User::class, 'student_id');
     }
+    // public function assignment()
+    // {
+    //     return $this->belongsTo(Assignments::class, 'assignment_id', 'id');
+        
+    // }
+
     public function assignment()
     {
-        return $this->belongsTo(Assignments::class, 'assignment_id', 'id');
+        return $this->belongsTo(Assignment_upload::class, 'assignment_id', 'id');
     }
+
     protected $casts = [
         'submitted_at' => 'datetime',
     ];
+    public function assignmentUploads()
+    {
+        return $this->hasMany(Assignment_upload::class, 'assignment_id', 'id');
+    }
+
 }
