@@ -168,7 +168,7 @@ class PaymentController extends Controller
                     ]
                 );
             }
-            
+             
             // Handle membership and future payments for membership
             if (is_null($payment->course_id) && is_null($payment->workshop_id)) {
                 $user = User::findOrFail($payment->student_id);

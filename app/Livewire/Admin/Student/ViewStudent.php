@@ -9,6 +9,7 @@ use Livewire\Attributes\Title;
 use Livewire\Component;
 use App\Models\User;
 use App\Models\Payment;
+use Carbon\Carbon;
 use Livewire\Attributes\On;
 
 #[Layout('components.layouts.admin')]
@@ -66,6 +67,35 @@ class ViewStudent extends Component
         $this->availableCourses = ModelsCourse::all()->except($this->purchasedCourses->pluck('course_id')->toArray());
         $this->fetchPayments();
     }
+    public function createFuturePayment()
+    {
+        $startDate = Carbon::now();
+        $studentId = $this->studentId;
+
+        // Create 12 payments (total 12)
+        for ($i = 1; $i <= 12; $i++) {
+            $dueDate = $startDate->copy()->addDays(28 * $i);
+            $year = $dueDate->year;
+            $month = $dueDate->month;
+
+            Payment::create([
+                'student_id' => $studentId,
+                'amount' => 700,
+                'receipt_no' => 'RCPT-' . $year . '-' . $month . '-' . $studentId,
+                'transaction_fee' => 700,
+                'due_date' => $dueDate,
+                'status' => 'unpaid',
+                'month' => $month,
+                'year' => $year,
+                'total_amount' =>  700,
+            ]);
+
+           
+        }
+        $this->student->is_member = 1;
+        $this->student->save();
+    }
+
     #[On('courseEnrollDataUpdated')]
     public function updateCourseModal()
     {

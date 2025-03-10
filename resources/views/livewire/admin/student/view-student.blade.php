@@ -107,6 +107,19 @@
     <!-- Membership Table -->
     @if($activeTab === 'membership')
     <div class="mt-4">
+        @if(!$isMember)
+        <div class="flex justify-center">
+            <button class="group relative mt-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-medium py-2.5 px-5 rounded-lg shadow-lg hover:shadow-blue-500/30 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" wire:click="createFuturePayment">
+                <span class="flex items-center">
+                    <span>Activate membership</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 transform group-hover:rotate-45 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+                    </svg>
+                </span>
+                <div class="absolute -top-1 -right-1 w-3 h-3 bg-yellow-400 rounded-full animate-pulse"></div>
+            </button>
+        </div>
+        @endif
         <h3 class="text-lg font-semibold">Membership Details</h3>
         <table class="min-w-full bg-white border border-gray-200">
             <thead>
@@ -222,7 +235,7 @@
             <div class="max-h-64 overflow-y-auto pr-1 mb-6">
                 <ul class="space-y-3">
                     @forelse($availableCourses as $course)
-                    
+
                     <li class="p-4 bg-white border border-gray-100 rounded-xl hover:shadow-md hover:border-blue-100 transition-all duration-200 flex flex-wrap md:flex-nowrap justify-between items-center gap-3">
                         <div class="flex-grow">
                             <h3 class="text-gray-800 font-semibold">{{ $course->title }}</h3>

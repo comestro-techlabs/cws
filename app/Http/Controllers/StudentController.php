@@ -343,7 +343,7 @@ class StudentController extends Controller
         $studentId = Auth::id();
         $user = User::where('id', $studentId)->first();
 
-        $overdueCount = $this->paymentService->processOverduePayments();
+        $overdueCount = $this->paymentService->processOverduePayments(); 
         // dd($overdueCount);
 
         $hasCompleted = $this->hasCompletedExamOrAssignment($studentId);
