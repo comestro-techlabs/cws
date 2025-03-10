@@ -12,7 +12,7 @@ class Header extends Component
     public function logout()
     {
         Auth::logout();
-        $this->redirect(route('v2.auth.login'), navigate: true);
+        $this->redirect(route('auth.login'), navigate: true);
 
     }
     public function toggleDropdown()

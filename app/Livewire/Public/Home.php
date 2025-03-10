@@ -33,7 +33,7 @@ class Home extends Component
             return redirect()->back()->with('error', 'Your account is inactive. Please contact support.');
         }
 
-        $this->redirect(route('v2.public.courseDetail', ['slug' => $slug]), navigate: true);
+        $this->redirect(route('public.courseDetail', ['slug' => $slug]), navigate: true);
     }
 
     #[Layout('components.layouts.app')]

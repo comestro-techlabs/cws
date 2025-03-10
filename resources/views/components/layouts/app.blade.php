@@ -21,7 +21,7 @@
 <body class="flex flex-col min-h-screen">
     <livewire:public.header />
 
-    @if (Route::currentRouteName() === 'v2.public.homepage')
+    @if (Route::currentRouteName() === 'public.index')
         <livewire:public.herosection />
     @endif
     {{ $slot }}
@@ -31,7 +31,7 @@
 
     @livewireScripts
 
-    
+
 </body>
 
 

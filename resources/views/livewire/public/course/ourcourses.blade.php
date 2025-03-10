@@ -97,7 +97,7 @@
                             @endauth
 
                             @guest
-                                <a href="{{ route('v2.auth.login') }}"
+                                <a href="{{ route('auth.login') }}"
                                     class="flex items-center justify-center w-full bg-[#662d91] text-white font-medium rounded-lg py-3 px-6 transition duration-200 hover:bg-purple-800 focus:ring-2 focus:ring-purple-400 focus:ring-offset-2">
                                     <span class="mr-2">Sign in to Enroll</span>
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -145,7 +145,7 @@
                     <div class="border-b border-gray-200 p-6">
                         <h2 class="text-2xl font-bold text-gray-900">Course Content</h2>
                     </div>
-                    
+
                     <div id="accordion-open" data-accordion="collapse">
                         @foreach ($course->chapters as $chapter)
                             <div class="border-b border-gray-200 last:border-b-0">

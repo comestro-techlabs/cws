@@ -3,7 +3,6 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AssignmentsController;
 use App\Http\Controllers\AssignmentUploadController;
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BatchController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChapterController;
@@ -37,10 +36,6 @@ use App\Livewire\Student\Messages;
 use App\Livewire\Student\MessageView;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ExamController;
-use App\Http\Controllers\PostChapterController;
-use App\Http\Controllers\PostCourseController;
-use App\Http\Controllers\PostMyPostController;
-use App\Http\Controllers\PostTopicPostController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\QuizController;
 use App\Livewire\Admin\Blog\PostCourse;
@@ -58,9 +53,6 @@ use App\Livewire\Student\ViewCourse;
 use App\Livewire\Student\MyCourse;
 use App\Livewire\Student\EditProfile;
 use App\Livewire\Student\Dashboard\ViewAssigment;
-
-use App\Livewire\Admin\Portfolio\CreatePortfolio;
-use App\Livewire\Admin\Portfolio\ManagePortfolio;
 use App\Livewire\Admin\Message\CreateMessage;
 use App\Livewire\Admin\Message\ManageMessage;
 use App\Livewire\Admin\Workshops\ManageWorkshop;
@@ -86,7 +78,6 @@ use App\Livewire\Public\Contact\ContactPage;
 use App\Livewire\Public\Course\Ourcourses;
 use App\Livewire\Public\Header;
 use App\Livewire\Public\Home;
-use App\Livewire\Public\Portfolio\OurPortfolio;
 use App\Livewire\Public\Viewallcourses\AllCourses;
 use App\Livewire\Public\Workshops\Workshop;
 use App\Livewire\Student\Billing\ViewBilling;
@@ -96,6 +87,22 @@ use App\Livewire\Student\Dashboard\Takeexam\Exam;
 // v3
 use App\Livewire\V3\Public\NewHome;
 
+Route::get('/', Home::class)->name('public.index');
+Route::prefix('auth')->group(function () {
+    Route::get('/register', Register::class)->name('auth.register');
+    Route::get('/login', Login::class)->name('auth.login');
+    Route::get('/logout', Header::class)->name('auth.logout');
+
+
+    Route::get('/viewallcourses', AllCourses::class)->name('public.viewallcourses.all-courses');
+    Route::get('/courses/{slug}', Ourcourses::class)->name('public.courseDetail');
+    Route::get('/contact', ContactPage::class)->name('public.contactUs');
+    Route::get('/workshops', Workshop::class)->name('public.workshop');
+
+    //routes for the free course
+    Route::get('/course/{course_id}/chapter/show',CourseWithChapterAndTopic::class)->name('v2.courses.show');
+    Route::get('/course/{course_id}/chapter/{chapter_id?}/topic/{topic_id?}/show',TopicWithPostContent::class)->name('v2.topics.show');
+});
 
 Route::prefix("student")->group(function () {
     Route::controller(StudentController::class)->group(function () {
@@ -298,7 +305,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/course/show/{courseId}', ShowCourse::class)->name('admin.course.show');
         Route::get('/course/manage', ManageCourse::class)->name('admin.course.manage');
         Route::get('/student/{id}', ViewStudent::class)->name('admin.student.view');
-        
+
         Route::get('/course/update/{courseId}', UpdateCourse::class)->name('admin.course.update');
         Route::get('/admin/courses/{chapter}/lessons', LessonManager::class)->name('admin.courses.chapters.lessons');
         Route::get("/admin/attendace", AttendanceScanner::class)->name('admin.attendance');
@@ -309,7 +316,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/quiz/{examId}/questions', ManageQuiz::class)->name(name: 'admin.quiz');
 
         //result routes
-       
+
         Route::get('/results', ManageResult::class)->name('results');
 
 
@@ -320,10 +327,10 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/assignment/course', AssignmentCourse::class)->name('admin.assignment.course');
         Route::get('/assignment/{assignment}/edit', CreateAssignment::class)->name('admin.assignment.edit');
         //upload assignment routes
-       
+
         Route::get('/assignments/course', AssignmentCourse::class)->name('admin.assignment.course'); //u
         Route::get('/assignments/review/{slug}', AssignmentReview::class)->name('assignment.review'); //u
-       
+
         Route::get('/assignments/review-work/{id}', ReviewWork::class)->name('assignment.reviewWork');//u
 
         // Workshop Routes
@@ -334,7 +341,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/placedstudent/manage', CallingPlacedStudent::class)->name('admin.placedstudent.index');
         Route::get('/placedstudent/{placedStudent?}', InsertPlacedStudent::class)->name('admin.placedstudent.edit')->whereNumber("placedStudent");
 
-        
+
 
         //Message Route
         Route::get('/message', CreateMessage::class)->name('admin.message.create');
@@ -344,7 +351,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/certificate', CertificateEligibility::class)->name('admin.certificate');
         //enquiry
         Route::get('/enquiry', ManageEnquiry::class)->name('admin.manage.enquiry');
-        
+
 
         //offline payments
         // Route::get('/offline-payment', ManageOfflinePayment::class)->name('admin.offline-payment');
@@ -372,16 +379,11 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
 });
 
 
-   
+
 
 
 Route::prefix('v2')->group(function () {
-    Route::prefix('auth')->group(function () {
-        Route::get('/register', Register::class)->name('v2.auth.register');
-        Route::get('/login', Login::class)->name('v2.auth.login');
-        Route::get('/logout', Header::class)->name('v2.auth.logout');
-        Route::get('/portfolio', OurPortfolio::class)->name('v2.public.portfolio');
-    });
+
 
     Route::prefix("student")->group(function () {
         Route::get('/billing', ViewBilling::class)->name('student.billing');
@@ -405,15 +407,7 @@ Route::prefix('v2')->group(function () {
     });
     //working here for public routes
     Route::prefix("public")->group(function () {
-        Route::get('/', Home::class)->name('v2.public.homepage');
-        Route::get('/viewallcourses', AllCourses::class)->name('v2.public.viewallcourses.all-courses');
-        Route::get('/courses/{slug}', Ourcourses::class)->name('v2.public.courseDetail');
-        Route::get('/contact', ContactPage::class)->name('v2.public.contactUs');
-        Route::get('/workshops', Workshop::class)->name('v2.public.workshop');
 
-        //routes for the free course
-        Route::get('/course/{course_id}/chapter/show',CourseWithChapterAndTopic::class)->name('v2.courses.show');
-        Route::get('/course/{course_id}/chapter/{chapter_id?}/topic/{topic_id?}/show',TopicWithPostContent::class)->name('v2.topics.show');
         // Route::get('/course/chapter/{chapter_id}/show', [PostTopicPostController::class, 'index'])->name('chapters.show');
     });
 });
@@ -421,7 +415,6 @@ Route::prefix('v2')->group(function () {
 // public routes here:
 Route::controller(PublicController::class)->group(function () {
 
-    Route::get("/", "index")->name('public.index');
     Route::prefix('training')->group(function () {
         Route::get("/", "training")->name('public.training');
         Route::get("/register/success", "success")->name('public.success');
@@ -442,28 +435,28 @@ Route::get('generate', function () {
 });
 
 // Authentication route's group here
-Route::prefix('auth')->controller(AuthController::class)->group(function () {
-    Route::get('/login', 'showLoginForm')->name('auth.login');
-    Route::post('/login', 'login')->name('auth.login.post');
-    Route::get('/verify-otp', 'showOtpForm')->name('show.otp.form');
-    Route::post('/resend-otp', 'resendOtp')->name('auth.resend-otp');
+// Route::prefix('auth')->controller(AuthController::class)->group(function () {
+//     // Route::get('/login', 'showLoginForm')->name('auth.login');
+//     // Route::post('/login', 'login')->name('auth.login.post');
+//     Route::get('/verify-otp', 'showOtpForm')->name('show.otp.form');
+//     Route::post('/resend-otp', 'resendOtp')->name('auth.resend-otp');
 
-    // OTP verification handling route (POST request to verify OTP)
-    Route::post('verify-otp', 'verifyOtp')->name('verify.otp');
-    Route::post('send-otp', 'sendOtp')->name('auth.sendOtp');
+//     // OTP verification handling route (POST request to verify OTP)
+//     Route::post('verify-otp', 'verifyOtp')->name('verify.otp');
+//     Route::post('send-otp', 'sendOtp')->name('auth.sendOtp');
 
-    Route::get('/register', 'showRegistrationForm')->name('auth.register');
-    Route::post('/register', 'register')->name('auth.register.post');
-    Route::post('/verify-otp-register', [AuthController::class, 'verifyOtpRegister'])->name('auth.verifyOtp.register');
-    Route::get('/logout', 'logout')->name('auth.logout');
-});
+//     // Route::get('/register', 'showRegistrationForm')->name('auth.register');
+//     // Route::post('/register', 'register')->name('auth.register.post');
+//     Route::post('/verify-otp-register', [AuthController::class, 'verifyOtpRegister'])->name('auth.verifyOtp.register');
+//     // Route::get('/logout', 'logout')->name('auth.logout');
+// });
 
 Route::get('/launch', function () {
     return view('public.launch');
 });
 
 
-Route::get('/portfolio', [PortfolioController::class, 'index'])->name('public.portfolio');
+// Route::get('/portfolio', [PortfolioController::class, 'index'])->name('public.portfolio');
 Route::get('/workshops', [WorkshopController::class, 'index'])->name('public.workshops');
 Route::get('/workshop/{id}/enroll', [WorkshopController::class, 'buyWorkshop'])->name('workshop.enroll');
 
