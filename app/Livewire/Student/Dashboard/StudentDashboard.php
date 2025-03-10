@@ -11,11 +11,14 @@ use App\Models\Payment;
 use App\Models\Assignment_upload;
 use App\Models\Assignments;
 use App\Models\ExamUser;
+use App\Models\CourseUser;
+use App\Models\Assignment;
+
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use App\Livewire\Student\Messages;
-
+use Illuminate\Support\Facades\DB;
 
 class StudentDashboard extends Component
 {
@@ -27,6 +30,7 @@ class StudentDashboard extends Component
     public $firstAttempts;
     public $secondAttempts;
     public $hasCompleted;
+    public $studentBatches;
 
     public function mount()
     {
@@ -84,25 +88,30 @@ class StudentDashboard extends Component
         $courseIds = $this->courses->pluck('id')->toArray();
         $batchIds = $user->courses()->pluck('course_user.batch_id')->toArray();
 
-        // Fetch assignments only for the logged-in student's courses and batches
         // $this->assignments = Assignments::whereIn('course_id', $courseIds)
         //     ->whereHas('batch', function ($query) use ($batchIds) {
         //         $query->whereIn('id', $batchIds);
         //     })
+        //     ->whereHas('assignmentUploads', function ($query) use ($studentId) {
+        //         $query->where('student_id', $studentId);
+        //     })
         //     ->latest()
         //     ->take(4)
         //     ->get();
-
         $this->assignments = Assignments::whereIn('course_id', $courseIds)
             ->whereHas('batch', function ($query) use ($batchIds) {
                 $query->whereIn('id', $batchIds);
             })
-            ->whereHas('assignmentUploads', function ($query) use ($studentId) {
-                $query->where('student_id', $studentId);
+            ->when($studentId != 1, function ($query) use ($studentId) {
+                $query->whereHas('assignmentUploads', function ($subQuery) use ($studentId) {
+                    $subQuery->where('student_id', $studentId);
+                });
             })
             ->latest()
             ->take(4)
             ->get();
+
+
 
         // Fetch only exams for logged-in student's courses
         $this->exams = ExamUser::where('user_id', $studentId)
@@ -138,6 +147,9 @@ class StudentDashboard extends Component
     #[Layout('components.layouts.student')]
     public function render()
     {
-        return view('livewire.student.dashboard.student-dashboard');
+        return view('livewire.student.dashboard.student-dashboard', [
+            'courses' => $this->courses,
+            'assignments' => $this->assignments
+        ]);
     }
 }
