@@ -33,7 +33,7 @@
             <strong class="block text-lg font-semibold text-slate-600">DOB</strong>
             <span class="text-slate-500">{{ $student->dob }}</span>
         </div>
-        
+
 
     </div>
     <!-- Tabs -->
@@ -53,9 +53,15 @@
     </div>
     <!-- Courses Table -->
     @if($activeTab === 'courses')
-    <div>
-        <button class="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline" wire:click="enrollButton">
-            Enroll in new course +
+    <div class="flex justify-end">
+        <button class="group relative mt-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-medium py-2.5 px-5 rounded-lg shadow-lg hover:shadow-blue-500/30 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" wire:click="enrollButtonOpenModal">
+            <span class="flex items-center">
+                <span>Enroll in new course</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 transform group-hover:rotate-45 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+                </svg>
+            </span>
+            <div class="absolute -top-1 -right-1 w-3 h-3 bg-yellow-400 rounded-full animate-pulse"></div>
         </button>
     </div>
     <div class="mt-4">
@@ -137,11 +143,11 @@
                         @endif
                     </td>
                     <td class="px-4 py-3 border-b text-sm text-green-700 text-center">
-                    @if($payment->status == 'captured')
-                    {{ \Carbon\Carbon::parse($payment->payment_date)->format('d M Y, h:i A') }}
-                    @endif
+                        @if($payment->status == 'captured')
+                        {{ \Carbon\Carbon::parse($payment->payment_date)->format('d M Y, h:i A') }}
+                        @endif
                     </td>
-                   
+
                     <td class="px-4 py-3 border-b text-center">
                         @if($payment->status != 'captured')
                         <button wire:click="payWithCash({{ $payment->id }})" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-md shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
@@ -192,24 +198,45 @@
     <!-- modal -->
     @if($isModalOpen)
     <div class="fixed inset-0 bg-gray-500 bg-opacity-75 overflow-y-auto h-full w-full flex items-center justify-center">
-        <div class="w-full max-w-lg bg-white rounded-2xl shadow-xl p-8">
-            <h2 class="text-xl font-bold mb-4">Enroll in New Course</h2>
-            <input type="text" wire:model="searchTerm" placeholder="Search courses..." class="w-full mb-4 p-2 border rounded">
-            <ul>
-                @forelse($availableCourses as $course)
-                <li class="mb-2 flex justify-between items-center">
-                    <span>{{ $course->title }}</span>
-                    <button wire:click="enrollCourse({{ $course->id }})" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded-full focus:outline-none focus:shadow-outline">
-                        Enroll Now
-                    </button>
-                </li>
-                @empty
-                <li>No courses available.</li>
-                @endforelse
-            </ul>
-            <button wire:click="closeModal" class="mt-4 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline">
-                Cancel
-            </button>
+        <div class="w-full max-w-lg bg-white rounded-xl shadow-2xl p-6 m-4 transform transition-all">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-semibold text-gray-800">Enroll in New Course</h2>
+                <button wire:click="enrollButtonCloseModal" class="text-gray-500 hover:text-gray-700 focus:outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="relative mb-6">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </div>
+                <input type="text" wire:model="searchTerm" placeholder="Search courses..." class="w-full pl-10 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+            </div>
+
+            <div class="max-h-64 overflow-y-auto pr-1 mb-6">
+                <ul class="space-y-3">
+                    @forelse($availableCourses as $course)
+                    <li class="p-3 border border-gray-100 rounded-lg hover:bg-gray-50 transition-colors flex justify-between items-center">
+                        <span class="text-gray-800 font-medium">{{ $course->title }}</span>
+                        <button wire:click="enrollCourse({{ $course->id }})" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium py-2 px-4 rounded-lg shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                            Enroll
+                        </button>
+                    </li>
+                    @empty
+                    <li class="p-6 text-center text-gray-500">No courses available.</li>
+                    @endforelse
+                </ul>
+            </div>
+
+            <div class="flex justify-end">
+                <button wire:click="enrollButtonCloseModal" class="text-gray-600 bg-gray-100 hover:bg-gray-200 font-medium py-2.5 px-5 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50">
+                    Cancel
+                </button>
+            </div>
         </div>
     </div>
     @endif

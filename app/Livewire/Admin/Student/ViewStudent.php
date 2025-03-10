@@ -11,7 +11,7 @@ use App\Models\User;
 use App\Models\Payment;
 use Livewire\Attributes\On;
 
-#[Layout('components.layouts.admin')] 
+#[Layout('components.layouts.admin')]
 #[Title('Manage Students')]
 class ViewStudent extends Component
 {
@@ -32,67 +32,85 @@ class ViewStudent extends Component
     public $availableCourses = [];
 
 
-    // protected $listeners = ['paymentUpdated' => 'fetchPayments'];
-
     public function mount($id)
     {
         // dd($id); this is user/student id
         $this->studentId = $id;
         $this->student = USer::findOrFail($id);
         $this->courses = $this->student->courses()->withPivot('created_at', 'batch_id')->get();
-    $this->isMember = $this->student->is_member == 1;
-    $this->isActive = $this->student->is_active == 1;
-    $this->lastPayment = Payment::where('student_id', $id)
-        ->where('status', 'captured')
-        ->latest()
-        ->first();
+        $this->isMember = $this->student->is_member == 1;
+        $this->isActive = $this->student->is_active == 1;
+        $this->lastPayment = Payment::where('student_id', $id)
+            ->where('status', 'captured')
+            ->latest()
+            ->first();
 
         if ($this->lastPayment) {
-            $this->dueDate = $this->lastPayment->created_at->addMonth(); 
-            $this->isPaymentDue = now()->greaterThan($this->dueDate); 
+            $this->dueDate = $this->lastPayment->created_at->addMonth();
+            $this->isPaymentDue = now()->greaterThan($this->dueDate);
             $this->overdueDays = $this->isPaymentDue ? now()->diffInDays($this->dueDate) : 0;
         } else {
             $this->dueDate = null;
-            $this->isPaymentDue = true; 
+            $this->isPaymentDue = true;
             $this->overdueDays = null;
         }
 
-            $this->purchasedCourses = Payment::with('course')
+        $this->purchasedCourses = Payment::with('course')
             ->where('student_id', $id)
             ->where('status', 'captured')
-            ->whereNotNull('course_id') 
-            ->get()?? collect();;
-            $this->paymentsWithWorkshops = Payment::where('student_id', $id)
+            ->whereNotNull('course_id')
+            ->get() ?? collect();
+        $this->paymentsWithWorkshops = Payment::where('student_id', $id)
             ->whereNotNull('workshop_id')
-            ->get()?? collect();;
-
-            $this->fetchPayments();
-
-            $this->availableCourses = ModelsCourse::all()->except($this->purchasedCourses->pluck('course_id')->toArray());
-            // dd($this->availableCourses);
+            ->get() ?? collect();
+        $this->availableCourses = ModelsCourse::all()->except($this->purchasedCourses->pluck('course_id')->toArray());
+        $this->fetchPayments();
     }
-    
+    #[On('courseEnrollDataUpdated')]
+    public function updateCourseModal()
+    {
+        $this->purchasedCourses = Payment::with('course')
+            ->where('student_id', $this->studentId)
+            ->where('status', 'captured')
+            ->whereNotNull('course_id')
+            ->get() ?? collect();
+        $this->availableCourses = ModelsCourse::all()->except($this->purchasedCourses->pluck('course_id')->toArray());
+        // dd($this->availableCourses);
+    }
 
-    public function enrollCourse($course_id){
+    public function enrollCourse($course_id)
+    {
         $course_data = ModelsCourse::find($course_id);
-        $add_data_to_payments = Payment::create([
-            'student_id' => $this->studentId,
-            'course_id' => $course_id,
-            'status' => 'captured',
-            'payment_id' => 'cash_payment',
-            'payment_status' => 'completed',
-            'method' => 'cash',
-            'month'=> now()->month,
-            'year' => now()->year,
-            'amount' => $course_data->discounted_fees,
-            'total_amount' => $course_data->discounted_fees,
-            'payment_date' => now(),
-        ]);
+        // dd($course_data);
+        if ($course_data) {
+            Payment::create([
+                'student_id' => $this->studentId,
+                'course_id' => $course_id,
+                'status' => 'captured',
+                'payment_id' => 'cash_payment',
+                'payment_status' => 'completed',
+                'method' => 'cash',
+                'month' => now()->month,
+                'year' => now()->year,
+                'transaction_fee' => $course_data->discounted_fees,
+                'amount' => $course_data->discounted_fees,
+                'total_amount' => $course_data->discounted_fees,
+                'payment_date' => now(),
+            ]);
+        }
+        // yha se course enroll k bad courseEnrollDataUpdated event dispatch krke updateCourseModal function call kra hai, isi component me
+        $this->dispatch('courseEnrollDataUpdated')->self();
     }
-    public function enrollButton(){
+    public function enrollButtonOpenModal()
+    {
         $this->isModalOpen = true;
     }
-    #[On('paymentUpdated')] 
+    public function enrollButtonCloseModal()
+    {
+        $this->isModalOpen = false;
+    }
+
+    #[On('paymentUpdated')]
     public function fetchPayments()
     {
         $this->lastPayment = Payment::where('student_id', $this->studentId)
