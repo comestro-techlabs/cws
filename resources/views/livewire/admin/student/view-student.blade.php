@@ -121,6 +121,7 @@
         </div>
         @endif
         <h3 class="text-lg font-semibold">Membership Details</h3>
+        <div wire:key="payment-table">
         <table class="min-w-full bg-white border border-gray-200">
             <thead>
                 <tr class="bg-gray-200">
@@ -180,6 +181,7 @@
                 @endif
             </tbody>
         </table>
+        </div>
     </div>
     @endif
 

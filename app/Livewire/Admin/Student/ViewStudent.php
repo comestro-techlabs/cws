@@ -41,20 +41,20 @@ class ViewStudent extends Component
         $this->courses = $this->student->courses()->withPivot('created_at', 'batch_id')->get();
         $this->isMember = $this->student->is_member == 1;
         $this->isActive = $this->student->is_active == 1;
-        $this->lastPayment = Payment::where('student_id', $id)
-            ->where('status', 'captured')
-            ->latest()
-            ->first();
+        // $this->lastPayment = Payment::where('student_id', $id)
+        //     ->where('status', 'captured')
+        //     ->latest()
+        //     ->first();
 
-        if ($this->lastPayment) {
-            $this->dueDate = $this->lastPayment->created_at->addMonth();
-            $this->isPaymentDue = now()->greaterThan($this->dueDate);
-            $this->overdueDays = $this->isPaymentDue ? now()->diffInDays($this->dueDate) : 0;
-        } else {
-            $this->dueDate = null;
-            $this->isPaymentDue = true;
-            $this->overdueDays = null;
-        }
+        // if ($this->lastPayment) {
+        //     $this->dueDate = $this->lastPayment->created_at->addMonth();
+        //     $this->isPaymentDue = now()->greaterThan($this->dueDate);
+        //     $this->overdueDays = $this->isPaymentDue ? now()->diffInDays($this->dueDate) : 0;
+        // } else {
+        //     $this->dueDate = null;
+        //     $this->isPaymentDue = true;
+        //     $this->overdueDays = null;
+        // }
 
         $this->purchasedCourses = Payment::with('course')
             ->where('student_id', $id)
@@ -66,6 +66,20 @@ class ViewStudent extends Component
             ->get() ?? collect();
         $this->availableCourses = ModelsCourse::all()->except($this->purchasedCourses->pluck('course_id')->toArray());
         $this->fetchPayments();
+        // $this->renderMembership();
+    }
+    #[On('updateMembershipData')]
+    public function renderMembership(){
+        $this->isMember = true;
+        // dd("testing by shaique");
+        $this->lastPayment = Payment::where('student_id', $this->studentId)
+        ->whereIn('status', ['captured', 'unpaid', 'overdue'])
+        ->latest()
+        ->get();
+
+
+            // dd($this->lastPayment);
+
     }
     public function createFuturePayment()
     {
@@ -94,8 +108,10 @@ class ViewStudent extends Component
         }
         $this->student->is_member = 1;
         $this->student->save();
+        $this->dispatch('updateMembershipData')->self();
     }
 
+    
     #[On('courseEnrollDataUpdated')]
     public function updateCourseModal()
     {
@@ -139,7 +155,6 @@ class ViewStudent extends Component
     {
         $this->isModalOpen = false;
     }
-
     #[On('paymentUpdated')]
     public function fetchPayments()
     {
