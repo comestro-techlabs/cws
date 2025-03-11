@@ -8,12 +8,6 @@
                           Admin Dashboard
                       </h2>
 
-                      <a wire:click="openModal"
-                          class="bg-purple-800 text-white px-3 py-1 rounded-md shadow hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-blue-300 sm:mb-0 flex items-center gap-1">
-                          New payments
-                          <i class="bi bi-plus font-bold text-xl"></i>
-                      </a>
-
                   </div>
 
                   <!-- Stats Grid -->
@@ -278,121 +272,7 @@
                       </div>
                   </div>
               </div>
-              <!-- modal for offline payments -->
-              @if($isModalOpen)
-              <div class="fixed inset-0 bg-gray-500 bg-opacity-75 overflow-y-auto h-full w-full flex items-center justify-center">
-                  <div class="w-full max-w-lg bg-white rounded-2xl shadow-xl p-8">
-                      <!-- form to fill student payment detail -->
-                      @if($paymentMode === 'cash' || $paymentMode === 'online')
-                      <form wire:submit="storePayment" class="bg-white rounded-lg shadow-md p-6 max-w-md mx-auto">
-                          <!-- Form Header -->
-                          <div class="mb-6 border-b pb-4 text-center">
-                              <h3 class="text-xl font-semibold text-gray-800">Payment Details</h3>
-                              <p class="text-sm text-gray-500">Enter student payment information</p>
-                          </div>
-
-                          <div class="space-y-5">
-                              <!-- Student Name Field -->
-                              <div>
-                                  <label for="student_name" class="block text-sm font-medium text-gray-700 mb-1">Student Name</label>
-                                  <div class="relative">
-
-                                      <input type="text" id="student_name" wire:model="student_name"
-                                          class="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 transition duration-150"
-                                          placeholder="Enter student's full name">
-                                  </div>
-                                  @error('student_name') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
-                              </div>
-                               <!-- Student email Field -->
-                               <div>
-                                  <label for="student_email" class="block text-sm font-medium text-gray-700 mb-1">Student Email</label>
-                                  <div class="relative">
-
-                                      <input type="text" id="student_email" wire:model="student_email"
-                                          class="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 transition duration-150"
-                                          placeholder="Enter student's email">
-                                  </div>
-                                  @error('student_email') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
-                              </div>
-
-                              <!-- Amount Field -->
-                              <div>
-                                  <label for="amount" class="block text-sm font-medium text-gray-700 mb-1">Amount</label>
-                                  <div class="relative">
-
-                                      <input type="number" id="amount" wire:model="amount"
-                                          class="pl-8 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 transition duration-150"
-                                          placeholder="0.00">
-                                  </div>
-                                  @error('amount') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
-                              </div>
-
-
-                              <!-- Payment Mode Field -->
-                              <div>
-                                  <label for="payment_mode" class="block text-sm font-medium text-gray-700 mb-1">Payment Mode</label>
-                                  <div class="relative">
-
-                                      <select id="payment_mode" wire:model="payment_mode"
-                                          class="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 " disabled>
-                                          <option value="cash" selected>{{$paymentMode}}</option>
-                                      </select>
-                                  </div>
-                              </div>
-
-                              <!-- Submit Button -->
-                              <div class="pt-2">
-                                  <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 text-white font-medium py-2.5 px-4 rounded-md shadow-sm transition duration-150">
-                                      Process Payment
-                                  </button>
-                              </div>
-                          </div>
-                      </form>
-                      @else
-                      <h1 class="text-2xl font-bold text-gray-800 text-center mb-8">Select Payment Method</h1>
-
-                      <div class="space-y-6">
-                          <!-- Payment Options -->
-                          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                              <!-- Cash Option -->
-                              <label class="block cursor-pointer">
-                                  <div id="cash-option" class="payment-option border-2 border-gray-200 rounded-xl p-6 text-center">
-                                      <a wire:click="mode('cash')">
-                                          <div class="text-4xl mb-4">💵</div>
-                                          <h3 class="text-lg font-semibold text-gray-800 mb-2">Cash</h3>
-                                          <p class="text-sm text-gray-500">Pay with Cash</p>
-                                      </a>
-                                  </div>
-                              </label>
-
-                              <!-- Online Option -->
-                              <label class="block cursor-pointer">
-                                  <div id="online-option" class="payment-option border-2 border-gray-200 rounded-xl p-6 text-center">
-                                      <a wire:click="mode('online')">
-                                          <div class="text-4xl mb-4">💳</div>
-                                          <h3 class="text-lg font-semibold text-gray-800 mb-2">Online</h3>
-                                          <p class="text-sm text-gray-500">Credit card, debit card, or bank transfer</p>
-                                      </a>
-                                  </div>
-                              </label>
-                          </div>
-                      </div>
-                      @endif
-
-                      <button type="button" wire:click="closeModal"
-                          class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
-                          Cancel
-                      </button>
-                  </div>
-                  @endif
-
-              </div>
-
-
-
-
-
-
+            
               <script>
                   document.addEventListener('livewire:init', () => {
                       const ctx = document.getElementById('paymentsChart').getContext('2d');
