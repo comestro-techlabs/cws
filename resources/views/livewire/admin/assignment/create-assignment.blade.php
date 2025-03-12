@@ -21,7 +21,8 @@
 
                 <!-- Instructions with CKEditor -->
                 <div wire:ignore>
-                    <label for="description" class="block text-sm font-medium text-gray-700 mb-2">Instructions (Optional)</label>
+                    <label for="description" class="block text-sm font-medium text-gray-700 mb-2">Instructions
+                        (Optional)</label>
                     <textarea id="description" wire:model.debounce.500ms="description" rows="4"
                         class="w-full bg-gray-50 border border-gray-300 rounded-md p-3 h-32 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                         placeholder="Enter instructions"></textarea>
@@ -75,79 +76,78 @@
 
     <script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>
     <script>
-        let editorInstance = null;
+    let editorInstance = null;
 
-        function initializeCKEditor() {
-            const descriptionElement = document.querySelector('#description');
+    document.addEventListener('DOMContentLoaded', () => {
+        initializeCKEditor();
+    });
 
-            if (!descriptionElement) {
-                console.log('Textarea #description not found');
-                return;
-            }
+    document.addEventListener('livewire:navigated', () => {
+        setTimeout(() => {
+            initializeCKEditor();
+        }, 200); 
+    });
 
-            // If editor already exists, destroy it first to avoid duplicate instances
-            if (editorInstance) {
-                editorInstance.destroy().then(() => {
+    document.addEventListener('livewire:update', () => {
+        setTimeout(() => {
+            initializeCKEditor();
+        }, 200);
+    });
+
+    function initializeCKEditor() {
+        const descriptionElement = document.querySelector('#description');
+        if (!descriptionElement) {
+            console.log('Textarea #description not found');
+            return;
+        }
+
+        if (editorInstance) {
+            editorInstance.destroy()
+                .then(() => {
                     editorInstance = null;
                     createEditor(descriptionElement);
-                }).catch(error => {
-                    console.error('Error destroying CKEditor:', error);
-                });
-            } else {
-                createEditor(descriptionElement);
-            }
-        }
-
-        function createEditor(element) {
-            ClassicEditor
-                .create(element, {
-                    toolbar: [
-                        'heading', '|',
-                        'bold', 'italic', 'link', '|',
-                        'bulletedList', 'numberedList', '|',
-                        'imageUpload', 'blockQuote', 'insertTable', 'mediaEmbed', '|',
-                        'outdent', 'indent', '|',
-                        'undo', 'redo'
-                    ],
-                    image: {
-                        toolbar: ['imageTextAlternative', 'imageStyle:full', 'imageStyle:side']
-                    }
-                })
-                .then(editor => {
-                    editorInstance = editor;
-                    const initialData = @json($description) || '';
-                    editor.setData(initialData);
-
-                    // Update Livewire when editor content changes
-                    editor.model.document.on('change:data', () => {
-                        @this.set('description', editor.getData());
-                    });
                 })
                 .catch(error => {
-                    console.error('CKEditor initialization failed:', error);
+                    console.error('Error destroying CKEditor:', error);
+                    editorInstance = null;
+                    createEditor(descriptionElement);
                 });
+            return; 
         }
 
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            initializeCKEditor();
-        });
+        createEditor(descriptionElement);
+    }
 
-        document.addEventListener('livewire:navigated', () => {
-            setTimeout(() => {
-                initializeCKEditor();
-            }, 100); 
-        });
+    function createEditor(element) {
+        ClassicEditor
+            .create(element, {
+                toolbar: [
+                    'heading', '|',
+                    'bold', 'italic', 'link', '|',
+                    'bulletedList', 'numberedList', '|',
+                    'imageUpload', 'blockQuote', 'insertTable', 'mediaEmbed', '|',
+                    'outdent', 'indent', '|',
+                    'undo', 'redo'
+                ],
+                image: {
+                    toolbar: ['imageTextAlternative', 'imageStyle:full', 'imageStyle:side']
+                }
+            })
+            .then(editor => {
+                editorInstance = editor;
+                const initialData = @json($description) || '';
+                editor.setData(initialData);
 
-        // Clean up editor instance before page unload to prevent memory leaks
-        window.addEventListener('beforeunload', () => {
-            if (editorInstance) {
-                editorInstance.destroy().then(() => {
-                    editorInstance = null;
-                }).catch(error => {
-                    console.error('Error destroying CKEditor on unload:', error);
+                editor.model.document.on('change:data', () => {
+                    if (window.Livewire) {
+                        @this.set('description', editor.getData());
+                    }
                 });
-            }
-        });
-    </script>
+            })
+            .catch(error => {
+                console.error('CKEditor initialization failed:', error);
+            });
+    }
+
+</script>
 </div>
