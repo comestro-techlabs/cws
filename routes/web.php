@@ -70,6 +70,7 @@ use App\Livewire\Public\Viewallcourses\AllCourses;
 use App\Livewire\Public\Workshops\Workshop;
 use App\Livewire\Student\Billing\ViewBilling;
 use App\Livewire\Student\Dashboard\ManageAssignments;
+use App\Livewire\Student\Dashboard\Product\OurProducts;
 use App\Livewire\Student\Dashboard\StudentDashboard;
 use App\Livewire\Student\Dashboard\Takeexam\Exam;
 use App\Livewire\Student\MockTest\SelectMockTest;
@@ -361,6 +362,8 @@ Route::prefix('v2')->group(function () {
         Route::get('/my-attendance', MyAttendance::class)->name('student.my-attendance');
         Route::get('/mocktest/course', SelectMockTest::class)->name('v2.student.mocktest.course');
         Route::get('/mocktest/course/{mockTestId}', ShowMockTest::class)->name('v2.student.mocktest.take');
+
+        Route::get('/products', OurProducts::class)->name('v2.student.products');
     });
     //working here for public routes
     Route::prefix("public")->group(function () {
