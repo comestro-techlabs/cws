@@ -199,10 +199,8 @@
 
                 <!-- Course Content Management -->
                 <div class="border-t pt-6 mt-8">
-                    <h3 class="text-lg font-medium text-gray-900 mb-4">Course Content</h3>
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         @livewire('admin.course.batch-manager', ['course' => $course])
-                        @livewire('admin.course.chapter-manager', ['course' => $course])
                     </div>
                 </div>
             </div>

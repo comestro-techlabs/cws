@@ -119,45 +119,7 @@
                 @endif
             </div>
 
-            <!-- Chapters and Lessons -->
-            <div class="p-6 border-t border-gray-200">
-                <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
-                    <i class="fas fa-book text-purple-500 mr-2"></i>
-                    Chapters and Lessons
-                </h2>
-                @if($chapters->count() > 0)
-                <div class="space-y-6">
-                    @foreach($chapters as $chapter)
-                    <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-                            <i class="fas fa-bookmark text-purple-500 mr-2"></i>
-                            {{ $chapter->title }}
-                        </h3>
-                        @if($chapter->lessons->count() > 0)
-                        <div class="ml-6">
-                            <h4 class="text-md font-medium text-gray-700 mb-3 flex items-center">
-                                <i class="fas fa-list text-purple-400 mr-2"></i>
-                                Lessons:
-                            </h4>
-                            <ul class="space-y-2">
-                                @foreach($chapter->lessons as $lesson)
-                                <li class="flex items-center text-gray-600 hover:text-purple-600 transition-colors duration-200">
-                                    <i class="fas fa-play-circle text-purple-400 mr-2"></i>
-                                    {{ $lesson->title }}
-                                </li>
-                                @endforeach
-                            </ul>
-                        </div>
-                        @else
-                        <p class="text-gray-500 italic ml-6">No lessons available for this chapter.</p>
-                        @endif
-                    </div>
-                    @endforeach
-                </div>
-                @else
-                <p class="text-gray-500 italic">No chapters available for this course.</p>
-                @endif
-            </div>
+
         </div>
     </div>
 </div>

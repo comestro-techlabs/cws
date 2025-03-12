@@ -5,9 +5,7 @@ use App\Http\Controllers\AssignmentsController;
 use App\Http\Controllers\AssignmentUploadController;
 use App\Http\Controllers\BatchController;
 
-use App\Http\Controllers\ChapterController;
 use App\Http\Controllers\CourseController;
-use App\Http\Controllers\LessonController;
 use App\Http\Controllers\PlacedStudentController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\ResultController;
@@ -53,7 +51,6 @@ use App\Livewire\Admin\Workshops\ManageWorkshop;
 use App\Livewire\Admin\Course\ManageCourse;
 use App\Livewire\Admin\Course\ShowCourse;
 use App\Livewire\Admin\Certificate\CertificateEligibility;
-use App\Livewire\Admin\Course\LessonManager;
 use App\Livewire\Admin\Exam\ManageExam;
 use App\Livewire\Admin\Exam\ExamQuestions;
 use App\Livewire\Admin\Quiz\ManageQuiz;
@@ -81,21 +78,22 @@ use App\Livewire\Student\MockTest\ShowMockTest;
 use App\Livewire\V3\Public\NewHome;
 
 Route::get('/', Home::class)->name('public.index');
+
+
+Route::get('/viewallcourses', AllCourses::class)->name('public.viewallcourses.all-courses');
+Route::get('/courses/{slug}', Ourcourses::class)->name('public.courseDetail');
+Route::get('/contact', ContactPage::class)->name('public.contactUs');
+Route::get('/workshops', Workshop::class)->name('public.workshop');
+
 Route::prefix('auth')->group(function () {
     Route::get('/register', Register::class)->name('auth.register');
     Route::get('/login', Login::class)->name('auth.login');
     Route::get('/logout', Header::class)->name('auth.logout');
-
-
-    Route::get('/viewallcourses', AllCourses::class)->name('public.viewallcourses.all-courses');
-    Route::get('/courses/{slug}', Ourcourses::class)->name('public.courseDetail');
-    Route::get('/contact', ContactPage::class)->name('public.contactUs');
-    Route::get('/workshops', Workshop::class)->name('public.workshop');
-
+});
     //routes for the free course
     Route::get('/course/{course_id}/chapter/show',CourseWithChapterAndTopic::class)->name('v2.courses.show');
     Route::get('/course/{course_id}/chapter/{chapter_id?}/topic/{topic_id?}/show',TopicWithPostContent::class)->name('v2.topics.show');
-});
+
 
 Route::prefix("student")->group(function () {
     Route::controller(StudentController::class)->group(function () {
@@ -178,18 +176,6 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::post('/courses/{course}/publish', [CourseController::class, 'publish'])->name('course.publish');
         Route::post('/course/{id}/unpublish', [CourseController::class, 'unpublish'])->name('course.unpublish');
         Route::patch('/courses/{course}/{field}', [CourseController::class, 'update'])->name('course.update');
-
-        // Chapter Management
-        Route::get('/courses/{course_id}/chapters/create', [ChapterController::class, 'create'])->name('chapter.create');
-        Route::post('/courses/{course_id}/chapters', [ChapterController::class, 'store'])->name('chapter.store');
-        Route::get('/chapters/{chapter}/edit', [ChapterController::class, 'edit'])->name('chapter.edit');
-        Route::patch('/chapters/{chapter}', [ChapterController::class, 'update'])->name('chapter.update');
-        Route::delete('/chapters/{id}', [ChapterController::class, 'destroy'])->name('chapter.destroy');
-
-        // Lesson Management
-        Route::get('/chapters/{chapter}/lessons/create', [LessonController::class, 'create'])->name('lessons.create');
-        Route::post('/chapters/{chapter}/lessons', [LessonController::class, 'store'])->name('lessons.store');
-
 
 
         // Batch Management
@@ -281,7 +267,6 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/student/{id}', ViewStudent::class)->name('admin.student.view');
 
         Route::get('/course/update/{courseId}', UpdateCourse::class)->name('admin.course.update');
-        Route::get('/admin/courses/{chapter}/lessons', LessonManager::class)->name('admin.courses.chapters.lessons');
         Route::get("/admin/attendace", AttendanceScanner::class)->name('admin.attendance');
 
         //exam routes
@@ -428,6 +413,6 @@ Route::get('/launch', function () {
 });
 
 
-Route::get('/workshops', [WorkshopController::class, 'index'])->name('public.workshops');
+// Route::get('/workshops', [WorkshopController::class, 'index'])->name('public.workshops');
 Route::get('/workshop/{id}/enroll', [WorkshopController::class, 'buyWorkshop'])->name('workshop.enroll');
 
