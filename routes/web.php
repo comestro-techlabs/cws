@@ -8,7 +8,6 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChapterController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\LessonController;
-use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PlacedStudentController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\ResultController;
@@ -17,13 +16,11 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\WorkshopController;
 
-
 use App\Livewire\Admin\Assignment\AssignmentCourse;
 use App\Livewire\Admin\Assignment\CreateAssignment;
 use App\Livewire\Admin\Assignment\ManageAssignment;
 use App\Livewire\Admin\Assignment\ReviewWork;
 use App\Livewire\Admin\Assignment\AssignmentReview;
-
 use App\Livewire\Admin\Assignment\SingleViewAssignment;
 
 use App\Livewire\Admin\Dashboad;
@@ -33,8 +30,6 @@ use App\Livewire\Admin\Student\ManageStudent;
 use App\Livewire\Student\Dashboard\Takeexam\Result;
 use App\Livewire\Student\Dashboard\Takeexam\ShowAllAttempt;
 use App\Livewire\Student\Dashboard\Takeexam\ShowQuiz;
-use App\Livewire\Student\Messages;
-use App\Livewire\Student\MessageView;
 use App\Livewire\Student\MyAttendance;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ExamController;
@@ -55,8 +50,6 @@ use App\Livewire\Student\ViewCourse;
 use App\Livewire\Student\MyCourse;
 use App\Livewire\Student\EditProfile;
 use App\Livewire\Student\Dashboard\ViewAssigment;
-use App\Livewire\Admin\Message\CreateMessage;
-use App\Livewire\Admin\Message\ManageMessage;
 use App\Livewire\Admin\Workshops\ManageWorkshop;
 use App\Livewire\Admin\Course\ManageCourse;
 use App\Livewire\Admin\Course\ShowCourse;
@@ -70,7 +63,6 @@ use App\Livewire\Admin\Result\ShowExamUser;
 use App\Livewire\Admin\Result\AttemptResults;
 use App\Livewire\Admin\Result\AttemptDetails;
 use App\Livewire\Admin\Result\ManageResult;
-
 use App\Livewire\Admin\Student\AttendanceScanner;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
@@ -86,8 +78,6 @@ use App\Livewire\Student\Billing\ViewBilling;
 use App\Livewire\Student\Dashboard\ManageAssignments;
 use App\Livewire\Student\Dashboard\StudentDashboard;
 use App\Livewire\Student\Dashboard\Takeexam\Exam;
-// v3
-use App\Livewire\V3\Public\NewHome;
 
 Route::get('/', Home::class)->name('public.index');
 Route::prefix('auth')->group(function () {
@@ -130,17 +120,6 @@ Route::prefix("student")->group(function () {
         Route::get('/certificate/{userId}', 'Certificate')->name('student.certificate');
     });
 });
-
-Route::get('/student/messages', [MessageController::class, 'studentMessages'])->name('user.messages');
-Route::get('/student/messages/{message}', [MessageController::class, 'showMessage'])->name('student.messages.show');
-
-
-
-// Route::get('/quiz_instruction', function () {
-//     return view('studentdashboard.quiz_instruction');
-// })->name('quiz_instruction');
-
-// });
 
 
 
@@ -346,9 +325,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
 
 
 
-        //Message Route
-        Route::get('/message', CreateMessage::class)->name('admin.message.create');
-        Route::get('/message/manage', ManageMessage::class)->name('admin.message.index');
+       
 
         //    certificate
         Route::get('/certificate', CertificateEligibility::class)->name('admin.certificate');
@@ -393,10 +370,8 @@ Route::prefix('v2')->group(function () {
         Route::get('/dashboard', StudentDashboard::class)->name('v2.student.dashboard');
         Route::get('/assignments/view', ManageAssignments::class)->name('student.assignments-view');
         Route::get('/take-exam', Exam::class)->name('student.takeExam');
-        Route::get('/notifications', Messages::class)->name('student.messages');
         Route::get('/explore-courses', ExploreCourse::class)->name('student.exploreCourses');
         Route::get('/view-courses/{courseId}', ViewCourse::class)->name('student.viewCourses');
-        Route::get('/student/{message}', MessageView::class)->name('v2.student.message.view');
         Route::get('/my-courses', MyCourse::class)->name('v2.student.mycourses');
         Route::get('/edit-profile', EditProfile::class)->name('student.v2edit.profile');
         Route::get('/view-assigment', ViewAssigment::class)->name('student.v2view.assigment');

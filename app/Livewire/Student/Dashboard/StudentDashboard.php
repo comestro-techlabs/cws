@@ -4,7 +4,6 @@ namespace App\Livewire\Student\Dashboard;
 
 use App\Models\Course;
 use App\Models\Exam;
-use App\Models\Message;
 use App\Models\User;
 use App\Models\Answer;
 use App\Models\Payment;
@@ -17,7 +16,6 @@ use App\Models\Assignment;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
-use App\Livewire\Student\Messages;
 use Illuminate\Support\Facades\DB;
 
 class StudentDashboard extends Component
@@ -151,16 +149,6 @@ class StudentDashboard extends Component
             $payment->progress = $payment->course_progress ?? 0;
         }
 
-        //$readMessages = session('read_messages', []);
-        // $this->messages = Message::whereJsonContains('recipients', (string)$studentId)
-        //     ->whereNotIn('id', $readMessages)
-        //     ->orderBy('created_at', 'desc')
-        //     ->take(3)
-        //     ->get();
-        $messageComponent = new Messages();
-        $messageComponent->mount();
-        $this->messages = $messageComponent->sortmessages->take(3);
-        $this->unreadCount = $messageComponent->unreadCount;
 
     }
 
