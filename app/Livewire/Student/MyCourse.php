@@ -14,11 +14,13 @@ class MyCourse extends Component
     public $coursesWithoutBatch = [];
     public $selectedBatch = [];
     public $editingCourseId = null;
+    public $progress = [];
 
     public function mount()
     {
         $this->loadCourses();
         $this->initializeBatchSelections();
+        $this->calculateProgress();
     }
 
     private function loadCourses()
@@ -61,13 +63,20 @@ class MyCourse extends Component
         $this->editingCourseId = null;
     }
 
+    private function calculateProgress()
+    {
+        foreach ($this->courses as $course) {
+            $this->progress[$course->id] = $course->course_progress ?? 0;
+        }
+    }
+
     public function toggleEdit($courseId)
-{
-    \Log::info("Toggling edit for courseId: {$courseId}, current editingCourseId: {$this->editingCourseId}");
-    $this->editingCourseId = $this->editingCourseId === $courseId ? null : $courseId;
-    \Log::info("New editingCourseId: " . ($this->editingCourseId ?? 'null'));
-    $this->dispatch('refresh'); // Force a re-render
-}
+    {
+        \Log::info("Toggling edit for courseId: {$courseId}, current editingCourseId: {$this->editingCourseId}");
+        $this->editingCourseId = $this->editingCourseId === $courseId ? null : $courseId;
+        \Log::info("New editingCourseId: " . ($this->editingCourseId ?? 'null'));
+        $this->dispatch('refresh'); // Force a re-render
+    }
 
     public function updateBatch($courseId, $batchId)
     {
@@ -106,6 +115,7 @@ class MyCourse extends Component
             $this->selectedBatch[$courseId] = $batchId;
             $this->editingCourseId = null;
             $this->loadCourses();
+            $this->calculateProgress();
 
             $this->dispatch("show-alert-{$courseId}", [
                 'icon' => 'success',
@@ -124,6 +134,8 @@ class MyCourse extends Component
     #[Layout('components.layouts.student')]
     public function render()
     {
-        return view('livewire.student.my-course');
+        return view('livewire.student.my-course' , [
+            'progress' => $this->progress,
+        ]);
     }
 }

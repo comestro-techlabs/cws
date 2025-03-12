@@ -65,35 +65,35 @@
             @enderror
         </div>
 
-       
+
           <div>
             <label for="image" class="block text-sm font-medium text-gray-700 mb-1">Image</label>
-            <input 
-                type="file" 
-                name="image" 
-                id="image" 
+            <input
+                type="file"
+                name="image"
+                id="image"
                 class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 accept="image/*"
                 onchange="previewImage(event)"
             >
-          
+
             @if ($workshops->image)
                 <div class="mt-4">
                     <p class="text-sm text-gray-500">Current Image:</p>
-                    <img src="{{ asset('storage/' . $workshops->image) }}" alt="Portfolio Image" class="w-24 h-24 mt-2 rounded-md shadow-md">
+                    <img src="{{ asset('storage/' . $workshops->image) }}" alt=" Image" class="w-24 h-24 mt-2 rounded-md shadow-md">
                 </div>
             @endif
-        
-           
+
+
             <div id="imagePreview" class="mt-4 hidden">
                 <p class="text-sm text-gray-500">Preview New Image:</p>
-                <img src="" alt="New Portfolio Image" class="w-24 h-24 mt-2 rounded-md shadow-md">
+                <img src="" alt="New  Image" class="w-24 h-24 mt-2 rounded-md shadow-md">
             </div>
         </div>
-        
-         
-        
-        
+
+
+
+
         <div>
             <label for="fees" class="block text-sm font-medium text-gray-700">Workshop Fees</label>
             <input
@@ -108,7 +108,7 @@
             <p class="text-xs text-red-500">{{ $message }}</p>
             @enderror
         </div>
-        
+
 
         <div>
             <label for="active" class="block text-sm font-medium text-gray-700">Is Active?</label>
@@ -141,13 +141,13 @@
         if (fileInput.files && fileInput.files[0]) {
             const reader = new FileReader();
             reader.onload = function (e) {
-                previewImage.src = e.target.result; 
-                previewContainer.classList.remove('hidden'); 
+                previewImage.src = e.target.result;
+                previewContainer.classList.remove('hidden');
             };
-            reader.readAsDataURL(fileInput.files[0]); 
+            reader.readAsDataURL(fileInput.files[0]);
         } else {
             previewImage.src = '';
-            previewContainer.classList.add('hidden'); 
+            previewContainer.classList.add('hidden');
         }
     }
 </script>

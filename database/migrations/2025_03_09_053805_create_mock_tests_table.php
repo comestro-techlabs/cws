@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('portfolios', function (Blueprint $table) {
+        Schema::create('mock_tests', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('image');
-            $table->string('url');
+            $table->string('test_title');
+            $table->foreignId('course_id')->constrained()->onDelete('cascade');
+            $table->enum('level', ['beginners', 'intermediate', 'hard']);
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('portfolios');
+        Schema::dropIfExists('mock_tests');
     }
 };

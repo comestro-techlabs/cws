@@ -4,26 +4,22 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AssignmentsController;
 use App\Http\Controllers\AssignmentUploadController;
 use App\Http\Controllers\BatchController;
-use App\Http\Controllers\CategoryController;
+
 use App\Http\Controllers\ChapterController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\LessonController;
-use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PlacedStudentController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\ResultController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\WorkshopController;
-
 
 use App\Livewire\Admin\Assignment\AssignmentCourse;
 use App\Livewire\Admin\Assignment\CreateAssignment;
 use App\Livewire\Admin\Assignment\ManageAssignment;
 use App\Livewire\Admin\Assignment\ReviewWork;
 use App\Livewire\Admin\Assignment\AssignmentReview;
-
 use App\Livewire\Admin\Assignment\SingleViewAssignment;
 
 use App\Livewire\Admin\Dashboad;
@@ -33,8 +29,6 @@ use App\Livewire\Admin\Student\ManageStudent;
 use App\Livewire\Student\Dashboard\Takeexam\Result;
 use App\Livewire\Student\Dashboard\Takeexam\ShowAllAttempt;
 use App\Livewire\Student\Dashboard\Takeexam\ShowQuiz;
-use App\Livewire\Student\Messages;
-use App\Livewire\Student\MessageView;
 use App\Livewire\Student\MyAttendance;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ExamController;
@@ -55,8 +49,6 @@ use App\Livewire\Student\ViewCourse;
 use App\Livewire\Student\MyCourse;
 use App\Livewire\Student\EditProfile;
 use App\Livewire\Student\Dashboard\ViewAssigment;
-use App\Livewire\Admin\Message\CreateMessage;
-use App\Livewire\Admin\Message\ManageMessage;
 use App\Livewire\Admin\Workshops\ManageWorkshop;
 use App\Livewire\Admin\Course\ManageCourse;
 use App\Livewire\Admin\Course\ShowCourse;
@@ -65,11 +57,8 @@ use App\Livewire\Admin\Course\LessonManager;
 use App\Livewire\Admin\Exam\ManageExam;
 use App\Livewire\Admin\Exam\ExamQuestions;
 use App\Livewire\Admin\Quiz\ManageQuiz;
-use App\Livewire\Admin\Result\ShowExams;
-use App\Livewire\Admin\Result\ShowExamUser;
-use App\Livewire\Admin\Result\AttemptResults;
-use App\Livewire\Admin\Result\AttemptDetails;
 use App\Livewire\Admin\Result\ManageResult;
+use App\Livewire\Admin\MockTest\ManageMockTest;
 
 use App\Livewire\Admin\Student\AttendanceScanner;
 use App\Livewire\Auth\Login;
@@ -86,6 +75,8 @@ use App\Livewire\Student\Billing\ViewBilling;
 use App\Livewire\Student\Dashboard\ManageAssignments;
 use App\Livewire\Student\Dashboard\StudentDashboard;
 use App\Livewire\Student\Dashboard\Takeexam\Exam;
+use App\Livewire\Student\MockTest\SelectMockTest;
+use App\Livewire\Student\MockTest\ShowMockTest;
 // v3
 use App\Livewire\V3\Public\NewHome;
 
@@ -130,9 +121,6 @@ Route::prefix("student")->group(function () {
         Route::get('/certificate/{userId}', 'Certificate')->name('student.certificate');
     });
 });
-
-Route::get('/student/messages', [MessageController::class, 'studentMessages'])->name('user.messages');
-Route::get('/student/messages/{message}', [MessageController::class, 'showMessage'])->name('student.messages.show');
 
 
 
@@ -202,8 +190,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/chapters/{chapter}/lessons/create', [LessonController::class, 'create'])->name('lessons.create');
         Route::post('/chapters/{chapter}/lessons', [LessonController::class, 'store'])->name('lessons.store');
 
-        // Category Management
-        Route::resource('category', CategoryController::class)->except(['create', 'show']);
+        
 
         // Batch Management
         Route::get('/batches', [BatchController::class, 'index'])->name('batches.index');
@@ -259,24 +246,9 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
             Route::get('/viewCertificate/{userId}', [ResultController::class, 'index'])->name('admin.viewCertificate');
         });
 
-        // Message Management
-        Route::prefix('message')->group(function () {
-            Route::get('/create', [MessageController::class, 'create'])->name('messages.create');
-            Route::post('/store', [MessageController::class, 'store'])->name('messages.store');
-            Route::get('/manage', [MessageController::class, 'index'])->name('messages.manage');
-            Route::get('/show/{message}', [MessageController::class, 'show'])->name('messages.show');
-            Route::delete('/delete/{message}', [MessageController::class, 'destroy'])->name('messages.delete');
-        });
 
-        // Portfolio Management
-        Route::prefix('portfolio')->group(function () {
-            Route::get('/create', [PortfolioController::class, 'create'])->name('portfolio.create');
-            Route::post('/store', [PortfolioController::class, 'store'])->name('portfolio.store');
-            Route::get('/', [PortfolioController::class, 'show'])->name('portfolio.admin.index');
-            Route::get('/{id}/edit', [PortfolioController::class, 'edit'])->name('portfolio.admin.edit');
-            Route::put('/{id}', [PortfolioController::class, 'update'])->name('portfolio.admin.update');
-            Route::delete('/{id}', [PortfolioController::class, 'destroy'])->name('portfolio.admin.destroy');
-        });
+
+
 
         // Workshop Management
         Route::prefix('workshops')->group(function () {
@@ -322,7 +294,8 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
 
         Route::get('/results', ManageResult::class)->name('results');
 
-
+        //mocktest routes
+        Route::get('/mocktest', ManageMockTest::class)->name('admin.mocktest');
         // Assignment Routes
         Route::get('/assignment', CreateAssignment::class)->name('admin.assignment');
         Route::get('/assignment/manage', ManageAssignment::class)->name('admin.assignment.manage');
@@ -346,9 +319,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
 
 
 
-        //Message Route
-        Route::get('/message', CreateMessage::class)->name('admin.message.create');
-        Route::get('/message/manage', ManageMessage::class)->name('admin.message.index');
+
 
         //    certificate
         Route::get('/certificate', CertificateEligibility::class)->name('admin.certificate');
@@ -393,19 +364,18 @@ Route::prefix('v2')->group(function () {
         Route::get('/dashboard', StudentDashboard::class)->name('v2.student.dashboard');
         Route::get('/assignments/view', ManageAssignments::class)->name('student.assignments-view');
         Route::get('/take-exam', Exam::class)->name('student.takeExam');
-        Route::get('/notifications', Messages::class)->name('student.messages');
         Route::get('/explore-courses', ExploreCourse::class)->name('student.exploreCourses');
         Route::get('/view-courses/{courseId}', ViewCourse::class)->name('student.viewCourses');
-        Route::get('/student/{message}', MessageView::class)->name('v2.student.message.view');
         Route::get('/my-courses', MyCourse::class)->name('v2.student.mycourses');
         Route::get('/edit-profile', EditProfile::class)->name('student.v2edit.profile');
         Route::get('/view-assigment', ViewAssigment::class)->name('student.v2view.assigment');
         Route::get('/view-assigment/{id}', ViewAssigment::class)->name('student.v2view.assigment');
         Route::get('/show-quiz/{courseId}', ShowQuiz::class)->name('v2.student.quiz');
         Route::get('/show-all-attempt/{course_id}', ShowAllAttempt::class)->name('v2.student.allAttempts');
-        Route::get('/show-quiz/result/{exam_id}', Result::class)->name('v2.student.examResult');
-        Route::get('/my-attendance', MyAttendance::class)->name('student.my-attendance');
-
+        Route::get('show-quiz/result/{exam_id}', Result::class)->name('v2.student.examResult');
+        
+        Route::get('/mocktest/course', SelectMockTest::class)->name('v2.student.mocktest.course');
+        Route::get('/mocktest/course/{mockTestId}', ShowMockTest::class)->name('v2.student.mocktest.take');
     });
     //working here for public routes
     Route::prefix("public")->group(function () {
@@ -458,7 +428,6 @@ Route::get('/launch', function () {
 });
 
 
-// Route::get('/portfolio', [PortfolioController::class, 'index'])->name('public.portfolio');
 Route::get('/workshops', [WorkshopController::class, 'index'])->name('public.workshops');
 Route::get('/workshop/{id}/enroll', [WorkshopController::class, 'buyWorkshop'])->name('workshop.enroll');
 

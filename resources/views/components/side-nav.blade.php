@@ -8,7 +8,6 @@
         $placestudentCount = App\Models\PlacedStudent::get()->count();
         $examCount = App\Models\Exam::get()->count();
         $workshopCount = App\Models\Workshop::get()->count();
-        $messageCount = App\Models\Message::get()->count();
         $notificationCount = App\Models\Enquiry::get()->count();
         $paymentCount = App\Models\Payment::with(['student', 'course'])
         ->where('status', 'captured')->count();
@@ -181,7 +180,7 @@
         </li>
         <li>
             <a wire:navigate href="{{ route('results') }}"
-                class="relative flex flex-row items-center h-8 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 w-full">
+                class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-purple-50 text-gray-600 hover:text-purple-700 border-l-4 border-transparent hover:border-purple-700 pr-6 transition duration-200">
                 <span class="inline-flex justify-center items-center ml-4">
                     <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -191,11 +190,29 @@
                     </svg>
                 </span>
                 <div class="flex justify-between items-center w-full">
-                    <span class="ml-2 text-sm tracking-wide truncate">Manage Result</span>
+                    <span class="ml-2 text-sm font-medium tracking-wide truncate">Manage Result</span>
+                   
+                </div>
+            </a>
+        </li>
+        <li>
+            <a wire:navigate href="{{ route('admin.mocktest') }}"
+                class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-purple-50 text-gray-600 hover:text-purple-700 border-l-4 border-transparent hover:border-purple-700 pr-6 transition duration-200">
+                <span class="inline-flex justify-center items-center ml-4">
+                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M4.5 3h15a1.5 1.5 0 011.5 1.5v15a1.5 1.5 0 01-1.5 1.5h-15a1.5 1.5 0 01-1.5-1.5v-15A1.5 1.5 0 014.5 3z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 8.25h6M9 12h6M9 15.75h3" />
+                    </svg>
+                </span>
+                <div class="flex justify-between items-center w-full">
+                    <span class="ml-2 text-sm font-medium tracking-wide truncate">Manage MockTest</span>
                     
                 </div>
             </a>
         </li>
+       
 
         <li>
             <a wire:navigate href="{{ route('admin.workshops.index') }}"
@@ -222,22 +239,7 @@
             </div>
         </li>
         
-        <li>
-            <a wire:navigate href="{{ route('admin.message.index') }}"
-                class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-purple-50 text-gray-600 hover:text-purple-700 border-l-4 border-transparent hover:border-purple-700 pr-6 transition duration-200">
-                <span class="inline-flex justify-center items-center ml-4">
-                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 48 48">
-                        <path
-                            d="M 10.5 5 C 6.92 5 4 7.92 4 11.5 L 4 30.5 C 4 34.08 6.92 37 10.5 37 L 22.150391 37 C 22.050391 36.35 22 35.68 22 35 C 22 34.66 22.010781 34.33 22.050781 34 L 10.5 34 C 8.57 34 7 32.43 7 30.5 L 7 16.015625 L 23.287109 24.820312 A 1.50015 1.50015 0 0 0 24.712891 24.820312 L 41 16.015625 L 41 23.470703 C 42.1 24.040703 43.11 24.770859 44 25.630859 L 44 11.5 C 44 7.92 41.08 5 37.5 5 L 10.5 5 z M 10.5 8 L 37.5 8 C 39.43 8 41 9.57 41 11.5 L 41 12.605469 L 24 21.794922 L 7 12.605469 L 7 11.5 C 7 9.57 8.57 8 10.5 8 z M 35 24 C 28.925 24 24 28.925 24 35 C 24 41.075 28.925 46 35 46 C 41.075 46 46 41.075 46 35 C 46 28.925 41.075 24 35 24 z M 35 27 C 35.552 27 36 27.448 36 28 L 36 34 L 42 34 C 42.552 34 43 34.448 43 35 C 43 35.552 42.552 36 42 36 L 36 36 L 36 42 C 36 42.552 35.552 43 35 43 C 34.448 43 34 42.552 34 42 L 34 36 L 28 36 C 27.448 36 27 35.552 27 35 C 27 34.448 27.448 34 28 34 L 34 34 L 34 28 C 34 27.448 34.448 27 35 27 z">
-                        </path>
-                    </svg>
-                </span>
-                <div class="flex justify-between items-center w-full">
-                    <span class="ml-2 text-sm font-medium tracking-wide truncate">Message</span>
-                    <x-admin.count :count="$messageCount"/>
-                </div>
-            </a>
-        </li>
+        
         <li>
             <a wire:navigate href="{{route('admin.manage.enquiry')}}"
                 class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-purple-50 text-gray-600 hover:text-purple-700 border-l-4 border-transparent hover:border-purple-700 pr-6 transition duration-200">

@@ -1,37 +1,126 @@
-<div>
-    <div class="p-2 sm:p-4 md:p-6 lg:p-8 rounded-2xl  max-w-6xl mx-auto">
-        <h4 class="text-xl sm:text-2xl md:text-3xl font-bold text-teal-700 mb-3 sm:mb-4 md:mb-6">My Attendance</h4>
-
-        <div class="mb-4 sm:mb-6 md:mb-8 bg-white p-3 sm:p-4 md:p-6 rounded-lg shadow-sm">
-            <p class="text-sm sm:text-base md:text-lg text-gray-700 mb-2">
-                <span class="font-medium">Present Days:</span>
-                <span class="text-green-600 font-semibold">{{ $presentCount }}</span>
-            </p>
-            <p class="text-sm sm:text-base md:text-lg text-gray-700 mb-2">
-                <span class="font-medium">Absent Days:</span>
-                <span class="text-red-600 font-semibold">{{ $absentCount }}</span>
-            </p>
-            <p class="text-sm sm:text-base md:text-lg text-gray-700">
-                <span class="font-medium">Today’s Status ({{ \Carbon\Carbon::today()->toDateString() }}):</span>
-                @if($todayStatus === 'Present')
-                    <span class="text-green-600 font-semibold">Present</span>
-                @elseif($todayStatus === 'Absent')
-                    <span class="text-red-600 font-semibold">Absent</span>
-                @else
-                    <span class="text-gray-500 font-semibold">Not Recorded</span>
-                @endif
-            </p>
+<div class="min-h-screen bg-gray-50">
+    <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <!-- Header Section -->
+        <div class="mb-8">
+            <h1 class="text-2xl font-bold text-gray-900">Attendance Overview</h1>
+            <p class="mt-1 text-sm text-gray-500">Track your class attendance and performance</p>
         </div>
 
-        <div class="bg-white p-3 sm:p-4 md:p-6 rounded-lg shadow-sm">
-            <div id="calendar" wire:ignore></div>
+        <!-- Statistics Cards -->
+        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 mb-8">
+            <!-- Present Days Card -->
+            <div class="bg-white overflow-hidden rounded-lg shadow-sm border border-green-100">
+                <div class="p-5">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <div class="bg-green-50 rounded-md p-3">
+                                <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">Present Days</dt>
+                                <dd class="flex items-baseline">
+                                    <div class="text-2xl font-semibold text-gray-900">{{ $presentCount }}</div>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Absent Days Card -->
+            <div class="bg-white overflow-hidden rounded-lg shadow-sm border border-red-100">
+                <div class="p-5">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <div class="bg-red-50 rounded-md p-3">
+                                <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">Absent Days</dt>
+                                <dd class="flex items-baseline">
+                                    <div class="text-2xl font-semibold text-gray-900">{{ $absentCount }}</div>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Today's Status Card -->
+            <div class="bg-white overflow-hidden rounded-lg shadow-sm border border-blue-100">
+                <div class="p-5">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <div class="bg-blue-50 rounded-md p-3">
+                                <svg class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">Today's Status</dt>
+                                <dd class="flex items-baseline">
+                                    @if($todayStatus === 'Present')
+                                        <div class="text-lg font-medium text-green-600">Present</div>
+                                    @elseif($todayStatus === 'Absent')
+                                        <div class="text-lg font-medium text-red-600">Absent</div>
+                                    @else
+                                        <div class="text-lg font-medium text-gray-400">Not Recorded</div>
+                                    @endif
+                                    <span class="ml-2 text-sm text-gray-500">
+                                        ({{ \Carbon\Carbon::today()->format('d M Y') }})
+                                    </span>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calendar Section -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="border-b border-gray-100 px-6 py-4">
+                <h2 class="text-lg font-medium text-gray-900">Attendance Calendar</h2>
+                <p class="mt-1 text-sm text-gray-500">View your attendance records and upcoming schedule</p>
+            </div>
+            <div class="p-6">
+                <div id="calendar" wire:ignore></div>
+            </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"
-        onerror="console.error('Failed to load FullCalendar from ')"></script>
+    <!-- Scripts and Styles -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
 
     <style>
+        .fc {
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
+        }
+        .fc .fc-button-primary {
+            background-color: #2563eb;
+            border-color: #2563eb;
+        }
+        .fc .fc-button-primary:hover {
+            background-color: #1d4ed8;
+            border-color: #1d4ed8;
+        }
+        .fc .fc-button-primary:disabled {
+            background-color: #93c5fd;
+            border-color: #93c5fd;
+        }
+        .fc .fc-daygrid-day.fc-day-today {
+            background-color: #eff6ff;
+        }
         @media (max-width: 640px) {
             .fc .fc-button {
                 padding: 0.2rem 0.4rem;
@@ -94,7 +183,7 @@
             var calendarEl = document.getElementById('calendar');
             if (!calendarEl || typeof FullCalendar === 'undefined') {
                 console.error('Calendar element or FullCalendar not ready yet.');
-                setTimeout(initializeCalendar, 50); 
+                setTimeout(initializeCalendar, 50);
                 return;
             }
 
@@ -110,7 +199,7 @@
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay', 
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay',
                 },
                 eventColor: '#4FD1C5',
                 eventTextColor: '#FFFFFF',
@@ -120,14 +209,14 @@
                 slotMaxTime: '18:00:00',
                 views: {
                     dayGridMonth: {
-                        dayMaxEventRows: 2 
+                        dayMaxEventRows: 2
                     },
                     timeGridWeek: {
-                        slotDuration: '00:30:00', 
-                        scrollTime: '08:00:00' 
+                        slotDuration: '00:30:00',
+                        scrollTime: '08:00:00'
                     },
                     timeGridDay: {
-                        slotDuration: '00:30:00' 
+                        slotDuration: '00:30:00'
                     }
                 },
                 eventClick: function (info) {
@@ -146,9 +235,9 @@
         }
 
         function getInitialView() {
-            if (window.innerWidth < 640) return 'timeGridWeek'; 
+            if (window.innerWidth < 640) return 'timeGridWeek';
             if (window.innerWidth < 1024) return 'dayGridMonth';
-            return 'dayGridMonth'; 
+            return 'dayGridMonth';
         }
 
         document.addEventListener('DOMContentLoaded', () => {

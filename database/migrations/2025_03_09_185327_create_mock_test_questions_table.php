@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('messages', function (Blueprint $table) {
+        Schema::create('mock_test_questions', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->text('content');
-            $table->enum('recipient_type',['all_users', 'batch', 'single_user', 'some_users']);
-            $table->json('recipients');
+            $table->foreignId('mocktest_id')->constrained('mock_tests')->onDelete('cascade');
+            $table->text('question');
+            $table->json('options');
+            $table->string('correct_answer');
+            $table->integer('marks')->default(1);
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('messages');
+        Schema::dropIfExists('mock_test_questions');
     }
 };
