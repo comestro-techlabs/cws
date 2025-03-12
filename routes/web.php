@@ -462,20 +462,3 @@ Route::get('/launch', function () {
 Route::get('/workshops', [WorkshopController::class, 'index'])->name('public.workshops');
 Route::get('/workshop/{id}/enroll', [WorkshopController::class, 'buyWorkshop'])->name('workshop.enroll');
 
-
-
-
-
-
-Route::prefix("v3")->group(function () {
-    // homepage
-    // view Paid Course
-    // view tutorial online Course
-    // view tutorial online Course Topics
-    // Workshops
-    // view Workshops
-    // Auth works
-    Route::get('/', NewHome::class)->name('public.homepage');
-});
-
-
