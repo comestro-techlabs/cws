@@ -123,6 +123,14 @@ Route::prefix("student")->group(function () {
 
 
 
+// Route::get('/quiz_instruction', function () {
+//     return view('studentdashboard.quiz_instruction');
+// })->name('quiz_instruction');
+
+// });
+
+
+
 
 Route::get('/get-access-token', [StudentController::class, 'store']);
 Route::post('/student/assignments/upload/{assignment_id}', [StudentController::class, 'store'])->name('assignments.store');
@@ -238,14 +246,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
             Route::get('/viewCertificate/{userId}', [ResultController::class, 'index'])->name('admin.viewCertificate');
         });
 
-        // Message Management
-        Route::prefix('message')->group(function () {
-            Route::get('/create', [MessageController::class, 'create'])->name('messages.create');
-            Route::post('/store', [MessageController::class, 'store'])->name('messages.store');
-            Route::get('/manage', [MessageController::class, 'index'])->name('messages.manage');
-            Route::get('/show/{message}', [MessageController::class, 'show'])->name('messages.show');
-            Route::delete('/delete/{message}', [MessageController::class, 'destroy'])->name('messages.delete');
-        });
+        
 
         // Portfolio Management
         Route::prefix('portfolio')->group(function () {
@@ -325,7 +326,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
 
 
 
-       
+
 
         //    certificate
         Route::get('/certificate', CertificateEligibility::class)->name('admin.certificate');
