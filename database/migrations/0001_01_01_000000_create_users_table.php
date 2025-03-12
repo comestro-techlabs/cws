@@ -24,6 +24,9 @@ return new class extends Migration
             // $table->string('password')->nullable();
             $table->integer('status')->default(0); //0 = new admission, 1 = new student, 2 = old student
             $table->rememberToken();
+            $table->string('google_id')->nullable();
+            $table->string('otp')->nullable(); // Column to store OTP
+            $table->timestamp('otp_expires_at')->nullable();
             $table->timestamps();
         });
 

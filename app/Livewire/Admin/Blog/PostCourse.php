@@ -118,7 +118,7 @@ class PostCourse extends Component
         $course->status = !$course->status;
         $course->save();
     }
-
+ 
     public function render()
     {
         $courses = PostCourseModel::where('title', 'like', '%'.$this->search.'%')

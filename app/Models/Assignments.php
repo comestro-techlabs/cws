@@ -21,9 +21,13 @@ class Assignments extends Model
         return $this->hasMany(Assignment_upload::class, 'assignment_id', 'id');
     }
     public function batch()
-{
-    return $this->belongsTo(Batch::class);
-}
+    {
+        return $this->belongsTo(Batch::class);
+    }
+    public function assignmentUploads()
+    {
+        return $this->hasMany(Assignment_upload::class, 'assignment_id', 'id');
+    }
 
 
 }

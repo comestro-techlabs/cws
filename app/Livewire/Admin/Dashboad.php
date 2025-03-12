@@ -45,16 +45,8 @@ class Dashboad extends Component
     public $courses;
     public $users;
     public $enquiries;
-    public $isModalOpen = false;
-    public $paymentMode;
 
 
-    #[Validate('required')] 
-    public $student_name = '';
-    #[Validate('required')]
-    public $student_email = '';
-    #[Validate('required')]
-    public $amount = '';
 
     public function mount()
     {
@@ -64,74 +56,7 @@ class Dashboad extends Component
         $this->users = User::latest()->take(3)->get();
         $this->enquiries = Enquiry::latest()->take(3)->get();
     }
-    public function mode($mode){
-        $this->paymentMode = $mode;
-        // dd($this->paymentMode);
-    }
- 
-
-public function storePayment()
-{
-    $this->validate();
-
-    $user = User::where('email', $this->student_email)->first();
-
-    if (!$user) {
-        $user = User::create([
-            'name'  => $this->student_name,
-            'email' => $this->student_email,
-        ]);
-    }
-
-    $currentMonth = Carbon::now()->month;
-    $currentYear = Carbon::now()->year;
-
-    Payment::create([
-        'student_id'   => $user->id,
-        'amount'       => $this->amount,
-        'total_amount' => $this->amount,
-        'month'        => $currentMonth,
-        'year'         => $currentYear,
-        'status'       => 'captured',
-        'method'       => $this->paymentMode,
-    ]);
-
-    // Convert month number to full name (e.g., 3 -> March)
-    $monthName = Carbon::create()->month($currentMonth)->format('F');
-
-    // Sending raw email
-    try {
-        $messageBody = "Hello {$user->name},\n\n"
-            . "Thank you for your payment of Rs{$this->amount} for {$monthName} {$currentYear}.\n"
-            . "Your payment has been successfully processed.\n\n"
-            . "Best Regards,\nLearn Syntax";
-
-        Mail::raw($messageBody, function ($message) use ($user) {
-            $message->to($user->email)
-                ->subject('Payment Successful');
-        });
-    } catch (\Exception $e) {
-        return redirect()->back()->with('error', 'Payment added but failed to send email.');
-    }
-
-    // Reset form fields and close modal
-    $this->reset(['student_name', 'student_email', 'amount']);
-    $this->isModalOpen = false;
-    session()->flash('success', 'Payment added successfully, and email sent!');
-}
-
-
-    public function openModal()
-    {
-        // $this->resetValidation();
-        // $this->reset(['title', 'description', 'image', 'status', 'courseId']);
-        $this->isModalOpen = true;
-    }
-    public function closeModal()
-    {
-        $this->isModalOpen = false;
-    }
-
+       
     public function togglePaymentDetails()
     {
         $this->showPaymentDetails = !$this->showPaymentDetails;

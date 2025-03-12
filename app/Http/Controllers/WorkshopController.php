@@ -19,7 +19,7 @@ public function index()
     // $endTime = Carbon::createFromTime(13, 0);
 
 
-    // $workshops = Workshop::with('payment') 
+    // $workshops = Workshop::with('payment')
     //     ->where('date', '>=', $currentDateTime->toDateString())
     //     ->where(function ($query) use ($currentDateTime) {
     //         $query->where('time', '>=', $currentDateTime->format('H:i'))
@@ -103,9 +103,9 @@ public function toggleStatus($id)
             'active' => 'required|boolean',
             'fees' => 'required|numeric|min:0',
 
-            
+
     ]);
-   
+
     $imagePath = $request->file('image')->store('workshops', 'public');
 
     Workshop::create([
@@ -115,12 +115,12 @@ public function toggleStatus($id)
         'image' => $imagePath,
         'active' => $request->active,
         'fees'=>$request->fees,
-       
-    ]);
-   
 
-    
-    return redirect()->route('workshops.admin.index')->with('success', 'Portfolio created successfully!');
+    ]);
+
+
+
+    return redirect()->route('workshops.admin.index')->with('success', 'Workshop created successfully!');
   }
   public function show()
   {
@@ -144,7 +144,7 @@ public function toggleStatus($id)
 public function update(Request $request, $id)
 {
     $workshop = Workshop::findOrFail($id);
-  
+
 //    dd($workshop);
      $request->validate([
         'title' => 'required|string|max:255',
@@ -159,15 +159,15 @@ public function update(Request $request, $id)
         $imagePath = $request->file('image')->store('workshops_images', 'public');
         $workshop->image = $imagePath;
     }
-  
+
     $workshop->title = $request->title;
     $workshop->date = $request->date;
     $workshop->time = $request->time;
     $workshop->active = $request->active;
-    $workshop->fees = $request->fees;  
+    $workshop->fees = $request->fees;
     $workshop->save();
 
-    
+
     return redirect()->route('workshops.admin.index')->with('success', 'Workshop updated successfully.');
 }
 
@@ -179,7 +179,7 @@ public function update(Request $request, $id)
       $workshop->delete();
       return redirect()->route('workshops.admin.index')->with('success', 'Workshop deleted successfully.');
   }
-  
+
 }
 
-  
+
