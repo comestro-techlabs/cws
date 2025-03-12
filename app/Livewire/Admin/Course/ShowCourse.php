@@ -11,13 +11,11 @@ class ShowCourse extends Component
 {
     public $course;
     public $batches;
-    public $chapters;
 
     public function mount($courseId)
     {
-        $this->course = Course::with(['batches', 'chapters.lessons'])->findOrFail($courseId);
+        $this->course = Course::with('batches')->findOrFail($courseId);
         $this->batches = $this->course->batches;
-        $this->chapters = $this->course->chapters;
     }
 
     public function render()

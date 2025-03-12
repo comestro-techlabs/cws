@@ -22,7 +22,7 @@ class ViewCourse extends Component
         }
 
         // Assign to public property instead of local variable
-        $this->course = Course::with(['chapters', 'features'])->findOrFail($courseId);
+        $this->course = Course::with('features')->findOrFail($courseId);
         $course_id = $this->course->id;
         $user_id = Auth::id();
 
@@ -43,11 +43,11 @@ class ViewCourse extends Component
                     DB::table('course_user')->insert([
                         'user_id'    => $user_id,
                         'course_id'  => $course_id,
-                        'batch_id'   => null, 
+                        'batch_id'   => null,
                         'created_at' => now(),
                         'updated_at' => now(),
                     ]);
-                    $this->payment_exist = true; 
+                    $this->payment_exist = true;
                 } catch (\Exception $e) {
                     session()->flash('error', 'Failed to enroll in free course');
                 }
