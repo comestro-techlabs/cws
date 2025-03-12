@@ -77,6 +77,8 @@ use App\Livewire\Student\Dashboard\StudentDashboard;
 use App\Livewire\Student\Dashboard\Takeexam\Exam;
 use App\Livewire\Student\MockTest\SelectMockTest;
 use App\Livewire\Student\MockTest\ShowMockTest;
+use App\Livewire\Auth\GoogleLogin;
+
 // v3
 use App\Livewire\V3\Public\NewHome;
 
@@ -85,6 +87,8 @@ Route::prefix('auth')->group(function () {
     Route::get('/register', Register::class)->name('auth.register');
     Route::get('/login', Login::class)->name('auth.login');
     Route::get('/logout', Header::class)->name('auth.logout');
+    Route::get('/google', [GoogleLogin::class, 'redirectToGoogle'])->name('auth.google.login');
+    Route::get('/google/callback', [GoogleLogin::class, 'handleGoogleCallback'])->name('auth.google.callback');
 
 
     Route::get('/viewallcourses', AllCourses::class)->name('public.viewallcourses.all-courses');
