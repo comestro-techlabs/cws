@@ -74,7 +74,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium text-gray-700">Attendance</p>
-                        <h3 class="text-2xl font-bold text-blue-600 mt-1">{{ $attendance }}%</h3>
+                        <h3 class="text-2xl font-bold text-blue-600 mt-1">{{ $attendancePercentage }}%</h3>
                     </div>
                     <div class="bg-blue-50 p-3 rounded-full">
                         <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">

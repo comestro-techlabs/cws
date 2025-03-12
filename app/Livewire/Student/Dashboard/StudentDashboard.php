@@ -36,8 +36,9 @@ class StudentDashboard extends Component
     public $completedTasks = 0;
     public $totalTasks = 0;
     public $nextMilestone = 100;
-    public $weekDays;
+    public $weekDays = [];
     public $studentId;
+    public $attendancePercentage;
 
     public function mount()
     {
@@ -154,7 +155,7 @@ class StudentDashboard extends Component
         $attendanceRecords = Attendance::where('user_id', $this->studentId)
             ->whereBetween('check_in', [
                 now()->subWeek()->startOfWeek(),
-                now()
+                now()                           
             ])
             ->orderBy('check_in', 'asc')
             ->get()
@@ -168,8 +169,7 @@ class StudentDashboard extends Component
 
         for ($i = 0; $start->copy()->addDays($i)->lte($today); $i++) {
             $date = $start->copy()->addDays($i);
-
-            if ($date->isWeekend()) {
+            if ($date->isSaturday() || $date->isSunday()) {
                 continue;
             }
 
@@ -183,8 +183,10 @@ class StudentDashboard extends Component
             ]);
         }
 
-        // Take the last 5 weekdays
         $this->weekDays = $allWeekDays->take(-5);
+        $totalDays = $this->weekDays->count();
+        $presentDays = $this->weekDays->where('present', true)->count();
+        $this->attendancePercentage = $totalDays > 0 ? round(($presentDays / $totalDays) * 100) : 0;
     }
     public function hasCompletedExamOrAssignment($userId)
     {
