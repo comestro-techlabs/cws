@@ -1,188 +1,121 @@
 <div>
-    <div class="py-6 px-4 sm:px-6 lg:px-8">
-        <!-- SweetAlert Notifications -->
-        <div id="alert-container"></div>
-
-        <!-- Page Header -->
-        <div class="flex items-center justify-between mb-6">
-            <h1 class="text-xl font-bold text-gray-900">My Courses</h1>
-            <a href="{{ route('student.course') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                </svg>
-                Explore New Courses
-            </a>
-        </div>
-
-        <!-- Courses Section -->
-        @if($courses->isEmpty())
-            <div class="bg-white rounded-lg border border-gray-200 p-8 text-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-300 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                </svg>
-                <p class="text-lg font-medium text-gray-700">No courses available</p>
-                <p class="text-gray-500 mt-1">You are not enrolled in any courses at the moment.</p>
-                <a href="{{ route('student.course') }}" class="mt-4 inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+    <div class="min-h-screen bg-gray-50">
+        <div class="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+            <!-- Header section -->
+            <div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900">My Learning Journey</h1>
+                    <p class="mt-1 text-sm text-gray-500">Track your progress and manage your enrolled courses</p>
+                </div>
+                <a href="{{ route('student.course') }}"
+                   class="mt-4 sm:mt-0 group inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg text-sm font-medium hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200">
+                    <span class="mr-2">Explore New Courses</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                     </svg>
-                    Browse Courses
                 </a>
             </div>
-        @else
-            <div class="grid gap-4">
-                @foreach ($courses as $course)
-                    <div wire:key="course-{{ $course->id }}" class="bg-white border border-gray-200 rounded-lg overflow-hidden transition-all duration-300 hover:border-blue-200">
-                        <div class="flex flex-col md:flex-row">
-                            <!-- Course Image -->
-                            <div class="md:w-1/4 lg:w-1/5 flex-shrink-0">
-                                <img src="{{ asset('storage/course_images/' . $course->course_image) }}"
-                                    alt="{{ $course->title }}"
-                                    class="h-48 w-full md:h-full object-cover">
-                            </div>
 
-                            <!-- Course Details -->
-                            <div class="p-5 flex-1 flex flex-col">
-                                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start">
-                                    <div>
-                                        <h3 class="text-lg font-semibold text-gray-900">
-                                            {{ $course->title }}
-                                        </h3>
-                                        <span class="text-sm text-gray-600 mt-1 block">
-                                            <span class="inline-flex items-center">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
-                                                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-                                                </svg>
-                                                {{ $course->instructor }}
-                                            </span>
-                                        </span>
-                                    </div>
-
-                                    <div class="mt-3 sm:mt-0">
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-800 border border-blue-100">
-                                            ₹{{ $course->discounted_fees }}
-                                        </span>
+            <!-- Empty state -->
+            @if($courses->isEmpty())
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-12 text-center">
+                    <div class="mx-auto h-24 w-24 bg-blue-50 flex items-center justify-center rounded-full">
+                        <svg class="h-12 w-12 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                    </div>
+                    <h3 class="mt-4 text-lg font-medium text-gray-900">Start Your Learning Journey</h3>
+                    <p class="mt-2 text-gray-500">Explore our courses and enroll in the ones that match your learning goals.</p>
+                    <a href="{{ route('student.course') }}" class="mt-6 inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                        Browse Available Courses
+                    </a>
+                </div>
+            @else
+                <div class="grid gap-6 sm:grid-cols-1 lg:grid-cols-2">
+                    @foreach ($courses as $course)
+                        <div class="group bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 overflow-hidden">
+                            <div class="flex flex-row">
+                                <!-- Course Image with Progress Overlay -->
+                                <div class="relative w-48 h-48">
+                                    <img src="{{ asset('storage/course_images/' . $course->course_image) }}"
+                                         alt="{{ $course->title }}"
+                                         class="h-full w-full object-cover">
+                                    <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-3">
+                                        <div class="w-full">
+                                            <div class="h-1 w-full bg-white/30 rounded-full overflow-hidden">
+                                                <div class="h-full w-[45%] bg-blue-500 rounded-full"></div>
+                                            </div>
+                                            <div class="mt-1 flex justify-end">
+                                                <span class="text-white text-xs">45% Complete</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <p class="text-gray-600 text-sm mt-3 line-clamp-2">
-                                    {{ strip_tags($course->description) }}
-                                </p>
+                                <!-- Course Content -->
+                                <div class="flex-1 p-4 min-w-0">
+                                    <div class="flex flex-col h-full">
+                                        <div class="flex items-start justify-between">
+                                            <div>
+                                                <h3 class="text-base font-medium text-gray-900">{{ $course->title }}</h3>
+                                                <div class="mt-1 flex items-center text-sm text-gray-500">
+                                                    <svg class="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"/>
+                                                    </svg>
+                                                    {{ $course->instructor }}
+                                                </div>
+                                            </div>
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700">
+                                                ₹{{ $course->discounted_fees }}
+                                            </span>
+                                        </div>
 
-                                <!-- Batch Section -->
-                                <div class="mt-auto pt-4">
-                                    <div class="border-t border-gray-100 pt-4">
-                                        <h4 class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">Batch Information</h4>
-
-                                        @if ($course->pivot && $course->pivot->batch_id && $course->batches->isNotEmpty())
-                                            @php
-                                                $selectedBatch = $course->batches->firstWhere('id', $course->pivot->batch_id);
-                                            @endphp
-
-                                            @if($selectedBatch)
-                                                <div class="flex items-center bg-gray-50 rounded-md p-3 border border-gray-200">
-                                                    <span class="w-2 h-2 mr-2 rounded-full bg-green-500"></span>
-                                                    <span class="text-sm text-gray-700">
-                                                        Enrolled in: <span class="font-medium">{{ $selectedBatch->batch_name }}</span>
-                                                    </span>
+                                        <!-- Batch Information -->
+                                        <div class="mt-4 pt-3 border-t border-gray-100">
+                                            @if($selectedBatch && isset($selectedBatch[$course->id]))
+                                                <div class="flex items-center justify-between">
+                                                    <div class="flex items-center space-x-2">
+                                                        <span class="flex-shrink-0 w-1.5 h-1.5 bg-green-500 rounded-full"></span>
+                                                        <span class="text-sm text-gray-600">Batch: <span class="font-medium">{{ $course->batches->firstWhere('id', $selectedBatch[$course->id])?->batch_name }}</span></span>
+                                                    </div>
+                                                    <button wire:click="toggleEdit({{ $course->id }})"
+                                                            class="text-sm text-blue-600 hover:text-blue-700">
+                                                        Change
+                                                    </button>
                                                 </div>
                                             @endif
 
-                                          <!-- Replace the button and its surrounding edit logic -->
-<div class="mt-3" wire:key="batch-actions-{{ $course->id }}">
-    <button wire:click.prevent="toggleEdit({{ $course->id }})"
-            wire:key="edit-button-{{ $course->id }}"
-            class="inline-flex items-center px-3 py-1.5 border border-gray-200 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-        </svg>
-        {{ $editingCourseId === $course->id ? 'Cancel Edit' : 'Edit Batch' }}
-    </button>
-
-    @if($editingCourseId === $course->id)
-        <div wire:key="edit-form-{{ $course->id }}" class="mt-3 space-y-3">
-            <div class="relative">
-                <select wire:model.live="selectedBatch.{{ $course->id }}"
-                        wire:key="select-{{ $course->id }}"
-                        class="w-full px-3 py-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition duration-200 appearance-none pr-10">
-                    <option value="">-- Select a Batch --</option>
-                    @foreach ($course->batches as $batch)
-                        <option value="{{ $batch->id }}">{{ $batch->batch_name }}</option>
-                    @endforeach
-                </select>
-                <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </div>
-            </div>
-
-            <button wire:click="updateBatch({{ $course->id }}, '{{ $selectedBatch[$course->id] }}')"
-                    wire:key="update-{{ $course->id }}"
-                    class="w-full inline-flex items-center justify-center px-3 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                </svg>
-                Update Batch
-            </button>
-        </div>
-    @endif
-
-    @if($editingCourseId !== $course->id)
-        <div class="mt-3 flex space-x-2">
-            <a href="#" class="inline-flex items-center px-3 py-1.5 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                </svg>
-                View Course
-            </a>
-            <button class="inline-flex items-center px-3 py-1.5 border border-gray-200 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-                Schedule
-            </button>
-        </div>
-    @endif
-</div>
-
-                                        @else
-                                            <div wire:key="no-batch-{{ $course->id }}" class="space-y-3">
-                                                <div class="relative">
+                                            @if($editingCourseId === $course->id)
+                                                <div class="mt-2 space-y-2">
                                                     <select wire:model.live="selectedBatch.{{ $course->id }}"
-                                                        wire:key="select-no-batch-{{ $course->id }}"
-                                                        class="w-full px-3 py-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition duration-200 appearance-none pr-10">
-                                                        <option value="">-- Select a Batch --</option>
+                                                            class="w-full text-sm border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                                                        <option value="">Select Batch</option>
                                                         @foreach ($course->batches as $batch)
                                                             <option value="{{ $batch->id }}">{{ $batch->batch_name }}</option>
                                                         @endforeach
                                                     </select>
-                                                    <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                                                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                                        </svg>
+
+                                                    <div class="flex items-center space-x-2">
+                                                        <button wire:click="updateBatch({{ $course->id }})"
+                                                                class="flex-1 inline-flex justify-center items-center px-3 py-1.5 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
+                                                            Update
+                                                        </button>
+                                                        <button wire:click="toggleEdit({{ $course->id }})"
+                                                                class="inline-flex justify-center items-center px-3 py-1.5 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200">
+                                                            Cancel
+                                                        </button>
                                                     </div>
                                                 </div>
-
-                                                <button wire:click="updateBatch({{ $course->id }}, '{{ $selectedBatch[$course->id] }}')"
-                                                    wire:key="update-no-batch-{{ $course->id }}"
-                                                    class="w-full inline-flex items-center justify-center px-3 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                                    </svg>
-                                                    Update Batch
-                                                </button>
-                                            </div>
-                                        @endif
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                @endforeach
-            </div>
-        @endif
+                    @endforeach
+                </div>
+            @endif
+        </div>
     </div>
 
     <style>
@@ -194,5 +127,4 @@
     }
     </style>
 
-    
 </div>
