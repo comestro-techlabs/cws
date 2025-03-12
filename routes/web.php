@@ -5,7 +5,7 @@ use App\Http\Controllers\AssignmentsController;
 use App\Http\Controllers\AssignmentUploadController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BatchController;
-use App\Http\Controllers\CategoryController;
+
 use App\Http\Controllers\ChapterController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\LessonController;
@@ -71,11 +71,8 @@ use App\Livewire\Admin\Course\LessonManager;
 use App\Livewire\Admin\Exam\ManageExam;
 use App\Livewire\Admin\Exam\ExamQuestions;
 use App\Livewire\Admin\Quiz\ManageQuiz;
-use App\Livewire\Admin\Result\ShowExams;
-use App\Livewire\Admin\Result\ShowExamUser;
-use App\Livewire\Admin\Result\AttemptResults;
-use App\Livewire\Admin\Result\AttemptDetails;
 use App\Livewire\Admin\Result\ManageResult;
+use App\Livewire\Admin\MockTest\ManageMockTest;
 
 use App\Livewire\Admin\Student\AttendanceScanner;
 use App\Livewire\Auth\Login;
@@ -93,6 +90,8 @@ use App\Livewire\Student\Billing\ViewBilling;
 use App\Livewire\Student\Dashboard\ManageAssignments;
 use App\Livewire\Student\Dashboard\StudentDashboard;
 use App\Livewire\Student\Dashboard\Takeexam\Exam;
+use App\Livewire\Student\MockTest\SelectMockTest;
+use App\Livewire\Student\MockTest\ShowMockTest;
 // v3
 use App\Livewire\V3\Public\NewHome;
 
@@ -193,8 +192,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/chapters/{chapter}/lessons/create', [LessonController::class, 'create'])->name('lessons.create');
         Route::post('/chapters/{chapter}/lessons', [LessonController::class, 'store'])->name('lessons.store');
 
-        // Category Management
-        Route::resource('category', CategoryController::class)->except(['create', 'show']);
+        
 
         // Batch Management
         Route::get('/batches', [BatchController::class, 'index'])->name('batches.index');
@@ -312,7 +310,8 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
        
         Route::get('/results', ManageResult::class)->name('results');
 
-
+        //mocktest routes
+        Route::get('/mocktest', ManageMockTest::class)->name('admin.mocktest');
         // Assignment Routes
         Route::get('/assignment', CreateAssignment::class)->name('admin.assignment');
         Route::get('/assignment/manage', ManageAssignment::class)->name('admin.assignment.manage');
@@ -399,9 +398,9 @@ Route::prefix('v2')->group(function () {
         Route::get('/show-quiz/{courseId}', ShowQuiz::class)->name('v2.student.quiz');
         Route::get('/show-all-attempt/{course_id}', ShowAllAttempt::class)->name('v2.student.allAttempts');
         Route::get('show-quiz/result/{exam_id}', Result::class)->name('v2.student.examResult');
-
-
-
+        
+        Route::get('/mocktest/course', SelectMockTest::class)->name('v2.student.mocktest.course');
+        Route::get('/mocktest/course/{mockTestId}', ShowMockTest::class)->name('v2.student.mocktest.take');
     });
     //working here for public routes
     Route::prefix("public")->group(function () {

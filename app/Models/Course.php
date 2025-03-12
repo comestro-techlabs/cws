@@ -102,4 +102,8 @@ class Course extends Model
         return $this->belongsToMany(User::class, 'course_user', 'course_id', 'user_id');
     }
 
+    public function mockTests()
+    {
+        return $this->hasMany(MockTest::class);
+    }
 }
