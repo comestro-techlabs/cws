@@ -81,12 +81,7 @@
                         <span class="ms-3">Courses</span>
                     </a>
                 </li>
-                <li>
-                    <a href="{{ route('public.portfolio') }}"
-                        class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
-                        <span class="ms-3">Portfolio</span>
-                    </a>
-                </li>
+
                 <li>
                     <a href="{{ route('public.workshops') }}"
                         class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
@@ -136,7 +131,7 @@
     @yield('js')
 
     <script type="module" src="{{ asset('build/assets/app-l0sNRNKZ.js') }}"></script>
-    
+
     @livewireScripts
 </body>
 

@@ -24,10 +24,7 @@
                 <a href="{{ route('public.training') }}"
                     class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 ">Courses</a>
             </li>
-            <li>
-                <a href="{{route('public.portfolio')}}"
-                    class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 ">Portfolio</a>
-            </li>
+
             <li>
                 <a href="{{route('public.workshops')}}"
                     class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 ">Workshop</a>

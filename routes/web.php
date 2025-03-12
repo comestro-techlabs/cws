@@ -13,7 +13,6 @@ use App\Http\Controllers\PublicController;
 use App\Http\Controllers\ResultController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\WorkshopController;
 
 use App\Livewire\Admin\Assignment\AssignmentCourse;
@@ -246,17 +245,9 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
             Route::get('/viewCertificate/{userId}', [ResultController::class, 'index'])->name('admin.viewCertificate');
         });
 
-        
 
-        // Portfolio Management
-        Route::prefix('portfolio')->group(function () {
-            Route::get('/create', [PortfolioController::class, 'create'])->name('portfolio.create');
-            Route::post('/store', [PortfolioController::class, 'store'])->name('portfolio.store');
-            Route::get('/', [PortfolioController::class, 'show'])->name('portfolio.admin.index');
-            Route::get('/{id}/edit', [PortfolioController::class, 'edit'])->name('portfolio.admin.edit');
-            Route::put('/{id}', [PortfolioController::class, 'update'])->name('portfolio.admin.update');
-            Route::delete('/{id}', [PortfolioController::class, 'destroy'])->name('portfolio.admin.destroy');
-        });
+
+
 
         // Workshop Management
         Route::prefix('workshops')->group(function () {
@@ -434,7 +425,6 @@ Route::get('/launch', function () {
 });
 
 
-// Route::get('/portfolio', [PortfolioController::class, 'index'])->name('public.portfolio');
 Route::get('/workshops', [WorkshopController::class, 'index'])->name('public.workshops');
 Route::get('/workshop/{id}/enroll', [WorkshopController::class, 'buyWorkshop'])->name('workshop.enroll');
 
