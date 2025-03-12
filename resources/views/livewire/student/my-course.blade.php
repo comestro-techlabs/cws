@@ -43,10 +43,10 @@
                                     <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-3">
                                         <div class="w-full">
                                             <div class="h-1 w-full bg-white/30 rounded-full overflow-hidden">
-                                                <div class="h-full w-[45%] bg-blue-500 rounded-full"></div>
+                                                <div class="h-full w-[45%] bg-blue-500 rounded-full" style="width: {{ $course->progress }}%;"></div>
                                             </div>
                                             <div class="mt-1 flex justify-end">
-                                                <span class="text-white text-xs">45% Complete</span>
+                                                <span class="text-white text-xs"> {{ $course->progress  }} %</span>
                                             </div>
                                         </div>
                                     </div>
