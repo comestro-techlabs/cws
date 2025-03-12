@@ -191,7 +191,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/chapters/{chapter}/lessons/create', [LessonController::class, 'create'])->name('lessons.create');
         Route::post('/chapters/{chapter}/lessons', [LessonController::class, 'store'])->name('lessons.store');
 
-        
+
 
         // Batch Management
         Route::get('/batches', [BatchController::class, 'index'])->name('batches.index');
@@ -374,7 +374,7 @@ Route::prefix('v2')->group(function () {
         Route::get('/show-quiz/{courseId}', ShowQuiz::class)->name('v2.student.quiz');
         Route::get('/show-all-attempt/{course_id}', ShowAllAttempt::class)->name('v2.student.allAttempts');
         Route::get('show-quiz/result/{exam_id}', Result::class)->name('v2.student.examResult');
-        
+        Route::get('/my-attendance', MyAttendance::class)->name('student.my-attendance');
         Route::get('/mocktest/course', SelectMockTest::class)->name('v2.student.mocktest.course');
         Route::get('/mocktest/course/{mockTestId}', ShowMockTest::class)->name('v2.student.mocktest.take');
 
