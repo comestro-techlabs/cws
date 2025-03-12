@@ -32,29 +32,14 @@
                 <h1 class="text-3xl font-bold text-gray-900">{{ $course->title }}</h1>
             </div>
 
-           
+
             <!-- Course Description -->
             <div class="bg-white rounded-lg shadow-sm p-6">
                 <h2 class="text-xl font-semibold text-gray-900 mb-4">About This Course</h2>
                 <p class="text-gray-700 leading-relaxed">{{ $course->description }}</p>
             </div>
 
-            <!-- Course Chapters -->
-            <div class="bg-white rounded-lg shadow-sm p-6">
-                <h2 class="text-xl font-semibold text-gray-900 mb-4">Course Content</h2>
-                <div class="space-y-3">
-                    @foreach ($course->chapters as $item)
-                        <div class="group transition-all duration-200 hover:bg-blue-50 border border-gray-200 hover:border-blue-200 rounded-lg p-4">
-                            <a href="#" class="flex items-center gap-3 text-gray-700 group-hover:text-blue-600">
-                                <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-blue-100 text-blue-600 rounded-full font-medium">
-                                    {{ $item->id }}
-                                </span>
-                                <span class="font-medium">{{ $item->title }}</span>
-                            </a>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
+
         </div>
 
         <!-- Right Column: Payment and Features -->
@@ -63,7 +48,7 @@
             <div class="bg-white rounded-lg shadow-lg overflow-hidden sticky top-24">
                 <!-- Course Preview Image -->
                 <div class="relative h-48">
-                    <img src="{{ asset('storage/course_images/' . $course->course_image) }}" 
+                    <img src="{{ asset('storage/course_images/' . $course->course_image) }}"
                          alt="{{ $course->title }}"
                          class="w-full h-full object-cover">
                     <!-- Gradient Overlay -->
@@ -91,7 +76,7 @@
                     @if ($payment_exist)
                         <div class="bg-blue-50 border border-blue-100 rounded-lg p-4 text-center">
                             <p class="text-blue-600 font-semibold mb-2">Already Enrolled</p>
-                            <a wire:navigate 
+                            <a wire:navigate
                                href="{{ route('v2.student.dashboard') }}"
                                class="inline-flex items-center text-sm text-blue-700 hover:text-blue-800 font-medium">
                                 Go to Dashboard
@@ -139,7 +124,7 @@
             e.preventDefault();
             let course_amount = {{$course->discounted_fees}}
             const receipt_no = `${Date.now()}`;
-            
+
             fetch("{{ route('store.payment.initiation') }}", {
                 method: "POST",
                 headers: {

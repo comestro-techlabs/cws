@@ -1,13 +1,13 @@
   <div class="group relative bg-white rounded-lg border border-gray-100 shadow-sm transition-all duration-200 hover:shadow-md hover:border-blue-100 overflow-hidden">
-    <a href="{{ route('public.courseDetails', ['category_slug' => optional($course->category)->cat_slug, 'slug' => $course->slug]) }}" class="block">
+    <a href="{{ route('public.courseDetail', [ 'slug' => $course->slug]) }}" class="block">
         <!-- Course Image with Overlay -->
         <div class="relative aspect-w-16 aspect-h-9 bg-gray-100">
-            <img src="storage/course_images/{{ $course->course_image }}" 
+            <img src="storage/course_images/{{ $course->course_image }}"
                  alt="{{ $course->title }}"
-                 class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" 
+                 class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
             />
             <div class="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            
+
             <!-- Category Badge -->
             <div class="absolute top-4 left-4">
                 <span class="inline-flex items-center px-3 py-1 rounded-lg text-xs font-medium bg-white/90 backdrop-blur-sm text-blue-600 transition-colors duration-200 group-hover:bg-blue-600 group-hover:text-white">

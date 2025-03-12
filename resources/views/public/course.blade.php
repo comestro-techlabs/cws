@@ -127,49 +127,7 @@
                 </div>
             </div>
 
-            <div class="bg-white  rounded-lg p-6 border-l-4 border-t border-b border-r border-slate-300">
-                <h2 class="text-2xl font-bold text-purple-600 mb-4">Course Content</h2>
-                <div id="accordion-open" data-accordion="collapse">
-                    @foreach ($course->chapters as $chapter)
-                        <h2 id="accordion-open-heading-{{ $loop->index }}">
-                            <button type="button"
-                                class="flex items-center justify-between w-full p-5 font-medium  text-gray-800 border border-b-0 border-gray-200 bg-slate-200   {{ $loop->index == 0 ? 'rounded-t-xl' : '' }} gap-3"
-                                data-accordion-target="#accordion-open-body-{{ $loop->index }}" aria-expanded="true"
-                                aria-controls="accordion-open-body-{{ $loop->index }}">
-                                <span class="flex items-center">{{ $chapter->title }}</span>
-                                <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2" d="M9 5 5 1 1 5" />
-                                </svg>
-                            </button>
-                        </h2>
-                        <div id="accordion-open-body-{{ $loop->index }}" class="hidden"
-                            aria-labelledby="accordion-open-heading-{{ $loop->index }}">
 
-                            <div class="w-full px-5 text-sm font-normal text-gray-900 border  bg-white">
-
-                                @foreach ($chapter->lessons as $lesson)
-                                    <a href="#" class="flex gap-2  items-center w-full px-4 py-2 ">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor" class="size-4 text-slate-400">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5" />
-                                        </svg>
-                                        {{ $lesson->title }}
-                                    </a>
-                                @endforeach
-
-
-                            </div>
-
-                        </div>
-                    @endforeach
-
-
-                </div>
-
-            </div>
 
             <div class="bg-gray-50">
                 <!-- Course Batches Section -->

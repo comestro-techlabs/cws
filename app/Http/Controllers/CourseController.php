@@ -111,7 +111,7 @@ class CourseController extends Controller
         // Handle file upload if updating the course_image
         if ($field === 'course_image' && $request->hasFile('course_image')) {
             $image = $request->file('course_image');
-          
+
             if ($course->course_image) {
                 $oldImagePath = storage_path('app/public/course_images/' . $course->course_image);
                 if (file_exists($oldImagePath)) {
@@ -169,12 +169,10 @@ class CourseController extends Controller
             }
         }
 
-        // Check if at least one chapter and one feature is added
-        $hasChapters = $course->chapters()->exists(); // Check if there are any chapters
         $hasFeatures = $course->features()->exists(); // Check if there are any features
 
         // Update the published status
-        $course->published = $allFieldsCompleted && $hasChapters && $hasFeatures;
+        $course->published = $allFieldsCompleted && $hasFeatures;
         $course->save();
 
         return redirect()->route('course.show', $course->id);
