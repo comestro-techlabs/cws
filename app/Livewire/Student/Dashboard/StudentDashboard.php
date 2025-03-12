@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Student\Dashboard;
 
+use App\Models\Attendance;
 use App\Models\Course;
 use App\Models\Exam;
 use App\Models\Message;
@@ -37,7 +38,8 @@ class StudentDashboard extends Component
     public $completedTasks = 0;
     public $totalTasks = 0;
     public $nextMilestone = 100;
-    public $weekDays = [];
+    public $weekDays;
+    public $studentId;
 
     public function mount()
     {
@@ -46,26 +48,22 @@ class StudentDashboard extends Component
         }
 
         $studentId = Auth::id();
+        $this->studentId = $studentId;
         $user = User::findOrFail($studentId);
+        $this->loadAttendance();
 
         // Initialize student stats
         $this->gems = $user->gems ?? 0;
         $this->points = $user->points ?? 0;
         $this->completedTasks = Assignment_upload::where('student_id', $studentId)->where('status', 'submitted')->count();
         $this->totalTasks = Assignments::whereIn('course_id', $user->courses->pluck('id'))->count();
-        
+
         // Calculate attendance percentage
         $totalClasses = $user->courses->sum('total_classes') ?? 0;
         $attendedClasses = $user->courses->sum('attended_classes') ?? 0;
         $this->attendance = $totalClasses > 0 ? round(($attendedClasses / $totalClasses) * 100) : 0;
 
         // Generate weekly attendance data
-        $this->weekDays = collect(range(6, 0))->map(function($daysAgo) {
-            return [
-                'name' => now()->subDays($daysAgo)->format('l'),
-                'present' => rand(0, 1) == 1 // Temporary random data, replace with actual attendance
-            ];
-        })->toArray();
 
         $this->hasCompleted = $this->hasCompletedExamOrAssignment($studentId);
 
@@ -163,7 +161,43 @@ class StudentDashboard extends Component
         $this->unreadCount = $messageComponent->unreadCount;
 
     }
+    public function loadAttendance()
+    {
+        $attendanceRecords = Attendance::where('user_id', $this->studentId)
+            ->whereBetween('check_in', [
+                now()->subWeek()->startOfWeek(),
+                now()
+            ])
+            ->orderBy('check_in', 'asc')
+            ->get()
+            ->keyBy(function ($item) {
+                return date('Y-m-d', strtotime($item->check_in));
+            });
 
+        $start = now()->subWeek()->startOfWeek();
+        $today = now();
+        $allWeekDays = collect();
+
+        for ($i = 0; $start->copy()->addDays($i)->lte($today); $i++) {
+            $date = $start->copy()->addDays($i);
+
+            if ($date->isWeekend()) {
+                continue;
+            }
+
+            $dateKey = $date->format('Y-m-d');
+            $isPresent = isset($attendanceRecords[$dateKey]);
+
+            $allWeekDays->push([
+                'present' => $isPresent,
+                'name' => $date->format('l'),
+                'date' => $dateKey
+            ]);
+        }
+
+        // Take the last 5 weekdays
+        $this->weekDays = $allWeekDays->take(-5);
+    }
     public function hasCompletedExamOrAssignment($userId)
     {
         return ExamUser::where('user_id', $userId)->exists()
@@ -182,7 +216,6 @@ class StudentDashboard extends Component
             'completedTasks' => $this->completedTasks,
             'totalTasks' => $this->totalTasks,
             'nextMilestone' => $this->nextMilestone,
-            'weekDays' => $this->weekDays,
             'messages' => $this->messages,
             'exams' => $this->exams
         ]);
