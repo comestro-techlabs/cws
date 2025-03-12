@@ -6,8 +6,6 @@
             </h2>
         </div>
 
-    
-
         <div class="bg-white shadow-lg rounded-lg p-8">
             <form wire:submit.prevent="save" class="space-y-6">
                 <!-- Assignment Title -->
@@ -24,9 +22,9 @@
                 <!-- Instructions with CKEditor -->
                 <div wire:ignore>
                     <label for="description" class="block text-sm font-medium text-gray-700 mb-2">Instructions (Optional)</label>
-                    <textarea id="description" rows="4"
+                    <textarea id="description" wire:model.debounce.500ms="description" rows="4"
                         class="w-full bg-gray-50 border border-gray-300 rounded-md p-3 h-32 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
-                        placeholder="Enter instructions">{{ $description }}</textarea>
+                        placeholder="Enter instructions"></textarea>
                     @error('description')
                         <span class="text-sm text-red-500">{{ $message }}</span>
                     @enderror
@@ -61,85 +59,95 @@
                     @enderror
                 </div>
 
-          
-
                 <div class="flex justify-end text-center gap-2">
                     <button type="submit" wire:loading.attr="disabled"
                         class="bg-purple-800 text-white px-6 py-3 rounded-md shadow hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50">
                         <span wire:loading.remove>{{ $assignment ? 'Update Assignment' : 'Create Assignment' }}</span>
                         <span wire:loading>{{ $assignment ? 'Updating...' : 'Creating...' }}</span>
                     </button>
-                   <a href="{{ route('admin.assignment.manage') }}" wire:navigate class="bg-gray-800 text-white px-6 py-3 rounded-md shadow hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50">
-                        Cancel</a> 
-                    
+                    <a href="{{ route('admin.assignment.manage') }}" wire:navigate
+                        class="bg-gray-800 text-white px-6 py-3 rounded-md shadow hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50">
+                        Cancel</a>
                 </div>
             </form>
         </div>
     </div>
-</div>
 
-<script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>
-<script>
-    function initializeCKEditor() {
-        const descriptionElement = document.querySelector('#description');
-        if (!descriptionElement) {
-            console.log('Textarea #description not found yet');
-            return;
-        }
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>
+    <script>
+        let editorInstance = null;
 
-        if (window.ckeditorInstance) {
-            window.ckeditorInstance.destroy();
-            window.ckeditorInstance = null;
-        }
+        function initializeCKEditor() {
+            const descriptionElement = document.querySelector('#description');
 
-        ClassicEditor
-            .create(descriptionElement, {
-                toolbar: [
-                    'heading', '|',
-                    'bold', 'italic', 'link', '|',
-                    'bulletedList', 'numberedList', '|',
-                    'imageUpload', 'blockQuote', 'insertTable', 'mediaEmbed', '|',
-                    'outdent', 'indent', '|',
-                    'undo', 'redo'
-                ],
-                image: {
-                    toolbar: ['imageTextAlternative', 'imageStyle:full', 'imageStyle:side']
-                }
-            })
-            .then(editor => {
-                window.ckeditorInstance = editor;
-                const initialData = @json($description) || '';
-                editor.setData(initialData);
+            if (!descriptionElement) {
+                console.log('Textarea #description not found');
+                return;
+            }
 
-                editor.model.document.on('change:data', () => {
-                    @this.set('description', editor.getData());
+            // If editor already exists, destroy it first to avoid duplicate instances
+            if (editorInstance) {
+                editorInstance.destroy().then(() => {
+                    editorInstance = null;
+                    createEditor(descriptionElement);
+                }).catch(error => {
+                    console.error('Error destroying CKEditor:', error);
                 });
+            } else {
+                createEditor(descriptionElement);
+            }
+        }
 
-                Livewire.hook('component.updated', (component) => {
-                    if (component.el.querySelector('#description') && editor) {
-                        const livewireData = @json($description) || '';
-                        if (editor.getData() !== livewireData) {
-                            editor.setData(livewireData);
-                        }
+        function createEditor(element) {
+            ClassicEditor
+                .create(element, {
+                    toolbar: [
+                        'heading', '|',
+                        'bold', 'italic', 'link', '|',
+                        'bulletedList', 'numberedList', '|',
+                        'imageUpload', 'blockQuote', 'insertTable', 'mediaEmbed', '|',
+                        'outdent', 'indent', '|',
+                        'undo', 'redo'
+                    ],
+                    image: {
+                        toolbar: ['imageTextAlternative', 'imageStyle:full', 'imageStyle:side']
                     }
+                })
+                .then(editor => {
+                    editorInstance = editor;
+                    const initialData = @json($description) || '';
+                    editor.setData(initialData);
+
+                    // Update Livewire when editor content changes
+                    editor.model.document.on('change:data', () => {
+                        @this.set('description', editor.getData());
+                    });
+                })
+                .catch(error => {
+                    console.error('CKEditor initialization failed:', error);
                 });
-            })
-            .catch(error => {
-                console.error('CKEditor initialization failed:', error);
-            });
-    }
-
-    document.addEventListener('livewire:init', () => {
-        setTimeout(() => initializeCKEditor(), 100);
-    });
-
-    Livewire.hook('component.updated', (component) => {
-        if (component.el.querySelector('#description')) {
-            setTimeout(() => initializeCKEditor(), 100);
         }
-    });
 
-    document.addEventListener('livewire:navigated', () => {
-        setTimeout(() => initializeCKEditor(), 100);
-    });
-</script>
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeCKEditor();
+        });
+
+        document.addEventListener('livewire:navigated', () => {
+            setTimeout(() => {
+                initializeCKEditor();
+            }, 100); 
+        });
+
+        // Clean up editor instance before page unload to prevent memory leaks
+        window.addEventListener('beforeunload', () => {
+            if (editorInstance) {
+                editorInstance.destroy().then(() => {
+                    editorInstance = null;
+                }).catch(error => {
+                    console.error('Error destroying CKEditor on unload:', error);
+                });
+            }
+        });
+    </script>
+</div>
