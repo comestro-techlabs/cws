@@ -4,7 +4,7 @@
         <div class="mb-8">
             <h1 class="text-2xl font-bold text-gray-900">Explore Courses</h1>
             <p class="text-gray-600 mt-1">Discover new skills and advance your career</p>
-        </div>
+        </div> 
         
         <!-- Search and Filters -->
         <div class="bg-white rounded-lg shadow-sm mb-8 p-4 sm:p-6">
