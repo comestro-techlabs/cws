@@ -31,6 +31,13 @@ class StudentDashboard extends Component
     public $secondAttempts;
     public $hasCompleted;
     public $studentBatches;
+    public $gems = 0;
+    public $points = 0;
+    public $attendance = 0;
+    public $completedTasks = 0;
+    public $totalTasks = 0;
+    public $nextMilestone = 100;
+    public $weekDays = [];
 
     public function mount()
     {
@@ -40,6 +47,25 @@ class StudentDashboard extends Component
 
         $studentId = Auth::id();
         $user = User::findOrFail($studentId);
+
+        // Initialize student stats
+        $this->gems = $user->gems ?? 0;
+        $this->points = $user->points ?? 0;
+        $this->completedTasks = Assignment_upload::where('student_id', $studentId)->where('status', 'submitted')->count();
+        $this->totalTasks = Assignments::whereIn('course_id', $user->courses->pluck('id'))->count();
+        
+        // Calculate attendance percentage
+        $totalClasses = $user->courses->sum('total_classes') ?? 0;
+        $attendedClasses = $user->courses->sum('attended_classes') ?? 0;
+        $this->attendance = $totalClasses > 0 ? round(($attendedClasses / $totalClasses) * 100) : 0;
+
+        // Generate weekly attendance data
+        $this->weekDays = collect(range(6, 0))->map(function($daysAgo) {
+            return [
+                'name' => now()->subDays($daysAgo)->format('l'),
+                'present' => rand(0, 1) == 1 // Temporary random data, replace with actual attendance
+            ];
+        })->toArray();
 
         $this->hasCompleted = $this->hasCompletedExamOrAssignment($studentId);
 
@@ -149,7 +175,16 @@ class StudentDashboard extends Component
     {
         return view('livewire.student.dashboard.student-dashboard', [
             'courses' => $this->courses,
-            'assignments' => $this->assignments
+            'assignments' => $this->assignments,
+            'gems' => $this->gems,
+            'points' => $this->points,
+            'attendance' => $this->attendance,
+            'completedTasks' => $this->completedTasks,
+            'totalTasks' => $this->totalTasks,
+            'nextMilestone' => $this->nextMilestone,
+            'weekDays' => $this->weekDays,
+            'messages' => $this->messages,
+            'exams' => $this->exams
         ]);
     }
 }
