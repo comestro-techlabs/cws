@@ -74,6 +74,7 @@ use App\Livewire\Student\Dashboard\StudentDashboard;
 use App\Livewire\Student\Dashboard\Takeexam\Exam;
 use App\Livewire\Student\MockTest\SelectMockTest;
 use App\Livewire\Student\MockTest\ShowMockTest;
+use App\Livewire\Student\MockTest\MockTestResult;
 use App\Livewire\Auth\GoogleLogin;
 
 // v3
@@ -368,9 +369,11 @@ Route::prefix('v2')->group(function () {
         Route::get('/show-quiz/{courseId}', ShowQuiz::class)->name('v2.student.quiz');
         Route::get('/show-all-attempt/{course_id}', ShowAllAttempt::class)->name('v2.student.allAttempts');
         Route::get('show-quiz/result/{exam_id}', Result::class)->name('v2.student.examResult');
-        Route::get('/my-attendance', MyAttendance::class)->name('student.my-attendance');
-        Route::get('/mocktest/course', SelectMockTest::class)->name('v2.student.mocktest.course');
-        Route::get('/mocktest/course/{mockTestId}', ShowMockTest::class)->name('v2.student.mocktest.take');
+        route::get('/my-attendance', MyAttendance::class)->name('student.my-attendance');
+        Route::get('/mocktest', SelectMockTest::class)->name('v2.student.mocktest');
+        Route::get('/mocktest/{mockTestId}', ShowMockTest::class)->name('v2.student.mocktest.take');
+        Route::get('/mocktest/result/{mockTestId}', MockTestResult::class)->name('v2.student.mocktest.result');
+       
 
         Route::get('/products', OurProducts::class)->name('v2.student.products');
     });

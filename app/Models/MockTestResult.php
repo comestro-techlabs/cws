@@ -9,6 +9,7 @@ class MockTestResult extends Model
     protected $guarded = [];
 
     protected $casts = [
+        'answers' => 'array',
         'completed_at' => 'datetime',
     ];
     public function mockTest()
@@ -19,5 +20,4 @@ class MockTestResult extends Model
     {
         return $this->belongsTo(User::class);
     }
-
 }
