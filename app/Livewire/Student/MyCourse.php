@@ -26,6 +26,7 @@ class MyCourse extends Component
     public $review;
     public $rating;
     public $user_id;
+    public $isRated = false;
 
     protected $rules = [
         'course_id' => 'required|exists:courses,id',
@@ -54,6 +55,10 @@ class MyCourse extends Component
         }
     }
 
+    public function offModel(){
+        $this->isRated=false;
+    }
+
     public function addReview(): void
     {
 
@@ -70,12 +75,12 @@ class MyCourse extends Component
         );
 
 
-        // Reset the form fields
+    
         $this->reset(['course_id', 'review', 'rating']);
 
         $this->showModal = false;
+        $this->isRated=true;
 
-        // Optionally, send a success message
         session()->flash('message', 'Review submitted successfully!');
     }
     public function rate($value)

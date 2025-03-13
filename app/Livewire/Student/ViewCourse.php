@@ -1,6 +1,7 @@
 <?php
 namespace App\Livewire\Student;
 
+use App\Models\CourseReview;
 use App\Models\Payment;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -11,7 +12,9 @@ use Illuminate\Support\Facades\DB;
 class ViewCourse extends Component
 {
     public $course;
+    public $reviewedCourse;
     public $payment_exist = false;
+    public $avgRating;
 
     #[Layout('components.layouts.student')]
     public function mount($courseId)
@@ -21,8 +24,15 @@ class ViewCourse extends Component
             return redirect()->route('auth.login')->with('error', 'You must be logged in to access this page');
         }
 
+
         // Assign to public property instead of local variable
         $this->course = Course::with('features')->findOrFail($courseId);
+        $this->reviewedCourse=CourseReview::where('course_id',  $courseId)->get();
+        $this->avgRating = CourseReview::where('course_id', $courseId)->avg('rating');
+
+       
+
+        
         $course_id = $this->course->id;
         $user_id = Auth::id();
 

@@ -53,6 +53,9 @@ class Course extends Model
     {
         return $this->hasMany(Quiz::class);
     }
+    public function rating(){
+        return $this->hasMany(CourseReview::class,'course_id','id');
+    }
 
     public function users(): BelongsToMany
     {

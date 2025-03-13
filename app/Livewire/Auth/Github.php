@@ -38,9 +38,7 @@ class Github extends Component
                 Auth::login($newUser);
             }
 
-            return redirect()->intended(
-                Auth::user()->isAdmin ? '/admin/dashboard' : '/'
-            );
+            return redirect()->intended(Auth::user()->isAdmin == 1 ? '/v2/admin/dashboard' : '/');
         } catch (\Exception $e) {
             \Log::error('GitHub login error: ' . $e->getMessage());
             $this->errorMessage = 'Unable to login with GitHub, please try again.';

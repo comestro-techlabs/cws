@@ -20,13 +20,14 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'testnewshaique@example.com',
         //     'contact'=> 123456787,
         //     'gender'=>'male',
-        //     'education_qualification'=>'BCA'            
+        //     'education_qualification'=>' BCA'
         // ]);
         $this->call([
-            PostCourseSeeder::class,
+            PostCourseSeeder::class,      // Make sure courses are seeded first
             PostChapterSeeder::class,
             PostTopicPostSeeder::class,
             PostMyPostSeeder::class,
+            MockTestSeeder::class,        // Mock tests after courses
         ]);
     }
 }

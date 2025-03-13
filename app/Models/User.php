@@ -28,6 +28,7 @@ class User extends Authenticatable
         'referral',
         'education_qualification',
         'is_member',
+        'gem',
     ];
 
     /**

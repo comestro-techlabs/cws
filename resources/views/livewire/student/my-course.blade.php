@@ -160,7 +160,7 @@
                                     <div class="rating-stars">
                                         @for ($i = 1; $i <= 5; $i++)
                                             <span wire:click="rate({{ $i }})"
-                                            style="cursor: pointer; font-size: 2rem; color: {{ $i <= $rating ? '#4CAF50' : 'gray' }};">
+                                            style="cursor: pointer; font-size: 2rem; color: {{ $i <= $rating ? '#FFA726' : 'gray' }};">
                                             &#9733;
                                             </span>
                                             @endfor
@@ -178,10 +178,6 @@
                             @enderror
                         </div>
 
-
-
-
-
                         <!-- Submit Button -->
                         <div class="mt-6">
                             <button type="submit" class="w-full px-4 py-2 text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 rounded-md">
@@ -193,8 +189,19 @@
             </div>
             @endif
 
+            @if($isRated)
+            <div wire:transition class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+                <div class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-lg text-center">
+                    <h2 class="text-xl font-semibold text-gray-800">Thanks, Champ!</h2>
+                    <p class="mt-4 text-gray-600">Your feedback is invaluable to us. We truly appreciate you taking the time to share your thoughts. Your input helps us improve and provide the best experience possible!</p>
+                    <div class="mt-6">
+                        <button wire:click="offModel" class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition duration-300">Close</button>
+                    </div>
+                </div>
+            </div>
 
 
+            @endif
         </div>
     </div>
 
