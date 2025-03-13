@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Student;
 
+use App\Models\CourseReview;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Course;
@@ -16,11 +18,69 @@ class MyCourse extends Component
     public $editingCourseId = null;
     public $progress = [];
 
+    public $showModal = false;
+
+
+    //review and rating
+    public $course_id;
+    public $review;
+    public $rating;
+    public $user_id;
+
+    protected $rules = [
+        'course_id' => 'required|exists:courses,id',
+        'review' => 'required|string',
+        'rating' => 'required|integer|min:1|max:5',
+    ];
+
+
     public function mount()
     {
+        $this->user_id = Auth::id();
         $this->loadCourses();
         $this->initializeBatchSelections();
         $this->calculateProgress();
+    }
+
+    #[On('getting-course')]
+    public function courseId($id)
+    {
+        $this->course_id = $id;
+        $this->showModal = true;
+        $ratedCourse = CourseReview::where('user_id', $this->user_id)->where('course_id', $this->course_id)->first();
+        if ($ratedCourse) {
+            $this->rating = $ratedCourse->rating;
+            $this->review = $ratedCourse->review;
+        }
+    }
+
+    public function addReview(): void
+    {
+
+        $this->validate();
+        CourseReview::updateOrCreate(
+            [
+                'user_id' => $this->user_id,
+                'course_id' => $this->course_id
+            ],
+            [
+                'review' => $this->review,
+                'rating' => $this->rating,
+            ]
+        );
+
+
+        // Reset the form fields
+        $this->reset(['course_id', 'review', 'rating']);
+
+        $this->showModal = false;
+
+        // Optionally, send a success message
+        session()->flash('message', 'Review submitted successfully!');
+    }
+    public function rate($value)
+    {
+        $this->rating = $value;
     }
 
     private function loadCourses()
@@ -50,6 +110,7 @@ class MyCourse extends Component
                 'title' => 'Error Loading Courses',
                 'text' => 'Unable to load your courses. Please try again later.',
             ]);
+            $this->course_id = $this->courses->id;
             $this->courses = collect();
             $this->coursesWithoutBatch = collect();
         }
@@ -134,7 +195,7 @@ class MyCourse extends Component
     #[Layout('components.layouts.student')]
     public function render()
     {
-        return view('livewire.student.my-course' , [
+        return view('livewire.student.my-course', [
             'progress' => $this->progress,
         ]);
     }
