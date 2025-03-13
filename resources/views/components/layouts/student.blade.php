@@ -8,6 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
     @livewireStyles
 </head>
 <body class="bg-gray-100">
@@ -18,6 +19,7 @@
         </x-slot>
     </x-student-navbar>
 
+    
     @livewireScripts
     @stack('scripts')
 
@@ -37,6 +39,8 @@
                         icon: 'success',
                         confirmButtonText: 'OK',
                         confirmButtonColor: '#662d91'
+                    }).then(() => {
+                        triggerConfetti();
                     });
                 @endif
 
@@ -50,6 +54,15 @@
                     });
                 @endif
             });
+
+            // Function to trigger confetti
+            function triggerConfetti() {
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+            }
 
             // Membership payment handling
             document.getElementById('membership-pay-button')?.addEventListener('click', function(e) {
@@ -90,6 +103,8 @@
                     this.disabled = false;
                 });
             });
+
+          
         </script>
     @endauth
 </body>

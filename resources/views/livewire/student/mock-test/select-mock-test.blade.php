@@ -72,12 +72,12 @@
                             <div class="p-4">
                                 <h5 class="text-lg font-medium text-gray-700 mb-3">{{ $test->test_title }}</h5>
                                 @if(\App\Models\MockTestResult::where('user_id', auth()->id())->where('mock_test_id', $test->id)->exists())
-                                    <a 
+                                  <a 
                                         href="{{ route('v2.student.mocktest.result', $test->id) }}"
                                         class="w-full block text-center bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300"
                                     >
                                         View Results
-                                    </a>
+                                    </a> 
                                 @else
                                     <a 
                                         href="{{ route('v2.student.mocktest.take', $test->id) }}"

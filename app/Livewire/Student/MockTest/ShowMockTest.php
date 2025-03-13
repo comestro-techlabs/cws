@@ -3,6 +3,7 @@
 namespace App\Livewire\Student\MockTest;
 
 use App\Models\MockTest;
+use App\Services\GemService;
 use Livewire\Component;
 use App\Models\MockTestQuestion;
 use App\Models\MockTestResult;
@@ -20,9 +21,11 @@ class ShowMockTest extends Component
     public $mockTest;
     public $attempted = false;
     public $submitted = false;
+    protected $globalGemService;
 
-    public function mount($mockTestId)
+    public function mount($mockTestId , GemService $gemService)
     {
+        $this->globalGemService = $gemService;
         $this->mockTestId = $mockTestId;
         $this->mockTest = MockTest::findOrFail($mockTestId);
         $this->questions = MockTestQuestion::where('mocktest_id', $mockTestId)->get()->toArray();
@@ -79,7 +82,7 @@ class ShowMockTest extends Component
             }
         }
 
-        MockTestResult::create([
+        $testdata = MockTestResult::create([
             'user_id' => auth()->id(),
             'mock_test_id' => $this->mockTestId,
             'answers' => json_encode($this->answers),
@@ -88,6 +91,9 @@ class ShowMockTest extends Component
             'completed_at' => now(),
         ]);
 
+        $this->globalGemService  = new GemService();
+        $this->globalGemService->earnedGem($testdata->score);
+        
         $this->submitted = true;
         $this->attempted = true;
 

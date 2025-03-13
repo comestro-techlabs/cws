@@ -4,7 +4,7 @@
     @if($attempted && !$submitted)
         <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-lg mb-6">
             <p class="font-medium">You have already attempted this test.</p>
-            <a href="{{ route('v2.student.mocktest.result', $mockTestId) }}" 
+            <a   href="{{ route('v2.student.mocktest.result', $mockTestId) }}" 
                class="mt-3 inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg shadow-md transition duration-300">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>

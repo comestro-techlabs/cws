@@ -22,7 +22,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string("password");
             $table->date('dob')->nullable();
-            // $table->string('password')->nullable();
+            $table->string('gem')->default(0);
             $table->integer('status')->default(0); //0 = new admission, 1 = new student, 2 = old student
             $table->rememberToken();
             $table->string('google_id')->nullable();
