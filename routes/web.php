@@ -78,6 +78,7 @@ use App\Livewire\Student\MockTest\SelectMockTest;
 use App\Livewire\Student\MockTest\ShowMockTest;
 use App\Livewire\Student\MockTest\MockTestResult;
 use App\Livewire\Auth\GoogleLogin;
+use App\Livewire\Student\Dashboard\Product\CheckOutPage;
 use App\Livewire\Student\Rewards\GemsTransactions;
 
 Route::get('/', Home::class)->name('public.index');
@@ -349,6 +350,7 @@ Route::prefix('v2')->group(function () {
 
 
         Route::get('/products', OurProducts::class)->name('v2.student.products');
+        Route::get('/products/{productId}/checkout', CheckOutPage::class)->name('v2.student.checkout');
     });
 
 });

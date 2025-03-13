@@ -15,7 +15,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                         </svg>
                     </div>
-                    <input wire:model.live="search" type="text" placeholder="Search for products..." 
+                    <!-- <input wire:model.live="search" type="text" placeholder="Search for products..."  -->
                         class="w-full pl-10 pr-4 py-2.5 text-gray-800 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none transition duration-200">
                 </div>
                 
@@ -65,7 +65,7 @@
              @foreach ($products as $product)
             <div class="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100 hover:border-purple-200 hover:shadow-md transition duration-200">
                 <div class="relative h-48">
-                    <img src="{{$product->imageUrl}}" alt="{{$product->name}}" class="w-full h-full object-cover">
+                    <img src="" alt="{{$product->name}}" class="w-full h-full object-cover">
                     <div class="absolute top-2 right-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded-full">
                         Popular
                     </div>
@@ -107,12 +107,11 @@
                         <span class="ml-1 text-sm text-gray-600">gems</span>
                     </div>
                     
-                    <button wire:click="redeemProduct()" wire:loading.attr="disabled"
-                        class="px-4 py-2 font-medium rounded-lg focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition duration-200 text-sm
-                        @if($totalAvailableGems <= $product->points) bg-gray-400 text-gray-200 cursor-not-allowed @else bg-primary text-white hover:bg-primary @endif"
-                        @disabled($totalAvailableGems <= $product->points)>
-                        Redeem Now
-                    </button>
+                    <a href="{{ route('v2.student.checkout', ['productId' => $product->id]) }}"
+                    class="px-4 py-2 font-medium rounded-lg focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition duration-200 text-sm
+                    @if($totalAvailableGems <= $product->points) bg-gray-400 text-gray-200 cursor-not-allowed pointer-events-none @else bg-primary text-white hover:bg-primary @endif">
+                    Redeem Now
+                    </a>
                 </div>
             </div>
             @endforeach
