@@ -16,9 +16,16 @@
                     <div class="flex items-center space-x-3">
                         <div class="relative group">
                             <div class="relative">
+                            @if(auth()->check())
                                 <img class="w-11 h-11 rounded-full ring-2 ring-purple-600 ring-offset-2 transition-all duration-200 group-hover:ring-purple-500 group-hover:scale-105"
-                                     src="{{ asset('user.png') }}"
-                                     alt="User Profile" />
+                                    src="{{ session('user_avatar') ?? asset('user.png') }}"
+                                    alt="User Profile" />
+                            @else
+                                <img class="w-11 h-11 rounded-full ring-2 ring-purple-600 ring-offset-2 transition-all duration-200 group-hover:ring-purple-500 group-hover:scale-105"
+                                    src="{{ asset('user.png') }}"
+                                    alt="User Profile" />
+                            @endif
+
                                 <div class="absolute -bottom-0.5 -right-0.5 bg-green-500 border-2 border-white rounded-full w-3 h-3"></div>
                             </div>
                         </div>
