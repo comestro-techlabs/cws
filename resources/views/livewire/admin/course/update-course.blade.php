@@ -35,7 +35,7 @@
                                         class="flex-1 rounded-lg border-gray-300 shadow-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 p-2">
                                     <button wire:click="saveField('{{ $field }}')"
                                         class="px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors">
-                                        Save
+                                        {{ $course->$field ? 'Edit' : 'Save' }}
                                     </button>
                                 </div>
                                 @error($field)
@@ -55,7 +55,7 @@
                             <div class="flex justify-end">
                                 <button wire:click="saveField('description')"
                                     class="px-4 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors p-2">
-                                    Save Description
+                                    {{ $course->$field ? 'Edit Description' : 'Save Description' }}
                                 </button>
                             </div>
                             @error('description')
@@ -81,7 +81,8 @@
                                     </select>
                                     <button wire:click="saveField('category_id')"
                                         class="px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors">
-                                        Save
+                                        {{ $course->$field ? 'Edit' : 'Save' }}
+
                                     </button>
                                 </div>
                             </div>
@@ -97,6 +98,7 @@
                                                 alt="Course preview"> -->
                                         <img src="{{ $previewImage ?? asset('storage/course_images/' . $course->course_image) }}"
                                             class="max-h-full object-contain rounded" alt="Course preview">
+
 
                                         @else
                                         <span class="text-gray-500">No image selected</span>
