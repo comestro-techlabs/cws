@@ -77,7 +77,7 @@
                         <div class="bg-blue-50 border border-blue-100 rounded-lg p-4 text-center">
                             <p class="text-blue-600 font-semibold mb-2">Already Enrolled</p>
                             <a wire:navigate
-                               href="{{ route('v2.student.dashboard') }}"
+                               href="{{ route('student.dashboard') }}"
                                class="inline-flex items-center text-sm text-blue-700 hover:text-blue-800 font-medium">
                                 Go to Dashboard
                                 <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

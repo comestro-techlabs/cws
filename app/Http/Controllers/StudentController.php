@@ -62,6 +62,14 @@ class StudentController extends Controller
             ->paginate(10);
         return view("admin.students.manage", ['students' => $students]);
     }
+/*************  ✨ Codeium Command ⭐  *************/
+    /**
+     * Searches for students by course title
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Contracts\View\View
+     */
+/******  72340c7f-9e86-4f64-a8bd-6aac3f32f266  *******/
     public function searchCourse(Request $request)
     {
         $search = $request->search;
@@ -343,7 +351,7 @@ class StudentController extends Controller
         $studentId = Auth::id();
         $user = User::where('id', $studentId)->first();
 
-        $overdueCount = $this->paymentService->processOverduePayments(); 
+        $overdueCount = $this->paymentService->processOverduePayments();
         // dd($overdueCount);
 
         $hasCompleted = $this->hasCompletedExamOrAssignment($studentId);

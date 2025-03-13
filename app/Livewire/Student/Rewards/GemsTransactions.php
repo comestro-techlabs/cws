@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\GemTransaction;
 use Livewire\Attributes\Layout;
+
 #[Layout('components.layouts.student')]
 class GemsTransactions extends Component
 {

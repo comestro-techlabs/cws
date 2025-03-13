@@ -9,7 +9,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
                     </button>
-                    
+
                     <div class="flex-shrink-0 flex items-center ml-3 lg:ml-0">
                         <img class="h-7 w-auto" src="{{ asset('assets/LearnSyntax.png') }}" alt="Learn Syntax" />
                     </div>
@@ -48,19 +48,19 @@
                             </svg>
                         </button>
 
-                        <div x-show="open" 
-                             x-transition:enter="transition ease-out duration-100" 
-                             x-transition:enter-start="transform opacity-0 scale-95" 
-                             x-transition:enter-end="transform opacity-100 scale-100" 
-                             x-transition:leave="transition ease-in duration-75" 
-                             x-transition:leave-start="transform opacity-100 scale-100" 
-                             x-transition:leave-end="transform opacity-0 scale-95" 
-                             class="absolute right-0 mt-2 w-48 rounded-lg shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5" 
-                             role="menu" 
-                             aria-orientation="vertical" 
+                        <div x-show="open"
+                             x-transition:enter="transition ease-out duration-100"
+                             x-transition:enter-start="transform opacity-0 scale-95"
+                             x-transition:enter-end="transform opacity-100 scale-100"
+                             x-transition:leave="transition ease-in duration-75"
+                             x-transition:leave-start="transform opacity-100 scale-100"
+                             x-transition:leave-end="transform opacity-0 scale-95"
+                             class="absolute right-0 mt-2 w-48 rounded-lg shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5"
+                             role="menu"
+                             aria-orientation="vertical"
                              aria-labelledby="user-menu">
-                            
-                            <a href="{{ route('v2.student.dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition duration-200" role="menuitem">Your Profile</a>
+
+                            <a href="{{ route('student.dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition duration-200" role="menuitem">Your Profile</a>
                             <a href="" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition duration-200" role="menuitem">Settings</a>
                             <a href="{{ route('admin.logout') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition duration-200" role="menuitem">Sign out</a>
                         </div>

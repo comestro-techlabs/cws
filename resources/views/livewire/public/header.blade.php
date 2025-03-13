@@ -69,7 +69,7 @@
                                     x-transition:leave-start="transform opacity-100 scale-100"
                                     x-transition:leave-end="transform opacity-0 scale-95">
                                     <div class="py-1">
-                                        <a href="{{ route('v2.student.dashboard') }}" wire:navigate
+                                        <a href="{{ route('student.dashboard') }}" wire:navigate
                                             class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">
                                             My Learning
                                         </a>

@@ -8,15 +8,24 @@
                         <h2 class="text-2xl font-bold text-gray-900">My Gems</h2>
                         <p class="text-sm text-gray-600 mt-1">Track your rewards and transactions</p>
                     </div>
-                    <div class="bg-gradient-to-br from-purple-500 to-indigo-600 p-4 rounded-2xl">
+                    <div class="bg-gradient-to-br from-purple-500 to-indigo-600 px-6 py-4 rounded-2xl">
                         <div class="text-center">
-                            <div class="flex items-center gap-2">
-                                <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M12 2L2 8l10 6 10-6-10-6zM2 15l10 6 10-6M2 19l10 6 10-6"/>
+                            <div class="flex items-center gap-3">
+                                <svg class="w-8 h-8" viewBox="0 0 24 24">
+                                    <defs>
+                                        <linearGradient id="gemIconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#ffffff"/>
+                                            <stop offset="100%" style="stop-color:#e2e8f0"/>
+                                        </linearGradient>
+                                    </defs>
+                                    <path fill="url(#gemIconGradient)" d="M12 1L3 9l9 13l9-13l-9-8zm0 3.5L6.5 9h11L12 4.5zM5 10l7 10l7-10H5z"/>
+                                    <path fill="currentColor" opacity="0.2" d="M12 14L5 10h14l-7 4z"/>
                                 </svg>
-                                <span class="text-2xl font-bold text-white">{{ $totalGems }}</span>
+                                <div class="text-left">
+                                    <span class="text-3xl font-bold text-white">{{ $totalGems }}</span>
+                                    <p class="text-xs text-purple-200 mt-0.5">Available Gems</p>
+                                </div>
                             </div>
-                            <p class="text-xs text-purple-100 mt-1">Available Gems</p>
                         </div>
                     </div>
                 </div>
@@ -59,15 +68,12 @@
                                     'bg-green-100' => $transaction->type === 'earned',
                                     'bg-red-100' => $transaction->type === 'spent'
                                 ])>
-                                    <svg class="w-5 h-5" @class([
+                                    <svg class="w-5 h-5" viewBox="0 0 24 24" @class([
                                         'text-green-600' => $transaction->type === 'earned',
                                         'text-red-600' => $transaction->type === 'spent'
-                                    ]) viewBox="0 0 24 24" fill="currentColor">
-                                        @if($transaction->type === 'earned')
-                                            <path d="M12 2L2 8l10 6 10-6-10-6zM2 15l10 6 10-6M2 19l10 6 10-6"/>
-                                        @else
-                                            <path d="M12 2L2 8l10 6 10-6-10-6zM2 15l10 6 10-6"/>
-                                        @endif
+                                    ])>
+                                        <path fill="currentColor" d="M12 1L3 9l9 13l9-13l-9-8zm0 3.5L6.5 9h11L12 4.5zM5 10l7 10l7-10H5z"/>
+                                        <path fill="currentColor" opacity="0.2" d="M12 14L5 10h14l-7 4z"/>
                                     </svg>
                                 </div>
                                 <div>

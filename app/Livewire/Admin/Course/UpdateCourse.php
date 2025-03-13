@@ -56,6 +56,54 @@ class UpdateCourse extends Component
     public $isPublished = false;
     public $previewImage = null;
 
+    public function updatedTempImage()
+{
+    // Validate the image
+    $this->validate([
+        'tempImage' => 'nullable|image|max:2048',
+    ]);
+
+    if ($this->tempImage) {
+        try {
+            // Store image temporarily (not yet saved to the course)
+            $imagePath = $this->tempImage->store('course_images', 'public');
+
+            // Set preview image
+            $this->previewImage = asset('storage/' . $imagePath);
+        } catch (\Exception $e) {
+            $this->addError('tempImage', 'Error uploading preview image.');
+        }
+    }
+}
+
+public function saveField($field)
+{
+    try {
+        $this->validateOnly($field);
+
+        if ($field === 'tempImage' && $this->tempImage) {
+            // Store the final image and update course
+            $imagePath = $this->tempImage->store('course_images', 'public');
+            $this->course->update(['course_image' => $imagePath]);
+
+            // Set preview image to the saved file
+            $this->previewImage = asset('storage/' . $imagePath);
+            
+            // Clear tempImage to prevent re-uploading
+            $this->reset('tempImage');
+        } elseif ($this->$field !== null) {
+            $this->course->update([$field => $this->$field]);
+        }
+
+        $this->dispatch('notice', type: 'info', text: ucfirst($field) . ' updated successfully.');
+        $this->checkAndPublish();
+    } catch (\Exception $e) {
+        $this->addError($field, 'Failed to update ' . $field);
+    }
+}
+
+// Ensure preview image is loaded when page refreshes
+
     public function mount($courseId)
     {
         $this->course = Course::with('features')->findOrFail((int) $courseId);
@@ -73,45 +121,13 @@ class UpdateCourse extends Component
         $this->categories = Category::all();
         $this->allFeatures = Feature::all();
         $this->selectedFeatures = $this->course->features->pluck('id')->toArray();
+
+        $this->previewImage = $this->course->course_image 
+        ? asset('storage/' . $this->course->course_image) 
+        : null;
+    
     }
 
-    public function updatedTempImage()
-    {
-        // Validate the image
-        $this->validate([
-            'tempImage' => 'nullable|image|max:2048',
-        ]);
-
-        // Try generating a temporary preview URL
-        try {
-            $this->previewImage = $this->tempImage->temporaryUrl();
-        } catch (\Exception $e) {
-            $this->reset('previewImage');
-            $this->addError('tempImage', 'Unable to generate preview.');
-        }
-    }
-
-    public function saveField($field)
-    {
-        try {
-            $this->validateOnly($field);
-
-            if ($field === 'tempImage' && $this->tempImage) {
-                $this->handleImageUpload();
-            } elseif ($this->$field !== null) {
-                $this->course->update([$field => $this->$field]);
-                
-                $this->dispatch('notice', type: 'info', text: ucfirst($field) . ' updated successfully.');
-                if ($field === 'description') {
-                    $this->dispatch('descriptionSaved');
-                }
-            }
-
-            $this->checkAndPublish();
-        } catch (\Exception $e) {
-            $this->addError($field, 'Failed to update ' . $field);
-        }
-    }
     public function openFeaturesModal()
     {
         $this->showFeaturesModal = true;
