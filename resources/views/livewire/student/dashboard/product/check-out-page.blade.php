@@ -3,6 +3,11 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Header and Description -->
             <div class="mb-8">
+                @if (session()->has('message'))
+                <div class="mb-4 text-green-600 font-semibold">
+                    {{ session('message') }}
+                </div>
+                @endif
                 <h1 class="text-2xl font-bold text-gray-900">Checkout</h1>
                 <p class="text-gray-600 mt-1">Complete your redemption to receive your reward</p>
             </div>
@@ -82,67 +87,107 @@
 
                     <!-- Shipping Information -->
                     <div class="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100">
-                        <div class="p-6">
+                        @if(!$shippingDetailsAvailablity)
+                        <form wire:submit.prevent="saveShippingAddress" class="p-6">
                             <h2 class="text-lg font-semibold text-gray-900 mb-4">Shipping Information</h2>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label for="first-name" class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
-                                    <input type="text" id="first-name" name="first-name" class="w-full px-3 py-2 text-gray-800 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none transition duration-200">
+                                    <input type="text" id="first-name" wire:model="first_name" class="w-full px-3 py-2 text-gray-800 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none transition duration-200">
+                                    @error('first_name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                                 </div>
 
                                 <div>
                                     <label for="last-name" class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
-                                    <input type="text" id="last-name" name="last-name" class="w-full px-3 py-2 text-gray-800 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none transition duration-200">
+                                    <input type="text" id="last-name" wire:model="last_name" class="w-full px-3 py-2 text-gray-800 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none transition duration-200">
+                                    @error('last_name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+
                                 </div>
 
                                 <div class="md:col-span-2">
                                     <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                                    <input type="email" id="email" name="email" class="w-full px-3 py-2 text-gray-800 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none transition duration-200">
+                                    <input type="email" id="email" wire:model="email" class="w-full px-3 py-2 text-gray-800 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none transition duration-200">
+                                    @error('email') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+
                                 </div>
 
                                 <div class="md:col-span-2">
-                                    <label for="address-line1" class="block text-sm font-medium text-gray-700 mb-1">Address Line 1</label>
-                                    <input type="text" id="address-line1" name="address-line1" class="w-full px-3 py-2 text-gray-800 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none transition duration-200">
-                                </div>
+                                    <label for="address-line1" class="block text-sm font-medium text-gray-700 mb-1">Address</label>
+                                    <input type="text" id="address-line" wire:model="address_line" class="w-full px-3 py-2 text-gray-800 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none transition duration-200">
+                                    @error('address_line') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
 
-                                <div class="md:col-span-2">
-                                    <label for="address-line2" class="block text-sm font-medium text-gray-700 mb-1">Address Line 2 (Optional)</label>
-                                    <input type="text" id="address-line2" name="address-line2" class="w-full px-3 py-2 text-gray-800 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none transition duration-200">
                                 </div>
 
                                 <div>
                                     <label for="city" class="block text-sm font-medium text-gray-700 mb-1">City</label>
-                                    <input type="text" id="city" name="city" class="w-full px-3 py-2 text-gray-800 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none transition duration-200">
+                                    <input type="text" id="city" wire:model="city" class="w-full px-3 py-2 text-gray-800 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none transition duration-200">
+                                    @error('city') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+
                                 </div>
 
                                 <div>
                                     <label for="state" class="block text-sm font-medium text-gray-700 mb-1">State/Province</label>
-                                    <input type="text" id="state" name="state" class="w-full px-3 py-2 text-gray-800 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none transition duration-200">
+                                    <input type="text" id="state" wire:model="state" class="w-full px-3 py-2 text-gray-800 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none transition duration-200">
+                                    @error('state') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+
                                 </div>
 
                                 <div>
                                     <label for="postal-code" class="block text-sm font-medium text-gray-700 mb-1">Postal Code</label>
-                                    <input type="text" id="postal-code" name="postal-code" class="w-full px-3 py-2 text-gray-800 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none transition duration-200">
+                                    <input type="text" id="postal-code" wire:model="postal_code" class="w-full px-3 py-2 text-gray-800 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none transition duration-200">
+                                    @error('postal_code') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+
                                 </div>
 
                                 <div>
                                     <label for="country" class="block text-sm font-medium text-gray-700 mb-1">Country</label>
-                                    <select id="country" name="country" class="w-full px-3 py-2 text-gray-800 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none transition duration-200">
+                                    <select id="country" wire:model="country" class="w-full px-3 py-2 text-gray-800 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none transition duration-200">
                                         <option value="">Select Country</option>
-                                        <option value="US">United States</option>
-                                        <option value="CA">Canada</option>
-                                        <option value="UK">United Kingdom</option>
+                                        <option value="india">India</option>
                                         <!-- Add more countries as needed -->
                                     </select>
+                                    @error('country') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+
                                 </div>
 
                                 <div class="md:col-span-2">
                                     <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
-                                    <input type="tel" id="phone" name="phone" class="w-full px-3 py-2 text-gray-800 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none transition duration-200">
+                                    <input type="tel" id="phone" wire:model="phone" class="w-full px-3 py-2 text-gray-800 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none transition duration-200">
+                                    @error('phone') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+
+                                </div>
+
+                                <div class="md:col-span-2 flex justify-end">
+                                    <button type="submit" class="px-4 py-2 bg-primary text-white rounded-lg focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition duration-200">
+                                        Submit
+                                    </button>
                                 </div>
                             </div>
+                        </form>
+                        @else
+                        @foreach($shippingDetailsFilled as $shippingDetails)
+                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                            <h2 class="text-lg font-semibold text-gray-900 mb-4">Your Shipping Address</h2>
+                            <div class="text-gray-700 space-y-1">
+                                <p><span class="font-medium">Name:</span> {{ $shippingDetails->first_name }} {{ $shippingDetails->last_name }}</p>
+                                <p><span class="font-medium">Email:</span> {{ $shippingDetails->email }}</p>
+                                <p><span class="font-medium">Address:</span> {{ $shippingDetails->address_line }}</p>
+                                <p><span class="font-medium">City:</span> {{ $shippingDetails->city }}, {{ $shippingDetails->state }}, {{ $shippingDetails->postal_code }}</p>
+                                <p><span class="font-medium">Country:</span> {{ $shippingDetails->country }}</p>
+                                <p><span class="font-medium">Phone:</span> {{ $shippingDetails->phone }}</p>
+                            </div>
+
+                            <!-- Edit Button -->
+                            <div class="mt-6 flex justify-end">
+                                <button wire:click="editShippingAddress" class="px-4 py-2 bg-primary text-white rounded-lg focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition duration-200">
+                                    Edit Address
+                                </button>
+                            </div>
                         </div>
+                        @endforeach
+                        @endif
+
                     </div>
                 </div>
 
