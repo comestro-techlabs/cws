@@ -19,7 +19,8 @@ class GoogleLogin extends Component
     public function handleGoogleCallback()
     {
         try {
-            $googleUser = Socialite::driver('googleAuth')->stateless()->user();
+            $googleUser = Socialite::driver('googleAuth')->scopes(['openid', 'profile', 'email'])
+            ->user();
             \Log::info('Google User: ', (array) $googleUser);
 
             $existingUser = User::where('email', $googleUser->getEmail())->first();
@@ -40,7 +41,9 @@ class GoogleLogin extends Component
 
             return redirect()->intended(Auth::user()->isAdmin == 1 ? '/admin' : '/');
         } catch (\Exception $e) {
+
             \Log::error($e->getMessage());
+            dd($e->getMessage());
             $this->errorMessage = 'Unable to login with Google, please try again.';
         }
     }
