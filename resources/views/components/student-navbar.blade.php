@@ -50,37 +50,49 @@
             </div>
 
             <nav class="space-y-1 mt-2">
-                <!-- Main Navigation Group -->
+                <!-- Main Navigation -->
                 <div class="pb-2">
-                    <p class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Main</p>
+                    <p class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Overview</p>
+
+                    <!-- Dashboard -->
                     <a wire:navigate href="{{ route('student.dashboard') }}"
-                        class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-purple-50 hover:text-purple-700 group transition duration-200">
-                        <svg class="w-6 h-6" viewBox="0 0 24 24">
-                            <defs>
-                                <linearGradient id="dashboardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" style="stop-color:#60A5FA"/>
-                                    <stop offset="100%" style="stop-color:#3B82F6"/>
-                                </linearGradient>
-                            </defs>
-                            <path fill="url(#dashboardGradient)" d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z"/>
-                            <path fill="url(#dashboardGradient)" d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z"/>
+                        class="flex items-center px-4 py-2.5 text-sm font-medium {{ request()->routeIs('student.dashboard') ? 'text-purple-700 bg-purple-50' : 'text-gray-700 hover:bg-purple-50 hover:text-purple-700' }} rounded-lg transition duration-200">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M13.5 21H6.75A2.25 2.25 0 014.5 18.75V7.5a2.25 2.25 0 012.25-2.25H13.5a2.25 2.25 0 012.25 2.25v11.25a2.25 2.25 0 01-2.25 2.25zm0 0h6.75a2.25 2.25 0 002.25-2.25V10.5a2.25 2.25 0 00-2.25-2.25H15M13.5 21V9"/>
                         </svg>
                         <span class="ml-3">Dashboard</span>
                     </a>
 
-                    <!-- Add Gems Transactions Link -->
+                    <!-- Rewards -->
                     <a wire:navigate href="{{ route('student.rewards.gems') }}"
-                        class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-purple-50 hover:text-purple-700 group transition duration-200">
-                        <svg class="w-6 h-6" viewBox="0 0 24 24">
-                            <defs>
-                                <linearGradient id="gemTransactionGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" style="stop-color:#8B5CF6"/>
-                                    <stop offset="100%" style="stop-color:#6366F1"/>
-                                </linearGradient>
-                            </defs>
-                            <path fill="url(#gemTransactionGradient)" d="M12 2L2 8l10 6 10-6-10-6zM2 15l10 6 10-6M2 19l10 6 10-6"/>
+                        class="flex items-center px-4 py-2.5 text-sm font-medium {{ request()->routeIs('student.rewards.gems') ? 'text-purple-700 bg-purple-50' : 'text-gray-700 hover:bg-purple-50 hover:text-purple-700' }} rounded-lg transition duration-200">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 1.5l3 6 7.5.75-5.5 4.75L18.5 21l-6.5-4-6.5 4 1.5-7.75L1.5 8.25l7.5-.75z"/>
                         </svg>
-                        <span class="ml-3">My Gems</span>
+                        <span class="ml-3">Rewards & Points</span>
+                    </a>
+                </div>
+
+                <!-- Learning Section -->
+                <div class="py-2">
+                    <p class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Learning</p>
+
+                    <!-- My Courses -->
+                    <a wire:navigate href="{{ route('v2.student.mycourses') }}"
+                        class="flex items-center px-4 py-2.5 text-sm font-medium {{ request()->routeIs('v2.student.mycourses') ? 'text-purple-700 bg-purple-50' : 'text-gray-700 hover:bg-purple-50 hover:text-purple-700' }} rounded-lg transition duration-200">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/>
+                        </svg>
+                        <span class="ml-3">My Learning</span>
+                    </a>
+
+                    <!-- Assignments -->
+                    <a wire:navigate href="{{ route('student.assignments-view') }}"
+                        class="flex items-center px-4 py-2.5 text-sm font-medium {{ request()->routeIs('student.assignments-view') ? 'text-purple-700 bg-purple-50' : 'text-gray-700 hover:bg-purple-50 hover:text-purple-700' }} rounded-lg transition duration-200">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M7.5 5.25a3 3 0 013-3h3a3 3 0 013 3v.205c.933.085 1.857.197 2.774.334 1.454.218 2.476 1.483 2.476 2.917v3.033c0 1.211-.734 2.352-1.936 2.752A24.726 24.726 0 0112 15.75c-2.73 0-5.357-.442-7.814-1.259-1.202-.4-1.936-1.541-1.936-2.752V8.706c0-1.434 1.022-2.7 2.476-2.917A48.814 48.814 0 017.5 5.455V5.25zm7.5 0v.09a49.488 49.488 0 00-6 0v-.09a1.5 1.5 0 011.5-1.5h3a1.5 1.5 0 011.5 1.5zm-3 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z"/>
+                        </svg>
+                        <span class="ml-3">Tasks & Assignments</span>
                     </a>
 
                     <a wire:navigate href="{{ route('student.exploreCourses') }}"
@@ -98,55 +110,17 @@
                     </a>
                 </div>
 
-                <!-- Learning Group -->
+                <!-- Assessment Section -->
                 <div class="py-2">
-                    <p class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Learning</p>
-                    <a wire:navigate href="{{ route('student.billing') }}"
-                        class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-purple-50 hover:text-purple-700 group transition duration-200">
-                        <svg class="flex-shrink-0 w-5 h-5 mr-3 text-amber-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M4.5 3.75a3 3 0 0 0-3 3v.75h21v-.75a3 3 0 0 0-3-3h-15Z" />
-                            <path fill-rule="evenodd" d="M22.5 9.75h-21v7.5a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3v-7.5Zm-18 3.75a.75.75 0 0 1 .75-.75h6a.75.75 0 0 1 0 1.5h-6a.75.75 0 0 1-.75-.75Zm.75 2.25a.75.75 0 0 0 0 1.5h3a.75.75 0 0 0 0-1.5h-3Z" clip-rule="evenodd" />
-                        </svg>
-                        Billing
-                    </a>
+                    <p class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Assessment</p>
 
-                    <a wire:navigate href="{{ route('v2.student.mycourses') }}"
-                        class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-purple-50 hover:text-purple-700 group transition duration-200">
-                        <svg class="flex-shrink-0 w-5 h-5 mr-3 text-teal-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M11.7 2.805a.75.75 0 0 1 .6 0A60.65 60.65 0 0 1 22.83 8.72a.75.75 0 0 1-.231 1.337 49.948 49.948 0 0 0-9.902 3.912l-.003.002c-.114.06-.227.119-.34.18a.75.75 0 0 1-.707 0A50.88 50.88 0 0 0 7.5 12.173v-.224c0-.131.067-.248.172-.311a54.615 54.615 0 0 1 4.653-2.52.75.75 0 0 0-.65-1.352 56.123 56.123 0 0 0-4.78 2.589 1.858 1.858 0 0 0-.859 1.228 49.803 49.803 0 0 0-4.634-1.527.75.75 0 0 1-.231-1.337A60.653 60.653 0 0 1 11.7 2.805Z" />
-                        </svg>
-                        My Courses
-                    </a>
-
-                    <a wire:navigate href="{{ route('student.assignments-view') }}"
-                        class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-purple-50 hover:text-purple-700 group transition duration-200">
-                        <svg class="flex-shrink-0 w-5 h-5 mr-3 text-emerald-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path fill-rule="evenodd" d="M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V12.75A3.75 3.75 0 0 0 16.5 9h-1.875a1.875 1.875 0 0 1-1.875-1.875V5.25A3.75 3.75 0 0 0 9 1.5H5.625ZM7.5 15a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5h-7.5A.75.75 0 0 1 7.5 15Zm.75 2.25a.75.75 0 0 0 0 1.5H12a.75.75 0 0 0 0-1.5H8.25Z" clip-rule="evenodd" />
-                        </svg>
-                        Assignments
-                    </a>
-
-
-                    @if (isset($hasCompleted) && $hasCompleted)
-                    <a wire:navigate href="{{ route('v2.student.examResult') }}"
-                        class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-purple-50 hover:text-purple-700 group transition duration-200">
-                        <svg class="flex-shrink-0 w-5 h-5 mr-3 text-rose-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M11.7 2.805a.75.75 0 0 1 .6 0A60.65 60.65 0 0 1 22.83 8.72a.75.75 0 0 1-.231 1.337 49.948 49.948 0 0 0-9.902 3.912l-.003.002c-.114.06-.227.119-.34.18a.75.75 0 0 1-.707 0A50.88 50.88 0 0 0 7.5 12.173v-.224c0-.131.067-.248.172-.311a54.615 54.615 0 0 1 4.653-2.52.75.75 0 0 0-.65-1.352 56.123 56.123 0 0 0-4.78 2.589 1.858 1.858 0 0 0-.859 1.228 49.803 49.803 0 0 0-4.634-1.527.75.75 0 0 1-.231-1.337A60.653 60.653 0 0 1 11.7 2.805Z" />
-                        </svg>
-                        Exam Results
-                    </a>
-                    @endif
-
+                    <!-- Mock Tests -->
                     <a wire:navigate href="{{ route('v2.student.mocktest') }}"
-                        class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-purple-50 hover:text-purple-700 group transition duration-200">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                            class="size-6 fill-purple-600">
-                            <path fill-rule="evenodd"
-                                d="M2.25 4.125c0-1.036.84-1.875 1.875-1.875h5.25c1.036 0 1.875.84 1.875 1.875V17.25a4.5 4.5 0 11-9 0V4.125zm4.5 14.25a1.125 1.125 0 100-2.25 1.125 1.125 0 000 2.25z"
-                                clip-rule="evenodd" />
-                            <path d="M10.719 21.75h9.156c1.036 0 1.875-.84 1.875-1.875v-5.25c0-1.036-.84-1.875-1.875-1.875h-.14l-8.742 8.743c-.09.089-.18.175-.274.257zM12.738 17.625l6.474-6.474a1.875 1.875 0 000-2.651L15.5 4.787a1.875 1.875 0 00-2.651 0l-.1.099V17.25c0 .126-.003.251-.01.375z" />
+                        class="flex items-center px-4 py-2.5 text-sm font-medium {{ request()->routeIs('v2.student.mocktest') ? 'text-purple-700 bg-purple-50' : 'text-gray-700 hover:bg-purple-50 hover:text-purple-700' }} rounded-lg transition duration-200">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z"/>
                         </svg>
-                        <span class="flex-1 ms-3 whitespace-nowrap">Mock Tests</span>
+                        <span class="ml-3">Practice Tests</span>
                     </a>
 
                     <a wire:navigate href="{{ route('student.takeExam') }}"
@@ -159,6 +133,16 @@
                         </svg>
                         Take Examinations
                     </a>
+
+                    @if (isset($hasCompleted) && $hasCompleted)
+                    <a wire:navigate href="{{ route('v2.student.examResult') }}"
+                        class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-purple-50 hover:text-purple-700 group transition duration-200">
+                        <svg class="flex-shrink-0 w-5 h-5 mr-3 text-rose-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M11.7 2.805a.75.75 0 0 1 .6 0A60.65 60.65 0 0 1 22.83 8.72a.75.75 0 0 1-.231 1.337 49.948 49.948 0 0 0-9.902 3.912l-.003.002c-.114.06-.227.119-.34.18a.75.75 0 0 1-.707 0A50.88 50.88 0 0 0 7.5 12.173v-.224c0-.131.067-.248.172-.311a54.615 54.615 0 0 1 4.653-2.52.75.75 0 0 0-.65-1.352 56.123 56.123 0 0 0-4.78 2.589 1.858 1.858 0 0 0-.859 1.228 49.803 49.803 0 0 0-4.634-1.527.75.75 0 0 1-.231-1.337A60.653 60.653 0 0 1 11.7 2.805Z" />
+                        </svg>
+                        Exam Results
+                    </a>
+                    @endif
 
                     @if (isset($hasCompleted) && $hasCompleted)
                     <a href="{{ route('student.certificate', ['userId' => Auth::id()]) }}"
@@ -175,9 +159,9 @@
                     @endif
                 </div>
 
-                <!-- Settings Group -->
+                <!-- Account Section -->
                 <div class="py-2">
-                    <p class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Settings</p>
+                    <p class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Account</p>
                     <a wire:navigate href="{{ route('student.v2edit.profile') }}"
                         class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-purple-50 hover:text-purple-700 group transition duration-200">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
