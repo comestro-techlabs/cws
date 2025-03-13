@@ -76,42 +76,45 @@ class UpdateCourse extends Component
     }
 
     public function updatedTempImage()
-    {
-        // Validate the image
-        $this->validate([
-            'tempImage' => 'nullable|image|max:2048',
-        ]);
+{
+    // Validate the image
+    $this->validate([
+        'tempImage' => 'nullable|image|max:2048',
+    ]);
 
-        // Try generating a temporary preview URL
-        try {
-            $this->previewImage = $this->tempImage->temporaryUrl();
-        } catch (\Exception $e) {
-            $this->reset('previewImage');
-            $this->addError('tempImage', 'Unable to generate preview.');
-        }
+    if ($this->tempImage) {
+        // Store image in 'course_images' directory inside storage/app/public
+        $imagePath = $this->tempImage->store('course_images', 'public');
+
+        // Save the path for preview
+        $this->previewImage = asset('storage/' . $imagePath);
     }
+}
 
-    public function saveField($field)
-    {
-        try {
-            $this->validateOnly($field);
 
-            if ($field === 'tempImage' && $this->tempImage) {
-                $this->handleImageUpload();
-            } elseif ($this->$field !== null) {
-                $this->course->update([$field => $this->$field]);
-                
-                $this->dispatch('notice', type: 'info', text: ucfirst($field) . ' updated successfully.');
-                if ($field === 'description') {
-                    $this->dispatch('descriptionSaved');
-                }
-            }
+public function saveField($field)
+{
+    try {
+        $this->validateOnly($field);
 
-            $this->checkAndPublish();
-        } catch (\Exception $e) {
-            $this->addError($field, 'Failed to update ' . $field);
+        if ($field === 'tempImage' && $this->tempImage) {
+            // Store image and update course
+            $imagePath = $this->tempImage->store('course_images', 'public');
+            $this->course->update(['course_image' => $imagePath]);
+
+            // Set preview image
+            $this->previewImage = asset('storage/' . $imagePath);
+        } elseif ($this->$field !== null) {
+            $this->course->update([$field => $this->$field]);
         }
+
+        $this->dispatch('notice', type: 'info', text: ucfirst($field) . ' updated successfully.');
+        $this->checkAndPublish();
+    } catch (\Exception $e) {
+        $this->addError($field, 'Failed to update ' . $field);
     }
+}
+
     public function openFeaturesModal()
     {
         $this->showFeaturesModal = true;
