@@ -7,10 +7,13 @@
             </div>
 
             <!-- Google Sign In -->
-            @livewire('auth.google-login', [
-                'class' => 'w-full flex items-center justify-center gap-3 px-6 py-3 bg-white hover:bg-gray-50 border border-gray-200 rounded-lg font-medium text-gray-700 transition-all duration-200 hover:shadow-sm'
-            ])
-            @livewire('auth.github')
+            <div class="flex flex-col gap-2">
+                @livewire('auth.google-login', [
+                    'class' => 'w-full flex items-center justify-center gap-3 px-6 py-3 bg-white hover:bg-gray-50 border border-gray-200 rounded-lg font-medium text-gray-700 transition-all duration-200 hover:shadow-sm'
+                ])
+                @livewire('auth.github')
+                @livewire('auth.linkedin-login')
+            </div>
         </div>
     </div>
 </div>
