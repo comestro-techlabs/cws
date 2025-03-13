@@ -19,34 +19,34 @@ class UpdateCourse extends Component
     use WithFileUploads;
 
     public Course $course;
-    
+
     #[Validate('required|string|max:255')]
     public $title;
-    
+
     #[Validate('required|string')]
     public $description;
-    
+
     #[Validate('required|numeric|min:0')]
     public $duration;
-    
+
     #[Validate('required|string|max:255')]
     public $instructor;
-    
+
     #[Validate('required|numeric|min:0')]
     public $fees;
-    
+
     #[Validate('required|numeric|min:0')]
     public $discounted_fees;
-    
+
     #[Validate('required|string|max:100')]
     public $course_code = '';
-    
+
     #[Validate('required|exists:categories,id')]
     public $category_id;
-    
+
     #[Validate('nullable|image|max:2048')]
     public $tempImage;
-    
+
     // Feature-related properties
     public $allFeatures;
     #[Validate('array')]
@@ -56,53 +56,78 @@ class UpdateCourse extends Component
     public $isPublished = false;
     public $previewImage = null;
 
+    public $editing = false;
+    public $editingField = null;
+
+    // Add new property for progress
+    public $progress = 0;
+
     public function updatedTempImage()
-{
-    // Validate the image
-    $this->validate([
-        'tempImage' => 'nullable|image|max:2048',
-    ]);
+    {
+        // Validate the image
+        $this->validate([
+            'tempImage' => 'nullable|image|max:2048',
+        ]);
 
-    if ($this->tempImage) {
-        try {
-            // Store image temporarily (not yet saved to the course)
-            $imagePath = $this->tempImage->store('course_images', 'public');
+        if ($this->tempImage) {
+            try {
+                // Reset progress at start
+                $this->progress = 0;
 
-            // Set preview image
-            $this->previewImage = asset('storage/' . $imagePath);
-        } catch (\Exception $e) {
-            $this->addError('tempImage', 'Error uploading preview image.');
+                // Simulate upload progress (since local uploads are usually too fast)
+                $this->js("
+                    let progress = 0;
+                    const interval = setInterval(() => {
+                        progress += 10;
+                        if (progress <= 90) {
+                            $wire.set('progress', progress);
+                        } else {
+                            clearInterval(interval);
+                        }
+                    }, 200);
+                ");
+
+                // Store image temporarily (not yet saved to the course)
+                $imagePath = $this->tempImage->store('course_images', 'public');
+
+                // Set progress to 100% when complete
+                $this->progress = 100;
+                $this->previewImage = asset('storage/' . $imagePath);
+
+                // Reset progress after a delay
+                $this->js("
+                    setTimeout(() => {
+                        $wire.set('progress', 0);
+                    }, 1000);
+                ");
+            } catch (\Exception $e) {
+                $this->addError('tempImage', 'Error uploading preview image.');
+                $this->progress = 0;
+            }
         }
     }
-}
 
-public function saveField($field)
-{
-    try {
-        $this->validateOnly($field);
+    public function saveField($field)
+    {
+        if ($this->editingField === $field) {
+            // Validate and save the field
+            $this->validate([
+                $field => 'required'
+            ]);
 
-        if ($field === 'tempImage' && $this->tempImage) {
-            // Store the final image and update course
-            $imagePath = $this->tempImage->store('course_images', 'public');
-            $this->course->update(['course_image' => $imagePath]);
+            $this->course->update([
+                $field => $this->$field
+            ]);
 
-            // Set preview image to the saved file
-            $this->previewImage = asset('storage/' . $imagePath);
-            
-            // Clear tempImage to prevent re-uploading
-            $this->reset('tempImage');
-        } elseif ($this->$field !== null) {
-            $this->course->update([$field => $this->$field]);
+            $this->editingField = null;
+            $this->editing = false;
+        } else {
+            $this->editingField = $field;
+            $this->editing = true;
         }
-
-        $this->dispatch('notice', type: 'info', text: ucfirst($field) . ' updated successfully.');
-        $this->checkAndPublish();
-    } catch (\Exception $e) {
-        $this->addError($field, 'Failed to update ' . $field);
     }
-}
 
-// Ensure preview image is loaded when page refreshes
+    // Ensure preview image is loaded when page refreshes
 
     public function mount($courseId)
     {
@@ -122,10 +147,10 @@ public function saveField($field)
         $this->allFeatures = Feature::all();
         $this->selectedFeatures = $this->course->features->pluck('id')->toArray();
 
-        $this->previewImage = $this->course->course_image 
-        ? asset('storage/' . $this->course->course_image) 
+        $this->previewImage = $this->course->course_image
+        ? asset('storage/' . $this->course->course_image)
         : null;
-    
+
     }
 
     public function openFeaturesModal()
@@ -144,7 +169,7 @@ public function saveField($field)
             $this->course->features()->sync($this->selectedFeatures);
             $this->closeFeaturesModal();
             $this->dispatch('notice', type: 'info', text: 'Features Updated Successfully!');
-            
+
         } catch (\Exception $e) {
             $this->dispatch('notice', type: 'info', text: 'Failed to update features!');
         }
@@ -176,7 +201,7 @@ public function saveField($field)
 
         // Show success message
         $this->dispatch('notice', type: 'info', text: 'Course image updated successfully!');
-        
+
     }
 
     public function checkAndPublish()
@@ -207,8 +232,8 @@ public function saveField($field)
     {
         $this->isPublished = !$this->isPublished;
         $this->course->update(['published' => $this->isPublished]);
-        $this->dispatch('notice', type: 'info', text: $this->isPublished 
-        ? 'Course published successfully.' 
+        $this->dispatch('notice', type: 'info', text: $this->isPublished
+        ? 'Course published successfully.'
         : 'Course unpublished successfully.');
     }
 
