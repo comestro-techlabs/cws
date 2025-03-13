@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Batch;
 use App\Models\Category;
-use App\Models\Chapter;
 use App\Models\Course;
-use App\Models\Lesson;
 use App\Models\Enquiry;
 use App\Models\Payment;
 use App\Models\User;

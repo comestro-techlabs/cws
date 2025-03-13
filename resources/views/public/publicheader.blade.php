@@ -26,7 +26,7 @@
             </li>
 
             <li>
-                <a href="{{route('public.workshops')}}"
+                <a href="{{route('public.workshop')}}"
                     class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 ">Workshop</a>
             </li>
 
@@ -68,12 +68,8 @@
         @guest
             <a href="{{ route('auth.login') }}"
                 class="text-primary hidden md:flex items-center font-light border border-indigo-600 hover:bg-indigo-600 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-sm hover:text-white text-sm px-4  py-2 text-center">
-                Login</a>
-            <a href="{{ route('auth.register') }}"
-                class="text-white md:flex items-center font-light bg-primary hover:bg-primary focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-sm text-sm px-4  py-2 text-center">
                 Join Us</a>
         @endguest
-
     </div>
 
     </div>

@@ -74,7 +74,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium text-gray-700">Attendance</p>
-                        <h3 class="text-2xl font-bold text-blue-600 mt-1">{{ $attendance }}%</h3>
+                        <h3 class="text-2xl font-bold text-blue-600 mt-1">{{ $attendancePercentage }}%</h3>
                     </div>
                     <div class="bg-blue-50 p-3 rounded-full">
                         <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -131,13 +131,13 @@
                 <div class="bg-white rounded-lg shadow-sm overflow-hidden">
                     <div class="border-b border-gray-200">
                         <div class="px-6 py-4">
-                            <h2 class="text-lg font-semibold text-gray-900">This Week</h2>
+                            <h2 class="text-lg font-semibold text-gray-900">Last Week</h2>
                         </div>
                     </div>
                     <div class="p-6">
-                        <div class="grid grid-cols-7 gap-2">
+                        <div class="grid grid-cols-7 gap-2 justify-between">
                             @foreach($weekDays as $day)
-                                <div class="flex flex-col items-center">
+                                <div class="flex flex-col  items-center">
                                     <div class="w-8 h-8 rounded-full flex items-center justify-center mb-1
                                         {{ $day['present'] ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600' }}">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -141,49 +141,7 @@
                 </div>
 
                 <!-- Course Content Accordion -->
-                <div class="bg-white rounded-xl shadow-sm overflow-hidden">
-                    <div class="border-b border-gray-200 p-6">
-                        <h2 class="text-2xl font-bold text-gray-900">Course Content</h2>
-                    </div>
 
-                    <div id="accordion-open" data-accordion="collapse">
-                        @foreach ($course->chapters as $chapter)
-                            <div class="border-b border-gray-200 last:border-b-0">
-                                <h2 id="accordion-open-heading-{{ $loop->index }}">
-                                    <button type="button"
-                                        class="flex items-center justify-between w-full p-5 font-medium text-gray-800 hover:bg-gray-50 transition duration-200"
-                                        data-accordion-target="#accordion-open-body-{{ $loop->index }}" aria-expanded="{{ $loop->index == 0 ? 'true' : 'false' }}"
-                                        aria-controls="accordion-open-body-{{ $loop->index }}">
-                                        <span class="flex items-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#662d91] mr-2" viewBox="0 0 20 20" fill="currentColor">
-                                                <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
-                                            </svg>
-                                            {{ $chapter->title }}
-                                        </span>
-                                        <svg data-accordion-icon class="w-4 h-4 shrink-0 transition-transform duration-200" aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                                stroke-width="2" d="M9 5 5 1 1 5" />
-                                        </svg>
-                                    </button>
-                                </h2>
-                                <div id="accordion-open-body-{{ $loop->index }}" class="{{ $loop->index == 0 ? '' : 'hidden' }}"
-                                    aria-labelledby="accordion-open-heading-{{ $loop->index }}">
-                                    <div class="border-t border-gray-100 bg-gray-50">
-                                        @foreach ($chapter->lessons as $lesson)
-                                            <a href="#" class="flex items-center p-4 hover:bg-gray-100 transition duration-200 border-b border-gray-100 last:border-b-0">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500 mr-3" viewBox="0 0 20 20" fill="currentColor">
-                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
-                                                </svg>
-                                                <span class="text-gray-700">{{ $lesson->title }}</span>
-                                            </a>
-                                        @endforeach
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
             </div>
 
             <!-- Right Column (Course Batches) -->

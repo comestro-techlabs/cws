@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Student\Dashboard;
 
+use App\Models\Attendance;
 use App\Models\Course;
 use App\Models\Exam;
 use App\Models\User;
@@ -36,6 +37,8 @@ class StudentDashboard extends Component
     public $totalTasks = 0;
     public $nextMilestone = 100;
     public $weekDays = [];
+    public $studentId;
+    public $attendancePercentage;
 
     public function mount()
     {
@@ -44,26 +47,26 @@ class StudentDashboard extends Component
         }
 
         $studentId = Auth::id();
+        $this->studentId = $studentId;
         $user = User::findOrFail($studentId);
+
+        $attendanceData = $this->loadAttendance();
+        $this->weekDays = $attendanceData['weekDays'];
+        $this->attendancePercentage = $attendanceData['attendancePercentage'];
+        $this->attendance = $attendanceData['showPercentage'] ? $this->attendancePercentage : 0;
 
         // Initialize student stats
         $this->gems = $user->gems ?? 0;
         $this->points = $user->points ?? 0;
         $this->completedTasks = Assignment_upload::where('student_id', $studentId)->where('status', 'submitted')->count();
         $this->totalTasks = Assignments::whereIn('course_id', $user->courses->pluck('id'))->count();
-        
+
         // Calculate attendance percentage
         $totalClasses = $user->courses->sum('total_classes') ?? 0;
         $attendedClasses = $user->courses->sum('attended_classes') ?? 0;
         $this->attendance = $totalClasses > 0 ? round(($attendedClasses / $totalClasses) * 100) : 0;
 
         // Generate weekly attendance data
-        $this->weekDays = collect(range(6, 0))->map(function($daysAgo) {
-            return [
-                'name' => now()->subDays($daysAgo)->format('l'),
-                'present' => rand(0, 1) == 1 // Temporary random data, replace with actual attendance
-            ];
-        })->toArray();
 
         $this->hasCompleted = $this->hasCompletedExamOrAssignment($studentId);
 
@@ -149,9 +152,86 @@ class StudentDashboard extends Component
             $payment->progress = $payment->course_progress ?? 0;
         }
 
-
     }
+   public function loadAttendance()
+    {
+        $student = User::find($this->studentId);
 
+        if (!$student) {
+            return [
+                'weekDays' => collect(),
+                'attendancePercentage' => 0,
+                'showPercentage' => false
+            ];
+        }
+
+        $userJoinedToday = $student->created_at->isToday();
+        $daysSinceJoining = $student->created_at->diffInDays(now());
+        $weekDays = collect();
+        $showPercentage = $daysSinceJoining >= 7; // Only show percentage after 7 days
+
+        if ($userJoinedToday) {
+            $attendanceRecords = Attendance::where('user_id', $this->studentId)
+                ->whereDate('check_in', now()->toDateString())
+                ->get()
+                ->keyBy(function ($item) {
+                    return date('Y-m-d', strtotime($item->check_in));
+                });
+
+            $today = now();
+            $dateKey = $today->format('Y-m-d');
+            $isPresent = isset($attendanceRecords[$dateKey]);
+
+            $weekDays->push([
+                'present' => $isPresent,
+                'name' => $today->format('l'),
+                'date' => $dateKey
+            ]);
+
+            $attendancePercentage = 0; // Don't calculate for new users
+        } else {
+            $attendanceRecords = Attendance::where('user_id', $this->studentId)
+                ->whereBetween('check_in', [
+                    now()->subWeek()->startOfWeek(),
+                    now()
+                ])
+                ->orderBy('check_in', 'asc')
+                ->get()
+                ->keyBy(function ($item) {
+                    return date('Y-m-d', strtotime($item->check_in));
+                });
+
+            $start = now()->subWeek()->startOfWeek();
+            $today = now();
+
+            for ($i = 0; $start->copy()->addDays($i)->lte($today); $i++) {
+                $date = $start->copy()->addDays($i);
+                if ($date->isSaturday() || $date->isSunday()) {
+                    continue;
+                }
+
+                $dateKey = $date->format('Y-m-d');
+                $isPresent = isset($attendanceRecords[$dateKey]);
+
+                $weekDays->push([
+                    'present' => $isPresent,
+                    'name' => $date->format('l'),
+                    'date' => $dateKey
+                ]);
+            }
+
+            $weekDays = $weekDays->take(-5);
+            $totalDays = $weekDays->count();
+            $presentDays = $weekDays->where('present', true)->count();
+            $attendancePercentage = $totalDays > 0 ? round(($presentDays / $totalDays) * 100) : 0;
+        }
+
+        return [
+            'weekDays' => $weekDays,
+            'attendancePercentage' => $attendancePercentage,
+            'showPercentage' => $showPercentage
+        ];
+    }
     public function hasCompletedExamOrAssignment($userId)
     {
         return ExamUser::where('user_id', $userId)->exists()
@@ -170,9 +250,10 @@ class StudentDashboard extends Component
             'completedTasks' => $this->completedTasks,
             'totalTasks' => $this->totalTasks,
             'nextMilestone' => $this->nextMilestone,
-            'weekDays' => $this->weekDays,
             'messages' => $this->messages,
-            'exams' => $this->exams
+            'exams' => $this->exams,
+            'attendancePercentage' => $this->attendancePercentage,
+            'showPercentage' => $this->loadAttendance()['showPercentage']
         ]);
     }
 }

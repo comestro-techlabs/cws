@@ -29,13 +29,17 @@ return [
     ],
 
     'google' => [
-    'client_id' => env('GOOGLE_DRIVE_CLIENT_ID'),
-    'client_secret' => env('GOOGLE_DRIVE_CLIENT_SECRET'),
-    'refresh_token'=>env('GOOGLE_DRIVE_REFRESH_TOKEN'),
-    'folder_id'=>env('GOOGLE_DRIVE_FOLDER_ID'),
-    // 'redirect' => env('GOOGLE_REDIRECT_URL'),
-],
-
+        'client_id' => env('GOOGLE_DRIVE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_DRIVE_CLIENT_SECRET'),
+        'refresh_token' => env('GOOGLE_DRIVE_REFRESH_TOKEN'),
+        'folder_id' => env('GOOGLE_DRIVE_FOLDER_ID'),
+        // 'redirect' => env('GOOGLE_REDIRECT_URL'),
+    ],
+    'googleAuth' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => 'http://127.0.0.1:8000/auth/google/callback',
+    ],
     'slack' => [
         'notifications' => [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),
@@ -43,10 +47,10 @@ return [
         ],
     ],
 
-   'recaptcha' => [
-    'site_key' => env('RECAPTCHA_SITE_KEY'),
-    'secret_key' => env('RECAPTCHA_SECRET_KEY'),
-],
+    'recaptcha' => [
+        'site_key' => env('RECAPTCHA_SITE_KEY'),
+        'secret_key' => env('RECAPTCHA_SECRET_KEY'),
+    ],
 
 
 ];
