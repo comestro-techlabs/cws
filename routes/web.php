@@ -94,8 +94,8 @@ Route::prefix('auth')->group(function () {
     Route::get('/logout', Header::class)->name('auth.logout');
     Route::get('/google', [GoogleLogin::class, 'redirectToGoogle'])->name('auth.google.login');
     Route::get('/google/callback', [GoogleLogin::class, 'handleGoogleCallback'])->name('auth.google.callback');
-    Route::get('/github/redirect', [Github::class, 'redirectToGoogle'])->name('github.redirect');
-    Route::get('/github/callback', [Github::class, 'handleGoogleCallback'])->name('github.callback');
+    Route::get('/github/redirect', [Github::class, 'redirectToGithub'])->name('github.redirect');
+    Route::get('/github/callback', [Github::class, 'handleGithubCallback'])->name('github.callback');
 
     Route::get('/viewallcourses', AllCourses::class)->name('public.viewallcourses.all-courses');
     Route::get('/courses/{slug}', Ourcourses::class)->name('public.courseDetail');
