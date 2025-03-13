@@ -49,6 +49,21 @@
                     <span class="ml-3">Dashboard</span>
                 </a>
 
+                <!-- Add Gems Transactions Link -->
+                <a wire:navigate href="{{ route('student.rewards.gems') }}"
+                    class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-purple-50 hover:text-purple-700 group transition duration-200">
+                    <svg class="w-6 h-6" viewBox="0 0 24 24">
+                        <defs>
+                            <linearGradient id="gemTransactionGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#8B5CF6"/>
+                                <stop offset="100%" style="stop-color:#6366F1"/>
+                            </linearGradient>
+                        </defs>
+                        <path fill="url(#gemTransactionGradient)" d="M12 2L2 8l10 6 10-6-10-6zM2 15l10 6 10-6M2 19l10 6 10-6"/>
+                    </svg>
+                    <span class="ml-3">My Gems</span>
+                </a>
+
                 <a wire:navigate href="{{ route('student.exploreCourses') }}"
                     class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-purple-50 hover:text-purple-700 group transition duration-200">
                     <svg class="w-6 h-6" viewBox="0 0 24 24">

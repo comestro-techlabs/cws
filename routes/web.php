@@ -131,6 +131,9 @@ Route::prefix("student")->group(function () {
         Route::get('/viewCertificate/{userId}', 'showCertificate')->name('student.viewCertificate');
         Route::get('/certificate/{userId}', 'Certificate')->name('student.certificate');
     });
+    Route::get('/student/rewards/gems', \App\Livewire\Student\Rewards\GemsTransactions::class)
+        ->name('student.rewards.gems')
+        ->middleware(['auth']);
 });
 
 
@@ -375,7 +378,7 @@ Route::prefix('v2')->group(function () {
         Route::get('/mocktest', SelectMockTest::class)->name('v2.student.mocktest');
         Route::get('/mocktest/{mockTestId}', ShowMockTest::class)->name('v2.student.mocktest.take');
         Route::get('/mocktest/result/{mockTestId}', MockTestResult::class)->name('v2.student.mocktest.result');
-       
+
 
         Route::get('/products', OurProducts::class)->name('v2.student.products');
     });
