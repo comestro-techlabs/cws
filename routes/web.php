@@ -78,7 +78,7 @@ use App\Livewire\Student\MockTest\SelectMockTest;
 use App\Livewire\Student\MockTest\ShowMockTest;
 use App\Livewire\Student\MockTest\MockTestResult;
 use App\Livewire\Auth\GoogleLogin;
-
+use App\Livewire\Student\Rewards\GemsTransactions;
 // v3
 use App\Livewire\V3\Public\NewHome;
 
@@ -133,7 +133,9 @@ Route::prefix("student")->group(function () {
         Route::get('/assignments/upload/{id}', 'viewAssignments')->name('student.assignment-upload');
         Route::get('/viewCertificate/{userId}', 'showCertificate')->name('student.viewCertificate');
         Route::get('/certificate/{userId}', 'Certificate')->name('student.certificate');
+        Route::get('/rewards/gems', GemsTransactions::class)->name('student.rewards.gems');
     });
+
 });
 
 
