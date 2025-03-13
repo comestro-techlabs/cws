@@ -5,6 +5,7 @@ namespace App\Livewire\Student\MockTest;
 use App\Models\MockTest;
 use Livewire\Component;
 use App\Models\Course;
+use App\Models\MockTestResult;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 
@@ -32,7 +33,11 @@ class SelectMockTest extends Component
     {
         $this->selectedLevel = $level;
     }
-
+    public function resetSelection()
+    {
+        $this->selectedCourseId = null;
+        $this->selectedLevel = null;
+    }
     public function render()
     {   
         $mockTests = [];

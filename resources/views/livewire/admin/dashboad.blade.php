@@ -64,8 +64,27 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-gray-600 text-sm">Total Payments</p>
-                            <h2 class="text-2xl font-bold text-gray-900">₹{{ number_format($paymentsCount) }}</h2>
-                        </div>
+                            <button wire:click="togglePaymentDetails" class="mt-2" >
+                                <span class="flex items-center">
+                                    <span class="w-8 h-8 flex items-center justify-center bg-blue-100 rounded-full mr-3">
+                                        
+                                            @if($showPaymentDetails)
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7z" />
+                                              </svg>
+                                              
+                                            @else
+                                            <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                                                </svg>
+                                            @endif
+                                        
+                                    </span>
+                                </span>
+                            </button>
+                                    </div>
                         <div class="p-2 bg-green-100 rounded-full">
                             <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -78,25 +97,7 @@
 
             <!-- Payment Details Section with modern toggle -->
             <div class="mb-8">
-                <button wire:click="togglePaymentDetails" class="group inline-flex items-center px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-all">
-                    <span class="flex items-center">
-                        <span class="w-8 h-8 flex items-center justify-center bg-blue-100 rounded-full mr-3">
-                            <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                @if($showPaymentDetails)
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-                                @else
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542-7z" />
-                                @endif
-                            </svg>
-                        </span>
-                        <span class="text-gray-700 group-hover:text-gray-900">{{ $showPaymentDetails ? 'Hide' : 'Show' }} Payment Details</span>
-                    </span>
-                </button>
-
+               
                 @if($showPaymentDetails)
                     <div class="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                         <div class="flex items-center">
@@ -270,21 +271,30 @@
                         <h2 class="text-lg font-semibold text-gray-900">Recent Notifications</h2>
                     </div>
                     <div class="divide-y divide-gray-100">
-                        @foreach ($enquiries as $enquiry)
-                            <div class="p-4 hover:bg-gray-50 transition-colors">
-                                <div class="flex items-start">
-                                    <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-yellow-100 rounded-full">
-                                        <svg class="w-4 h-4 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
-                                        </svg>
-                                    </span>
-                                    <div class="ml-3">
-                                        <p class="text-sm font-medium text-gray-900">{{ $enquiry->name }}</p>
-                                        <p class="text-sm text-gray-500">{{ $enquiry->message }}</p>
+                        @if ($enquiries->isEmpty())
+                            <div class="p-4 flex items-center justify-center text-gray-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M12 18.5a1.5 1.5 0 01-1.5-1.5h3a1.5 1.5 0 01-1.5 1.5zM12 3a9 9 0 00-9 9v3.5l-1.5 1.5h21l-1.5-1.5V12a9 9 0 00-9-9z" />
+                                </svg>
+                                No notifications
+                            </div>
+                        @else
+                            @foreach ($enquiries as $enquiry)
+                                <div class="p-4 hover:bg-gray-50 transition-colors">
+                                    <div class="flex items-start">
+                                        <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-yellow-100 rounded-full">
+                                            <svg class="w-4 h-4 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                                            </svg>
+                                        </span>
+                                        <div class="ml-3">
+                                            <p class="text-sm font-medium text-gray-900">{{ $enquiry->name }}</p>
+                                            <p class="text-sm text-gray-500">{{ $enquiry->message }}</p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        @endforeach
+                            @endforeach
+                        @endif
                     </div>
                 </div>
 

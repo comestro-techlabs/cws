@@ -83,7 +83,7 @@
                 </li>
 
                 <li>
-                    <a href="{{ route('public.workshops') }}"
+                    <a href="{{ route('public.workshop') }}"
                         class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
                         <span class="ms-3">Workshop</span>
                     </a>

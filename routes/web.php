@@ -24,6 +24,7 @@ use App\Livewire\Admin\Dashboad;
 use App\Livewire\Admin\ManageEnquiry;
 use App\Livewire\Admin\Student\AttendanceCalendar;
 use App\Livewire\Admin\Student\ManageStudent;
+use App\Livewire\Auth\Github;
 use App\Livewire\Student\Dashboard\Takeexam\Result;
 use App\Livewire\Student\Dashboard\Takeexam\ShowAllAttempt;
 use App\Livewire\Student\Dashboard\Takeexam\ShowQuiz;
@@ -59,7 +60,6 @@ use App\Livewire\Admin\MockTest\ManageMockTest;
 
 use App\Livewire\Admin\Student\AttendanceScanner;
 use App\Livewire\Auth\Login;
-use App\Livewire\Auth\Register;
 use App\Livewire\Public\Blog\CourseWithChapterAndTopic;
 use App\Livewire\Public\Blog\TopicWithPostContent;
 use App\Livewire\Public\Contact\ContactPage;
@@ -75,6 +75,9 @@ use App\Livewire\Student\Dashboard\StudentDashboard;
 use App\Livewire\Student\Dashboard\Takeexam\Exam;
 use App\Livewire\Student\MockTest\SelectMockTest;
 use App\Livewire\Student\MockTest\ShowMockTest;
+use App\Livewire\Student\MockTest\MockTestResult;
+use App\Livewire\Auth\GoogleLogin;
+use App\Livewire\Student\Rewards\GemsTransactions;
 // v3
 use App\Livewire\V3\Public\NewHome;
 
@@ -87,13 +90,22 @@ Route::get('/contact', ContactPage::class)->name('public.contactUs');
 Route::get('/workshops', Workshop::class)->name('public.workshop');
 
 Route::prefix('auth')->group(function () {
-    Route::get('/register', Register::class)->name('auth.register');
     Route::get('/login', Login::class)->name('auth.login');
     Route::get('/logout', Header::class)->name('auth.logout');
+    Route::get('/google', [GoogleLogin::class, 'redirectToGoogle'])->name('auth.google.login');
+    Route::get('/google/callback', [GoogleLogin::class, 'handleGoogleCallback'])->name('auth.google.callback');
+    Route::get('/github/redirect', [Github::class, 'redirectToGithub'])->name('github.redirect');
+    Route::get('/github/callback', [Github::class, 'handleGithubCallback'])->name('github.callback');
+
+    Route::get('/viewallcourses', AllCourses::class)->name('public.viewallcourses.all-courses');
+    Route::get('/courses/{slug}', Ourcourses::class)->name('public.courseDetail');
+    Route::get('/contact', ContactPage::class)->name('public.contactUs');
+    Route::get('/workshops', Workshop::class)->name('public.workshop');
+
 });
-    //routes for the free course
-    Route::get('/course/{course_id}/chapter/show',CourseWithChapterAndTopic::class)->name('v2.courses.show');
-    Route::get('/course/{course_id}/chapter/{chapter_id?}/topic/{topic_id?}/show',TopicWithPostContent::class)->name('v2.topics.show');
+//routes for the free course
+Route::get('/course/{course_id}/chapter/show', CourseWithChapterAndTopic::class)->name('v2.courses.show');
+Route::get('/course/{course_id}/chapter/{chapter_id?}/topic/{topic_id?}/show', TopicWithPostContent::class)->name('v2.topics.show');
 
 
 Route::prefix("student")->group(function () {
@@ -118,7 +130,9 @@ Route::prefix("student")->group(function () {
         Route::get('/assignments/upload/{id}', 'viewAssignments')->name('student.assignment-upload');
         Route::get('/viewCertificate/{userId}', 'showCertificate')->name('student.viewCertificate');
         Route::get('/certificate/{userId}', 'Certificate')->name('student.certificate');
+        Route::get('/rewards/gems', GemsTransactions::class)->name('student.rewards.gems');
     });
+
 });
 
 
@@ -253,8 +267,8 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::post('/placed-students/{placedStudent}/toggle-status', [PlacedStudentController::class, 'toggleStatus'])->name('placedStudent.toggleStatus');
     });
 
-     // Version 2 Routes (Livewire)
-     Route::prefix('v2/admin')->group(function () {
+    // Version 2 Routes (Livewire)
+    Route::prefix('v2/admin')->group(function () {
         Route::get('/dashboard', Dashboad::class)->name('admin.dashboard');
         Route::get('/logout', [Dashboad::class, 'logout'])->name('admin.logout');
         Route::get('/category', ManageCategory::class)->name('admin.category');
@@ -359,9 +373,11 @@ Route::prefix('v2')->group(function () {
         Route::get('/show-quiz/{courseId}', ShowQuiz::class)->name('v2.student.quiz');
         Route::get('/show-all-attempt/{course_id}', ShowAllAttempt::class)->name('v2.student.allAttempts');
         Route::get('show-quiz/result/{exam_id}', Result::class)->name('v2.student.examResult');
-        Route::get('/my-attendance', MyAttendance::class)->name('student.my-attendance');
-        Route::get('/mocktest/course', SelectMockTest::class)->name('v2.student.mocktest.course');
-        Route::get('/mocktest/course/{mockTestId}', ShowMockTest::class)->name('v2.student.mocktest.take');
+        route::get('/my-attendance', MyAttendance::class)->name('student.my-attendance');
+        Route::get('/mocktest', SelectMockTest::class)->name('v2.student.mocktest');
+        Route::get('/mocktest/{mockTestId}', ShowMockTest::class)->name('v2.student.mocktest.take');
+        Route::get('/mocktest/result/{mockTestId}', MockTestResult::class)->name('v2.student.mocktest.result');
+
 
         Route::get('/products', OurProducts::class)->name('v2.student.products');
     });
@@ -405,9 +421,7 @@ Route::get('generate', function () {
 //     Route::post('verify-otp', 'verifyOtp')->name('verify.otp');
 //     Route::post('send-otp', 'sendOtp')->name('auth.sendOtp');
 
-//     // Route::get('/register', 'showRegistrationForm')->name('auth.register');
-//     // Route::post('/register', 'register')->name('auth.register.post');
-//     Route::post('/verify-otp-register', [AuthController::class, 'verifyOtpRegister'])->name('auth.verifyOtp.register');
+//    Route::post('/verify-otp-register', [AuthController::class, 'verifyOtpRegister'])->name('auth.verifyOtp.register');
 //     // Route::get('/logout', 'logout')->name('auth.logout');
 // });
 
@@ -416,6 +430,6 @@ Route::get('/launch', function () {
 });
 
 
-// Route::get('/workshops', [WorkshopController::class, 'index'])->name('public.workshops');
+// Route::get('/workshops', [WorkshopController::class, 'index'])->name('public.workshop');
 Route::get('/workshop/{id}/enroll', [WorkshopController::class, 'buyWorkshop'])->name('workshop.enroll');
 

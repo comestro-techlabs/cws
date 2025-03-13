@@ -15,10 +15,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('mock_test_id')->constrained()->onDelete('cascade');
-            $table->unsignedInteger('set_number');
+            $table->json('answers');
             $table->unsignedInteger('score');
+            $table->integer('total_questions');
             $table->timestamp('completed_at')->nullable();
-            $table->unique(['user_id', 'mock_test_id', 'set_number'], 'unique_user_test_set');
+            $table->unique(['user_id', 'mock_test_id'], 'user_mock_test_unique');
             $table->timestamps();
         });
     }
