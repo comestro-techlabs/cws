@@ -96,7 +96,9 @@ Route::prefix('auth')->group(function () {
     Route::get('/google/callback', [GoogleLogin::class, 'handleGoogleCallback'])->name('auth.google.callback');
     Route::get('/github/redirect', [Github::class, 'redirectToGithub'])->name('github.redirect');
     Route::get('/github/callback', [Github::class, 'handleGithubCallback'])->name('github.callback');
-
+    Route::get('/linkedin/redirect', [LinkedinLogin::class, 'redirectToLinkedin'])->name('linkedin.redirect');
+    Route::get('/linkedin-openid/callback', [LinkedinLogin::class, 'handleLinkedinCallback'])->name('linkedin.callback');
+    
     Route::get('/viewallcourses', AllCourses::class)->name('public.viewallcourses.all-courses');
     Route::get('/courses/{slug}', Ourcourses::class)->name('public.courseDetail');
     Route::get('/contact', ContactPage::class)->name('public.contactUs');
@@ -107,8 +109,6 @@ Route::prefix('auth')->group(function () {
 Route::get('/course/{course_id}/chapter/show', CourseWithChapterAndTopic::class)->name('v2.courses.show');
 Route::get('/course/{course_id}/chapter/{chapter_id?}/topic/{topic_id?}/show', TopicWithPostContent::class)->name('v2.topics.show');
 
-Route::get('/linkedin/redirect', [LinkedinLogin::class, 'redirectToLinkedin'])->name('linkedin.redirect');
-Route::get('/linkedin/callback', [LinkedinLogin::class, 'handleLinkedinCallback'])->name('linkedin.callback');
 
 Route::prefix("student")->group(function () {
     Route::get('/dashboard', StudentDashboard::class)->name('student.dashboard');

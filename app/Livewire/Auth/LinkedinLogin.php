@@ -12,13 +12,13 @@ class LinkedinLogin extends Component
 
     public function redirectToLinkedin() 
     {
-        return redirect()->to(Socialite::driver('linkedin')->redirect()->getTargetUrl());
+        return redirect()->to(Socialite::driver('linkedin-openid')->redirect()->getTargetUrl());
     }
     
     public function handleLinkedinCallback() 
     {
         try {
-            $linkedinUser = Socialite::driver('linkedin')->stateless()->user();
+            $linkedinUser = Socialite::driver('linkedin-openid')->stateless()->user();
             \Log::info('Linkedin User: ', (array) $linkedinUser);
             $existingUser = User::where('email', $linkedinUser->getEmail())->first();
 
@@ -36,9 +36,7 @@ class LinkedinLogin extends Component
                 Auth::login($newUser);
             }
 
-            return redirect()->intended(
-                Auth::user()->isAdmin ? '/admin/dashboard' : '/'
-            );
+            return redirect()->intended(Auth::user()->isAdmin == 1 ? '/v2/admin/dashboard' : '/');
         } catch (\Exception $e) {
             \Log::error('LinkedIn login error: ' . $e->getMessage());
             $this->errorMessage = 'Unable to login with LinkedIn, please try again.';
