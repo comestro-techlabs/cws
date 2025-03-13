@@ -25,6 +25,6 @@ class Workshop extends Component
     }
     public function render()
     {
-        return view('livewire.public.workshop.workshop');
+        return view('livewire.public.workshops.workshop');
     }
 }

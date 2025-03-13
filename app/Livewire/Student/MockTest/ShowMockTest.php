@@ -5,8 +5,10 @@ namespace App\Livewire\Student\MockTest;
 use App\Models\MockTest;
 use Livewire\Component;
 use App\Models\MockTestQuestion;
+use App\Models\MockTestResult;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
+
 #[Layout('components.layouts.student')]
 #[Title('Mock Test')]
 class ShowMockTest extends Component
@@ -19,14 +21,26 @@ class ShowMockTest extends Component
     public $attempted = false;
     public $submitted = false;
 
-    public function mount($mockTestId){
+    public function mount($mockTestId)
+    {
         $this->mockTestId = $mockTestId;
         $this->mockTest = MockTest::findOrFail($mockTestId);
         $this->questions = MockTestQuestion::where('mocktest_id', $mockTestId)->get()->toArray();
-        $attempts = session()->get('test_attempts', []);
-        $this->attempted = in_array($mockTestId, $attempts);
-        $this->submitted = $this->attempted;
-       
+        
+        $existingResult = MockTestResult::where('user_id', auth()->id())
+            ->where('mock_test_id', $mockTestId)
+            ->first();
+            
+        if ($existingResult) {
+            $this->attempted = true;
+            $this->submitted = true;
+            $this->answers = json_decode($existingResult->answers, true) ?? [];
+        }
+    }
+
+    public function updateAnswer($questionId, $answer)
+    {
+        $this->answers[$questionId] = $answer;
     }
 
     public function nextQuestion()
@@ -34,16 +48,17 @@ class ShowMockTest extends Component
         if ($this->currentQuestionIndex < count($this->questions) - 1) {
             $this->currentQuestionIndex++;
         }
-        
     }
 
-    public function previousQuestion(){
+    public function previousQuestion()
+    {
         if ($this->currentQuestionIndex > 0) {
             $this->currentQuestionIndex--;
         }
     }
 
-    public function goToQuestion($index){
+    public function goToQuestion($index)
+    {
         if ($index >= 0 && $index < count($this->questions)) {
             $this->currentQuestionIndex = $index;
         }
@@ -52,7 +67,8 @@ class ShowMockTest extends Component
     public function submitTest()
     {
         if ($this->submitted) {
-            return redirect()->route('student.tests')->with('error', 'You have already submitted this test');
+            return redirect()->route('v2.student.mocktest')
+                ->with('error', 'You have already submitted this test');
         }
 
         $score = 0;
@@ -63,23 +79,22 @@ class ShowMockTest extends Component
             }
         }
 
-        // Store attempt in session
-        $attempts = session()->get('test_attempts', []);
-        $attempts[] = $this->mockTestId;
-        session()->put('test_attempts', array_unique($attempts));
-        
-        // Store results in session (optional, if you want to show results later)
-        session()->put("test_result_{$this->mockTestId}", [
+        MockTestResult::create([
+            'user_id' => auth()->id(),
+            'mock_test_id' => $this->mockTestId,
+            'answers' => json_encode($this->answers),
             'score' => $score,
-            'total' => count($this->questions),
-            'answers' => $this->answers,
+            'total_questions' => count($this->questions),
+            'completed_at' => now(),
         ]);
 
         $this->submitted = true;
         $this->attempted = true;
 
-        return redirect()->route('v2.student.mocktest.course')->with('success', 'Test submitted successfully');
+        return redirect()->route('v2.student.mocktest.result', ['mockTestId' => $this->mockTestId])
+            ->with('success', 'Test submitted successfully');
     }
+
     public function render()
     {
         return view('livewire.student.mock-test.show-mock-test');

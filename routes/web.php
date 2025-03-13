@@ -60,7 +60,6 @@ use App\Livewire\Admin\MockTest\ManageMockTest;
 
 use App\Livewire\Admin\Student\AttendanceScanner;
 use App\Livewire\Auth\Login;
-use App\Livewire\Auth\Register;
 use App\Livewire\Public\Blog\CourseWithChapterAndTopic;
 use App\Livewire\Public\Blog\TopicWithPostContent;
 use App\Livewire\Public\Contact\ContactPage;
@@ -76,6 +75,7 @@ use App\Livewire\Student\Dashboard\StudentDashboard;
 use App\Livewire\Student\Dashboard\Takeexam\Exam;
 use App\Livewire\Student\MockTest\SelectMockTest;
 use App\Livewire\Student\MockTest\ShowMockTest;
+use App\Livewire\Student\MockTest\MockTestResult;
 use App\Livewire\Auth\GoogleLogin;
 
 // v3
@@ -90,7 +90,6 @@ Route::get('/contact', ContactPage::class)->name('public.contactUs');
 Route::get('/workshops', Workshop::class)->name('public.workshop');
 
 Route::prefix('auth')->group(function () {
-    Route::get('/register', Register::class)->name('auth.register');
     Route::get('/login', Login::class)->name('auth.login');
     Route::get('/logout', Header::class)->name('auth.logout');
     Route::get('/google', [GoogleLogin::class, 'redirectToGoogle'])->name('auth.google.login');
@@ -372,9 +371,11 @@ Route::prefix('v2')->group(function () {
         Route::get('/show-quiz/{courseId}', ShowQuiz::class)->name('v2.student.quiz');
         Route::get('/show-all-attempt/{course_id}', ShowAllAttempt::class)->name('v2.student.allAttempts');
         Route::get('show-quiz/result/{exam_id}', Result::class)->name('v2.student.examResult');
-        Route::get('/my-attendance', MyAttendance::class)->name('student.my-attendance');
-        Route::get('/mocktest/course', SelectMockTest::class)->name('v2.student.mocktest.course');
-        Route::get('/mocktest/course/{mockTestId}', ShowMockTest::class)->name('v2.student.mocktest.take');
+        route::get('/my-attendance', MyAttendance::class)->name('student.my-attendance');
+        Route::get('/mocktest', SelectMockTest::class)->name('v2.student.mocktest');
+        Route::get('/mocktest/{mockTestId}', ShowMockTest::class)->name('v2.student.mocktest.take');
+        Route::get('/mocktest/result/{mockTestId}', MockTestResult::class)->name('v2.student.mocktest.result');
+       
 
         Route::get('/products', OurProducts::class)->name('v2.student.products');
     });
@@ -418,9 +419,7 @@ Route::get('generate', function () {
 //     Route::post('verify-otp', 'verifyOtp')->name('verify.otp');
 //     Route::post('send-otp', 'sendOtp')->name('auth.sendOtp');
 
-//     // Route::get('/register', 'showRegistrationForm')->name('auth.register');
-//     // Route::post('/register', 'register')->name('auth.register.post');
-//     Route::post('/verify-otp-register', [AuthController::class, 'verifyOtpRegister'])->name('auth.verifyOtp.register');
+//    Route::post('/verify-otp-register', [AuthController::class, 'verifyOtpRegister'])->name('auth.verifyOtp.register');
 //     // Route::get('/logout', 'logout')->name('auth.logout');
 // });
 
