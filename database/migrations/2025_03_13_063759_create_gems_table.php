@@ -11,15 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('mock_test_results', function (Blueprint $table) {
+        Schema::create('gems', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('mock_test_id')->constrained()->onDelete('cascade');
-            $table->json('answers');
-            $table->unsignedInteger('score');
-            $table->integer('total_questions');
-            $table->timestamp('completed_at')->nullable();
-            $table->unique(['user_id', 'mock_test_id'], 'user_mock_test_unique');
+            $table->unsignedInteger('gems_earned')->default(0); 
+            $table->unsignedInteger('redeemed_gems')->default(0);
             $table->timestamps();
         });
     }
@@ -29,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('mock_test_results');
+        Schema::dropIfExists('gems');
     }
 };
