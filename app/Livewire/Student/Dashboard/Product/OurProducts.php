@@ -21,12 +21,15 @@ class OurProducts extends Component
     }
     public function updatedSelectedCategory($categoryId)
     {
+        // dd($categoryId);
+
         if ($categoryId == '') {
-            $this->products = Products::all(); // Show all products if no category is selected
+            $this->products = Products::all(); 
         } else {
             $this->products = Products::where('product_category_id', $categoryId)->get();
         }
     }
+  
 
 
     #[Layout('components.layouts.student')]
