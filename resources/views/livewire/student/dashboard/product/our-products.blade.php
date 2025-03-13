@@ -53,7 +53,7 @@
                         <h2 class="text-white text-2xl font-bold">1,250 Gems</h2>
                     </div>
                 </div>
-                <a href="#" class="px-4 py-2 bg-white text-primary rounded-lg font-medium text-sm hover:bg-purple-50 transition duration-200">
+                <a href="{{ route('student.rewards.gems') }}" class="px-4 py-2 bg-white text-primary rounded-lg font-medium text-sm hover:bg-purple-50 transition duration-200">
                     Transaction History
                 </a>
             </div>
