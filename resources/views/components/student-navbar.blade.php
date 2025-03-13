@@ -11,75 +11,96 @@
         class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
         :class="{'translate-x-0': sidebarOpen, '-translate-x-full': !sidebarOpen}">
         <div class="h-full px-3 py-4 overflow-y-auto bg-white border-r border-gray-100">
-            <div class="flex flex-col items-center pb-5">
-                <img class="w-24 h-24 mb-3 rounded-full ring-2 ring-purple-600 ring-offset-2" src="{{ asset('user.png') }}" alt="User Profile" />
-                <h5 class="mb-1 text-sm font-medium text-gray-900 capitalize">
-                    @if (auth()->check())
-                    {{ auth()->user()->name }}
-                    @endif
-                </h5>
-                @if (auth()->check() && auth()->user()->is_member)
-                <span class="px-3 py-1 text-sm font-medium text-purple-700 bg-purple-50 rounded-full">
-                    Member
-                </span>
-                @endif
+            <div class="flex flex-col items-center pb-3 border-b border-gray-100">
+                <div class="relative flex items-center w-full px-2">
+                    <div class="flex items-center space-x-3">
+                        <div class="relative group">
+                            <div class="relative">
+                                <img class="w-11 h-11 rounded-full ring-2 ring-purple-600 ring-offset-2 transition-all duration-200 group-hover:ring-purple-500 group-hover:scale-105"
+                                     src="{{ asset('user.png') }}"
+                                     alt="User Profile" />
+                                <div class="absolute -bottom-0.5 -right-0.5 bg-green-500 border-2 border-white rounded-full w-3 h-3"></div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col min-w-0">
+                            <h5 class="text-sm font-semibold text-gray-900 truncate group-hover:text-purple-600 transition-colors duration-200">
+                                @if (auth()->check())
+                                    {{ auth()->user()->name }}
+                                @endif
+                            </h5>
+                            @if (auth()->check() && auth()->user()->is_member)
+                                <span class="inline-flex items-center mt-1 text-xs font-medium text-purple-700">
+                                    <span class="w-1.5 h-1.5 mr-1.5 bg-purple-600 rounded-full"></span>
+                                    Member
+                                </span>
+                            @else
+                                <span class="text-xs text-gray-500">Student</span>
+                            @endif
+                        </div>
+                    </div>
+                </div>
 
                 @if(auth()->check() && auth()->user()->barcode)
-                <div class="p-4 mt-2 bg-white rounded-lg shadow-sm">
+                <div class="w-full p-3 mt-2 bg-white rounded-lg shadow-sm border border-gray-100 hover:border-purple-200 transition">
                     <img src="data:image/png;base64,{{ DNS1D::getBarcodePNG(auth()->user()->barcode, 'C128') }}"
                         alt="barcode" class="w-full">
                 </div>
                 @endif
             </div>
 
-            <div class="space-y-1">
-                <!-- Main Navigation -->
-                <a wire:navigate href="{{ route('student.dashboard') }}"
-                    class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-purple-50 hover:text-purple-700 group transition duration-200">
-                    <svg class="w-6 h-6" viewBox="0 0 24 24">
-                        <defs>
-                            <linearGradient id="dashboardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" style="stop-color:#60A5FA"/>
-                                <stop offset="100%" style="stop-color:#3B82F6"/>
-                            </linearGradient>
-                        </defs>
-                        <path fill="url(#dashboardGradient)" d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z"/>
-                        <path fill="url(#dashboardGradient)" d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z"/>
-                    </svg>
-                    <span class="ml-3">Dashboard</span>
-                </a>
+            <nav class="space-y-1 mt-2">
+                <!-- Main Navigation Group -->
+                <div class="pb-2">
+                    <p class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Main</p>
+                    <a wire:navigate href="{{ route('student.dashboard') }}"
+                        class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-purple-50 hover:text-purple-700 group transition duration-200">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24">
+                            <defs>
+                                <linearGradient id="dashboardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#60A5FA"/>
+                                    <stop offset="100%" style="stop-color:#3B82F6"/>
+                                </linearGradient>
+                            </defs>
+                            <path fill="url(#dashboardGradient)" d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z"/>
+                            <path fill="url(#dashboardGradient)" d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z"/>
+                        </svg>
+                        <span class="ml-3">Dashboard</span>
+                    </a>
 
-                <!-- Add Gems Transactions Link -->
-                <a wire:navigate href="{{ route('student.rewards.gems') }}"
-                    class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-purple-50 hover:text-purple-700 group transition duration-200">
-                    <svg class="w-6 h-6" viewBox="0 0 24 24">
-                        <defs>
-                            <linearGradient id="gemTransactionGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" style="stop-color:#8B5CF6"/>
-                                <stop offset="100%" style="stop-color:#6366F1"/>
-                            </linearGradient>
-                        </defs>
-                        <path fill="url(#gemTransactionGradient)" d="M12 2L2 8l10 6 10-6-10-6zM2 15l10 6 10-6M2 19l10 6 10-6"/>
-                    </svg>
-                    <span class="ml-3">My Gems</span>
-                </a>
+                    <!-- Add Gems Transactions Link -->
+                    <a wire:navigate href="{{ route('student.rewards.gems') }}"
+                        class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-purple-50 hover:text-purple-700 group transition duration-200">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24">
+                            <defs>
+                                <linearGradient id="gemTransactionGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#8B5CF6"/>
+                                    <stop offset="100%" style="stop-color:#6366F1"/>
+                                </linearGradient>
+                            </defs>
+                            <path fill="url(#gemTransactionGradient)" d="M12 2L2 8l10 6 10-6-10-6zM2 15l10 6 10-6M2 19l10 6 10-6"/>
+                        </svg>
+                        <span class="ml-3">My Gems</span>
+                    </a>
 
-                <a wire:navigate href="{{ route('student.exploreCourses') }}"
-                    class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-purple-50 hover:text-purple-700 group transition duration-200">
-                    <svg class="w-6 h-6" viewBox="0 0 24 24">
-                        <defs>
-                            <linearGradient id="courseGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" style="stop-color:#34D399"/>
-                                <stop offset="100%" style="stop-color:#059669"/>
-                            </linearGradient>
-                        </defs>
-                        <path fill="url(#courseGradient)" d="M11.7 2.805a.75.75 0 01.6 0A60.65 60.65 0 0122.83 8.72a.75.75 0 01-.231 1.337 49.949 49.949 0 00-9.902 3.912l-.003.002c-.114.06-.227.119-.34.18a.75.75 0 01-.707 0A50.88 50.88 0 007.5 12.173v-.224c0-.131.067-.248.172-.311a54.615 54.615 0 014.653-2.52.75.75 0 00-.65-1.352 56.123 56.123 0 00-4.78 2.589 1.858 1.858 0 00-.859 1.228 49.803 49.803 0 00-4.634-1.527.75.75 0 01-.231-1.337A60.653 60.653 0 0111.7 2.805z"/>
-                    </svg>
-                    <span class="ml-3">Explore Courses</span>
-                </a>
+                    <a wire:navigate href="{{ route('student.exploreCourses') }}"
+                        class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-purple-50 hover:text-purple-700 group transition duration-200">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24">
+                            <defs>
+                                <linearGradient id="courseGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#34D399"/>
+                                    <stop offset="100%" style="stop-color:#059669"/>
+                                </linearGradient>
+                            </defs>
+                            <path fill="url(#courseGradient)" d="M11.7 2.805a.75.75 0 01.6 0A60.65 60.65 0 0122.83 8.72a.75.75 0 01-.231 1.337 49.949 49.949 0 00-9.902 3.912l-.003.002c-.114.06-.227.119-.34.18a.75.75 0 01-.707 0A50.88 50.88 0 007.5 12.173v-.224c0-.131.067-.248.172-.311a54.615 54.615 0 014.653-2.52.75.75 0 00-.65-1.352 56.123 56.123 0 00-4.78 2.589 1.858 1.858 0 00-.859 1.228 49.803 49.803 0 00-4.634-1.527.75.75 0 01-.231-1.337A60.653 60.653 0 0111.7 2.805Z"/>
+                        </svg>
+                        <span class="ml-3">Explore Courses</span>
+                    </a>
+                </div>
 
-                <!-- Priority Navigation Items -->
-                <div class="mt-2 pt-2 border-t border-gray-100">
+                <!-- Learning Group -->
+                <div class="py-2">
+                    <p class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Learning</p>
                     <a wire:navigate href="{{ route('student.billing') }}"
                         class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-purple-50 hover:text-purple-700 group transition duration-200">
                         <svg class="flex-shrink-0 w-5 h-5 mr-3 text-amber-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -104,13 +125,7 @@
                         </svg>
                         Assignments
                     </a>
-                    <a wire:navigate href="{{ route('v2.student.mocktest') }}"
-                        class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-purple-50 hover:text-purple-700 group transition duration-200">
-                        <svg class="flex-shrink-0 w-5 h-5 mr-3 text-emerald-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path fill-rule="evenodd" d="M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V12.75A3.75 3.75 0 0 0 16.5 9h-1.875a1.875 1.875 0 0 1-1.875-1.875V5.25A3.75 3.75 0 0 0 9 1.5H5.625ZM7.5 15a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5h-7.5A.75.75 0 0 1 7.5 15Zm.75 2.25a.75.75 0 0 0 0 1.5H12a.75.75 0 0 0 0-1.5H8.25Z" clip-rule="evenodd" />
-                        </svg>
-                        MockTest
-                    </a>
+
 
                     @if (isset($hasCompleted) && $hasCompleted)
                     <a wire:navigate href="{{ route('v2.student.examResult') }}"
@@ -160,8 +175,9 @@
                     @endif
                 </div>
 
-                <!-- Settings & Account -->
-                <div class="mt-2 pt-2 border-t border-gray-100">
+                <!-- Settings Group -->
+                <div class="py-2">
+                    <p class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Settings</p>
                     <a wire:navigate href="{{ route('student.v2edit.profile') }}"
                         class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-purple-50 hover:text-purple-700 group transition duration-200">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
@@ -224,7 +240,7 @@
                         <span class="flex-1 ms-3 whitespace-nowrap">Logout</span>
                     </a>
                 </div>
-            </div>
+            </nav>
         </div>
     </aside>
 
