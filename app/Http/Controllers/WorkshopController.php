@@ -71,10 +71,10 @@ public function buyWorkshop($id)
                 'updated_at'   => now(),
             ]);
 
-            return redirect()->route('public.workshops')->with('success', 'You have been enrolled in the workshop for free.');
+            return redirect()->route('public.workshop')->with('success', 'You have been enrolled in the workshop for free.');
         }
 
-        return redirect()->route('public.workshops')->with('info', 'You are already enrolled.');
+        return redirect()->route('public.workshop')->with('info', 'You are already enrolled.');
     }
 
     return view("public.workshop", compact('workshop', 'payment_exist'));

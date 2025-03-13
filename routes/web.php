@@ -416,6 +416,6 @@ Route::get('/launch', function () {
 });
 
 
-// Route::get('/workshops', [WorkshopController::class, 'index'])->name('public.workshops');
+// Route::get('/workshops', [WorkshopController::class, 'index'])->name('public.workshop');
 Route::get('/workshop/{id}/enroll', [WorkshopController::class, 'buyWorkshop'])->name('workshop.enroll');
 
