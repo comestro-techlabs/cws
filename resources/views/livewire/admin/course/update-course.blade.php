@@ -40,7 +40,7 @@
                                 </div>
                                 @error($field)
                                 <p class="text-sm text-red-600">{{ $message }}</p>
-                                @enderrorhttp://127.0.0.1:8000/v2/student/billing
+                                @enderror
                             </div>
                             @endforeach
                         </div>
