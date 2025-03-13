@@ -45,6 +45,11 @@ return [
         'client_secret' => env('GITHUB_CLIENT_SECRET'),
         'redirect' => 'http://127.0.0.1:8000/auth/github/callback',
     ],
+    'linkedin' => [
+        'client_id' => env('LINKEDIN_CLIENT_ID'),
+        'client_secret' => env('LINKEDIN_CLIENT_SECRET'),
+        'redirect' => env('LINKEDIN_REDIRECT_URI'),
+    ],
     'slack' => [
         'notifications' => [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),
