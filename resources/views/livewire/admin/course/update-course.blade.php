@@ -30,12 +30,24 @@
                             ] as [$field, $label])
                             <div class="space-y-2">
                                 <label class="text-sm font-medium text-gray-700">{{ $label }}</label>
-                                <div class="flex gap-2 mt-2">
+                                <div class="flex gap-2 mt-2 relative">
                                     <input type="text" wire:model.defer="{{ $field }}"
-                                        class="flex-1 rounded-lg border-gray-300 shadow-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 p-2">
+                                        {{ !$editing || $editingField !== $field ? 'disabled' : '' }}
+                                        class="flex-1 rounded-lg border-gray-300 shadow-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 p-2 disabled:bg-gray-50">
+                                    <div wire:loading.delay wire:target="saveField('{{ $field }}')"
+                                        class="absolute inset-0 bg-white bg-opacity-50 flex items-center justify-center">
+                                        <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
+                                    </div>
                                     <button wire:click="saveField('{{ $field }}')"
+                                        wire:loading.attr="disabled"
+                                        wire:loading.class="opacity-50 cursor-not-allowed"
                                         class="px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors">
-                                        {{ $course->$field ? 'Edit' : 'Save' }}
+                                        <span wire:loading.remove wire:target="saveField('{{ $field }}')">
+                                            {{ $editingField === $field ? 'Save' : 'Edit' }}
+                                        </span>
+                                        <span wire:loading wire:target="saveField('{{ $field }}')">
+                                            Saving...
+                                        </span>
                                     </button>
                                 </div>
                                 @error($field)
@@ -91,6 +103,17 @@
                             <div class="space-y-4">
                                 <label class="text-sm font-medium text-gray-700">Course Image</label>
                                 <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 mt-2">
+                                    <!-- Progress Bar -->
+                                    <div wire:loading wire:target="tempImage" class="mb-4">
+                                        <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                                            <div class="h-full bg-blue-500 rounded-full transition-all duration-300"
+                                                style="width: {{ $progress }}%"></div>
+                                        </div>
+                                        <p class="text-sm text-gray-600 text-center mt-2">
+                                            Uploading... {{ $progress }}%
+                                        </p>
+                                    </div>
+
                                     <div class="flex items-center justify-center h-32">
                                         @if ($previewImage || $course->course_image)
                                         <!-- <img src="{{ $previewImage ?? asset('storage/' . $course->course_image) }}"

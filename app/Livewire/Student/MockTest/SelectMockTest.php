@@ -18,6 +18,7 @@ class SelectMockTest extends Component
     public $courses;
     public $levels = ['beginners', 'intermediate', 'hard'];
 
+
     public function mount()
     {
         $this->courses = Course::has('mockTests')->with(['mockTests'])->get();
@@ -39,7 +40,7 @@ class SelectMockTest extends Component
         $this->selectedLevel = null;
     }
     public function render()
-    {   
+    {
         $mockTests = [];
         if ($this->selectedCourseId && $this->selectedLevel) {
             $mockTests = MockTest::where('course_id', $this->selectedCourseId)
@@ -47,7 +48,7 @@ class SelectMockTest extends Component
                 ->where('status', true)
                 ->get();
         }
-        
+
         return view('livewire.student.mock-test.select-mock-test', [
             'mockTests' => $mockTests
         ]);

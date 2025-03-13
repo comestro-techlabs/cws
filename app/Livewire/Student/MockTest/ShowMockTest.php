@@ -10,7 +10,7 @@ use App\Models\MockTestResult;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 
-#[Layout('components.layouts.student')]
+#[Layout('components.layouts.exam')]
 #[Title('Mock Test')]
 class ShowMockTest extends Component
 {
@@ -29,15 +29,26 @@ class ShowMockTest extends Component
         $this->mockTestId = $mockTestId;
         $this->mockTest = MockTest::findOrFail($mockTestId);
         $this->questions = MockTestQuestion::where('mocktest_id', $mockTestId)->get()->toArray();
-        
+
         $existingResult = MockTestResult::where('user_id', auth()->id())
             ->where('mock_test_id', $mockTestId)
             ->first();
-            
+
         if ($existingResult) {
             $this->attempted = true;
             $this->submitted = true;
             $this->answers = json_decode($existingResult->answers, true) ?? [];
+        }
+    }
+
+    public function saveAndNext($selectedOption)
+    {
+        $currentQuestion = $this->questions[$this->currentQuestionIndex];
+        $this->answers[$currentQuestion['id']] = $selectedOption;
+
+        // Auto navigate to next question if not on last question
+        if ($this->currentQuestionIndex < count($this->questions) - 1) {
+            $this->currentQuestionIndex++;
         }
     }
 
@@ -76,7 +87,7 @@ class ShowMockTest extends Component
 
         $score = 0;
         foreach ($this->questions as $question) {
-            if (isset($this->answers[$question['id']]) && 
+            if (isset($this->answers[$question['id']]) &&
                 $this->answers[$question['id']] === $question['correct_answer']) {
                 $score += $question['marks'];
             }
