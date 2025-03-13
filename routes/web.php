@@ -25,6 +25,7 @@ use App\Livewire\Admin\ManageEnquiry;
 use App\Livewire\Admin\Student\AttendanceCalendar;
 use App\Livewire\Admin\Student\ManageStudent;
 use App\Livewire\Auth\Github;
+use App\Livewire\Auth\LinkedinLogin;
 use App\Livewire\Student\Dashboard\Takeexam\Result;
 use App\Livewire\Student\Dashboard\Takeexam\ShowAllAttempt;
 use App\Livewire\Student\Dashboard\Takeexam\ShowQuiz;
@@ -104,6 +105,9 @@ Route::prefix('auth')->group(function () {
 //routes for the free course
 Route::get('/course/{course_id}/chapter/show', CourseWithChapterAndTopic::class)->name('v2.courses.show');
 Route::get('/course/{course_id}/chapter/{chapter_id?}/topic/{topic_id?}/show', TopicWithPostContent::class)->name('v2.topics.show');
+
+Route::get('/linkedin/redirect', [LinkedinLogin::class, 'redirectToLinkedin'])->name('linkedin.redirect');
+Route::get('/linkedin/callback', [LinkedinLogin::class, 'handleLinkedinCallback'])->name('linkedin.callback');
 
 Route::prefix("student")->group(function () {
     Route::get('/dashboard', StudentDashboard::class)->name('student.dashboard');

@@ -16,20 +16,20 @@
                         </svg>
                     </div>
                     <input wire:model.live="search" type="text" placeholder="Search for products..." 
-                        class="w-full pl-10 pr-4 py-2.5 text-gray-800 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none transition duration-200">
+                        class="w-full pl-10 pr-4 py-2.5 text-gray-800 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none transition duration-200">
                 </div>
                 
                 <!-- Category Filter Dropdown -->
                 <div class="w-full sm:w-auto">
-                    <select wire:model="selectedCategory" class="w-full py-2.5 px-4 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none transition duration-200">
+                    <select wire:model.live="selectedCategory" class="w-full py-2.5 px-4 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none transition duration-200">
                         <option value="">All Categories</option>
                         @foreach($categories as $id => $name)
                             <option value="{{ $id }}">{{ ucfirst($name) }}</option>
                         @endforeach
                     </select>
                 </div>
-                
-                <button wire:loading.attr="disabled" class="px-6 py-2.5 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 transition duration-200 whitespace-nowrap">
+
+                <button wire:loading.attr="disabled" class="px-6 py-2.5 bg-primary text-white rounded-lg hover:bg-primary focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition duration-200 whitespace-nowrap">
                     <div class="flex items-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
@@ -41,7 +41,7 @@
         </div>
 
         <!-- User Gem Balance -->
-        <div class="mb-8 bg-gradient-to-r from-purple-500 to-white rounded-lg shadow-md p-4">
+        <div class="mb-8 bg-gradient-to-r from-purple-700 to-white rounded-lg shadow-md p-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10 text-white mr-3">
@@ -50,10 +50,10 @@
                     </svg>
                     <div>
                         <p class="text-white text-sm font-medium">Your Balance</p>
-                        <h2 class="text-white text-2xl font-bold">1,250 Gems</h2>
+                        <h2 class="text-white text-2xl font-bold">{{$totalAvailableGems}} Gems</h2>
                     </div>
                 </div>
-                <a href="#" class="px-4 py-2 bg-white text-emerald-700 rounded-lg font-medium text-sm hover:bg-emerald-50 transition duration-200">
+                <a href="{{ route('student.rewards.gems') }}" class="px-4 py-2 bg-white text-primary rounded-lg font-medium text-sm hover:bg-purple-50 transition duration-200">
                     Transaction History
                 </a>
             </div>
@@ -61,18 +61,18 @@
 
         <!-- Products Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            <!-- Product Card 1 -->
+            <!-- Product Card  -->
              @foreach ($products as $product)
-            <div class="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100 hover:border-emerald-200 hover:shadow-md transition duration-200">
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100 hover:border-purple-200 hover:shadow-md transition duration-200">
                 <div class="relative h-48">
-                    <img src="/api/placeholder/400/320" alt="Wireless Earbuds" class="w-full h-full object-cover">
-                    <div class="absolute top-2 right-2 bg-emerald-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                    <img src="{{$product->imageUrl}}" alt="{{$product->name}}" class="w-full h-full object-cover">
+                    <div class="absolute top-2 right-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded-full">
                         Popular
                     </div>
                 </div>
                 
                 <div class="p-5 space-y-3 flex-grow">
-                    <h2 class="text-lg font-semibold text-gray-900 leading-tight line-clamp-2 hover:text-emerald-600 transition-colors">
+                    <h2 class="text-lg font-semibold text-gray-900 leading-tight line-clamp-2 hover:text-primary transition-colors">
                             {{$product->name}}
                      </h2>
                     
@@ -82,14 +82,14 @@
                     
                     <!-- Product details -->
                     <div class="flex flex-wrap gap-2 pt-1">
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-blue-800">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3.5 h-3.5 mr-1">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z" />
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6Z" />
                             </svg>
                             {{$product->category->name}}
                         </span>
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-blue-800">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3.5 h-3.5 mr-1">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
                             </svg>
@@ -100,7 +100,7 @@
                 
                 <div class="px-5 py-4 flex justify-between items-center border-t border-gray-100">
                     <div class="flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-emerald-500 mr-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-purple-500 mr-1">
                             <path fill-rule="evenodd" d="M12 1.5a5.25 5.25 0 0 0-5.25 5.25v3a3 3 0 0 0-3 3v6.75a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3v-6.75a3 3 0 0 0-3-3v-3c0-2.9-2.35-5.25-5.25-5.25Zm3.75 8.25v-3a3.75 3.75 0 1 0-7.5 0v3h7.5Z" clip-rule="evenodd" />
                         </svg>
                         <span class="text-lg font-semibold text-gray-900">{{$product->points}}</span>
@@ -108,7 +108,9 @@
                     </div>
                     
                     <button wire:click="redeemProduct()" wire:loading.attr="disabled"
-                        class="px-4 py-2 bg-emerald-600 text-white font-medium rounded-lg hover:bg-emerald-700 focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 transition duration-200 text-sm">
+                        class="px-4 py-2 font-medium rounded-lg focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition duration-200 text-sm
+                        @if($totalAvailableGems <= $product->points) bg-gray-400 text-gray-200 cursor-not-allowed @else bg-primary text-white hover:bg-primary @endif"
+                        @disabled($totalAvailableGems <= $product->points)>
                         Redeem Now
                     </button>
                 </div>
@@ -130,29 +132,6 @@
             </div>
         </div>
 
-        <!-- Pagination -->
-        <div class="mt-10 flex justify-center">
-            <nav class="flex items-center space-x-2">
-                <a href="#" class="px-3 py-2 rounded-md bg-white border border-gray-300 text-gray-700 hover:bg-gray-50">
-                    Previous
-                </a>
-                <a href="#" class="px-3 py-2 rounded-md bg-emerald-600 text-white font-medium">
-                    1
-                </a>
-                <a href="#" class="px-3 py-2 rounded-md bg-white border border-gray-300 text-gray-700 hover:bg-gray-50">
-                    2
-                </a>
-                <a href="#" class="px-3 py-2 rounded-md bg-white border border-gray-300 text-gray-700 hover:bg-gray-50">
-                    3
-                </a>
-                <span class="px-2 text-gray-500">...</span>
-                <a href="#" class="px-3 py-2 rounded-md bg-white border border-gray-300 text-gray-700 hover:bg-gray-50">
-                    8
-                </a>
-                <a href="#" class="px-3 py-2 rounded-md bg-white border border-gray-300 text-gray-700 hover:bg-gray-50">
-                    Next
-                </a>
-            </nav>
-        </div>
+       <!-- removed pagination here -->
     </div>
 </div>

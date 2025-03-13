@@ -7,9 +7,12 @@
             </div>
             <hr/>
             <!-- Google Sign In -->
-            <div class="flex flex-1 space-y-2 flex-col mt-10">
+
+
+            <div class="flex flex-1 space-y-2 flex-col">
                 @livewire('auth.google-login')
                 @livewire('auth.github')
+                @livewire('auth.linkedin-login')
             </div>
         </div>
     </div>
