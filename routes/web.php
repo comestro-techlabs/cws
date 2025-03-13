@@ -112,6 +112,7 @@ Route::get('/linkedin/callback', [LinkedinLogin::class, 'handleLinkedinCallback'
 Route::prefix("student")->group(function () {
     Route::get('/dashboard', StudentDashboard::class)->name('student.dashboard');
     Route::get('/billing', ViewBilling::class)->name('student.billing');
+    Route::get('/rewards/gems', GemsTransactions::class)->name('student.rewards.gems');
 
     Route::controller(StudentController::class)->group(function () {
         Route::get('/viewbilling/{paymentId}', 'viewbilling')->name('student.viewbilling');
@@ -132,7 +133,6 @@ Route::prefix("student")->group(function () {
         Route::get('/assignments/upload/{id}', 'viewAssignments')->name('student.assignment-upload');
         Route::get('/viewCertificate/{userId}', 'showCertificate')->name('student.viewCertificate');
         Route::get('/certificate/{userId}', 'Certificate')->name('student.certificate');
-        Route::get('/rewards/gems', GemsTransactions::class)->name('student.rewards.gems');
     });
 });
 

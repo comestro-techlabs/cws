@@ -34,7 +34,7 @@
 
             <div class="space-y-1">
                 <!-- Main Navigation -->
-                <a wire:navigate href="{{ route('v2.student.dashboard') }}"
+                <a wire:navigate href="{{ route('student.dashboard') }}"
                     class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-purple-50 hover:text-purple-700 group transition duration-200">
                     <svg class="w-6 h-6" viewBox="0 0 24 24">
                         <defs>
