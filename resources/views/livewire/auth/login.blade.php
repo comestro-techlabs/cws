@@ -35,6 +35,7 @@
                     </svg>
                 </button>
                 @livewire('auth.google-login')
+                @livewire('auth.github')
                 @error('email')
                     <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span>
                 @enderror
