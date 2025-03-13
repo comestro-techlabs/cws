@@ -43,7 +43,6 @@ class GoogleLogin extends Component
         } catch (\Exception $e) {
 
             \Log::error($e->getMessage());
-            dd($e->getMessage());
             $this->errorMessage = 'Unable to login with Google, please try again.';
         }
     }
