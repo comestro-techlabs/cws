@@ -59,7 +59,6 @@ use App\Livewire\Admin\MockTest\ManageMockTest;
 
 use App\Livewire\Admin\Student\AttendanceScanner;
 use App\Livewire\Auth\Login;
-use App\Livewire\Auth\Register;
 use App\Livewire\Public\Blog\CourseWithChapterAndTopic;
 use App\Livewire\Public\Blog\TopicWithPostContent;
 use App\Livewire\Public\Contact\ContactPage;
@@ -89,7 +88,6 @@ Route::get('/contact', ContactPage::class)->name('public.contactUs');
 Route::get('/workshops', Workshop::class)->name('public.workshop');
 
 Route::prefix('auth')->group(function () {
-    Route::get('/register', Register::class)->name('auth.register');
     Route::get('/login', Login::class)->name('auth.login');
     Route::get('/logout', Header::class)->name('auth.logout');
     Route::get('/google', [GoogleLogin::class, 'redirectToGoogle'])->name('auth.google.login');
@@ -416,9 +414,7 @@ Route::get('generate', function () {
 //     Route::post('verify-otp', 'verifyOtp')->name('verify.otp');
 //     Route::post('send-otp', 'sendOtp')->name('auth.sendOtp');
 
-//     // Route::get('/register', 'showRegistrationForm')->name('auth.register');
-//     // Route::post('/register', 'register')->name('auth.register.post');
-//     Route::post('/verify-otp-register', [AuthController::class, 'verifyOtpRegister'])->name('auth.verifyOtp.register');
+//    Route::post('/verify-otp-register', [AuthController::class, 'verifyOtpRegister'])->name('auth.verifyOtp.register');
 //     // Route::get('/logout', 'logout')->name('auth.logout');
 // });
 
