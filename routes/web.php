@@ -24,6 +24,7 @@ use App\Livewire\Admin\Dashboad;
 use App\Livewire\Admin\ManageEnquiry;
 use App\Livewire\Admin\Student\AttendanceCalendar;
 use App\Livewire\Admin\Student\ManageStudent;
+use App\Livewire\Auth\Github;
 use App\Livewire\Student\Dashboard\Takeexam\Result;
 use App\Livewire\Student\Dashboard\Takeexam\ShowAllAttempt;
 use App\Livewire\Student\Dashboard\Takeexam\ShowQuiz;
@@ -93,7 +94,8 @@ Route::prefix('auth')->group(function () {
     Route::get('/logout', Header::class)->name('auth.logout');
     Route::get('/google', [GoogleLogin::class, 'redirectToGoogle'])->name('auth.google.login');
     Route::get('/google/callback', [GoogleLogin::class, 'handleGoogleCallback'])->name('auth.google.callback');
-
+    Route::get('/github/redirect', [Github::class, 'redirectToGithub'])->name('github.redirect');
+    Route::get('/github/callback', [Github::class, 'handleGithubCallback'])->name('github.callback');
 
     Route::get('/viewallcourses', AllCourses::class)->name('public.viewallcourses.all-courses');
     Route::get('/courses/{slug}', Ourcourses::class)->name('public.courseDetail');
@@ -101,9 +103,9 @@ Route::prefix('auth')->group(function () {
     Route::get('/workshops', Workshop::class)->name('public.workshop');
 
 });
-    //routes for the free course
-    Route::get('/course/{course_id}/chapter/show',CourseWithChapterAndTopic::class)->name('v2.courses.show');
-    Route::get('/course/{course_id}/chapter/{chapter_id?}/topic/{topic_id?}/show',TopicWithPostContent::class)->name('v2.topics.show');
+//routes for the free course
+Route::get('/course/{course_id}/chapter/show', CourseWithChapterAndTopic::class)->name('v2.courses.show');
+Route::get('/course/{course_id}/chapter/{chapter_id?}/topic/{topic_id?}/show', TopicWithPostContent::class)->name('v2.topics.show');
 
 
 Route::prefix("student")->group(function () {
@@ -129,6 +131,9 @@ Route::prefix("student")->group(function () {
         Route::get('/viewCertificate/{userId}', 'showCertificate')->name('student.viewCertificate');
         Route::get('/certificate/{userId}', 'Certificate')->name('student.certificate');
     });
+    Route::get('/student/rewards/gems', \App\Livewire\Student\Rewards\GemsTransactions::class)
+        ->name('student.rewards.gems')
+        ->middleware(['auth']);
 });
 
 
@@ -263,8 +268,8 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::post('/placed-students/{placedStudent}/toggle-status', [PlacedStudentController::class, 'toggleStatus'])->name('placedStudent.toggleStatus');
     });
 
-     // Version 2 Routes (Livewire)
-     Route::prefix('v2/admin')->group(function () {
+    // Version 2 Routes (Livewire)
+    Route::prefix('v2/admin')->group(function () {
         Route::get('/dashboard', Dashboad::class)->name('admin.dashboard');
         Route::get('/logout', [Dashboad::class, 'logout'])->name('admin.logout');
         Route::get('/category', ManageCategory::class)->name('admin.category');
@@ -373,7 +378,7 @@ Route::prefix('v2')->group(function () {
         Route::get('/mocktest', SelectMockTest::class)->name('v2.student.mocktest');
         Route::get('/mocktest/{mockTestId}', ShowMockTest::class)->name('v2.student.mocktest.take');
         Route::get('/mocktest/result/{mockTestId}', MockTestResult::class)->name('v2.student.mocktest.result');
-       
+
 
         Route::get('/products', OurProducts::class)->name('v2.student.products');
     });

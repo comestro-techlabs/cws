@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('education_qualification')->nullable();
             $table->boolean("isAdmin")->default(false);
             $table->timestamp('email_verified_at')->nullable();
+            $table->string("password");
             $table->date('dob')->nullable();
             // $table->string('password')->nullable();
             $table->integer('status')->default(0); //0 = new admission, 1 = new student, 2 = old student

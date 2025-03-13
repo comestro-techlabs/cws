@@ -6,25 +6,21 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('gems', function (Blueprint $table) {
+        Schema::create('gem_transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->unsignedInteger('gems_earned')->default(0); 
-            $table->unsignedInteger('redeemed_gems')->default(0);
+            $table->integer('amount');
+            $table->enum('type', ['earned', 'spent']);
+            $table->string('description');
+            $table->timestamp('expires_at')->nullable();
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('gems');
+        Schema::dropIfExists('gem_transactions');
     }
 };
