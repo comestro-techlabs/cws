@@ -25,6 +25,7 @@ use App\Livewire\Admin\ManageEnquiry;
 use App\Livewire\Admin\Student\AttendanceCalendar;
 use App\Livewire\Admin\Student\ManageStudent;
 use App\Livewire\Auth\Github;
+use App\Livewire\Auth\LinkedinLogin;
 use App\Livewire\Student\Dashboard\Takeexam\Result;
 use App\Livewire\Student\Dashboard\Takeexam\ShowAllAttempt;
 use App\Livewire\Student\Dashboard\Takeexam\ShowQuiz;
@@ -79,8 +80,6 @@ use App\Livewire\Student\MockTest\MockTestResult;
 use App\Livewire\Auth\GoogleLogin;
 use App\Livewire\Student\Dashboard\Product\CheckOutPage;
 use App\Livewire\Student\Rewards\GemsTransactions;
-// v3
-use App\Livewire\V3\Public\NewHome;
 
 Route::get('/', Home::class)->name('public.index');
 
@@ -108,11 +107,15 @@ Route::prefix('auth')->group(function () {
 Route::get('/course/{course_id}/chapter/show', CourseWithChapterAndTopic::class)->name('v2.courses.show');
 Route::get('/course/{course_id}/chapter/{chapter_id?}/topic/{topic_id?}/show', TopicWithPostContent::class)->name('v2.topics.show');
 
+Route::get('/linkedin/redirect', [LinkedinLogin::class, 'redirectToLinkedin'])->name('linkedin.redirect');
+Route::get('/linkedin/callback', [LinkedinLogin::class, 'handleLinkedinCallback'])->name('linkedin.callback');
 
 Route::prefix("student")->group(function () {
+    Route::get('/dashboard', StudentDashboard::class)->name('student.dashboard');
+    Route::get('/billing', ViewBilling::class)->name('student.billing');
+    Route::get('/rewards/gems', GemsTransactions::class)->name('student.rewards.gems');
+
     Route::controller(StudentController::class)->group(function () {
-        Route::get('/dashboard', 'dashboard')->name('student.dashboard');
-        Route::get('/billing', 'billing')->name('student.billing');
         Route::get('/viewbilling/{paymentId}', 'viewbilling')->name('student.viewbilling');
         Route::get('course/quiz', 'courseQuiz')->name('student.course.quiz');
         Route::get('/quiz/{courseId}', 'showquiz')->name('student.quiz');
@@ -131,30 +134,11 @@ Route::prefix("student")->group(function () {
         Route::get('/assignments/upload/{id}', 'viewAssignments')->name('student.assignment-upload');
         Route::get('/viewCertificate/{userId}', 'showCertificate')->name('student.viewCertificate');
         Route::get('/certificate/{userId}', 'Certificate')->name('student.certificate');
-        Route::get('/rewards/gems', GemsTransactions::class)->name('student.rewards.gems');
     });
-
 });
-
-
-
-// Route::get('/quiz_instruction', function () {
-//     return view('studentdashboard.quiz_instruction');
-// })->name('quiz_instruction');
-
-// });
-
-
-
 
 Route::get('/get-access-token', [StudentController::class, 'store']);
 Route::post('/student/assignments/upload/{assignment_id}', [StudentController::class, 'store'])->name('assignments.store');
-
-
-// Route::post('save-course-payment', [PaymentController::class, 'saveCoursePayment'])->name('save.course.payment');
-// Route::post('save-workshop-payment', [PaymentController::class, 'saveWorkshopPayment'])->name('save.workshop.payment');
-
-// Route::get('payment/refresh/{paymentId}', [PaymentController::class, 'refreshPayment'])->name('payment.refresh');
 
 //razorpay routes
 Route::post('/initiate-payment', [PaymentController::class, 'initiatePayment'])->name('store.payment.initiation');
@@ -248,10 +232,6 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
             Route::get('/viewCertificate/{userId}', [ResultController::class, 'index'])->name('admin.viewCertificate');
         });
 
-
-
-
-
         // Workshop Management
         Route::prefix('workshops')->group(function () {
             Route::get('/create', [WorkshopController::class, 'create'])->name('workshops.create');
@@ -318,19 +298,10 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/placedstudent/manage', CallingPlacedStudent::class)->name('admin.placedstudent.index');
         Route::get('/placedstudent/{placedStudent?}', InsertPlacedStudent::class)->name('admin.placedstudent.edit')->whereNumber("placedStudent");
 
-
-
-
-
         //    certificate
         Route::get('/certificate', CertificateEligibility::class)->name('admin.certificate');
         //enquiry
         Route::get('/enquiry', ManageEnquiry::class)->name('admin.manage.enquiry');
-
-
-        //offline payments
-        // Route::get('/offline-payment', ManageOfflinePayment::class)->name('admin.offline-payment');
-
         //blog
         Route::get("/blog/post-course", PostCourse::class)->name('admin.blog.post-course');
 
@@ -361,8 +332,6 @@ Route::prefix('v2')->group(function () {
 
 
     Route::prefix("student")->group(function () {
-        Route::get('/billing', ViewBilling::class)->name('student.billing');
-        Route::get('/dashboard', StudentDashboard::class)->name('v2.student.dashboard');
         Route::get('/assignments/view', ManageAssignments::class)->name('student.assignments-view');
         Route::get('/take-exam', Exam::class)->name('student.takeExam');
         Route::get('/explore-courses', ExploreCourse::class)->name('student.exploreCourses');
@@ -383,11 +352,7 @@ Route::prefix('v2')->group(function () {
         Route::get('/products', OurProducts::class)->name('v2.student.products');
         Route::get('/products/{productId}/checkout', CheckOutPage::class)->name('v2.student.checkout');
     });
-    //working here for public routes
-    Route::prefix("public")->group(function () {
 
-        // Route::get('/course/chapter/{chapter_id}/show', [PostTopicPostController::class, 'index'])->name('chapters.show');
-    });
 });
 
 // public routes here:
@@ -412,26 +377,5 @@ Route::get('generate', function () {
     echo 'ok';
 });
 
-// Authentication route's group here
-// Route::prefix('auth')->controller(AuthController::class)->group(function () {
-//     // Route::get('/login', 'showLoginForm')->name('auth.login');
-//     // Route::post('/login', 'login')->name('auth.login.post');
-//     Route::get('/verify-otp', 'showOtpForm')->name('show.otp.form');
-//     Route::post('/resend-otp', 'resendOtp')->name('auth.resend-otp');
-
-//     // OTP verification handling route (POST request to verify OTP)
-//     Route::post('verify-otp', 'verifyOtp')->name('verify.otp');
-//     Route::post('send-otp', 'sendOtp')->name('auth.sendOtp');
-
-//    Route::post('/verify-otp-register', [AuthController::class, 'verifyOtpRegister'])->name('auth.verifyOtp.register');
-//     // Route::get('/logout', 'logout')->name('auth.logout');
-// });
-
-Route::get('/launch', function () {
-    return view('public.launch');
-});
-
-
-// Route::get('/workshops', [WorkshopController::class, 'index'])->name('public.workshop');
 Route::get('/workshop/{id}/enroll', [WorkshopController::class, 'buyWorkshop'])->name('workshop.enroll');
 

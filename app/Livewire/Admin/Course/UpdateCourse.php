@@ -126,10 +126,7 @@ public function saveField($field)
         ? asset('storage/' . $this->course->course_image) 
         : null;
     
-    
     }
-
-    
 
     public function openFeaturesModal()
     {

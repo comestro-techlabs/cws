@@ -81,7 +81,7 @@
                                     </select>
                                     <button wire:click="saveField('category_id')"
                                         class="px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors">
-                                        {{ $course->$field ? 'Edit' : 'Save' }}
+                                        {{ $category_id ? 'Edit' : 'Save' }}
 
                                     </button>
                                 </div>

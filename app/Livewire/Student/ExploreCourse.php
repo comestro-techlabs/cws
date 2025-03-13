@@ -81,7 +81,7 @@ class ExploreCourse extends Component
             return redirect()->route('student.viewCourses', ['courseId' => $courseId]);
         }
 
-        return redirect()->route('v2.student.dashboard')->with('success', 'You have successfully enrolled in the course.');
+        return redirect()->route('student.dashboard')->with('success', 'You have successfully enrolled in the course.');
     }
 
     public function render()
