@@ -41,6 +41,8 @@
                                     <span class="w-1.5 h-1.5 mr-1.5 bg-purple-600 rounded-full"></span>
                                     Member
                                 </span>
+                            @elseif(auth()->check() && auth()->user()->isAdmin==1)
+                                <span class="text-xs text-gray-500">Admin</span>
                             @else
                                 <span class="text-xs text-gray-500">Student</span>
                             @endif
