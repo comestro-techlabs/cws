@@ -13,6 +13,7 @@ class OurProducts extends Component
     public $categories;
     public $products;
     public $selectedCategory='';
+    public $totalAvailableGems=1000;
     public function mount(){
         $this->categories = ProductCategories::pluck('name', 'id');
         // dd($this->categories);

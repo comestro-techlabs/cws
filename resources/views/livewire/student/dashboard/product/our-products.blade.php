@@ -50,7 +50,7 @@
                     </svg>
                     <div>
                         <p class="text-white text-sm font-medium">Your Balance</p>
-                        <h2 class="text-white text-2xl font-bold">1,250 Gems</h2>
+                        <h2 class="text-white text-2xl font-bold">{{$totalAvailableGems}} Gems</h2>
                     </div>
                 </div>
                 <a href="{{ route('student.rewards.gems') }}" class="px-4 py-2 bg-white text-primary rounded-lg font-medium text-sm hover:bg-purple-50 transition duration-200">
@@ -61,11 +61,11 @@
 
         <!-- Products Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            <!-- Product Card 1 -->
+            <!-- Product Card  -->
              @foreach ($products as $product)
             <div class="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100 hover:border-purple-200 hover:shadow-md transition duration-200">
                 <div class="relative h-48">
-                    <img src="/api/placeholder/400/320" alt="Wireless Earbuds" class="w-full h-full object-cover">
+                    <img src="{{$product->imageUrl}}" alt="{{$product->name}}" class="w-full h-full object-cover">
                     <div class="absolute top-2 right-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded-full">
                         Popular
                     </div>
@@ -108,7 +108,9 @@
                     </div>
                     
                     <button wire:click="redeemProduct()" wire:loading.attr="disabled"
-                        class="px-4 py-2 bg-primary text-white font-medium rounded-lg hover:bg-primary focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition duration-200 text-sm">
+                        class="px-4 py-2 font-medium rounded-lg focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition duration-200 text-sm
+                        @if($totalAvailableGems <= $product->points) bg-gray-400 text-gray-200 cursor-not-allowed @else bg-primary text-white hover:bg-primary @endif"
+                        @disabled($totalAvailableGems <= $product->points)>
                         Redeem Now
                     </button>
                 </div>
@@ -130,29 +132,6 @@
             </div>
         </div>
 
-        <!-- Pagination -->
-        <div class="mt-10 flex justify-center">
-            <nav class="flex items-center space-x-2">
-                <a href="#" class="px-3 py-2 rounded-md bg-white border border-gray-300 text-gray-700 hover:bg-gray-50">
-                    Previous
-                </a>
-                <a href="#" class="px-3 py-2 rounded-md bg-primary text-white font-medium">
-                    1
-                </a>
-                <a href="#" class="px-3 py-2 rounded-md bg-white border border-gray-300 text-gray-700 hover:bg-gray-50">
-                    2
-                </a>
-                <a href="#" class="px-3 py-2 rounded-md bg-white border border-gray-300 text-gray-700 hover:bg-gray-50">
-                    3
-                </a>
-                <span class="px-2 text-gray-500">...</span>
-                <a href="#" class="px-3 py-2 rounded-md bg-white border border-gray-300 text-gray-700 hover:bg-gray-50">
-                    8
-                </a>
-                <a href="#" class="px-3 py-2 rounded-md bg-white border border-gray-300 text-gray-700 hover:bg-gray-50">
-                    Next
-                </a>
-            </nav>
-        </div>
+       <!-- removed pagination here -->
     </div>
 </div>
