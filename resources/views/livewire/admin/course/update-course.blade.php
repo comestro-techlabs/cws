@@ -30,10 +30,10 @@
                             ] as [$field, $label])
                             <div class="space-y-2">
                                 <label class="text-sm font-medium text-gray-700">{{ $label }}</label>
-                                <div class="flex gap-2">
+                                <div class="flex gap-2 mt-2">
                                     <input type="text"
                                         wire:model.defer="{{ $field }}"
-                                        class="flex-1 rounded-lg border-gray-300 shadow-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                                        class="flex-1 rounded-lg border-gray-300 shadow-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 p-2">
                                     <button wire:click="saveField('{{ $field }}')"
                                         class="px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors">
                                         Save
@@ -53,10 +53,10 @@
                         <div class="space-y-2">
                             <textarea wire:model.defer="description"
                                 rows="4"
-                                class="w-full rounded-lg border-gray-300 shadow-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500"></textarea>
+                                class="w-full rounded-lg border-gray-300 shadow-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 p-2"></textarea>
                             <div class="flex justify-end">
                                 <button wire:click="saveField('description')"
-                                    class="px-4 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors">
+                                    class="px-4 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors p-2">
                                     Save Description
                                 </button>
                             </div>
@@ -72,8 +72,8 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- Category Selection -->
                             <div class="space-y-2">
-                                <label class="text-sm font-medium text-gray-700">Category</label>
-                                <div class="flex gap-2">
+                                <label class="text-sm font-medium text-gray-700 ">Category</label>
+                                <div class="flex gap-2 mt-2">
                                     <select wire:model.defer="category_id"
                                         class="flex-1 rounded-lg border-gray-300 shadow-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
                                         <option value="">Select Category</option>
@@ -91,7 +91,7 @@
                             <!-- Image Upload -->
                             <div class="space-y-4">
                                 <label class="text-sm font-medium text-gray-700">Course Image</label>
-                                <div class="border-2 border-dashed border-gray-300 rounded-lg p-4">
+                                <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 mt-2">
                                     <div class="flex items-center justify-center h-32">
                                         @if ($previewImage || $course->course_image)
                                             <img src="{{ $previewImage ?? asset('storage/' . $course->course_image) }}"
@@ -198,8 +198,8 @@
                 </div>
 
                 <!-- Course Content Management -->
-                <div class="border-t pt-6 mt-8">
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="border-t pt-6 mt-8 ">
+                    <div class="w-full gap-6">
                         @livewire('admin.course.batch-manager', ['course' => $course])
                     </div>
                 </div>
