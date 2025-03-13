@@ -18,8 +18,7 @@ class Products extends Model
         'availableQuantity',
     ];
 
-    
-    public function category()
+        public function category()
     {
         return $this->belongsTo(ProductCategories::class, 'product_category_id');
     }
