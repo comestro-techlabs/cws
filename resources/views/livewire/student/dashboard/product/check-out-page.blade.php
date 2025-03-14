@@ -166,16 +166,16 @@
                             </div>
                         </form>
                         @else
-                        @foreach($shippingDetailsFilled as $shippingDetails)
+                        @if($shippingDetailsFilled)
                         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                             <h2 class="text-lg font-semibold text-gray-900 mb-4">Your Shipping Address</h2>
                             <div class="text-gray-700 space-y-1">
-                                <p><span class="font-medium">Name:</span> {{ $shippingDetails->first_name }} {{ $shippingDetails->last_name }}</p>
-                                <p><span class="font-medium">Email:</span> {{ $shippingDetails->email }}</p>
-                                <p><span class="font-medium">Address:</span> {{ $shippingDetails->address_line }}</p>
-                                <p><span class="font-medium">City:</span> {{ $shippingDetails->city }}, {{ $shippingDetails->state }}, {{ $shippingDetails->postal_code }}</p>
-                                <p><span class="font-medium">Country:</span> {{ $shippingDetails->country }}</p>
-                                <p><span class="font-medium">Phone:</span> {{ $shippingDetails->phone }}</p>
+                                <p><span class="font-medium">Name:</span> {{ $shippingDetailsFilled->first_name }} {{ $shippingDetailsFilled->last_name }}</p>
+                                <p><span class="font-medium">Email:</span> {{ $shippingDetailsFilled->email }}</p>
+                                <p><span class="font-medium">Address:</span> {{ $shippingDetailsFilled->address_line }}</p>
+                                <p><span class="font-medium">City:</span> {{ $shippingDetailsFilled->city }}, {{ $shippingDetailsFilled->state }}, {{ $shippingDetailsFilled->postal_code }}</p>
+                                <p><span class="font-medium">Country:</span> {{ $shippingDetailsFilled->country }}</p>
+                                <p><span class="font-medium">Phone:</span> {{ $shippingDetailsFilled->phone }}</p>
                             </div>
 
                             <!-- Edit Button -->
@@ -185,7 +185,7 @@
                                 </button>
                             </div>
                         </div>
-                        @endforeach
+                        @endif
                         @endif
 
                     </div>
