@@ -56,6 +56,56 @@
                         alt="barcode" class="w-full">
                 </div>
                 @endif
+
+                @if(auth()->check() && auth()->user()->hasActiveSubscription())
+                    <div class="w-full mt-2 p-2 bg-green-50 rounded-lg border border-green-200">
+                        <div class="flex flex-col space-y-1">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-green-700">Active Subscription</span>
+                                <span class="text-xs font-medium text-green-600">Premium</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs text-green-600">Valid till:</span>
+                                <span class="text-xs font-medium text-green-600">
+                                    {{ auth()->user()->currentSubscription?->ends_at?->format('M d, Y') ?? 'N/A' }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                @elseif(auth()->check() && auth()->user()->is_member)
+                    <div class="w-full mt-2 p-2 bg-blue-50 rounded-lg border border-blue-200">
+                        <div class="flex flex-col space-y-1">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-blue-700">Course Member</span>
+                                <span class="text-xs font-medium text-blue-600">Active</span>
+                            </div>
+                            <div class="flex items-center justify-between mt-1">
+                                <a href="{{ route('student.subscriptions.plans') }}" 
+                                   class="text-xs text-purple-600 hover:text-purple-800">
+                                    Upgrade to Premium
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                @else
+                    <div class="w-full mt-2 p-2 bg-yellow-50 rounded-lg border border-yellow-200">
+                        <div class="flex flex-col space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-yellow-700">No Active Plan</span>
+                            </div>
+                            <div class="flex items-center justify-between space-x-2">
+                                <a href="{{ route('student.exploreCourses') }}" 
+                                   class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded hover:bg-purple-200">
+                                    Buy Course
+                                </a>
+                                <a href="{{ route('student.subscriptions.plans') }}" 
+                                   class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded hover:bg-green-200">
+                                    Subscribe
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                @endif
             </div>
 
             <nav class="space-y-1 mt-2">

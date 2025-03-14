@@ -169,12 +169,9 @@
         const payButton = document.getElementById('pay-button');
         payButton.disabled = true;
         e.preventDefault();
-        let course_amount = {
-            {
-                $course - > discounted_fees
-            }
-        }
-        const receipt_no = `${Date.now()}`;
+        
+        const courseAmount = {{ $course->discounted_fees }};
+        const receipt_no = `COURSE_${Date.now()}`;
 
         fetch("{{ route('store.payment.initiation') }}", {
                 method: "POST",
@@ -183,11 +180,12 @@
                     "X-CSRF-TOKEN": "{{ csrf_token() }}"
                 },
                 body: JSON.stringify({
-                    student_id: "{{ Auth::id() }}" ?? 99,
-                    course_id: "{{ $course->id }}",
+                    student_id: {{ Auth::id() }},
+                    course_id: {{ $course->id }},
                     receipt_no: receipt_no,
-                    amount: course_amount,
+                    amount: courseAmount,
                     ip_address: "{{ request()->ip() }}",
+                    payment_type: 'course'
                 })
             })
             .then(response => response.json())
@@ -195,11 +193,11 @@
                 if (data.success) {
                     var options = {
                         "key": "{{ env('RAZORPAY_KEY') }}",
-                        "amount": data.amount,
+                        "amount": courseAmount * 100, // Convert to paise
                         "currency": "INR",
                         "name": "LearnSyntax",
-                        "description": "Course Enrollment",
-                        "image": "{{ asset('assets/img/logo/logo.png') }}",
+                        "description": "{{ $course->title }}",
+                        "image": "{{ asset('front_assets/img/logo/logo.png') }}",
                         "order_id": data.order_id,
                         "handler": function(response) {
                             fetch("{{ route('handle.payment.response') }}", {
@@ -213,26 +211,15 @@
                                         razorpay_payment_id: response.razorpay_payment_id,
                                         razorpay_order_id: response.razorpay_order_id,
                                         razorpay_signature: response.razorpay_signature,
+                                        course_id: {{ $course->id }}
                                     })
                                 })
                                 .then(response => response.json())
                                 .then(data => {
                                     if (data.success) {
-                                        Swal.fire({
-                                            title: 'Success!',
-                                            text: 'Payment processed successfully',
-                                            icon: 'success',
-                                            confirmButtonColor: '#2563EB'
-                                        }).then(() => {
-                                            window.location.href = '/student/billing';
-                                        });
+                                        window.location.href = '/student/dashboard';
                                     } else {
-                                        Swal.fire({
-                                            title: 'Error!',
-                                            text: data.message,
-                                            icon: 'error',
-                                            confirmButtonColor: '#2563EB'
-                                        });
+                                        alert('Payment failed: ' + data.message);
                                         payButton.disabled = false;
                                     }
                                 })
@@ -250,12 +237,6 @@
                         },
                         "modal": {
                             "ondismiss": function() {
-                                Swal.fire({
-                                    title: 'Cancelled',
-                                    text: 'Payment process was cancelled',
-                                    icon: 'info',
-                                    confirmButtonColor: '#2563EB'
-                                });
                                 payButton.disabled = false;
                             }
                         }
@@ -264,25 +245,14 @@
                     var rzp1 = new Razorpay(options);
                     rzp1.open();
                 } else {
-                    Swal.fire({
-                        title: 'Error!',
-                        text: data.message,
-                        icon: 'error',
-                        confirmButtonColor: '#2563EB'
-                    });
+                    alert("Error initiating payment: " + data.message);
                     payButton.disabled = false;
                 }
             })
             .catch(error => {
-                console.error("Error:", error);
-                Swal.fire({
-                    title: 'Error!',
-                    text: 'An unexpected error occurred',
-                    icon: 'error',
-                    confirmButtonColor: '#2563EB'
-                });
+                console.error("Error initiating payment:", error);
                 payButton.disabled = false;
             });
-    }
+    };
 </script>
 @endauth

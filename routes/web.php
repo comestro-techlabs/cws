@@ -81,6 +81,8 @@ use App\Livewire\Student\MockTest\MockTestResult;
 use App\Livewire\Auth\GoogleLogin;
 use App\Livewire\Student\Dashboard\Product\CheckOutPage;
 use App\Livewire\Student\Rewards\GemsTransactions;
+use App\Http\Controllers\SubscriptionController;
+use App\Livewire\Student\Subscriptions\Plans;
 
 // public routes
 Route::get('/', Home::class)->name('public.index');
@@ -118,11 +120,17 @@ Route::middleware('auth')->group(function () {
     Route::prefix("student")->group(function () {
         Route::get('/dashboard', StudentDashboard::class)->name('student.dashboard');
         Route::get('/billing', ViewBilling::class)->name('student.billing');
+        Route::get('/billing/{paymentId}', \App\Livewire\Student\Billing\ShowBilling::class)->name('student.viewbilling');
         Route::get('/rewards/gems', GemsTransactions::class)->name('student.rewards.gems');
+        Route::get('/subscriptions/plans', \App\Livewire\Student\Subscriptions\Plans::class)
+            ->name('student.subscriptions.plans');
+        Route::post('/subscriptions/process', [SubscriptionController::class, 'process'])
+            ->name('student.subscriptions.process');
+        Route::post('/subscriptions/plans/subscribe/{plan}', [App\Livewire\Student\Subscriptions\Plans::class, 'subscribe'])
+            ->name('student.subscriptions.subscribe');
     });
 
     Route::controller(StudentController::class)->group(function () {
-        Route::get('/viewbilling/{paymentId}', 'viewbilling')->name('student.viewbilling');
         Route::get('course/quiz', 'courseQuiz')->name('student.course.quiz');
         Route::get('/quiz/{courseId}', 'showquiz')->name('student.quiz');
         Route::post('/quiz/submit', 'storeAnswer')->name('student.storeAnswer');
@@ -348,7 +356,7 @@ Route::prefix('v2')->group(function () {
         Route::get('/view-assigment/{id}', ViewAssigment::class)->name('student.v2view.assigment');
         Route::get('/show-quiz/{courseId}', ShowQuiz::class)->name('v2.student.quiz');
         Route::get('/show-all-attempt/{course_id}', ShowAllAttempt::class)->name('v2.student.allAttempts');
-        Route::get('show-quiz/result/{exam_id}', Result::class)->name('v2.student.examResult');
+        route::get('show-quiz/result/{exam_id}', Result::class)->name('v2.student.examResult');
         route::get('/my-attendance', MyAttendance::class)->name('student.my-attendance');
         Route::get('/mocktest', SelectMockTest::class)->name('v2.student.mocktest');
         Route::get('/mocktest/{mockTestId}', ShowMockTest::class)->name('v2.student.mocktest.take');
@@ -381,7 +389,7 @@ Route::controller(PublicController::class)->group(function () {
 Route::get('generate', function () {
     \Illuminate\Support\Facades\Artisan::call('storage:link');
     echo 'ok';
-});
+});Route::get('/workshop/{id}/enroll', [WorkshopController::class, 'buyWorkshop'])->name('workshop.enroll');
 
-Route::get('/workshop/{id}/enroll', [WorkshopController::class, 'buyWorkshop'])->name('workshop.enroll');
+
 

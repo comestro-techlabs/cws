@@ -32,8 +32,8 @@
                         <p class="mt-4 text-blue-600 font-medium">Already Enrolled</p>
 
                         @elseif ($workshop->fees > 0)
-                            <button id="pay-button-{{ $workshop->id }}"
-                                class="bg-blue-600 mt-8 text-white font-medium rounded-lg px-4 py-2 hover:bg-blue-700 transition-colors"                                data-workshop-id="{{ $workshop->id }}"> 
+                            <button wire:click="initiatePayment({{ $workshop->id }})"
+                                class="bg-blue-600 mt-8 text-white font-medium rounded-lg px-4 py-2 hover:bg-blue-700 transition-colors">
                                 <div class="flex gap-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -90,3 +90,43 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    document.addEventListener('livewire:initialized', () => {
+        @this.on('initializePayment', (data) => {
+            const options = {
+                key: data.key,
+                amount: data.amount,
+                currency: "INR",
+                name: "LearnSyntax",
+                description: "Workshop: " + data.workshop_title,
+                order_id: data.order_id,
+                handler: function(response) {
+                    @this.call('handlePayment', {
+                        razorpay_payment_id: response.razorpay_payment_id,
+                        razorpay_order_id: response.razorpay_order_id,
+                        razorpay_signature: response.razorpay_signature,
+                        payment_id: data.payment_id
+                    });
+                },
+                prefill: {
+                    name: "{{ auth()->user()->name }}",
+                    email: "{{ auth()->user()->email }}"
+                },
+                theme: {
+                    color: "#2563EB"
+                }
+            };
+
+            const rzp = new Razorpay(options);
+            rzp.open();
+        });
+
+        @this.on('showError', (data) => {
+            alert(data.message);
+        });
+    });
+</script>
+@endpush

@@ -74,43 +74,47 @@
 
                                 <!-- Batch Information -->
                                 <div class="mt-4 pt-3 border-t border-gray-100">
-                                    @if($selectedBatch && isset($selectedBatch[$course->id]))
-                                    <div class="flex items-center justify-between">
-                                        <div class="flex items-center space-x-2">
-                                            <span class="flex-shrink-0 w-1.5 h-1.5 bg-green-500 rounded-full"></span>
-                                            <span class="text-sm text-gray-600">Batch: <span class="font-medium">{{ $course->batches->firstWhere('id', $selectedBatch[$course->id])?->batch_name }}</span></span>
+                                    @if(isset($selectedBatch[$course->id]))
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center space-x-2">
+                                                <span class="flex-shrink-0 w-1.5 h-1.5 {{ $selectedBatch[$course->id] ? 'bg-green-500' : 'bg-yellow-500' }} rounded-full"></span>
+                                                <span class="text-sm text-gray-600">
+                                                    Batch: 
+                                                    <span class="font-medium">
+                                                        {{ $course->batches->where('id', $selectedBatch[$course->id])->first()?->batch_name ?? 'No Batch Selected' }}
+                                                    </span>
+                                                </span>
+                                            </div>
+                                            <button wire:click="toggleEdit({{ $course->id }})"
+                                                class="text-sm text-blue-600 hover:text-blue-700">
+                                                {{ $selectedBatch[$course->id] ? 'Change' : 'Select Batch' }}
+                                            </button>
                                         </div>
-                                        <button wire:click="toggleEdit({{ $course->id }})"
-                                            class="text-sm text-blue-600 hover:text-blue-700">
-                                            Change
-                                        </button>
-                                    </div>
-                                    <button wire:click="$dispatch('getting-course', { id: {{ $course->id}} })" class="bg-purple-800 mt-10 hover:bg-purple-600 text-white px-4 py-2 rounded">
-                                        Add Review
-                                    </button>
                                     @endif
 
                                     @if($editingCourseId === $course->id)
-                                    <div class="mt-2 space-y-2">
-                                        <select wire:model.live="selectedBatch.{{ $course->id }}"
-                                            class="w-full text-sm border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
-                                            <option value="">Select Batch</option>
-                                            @foreach ($course->batches as $batch)
-                                            <option value="{{ $batch->id }}">{{ $batch->batch_name }}</option>
-                                            @endforeach
-                                        </select>
+                                        <div class="mt-2 space-y-2">
+                                            <select wire:model.live="selectedBatch.{{ $course->id }}"
+                                                class="w-full text-sm border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                                                <option value="">Select Batch</option>
+                                                @foreach ($course->batches as $batch)
+                                                    <option value="{{ $batch->id }}">{{ $batch->batch_name }}</option>
+                                                @endforeach
+                                            </select>
 
-                                        <div class="flex items-center space-x-2">
-                                            <button wire:click="updateBatch({{ $course->id }})"
-                                                class="flex-1 inline-flex justify-center items-center px-3 py-1.5 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
-                                                Update
-                                            </button>
-                                            <button wire:click="toggleEdit({{ $course->id }})"
-                                                class="inline-flex justify-center items-center px-3 py-1.5 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200">
-                                                Cancel
-                                            </button>
+                                            <div class="flex items-center space-x-2">
+                                                <button wire:click="updateBatch({{ $course->id }})"
+                                                    wire:loading.attr="disabled"
+                                                    class="flex-1 inline-flex justify-center items-center px-3 py-1.5 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:opacity-50">
+                                                    <span wire:loading.remove wire:target="updateBatch({{ $course->id }})">Update</span>
+                                                    <span wire:loading wire:target="updateBatch({{ $course->id }})">Updating...</span>
+                                                </button>
+                                                <button wire:click="toggleEdit({{ $course->id }})"
+                                                    class="inline-flex justify-center items-center px-3 py-1.5 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200">
+                                                    Cancel
+                                                </button>
+                                            </div>
                                         </div>
-                                    </div>
                                     @endif
                                 </div>
                             </div>
@@ -213,5 +217,31 @@
             overflow: hidden;
         }
     </style>
+
+    <script>
+        document.addEventListener('livewire:initialized', () => {
+            Livewire.on('alert', (data) => {
+                const type = data[0].type;
+                const message = data[0].message;
+                
+                // You can use your preferred alert library here
+                if (type === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: message,
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: message
+                    });
+                }
+            });
+        });
+    </script>
 
 </div>

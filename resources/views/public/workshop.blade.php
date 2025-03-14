@@ -41,10 +41,12 @@
                         </p>
                         @if (in_array($workshop->id, $userPayments))
                         <p class="mt-4 text-blue-600 font-medium">Already Enrolled</p>
-
                         @elseif ($workshop->fees > 0)
                             <button id="pay-button-{{ $workshop->id }}"
-                                class="bg-blue-600 mt-8 text-white font-medium rounded-lg px-4 py-2 hover:bg-blue-700 transition-colors"                                data-workshop-id="{{ $workshop->id }}"> 
+                                class="bg-blue-600 mt-8 text-white font-medium rounded-lg px-4 py-2 hover:bg-blue-700 transition-colors"                                
+                                data-workshop-id="{{ $workshop->id }}"
+                                data-workshop-fees="{{ $workshop->fees }}"
+                                data-workshop-title="{{ $workshop->title }}">
                                 <div class="flex gap-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -112,104 +114,108 @@
                         payButton.disabled = true;
                         e.preventDefault();
 
-                        const receipt_no = `${Date.now()}`;
-                        const workshopId = payButton.getAttribute(
-                            'data-workshop-id'); // Get the workshop id dynamically
-                        console.log(workshopId); // Now it will log the correct id of the clicked workshop
+                        const workshopId = payButton.dataset.workshopId;
+                        const workshopFees = payButton.dataset.workshopFees;
+                        const workshopTitle = payButton.dataset.workshopTitle;
+                        const receipt_no = `WORKSHOP_${workshopId}_${Date.now()}`;
 
-                        // First, initiate payment by sending the details to the backend
                         fetch("{{ route('store.payment.initiation') }}", {
-                                method: "POST",
-                                headers: {
-                                    "Content-Type": "application/json",
-                                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                                },
-                                body: JSON.stringify({
-                                    student_id: "{{ Auth::id() }}" ?? 99,
-                                    receipt_no: receipt_no,
-                                    amount: "{{ $workshop->fees }}" ?? null,
-                                    ip_address: "{{ request()->ip() }}",
-                                    workshop_id: workshopId, // Send the correct workshop id to backend
-                                })
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                            },
+                            body: JSON.stringify({
+                                student_id: {{ Auth::id() }},
+                                workshop_id: workshopId,
+                                receipt_no: receipt_no,
+                                amount: parseInt(workshopFees),
+                                ip_address: "{{ request()->ip() }}",
+                                payment_type: 'workshop'
                             })
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data.success) {
-                                    // Use the Razorpay order_id received from backend
-                                    var options = {
-                                        "key": "{{ env('RAZORPAY_KEY') }}",
-                                        "amount": "{{ $workshop->fees }}" * 100, // amount in paise
-                                        "currency": "INR",
-                                        "name": "LearnSyntax",
-                                        "description": "Processing Fee",
-                                        "image": "{{ asset('front_assets/img/logo/logo.png') }}",
-                                        "order_id": data.order_id, // Razorpay order ID
-                                        "handler": function(response) {
-                                            // After successful payment, send the payment details to the backend
-                                            fetch("{{ route('handle.payment.response') }}", {
-                                                    method: "POST",
-                                                    headers: {
-                                                        "Content-Type": "application/json",
-                                                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                                                    },
-                                                    body: JSON.stringify({
-                                                        payment_id: data
-                                                            .payment_id, // Payment ID created in the backend
-                                                        razorpay_payment_id: response
-                                                            .razorpay_payment_id,
-                                                        razorpay_order_id: response
-                                                            .razorpay_order_id,
-                                                        razorpay_signature: response
-                                                            .razorpay_signature,
-                                                    })
-                                                })
-                                                .then(response => {
-                                                    console.log('Response from backend:', response);
-                                                    return response.json();
-                                                })
-                                                .then(data => {
-                                                    if (data.success) {
-                                                        alert('Payment processed successfully');
-                                                        window.location.href = '/student/billing';
-                                                    } else {
-                                                        alert('Payment failed: ' + data.message);
-                                                        payButton.disabled = false;
-                                                    }
-                                                })
-                                                .catch(error => {
-                                                    console.error("Error in updating payment:", error);
-                                                    payButton.disabled = false;
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                var options = {
+                                    "key": "{{ env('RAZORPAY_KEY') }}",
+                                    "amount": parseInt(workshopFees) * 100,
+                                    "currency": "INR",
+                                    "name": "LearnSyntax",
+                                    "description": `Workshop: ${workshopTitle}`,
+                                    "image": "{{ asset('front_assets/img/logo/logo.png') }}",
+                                    "order_id": data.order_id,
+                                    "handler": function(response) {
+                                        fetch("{{ route('handle.payment.response') }}", {
+                                            method: "POST",
+                                            headers: {
+                                                "Content-Type": "application/json",
+                                                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                                            },
+                                            body: JSON.stringify({
+                                                payment_id: data.payment_id,
+                                                razorpay_payment_id: response.razorpay_payment_id,
+                                                razorpay_order_id: response.razorpay_order_id,
+                                                razorpay_signature: response.razorpay_signature,
+                                                workshop_id: workshopId
+                                            })
+                                        })
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            if (data.success) {
+                                                Swal.fire({
+                                                    title: 'Success!',
+                                                    text: 'Workshop enrollment successful',
+                                                    icon: 'success',
+                                                    confirmButtonText: 'OK'
+                                                }).then(() => {
+                                                    window.location.reload();
                                                 });
-                                        },
-                                        "prefill": {
-                                            "name": "{{ Auth::user()->name }}",
-                                            "email": "{{ Auth::user()->email }}"
-                                        },
-                                        "theme": {
-                                            "color": "#0a64a3"
-                                        },
-                                        "modal": {
-                                            "ondismiss": function() {
-                                                alert('Payment process was cancelled.');
+                                            } else {
+                                                Swal.fire({
+                                                    title: 'Error!',
+                                                    text: data.message,
+                                                    icon: 'error',
+                                                    confirmButtonText: 'OK'
+                                                });
                                                 payButton.disabled = false;
-                                                document.forms[0].submit();
                                             }
+                                        })
+                                        .catch(error => {
+                                            console.error("Error:", error);
+                                            payButton.disabled = false;
+                                        });
+                                    },
+                                    "prefill": {
+                                        "name": "{{ Auth::user()->name }}",
+                                        "email": "{{ Auth::user()->email }}"
+                                    },
+                                    "theme": {
+                                        "color": "#0a64a3"
+                                    },
+                                    "modal": {
+                                        "ondismiss": function() {
+                                            payButton.disabled = false;
                                         }
-                                    };
+                                    }
+                                };
 
-                                    // Open the Razorpay payment modal
-                                    var rzp1 = new Razorpay(options);
-                                    rzp1.open();
-
-                                } else {
-                                    alert("Error initiating payment: " + data.message);
-                                    payButton.disabled = false;
-                                }
-                            })
-                            .catch(error => {
-                                console.error("Error initiating payment:", error);
+                                var rzp = new Razorpay(options);
+                                rzp.open();
+                            } else {
+                                Swal.fire({
+                                    title: 'Error!',
+                                    text: data.message,
+                                    icon: 'error',
+                                    confirmButtonText: 'OK'
+                                });
                                 payButton.disabled = false;
-                            });
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error:", error);
+                            payButton.disabled = false;
+                        });
                     };
                 });
             </script>

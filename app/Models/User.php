@@ -62,16 +62,15 @@ class User extends Authenticatable
     public function courses(): BelongsToMany
     {
         return $this->belongsToMany(Course::class, 'course_user', 'user_id', 'course_id')->withPivot('batch_id')
-            ->withTimestamps();
+                    ->withTimestamps();
     }
+
     public function batches(): BelongsToMany
     {
         return $this->belongsToMany(Batch::class, 'course_user', 'user_id', 'batch_id')
             ->withPivot('course_id')
             ->withTimestamps();
     }
-
-
 
     public function answers()
     {
@@ -87,8 +86,30 @@ class User extends Authenticatable
         return $this->hasMany(MockTestResult::class);
     }
 
-        public function orders()
+    public function orders()
     {
         return $this->hasMany(Orders::class);
+    }
+
+    public function currentSubscription()
+    {
+        return $this->hasOne(Subscription::class)
+            ->where('status', 'active')
+            ->where('payment_status', 'completed')
+            ->where('ends_at', '>', now())
+            ->latest();
+    }
+
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class);
+    }
+
+    public function hasActiveSubscription()
+    {
+        $subscription = $this->currentSubscription;
+        return $subscription && $subscription->status === 'active' 
+            && $subscription->payment_status === 'completed'
+            && $subscription->ends_at > now();
     }
 }

@@ -9,21 +9,22 @@ class Payment extends Model
 {
     use HasFactory;
 
-    // protected $fillable = [
-    //     'student_id',
-    //     'course_id',
-    //     'amount',
-    //     'payment_option',
-    //     'installment_number',
-    //     'payment_date',
-    // ];
-
+    protected $fillable = [
+        'student_id',
+        'course_id',
+        'workshop_id',
+        'receipt_no',
+        'order_id',
+        'transaction_id',
+        'total_amount',
+        'status',
+        'payment_status',
+        'payment_method',
+        'payment_date',
+        'ip_address'
+    ];
 
     protected $guarded = [];
-
-    // protected $casts = [
-    //     'payment_date' => 'datetime',
-    // ];
 
     public function getFormattedDateAttribute()
     {
@@ -37,38 +38,38 @@ class Payment extends Model
 
     public function course()
     {
-        return $this->belongsTo(Course::class, 'course_id');
+        return $this->belongsTo(Course::class);
     }
-     public function workshops(){
-        return $this->belongsTo(workshop::class, 'workshop_id');
-     }
-     public function getCourseProgressAttribute()
-     {
-         // Assuming the duration of the course is in weeks
-         $totalDays = $this->course->duration * 7; // Total course duration in days (weeks * 7)
 
-         // Get the start date from the payment's created_at field (when the student registered)
-         $startDate = \Carbon\Carbon::parse($this->payment_date); // Using payment created_at as registration date
-         $currentDate = \Carbon\Carbon::now(); // Current date
+    public function workshop()
+    {
+        return $this->belongsTo(Workshop::class);
+    }
 
-         // Ensure the difference in days is always positive by using abs()
-         $elapsedDays = abs($currentDate->diffInDays($startDate)); // Absolute difference in days
+    public function getCourseProgressAttribute()
+    {
+        // Assuming the duration of the course is in weeks
+        $totalDays = $this->course->duration * 7; // Total course duration in days (weeks * 7)
 
-         // If the course is completed, return 100%
-         if ($elapsedDays >= $totalDays) {
-             return 100;
-         }
+        // Get the start date from the payment's created_at field (when the student registered)
+        $startDate = \Carbon\Carbon::parse($this->payment_date); // Using payment created_at as registration date
+        $currentDate = \Carbon\Carbon::now(); // Current date
 
-         // Otherwise, calculate the percentage of the course that has passed
-         $progress = ($elapsedDays / $totalDays) * 100;
+        // Ensure the difference in days is always positive by using abs()
+        $elapsedDays = abs($currentDate->diffInDays($startDate)); // Absolute difference in days
 
-         // Ensure the progress does not exceed 100%
-         $progress = min(100, $progress);
+        // If the course is completed, return 100%
+        if ($elapsedDays >= $totalDays) {
+            return 100;
+        }
 
-         // Return the rounded progress percentage
-         return round($progress, 2);
-     }
+        // Otherwise, calculate the percentage of the course that has passed
+        $progress = ($elapsedDays / $totalDays) * 100;
 
+        // Ensure the progress does not exceed 100%
+        $progress = min(100, $progress);
 
-
+        // Return the rounded progress percentage
+        return round($progress, 2);
+    }
 }

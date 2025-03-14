@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
+#[Layout('components.layouts.student')]
 class ViewBilling extends Component
 {
     public $hasCompleted;
