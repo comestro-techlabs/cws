@@ -14,6 +14,7 @@ use App\Models\ExamUser;
 use App\Models\CourseUser;
 use App\Models\Assignment;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -153,85 +154,96 @@ class StudentDashboard extends Component
         }
 
     }
-   public function loadAttendance()
-    {
-        $student = User::find($this->studentId);
+    public function loadAttendance()
+{
+    $student = User::find($this->studentId);
 
-        if (!$student) {
-            return [
-                'weekDays' => collect(),
-                'attendancePercentage' => 0,
-                'showPercentage' => false
-            ];
+    if (!$student) {
+        return [
+            'weekDays' => collect(),
+            'attendancePercentage' => 0,
+            'showPercentage' => false
+        ];
+    }
+
+    $joinDate = Carbon::parse($student->created_at)->startOfDay();
+    $today = Carbon::today();
+    $weekDays = collect();
+
+    // Calculate weekdays (excluding Saturdays and Sundays) since joining
+    $weekdaysSinceJoining = 0;
+    $tempDate = $joinDate->copy();
+    while ($tempDate->lte($today)) {
+        if (!$tempDate->isSaturday() && !$tempDate->isSunday()) {
+            $weekdaysSinceJoining++;
         }
+        $tempDate->addDay();
+    }
+    // Subtract 1 because we don't count today yet unless attendance is recorded
+    $weekdaysSinceJoining = max(0, $weekdaysSinceJoining - 1);
+    $showPercentage = $weekdaysSinceJoining >= 7; // Show percentage after 7 weekdays
 
-        $userJoinedToday = $student->created_at->isToday();
-        $daysSinceJoining = $student->created_at->diffInDays(now());
-        $weekDays = collect();
-        $showPercentage = $daysSinceJoining >= 7; // Only show percentage after 7 days
+    if ($joinDate->isToday()) { // Joined today
+        $attendanceRecords = Attendance::where('user_id', $this->studentId)
+            ->whereDate('check_in', $today->toDateString())
+            ->get()
+            ->keyBy(function ($item) {
+                return date('Y-m-d', strtotime($item->check_in));
+            });
 
-        if ($userJoinedToday) {
-            $attendanceRecords = Attendance::where('user_id', $this->studentId)
-                ->whereDate('check_in', now()->toDateString())
-                ->get()
-                ->keyBy(function ($item) {
-                    return date('Y-m-d', strtotime($item->check_in));
-                });
+        $dateKey = $today->format('Y-m-d');
+        $isPresent = isset($attendanceRecords[$dateKey]);
 
-            $today = now();
-            $dateKey = $today->format('Y-m-d');
+        $weekDays->push([
+            'present' => $isPresent,
+            'name' => $today->format('l'),
+            'date' => $dateKey
+        ]);
+
+        $attendancePercentage = 0;
+    } else { // Joined before today
+        $startDate = $joinDate->gt(Carbon::now()->startOfWeek()) ? $joinDate : Carbon::now()->startOfWeek();
+        $endDate = Carbon::now();
+
+        $attendanceRecords = Attendance::where('user_id', $this->studentId)
+            ->whereBetween('check_in', [$startDate, $endDate])
+            ->orderBy('check_in', 'asc')
+            ->get()
+            ->keyBy(function ($item) {
+                return date('Y-m-d', strtotime($item->check_in));
+            });
+
+        $start = $startDate;
+        
+        for ($i = 0; $start->copy()->addDays($i)->lte($today); $i++) {
+            $date = $start->copy()->addDays($i);
+            if ($date->isSaturday() || $date->isSunday()) {
+                continue;
+            }
+
+            $dateKey = $date->format('Y-m-d');
             $isPresent = isset($attendanceRecords[$dateKey]);
 
             $weekDays->push([
                 'present' => $isPresent,
-                'name' => $today->format('l'),
+                'name' => $date->format('l'),
                 'date' => $dateKey
             ]);
-
-            $attendancePercentage = 0; // Don't calculate for new users
-        } else {
-            $attendanceRecords = Attendance::where('user_id', $this->studentId)
-                ->whereBetween('check_in', [
-                    now()->subWeek()->startOfWeek(),
-                    now()
-                ])
-                ->orderBy('check_in', 'asc')
-                ->get()
-                ->keyBy(function ($item) {
-                    return date('Y-m-d', strtotime($item->check_in));
-                });
-
-            $start = now()->subWeek()->startOfWeek();
-            $today = now();
-
-            for ($i = 0; $start->copy()->addDays($i)->lte($today); $i++) {
-                $date = $start->copy()->addDays($i);
-                if ($date->isSaturday() || $date->isSunday()) {
-                    continue;
-                }
-
-                $dateKey = $date->format('Y-m-d');
-                $isPresent = isset($attendanceRecords[$dateKey]);
-
-                $weekDays->push([
-                    'present' => $isPresent,
-                    'name' => $date->format('l'),
-                    'date' => $dateKey
-                ]);
-            }
-
-            $weekDays = $weekDays->take(-5);
-            $totalDays = $weekDays->count();
-            $presentDays = $weekDays->where('present', true)->count();
-            $attendancePercentage = $totalDays > 0 ? round(($presentDays / $totalDays) * 100) : 0;
         }
 
-        return [
-            'weekDays' => $weekDays,
-            'attendancePercentage' => $attendancePercentage,
-            'showPercentage' => $showPercentage
-        ];
+        $weekDays = $weekDays->take(-5);
+        $totalDays = $weekDays->count();
+        $presentDays = $weekDays->where('present', true)->count();
+        $attendancePercentage = $totalDays > 0 && $showPercentage ? 
+            round(($presentDays / $totalDays) * 100) : 0;
     }
+
+    return [
+        'weekDays' => $weekDays,
+        'attendancePercentage' => $attendancePercentage,
+        'showPercentage' => $showPercentage
+    ];
+}
     public function hasCompletedExamOrAssignment($userId)
     {
         return ExamUser::where('user_id', $userId)->exists()

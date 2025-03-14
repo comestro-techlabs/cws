@@ -2,6 +2,7 @@
 namespace App\Livewire\Student;
 
 use App\Models\Attendance;
+use App\Models\User;
 use Carbon\Carbon;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -16,19 +17,25 @@ class MyAttendance extends Component
     public $presentCount = 0;
     public $absentCount = 0;
     public $todayStatus = 'Not Recorded'; // Default status
+    public $student;
 
     public function mount()
     {
         $this->studentId = Auth::id();
+        $this->student = User::find($this->studentId);
+        if(!$this->student){ 
+            session()->flash('error', 'Student not found.');
+        }
         $this->loadAttendance();
     }
 
     public function loadAttendance()
     {
         // Define date range
-        $startDate = Carbon::now()->startOfMonth();
-        $endDate = Carbon::now()->endOfMonth();
-        $today = Carbon::today(); // Today is March 11, 2025
+        $joinDate = Carbon::parse($this->student->created_at)->startOfday();
+        $today = Carbon::today();
+        $startDate = $joinDate->gt(Carbon::today()->startOfMonth())? $joinDate : Carbon::now()->startOfMonth(); 
+        $endDate = Carbon::now();
 
         // Fetch attendance records for the current month
         $this->attendances = Attendance::where('user_id', $this->studentId)

@@ -14,8 +14,10 @@
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
                             <div class="bg-green-50 rounded-md p-3">
-                                <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7" />
                                 </svg>
                             </div>
                         </div>
@@ -38,7 +40,8 @@
                         <div class="flex-shrink-0">
                             <div class="bg-red-50 rounded-md p-3">
                                 <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12" />
                                 </svg>
                             </div>
                         </div>
@@ -60,8 +63,10 @@
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
                             <div class="bg-blue-50 rounded-md p-3">
-                                <svg class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                <svg class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                 </svg>
                             </div>
                         </div>
@@ -106,21 +111,26 @@
         .fc {
             font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
         }
+
         .fc .fc-button-primary {
             background-color: #2563eb;
             border-color: #2563eb;
         }
+
         .fc .fc-button-primary:hover {
             background-color: #1d4ed8;
             border-color: #1d4ed8;
         }
+
         .fc .fc-button-primary:disabled {
             background-color: #93c5fd;
             border-color: #93c5fd;
         }
+
         .fc .fc-daygrid-day.fc-day-today {
             background-color: #eff6ff;
         }
+
         @media (max-width: 640px) {
             .fc .fc-button {
                 padding: 0.2rem 0.4rem;
@@ -174,6 +184,9 @@
     </style>
 
     <script>
+        let selectedDate = null;
+        const studentJoinDate = @json(Carbon\Carbon::parse($student->created_at)->toDateString());
+        let editorInstance = null;
         document.addEventListener('livewire:navigated', () => {
             console.log('livewire:navigated');
             initializeCalendar();
@@ -207,6 +220,7 @@
                 height: 'auto',
                 slotMinTime: '08:00:00',
                 slotMaxTime: '18:00:00',
+                validRange: { start: studentJoinDate },
                 views: {
                     dayGridMonth: {
                         dayMaxEventRows: 2
