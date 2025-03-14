@@ -87,7 +87,7 @@
 
                     <!-- Shipping Information -->
                     <div class="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100">
-                        @if(!$shippingDetailsAvailablity)
+                        @if(!$shippingDetailsFilled)
                         <form wire:submit.prevent="saveShippingAddress" class="p-6">
                             <h2 class="text-lg font-semibold text-gray-900 mb-4">Shipping Information</h2>
 
@@ -166,16 +166,15 @@
                             </div>
                         </form>
                         @else
-                        @foreach($shippingDetailsFilled as $shippingDetails)
                         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                             <h2 class="text-lg font-semibold text-gray-900 mb-4">Your Shipping Address</h2>
                             <div class="text-gray-700 space-y-1">
-                                <p><span class="font-medium">Name:</span> {{ $shippingDetails->first_name }} {{ $shippingDetails->last_name }}</p>
-                                <p><span class="font-medium">Email:</span> {{ $shippingDetails->email }}</p>
-                                <p><span class="font-medium">Address:</span> {{ $shippingDetails->address_line }}</p>
-                                <p><span class="font-medium">City:</span> {{ $shippingDetails->city }}, {{ $shippingDetails->state }}, {{ $shippingDetails->postal_code }}</p>
-                                <p><span class="font-medium">Country:</span> {{ $shippingDetails->country }}</p>
-                                <p><span class="font-medium">Phone:</span> {{ $shippingDetails->phone }}</p>
+                                <p><span class="font-medium">Name:</span> {{ $shippingDetailsFilled->first_name }} {{ $shippingDetailsFilled->last_name }}</p>
+                                <p><span class="font-medium">Email:</span> {{ $shippingDetailsFilled->email }}</p>
+                                <p><span class="font-medium">Address:</span> {{ $shippingDetailsFilled->address_line }}</p>
+                                <p><span class="font-medium">City:</span> {{ $shippingDetailsFilled->city }}, {{ $shippingDetailsFilled->state }}, {{ $shippingDetailsFilled->postal_code }}</p>
+                                <p><span class="font-medium">Country:</span> {{ $shippingDetailsFilled->country }}</p>
+                                <p><span class="font-medium">Phone:</span> {{ $shippingDetailsFilled->phone }}</p>
                             </div>
 
                             <!-- Edit Button -->
@@ -185,7 +184,6 @@
                                 </button>
                             </div>
                         </div>
-                        @endforeach
                         @endif
 
                     </div>
@@ -236,7 +234,11 @@
                             </div>
 
                             <!-- Redeem Button -->
-                            <button type="submit" class="w-full mt-6 px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-purple-700 focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition duration-200">
+                            <button type="submit" 
+                                class="w-full mt-6 px-6 py-3 rounded-lg font-medium 
+                                focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition duration-200 
+                                {{ $shippingDetailsFilled ? 'bg-primary text-white hover:bg-purple-700' : 'bg-gray-300 text-gray-500 cursor-not-allowed' }}"
+                                {{ $shippingDetailsFilled ? '' : 'disabled' }}>
                                 Complete Redemption
                             </button>
 

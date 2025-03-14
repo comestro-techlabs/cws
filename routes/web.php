@@ -82,14 +82,16 @@ use App\Livewire\Auth\GoogleLogin;
 use App\Livewire\Student\Dashboard\Product\CheckOutPage;
 use App\Livewire\Student\Rewards\GemsTransactions;
 
+// public routes
 Route::get('/', Home::class)->name('public.index');
-
-
 Route::get('/viewallcourses', AllCourses::class)->name('public.viewallcourses.all-courses');
 Route::get('/courses/{slug}', Ourcourses::class)->name('public.courseDetail');
 Route::get('/contact', ContactPage::class)->name('public.contactUs');
 Route::get('/workshops', Workshop::class)->name('public.workshop');
+Route::get('/course/{course_id}/chapter/show', CourseWithChapterAndTopic::class)->name('v2.courses.show');
+Route::get('/course/{course_id}/chapter/{chapter_id?}/topic/{topic_id?}/show', TopicWithPostContent::class)->name('v2.topics.show');
 
+//auth routes
 Route::prefix('auth')->group(function () {
     Route::get('/login', Login::class)->name('auth.login');
     Route::get('/logout', Header::class)->name('auth.logout');
@@ -110,15 +112,14 @@ Route::prefix('auth')->group(function () {
     Route::get('/facebook/callback', [Facebook::class, 'handleFacebookCallback'])->name('facebook.callback');
 
 });
-//routes for the free course
-Route::get('/course/{course_id}/chapter/show', CourseWithChapterAndTopic::class)->name('v2.courses.show');
-Route::get('/course/{course_id}/chapter/{chapter_id?}/topic/{topic_id?}/show', TopicWithPostContent::class)->name('v2.topics.show');
-
-
-Route::prefix("student")->group(function () {
-    Route::get('/dashboard', StudentDashboard::class)->name('student.dashboard');
-    Route::get('/billing', ViewBilling::class)->name('student.billing');
-    Route::get('/rewards/gems', GemsTransactions::class)->name('student.rewards.gems');
+//protected routes
+Route::middleware('auth')->group(function () {
+    //student routes
+    Route::prefix("student")->group(function () {
+        Route::get('/dashboard', StudentDashboard::class)->name('student.dashboard');
+        Route::get('/billing', ViewBilling::class)->name('student.billing');
+        Route::get('/rewards/gems', GemsTransactions::class)->name('student.rewards.gems');
+    });
 
     Route::controller(StudentController::class)->group(function () {
         Route::get('/viewbilling/{paymentId}', 'viewbilling')->name('student.viewbilling');

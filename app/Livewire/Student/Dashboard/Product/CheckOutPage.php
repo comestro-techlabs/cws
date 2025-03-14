@@ -22,7 +22,7 @@ class CheckOutPage extends Component
     public $totalPriceOfProduct;
     public $balanceGems;
     public $shippingDetailsFilled;
-    public $shippingDetailsAvailablity = true;
+    // public $shippingDetailsAvailablity = true ;
 
     
     // Address form fields
@@ -55,21 +55,33 @@ class CheckOutPage extends Component
         $this->balanceGems = $this->totalAvailableGems - $this->gems;
         $this->totalPriceOfProduct = $this->gems+$this->shipping_charge;
         // $this->refreshShipDetails();
-        $this->shippingDetailsFilled = ShippingDetail::where('user_id',Auth::id())->get();
+        $this->shippingDetailsFilled = ShippingDetail::where('user_id',Auth::id())->first();
         // dd($this->shippingDetailsFilled);
-        if($this->shippingDetailsFilled->isEmpty()){
-            $this->shippingDetailsAvailablity = false;
+          
+    }
+    public function editShippingAddress(){
+        $this->shippingDetailsFilled = ShippingDetail::where('user_id',Auth::id())->first();
+// dd($this->shippingDetailsFilled);
+        if ($this->shippingDetailsFilled) {
+            $this->first_name = $this->shippingDetailsFilled->first_name;
+            $this->last_name = $this->shippingDetailsFilled->last_name;
+            $this->email = $this->shippingDetailsFilled->email;
+            $this->address_line =$this->shippingDetailsFilled->address_line;
+            $this->city = $this->shippingDetailsFilled->city;
+            $this->state = $this->shippingDetailsFilled->state;
+            $this->postal_code = $this->shippingDetailsFilled->postal_code;
+            $this->country = $this->shippingDetailsFilled->country;
+            $this->phone = $this->shippingDetailsFilled->phone;
+    
+            $this->shippingDetailsFilled = false; // Show the form for editing
         }
-       
-
-      
     }
     #[On('updateshippingDetails')]
     public function refreshShipDetails(){
         // dd('shaique');
-        $this->shippingDetailsFilled = ShippingDetail::where('user_id',Auth::id())->get();
+        $this->shippingDetailsFilled = ShippingDetail::where('user_id',Auth::id())->first();
         // dd($this->shippingDetailsFilled);
-        $this->shippingDetailsAvailablity = true;
+        // $this->shippingDetailsAvailablity = true;
     }
 
     
@@ -79,12 +91,18 @@ class CheckOutPage extends Component
 
         $validatedData['user_id'] = Auth::id(); // Add user_id
 
-        ShippingDetail::create($validatedData); // Save to DB
+        $this->shippingDetailsFilled = ShippingDetail::where('user_id', Auth::id())->first();//check if already exists
+        if( $this->shippingDetailsFilled){
+            $this->shippingDetailsFilled->update($validatedData);
+            session()->flash('message', 'Shipping details updated successfully!');
+        }
+        else{
+            ShippingDetail::create($validatedData); // Save to DB
+            session()->flash('message', 'Shipping details saved successfully!');
+        }
 
         $this->dispatch('updateshippingDetails')->self();
-        
-        
-        session()->flash('message', 'Shipping details saved successfully!');
+          
         // $this->reset();
 
     }

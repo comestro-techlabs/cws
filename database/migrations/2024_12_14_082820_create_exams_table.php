@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId(column: 'batch_id')->constrained()->onDelete('cascade');
             $table->string('exam_name');
             $table->boolean('status')->default(false);
+            $table->date('exam_date')->nullable();
             $table->timestamps();
         });
     }
