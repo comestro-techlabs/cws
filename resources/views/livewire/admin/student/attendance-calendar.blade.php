@@ -1,6 +1,6 @@
 <div>
     <!-- Email Modal with CKEditor -->
-    <div id="emailModal" wire:wire:ignore class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden flex items-center justify-center z-50 transition-opacity duration-300" wire:ignore>
+    <div id="emailModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden flex items-center justify-center z-50 transition-opacity duration-300" wire:ignore>
         <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full m-4 transform transition-all duration-300 scale-95 opacity-0" id="emailModalContent">
             <h3 class="text-lg font-bold text-teal-700 mb-4">Send Message to Student</h3>
             <div id="ckeditor-container" class="mb-4">
