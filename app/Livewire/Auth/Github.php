@@ -37,6 +37,7 @@ class Github extends Component
                 ]);
                 Auth::login($newUser);
             }
+            session(['user_avatar' => $githubUser->getAvatar()]);
 
             return redirect()->intended(Auth::user()->isAdmin == 1 ? '/v2/admin/dashboard' : '/');
         } catch (\Exception $e) {
