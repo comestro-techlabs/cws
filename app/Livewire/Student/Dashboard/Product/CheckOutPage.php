@@ -5,6 +5,7 @@ namespace App\Livewire\Student\Dashboard\Product;
 use App\Models\Products;
 use App\Models\ShippingDetail;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -107,10 +108,17 @@ class CheckOutPage extends Component
 
     }
     
+    public function completeRedemption(){
+        // dd('shaique');
+        Mail::raw('Your redemption has been successfully completed.', function ($message) {
+            $message->to(auth()->user()->email)
+                    ->subject('Redemption Confirmation');
+        });
     
-    
+        // session()->flash('message', 'Redemption email sent successfully!');
+        $this->dispatch('showAlert', 'Redemption completed successfully!');
 
-    
+    }
    
     #[Layout('components.layouts.student')]
     public function render()
