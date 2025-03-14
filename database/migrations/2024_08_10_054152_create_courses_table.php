@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('slug')->unique();
-
             $table->string('course_code')->nullable();
             $table->text('description')->nullable();
             $table->float('duration')->default(0);
@@ -24,6 +23,8 @@ return new class extends Migration
             $table->float('discounted_fees')->nullable();
             $table->foreignId('category_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('course_image')->nullable();
+            $table->boolean('published')->default(false);
+
             $table->timestamps();
         });
     }
