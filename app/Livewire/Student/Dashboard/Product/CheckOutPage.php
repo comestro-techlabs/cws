@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Livewire\Student\Dashboard\Product;
-
+use Illuminate\Support\Str;
+use App\Models\Orders;
 use App\Models\Products;
 use App\Models\ShippingDetail;
 use Illuminate\Support\Facades\Auth;
@@ -110,6 +111,16 @@ class CheckOutPage extends Component
     
     public function completeRedemption(){
         // dd('shaique');
+        Orders::create([
+            'user_id' => Auth::id(),
+            'shipping_detail_id' => $this->shippingDetailsFilled->id,
+            'product_id' => $this->my_product->id,
+            'order_number' => Str::random(6),
+            'total_amount' => $this->totalPriceOfProduct,
+            'status' => 'pending',
+            'payment_method' => 'gems',
+            'transaction_id' => Str::random(10),
+        ]);
         Mail::raw('Your redemption has been successfully completed.', function ($message) {
             $message->to(auth()->user()->email)
                     ->subject('Redemption Confirmation');

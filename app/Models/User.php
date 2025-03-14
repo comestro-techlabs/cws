@@ -72,6 +72,7 @@ class User extends Authenticatable
     }
 
 
+
     public function answers()
     {
         return $this->hasMany(Answer::class);
@@ -84,5 +85,10 @@ class User extends Authenticatable
     public function mockTestResults()
     {
         return $this->hasMany(MockTestResult::class);
+    }
+
+        public function orders()
+    {
+        return $this->hasMany(Orders::class);
     }
 }
