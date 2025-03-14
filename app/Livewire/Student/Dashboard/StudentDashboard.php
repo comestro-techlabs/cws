@@ -57,7 +57,7 @@ class StudentDashboard extends Component
         $this->attendance = $attendanceData['showPercentage'] ? $this->attendancePercentage : 0;
 
         // Initialize student stats
-        $this->gems = $user->gems ?? 0;
+        $this->gems = $user->gem ?? 0;
         $this->points = $user->points ?? 0;
         $this->completedTasks = Assignment_upload::where('student_id', $studentId)->where('status', 'submitted')->count();
         $this->totalTasks = Assignments::whereIn('course_id', $user->courses->pluck('id'))->count();
