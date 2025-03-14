@@ -50,6 +50,9 @@
                             class="w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm">
                         Workshop Payments
                     </button>
+                    @else
+                    
+                    @endif
                 </nav>
             </div>
         </div>

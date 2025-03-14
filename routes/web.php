@@ -59,7 +59,7 @@ use App\Livewire\Admin\Exam\ExamQuestions;
 use App\Livewire\Admin\Quiz\ManageQuiz;
 use App\Livewire\Admin\Result\ManageResult;
 use App\Livewire\Admin\MockTest\ManageMockTest;
-
+use App\Livewire\Admin\Store\ManageOrders;
 use App\Livewire\Admin\Student\AttendanceScanner;
 use App\Livewire\Auth\Login;
 use App\Livewire\Public\Blog\CourseWithChapterAndTopic;
@@ -316,6 +316,9 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/certificate', CertificateEligibility::class)->name('admin.certificate');
         //enquiry
         Route::get('/enquiry', ManageEnquiry::class)->name('admin.manage.enquiry');
+        //manage-orders
+        Route::get('/manage-orders', ManageOrders::class)->name('v2.student.manageOrders');
+
         //blog
         Route::get("/blog/post-course", PostCourse::class)->name('admin.blog.post-course');
 
