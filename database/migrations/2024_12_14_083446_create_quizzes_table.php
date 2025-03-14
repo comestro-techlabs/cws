@@ -22,7 +22,7 @@ return new class extends Migration
             $table->enum('correct_answer', ['option1', 'option2', 'option3', 'option4']);
             // $table->integer('time')->default(1);
             $table->boolean('status')->default(true);
-            $table->integer('marks')->after('correct_answer')->default(1);
+            $table->integer('marks')->default(1);
 
             $table->timestamps();
         });
