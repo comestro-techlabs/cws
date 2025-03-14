@@ -31,7 +31,15 @@ return new class extends Migration
             $table->string('international_payment')->nullable();
             $table->string('error_reason')->nullable();
             $table->string('payment_status')->nullable();
+            $table->foreignId('workshop_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('course_id')->nullable()->change();
+            $table->unsignedTinyInteger('month'); // Stores month (1 = Jan, 2 = Feb, etc.)
+            $table->unsignedSmallInteger('year'); // Stores the payment year
             $table->string('status')->default('pending');
+            $table->date('due_date')->nullable();
+            $table->integer('days_overdue')->default(0);
+            $table->decimal('late_fee', 10, 2)->default(0);
+            $table->decimal('total_amount', 10, 2)->default(0);
             $table->timestamps();
         });
     }

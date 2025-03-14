@@ -19,15 +19,21 @@ return new class extends Migration
             $table->enum("gender",["male","female","other"])->nullable();
             $table->string('education_qualification')->nullable();
             $table->boolean("isAdmin")->default(false);
+            $table->boolean('is_member')->default(false);
             $table->timestamp('email_verified_at')->nullable();
             $table->string("password");
             $table->date('dob')->nullable();
+            $table->string('image')->nullable();
             $table->string('gem')->default(0);
             $table->integer('status')->default(0); //0 = new admission, 1 = new student, 2 = old student
             $table->rememberToken();
             $table->string('google_id')->nullable();
             $table->string('otp')->nullable(); // Column to store OTP
             $table->timestamp('otp_expires_at')->nullable();
+            $table->boolean('is_active')->default(1);
+            $table->string('barcode')->nullable();
+
+
             $table->timestamps();
         });
 

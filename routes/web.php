@@ -98,7 +98,6 @@ Route::prefix('auth')->group(function () {
     Route::get('/github/callback', [Github::class, 'handleGithubCallback'])->name('github.callback');
     Route::get('/linkedin/redirect', [LinkedinLogin::class, 'redirectToLinkedin'])->name('linkedin.redirect');
     Route::get('/linkedin-openid/callback', [LinkedinLogin::class, 'handleLinkedinCallback'])->name('linkedin.callback');
-    
     Route::get('/viewallcourses', AllCourses::class)->name('public.viewallcourses.all-courses');
     Route::get('/courses/{slug}', Ourcourses::class)->name('public.courseDetail');
     Route::get('/contact', ContactPage::class)->name('public.contactUs');
