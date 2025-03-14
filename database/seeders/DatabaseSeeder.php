@@ -30,6 +30,8 @@ class DatabaseSeeder extends Seeder
             PostTopicPostSeeder::class,
             PostMyPostSeeder::class,
             MockTestSeeder::class,        // Mock tests after courses
+            ProductCategorySeeder::class, // Product categories after mock tests
+            ProductSeeder::class,         // Products after mock testsP
         ]);
     }
 }
