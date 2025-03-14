@@ -23,7 +23,9 @@ class DatabaseSeeder extends Seeder
         //     'education_qualification'=>' BCA'
         // ]);
         $this->call([
-            PostCourseSeeder::class,      // Make sure courses are seeded first
+            CategorySeeder::class,        // Categories first
+            CourseSeeder::class,          // Courses second
+            PostCourseSeeder::class,
             PostChapterSeeder::class,
             PostTopicPostSeeder::class,
             PostMyPostSeeder::class,
