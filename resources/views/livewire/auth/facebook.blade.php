@@ -7,10 +7,12 @@
 
     <a href="{{ route('facebook.redirect') }}"
         class="w-full bg-white text-gray-700 font-semibold py-3 px-6 rounded-lg border border-gray-300 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200 flex items-center justify-center gap-2">
-        <svg class="h-5 w-5 mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path fill="#1877F2" d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.068 4.388 22.91 10.125 24V15.563H7.078V12.073H10.125V9.413C10.125 6.387 11.916 4.716 14.657 4.716C15.97 4.716 17.344 4.951 17.344 4.951V7.875H15.83C14.339 7.875 13.875 8.801 13.875 9.749V12.073H17.203L16.671 15.563H13.875V24C19.612 22.91 24 18.068 24 12.073Z"/>
-            <path fill="white" d="M16.671 15.563L17.203 12.073H13.875V9.749C13.875 8.801 14.339 7.875 15.83 7.875H17.344V4.951C17.344 4.951 15.97 4.716 14.657 4.716C11.916 4.716 10.125 6.387 10.125 9.413V12.073H7.078V15.563H10.125V24C12.488 24.398 14.512 24.398 16.875 24V15.563H16.671Z"/>
+        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="25" viewBox="0 0 48 48">
+            <path fill="#039be5" d="M24 5A19 19 0 1 0 24 43A19 19 0 1 0 24 5Z"></path>
+            <path fill="#fff"
+                d="M26.572,29.036h4.917l0.772-4.995h-5.69v-2.73c0-2.075,0.678-3.915,2.619-3.915h3.119v-4.359c-0.548-0.074-1.707-0.236-3.897-0.236c-4.573,0-7.254,2.415-7.254,7.917v3.323h-4.701v4.995h4.701v13.729C22.089,42.905,23.032,43,24,43c0.875,0,1.729-0.08,2.572-0.194V29.036z">
+            </path>
         </svg>
         <span>Sign in with Facebook</span>
-</a>
+    </a>
 </div>

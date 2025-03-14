@@ -38,6 +38,7 @@ class GoogleLogin extends Component
                 ]);
                 Auth::login($newUser);
             }
+            session(['user_avatar' => $googleUser->getAvatar()]);
 
             return redirect()->intended(Auth::user()->isAdmin == 1 ? '/v2/admin/dashboard' : '/');
         } catch (\Exception $e) {
