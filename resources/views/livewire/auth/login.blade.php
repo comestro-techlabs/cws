@@ -13,6 +13,7 @@
                 @livewire('auth.google-login')
                 @livewire('auth.github')
                 @livewire('auth.linkedin-login')
+                @livewire('auth.facebook')
             </div>
         </div>
     </div>

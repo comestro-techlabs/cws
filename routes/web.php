@@ -24,6 +24,7 @@ use App\Livewire\Admin\Dashboad;
 use App\Livewire\Admin\ManageEnquiry;
 use App\Livewire\Admin\Student\AttendanceCalendar;
 use App\Livewire\Admin\Student\ManageStudent;
+use App\Livewire\Auth\Facebook;
 use App\Livewire\Auth\Github;
 use App\Livewire\Auth\LinkedinLogin;
 use App\Livewire\Student\Dashboard\Takeexam\Result;
@@ -96,13 +97,17 @@ Route::prefix('auth')->group(function () {
     Route::get('/google/callback', [GoogleLogin::class, 'handleGoogleCallback'])->name('auth.google.callback');
     Route::get('/github/redirect', [Github::class, 'redirectToGithub'])->name('github.redirect');
     Route::get('/github/callback', [Github::class, 'handleGithubCallback'])->name('github.callback');
+
+    
     Route::get('/linkedin/redirect', [LinkedinLogin::class, 'redirectToLinkedin'])->name('linkedin.redirect');
     Route::get('/linkedin-openid/callback', [LinkedinLogin::class, 'handleLinkedinCallback'])->name('linkedin.callback');
-    
+
     Route::get('/viewallcourses', AllCourses::class)->name('public.viewallcourses.all-courses');
     Route::get('/courses/{slug}', Ourcourses::class)->name('public.courseDetail');
     Route::get('/contact', ContactPage::class)->name('public.contactUs');
     Route::get('/workshops', Workshop::class)->name('public.workshop');
+    Route::get('/facebook/redirect', [Facebook::class, 'redirectToFacebook'])->name('facebook.redirect');
+    Route::get('/facebook/callback', [Facebook::class, 'handleFacebookCallback'])->name('facebook.callback');
 
 });
 //routes for the free course
