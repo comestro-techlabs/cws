@@ -22,7 +22,7 @@ class CheckOutPage extends Component
     public $totalPriceOfProduct;
     public $balanceGems;
     public $shippingDetailsFilled;
-    public $shippingDetailsAvailablity ;
+    // public $shippingDetailsAvailablity = true ;
 
     
     // Address form fields
@@ -57,13 +57,11 @@ class CheckOutPage extends Component
         // $this->refreshShipDetails();
         $this->shippingDetailsFilled = ShippingDetail::where('user_id',Auth::id())->first();
         // dd($this->shippingDetailsFilled);
-        if($this->shippingDetailsFilled){
-            $this->shippingDetailsAvailablity = false;
-        }   
+          
     }
     public function editShippingAddress(){
         $this->shippingDetailsFilled = ShippingDetail::where('user_id',Auth::id())->first();
-
+// dd($this->shippingDetailsFilled);
         if ($this->shippingDetailsFilled) {
             $this->first_name = $this->shippingDetailsFilled->first_name;
             $this->last_name = $this->shippingDetailsFilled->last_name;
@@ -75,7 +73,7 @@ class CheckOutPage extends Component
             $this->country = $this->shippingDetailsFilled->country;
             $this->phone = $this->shippingDetailsFilled->phone;
     
-            $this->shippingDetailsAvailablity = false; // Show the form for editing
+            $this->shippingDetailsFilled = false; // Show the form for editing
         }
     }
     #[On('updateshippingDetails')]
@@ -83,7 +81,7 @@ class CheckOutPage extends Component
         // dd('shaique');
         $this->shippingDetailsFilled = ShippingDetail::where('user_id',Auth::id())->first();
         // dd($this->shippingDetailsFilled);
-        $this->shippingDetailsAvailablity = true;
+        // $this->shippingDetailsAvailablity = true;
     }
 
     
