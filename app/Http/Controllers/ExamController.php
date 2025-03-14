@@ -83,7 +83,7 @@ class ExamController extends Controller
     {
         $users = User::whereHas('batches', function ($query) use ($exam) {
             $query->where('batch_id', $exam->batch_id);
-        })->get();
+        })->get(); 
         foreach ($users as $user) {
             Mail::send(
                 'emails.exam_notification',

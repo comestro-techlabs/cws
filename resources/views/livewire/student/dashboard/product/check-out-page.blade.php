@@ -1,13 +1,27 @@
+
 <div>
+<script>
+     document.addEventListener('livewire:initialized', () => {
+        Livewire.on('showAlert', (message) => {
+            Swal.fire({
+                title: 'Success!',
+                text: message,
+                icon: 'success',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#2563EB'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "{{ route('v2.student.products') }}"; // Livewire way to redirect
+                }
+            });
+        });
+    });
+</script>
     <div class="bg-gray-50 min-h-screen pt-6 mt-5 pb-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Header and Description -->
             <div class="mb-8">
-                @if (session()->has('message'))
-                <div class="mb-4 text-green-600 font-semibold">
-                    {{ session('message') }}
-                </div>
-                @endif
+              
                 <h1 class="text-2xl font-bold text-gray-900">Checkout</h1>
                 <p class="text-gray-600 mt-1">Complete your redemption to receive your reward</p>
             </div>
@@ -234,12 +248,14 @@
                             </div>
 
                             <!-- Redeem Button -->
-                            <button type="submit" 
+                            <button wire:click="completeRedemption"
+                                wire:loading.attr="disabled"
                                 class="w-full mt-6 px-6 py-3 rounded-lg font-medium 
                                 focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition duration-200 
                                 {{ $shippingDetailsFilled ? 'bg-primary text-white hover:bg-purple-700' : 'bg-gray-300 text-gray-500 cursor-not-allowed' }}"
                                 {{ $shippingDetailsFilled ? '' : 'disabled' }}>
-                                Complete Redemption
+                                <span wire:loading.remove>Complete Redemption</span>
+                                <span wire:loading>Processing...</span>
                             </button>
 
                             <p class="text-xs text-gray-500 text-center mt-4">
