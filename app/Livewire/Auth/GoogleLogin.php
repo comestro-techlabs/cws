@@ -39,7 +39,7 @@ class GoogleLogin extends Component
                 Auth::login($newUser);
             }
 
-            return redirect()->intended(Auth::user()->isAdmin == 1 ? '/admin' : '/');
+            return redirect()->intended(Auth::user()->isAdmin == 1 ? '/v2/admin/dashboard' : '/');
         } catch (\Exception $e) {
 
             \Log::error($e->getMessage());

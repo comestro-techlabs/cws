@@ -3,7 +3,10 @@
 namespace App\Livewire\Student\Dashboard\Product;
 
 use App\Models\Products;
+use App\Models\ShippingDetail;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class CheckOutPage extends Component
@@ -18,27 +21,24 @@ class CheckOutPage extends Component
     public $shipping_charge=0;
     public $totalPriceOfProduct;
     public $balanceGems;
+    public $shippingDetailsFilled;
+    public $shippingDetailsAvailablity = true;
 
     
     // Address form fields
-    public $fullName;
-    public $addressLine1;
-    public $addressLine2;
-    public $city;
-    public $state;
-    public $postalCode;
-    public $country;
-    public $phoneNumber;
+    public $first_name, $last_name, $email, $address_line, 
+    $city, $state, $postal_code, $country, $phone;
     
     protected $rules = [
-        'fullName' => 'required|string|max:100',
-        'addressLine1' => 'required|string|max:100',
-        'addressLine2' => 'nullable|string|max:100',
-        'city' => 'required|string|max:50',
-        'state' => 'required|string|max:50',
-        'postalCode' => 'required|string|max:20',
-        'country' => 'required|string|max:50',
-        'phoneNumber' => 'required|string|max:20',
+        'first_name' => 'required|string|max:255',
+        'last_name' => 'required|string|max:255',
+        'email' => 'required|email|max:255',
+        'address_line' => 'required|string|max:500',
+        'city' => 'required|string|max:255',
+        'state' => 'required|string|max:255',
+        'postal_code' => 'required|string|max:50',
+        'country' => 'required|string|max:100',
+        'phone' => 'required|string|max:50',
     ];
     
     public function mount($productId)
@@ -54,54 +54,46 @@ class CheckOutPage extends Component
         // dd($this->belongToCategory);
         $this->balanceGems = $this->totalAvailableGems - $this->gems;
         $this->totalPriceOfProduct = $this->gems+$this->shipping_charge;
+        // $this->refreshShipDetails();
+        $this->shippingDetailsFilled = ShippingDetail::where('user_id',Auth::id())->get();
+        // dd($this->shippingDetailsFilled);
+        if($this->shippingDetailsFilled->isEmpty()){
+            $this->shippingDetailsAvailablity = false;
+        }
+       
 
       
     }
+    #[On('updateshippingDetails')]
+    public function refreshShipDetails(){
+        // dd('shaique');
+        $this->shippingDetailsFilled = ShippingDetail::where('user_id',Auth::id())->get();
+        // dd($this->shippingDetailsFilled);
+        $this->shippingDetailsAvailablity = true;
+    }
+
+    
+    public function saveShippingAddress(){
+        
+        $validatedData = $this->validate();
+
+        $validatedData['user_id'] = Auth::id(); // Add user_id
+
+        ShippingDetail::create($validatedData); // Save to DB
+
+        $this->dispatch('updateshippingDetails')->self();
+        
+        
+        session()->flash('message', 'Shipping details saved successfully!');
+        // $this->reset();
+
+    }
     
     
     
 
     
-    public function completeRedemption()
-    {
-        $this->validate();
-        
-        $user = Products::find($this->product->id);
-        
-        if ($user->points >= $this->totalPoints) {
-            // Process redemption
-            // Create redemption record with address details
-            // Deduct points from user
-            
-            // Example redemption logic (you'd need to implement this according to your models)
-            // $redemption = Redemption::create([
-            //     'user_id' => $user->id,
-            //     'product_id' => $this->product->id,
-            //     'quantity' => $this->quantity,
-            //     'points_used' => $this->totalPoints,
-            //     'status' => 'pending',
-            //     'shipping_name' => $this->fullName,
-            //     'shipping_address_1' => $this->addressLine1,
-            //     'shipping_address_2' => $this->addressLine2,
-            //     'shipping_city' => $this->city,
-            //     'shipping_state' => $this->state,
-            //     'shipping_postal_code' => $this->postalCode,
-            //     'shipping_country' => $this->country,
-            //     'shipping_phone' => $this->phoneNumber,
-            // ]);
-            
-            // $user->update([
-            //     'points' => $user->points - $this->totalPoints
-            // ]);
-            
-            // Reset form
-            $this->showAddressForm = false;
-            
-            session()->flash('message', 'Product successfully redeemed! Your item will be shipped to the address provided.');
-        } else {
-            session()->flash('error', 'You don\'t have enough points to redeem this product.');
-        }
-    }
+   
     #[Layout('components.layouts.student')]
     public function render()
     {
