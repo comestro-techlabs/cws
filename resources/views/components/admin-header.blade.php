@@ -26,7 +26,8 @@
                         type="button" 
                         class="relative inline-flex items-center p-2 hover:bg-gray-100 rounded-full"
                         id="user-menu-button">
-                    <img class="w-8 h-8 rounded-full" src="{{ auth()->user()->profile_photo_url }}" alt="User Photo">
+                        
+                        <img class="w-8 h-8 rounded-full" src="{{ session('user_avatar') }}" alt="User Photo">
                 </button>
 
                 <div x-show="isOpen"
@@ -38,7 +39,7 @@
                      x-transition:leave-end="transform opacity-0 scale-95"
                      class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 ring-1 ring-black ring-opacity-5">
                     <div class="py-2 px-4 text-sm text-gray-700">
-                        <span class="block font-semibold">{{ auth()->user()->email }}</span>
+                    <span class="block font-semibold truncate max-w-[200px]">{{ auth()->user()->email }}</span>
                     </div>
                     <a wire:navigate href="{{ route('admin.logout') }}"
                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-b-lg">Logout</a>
