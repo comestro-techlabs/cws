@@ -114,7 +114,7 @@ class StudentDashboard extends Component
             ->get();
 
         $courseIds = $this->courses->pluck('id')->toArray();
-        $batchIds = $user->courses()->pluck('course_user.batch_id')->toArray();
+        $batchIds = $user->courses()->pluck('course_student.batch_id')->toArray();
 
         // $this->assignments = Assignments::whereIn('course_id', $courseIds)
         //     ->whereHas('batch', function ($query) use ($batchIds) {

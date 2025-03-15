@@ -4,10 +4,36 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    
+    <!-- Replace Tailwind browser script with CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <!-- Add Tailwind CSS base styles -->
+    <style type="text/tailwindcss">
+        @layer base {
+            html {
+                font-family: "Poppins", system-ui, sans-serif;
+            }
+        }
+    </style>
+
+    <!-- Your existing styles -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Parisienne&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Parisienne&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
     <style>
         *{
             font-family: "Poppins", sans-serif!important;
@@ -19,7 +45,7 @@
     @livewireStyles
 </head>
 
-<body x-data="{ sidebarOpen: true }" class="bg-gray-50">
+<body x-data="{ sidebarOpen: true, dropdownOpen: false }" class="bg-gray-50">
     <!-- Overlay for mobile -->
     <div x-show="sidebarOpen" @click="sidebarOpen = false"
          class="fixed inset-0 z-30 transition-opacity duration-300 sm:hidden"
@@ -101,21 +127,6 @@
                 const message = data[0].message;
                 toastr.success(message, 'Success');
             });
-        });
-
-
-        // Avatar Dropdown Script
-        const avatarButton = document.getElementById('avatarButton');
-        const dropdownMenu = document.getElementById('dropdownMenu');
-
-        avatarButton.addEventListener('click', () => {
-            dropdownMenu.classList.toggle('hidden');
-        });
-
-        window.addEventListener('click', (event) => {
-            if (!event.target.closest('#avatarButton') && !event.target.closest('#dropdownMenu')) {
-                dropdownMenu.classList.add('hidden');
-            }
         });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

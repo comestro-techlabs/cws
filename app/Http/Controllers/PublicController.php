@@ -77,13 +77,13 @@ class PublicController extends Controller
 
     // Check if the course is free
     if ($course->discounted_fees == 0) {
-        $alreadyEnrolled = DB::table('course_user')
+        $alreadyEnrolled = DB::table('course_student')
             ->where('user_id', $user->id)
             ->where('course_id', $courseId)
             ->exists();
 
         if (!$alreadyEnrolled) {
-            DB::table('course_user')->insert([
+            DB::table('course_student')->insert([
                 'user_id'    => $user->id,
                 'course_id'  => $courseId,
                 'batch_id'   => null,

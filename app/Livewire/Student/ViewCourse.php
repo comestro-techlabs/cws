@@ -45,14 +45,14 @@ class ViewCourse extends Component
             ->exists();
 
         if ($this->course->discounted_fees == 0) {
-            $already_enrolled = DB::table('course_user')
+            $already_enrolled = DB::table('course_student')
                 ->where('user_id', $user_id)
                 ->where('course_id', $course_id)
                 ->exists();
 
             if (!$already_enrolled) {
                 try {
-                    DB::table('course_user')->insert([
+                    DB::table('course_student')->insert([
                         'user_id'    => $user_id,
                         'course_id'  => $course_id,
                         'batch_id'   => null,
@@ -137,7 +137,7 @@ class ViewCourse extends Component
                 ]);
 
                 // Enroll user in course
-                DB::table('course_user')->insert([
+                DB::table('course_student')->insert([
                     'user_id' => Auth::id(),
                     'course_id' => $this->course->id,
                     'created_at' => now(),

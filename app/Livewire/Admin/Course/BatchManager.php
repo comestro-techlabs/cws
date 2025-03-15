@@ -79,7 +79,7 @@ class BatchManager extends Component
         }
 
         // Check if any user is assigned to this batch
-        $usersAssigned = DB::table('course_user')->where('batch_id', $batch->id)->exists();
+        $usersAssigned = DB::table('course_student')->where('batch_id', $batch->id)->exists();
 
         if ($usersAssigned) {
             $this->dispatch('notice',type:'info', text: 'This batch cannot be deleted because users are assigned to it.');

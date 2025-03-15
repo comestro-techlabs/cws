@@ -20,7 +20,7 @@ class Batch extends Model
     }
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'course_user', 'batch_id', 'user_id')
+        return $this->belongsToMany(User::class, 'course_student', 'batch_id', 'user_id')
                     ->withPivot('course_id')
                     ->withTimestamps();
     }
