@@ -14,33 +14,34 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('student_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('course_id')->constrained()->onDelete('cascade');
-            $table->decimal('amount', 8, 2);
-            $table->string('receipt_no')->nullable();
-            $table->string('payment_id')->nullable();
-            $table->string('order_id')->nullable();
-            $table->string('transaction_fee')->nullable();
-            $table->string('transaction_id')->nullable();
-            $table->string('transaction_date')->nullable();
-            $table->string('payment_card_id')->nullable();
-            $table->string('method')->nullable();
-            $table->string('wallet')->nullable();
-            $table->string('payment_date')->nullable();
-            $table->string('payment_vpa')->nullable();
-            $table->string('ip_address')->nullable();
-            $table->string('international_payment')->nullable();
-            $table->string('error_reason')->nullable();
-            $table->string('payment_status')->nullable();
-            $table->foreignId('workshop_id')->nullable()->constrained()->onDelete('cascade');
-            $table->foreignId('course_id')->nullable()->change();
-            $table->unsignedTinyInteger('month'); // Stores month (1 = Jan, 2 = Feb, etc.)
-            $table->unsignedSmallInteger('year'); // Stores the payment year
-            $table->string('status')->default('pending');
-            $table->date('due_date')->nullable();
-            $table->integer('days_overdue')->default(0);
-            $table->decimal('late_fee', 10, 2)->default(0);
+            $table->foreignId('course_id')->nullable()->constrained('courses')->onDelete('set null');
+            $table->foreignId('workshop_id')->nullable()->constrained('workshops')->onDelete('set null');
+            $table->string('payment_type')->default('course'); // course, workshop, subscription
+            $table->decimal('amount', 10, 2)->default(0);
             $table->decimal('total_amount', 10, 2)->default(0);
+            $table->decimal('transaction_fee', 10, 2)->default(0);
+            $table->string('currency')->default('INR');
+            $table->string('payment_method')->nullable();
+            $table->string('payment_status')->default('initiated'); // initiated, pending, completed, failed
+            $table->string('status')->default('pending'); // pending, captured, failed
+            $table->string('order_id')->nullable();
+            $table->string('payment_id')->nullable();
+            $table->string('receipt_no')->nullable();
+            $table->string('razorpay_order_id')->nullable();
+            $table->string('razorpay_payment_id')->nullable();
+            $table->string('razorpay_signature')->nullable();
+            $table->ipAddress('ip_address')->nullable();
+            $table->text('notes')->nullable();
+            $table->timestamp('payment_date')->nullable();
+            $table->integer('month')->nullable();
+            $table->integer('year')->nullable();
             $table->timestamps();
+
+            // Add indexes for better query performance
+            $table->index(['student_id', 'course_id']);
+            $table->index(['student_id', 'workshop_id']);
+            $table->index(['payment_type', 'status']);
+            $table->index(['payment_status', 'created_at']);
         });
     }
 

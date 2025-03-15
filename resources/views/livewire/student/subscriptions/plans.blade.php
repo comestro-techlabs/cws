@@ -10,107 +10,97 @@
         </div>
 
         <div class="mt-12 grid gap-8 lg:grid-cols-3">
-            <!-- Basic Plan -->
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-                <div class="px-6 py-8">
-                    <h3 class="text-2xl font-bold text-purple-600">Basic</h3>
-                    <p class="mt-4 text-gray-500">Perfect for getting started</p>
-                    <p class="mt-8">
-                        <span class="text-4xl font-bold text-gray-900">₹699</span>
-                        <span class="text-gray-500">/month</span>
-                    </p>
-                    <button 
-                        onclick="initializePayment('basic')"
-                        class="mt-8 w-full bg-purple-600 text-white rounded-md py-2 px-4 hover:bg-purple-700">
-                        Subscribe Now
-                    </button>
+            @foreach($subscriptionPlans as $plan)
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden {{ $plan->slug === 'pro' ? 'border-2 border-purple-500' : '' }}">
+                    <div class="px-6 py-8">
+                        <h3 class="text-2xl font-bold text-purple-600">{{ $plan->name }}</h3>
+                        <p class="mt-4 text-gray-500">{{ $plan->description }}</p>
+                        <p class="mt-8">
+                            <span class="text-4xl font-bold text-gray-900">₹{{ $plan->price }}</span>
+                            <span class="text-gray-500">/{{ $plan->duration }}</span>
+                        </p>
+                        <button 
+                            wire:click="subscribe('{{ $plan->slug }}')"
+                            class="mt-8 w-full bg-purple-600 text-white rounded-md py-2 px-4 hover:bg-purple-700">
+                            Subscribe Now
+                        </button>
+                    </div>
+                    <div class="px-6 pt-6 pb-8">
+                        <ul class="space-y-4">
+                            @php
+                                $planFeatures = is_string($plan->features) ? json_decode($plan->features, true) : $plan->features;
+                            @endphp
+                            @forelse($planFeatures ?? [] as $feature)
+                                <li class="flex items-center space-x-3">
+                                    <svg class="h-5 w-5 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                    <span class="text-gray-600">{{ $feature }}</span>
+                                </li>
+                            @empty
+                                <li class="text-gray-500 text-sm">No features listed</li>
+                            @endforelse
+                        </ul>
+                    </div>
                 </div>
-                <div class="px-6 pt-6 pb-8">
-                    <ul class="space-y-4">
-                        <li class="flex items-center">
-                            <svg class="h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
-                            </svg>
-                            <span class="ml-3">Access to all courses</span>
-                        </li>
-                        <!-- Add more features -->
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Pro Plan -->
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden border-2 border-purple-500">
-                <div class="px-6 py-8">
-                    <h3 class="text-2xl font-bold text-purple-600">Pro</h3>
-                    <p class="mt-4 text-gray-500">Most popular choice</p>
-                    <p class="mt-8">
-                        <span class="text-4xl font-bold text-gray-900">₹1499</span>
-                        <span class="text-gray-500">/quarter</span>
-                    </p>
-                    <button 
-                        wire:click="subscribe('pro')"
-                        class="mt-8 w-full bg-purple-600 text-white rounded-md py-2 px-4 hover:bg-purple-700">
-                        Subscribe Now
-                    </button>
-                </div>
-                <div class="px-6 pt-6 pb-8">
-                    <ul class="space-y-4">
-                        <!-- Add features -->
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Premium Plan -->
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-                <div class="px-6 py-8">
-                    <h3 class="text-2xl font-bold text-purple-600">Premium</h3>
-                    <p class="mt-4 text-gray-500">Best value for money</p>
-                    <p class="mt-8">
-                        <span class="text-4xl font-bold text-gray-900">₹4999</span>
-                        <span class="text-gray-500">/year</span>
-                    </p>
-                    <button 
-                        wire:click="subscribe('premium')"
-                        class="mt-8 w-full bg-purple-600 text-white rounded-md py-2 px-4 hover:bg-purple-700">
-                        Subscribe Now
-                    </button>
-                </div>
-                <div class="px-6 pt-6 pb-8">
-                    <ul class="space-y-4">
-                        <!-- Add features -->
-                    </ul>
-                </div>
-            </div>
+            @endforeach
         </div>
     </div>
 </div>
 
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
-    function initializePayment(plan) {
-        fetch(`/student/subscriptions/plans/subscribe/${plan}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+    document.addEventListener('livewire:initialized', () => {
+        @this.on('initSubscriptionPayment', (data) => {
+            console.log('Payment Data:', data[0]); // Debug payment data
+
+            const paymentData = data[0];
+            if (!paymentData || !paymentData.key || !paymentData.amount || !paymentData.order_id) {
+                console.error('Invalid payment data:', paymentData);
+                return;
             }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
+
+            try {
                 const options = {
-                    key: data.key,
-                    amount: data.amount,
+                    key: paymentData.key,
+                    amount: paymentData.amount,
                     currency: "INR",
                     name: "LearnSyntax",
-                    description: "Subscription Payment",
+                    description: paymentData.description || "Subscription Payment",
                     image: "{{ asset('front_assets/img/logo/logo.png') }}",
-                    order_id: data.order_id,
+                    order_id: paymentData.order_id,
                     handler: function(response) {
-                        handlePaymentSuccess(response, data.payment_id);
+                        fetch("{{ route('student.subscriptions.process') }}", {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({
+                                payment_id: paymentData.payment_id,
+                                razorpay_payment_id: response.razorpay_payment_id,
+                                razorpay_order_id: response.razorpay_order_id,
+                                razorpay_signature: response.razorpay_signature,
+                                plan_type: paymentData.plan_type,
+                                duration: paymentData.duration
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(result => {
+                            if (result.success) {
+                                window.location.href = '/student/dashboard';
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Payment Failed',
+                                    text: result.message || 'Payment processing failed'
+                                });
+                            }
+                        });
                     },
                     prefill: {
-                        name: "{{ auth()->user()->name }}",
-                        email: "{{ auth()->user()->email }}"
+                        name: paymentData.name,
+                        email: paymentData.email
                     },
                     theme: {
                         color: "#662d91"
@@ -119,41 +109,14 @@
 
                 const rzp = new Razorpay(options);
                 rzp.open();
-            } else {
-                alert('Failed to initialize payment: ' + data.message);
+            } catch (error) {
+                console.error('Razorpay initialization error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to initialize payment'
+                });
             }
-        })
-        .catch(error => {
-            console.error('Payment initialization error:', error);
-            alert('Failed to initialize payment');
         });
-    }
-
-    function handlePaymentSuccess(response, paymentId) {
-        fetch("{{ route('student.subscriptions.process') }}", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            body: JSON.stringify({
-                payment_id: paymentId,
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_order_id: response.razorpay_order_id,
-                razorpay_signature: response.razorpay_signature
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                window.location.href = '/student/dashboard';
-            } else {
-                alert('Payment verification failed: ' + data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Payment verification error:', error);
-            alert('Payment verification failed');
-        });
-    }
+    });
 </script>

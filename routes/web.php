@@ -122,12 +122,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/billing', ViewBilling::class)->name('student.billing');
         Route::get('/billing/{paymentId}', \App\Livewire\Student\Billing\ShowBilling::class)->name('student.viewbilling');
         Route::get('/rewards/gems', GemsTransactions::class)->name('student.rewards.gems');
-        Route::get('/subscriptions/plans', \App\Livewire\Student\Subscriptions\Plans::class)
-            ->name('student.subscriptions.plans');
-        Route::post('/subscriptions/process', [SubscriptionController::class, 'process'])
-            ->name('student.subscriptions.process');
-        Route::post('/subscriptions/plans/subscribe/{plan}', [App\Livewire\Student\Subscriptions\Plans::class, 'subscribe'])
-            ->name('student.subscriptions.subscribe');
+        Route::get('/subscriptions/plans', Plans::class)->name('student.subscriptions.plans');
+        Route::post('/subscriptions/process', [SubscriptionController::class, 'process'])->name('student.subscriptions.process');
+        Route::post('/subscriptions/initiate', [Plans::class, 'initializePayment'])->name('student.subscriptions.initiate');
+        Route::get('/subscription/success', [Plans::class, 'handleSuccess'])->name('student.subscriptions.success');
+        Route::get('/subscription/cancel', [Plans::class, 'handleCancel'])->name('student.subscriptions.cancel');
     });
 
     Route::controller(StudentController::class)->group(function () {
