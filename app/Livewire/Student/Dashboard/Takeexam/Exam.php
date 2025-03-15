@@ -21,7 +21,7 @@ class Exam extends Component
         $user = Auth::user();
 
         // Get the batch IDs for the courses the user is enrolled in
-        $batchIds = DB::table('course_user')
+        $batchIds = DB::table('course_student')
             ->where('user_id', $user->id)
             ->pluck('batch_id', 'course_id');
 

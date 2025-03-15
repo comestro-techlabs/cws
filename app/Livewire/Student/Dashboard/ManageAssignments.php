@@ -21,7 +21,7 @@ class ManageAssignments extends Component
 
         $studentId = Auth::id();
 
-        $this->studentBatches = DB::table('course_user')
+        $this->studentBatches = DB::table('course_student')
             ->where('user_id', $studentId)
             ->pluck('batch_id', 'course_id'); 
 

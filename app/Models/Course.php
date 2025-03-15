@@ -49,6 +49,7 @@ class Course extends Model
     {
         return $this->hasMany(Batch::class);
     }
+
     public function quizzes()
     {
         return $this->hasMany(Quiz::class);
@@ -59,7 +60,7 @@ class Course extends Model
 
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'course_user', 'course_id', 'user_id')
+        return $this->belongsToMany(User::class, 'course_student', 'course_id', 'user_id')
             ->withPivot('batch_id')
             ->withTimestamps();
     }
@@ -114,7 +115,9 @@ class Course extends Model
     }
     public function students()
     {
-        return $this->belongsToMany(User::class, 'course_user', 'course_id', 'user_id');
+        return $this->belongsToMany(User::class, 'course_student', 'course_id', 'user_id')
+                    ->withPivot('batch_id')
+                    ->withTimestamps();
     }
 
     public function mockTests()

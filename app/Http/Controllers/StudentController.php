@@ -281,7 +281,7 @@ class StudentController extends Controller
     {
         $userId = auth()->id();
 
-        $enrolledCourses = DB::table('course_user')
+        $enrolledCourses = DB::table('course_student')
             ->where('user_id', $userId)
             ->pluck('course_id');
         $data = [
@@ -409,7 +409,7 @@ class StudentController extends Controller
         $user = Auth::user();
 
         // Get the batch IDs for the courses the user is enrolled in
-        $batchIds = DB::table('course_user')
+        $batchIds = DB::table('course_student')
             ->where('user_id', $user->id)
             ->pluck('batch_id', 'course_id'); // Fetch batch_id mapped by course_id
 
@@ -615,13 +615,13 @@ class StudentController extends Controller
         $payment_exist = Payment::where("student_id", $user_id)->where("course_id", $course_id)->where("status", "captured")->exists();
         // If the course price is 0, enroll the user directly
         if ($course->discounted_fees == 0) {
-            $already_enrolled = DB::table('course_user')
+            $already_enrolled = DB::table('course_student')
                 ->where('user_id', $user_id)
                 ->where('course_id', $course_id)
                 ->exists();
 
             if (!$already_enrolled) {
-                DB::table('course_user')->insert([
+                DB::table('course_student')->insert([
                     'user_id' => $user_id,
                     'course_id' => $course_id,
                     'batch_id' => null, // Set batch_id if applicable
@@ -672,7 +672,7 @@ class StudentController extends Controller
         $studentId = Auth::id();
 
         // Get the batch IDs for the courses the student is enrolled in
-        $studentBatches = DB::table('course_user')
+        $studentBatches = DB::table('course_student')
             ->where('user_id', $studentId)
             ->pluck('batch_id', 'course_id'); // Fetch batch_id mapped by course_id
 

@@ -20,6 +20,8 @@ class MyCourse extends Component
 
     public $showModal = false;
 
+    public $viewingCourse = false;
+    public $selectedCourse = null;
 
     //review and rating
     public $course_id;
@@ -41,6 +43,10 @@ class MyCourse extends Component
         $this->loadCourses();
         $this->initializeBatchSelections();
         $this->calculateProgress();
+        $this->courses = auth()->user()->courses;
+        foreach ($this->courses as $course) {
+            $this->selectedBatch[$course->id] = $course->pivot->batch_id;
+        }
     }
 
     #[On('getting-course')]
@@ -86,6 +92,18 @@ class MyCourse extends Component
     public function rate($value)
     {
         $this->rating = $value;
+    }
+
+    public function viewCourse($courseId)
+    {
+        $this->selectedCourse = $this->courses->find($courseId);
+        $this->viewingCourse = true;
+    }
+
+    public function closeView()
+    {
+        $this->viewingCourse = false;
+        $this->selectedCourse = null;
     }
 
     private function loadCourses()
@@ -138,61 +156,29 @@ class MyCourse extends Component
 
     public function toggleEdit($courseId)
     {
-        \Log::info("Toggling edit for courseId: {$courseId}, current editingCourseId: {$this->editingCourseId}");
         $this->editingCourseId = $this->editingCourseId === $courseId ? null : $courseId;
-        \Log::info("New editingCourseId: " . ($this->editingCourseId ?? 'null'));
-        $this->dispatch('refresh'); // Force a re-render
     }
 
-    public function updateBatch($courseId, $batchId)
+    public function updateBatch($courseId)
     {
+        $this->validate([
+            "selectedBatch.$courseId" => 'required|exists:batches,id'
+        ]);
+
         try {
-            $user = Auth::user();
-            $course = $this->courses->firstWhere('id', $courseId);
+            auth()->user()->courses()->updateExistingPivot($courseId, [
+                'batch_id' => $this->selectedBatch[$courseId]
+            ]);
 
-            if (!$course) {
-                $this->dispatch("show-alert-{$courseId}", [
-                    'icon' => 'error',
-                    'title' => 'Course Not Found',
-                    'text' => 'The selected course could not be found.',
-                ]);
-                return;
-            }
-
-            if ($course->batches->isEmpty()) {
-                $this->dispatch("show-alert-{$courseId}", [
-                    'icon' => 'warning',
-                    'title' => 'No Batches Available',
-                    'text' => "No batches are available for {$course->title}.",
-                ]);
-                return;
-            }
-
-            if ($batchId && !$course->batches->contains('id', $batchId)) {
-                $this->dispatch("show-alert-{$courseId}", [
-                    'icon' => 'error',
-                    'title' => 'Invalid Batch',
-                    'text' => 'Please select a valid batch from the available options.',
-                ]);
-                return;
-            }
-
-            $user->courses()->updateExistingPivot($courseId, ['batch_id' => $batchId ?: null]);
-            $this->selectedBatch[$courseId] = $batchId;
             $this->editingCourseId = null;
-            $this->loadCourses();
-            $this->calculateProgress();
-
-            $this->dispatch("show-alert-{$courseId}", [
-                'icon' => 'success',
-                'title' => 'Batch Updated',
-                'text' => "Batch for {$course->title} updated successfully!",
+            $this->dispatch('alert', [
+                'type' => 'success',
+                'message' => 'Batch updated successfully!'
             ]);
         } catch (\Exception $e) {
-            $this->dispatch("show-alert-{$courseId}", [
-                'icon' => 'error',
-                'title' => 'Update Failed',
-                'text' => 'An error occurred while updating the batch: ' . $e->getMessage(),
+            $this->dispatch('alert', [
+                'type' => 'error',
+                'message' => 'Failed to update batch. Please try again.'
             ]);
         }
     }

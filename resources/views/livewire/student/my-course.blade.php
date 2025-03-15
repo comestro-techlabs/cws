@@ -16,7 +16,7 @@
                 </a>
             </div>
 
-            <!-- Empty state -->
+            <!-- Course Grid -->
             @if($courses->isEmpty())
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-12 text-center">
                 <div class="mx-auto h-24 w-24 bg-blue-50 flex items-center justify-center rounded-full">
@@ -33,89 +33,54 @@
             @else
             <div class="grid gap-6 sm:grid-cols-1 lg:grid-cols-2">
                 @foreach ($courses as $course)
-                <div class="group bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 overflow-hidden">
-                    <div class="flex flex-row">
-                        <!-- Course Image with Progress Overlay -->
-                        <div class="relative w-48 h-48">
+                <div class="group bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 overflow-hidden">
+                    <div class="flex flex-col sm:flex-row">
+                        <!-- Course Image with Progress -->
+                        <div class="relative w-full sm:w-48 h-48">
                             <img src="{{ asset('storage/course_images/' . $course->course_image) }}"
                                 alt="{{ $course->title }}"
                                 class="h-full w-full object-cover">
-                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-3">
-                                <div class="w-full">
-                                    <div class="h-1 w-full bg-white/30 rounded-full overflow-hidden">
-                                        <div class="h-full w-[45%] bg-blue-500 rounded-full" style="width: {{ $course->progress }}%;"></div>
-                                    </div>
-                                    <div class="mt-1 flex justify-end">
-                                        <span class="text-white text-xs"> {{ $course->progress  }} %</span>
-                                    </div>
+                            <!-- New Progress Overlay -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-4">
+                                <div class="flex items-center justify-between text-white mb-2">
+                                    <span class="text-sm font-medium">Progress</span>
+                                    <span class="text-sm">{{ $course->progress }}%</span>
+                                </div>
+                                <div class="w-full bg-white/20 rounded-full h-1.5">
+                                    <div class="bg-blue-500 h-1.5 rounded-full transition-all duration-500" 
+                                         style="width: {{ $course->progress }}%"></div>
                                 </div>
                             </div>
                         </div>
 
-
-
                         <!-- Course Content -->
-                        <div class="flex-1 p-4 min-w-0">
+                        <div class="flex-1 p-5">
                             <div class="flex flex-col h-full">
-                                <div class="flex items-start justify-between">
-                                    <div>
-                                        <h3 class="text-base font-medium text-gray-900">{{ $course->title }}</h3>
-                                        <div class="mt-1 flex items-center text-sm text-gray-500">
-                                            <svg class="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                                <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" />
-                                            </svg>
-                                            {{ $course->instructor }}
-                                        </div>
+                                <div class="mb-4">
+                                    <div class="flex items-start justify-between">
+                                        <h3 class="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
+                                            {{ $course->title }}
+                                        </h3>
+                                        <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-blue-50 text-blue-700">
+                                            ₹{{ $course->discounted_fees }}
+                                        </span>
                                     </div>
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700">
-                                        ₹{{ $course->discounted_fees }}
-                                    </span>
+                                    <div class="mt-2 flex items-center text-sm text-gray-500">
+                                        <svg class="h-4 w-4 mr-1.5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" />
+                                        </svg>
+                                        {{ $course->instructor }}
+                                    </div>
                                 </div>
-
-                                <!-- Batch Information -->
-                                <div class="mt-4 pt-3 border-t border-gray-100">
-                                    @if(isset($selectedBatch[$course->id]))
-                                        <div class="flex items-center justify-between">
-                                            <div class="flex items-center space-x-2">
-                                                <span class="flex-shrink-0 w-1.5 h-1.5 {{ $selectedBatch[$course->id] ? 'bg-green-500' : 'bg-yellow-500' }} rounded-full"></span>
-                                                <span class="text-sm text-gray-600">
-                                                    Batch: 
-                                                    <span class="font-medium">
-                                                        {{ $course->batches->where('id', $selectedBatch[$course->id])->first()?->batch_name ?? 'No Batch Selected' }}
-                                                    </span>
-                                                </span>
-                                            </div>
-                                            <button wire:click="toggleEdit({{ $course->id }})"
-                                                class="text-sm text-blue-600 hover:text-blue-700">
-                                                {{ $selectedBatch[$course->id] ? 'Change' : 'Select Batch' }}
-                                            </button>
-                                        </div>
-                                    @endif
-
-                                    @if($editingCourseId === $course->id)
-                                        <div class="mt-2 space-y-2">
-                                            <select wire:model.live="selectedBatch.{{ $course->id }}"
-                                                class="w-full text-sm border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
-                                                <option value="">Select Batch</option>
-                                                @foreach ($course->batches as $batch)
-                                                    <option value="{{ $batch->id }}">{{ $batch->batch_name }}</option>
-                                                @endforeach
-                                            </select>
-
-                                            <div class="flex items-center space-x-2">
-                                                <button wire:click="updateBatch({{ $course->id }})"
-                                                    wire:loading.attr="disabled"
-                                                    class="flex-1 inline-flex justify-center items-center px-3 py-1.5 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:opacity-50">
-                                                    <span wire:loading.remove wire:target="updateBatch({{ $course->id }})">Update</span>
-                                                    <span wire:loading wire:target="updateBatch({{ $course->id }})">Updating...</span>
-                                                </button>
-                                                <button wire:click="toggleEdit({{ $course->id }})"
-                                                    class="inline-flex justify-center items-center px-3 py-1.5 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200">
-                                                    Cancel
-                                                </button>
-                                            </div>
-                                        </div>
-                                    @endif
+                                
+                                <div class="mt-auto">
+                                    <button wire:click="viewCourse({{ $course->id }})"
+                                        class="w-full bg-gray-50 hover:bg-gray-100 text-gray-700 font-medium py-2.5 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2">
+                                        <span>View Details</span>
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                        </svg>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -124,6 +89,7 @@
                 @endforeach
             </div>
             @endif
+
             <!-- resources/views/livewire/review-form.blade.php -->
             @if ($showModal)
             <div wire:transition class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full" wire:click.self="$toggle('showModal')">
@@ -205,6 +171,104 @@
             </div>
 
 
+            @endif
+
+            <!-- Course Detail Modal -->
+            @if($viewingCourse)
+            <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm overflow-y-auto h-full w-full z-50" 
+                 wire:click.self="closeView">
+                <div class="relative max-w-4xl mx-auto my-8">
+                    <div class="relative bg-white rounded-2xl shadow-xl overflow-hidden">
+                        <!-- Modal Header with Image -->
+                        <div class="relative h-64">
+                            <img src="{{ asset('storage/course_images/' . $selectedCourse->course_image) }}"
+                                alt="{{ $selectedCourse->title }}"
+                                class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent"></div>
+                            <button wire:click="closeView" 
+                                class="absolute top-4 right-4 text-white hover:text-gray-200 rounded-full bg-black/20 p-2">
+                                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                            <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                                <h2 class="text-3xl font-bold">{{ $selectedCourse->title }}</h2>
+                                <div class="mt-2 flex items-center">
+                                    <svg class="h-5 w-5 mr-2 opacity-75" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" />
+                                    </svg>
+                                    <span class="opacity-90">{{ $selectedCourse->instructor }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal Content -->
+                        <div class="p-6 space-y-6">
+                            <!-- Progress Section -->
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h3 class="text-lg font-medium text-gray-900">Your Progress</h3>
+                                <div class="mt-2">
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: {{ $selectedCourse->progress }}%"></div>
+                                    </div>
+                                    <p class="mt-2 text-sm text-gray-600">{{ $selectedCourse->progress }}% Complete</p>
+                                </div>
+                            </div>
+
+                            <!-- Enhanced Batch Selection -->
+                            <div class="bg-gray-50 rounded-xl p-5">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="text-lg font-semibold text-gray-900">Current Batch</h3>
+                                    @if(!$editingCourseId)
+                                        <button wire:click="toggleEdit({{ $selectedCourse->id }})"
+                                            class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 hover:text-blue-700">
+                                            <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                            </svg>
+                                            {{ isset($selectedBatch[$selectedCourse->id]) ? 'Change' : 'Select Batch' }}
+                                        </button>
+                                    @endif
+                                </div>
+
+                                @if(!$editingCourseId)
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-gray-600">
+                                            {{ $selectedCourse->batches->where('id', $selectedBatch[$selectedCourse->id] ?? null)->first()?->batch_name ?? 'No Batch Selected' }}
+                                        </span>
+                                        <button wire:click="toggleEdit({{ $selectedCourse->id }})"
+                                            class="text-sm bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700">
+                                            {{ isset($selectedBatch[$selectedCourse->id]) ? 'Change Batch' : 'Select Batch' }}
+                                        </button>
+                                    </div>
+                                @else
+                                    <div class="space-y-3">
+                                        <select wire:model.live="selectedBatch.{{ $selectedCourse->id }}"
+                                            class="w-full text-sm border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                                            <option value="">Select Batch</option>
+                                            @foreach ($selectedCourse->batches as $batch)
+                                                <option value="{{ $batch->id }}">{{ $batch->batch_name }}</option>
+                                            @endforeach
+                                        </select>
+
+                                        <div class="flex items-center space-x-2">
+                                            <button wire:click="updateBatch({{ $selectedCourse->id }})"
+                                                wire:loading.attr="disabled"
+                                                class="flex-1 inline-flex justify-center items-center px-3 py-1.5 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:opacity-50">
+                                                <span wire:loading.remove wire:target="updateBatch({{ $selectedCourse->id }})">Update Batch</span>
+                                                <span wire:loading wire:target="updateBatch({{ $selectedCourse->id }})">Updating...</span>
+                                            </button>
+                                            <button wire:click="toggleEdit({{ $selectedCourse->id }})"
+                                                class="inline-flex justify-center items-center px-3 py-1.5 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200">
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             @endif
         </div>
     </div>

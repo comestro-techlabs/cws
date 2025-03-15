@@ -157,7 +157,7 @@ class PaymentController extends Controller
             ]);
              // Grant course access if the payment is for a course
              if ($razorpayPayment->status == 'captured' && $payment->course_id) {
-                DB::table('course_user')->updateOrInsert(
+                DB::table('course_student')->updateOrInsert(
                     [
                         'course_id' => $payment->course_id,
                         'user_id' => $payment->student_id,
