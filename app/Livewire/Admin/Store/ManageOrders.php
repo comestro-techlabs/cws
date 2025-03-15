@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\Order;
 use App\Models\Orders;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 
 class ManageOrders extends Component
@@ -16,6 +17,7 @@ class ManageOrders extends Component
     public $pendingOrders;
     public $confirmedOrders;
     
+    #[On('refreshOrders')]
     public function mount(){
         $this->pendingOrders = Orders::with('product','user', 'shippingDetail')->where('status', 'pending')->get();
         // dd( $this->pendingOrders);
@@ -25,7 +27,6 @@ class ManageOrders extends Component
     {
         $this->activeTab = $tab;
     }
-    
     public function selectOrder($orderId)
     {
         $this->selectedOrder = Orders::with('product')->find($orderId);
@@ -39,7 +40,8 @@ class ManageOrders extends Component
             $this->selectedOrder->save();
             $this->showModal = false;
             $this->selectedOrder = null;
-            session()->flash('message', 'Order fulfilled successfully!');
+            // session()->flash('message', 'Order fulfilled successfully!');
+            $this->dispatch('refreshOrders')->self();
         }
     }
     

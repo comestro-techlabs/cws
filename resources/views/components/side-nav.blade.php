@@ -284,7 +284,7 @@
             </div>
         </li>
         <li>
-            <a wire:navigate href="{{ route('admin.blog.post-course') }}"
+            <a wire:navigate href=""
                 class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-purple-50 text-gray-600 hover:text-purple-700 border-l-4 border-transparent hover:border-purple-700 pr-6 transition duration-200">
                 <span class="inline-flex justify-center items-center ml-4">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5" stroke-width="1.5">
@@ -298,7 +298,7 @@
             </a>
         </li>
         <li>
-            <a wire:navigate href="{{ route('admin.blog.post-course') }}"
+            <a wire:navigate href="{{ route('v2.student.manageOrders') }}"
                 class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-purple-50 text-gray-600 hover:text-purple-700 border-l-4 border-transparent hover:border-purple-700 pr-6 transition duration-200">
                 <span class="inline-flex justify-center items-center ml-4">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5" stroke-width="1.5">
