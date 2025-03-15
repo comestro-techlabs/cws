@@ -179,6 +179,7 @@ class StudentDashboard extends Component
         }
         $tempDate->addDay();
     }
+    
     // Subtract 1 because we don't count today yet unless attendance is recorded
     $weekdaysSinceJoining = max(0, $weekdaysSinceJoining - 1);
     $showPercentage = $weekdaysSinceJoining >= 7; // Show percentage after 7 weekdays
@@ -194,11 +195,14 @@ class StudentDashboard extends Component
         $dateKey = $today->format('Y-m-d');
         $isPresent = isset($attendanceRecords[$dateKey]);
 
-        $weekDays->push([
-            'present' => $isPresent,
-            'name' => $today->format('l'),
-            'date' => $dateKey
-        ]);
+        // Only include if it's not Saturday or Sunday
+        if (!$today->isSaturday() && !$today->isSunday()) {
+            $weekDays->push([
+                'present' => $isPresent,
+                'name' => $today->format('l'),
+                'date' => $dateKey
+            ]);
+        }
 
         $attendancePercentage = 0;
     } else { // Joined before today
@@ -217,6 +221,7 @@ class StudentDashboard extends Component
         
         for ($i = 0; $start->copy()->addDays($i)->lte($today); $i++) {
             $date = $start->copy()->addDays($i);
+            // Skip Saturdays and Sundays entirely
             if ($date->isSaturday() || $date->isSunday()) {
                 continue;
             }
@@ -231,7 +236,7 @@ class StudentDashboard extends Component
             ]);
         }
 
-        $weekDays = $weekDays->take(-5);
+        $weekDays = $weekDays->take(-5); // Last 5 weekdays
         $totalDays = $weekDays->count();
         $presentDays = $weekDays->where('present', true)->count();
         $attendancePercentage = $totalDays > 0 && $showPercentage ? 
