@@ -3,7 +3,7 @@
         <div class="alert alert-danger">
             {{ $errorMessage }}
         </div>
-    @endif
+    @endif 
 
     <button wire:click="redirectToGoogle" type="button"
         class="w-full bg-white text-gray-700 font-semibold py-3 px-6 rounded-lg border border-gray-300 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200 flex items-center justify-center gap-2">

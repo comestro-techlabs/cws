@@ -2,13 +2,16 @@
 
 namespace App\Livewire\Auth;
 
+use App\Mail\UserRegisterMail;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Livewire\Component;
 use Laravel\Socialite\Facades\Socialite;
 class GoogleLogin extends Component
 {
     public $errorMessage = '';
-
+ 
     // Method to initiate Google login
     public function redirectToGoogle()
     {
@@ -37,6 +40,8 @@ class GoogleLogin extends Component
                     'password' => '123456dummy', // Consider hashing this
                 ]);
                 Auth::login($newUser);
+                // Send email to the user
+                Mail::to($newUser->email)->send(new UserRegisterMail($newUser));
             }
             session(['user_avatar' => $googleUser->getAvatar()]);
 
