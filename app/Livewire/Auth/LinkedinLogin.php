@@ -1,8 +1,10 @@
 <?php
 namespace App\Livewire\Auth;
 
+use App\Mail\UserRegisterMail;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Laravel\Socialite\Facades\Socialite;
 use Livewire\Component;
 
@@ -34,6 +36,8 @@ class LinkedinLogin extends Component
                     'password' => bcrypt('123456dummy'),
                 ]);
                 Auth::login($newUser);
+                 // Send email to the user
+                 Mail::to($newUser->email)->send(new UserRegisterMail($newUser));
             }
             session(['user_avatar' => $linkedinUser->getAvatar()]);
             return redirect()->intended(Auth::user()->isAdmin == 1 ? '/v2/admin/dashboard' : '/');

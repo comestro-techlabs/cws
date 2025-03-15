@@ -2,8 +2,10 @@
 
 namespace App\Livewire\Auth;
 
+use App\Mail\UserRegisterMail;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth; 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Laravel\Socialite\Facades\Socialite;
 use Livewire\Component;
 
@@ -36,6 +38,8 @@ class Facebook extends Component
                 ]);
 
                 Auth::login($newUser);
+                 // Send email to the user
+                 Mail::to($newUser->email)->send(new UserRegisterMail($newUser));
             }
             session(['user_avatar' => $facebookUser->getAvatar()]);
 
