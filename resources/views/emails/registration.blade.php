@@ -45,7 +45,7 @@
         
         <!-- Footer -->
         <footer style="background-color: #F3F4F6; padding: 20px; text-align: center; font-size: 14px; color: #6B7280;">
-            <p style="margin: 0;">© {{ date('Y') }} Learn Syntax Connect. All rights reserved.</p>
+            <p style="margin: 0;">© {{ date('Y') }} Learn Syntax. All rights reserved.</p>
            
         </footer>
     </div>
