@@ -12,31 +12,38 @@ class CategorySeeder extends Seeder
     {
         $categories = [
             [
-                'title' => 'Web Development',
-                'description' => 'Learn modern web development technologies including HTML, CSS, JavaScript, PHP, and popular frameworks.',
+                'cat_title' => 'Web Development',
+                'cat_description' => 'Learn modern web development technologies including HTML, CSS, JavaScript, PHP, and popular frameworks.',
             ],
             [
-                'title' => 'Programming',
-                'description' => 'Master programming fundamentals and advanced concepts with popular languages like Python, Java, and C++.',
+                'cat_title' => 'Mobile Development',
+                'cat_description' => 'Master mobile app development for iOS and Android platforms.',
             ],
             [
-                'title' => 'Database',
-                'description' => 'Understand database design, management, and optimization with various database systems.',
+                'cat_title' => 'Data Science',
+                'cat_description' => 'Explore data analysis, machine learning, and statistical modeling.',
             ],
             [
-                'title' => 'Mobile Development',
-                'description' => 'Create mobile applications for iOS and Android platforms using modern frameworks.',
-            ]
+                'cat_title' => 'Cloud Computing',
+                'cat_description' => 'Learn cloud platforms, services, and deployment strategies.',
+            ],
+            [
+                'cat_title' => 'Cybersecurity',
+                'cat_description' => 'Study network security, ethical hacking, and security best practices.',
+            ],
         ];
 
         foreach ($categories as $category) {
-            Category::create([
-                'cat_title' => $category['title'],
-                'cat_description' => $category['description'],
-                'cat_slug' => Str::slug($category['title']),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+            // Check if category exists
+            $existingCategory = Category::where('cat_slug', Str::slug($category['cat_title']))->first();
+            
+            if (!$existingCategory) {
+                Category::create([
+                    'cat_title' => $category['cat_title'],
+                    'cat_slug' => Str::slug($category['cat_title']),
+                    'cat_description' => $category['cat_description'],
+                ]);
+            }
         }
     }
 }

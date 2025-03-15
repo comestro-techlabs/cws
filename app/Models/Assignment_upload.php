@@ -35,4 +35,29 @@ class Assignment_upload extends Model
         return $this->hasMany(Assignment_upload::class, 'assignment_id', 'id');
     }
 
+    public function getSubmissionStatusAttribute()
+    {
+        if (!$this->assignment->due_date) {
+            return 'submitted';
+        }
+
+        $submittedDate = $this->submitted_at;
+        $dueDate = $this->assignment->due_date;
+
+        if ($submittedDate > $dueDate) {
+            return 'overdue';
+        }
+
+        return 'on-time';
+    }
+
+    public function getDaysLateAttribute()
+    {
+        if (!$this->assignment->due_date || $this->submission_status !== 'overdue') {
+            return 0;
+        }
+
+        return $this->submitted_at->diffInDays($this->assignment->due_date);
+    }
+
 }

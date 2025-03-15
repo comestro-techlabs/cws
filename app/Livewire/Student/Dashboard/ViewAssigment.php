@@ -51,60 +51,63 @@ class ViewAssigment extends Component
 
     public function submit()
     {
-        // Validate the file
         $this->validate([
-            'file' => 'required|file|mimes:pdf,doc,docx|max:10240', // Adjust rules as needed
+            'file' => 'required|file|mimes:pdf,doc,docx|max:10240',
         ]);
 
-        // Get the access token for Google Drive
-        $accessToken = $this->token();
+        try {
+            $accessToken = $this->token();
 
-        // Prepare file details
-        $file = $this->file;
-        $mimeType = $file->getMimeType();
-        $fileName = $file->getClientOriginalName();
-        $fileContent = file_get_contents($file->getRealPath());
+            // Prepare file details
+            $file = $this->file;
+            $mimeType = $file->getMimeType();
+            $fileName = $file->getClientOriginalName();
+            $fileContent = file_get_contents($file->getRealPath());
 
-        // Step 1: Metadata request to Google Drive
-        $metadataResponse = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $accessToken,
-            'Content-Type' => 'application/json',
-        ])->post('https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable', [
-            'name' => $fileName,
-            'mimeType' => $mimeType,
-            'parents' => [config('services.google.folder_id')],
-        ]);
+            // Step 1: Metadata request to Google Drive
+            $metadataResponse = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $accessToken,
+                'Content-Type' => 'application/json',
+            ])->post('https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable', [
+                'name' => $fileName,
+                'mimeType' => $mimeType,
+                'parents' => [config('services.google.folder_id')],
+            ]);
 
-        if (!$metadataResponse->successful()) {
-            $this->addError('file', 'Failed to initialize upload.');
-            return;
-        }
+            if (!$metadataResponse->successful()) {
+                $this->addError('file', 'Failed to initialize upload.');
+                return;
+            }
 
-        $uploadUrl = $metadataResponse->header('Location');
+            $uploadUrl = $metadataResponse->header('Location');
 
-        // Step 2: Upload file content to Google Drive
-        $uploadResponse = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $accessToken,
-            'Content-Type' => $mimeType,
-        ])->withBody($fileContent, $mimeType)->put($uploadUrl);
+            // Step 2: Upload file content to Google Drive
+            $uploadResponse = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $accessToken,
+                'Content-Type' => $mimeType,
+            ])->withBody($fileContent, $mimeType)->put($uploadUrl);
 
-        if ($uploadResponse->successful()) {
-            // Get the file ID from Google Drive
-            $fileId = json_decode($uploadResponse->body())->id;
+            if ($uploadResponse->successful()) {
+                // Get the file ID from Google Drive
+                $fileId = json_decode($uploadResponse->body())->id;
 
-            // Save the file details to the database
-            $uploadedFile = new Assignment_upload();
-            $uploadedFile->student_id = auth()->id();
-            $uploadedFile->file_path = $fileId;
-            $uploadedFile->assignment_id = $this->assignment_id; // Use the assignment_id property
-            $uploadedFile->submitted_at = now(); // Set the submission time
-            $uploadedFile->status = 'submitted';
-            $uploadedFile->save();
+                // Save the file details to the database
+                $assignment_upload = new Assignment_upload();
+                $assignment_upload->student_id = auth()->id();
+                $assignment_upload->file_path = $fileId;
+                $assignment_upload->assignment_id = $this->assignment_id; // Use the assignment_id property
+                $assignment_upload->submitted_at = now(); // Set the submission time
+                $assignment_upload->status = 'submitted';
+                $assignment_upload->save();
 
-            // Flash a success message
-            session()->flash('msg', 'Your file has been uploaded successfully.');
-        } else {
-            $this->addError('file', 'Failed to upload file to Google Drive.');
+                if ($this->assignment->isOverdue()) {
+                    session()->flash('warning', 'Assignment submitted after due date.');
+                } else {
+                    session()->flash('success', 'Assignment submitted successfully.');
+                }
+            }
+        } catch (\Exception $e) {
+            session()->flash('error', 'Failed to upload assignment: ' . $e->getMessage());
         }
     }
 

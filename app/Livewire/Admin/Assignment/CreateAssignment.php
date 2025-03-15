@@ -22,7 +22,16 @@ class CreateAssignment extends Component
     public $description = '';
     public $status = false;
     public $batches = [];
+    public $due_date;
 
+    protected $rules = [
+        'course_id' => 'required|exists:courses,id',
+        'batch_id' => 'required|exists:batches,id',
+        'title' => 'required|string|max:255',
+        'description' => 'nullable|string',
+        'status' => 'boolean',
+        'due_date' => 'required|date|after:now',
+    ];
 
     public function render()
     {
@@ -43,6 +52,7 @@ class CreateAssignment extends Component
                 $this->batch_id = $this->assignment->batch_id;
                 $this->title = $this->assignment->title;
                 $this->description = $this->assignment->description ?? '';                
+                $this->due_date = $this->assignment->due_date?->format('Y-m-d\TH:i');
             } else {
                 
                 session()->flash('error', 'Assignment not found.');
@@ -62,6 +72,7 @@ class CreateAssignment extends Component
                 'title' => 'required|string|max:255',
                 'description' => 'nullable|string',
                 'status' => 'boolean',
+                'due_date' => 'required|date|after:now',
             ]);
 
             $validated['description'] = strip_tags($this->description);
@@ -128,4 +139,26 @@ class CreateAssignment extends Component
         'batch_id.required' => 'Please select a batch.',
         'title.required' => 'Assignment title is required.',
     ];
+
+    public function updatedCourseId($value)
+    {
+        $this->batch_id = ''; // Reset batch selection
+        if ($value) {
+            $this->batches = Batch::where('course_id', $value)->get();
+        } else {
+            $this->batches = collect();
+        }
+    }
+
+    protected function rules()
+    {
+        return [
+            'course_id' => 'required|exists:courses,id',
+            'batch_id' => 'required|exists:batches,id',
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'due_date' => 'required|date|after:now',
+            'status' => 'boolean'
+        ];
+    }
 }

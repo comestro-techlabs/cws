@@ -132,6 +132,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     @livewireScripts
+    <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+    @stack('scripts')
 </body>
 
 </html>

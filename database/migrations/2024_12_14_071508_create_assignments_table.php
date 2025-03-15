@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description')->nullable();
+            $table->dateTime('due_date')->nullable();
             $table->foreignId('course_id')->nullable()->constrained()->onDelete('cascade'); 
             $table->foreignId('batch_id')->nullable()->constrained()->onDelete('cascade'); 
             $table->boolean('status')->default(1);
