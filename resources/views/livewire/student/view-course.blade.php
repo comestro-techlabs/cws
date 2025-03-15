@@ -165,94 +165,73 @@
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 @auth
 <script>
-    document.getElementById('pay-button').onclick = function(e) {
+    document.getElementById('pay-button').onclick = async function(e) {
+        e.preventDefault();
         const payButton = document.getElementById('pay-button');
         payButton.disabled = true;
-        e.preventDefault();
         
-        const courseAmount = {{ $course->discounted_fees }};
-        const receipt_no = `COURSE_${Date.now()}`;
+        try {
+            const response = await @this.initiatePayment();
+            
+            if (response && response.payment_id && response.order_id) {
+                var options = {
+                    "key": "{{ env('RAZORPAY_KEY') }}",
+                    "amount": {{ $course->discounted_fees }} * 100,
+                    "currency": "INR",
+                    "name": "LearnSyntax",
+                    "description": "{{ $course->title }}",
+                    "image": "{{ asset('front_assets/img/logo/logo.png') }}",
+                    "order_id": response.order_id, // Razorpay order ID
+                    "handler": async function(razorpayResponse) {
+                        const result = await @this.handlePaymentResponse({
+                            payment_id: response.payment_id,
+                            razorpay_payment_id: razorpayResponse.razorpay_payment_id,
+                            razorpay_order_id: razorpayResponse.razorpay_order_id,
+                            razorpay_signature: razorpayResponse.razorpay_signature
+                        });
 
-        fetch("{{ route('store.payment.initiation') }}", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                },
-                body: JSON.stringify({
-                    student_id: {{ Auth::id() }},
-                    course_id: {{ $course->id }},
-                    receipt_no: receipt_no,
-                    amount: courseAmount,
-                    ip_address: "{{ request()->ip() }}",
-                    payment_type: 'course'
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    var options = {
-                        "key": "{{ env('RAZORPAY_KEY') }}",
-                        "amount": courseAmount * 100, // Convert to paise
-                        "currency": "INR",
-                        "name": "LearnSyntax",
-                        "description": "{{ $course->title }}",
-                        "image": "{{ asset('front_assets/img/logo/logo.png') }}",
-                        "order_id": data.order_id,
-                        "handler": function(response) {
-                            fetch("{{ route('handle.payment.response') }}", {
-                                    method: "POST",
-                                    headers: {
-                                        "Content-Type": "application/json",
-                                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                                    },
-                                    body: JSON.stringify({
-                                        payment_id: data.payment_id,
-                                        razorpay_payment_id: response.razorpay_payment_id,
-                                        razorpay_order_id: response.razorpay_order_id,
-                                        razorpay_signature: response.razorpay_signature,
-                                        course_id: {{ $course->id }}
-                                    })
-                                })
-                                .then(response => response.json())
-                                .then(data => {
-                                    if (data.success) {
-                                        window.location.href = '/student/dashboard';
-                                    } else {
-                                        alert('Payment failed: ' + data.message);
-                                        payButton.disabled = false;
-                                    }
-                                })
-                                .catch(error => {
-                                    console.error("Error in updating payment:", error);
-                                    payButton.disabled = false;
-                                });
-                        },
-                        "prefill": {
-                            "name": "{{ Auth::user()->name }}",
-                            "email": "{{ Auth::user()->email }}"
-                        },
-                        "theme": {
-                            "color": "#2563EB"
-                        },
-                        "modal": {
-                            "ondismiss": function() {
-                                payButton.disabled = false;
-                            }
+                        if (result.success) {
+                            window.location.href = '/student/dashboard';
+                        } else {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: result.message || 'Payment verification failed',
+                                icon: 'error',
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#2563EB'
+                            });
                         }
-                    };
+                    },
+                    "prefill": {
+                        "name": "{{ Auth::user()->name }}",
+                        "email": "{{ Auth::user()->email }}"
+                    },
+                    "theme": {
+                        "color": "#2563EB"
+                    },
+                    "modal": {
+                        "ondismiss": function() {
+                            payButton.disabled = false;
+                        }
+                    }
+                };
 
-                    var rzp1 = new Razorpay(options);
-                    rzp1.open();
-                } else {
-                    alert("Error initiating payment: " + data.message);
-                    payButton.disabled = false;
-                }
-            })
-            .catch(error => {
-                console.error("Error initiating payment:", error);
-                payButton.disabled = false;
+                var rzp1 = new Razorpay(options);
+                rzp1.open();
+            } else {
+                throw new Error('Payment initialization failed');
+            }
+        } catch (error) {
+            console.error("Payment Error:", error);
+            Swal.fire({
+                title: 'Error!',
+                text: 'Payment initiation failed: ' + (error.message || ''),
+                icon: 'error',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#2563EB'
             });
+            payButton.disabled = false;
+        }
     };
 </script>
 @endauth
