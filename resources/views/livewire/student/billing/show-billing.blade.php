@@ -7,7 +7,7 @@
                     <h1 class="text-2xl font-bold text-gray-900">Invoice</h1>
                     <p class="text-sm text-gray-500">Order ID: {{ $payment->order_id }}</p>
                 </div>
-                <img src="{{ asset('front_assets/img/logo/logo.png') }}" alt="Logo" class="h-12">
+                <img src="{{ asset('assets/LearnSyntax.png') }}" alt="Logo" class="h-8">
             </div>
         </div>
 

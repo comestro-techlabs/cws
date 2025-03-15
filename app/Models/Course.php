@@ -101,7 +101,7 @@ class Course extends Model
     public function getProgressAttribute()
     {
         $payment = $this->payments()->latest()->first(); // Get latest payment
-        return $payment ? $payment->course_progress : 0;
+        return $payment ? $payment->course_progress : 100;
     }
 
     public function exams()
