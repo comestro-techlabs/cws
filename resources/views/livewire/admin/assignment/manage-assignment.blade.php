@@ -1,18 +1,21 @@
-<div class="py-6">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-        <!-- Page Header -->
-        <div class="mb-8 flex items-center justify-between">
-            <h1 class="text-2xl font-semibold text-gray-900">Manage Assignments</h1>
-            <button wire:click="create" class="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 inline-flex items-center">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+<div class="py-6 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header Section -->
+        <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">Manage Assignments</h1>
+                <p class="mt-1 text-sm text-gray-500">Create and manage course assignments</p>
+            </div>
+            <button wire:click="create" class="inline-flex items-center px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">
+                <svg class="w-5 h-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"/>
                 </svg>
                 Create Assignment
             </button>
         </div>
 
-        <!-- Filters Section -->
-        <div class="bg-white p-6 rounded-lg shadow mb-6">
+        <!-- Filters -->
+        <div class="mb-6 bg-white rounded-lg shadow p-4">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Filter by Course</label>
@@ -50,81 +53,82 @@
             </div>
         @endif
 
-        <!-- Assignments Table -->
-        <div class="bg-white rounded-lg shadow overflow-hidden">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Title</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Course</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Due Date</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-200">
-                    @forelse($assignments as $assignment)
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4">{{ $assignment->title }}</td>
-                            <td class="px-6 py-4">{{ $assignment->course?->title ?? 'No Course' }}</td>
-                            <td class="px-6 py-4">
-                                @if($assignment->due_date)
-                                    {{ \Carbon\Carbon::parse($assignment->due_date)->format('M d, Y H:i') }}
-                                @else
-                                    No Due Date
-                                @endif
-                            </td>
-                            <td class="px-6 py-4">
-                                <button wire:click="toggleStatus({{ $assignment->id }})" 
-                                    class="px-3 py-1 rounded-full text-sm {{ $assignment->status ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                    {{ $assignment->status ? 'Active' : 'Inactive' }}
+        <!-- Assignments Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @forelse($assignments as $assignment)
+                <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-all">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start">
+                            <h3 class="text-lg font-semibold text-gray-900">{{ $assignment->title }}</h3>
+                            <span class="px-2 py-1 text-sm rounded-full {{ $assignment->status ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                {{ $assignment->status ? 'Active' : 'Inactive' }}
+                            </span>
+                        </div>
+                        
+                        <div class="mt-4 space-y-3">
+                            <div class="flex items-center text-sm text-gray-600">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                                </svg>
+                                {{ $assignment->course?->title ?? 'No Course' }}
+                            </div>
+                            
+                            <div class="flex items-center text-sm text-gray-600">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                </svg>
+                                Due: {{ \Carbon\Carbon::parse($assignment->due_date)->format('M d, Y H:i') }}
+                            </div>
+                        </div>
+
+                        <div class="mt-6 flex items-center justify-between">
+                            <div class="flex items-center space-x-4">
+                                <button wire:click="viewAssignmentSubmissions({{ $assignment->id }})" 
+                                    class="inline-flex items-center text-sm text-blue-600 hover:text-blue-900">
+                                    <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                    </svg>
+                                    Review
                                 </button>
-                            </td>
-                            <td class="px-6 py-4">
-                                <div class="flex space-x-3">
-                                    <!-- View Submissions -->
-                                    <button wire:click="viewAssignmentSubmissions({{ $assignment->id }})" 
-                                        class="text-blue-600 hover:text-blue-900" 
-                                        title="View Submissions">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                        </svg>
-                                    </button>
-                                    
-                                    <!-- Edit -->
-                                    <button wire:click="edit({{ $assignment->id }})" 
-                                        class="text-teal-600 hover:text-teal-900"
-                                        title="Edit Assignment">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                                        </svg>
-                                    </button>
-                                    
-                                    <!-- Delete -->
-                                    <button wire:click="delete({{ $assignment->id }})" 
-                                        onclick="return confirm('Are you sure you want to delete this assignment?')"
-                                        class="text-red-600 hover:text-red-900"
-                                        title="Delete Assignment">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="5" class="px-6 py-4 text-center text-gray-500">
-                                No assignments found
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-            <div class="px-6 py-4 border-t">
-                {{ $assignments->links() }}
-            </div>
+                                
+                                <a href="{{ route('assignment.reviewWork', $assignment->id) }}"
+                                    class="inline-flex items-center text-sm text-blue-600 hover:text-blue-900">
+                                    <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                    </svg>
+                                    Review Work
+                                </a>
+                                
+                                <button wire:click="edit({{ $assignment->id }})" 
+                                    class="inline-flex items-center text-sm text-gray-600 hover:text-gray-900">
+                                    <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                    </svg>
+                                    Edit
+                                </button>
+                            </div>
+                            
+                            <button wire:click="toggleStatus({{ $assignment->id }})" class="text-sm">
+                                {{ $assignment->status ? 'Deactivate' : 'Activate' }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <div class="col-span-full text-center py-12">
+                    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    <h3 class="mt-2 text-sm font-medium text-gray-900">No assignments</h3>
+                    <p class="mt-1 text-sm text-gray-500">Get started by creating a new assignment.</p>
+                </div>
+            @endforelse
+        </div>
+
+        <!-- Pagination -->
+        <div class="mt-6">
+            {{ $assignments->links() }}
         </div>
     </div>
 
@@ -202,93 +206,108 @@
         </div>
     @endif
 
-    <!-- Submissions Modal -->
+    <!-- Submissions Review Modal -->
     @if($viewSubmissions)
-        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity z-50">
-            <div class="fixed inset-0 z-50 overflow-y-auto">
-                <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                    <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-4xl">
-                        <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                            <!-- Header -->
-                            <div class="flex justify-between items-center mb-4">
-                                <h3 class="text-lg font-semibold">
-                                    {{ $currentAssignment->title }} - Submissions
-                                </h3>
-                                <button wire:click="closeSubmissions" class="text-gray-500 hover:text-gray-700">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
+    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity z-50">
+        <div class="fixed inset-0 z-50 overflow-y-auto">
+            <div class="flex min-h-full items-center justify-center p-4">
+                <div class="relative transform overflow-hidden rounded-lg bg-white shadow-xl transition-all w-full max-w-6xl">
+                    <div class="absolute top-0 right-0 pt-4 pr-4">
+                        <button wire:click="closeSubmissions" class="rounded-md bg-white text-gray-400 hover:text-gray-500">
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
 
-                            <!-- Submissions Table -->
-                            <div class="mt-4">
-                                <table class="min-w-full divide-y divide-gray-200">
-                                    <thead class="bg-gray-50">
-                                        <tr>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Student</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Submitted</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Files</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Grade</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="bg-white divide-y divide-gray-200">
-                                        @forelse($studentSubmissions as $submission)
-                                            <tr>
-                                                <td class="px-6 py-4 whitespace-nowrap">{{ $submission['student_name'] }}</td>
-                                                <td class="px-6 py-4 whitespace-nowrap">{{ $submission['submitted_at'] }}</td>
-                                                <td class="px-6 py-4 whitespace-nowrap">
-                                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                                        {{ $submission['status'] === 'overdue' ? 'bg-red-100 text-red-800' : 
-                                                           ($submission['status'] === 'submitted' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800') }}">
-                                                        {{ ucfirst($submission['status']) }}
-                                                    </span>
-                                                </td>
-                                                <td class="px-6 py-4">
+                    <!-- Submissions Content -->
+                    <div class="p-6">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">{{ $currentAssignment->title }} - Submissions</h3>
+                        <div class="border rounded-lg overflow-hidden">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Student</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Submitted</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Files</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Grade</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    @forelse($studentSubmissions as $submission)
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                {{ $submission['student_name'] }}
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                                    {{ $submission['status'] === 'overdue' ? 'bg-red-100 text-red-800' : 
+                                                    ($submission['status'] === 'submitted' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800') }}">
+                                                    {{ ucfirst($submission['status']) }}
+                                                </span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                {{ $submission['submitted_at'] }}
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <div class="flex space-x-2">
                                                     @foreach($submission['files'] as $file)
                                                         <button wire:click="previewFile('{{ $file['file_path'] }}')" 
-                                                                class="text-blue-600 hover:text-blue-900 mr-2">
+                                                            class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
                                                             File {{ $loop->iteration }}
                                                         </button>
                                                     @endforeach
-                                                </td>
-                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="flex items-center space-x-3">
                                                     <input type="number" 
                                                         wire:model.defer="grade" 
                                                         wire:change="updateGrade('{{ $submission['student_id'] }}', $event.target.value)"
-                                                        class="w-20 rounded border-gray-300" 
+                                                        class="w-20 rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
                                                         min="0" 
                                                         max="100" 
-                                                        value="{{ $submission['grade'] }}">
-                                                </td>
-                                            </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="5" class="px-6 py-4 text-center text-gray-500">
-                                                    No submissions found
-                                                </td>
-                                            </tr>
-                                        @endforelse
-                                    </tbody>
-                                </table>
-                            </div>
+                                                        placeholder="{{ $submission['grade'] ?? '0' }}"
+                                                    >
+                                                    <span class="text-sm text-gray-500">/100</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="5" class="px-6 py-4 text-center text-gray-500">
+                                                No submissions found
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     @endif
 
     <!-- File Preview Modal -->
     @if($selectedFileId)
-        <div class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
-            <div class="bg-white p-4 rounded-lg w-11/12 max-w-4xl h-5/6 relative">
-                <button wire:click="closePreview" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
-                </button>
-                <iframe src="https://drive.google.com/file/d/{{ $selectedFileId }}/preview"
-                        class="w-full h-[90%] border rounded-lg mt-8"></iframe>
+        <div class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+            <div class="bg-white rounded-lg shadow-xl w-full max-w-5xl h-[80vh] flex flex-col">
+                <div class="flex items-center justify-between p-4 border-b">
+                    <h3 class="text-lg font-medium">File Preview</h3>
+                    <button wire:click="closePreview" class="text-gray-400 hover:text-gray-500">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="flex-1 p-4">
+                    <iframe src="https://drive.google.com/file/d/{{ $selectedFileId }}/preview"
+                        class="w-full h-full rounded-lg border-2 border-gray-200">
+                    </iframe>
+                </div>
             </div>
         </div>
     @endif
