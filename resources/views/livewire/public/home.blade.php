@@ -15,6 +15,22 @@
                     <div class="relative">
                         <img src="{{ asset('storage/course_images/' . $item->course_image) }}" alt="{{ $item->title }}"
                             class="w-full h-52 object-cover" />
+                        <!-- Course Type Label -->
+                        <div class="absolute top-4 left-4 flex items-center space-x-1">
+                            <div class="px-3 py-1 {{ $item->course_type === 'online' ? 'bg-blue-600' : 'bg-green-600' }} text-white rounded-full text-sm font-medium flex items-center shadow-lg">
+                                @if($item->course_type === 'online')
+                                    <svg class="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                    </svg>
+                                @else
+                                    <svg class="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                    </svg>
+                                @endif
+                                {{ ucfirst($item->course_type) }}
+                            </div>
+                        </div>
+                        <!-- Existing Rating Badge -->
                         <div class="absolute top-4 right-4 flex items-center space-x-1">
                             <div class="px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-sm font-medium text-[#662d91] flex items-center">
                                 <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">

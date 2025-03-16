@@ -41,20 +41,14 @@ class ShowMockTest extends Component
         }
     }
 
-    public function saveAndNext($selectedOption)
+    public function saveAnswer($questionId, $selectedOption)
     {
-        $currentQuestion = $this->questions[$this->currentQuestionIndex];
-        $this->answers[$currentQuestion['id']] = $selectedOption;
-
+        $this->answers[$questionId] = $selectedOption;
+        
         // Auto navigate to next question if not on last question
         if ($this->currentQuestionIndex < count($this->questions) - 1) {
             $this->currentQuestionIndex++;
         }
-    }
-
-    public function updateAnswer($questionId, $answer)
-    {
-        $this->answers[$questionId] = $answer;
     }
 
     public function nextQuestion()
@@ -103,7 +97,7 @@ class ShowMockTest extends Component
         ]);
 
         $this->globalGemService  = new GemService();
-        $this->globalGemService->earnedGem($testdata->score);
+        $this->globalGemService->earnedGem($testdata->score, 'Earned by MockTest');
         
         $this->submitted = true;
         $this->attempted = true;

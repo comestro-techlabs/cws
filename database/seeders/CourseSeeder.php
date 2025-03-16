@@ -67,21 +67,40 @@ class CourseSeeder extends Seeder
             $regularFees = $faker->randomElement([15000, 20000, 25000, 30000, 35000]);
             $discountedFees = $regularFees * 0.8; // 20% discount
 
-            Course::create([
+            $courseType = $faker->randomElement(['online', 'offline']);
+            
+            // Base course data
+            $courseData = [
                 'title' => $uniqueTitle,
                 'slug' => Str::slug($uniqueTitle),
                 'course_code' => strtoupper(Str::random(3)) . rand(1000, 9999),
                 'description' => $faker->paragraphs(3, true),
-                'duration' => $faker->randomFloat(1, 1, 6), // Duration in months
+                'duration' => $faker->randomFloat(1, 1, 6),
                 'instructor' => $instructors[array_rand($instructors)],
                 'fees' => $regularFees,
                 'discounted_fees' => $discountedFees,
-                'category_id' => rand(1, 4), // Assuming you have 4 categories
-                'course_image' => 'courses/course-' . rand(1, 5) . '.jpg', // Assuming you have default images
-                'published' => $faker->boolean(80), // 80% chances of being published
+                'category_id' => rand(1, 4),
+                'course_image' => 'courses/course-' . rand(1, 5) . '.jpg',
+                'published' => $faker->boolean(80),
+                'course_type' => $courseType,
                 'created_at' => $faker->dateTimeBetween('-1 year', 'now'),
                 'updated_at' => now(),
-            ]);
+            ];
+
+            // Add type-specific details
+            if ($courseType === 'online') {
+                $courseData['meeting_link'] = $faker->url;
+                $courseData['meeting_id'] = $faker->numberBetween(100000000, 999999999);
+                $courseData['meeting_password'] = $faker->password(8);
+                $courseData['venue'] = null;
+            } else {
+                $courseData['meeting_link'] = null;
+                $courseData['meeting_id'] = null;
+                $courseData['meeting_password'] = null;
+                $courseData['venue'] = $faker->address;
+            }
+
+            Course::create($courseData);
         }
     }
 }
