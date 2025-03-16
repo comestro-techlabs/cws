@@ -4,35 +4,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>New Assignment Notification</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
-<body style="font-family: Arial, sans-serif; background-color: #f4f4f9; margin: 0; padding: 0;">
-    <div style="background-color: #ffffff; border-radius: 8px; overflow: hidden; max-width: 600px; margin: 20px auto; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-        <header style="background-color: #4CAF50; color: #ffffff; text-align: center; padding: 20px;">
-            <h1 style="margin: 0; font-size: 24px;">📚 New Assignment Available</h1>
+<body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f6f9fc; margin: 0; padding: 0; color: #333; line-height: 1.6;">
+    <div style="max-width: 600px; margin: 20px auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+        <!-- Header with Gradient -->
+        <header style="background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%); color: #ffffff; text-align: center; padding: 30px 20px;">
+            <h1 style="margin: 0; font-size: 28px; font-weight: 700; letter-spacing: 0.5px;">New Assignment Available</h1>
+            <div style="margin-top: 15px; font-size: 16px;">Your course has been updated</div>
         </header>
-        <main style="padding: 20px; color: #333333; margin-bottom: 20px;">
-            <p style="font-size: 16px; line-height: 1.5; color: #555555;">
+        
+        <!-- Main Content -->
+        <main style="padding: 30px; color: #333333;">
+            <p style="font-size: 16px; line-height: 1.6; color: #4B5563;">
                 Hello <strong>{{ $user->name }}</strong>,
             </p>
-            <p style="font-size: 16px; line-height: 1.5; color: #555555;">
-                A new assignment has been added to your course <strong>{{ $assignment->course->name }}</strong>.
+            
+            <p style="font-size: 16px; line-height: 1.6; color: #4B5563;">
+                A new assignment has been added to your course <strong>{{ $assignment->course->title }}</strong>.
             </p>
-            <div style="margin: 20px 0; padding: 15px; border: 1px solid #dddddd; border-radius: 5px; background-color: #f9f9f9;">
-                <h2 style="font-size: 18px; margin-bottom: 10px; color: #4CAF50;">📄 Assignment Details:</h2>
-                <p style="margin: 5px 0; font-size: 16px;"><strong>Title:</strong> {{ $assignment->title }}</p>
-                <p style="margin: 5px 0; font-size: 16px;"><strong>Description:</strong> {{ $assignment->description }}</p>
-                {{-- <p style="margin: 5px 0; font-size: 16px;"><strong>Due Date:</strong> {{ $assignment->due_date ?? 'No due date specified' }}</p> --}}
+            
+            <!-- Assignment Details Box -->
+            <div style="background-color: #EEF2FF; padding: 20px; margin: 25px 0; border-radius: 8px;">
+                <div style="font-size: 18px; font-weight: 600; color: #4F46E5; margin-bottom: 15px;">📄 Assignment Details</div>
+                
+                <div style="margin-bottom: 10px;">
+                    <span style="font-weight: 600; color: #4B5563;">Title:</span>
+                    <span style="color: #4B5563;">{{ $assignment->title }}</span>
+                </div>
+                
+                <div style="margin-bottom: 10px;">
+                    <span style="font-weight: 600; color: #4B5563;">Description:</span>
+                    <span style="color: #4B5563;">{{ $assignment->description }}</span>
+                </div>
+                
+                {{-- <div>
+                    <span style="font-weight: 600; color: #4B5563;">Due Date:</span>
+                    <span style="color: #4B5563;">{{ $assignment->due_date ?? 'No due date specified' }}</span>
+                </div> --}}
             </div>
-            <p style="font-size: 16px; line-height: 1.5; color: #555555;">
-                📝 Please log in to your account to view and complete the assignment.
+            
+            <p style="font-size: 16px; line-height: 1.6; color: #4B5563;">
+                 Please log in to your account to view and complete the assignment.
             </p>
-            <a href="{{ route('student.assignment-upload', $assignment->id) }}" style="display: inline-block; background-color: #4CAF50; color: #ffffff; text-decoration: none; padding: 10px 20px; border-radius: 5px; font-size: 16px; margin-top: 10px;">
-                View Assignment
-            </a>
+            
+            <!-- CTA Button -->
+            <div style="text-align: center; margin: 30px 0 20px;">
+                <a href="{{ route('student.assignment-upload', $assignment->id) }}" style="display: inline-block; background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%); color: #ffffff; text-decoration: none; padding: 12px 32px; border-radius: 6px; font-size: 16px; font-weight: 600; letter-spacing: 0.3px; transition: all 0.2s ease; box-shadow: 0 4px 10px rgba(107, 114, 128, 0.2);">
+                    View Assignment
+                </a>
+            </div>
+            
+            <p style="font-size: 16px; line-height: 1.6; color: #4B5563; margin-top: 25px;">
+                Best regards,<br>
+                <strong>Learn Syntax Team</strong>
+            </p>
         </main>
-        <footer style="background-color: #f4f4f9; padding: 15px; text-align: center; border-top: 1px solid #dddddd; font-size: 14px; color: #888888;">
-            <p style="margin: 0;">🌟 Thank you for your dedication! 🌟</p>
-            <p style="margin: 5px 0;">© {{ date('Y') }} Learn Syntax. All rights reserved.</p>
+        
+        <!-- Footer -->
+        <footer style="background-color: #F3F4F6; padding: 20px; text-align: center; border-top: 1px solid #E5E7EB;">
+            <p style="margin: 0; color: #6B7280; font-size: 14px;">© {{ date('Y') }} Learn Syntax. All rights reserved.</p>
         </footer>
     </div>
 </body>
