@@ -126,7 +126,7 @@
                             </div>
 
                             <!-- Options -->
-                            <div class="space-y-3 mb-6">
+                            <div wire:key="question-{{ $questions[$currentQuestionIndex]['id'] }}" class="space-y-3 mb-6">
                                 @foreach(json_decode($questions[$currentQuestionIndex]['options'], true) as $option)
                                     <label class="block w-full p-4 border rounded-xl hover:bg-blue-50 hover:border-blue-200
                                         cursor-pointer transition-all {{ $submitted ? 'opacity-60 cursor-not-allowed' : '' }}">
@@ -134,10 +134,10 @@
                                             <input type="radio"
                                                 name="question_{{ $questions[$currentQuestionIndex]['id'] }}"
                                                 value="{{ $option }}"
-                                                wire:model="answers.{{ $questions[$currentQuestionIndex]['id'] }}"
-                                                wire:change="saveAndNext('{{ $option }}')"
+                                                wire:click="saveAnswer('{{ $questions[$currentQuestionIndex]['id'] }}', '{{ $option }}')"
                                                 class="w-5 h-5 text-blue-600 border-gray-300 focus:ring-blue-500"
                                                 {{ $submitted ? 'disabled' : '' }}
+                                                {{ isset($answers[$questions[$currentQuestionIndex]['id']]) && $answers[$questions[$currentQuestionIndex]['id']] === $option ? 'checked' : '' }}
                                             >
                                             <span class="text-gray-700">{{ $option }}</span>
                                         </div>

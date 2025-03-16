@@ -9,11 +9,14 @@ use App\Models\Course;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Rule;
+use Livewire\WithPagination;
 
 #[Layout('components.layouts.admin')]
 #[Title('Manage Mocktest')]
 class ManageMockTest extends Component
-{// Mock Test Properties
+{
+    use WithPagination;
+    // Mock Test Properties
     #[Rule('required|string|max:255')]
     public $test_title;
 
@@ -190,7 +193,7 @@ class ManageMockTest extends Component
     }
            public function render()
     {
-        $tests = MockTest::with('course')->latest()->get();
+        $tests = MockTest::with('course')->latest()->paginate(10);
         $questions = $this->viewQuestionsId ? MockTestQuestion::where('mocktest_id', $this->viewQuestionsId)->get() : [];
         return view('livewire.admin.mock-test.manage-mock-test', compact('tests', 'questions'));
     }
