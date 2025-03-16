@@ -13,12 +13,8 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\WorkshopController;
 
-use App\Livewire\Admin\Assignment\AssignmentCourse;
-use App\Livewire\Admin\Assignment\CreateAssignment;
 use App\Livewire\Admin\Assignment\ManageAssignment;
 use App\Livewire\Admin\Assignment\ReviewWork;
-use App\Livewire\Admin\Assignment\AssignmentReview;
-use App\Livewire\Admin\Assignment\SingleViewAssignment;
 
 use App\Livewire\Admin\Dashboad;
 use App\Livewire\Admin\ManageEnquiry;
@@ -291,15 +287,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         //mocktest routes
         Route::get('/mocktest', ManageMockTest::class)->name('admin.mocktest');
         // Assignment Routes
-        Route::get('/assignment', CreateAssignment::class)->name('admin.assignment');
         Route::get('/assignment/manage', ManageAssignment::class)->name('admin.assignment.manage');
-        Route::get('/singleViewAssignment/{assignment}', SingleViewAssignment::class)->name('admin.assignment.view');
-        Route::get('/assignment/course', AssignmentCourse::class)->name('admin.assignment.course');
-        Route::get('/assignment/{assignment}/edit', CreateAssignment::class)->name('admin.assignment.edit');
-        //upload assignment routes
-
-        Route::get('/assignments/course', AssignmentCourse::class)->name('admin.assignment.course'); //u
-        Route::get('/assignments/review/{slug}', AssignmentReview::class)->name('assignment.review'); //u
 
         Route::get('/assignments/review-work/{id}', ReviewWork::class)->name('assignment.reviewWork');//u
 

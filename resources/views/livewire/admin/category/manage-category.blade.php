@@ -1,4 +1,7 @@
 <div>
+    <!-- Full Page Loader -->
+    <x-loader />
+
     <div class="container mx-auto px-4 sm:px-8">
         <div class="py-8">
             <div class="flex gap-3 flex-col md:flex-row justify-between md:items-center mb-6">
