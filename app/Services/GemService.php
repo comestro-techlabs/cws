@@ -6,7 +6,6 @@ use App\Models\Gem;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
-
 class GemService
 {
     public $user_id;
@@ -18,9 +17,8 @@ class GemService
         $this->user = User::where('id', $this->user_id)->first();
     }
 
-    public function earnedGem($gem)
+    public function earnedGem($gem, $description)
     {
-
         if (!$this->user) {
             throw new \Exception("User not authenticated.");
         }
@@ -28,10 +26,9 @@ class GemService
             'user_id' => $this->user_id,
             'amount' => $gem,
             'type' => 'earned',
-            'description' => 'Earned Gem',
+            'description' => $description,
             'expires_at' => now()->addDays(30),
         ]);
-
 
         $this->user->gem += $gem;
         $this->user->save();
@@ -41,7 +38,6 @@ class GemService
 
     public function redeemGem($gem)
     {
-
         Gem::create([
             'user_id' => $this->user_id,
             'amount' => $gem,
