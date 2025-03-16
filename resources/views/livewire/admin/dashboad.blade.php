@@ -203,7 +203,7 @@
                                         <td class="px-4 py-3 text-sm text-gray-900">{{$course->title}}</td>
                                         <td class="px-4 py-3 text-sm text-gray-500">{{ $course->duration }} Weeks</td>
                                         <td class="px-4 py-3 text-right">
-                                            <a wire:navigate href="{{ route('admin.course.show', $course->id) }}"
+                                            <a wire:navigate href="{{ route('admin.course.update', $course->id) }}"
                                                class="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium text-white bg-blue-500 hover:bg-blue-600 transition-colors">
                                                 View Details
                                             </a>

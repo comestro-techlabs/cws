@@ -58,9 +58,33 @@ class UpdateCourse extends Component
 
     public $editing = false;
     public $editingField = null;
+    public $tempData = [];
 
     // Add new property for progress
     public $progress = 0;
+
+    // New properties for course type
+    public $course_type;
+    public $meeting_link;
+    public $meeting_id;
+    public $meeting_password;
+    public $venue;
+
+    protected $rules = [
+        'title' => 'required|min:3',
+        'course_code' => 'nullable|string',
+        'description' => 'required',
+        'duration' => 'required|numeric|min:0',
+        'instructor' => 'required|string',
+        'fees' => 'required|numeric|min:0',
+        'discounted_fees' => 'required|numeric|min:0',
+        'category_id' => 'required|exists:categories,id',
+        'course_type' => 'required|in:online,offline',
+        'meeting_link' => 'required_if:course_type,online|nullable|url',
+        'meeting_id' => 'nullable|string',
+        'meeting_password' => 'nullable|string',
+        'venue' => 'required_if:course_type,offline|nullable|string',
+    ];
 
     public function updatedTempImage()
     {
@@ -107,24 +131,48 @@ class UpdateCourse extends Component
         }
     }
 
+    public function editField($field)
+    {
+        $this->editingField = $field;
+        $this->tempData[$field] = $this->{$field};
+    }
+
+    public function cancelEdit()
+    {
+        if ($this->editingField && isset($this->tempData[$this->editingField])) {
+            $this->{$this->editingField} = $this->tempData[$this->editingField];
+        }
+        $this->editingField = null;
+        $this->tempData = [];
+    }
+
     public function saveField($field)
     {
-        if ($this->editingField === $field) {
-            // Validate and save the field
-            $this->validate([
-                $field => 'required'
-            ]);
-
-            $this->course->update([
-                $field => $this->$field
-            ]);
-
-            $this->editingField = null;
-            $this->editing = false;
-        } else {
-            $this->editingField = $field;
-            $this->editing = true;
+        if ($this->editingField !== $field) {
+            $this->editField($field);
+            return;
         }
+
+        $this->validate([
+            $field => $this->rules[$field] ?? 'required'
+        ]);
+
+        $updateData = [$field => $this->$field];
+
+        // Handle course type change
+        if ($field === 'course_type') {
+            if ($this->course_type === 'online') {
+                $updateData['venue'] = null;
+            } else {
+                $updateData['meeting_link'] = null;
+                $updateData['meeting_id'] = null;
+                $updateData['meeting_password'] = null;
+            }
+        }
+
+        $this->course->update($updateData);
+        $this->editingField = null;
+        $this->dispatch('notice', type: 'success', text: 'Field updated successfully!');
     }
 
     // Ensure preview image is loaded when page refreshes
@@ -140,7 +188,12 @@ class UpdateCourse extends Component
             'fees',
             'discounted_fees',
             'course_code',
-            'category_id'
+            'category_id',
+            'course_type',
+            'meeting_link',
+            'meeting_id',
+            'meeting_password',
+            'venue'
         ]));
         $this->isPublished = (bool) $this->course->published;
         $this->categories = Category::all();

@@ -83,7 +83,7 @@ use App\Livewire\Student\Subscriptions\Plans;
 // public routes
 Route::get('/', Home::class)->name('public.index');
 Route::get('/viewallcourses', AllCourses::class)->name('public.viewallcourses.all-courses');
-Route::get('/courses/{slug}', Ourcourses::class)->name('public.courseDetail');
+Route::get('/course/{slug}', Ourcourses::class)->name('public.course.view');
 Route::get('/contact', ContactPage::class)->name('public.contactUs');
 Route::get('/workshops', Workshop::class)->name('public.workshop');
 Route::get('/course/{course_id}/chapter/show', CourseWithChapterAndTopic::class)->name('v2.courses.show');
@@ -267,7 +267,6 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         //course routes
         Route::get('/course', InsertCourse::class)->name('admin.course');
         Route::get('/course/update/{courseId}', UpdateCourse::class)->name('admin.course.update');
-        Route::get('/course/show/{courseId}', ShowCourse::class)->name('admin.course.show');
         Route::get('/course/manage', ManageCourse::class)->name('admin.course.manage');
         Route::get('/student/{id}', ViewStudent::class)->name('admin.student.view');
 

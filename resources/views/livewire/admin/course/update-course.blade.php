@@ -26,44 +26,132 @@
                             ['instructor', 'Instructor Name'],
                             ['duration', 'Duration (Weeks)'],
                             ['fees', 'Course Fees'],
-                            ['discounted_fees', 'Discounted Fees']
+                            ['discounted_fees', 'Discounted Fees'],
+                            ['course_type', 'Course Type']
+                            ] as [$field, $label])
+                            <div class="space-y-2">
+                                @if($field === 'course_type')
+                                <label class="text-sm font-medium text-gray-700">{{ $label }}</label>
+                                <div class="flex gap-2 mt-2 relative">
+                                    <select wire:model.defer="{{ $field }}"
+                                        @if($editingField !== $field) 
+                                            disabled 
+                                            wire:click="editField('{{ $field }}')"
+                                            wire:keydown.prevent
+                                        @endif
+                                        class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-1 focus:ring-purple-500 focus:border-purple-500 
+                                            {{ $editingField !== $field ? 'cursor-pointer bg-gray-50' : 'bg-white' }}">
+                                        <option value="online">Online Course</option>
+                                        <option value="offline">Offline Course</option>
+                                    </select>
+                                    <button wire:click="saveField('{{ $field }}')"
+                                        class="px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors">
+                                        {{ $editingField === $field ? 'Save' : 'Edit' }}
+                                    </button>
+                                </div>
+                                @else
+                                <label class="text-sm font-medium text-gray-700">{{ $label }}</label>
+                                <div class="relative group">
+                                    <input type="text" 
+                                        wire:model.defer="{{ $field }}"
+                                        @if($editingField !== $field) 
+                                            readonly 
+                                            wire:click="editField('{{ $field }}')"
+                                            wire:keydown.prevent
+                                        @endif
+                                        class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-1 focus:ring-purple-500 focus:border-purple-500 
+                                            {{ $editingField !== $field ? 'cursor-pointer bg-gray-50' : 'bg-white' }}"
+                                    >
+                                    @if($editingField === $field)
+                                        <div class="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
+                                            <button type="button" wire:click="saveField('{{ $field }}')"
+                                                class="p-1 text-green-600 hover:text-green-700">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                            <button type="button" wire:click="cancelEdit"
+                                                class="p-1 text-red-600 hover:text-red-700">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                    @endif
+                                </div>
+                                @error($field)
+                                <p class="text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                                @endif
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <!-- Online Course Details -->
+                    @if($course->course_type === 'online')
+                    <div class="border-t pt-6">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Online Course Details</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            @foreach ([
+                            ['meeting_link', 'Meeting Link'],
+                            ['meeting_id', 'Meeting ID'],
+                            ['meeting_password', 'Meeting Password']
                             ] as [$field, $label])
                             <div class="space-y-2">
                                 <label class="text-sm font-medium text-gray-700">{{ $label }}</label>
                                 <div class="flex gap-2 mt-2 relative">
                                     <input type="text" wire:model.defer="{{ $field }}"
-                                        {{ !$editing || $editingField !== $field ? 'disabled' : '' }}
-                                        class="flex-1 rounded-lg border-gray-300 shadow-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 p-2 disabled:bg-gray-50">
-                                    <div wire:loading.delay wire:target="saveField('{{ $field }}')"
-                                        class="absolute inset-0 bg-white bg-opacity-50 flex items-center justify-center">
-                                        <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
-                                    </div>
+                                        @if($editingField !== $field) 
+                                            readonly 
+                                            wire:click="editField('{{ $field }}')"
+                                            wire:keydown.prevent
+                                        @endif
+                                        class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-1 focus:ring-purple-500 focus:border-purple-500 
+                                            {{ $editingField !== $field ? 'cursor-pointer bg-gray-50' : 'bg-white' }}">
                                     <button wire:click="saveField('{{ $field }}')"
-                                        wire:loading.attr="disabled"
-                                        wire:loading.class="opacity-50 cursor-not-allowed"
                                         class="px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors">
-                                        <span wire:loading.remove wire:target="saveField('{{ $field }}')">
-                                            {{ $editingField === $field ? 'Save' : 'Edit' }}
-                                        </span>
-                                        <span wire:loading wire:target="saveField('{{ $field }}')">
-                                            Saving...
-                                        </span>
+                                        {{ $editingField === $field ? 'Save' : 'Edit' }}
                                     </button>
                                 </div>
-                                @error($field)
-                                <p class="text-sm text-red-600">{{ $message }}</p>
-                                @enderror
                             </div>
                             @endforeach
                         </div>
                     </div>
+                    @endif
+
+                    <!-- Offline Course Details -->
+                    @if($course->course_type === 'offline')
+                    <div class="border-t pt-6">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Offline Course Details</h3>
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium text-gray-700">Venue</label>
+                            <div class="flex gap-2 mt-2 relative">
+                                <textarea wire:model.defer="venue" rows="3"
+                                    @if($editingField !== 'venue') 
+                                        readonly 
+                                        wire:click="editField('venue')"
+                                        wire:keydown.prevent
+                                    @endif
+                                    class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-1 focus:ring-purple-500 focus:border-purple-500 
+                                        {{ $editingField !== $field ? 'cursor-pointer bg-gray-50' : 'bg-white' }}"></textarea>
+                                <button wire:click="saveField('venue')"
+                                    class="px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors">
+                                    {{ $editingField === 'venue' ? 'Save' : 'Edit' }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
 
                     <!-- Description -->
                     <div class="border-t pt-6">
                         <h3 class="text-lg font-medium text-gray-900 mb-4">Course Description</h3>
                         <div class="space-y-2">
                             <textarea wire:model.defer="description" rows="4"
-                                class="w-full rounded-lg border-gray-300 shadow-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 p-2"></textarea>
+                                @if($editingField !== 'description') 
+                                    readonly 
+                                    wire:click="editField('description')"
+                                    wire:keydown.prevent
+                                @endif
+                                class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-1 focus:ring-purple-500 focus:border-purple-500 
+                                    {{ $editingField !== 'description' ? 'cursor-pointer bg-gray-50' : 'bg-white' }}"></textarea>
                             <div class="flex justify-end">
                                 <button wire:click="saveField('description')"
                                     class="px-4 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors p-2">
@@ -85,7 +173,13 @@
                                 <label class="text-sm font-medium text-gray-700 ">Category</label>
                                 <div class="flex gap-2 mt-2">
                                     <select wire:model.defer="category_id"
-                                        class="flex-1 rounded-lg border-gray-300 shadow-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                                        @if($editingField !== 'category_id') 
+                                            disabled 
+                                            wire:click="editField('category_id')"
+                                            wire:keydown.prevent
+                                        @endif
+                                        class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-1 focus:ring-purple-500 focus:border-purple-500 
+                                            {{ $editingField !== 'category_id' ? 'cursor-pointer bg-gray-50' : 'bg-white' }}">
                                         <option value="">Select Category</option>
                                         @foreach ($categories as $category)
                                         <option value="{{ $category->id }}">{{ $category->cat_title }}</option>
