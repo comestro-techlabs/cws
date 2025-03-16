@@ -68,13 +68,13 @@ class ExploreCourse extends Component
         if ($user->hasActiveSubscription()) {
             if ($activeCourseExists) {
                 return redirect()->route('student.viewCourses', ['courseId' => $courseId])
-                    ->with('error', 'You can only enroll in one active course at a time with your subscription.');
+                    ->with('warning', 'You can only enroll in one active course at a time with your subscription.');
             }
 
             $user->courses()->attach($courseId, ['batch_id' => $batch->id]);
         } else {
             return redirect()->route('student.viewCourses', ['courseId' => $courseId])
-                ->with('error', 'You need an active subscription to enroll.');
+                ->with('warning', 'You need an active subscription to enroll.');
         }
 
         return redirect()->route('student.dashboard')->with('success', 'You have successfully enrolled in the course.');
