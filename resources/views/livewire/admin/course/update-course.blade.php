@@ -1,4 +1,7 @@
 <div class="min-h-screen bg-gray-50 py-6">
+    <!-- Add loader component -->
+    <x-loader />
+    
     <div class="max-w-7xl mx-auto">
         <div class="bg-white rounded-lg shadow-sm">
             <!-- Header -->
@@ -45,8 +48,11 @@
                                         <option value="offline">Offline Course</option>
                                     </select>
                                     <button wire:click="saveField('{{ $field }}')"
-                                        class="px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors">
-                                        {{ $editingField === $field ? 'Save' : 'Edit' }}
+                                        wire:loading.attr="disabled"
+                                        wire:target="saveField"
+                                        class="px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors disabled:opacity-50">
+                                        <span wire:loading.remove wire:target="saveField">{{ $editingField === $field ? 'Save' : 'Edit' }}</span>
+                                        <span wire:loading wire:target="saveField">Saving...</span>
                                     </button>
                                 </div>
                                 @else
@@ -59,7 +65,7 @@
                                             wire:click="editField('{{ $field }}')"
                                             wire:keydown.prevent
                                         @endif
-                                        class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-1 focus:ring-purple-500 focus:border-purple-500 
+                                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-1 focus:ring-purple-500 focus:border-purple-500 
                                             {{ $editingField !== $field ? 'cursor-pointer bg-gray-50' : 'bg-white' }}"
                                     >
                                     @if($editingField === $field)
@@ -103,11 +109,14 @@
                                             wire:click="editField('{{ $field }}')"
                                             wire:keydown.prevent
                                         @endif
-                                        class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-1 focus:ring-purple-500 focus:border-purple-500 
+                                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-1 focus:ring-purple-500 focus:border-purple-500 
                                             {{ $editingField !== $field ? 'cursor-pointer bg-gray-50' : 'bg-white' }}">
                                     <button wire:click="saveField('{{ $field }}')"
-                                        class="px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors">
-                                        {{ $editingField === $field ? 'Save' : 'Edit' }}
+                                        wire:loading.attr="disabled"
+                                        wire:target="saveField"
+                                        class="px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors disabled:opacity-50">
+                                        <span wire:loading.remove wire:target="saveField">{{ $editingField === $field ? 'Save' : 'Edit' }}</span>
+                                        <span wire:loading wire:target="saveField">Saving...</span>
                                     </button>
                                 </div>
                             </div>
@@ -129,11 +138,14 @@
                                         wire:click="editField('venue')"
                                         wire:keydown.prevent
                                     @endif
-                                    class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-1 focus:ring-purple-500 focus:border-purple-500 
+                                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-1 focus:ring-purple-500 focus:border-purple-500 
                                         {{ $editingField !== $field ? 'cursor-pointer bg-gray-50' : 'bg-white' }}"></textarea>
                                 <button wire:click="saveField('venue')"
-                                    class="px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors">
-                                    {{ $editingField === 'venue' ? 'Save' : 'Edit' }}
+                                    wire:loading.attr="disabled"
+                                    wire:target="saveField"
+                                    class="px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors disabled:opacity-50">
+                                    <span wire:loading.remove wire:target="saveField">{{ $editingField === 'venue' ? 'Save' : 'Edit' }}</span>
+                                    <span wire:loading wire:target="saveField">Saving...</span>
                                 </button>
                             </div>
                         </div>
@@ -150,12 +162,15 @@
                                     wire:click="editField('description')"
                                     wire:keydown.prevent
                                 @endif
-                                class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-1 focus:ring-purple-500 focus:border-purple-500 
+                                class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-1 focus:ring-purple-500 focus:border-purple-500 
                                     {{ $editingField !== 'description' ? 'cursor-pointer bg-gray-50' : 'bg-white' }}"></textarea>
                             <div class="flex justify-end">
                                 <button wire:click="saveField('description')"
-                                    class="px-4 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors p-2">
-                                    {{ $course->$field ? 'Edit Description' : 'Save Description' }}
+                                    wire:loading.attr="disabled"
+                                    wire:target="saveField"
+                                    class="px-4 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors p-2 disabled:opacity-50">
+                                    <span wire:loading.remove wire:target="saveField">{{ $course->$field ? 'Edit Description' : 'Save Description' }}</span>
+                                    <span wire:loading wire:target="saveField">Saving...</span>
                                 </button>
                             </div>
                             @error('description')
@@ -186,9 +201,11 @@
                                         @endforeach
                                     </select>
                                     <button wire:click="saveField('category_id')"
-                                        class="px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors">
-                                        {{ $category_id ? 'Edit' : 'Save' }}
-
+                                        wire:loading.attr="disabled"
+                                        wire:target="saveField"
+                                        class="px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors disabled:opacity-50">
+                                        <span wire:loading.remove wire:target="saveField">{{ $category_id ? 'Edit' : 'Save' }}</span>
+                                        <span wire:loading wire:target="saveField">Saving...</span>
                                     </button>
                                 </div>
                             </div>
@@ -229,8 +246,11 @@
                                         </label>
                                         @if ($tempImage)
                                         <button wire:click="saveField('tempImage')"
-                                            class="px-4 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors">
-                                            Upload
+                                            wire:loading.attr="disabled"
+                                            wire:target="saveField"
+                                            class="px-4 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors disabled:opacity-50">
+                                            <span wire:loading.remove wire:target="saveField">Upload</span>
+                                            <span wire:loading wire:target="saveField">Saving...</span>
                                         </button>
                                         @endif
                                     </div>

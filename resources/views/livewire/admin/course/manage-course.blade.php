@@ -1,4 +1,6 @@
 <div>
+    <!-- Add loader component at the top -->
+    <x-loader />
 
     <div class=" mx-auto px-4 sm:px-8">
         <div class="flex flex-col gap-3">
@@ -145,7 +147,12 @@
                                                 class="bg-purple-800 text-white p-2 rounded-lg ">View</a>
 
                                             <button wire:click="confirmDelete({{ $course->id }})"
-                                                class="bg-red-500 text-white p-2 rounded-lg ">Delete</button>
+                                                wire:loading.attr="disabled"
+                                                wire:target="confirmDelete"
+                                                class="bg-red-500 text-white p-2 rounded-lg disabled:opacity-50">
+                                                <span wire:loading.remove wire:target="confirmDelete">Delete</span>
+                                                <span wire:loading wire:target="confirmDelete">Deleting...</span>
+                                            </button>
                                         </td>
                                     </tr>
                                 @empty
