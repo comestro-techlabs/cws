@@ -1,4 +1,13 @@
+<div>
 <div class="min-h-screen bg-gray-50">
+    <!-- Full Page Loader -->
+    <div wire:loading.flex class="fixed inset-0 bg-black bg-opacity-50 z-50 items-center justify-center">
+        <div class="bg-white p-4 rounded-lg shadow-lg flex items-center space-x-4">
+            <div class="animate-spin rounded-full h-8 w-8 border-4 border-teal-500 border-t-transparent"></div>
+            <span class="text-gray-700">Loading...</span>
+        </div>
+    </div>
+
     <div class="flex flex-col h-screen">
         <!-- Header -->
         <div class="bg-white border-b px-4 py-3 flex items-center justify-between">
@@ -84,21 +93,35 @@
                             <!-- Grading -->
                             <div class="border-t pt-6">
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Grade</label>
-                                <div class="flex items-center space-x-4">
+                                <div class="flex items-center space-x-4 mb-4">
                                     <input type="number" 
                                         wire:model.defer="grade.{{ $currentStudent['id'] }}"
-                                        class="w-20 rounded-lg border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"
+                                        class="block w-24 px-4 py-3 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 shadow-sm"
                                         min="0"
-                                        max="100">
+                                        max="100"
+                                        placeholder="Grade">
                                     <span class="text-gray-500">/100</span>
                                     <button wire:click="insertGrade('{{ $currentStudent['id'] }}')"
-                                        class="ml-4 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700">
-                                        Save Grade
+                                        class="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 flex items-center">
+                                        <span>Save & Next</span>
+                                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                        </svg>
                                     </button>
                                 </div>
                                 @error("grade.{$currentStudent['id']}") 
                                     <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                                 @enderror
+
+                                <div class="mt-6 flex justify-end">
+                                    <a href="{{ route('admin.assignment.manage') }}" 
+                                       class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 inline-flex items-center">
+                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                                        </svg>
+                                        Return to Assignments
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -106,4 +129,17 @@
             </div>
         </div>
     </div>
+</div>
+
+<!-- Common form control styles that can be added to your CSS -->
+<style>
+    .form-input {
+        @apply block w-full px-4 py-3 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 shadow-sm;
+    }
+    
+    .form-select {
+        @apply block w-full px-4 py-3 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 shadow-sm bg-white;
+    }
+</style>
+
 </div>

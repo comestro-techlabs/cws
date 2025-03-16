@@ -72,6 +72,7 @@ class ReviewWork extends Component
 
     public function nextStudent()
     {
+        $this->dispatch('loading');
         if ($this->hasNextStudent) {
             $this->currentStudentIndex++;
             $this->loadCurrentStudent();
@@ -80,6 +81,7 @@ class ReviewWork extends Component
 
     public function previousStudent()
     {
+        $this->dispatch('loading');
         if ($this->hasPreviousStudent) {
             $this->currentStudentIndex--;
             $this->loadCurrentStudent();
@@ -88,6 +90,7 @@ class ReviewWork extends Component
 
     public function insertGrade($studentId)
     {
+        $this->dispatch('loading'); // Show loader
         $this->validate([
             "grade.$studentId" => 'required|numeric|min:0|max:100'
         ]);
@@ -103,18 +106,28 @@ class ReviewWork extends Component
                 'status' => 'graded'
             ]);
 
-            $this->loadStudents();
-            $this->loadCurrentStudent();
-            
             $this->dispatch('notify', [
-                'message' => 'Grade updated successfully!'
+                'message' => 'Grade saved successfully!'
             ]);
+
+            // Auto advance to next student if available
+            if ($this->hasNextStudent) {
+                $this->nextStudent();
+            } else {
+                return redirect()->route('admin.assignment.manage');
+            }
         }
     }
 
     public function previewFile($fileId)
     {
+        $this->dispatch('loading');
         $this->selectedFileId = $fileId;
+    }
+
+    public function closePreview()
+    {
+        $this->selectedFileId = null;
     }
 
     public function render()
