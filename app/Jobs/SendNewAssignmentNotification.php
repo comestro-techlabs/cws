@@ -43,6 +43,7 @@ class SendNewAssignmentNotification implements ShouldQueue
                 ['user'=>$this->student, 'assignment' => $this->assignment],
                 function($message){
                     $message->to($this->student->email, $this->student->name)
+                    ->from(config('mail.from.address'), 'Learn Syntax') // Fetch from config
                     ->subject('New assignment available');
                 }
             );
