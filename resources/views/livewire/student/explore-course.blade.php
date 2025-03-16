@@ -135,7 +135,7 @@
                         @endif
                     </div>
 
-                    @if (auth()->user() && auth()->user()->is_member)
+                    @if (auth()->user()->hasActiveSubscription())
                     <button wire:click="enrollCourse({{ $course->id }})" wire:loading.attr="disabled"
                         class="px-4 py-2 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition duration-200 text-sm">
                         Enroll Now
