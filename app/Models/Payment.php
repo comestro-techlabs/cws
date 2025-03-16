@@ -17,6 +17,11 @@ class Payment extends Model
         return \Carbon\Carbon::parse($this->payment_date)->format('Y-m-d');
     }
 
+    public function getFormattedPaymentDateAttribute()
+    {
+        return $this->payment_date ? \Carbon\Carbon::parse($this->payment_date)->format('d M Y, h:i A') : 'N/A';
+    }
+
     public function student()
     {
         return $this->belongsTo(User::class, 'student_id');
