@@ -9,4 +9,4 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote')->hourly();
 
-Schedule::command('exam:reminder')->everyMinute(); // Runs every day at 9 AM
+Schedule::command('exam:reminder')->dailyAt('07:00'); // Runs every day at 7 AM
