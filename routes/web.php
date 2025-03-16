@@ -350,7 +350,7 @@ Route::prefix('v2')->group(function () {
         Route::get('/mocktest', SelectMockTest::class)->name('v2.student.mocktest');
         Route::get('/mocktest/{mockTestId}', ShowMockTest::class)->name('v2.student.mocktest.take');
         Route::get('/mocktest/result/{mockTestId}', MockTestResult::class)->name('v2.student.mocktest.result');
-
+        Route::get('/dashboard', StudentDashboard::class)->name('v2.student.dashboard.student-dashboard');
 
         Route::get('/products', OurProducts::class)->name('v2.student.products');
         Route::get('/products/{productId}/checkout', CheckOutPage::class)->name('v2.student.checkout');
