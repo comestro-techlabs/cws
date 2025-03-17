@@ -112,72 +112,91 @@ class AttendanceScanner extends Component
             return;
         }
 
-        $student = User::where('barcode', $this->barcode)
-            ->with(['courses.batches'])
+        $this->pendingStudent = User::where('barcode', $this->barcode)
+            ->with(['courses', 'batches'])
             ->first();
 
-        if (!$student) {
+        if (!$this->pendingStudent) {
             $this->message = 'Student not found';
             return;
         }
 
-        // Check if student has any courses
-        if ($student->courses->isEmpty()) {
-            $this->message = 'This student is not enrolled in any course';
+        // Check if student has courses
+        if ($this->pendingStudent->courses->isEmpty()) {
+            $this->message = 'Student is not enrolled in any course';
             return;
         }
 
-        // If student has multiple courses, show course selection
-        if ($student->courses->count() > 1) {
-            $this->pendingStudent = $student;
-            $this->studentCourses = $student->courses;
-            $this->showCourseSelection = true;
-            $this->message = 'Please select course and batch';
+        // Check for existing attendance
+        $existingAttendance = Attendance::where('user_id', $this->pendingStudent->id)
+            ->whereDate('check_in', today())
+            ->exists();
+
+        if ($existingAttendance) {
+            $this->message = 'Attendance already marked for today';
             return;
         }
 
-        // Get first course
-        $firstCourse = $student->courses->first();
-
-        // Check if course has any batches
-        if (!$firstCourse->batches || $firstCourse->batches->isEmpty()) {
-            $this->message = 'No batch assigned to this student. Please assign a batch first.';
-            return;
-        }
-
-        // If student has only one course and batch
-        $this->markAttendance($student, $firstCourse->id, $firstCourse->batches->first()->id);
+        $this->studentCourses = $this->pendingStudent->courses;
+        $this->showCourseSelection = true;
+        $this->message = 'Please select course and batch';
     }
 
     public function selectCourseAndBatch()
     {
-        $this->validate([
-            'selectedStudentCourse' => 'required',
-            'selectedStudentBatch' => 'required'
-        ]);
+        try {
+            $this->validate([
+                'selectedStudentCourse' => 'required',
+                'selectedStudentBatch' => 'required'
+            ]);
 
-        $this->markAttendance(
-            $this->pendingStudent, 
-            $this->selectedStudentCourse, 
-            $this->selectedStudentBatch
-        );
+            // Check for existing attendance
+            $existingAttendance = Attendance::where('user_id', $this->pendingStudent->id)
+                ->whereDate('check_in', Carbon::today())
+                ->exists();
 
-        $this->resetCourseSelection();
+            if ($existingAttendance) {
+                $this->message = 'Attendance already marked for today';
+                $this->resetSelections();
+                return;
+            }
+
+            // Create new attendance record
+            $attendance = new Attendance();
+            $attendance->user_id = $this->pendingStudent->id;
+            $attendance->course_id = $this->selectedStudentCourse;
+            $attendance->batch_id = $this->selectedStudentBatch;
+            $attendance->check_in = now();
+            $attendance->save();
+
+            // Update display
+            $this->student = User::with(['courses', 'batches'])->find($this->pendingStudent->id);
+            $this->message = 'Attendance marked successfully';
+            
+            // Reset and refresh
+            $this->resetSelections();
+            $this->refreshAttendance();
+
+        } catch (\Exception $e) {
+            \Log::error('Attendance Error: ' . $e->getMessage());
+            $this->message = 'Failed to mark attendance. Please try again.';
+        }
     }
 
     public function cancelSelection()
     {
-        $this->resetCourseSelection();
+        $this->resetSelections();
     }
 
-    private function resetCourseSelection()
+    private function resetSelections()
     {
         $this->showCourseSelection = false;
         $this->pendingStudent = null;
-        $this->studentCourses = [];
-        $this->studentBatches = [];
+        $this->studentCourses = collect();
+        $this->studentBatches = collect();
         $this->selectedStudentCourse = null;
         $this->selectedStudentBatch = null;
+        $this->barcode = '';
     }
 
     private function markAttendance($student, $courseId, $batchId)
@@ -198,10 +217,19 @@ class AttendanceScanner extends Component
 
     public function updatedSelectedStudentCourse($courseId)
     {
-        if ($courseId && $this->pendingStudent) {
-            $course = $this->pendingStudent->courses->find($courseId);
-            $this->studentBatches = $course ? $course->batches : collect();
-            $this->selectedStudentBatch = null;
+        if (!$courseId || !$this->pendingStudent) {
+            $this->studentBatches = collect();
+            $this->selectedStudentBatch = '';
+            return;
         }
+
+        // Get batches for selected course where student is enrolled
+        $this->studentBatches = Batch::whereHas('course', function($query) use ($courseId) {
+            $query->where('id', $courseId);
+        })->whereHas('users', function($query) {
+            $query->where('users.id', $this->pendingStudent->id);
+        })->get();
+
+        $this->selectedStudentBatch = '';
     }
 }

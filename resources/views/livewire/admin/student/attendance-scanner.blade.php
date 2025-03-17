@@ -216,15 +216,19 @@
                                     </select>
                                 </div>
 
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Batch</label>
-                                    <select wire:model="selectedStudentBatch" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-400">
-                                        <option value="">Select Batch</option>
-                                        @foreach($studentBatches as $batch)
-                                            <option value="{{ $batch->id }}">{{ $batch->batch_name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                @if($studentBatches && $studentBatches->count() > 0)
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Batch</label>
+                                        <select wire:model="selectedStudentBatch" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-400">
+                                            <option value="">Select Batch</option>
+                                            @foreach($studentBatches as $batch)
+                                                <option value="{{ $batch->id }}">{{ $batch->batch_name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                @else
+                                    <p class="text-sm text-gray-500">No batches assigned for selected course</p>
+                                @endif
                             </div>
 
                             <div class="mt-6 flex justify-end space-x-3">
