@@ -81,18 +81,17 @@ class ManageAssignment extends Component
 
     private function notifyStudents(Assignments $assignment)
     {
-    //    dd($assignment->course_id);
+
+        //jo v students us particular course k assignment me enrolled hoga unsbko mail jaiga
         $students = User::whereHas('courses', fn ($query) => 
             $query->where('course_id', $assignment->course_id)
         )->get();
 
-        // dd($students);
+        
 
         foreach ($students as $student) {
             try {
-                // will add $assignment below as well when it will get the data
                 dispatch(new SendNewAssignmentNotification($student,$assignment));
-
             } catch (\Exception $e) {
                 \Log::warning("Failed to send notification to {$student->email}: {$e->getMessage()}");
             }

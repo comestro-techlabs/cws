@@ -133,13 +133,12 @@ class ManageExam extends Component
 
     private function notifyUsers(Exam $exam)
     {
-        // dd($exam->batch_id);
         $users = User::whereHas('batches', function ($query) use ($exam) {
             $query->where('batch_id', $exam->batch_id);
         })->get();
-
         foreach ($users as $user) {
-            dispatch(new SendExamNotification($user, $exam)); // Dispatch job to send exam notification mail
+            // here dispatching the job to notify the students about exam
+            dispatch(new SendExamNotification($user, $exam)); 
         }
     }
 

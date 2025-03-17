@@ -33,7 +33,7 @@ class SendExamReminder extends Command
         $this->info('Checking for exams happening tomorrow...');
 
         $tomorrow = now()->addDay()->toDateString();
-        // $tomorrow = now()->toDateString();// For testing ,uncomment and change the exam data as well to today's date in exam table
+        // $tomorrow = now()->toDateString();// For testing ,uncomment and change the exam data as well as to today's date in exam table
         $exams = Exam::whereDate('exam_date', $tomorrow)->get();
     
     foreach ($exams as $exam) {
@@ -41,7 +41,7 @@ class SendExamReminder extends Command
             $query->where('batch_id', $exam->batch_id);
         })->get();
 
-        foreach ($users as $user) {
+        foreach ($users as $user) { 
             dispatch(new SendExamNotification($user, $exam)); // Dispatch the job
             $this->info("Job dispatched for: " . $user->email);
         }
