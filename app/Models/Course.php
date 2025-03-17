@@ -14,24 +14,6 @@ class Course extends Model
 
     protected $guarded = [];
 
-    protected $fillable = [
-        'title',
-        'slug',
-        'course_code',
-        'description',
-        'duration',
-        'instructor',
-        'fees',
-        'discounted_fees',
-        'category_id',
-        'course_image',
-        'published',
-        'course_type',
-        'meeting_link',
-        'meeting_id', 
-        'meeting_password',
-        'venue'
-    ];
 
     protected $attributes = [
         'course_type' => 'offline'

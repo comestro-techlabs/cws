@@ -92,9 +92,24 @@
                                             d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z"
                                             clip-rule="evenodd" />
                                     </svg>
-                                    <span class="text-sm text-gray-700">assignment_{{ $assignment?->id }}.pdf</span>
+
+                                    @if ($uploadedFile)
+                                   
+                                    <a href="{{ Storage::url('uploads/' . $uploadedFile->file_path) }}" target="_blank" class="text-sm text-blue-500 underline">View PDF</a>
+
+
+                                    @else
+                                    <span class="text-sm text-gray-700">No file uploaded</span>
+                                    @endif
+
                                 </div>
+
+                                @if ($assignment?->uploadedFile)
+                                <iframe src="{{ asset('storage/uploads/' . $assignment->uploadedFile->file_path) }}"
+                                    class="w-full h-64 mt-4 border border-gray-300 rounded-lg" frameborder="0"></iframe>
+                                @endif
                             </div>
+
                         </div>
                     </div>
                     @endif
@@ -148,53 +163,19 @@
                                     <!-- Preview Section (3/12 width) -->
                                     <div class="w-3/12">
                                         <div class="border-2 border-dashed border-gray-300 rounded-lg h-full p-4">
-                                            @if ($file)
-                                            <div class="text-center space-y-2">
-                                                @if (str_starts_with($file->getMimeType(), 'image/'))
-                                                <img src="{{ $file->temporaryUrl() }}"
-                                                    class="w-full h-32 object-contain mb-2 rounded">
-                                                @else
-                                                <div class="mx-auto h-16 w-16 text-gray-400">
-                                                    @if ($file->getClientOriginalExtension() === 'pdf')
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                        viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2"
-                                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                                    </svg>
-                                                    @elseif (in_array($file->getClientOriginalExtension(), ['doc',
-                                                    'docx']))
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                        viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2"
-                                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                                    </svg>
-                                                    @else
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16"
-                                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2"
-                                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                                    </svg>
-                                                    @endif
-                                                </div>
-                                                @endif
-                                                <p class="text-sm font-medium text-gray-700 truncate">
-                                                    {{ $file->getClientOriginalName() }}
-                                                </p>
-                                                <p class="text-xs text-gray-500">
-                                                    {{ round($file->getSize() / 1024, 2) }} KB
-                                                </p>
-                                            </div>
+                                            <p>Preview URL: {{ $previewUrl }}</p>
+
+                                            @if ($previewUrl)
+                                            <iframe src="{{ $previewUrl }}" class="w-full h-48"
+                                                frameborder="0"></iframe>
                                             @else
-                                            <div
-                                                class="text-gray-500 text-center h-full flex items-center justify-center">
-                                                <p>File preview will appear here</p>
-                                            </div>
+                                            <p>No preview available</p>
                                             @endif
+
                                         </div>
                                     </div>
+
+
                                 </div>
 
                                 <!-- Validation Error -->
