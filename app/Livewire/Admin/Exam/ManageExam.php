@@ -12,6 +12,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
+use Illuminate\Support\Str;
 
 #[Layout('components.layouts.admin')]
 #[Title('Manage Exams')]
@@ -30,6 +31,9 @@ class ManageExam extends Component
     public $showForm = false;
     public $isEditing = false;
     public $editingExamId;
+    public $showPasscodeModal = false;
+    public $selectedExamId;
+    public $generatedPasscode;
 
     protected $rules = [
         'exam_name' => 'required|string',
@@ -38,7 +42,6 @@ class ManageExam extends Component
         'exam_date' => 'required|date|after_or_equal:today',
         'status' => 'nullable|boolean'
     ];
-    
 
     public function mount()
     {
@@ -69,19 +72,18 @@ class ManageExam extends Component
             'course_id' => $this->course_id,
             'batch_id' => $this->batch_id,
             'exam_date' => $this->exam_date,
-            'status' => $this->status
+            'status' => $this->status,
+            'passcode' => null 
         ]);
 
         $this->reset(['exam_name', 'course_id', 'batch_id', 'exam_date', 'status']);
-        
         $this->dispatch('notice', type: 'info', text: 'Exam created successfully!');
-
     }
 
     public function edit(Exam $exam)
     {
         $this->isEditing = true;
-        $this->showForm=true;
+        $this->showForm = true;
         $this->editingExamId = $exam->id;
         $this->exam_name = $exam->exam_name;
         $this->course_id = $exam->course_id;
@@ -105,7 +107,6 @@ class ManageExam extends Component
 
         $this->reset(['exam_name', 'course_id', 'batch_id', 'exam_date', 'status', 'isEditing', 'editingExamId']);
         $this->dispatch('notice', type: 'info', text: 'Exam updated successfully!');
-
     }
 
     public function delete(Exam $exam)
@@ -124,7 +125,6 @@ class ManageExam extends Component
                 $this->notifyUsers($exam);
             }
             $this->dispatch('notice', type: 'info', text: 'Exam status updated successfully!');
-
         } else {
             $this->dispatch('notice', type: 'error', text: 'Exam must have at least 10 quizzes to activate.');
             session()->flash('error', 'Exam must have at least 10 quizzes to activate.');
@@ -142,6 +142,35 @@ class ManageExam extends Component
         }
     }
 
+    public function generatePasscode($examId)
+    {
+        $exam = Exam::find($examId);
+        
+        if (!$exam->passcode) {
+            $passcode = Str::random(8); // Generate 8-character random passcode
+            $exam->update(['passcode' => $passcode]);
+        }
+        
+        $this->selectedExamId = $examId;
+        $this->generatedPasscode = $exam->passcode;
+        $this->showPasscodeModal = true;
+    }
+
+    public function showPasscode($examId)
+    {
+        $exam = Exam::find($examId);
+        $this->selectedExamId = $examId;
+        $this->generatedPasscode = $exam->passcode;
+        $this->showPasscodeModal = true;
+    }
+
+    public function closePasscodeModal()
+    {
+        $this->showPasscodeModal = false;
+        $this->selectedExamId = null;
+        $this->generatedPasscode = null;
+    }
+
     public function render()
     {
         $exams = Exam::with(['course', 'batch'])
@@ -156,6 +185,4 @@ class ManageExam extends Component
             'batches' => $this->batches
         ]);
     }
-
-    // protected $listeners = ['refreshComponent' => '$refresh'];
 }

@@ -3,7 +3,7 @@
         <!-- Header with back button -->
         <div class="flex items-center justify-between mb-6">
             <h1 class="text-xl font-bold text-gray-900">Quiz Attempts</h1>
-            <a href="{{ route('v2.student.exam') }}" class="inline-flex items-center px-3 py-1.5 bg-blue-50 text-blue-600 rounded-md text-sm font-medium hover:bg-blue-100 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            <a href="{{ route('student.takeExam') }}" class="inline-flex items-center px-3 py-1.5 bg-blue-50 text-blue-600 rounded-md text-sm font-medium hover:bg-blue-100 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
@@ -69,7 +69,7 @@
                                 
                                 <!-- Progress Bar -->
                                 @php
-                                    $percentage = ($data['total_marks'] / 100) * 100;
+                                    $percentage = ($data['total_marks'] / 10) * 100;
                                     $barColor = $percentage >= 70 ? 'bg-green-500' : 'bg-red-500';
                                 @endphp
                                 <div class="w-full bg-gray-200 rounded-full h-2.5">
@@ -87,7 +87,7 @@
                                 </div>
                                 
                                 <div>
-                                    @if($data['total_marks'] >= 70)
+                                    @if($data['total_marks'] >= 7)
                                         <span class="inline-flex items-center text-green-600">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -106,13 +106,13 @@
                             </div>
                             
                             <!-- Action Button -->
-                            <a href="{{ route('v2.student.result', ['courseId' => $course->id, 'attempt' => $data['attempt']]) }}" class="w-full inline-flex justify-center items-center px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            {{-- <a href="{{ route('v2.student.result', ['courseId' => $course->id, 'attempt' => $data['attempt']]) }}" class="w-full inline-flex justify-center items-center px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                 </svg>
                                 View Details
-                            </a>
+                            </a> --}}
                         </div>
                     </div>
                 @endforeach

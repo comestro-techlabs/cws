@@ -1,72 +1,95 @@
 <div>
-    <button id="fullscreen-btn" class="bg-gray-800 text-white mt-5 p-2 rounded-lg fixed top-18 right-4 z-50">
-        Fullscreen
-    </button>
-
-    <div class="container mx-auto py-12 px-6" id="quizzes">
-        <div class="sticky top-0 bg-white p-4 flex space-x-2 overflow-x-auto w-full">
-            @foreach ($courses->exams as $exam)
-                @if ($exam->status)
-                    @foreach ($quizzes as $quiz)
-                        @if ($quiz->status)
-                            <button type="button"
-                                    class="w-24 md:w-16 h-10 flex items-center justify-center font-medium border rounded-lg bg-gray-50 hover:bg-gray-100 quiz-nav-button disabled:bg-gray-300 disabled:cursor-not-allowed"
-                                    data-target="question-{{ $quiz->id }}"
-                                    disabled>
-                                {{ $loop->iteration }}
-                            </button>
-                        @endif
-                    @endforeach
-                @endif
-            @endforeach
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mt-6">
-            <div class="md:col-span-3 bg-white rounded-lg">
-                <form id="quiz-form" wire:submit.prevent="storeAnswer" class="p-6">
-                    @csrf
-                    <div id="quiz-container">
-                        @if ($quizzes && $quizzes->count() > 0)
-                            @foreach ($quizzes as $quiz)
-                                <div class="quiz-question hidden" id="question-{{ $quiz->id }}">
-                                    <div class="mb-4">
-                                        <h6 class="text-lg font-semibold">Question {{ $loop->iteration }}</h6>
-                                        <p class="text-gray-700">{{ $quiz->question }}</p>
-                                    </div>
-                                    @for ($i = 1; $i <= 4; $i++)
-                                    <div class="mb-2">
-                                        <input type="radio" 
-                                            id="option{{ $i }}-{{ $quiz->id }}"
-                                            name="selectedOptions[{{ $quiz->id }}]"
-                                            value="option{{ $i }}"
-                                            wire:model="selectedOptions.{{ $quiz->id }}"
-                                            class="hidden peer quiz-option">
-                                        <label for="option{{ $i }}-{{ $quiz->id }}"
-                                            class="inline-flex items-center gap-3 w-full px-4 py-2 text-sm font-medium border rounded-lg cursor-pointer bg-gray-50 border-gray-300 peer-checked:bg-blue-500 peer-checked:text-white">
-                                            {{ $quiz->{'option' . $i} ?? 'N/A' }}
-                                        </label>
-                                    </div>
-                                @endfor
-                                </div>
-                            @endforeach
-                        @else
-                            <p>No quizzes available for this exam.</p>
+    @if (!$passcodeVerified)
+        <div class="container mx-auto py-12 px-6">
+            <div class="bg-white rounded-lg p-6 max-w-md mx-auto">
+                <h2 class="text-xl font-semibold mb-4">Enter Exam Passcode</h2>
+                <form wire:submit.prevent="verifyPasscode">
+                    <div class="mb-4">
+                        <label for="passcode" class="block text-sm font-medium text-gray-700">Passcode</label>
+                        <input type="text" id="passcode" wire:model="passcode"
+                            class="mt-1 p-2 block w-full rounded-md border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
+                        @if ($passcodeError)
+                            <span class="text-red-500 text-sm">{{ $passcodeError }}</span>
                         @endif
                     </div>
-
-                    <div class="mt-6 flex justify-between">
-                        <button type="button" id="prev-btn"
-                                class="hidden bg-gray-200 text-gray-800 px-4 py-2 rounded-lg">Previous</button>
-                        <button type="button" id="next-btn"
-                                class="bg-blue-500 text-white px-4 py-2 rounded-lg hidden">Next</button>
-                        <button type="submit" id="submit-btn"
-                                class="bg-green-500 text-white px-4 py-2 rounded-lg hidden">Submit</button>
-                    </div>
+                    <button type="submit"
+                        class="w-full bg-purple-800 text-white px-4 py-2 rounded-lg hover:bg-purple-600">
+                        Verify Passcode
+                    </button>
                 </form>
             </div>
         </div>
-    </div>
+    @else
+        <button id="fullscreen-btn" class="bg-gray-800 text-white mt-5 p-2 rounded-lg fixed top-18 right-4 z-50">
+            Fullscreen
+        </button>
+
+        <div class="container mx-auto py-12 px-6" id="quizzes">
+            <div class="sticky top-0 bg-white p-4 flex space-x-2 overflow-x-auto w-full">
+                @foreach ($courses->exams as $exam)
+                    @if ($exam->status)
+                        @foreach ($quizzes as $quiz)
+                            @if ($quiz->status)
+                                <button type="button"
+                                    class="w-24 md:w-16 h-10 flex items-center justify-center font-medium border rounded-lg bg-gray-50 hover:bg-gray-100 quiz-nav-button disabled:bg-gray-300 disabled:cursor-not-allowed"
+                                    data-target="question-{{ $quiz->id }}"
+                                    disabled>
+                                    {{ $loop->iteration }}
+                                </button>
+                            @endif
+                        @endforeach
+                    @endif
+                @endforeach
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mt-6">
+                <div class="md:col-span-3 bg-white rounded-lg">
+                    <form id="quiz-form" wire:submit.prevent="storeAnswer" class="p-6">
+                        @csrf
+                        <div id="quiz-container">
+                            @if ($quizzes && $quizzes->count() > 0)
+                                @foreach ($quizzes as $quiz)
+                                    <div class="quiz-question hidden" id="question-{{ $quiz->id }}">
+                                        <div class="mb-4">
+                                            <h6 class="text-lg font-semibold">Question {{ $loop->iteration }}</h6>
+                                            <p class="text-gray-700">{{ $quiz->question }}</p>
+                                        </div>
+                                        @for ($i = 1; $i <= 4; $i++)
+                                            <div class="mb-2">
+                                                <input type="radio" 
+                                                    id="option{{ $i }}-{{ $quiz->id }}"
+                                                    name="selectedOptions[{{ $quiz->id }}]"
+                                                    value="option{{ $i }}"
+                                                    wire:model="selectedOptions.{{ $quiz->id }}"
+                                                    class="hidden peer quiz-option">
+                                                <label for="option{{ $i }}-{{ $quiz->id }}"
+                                                    class="inline-flex items-center gap-3 w-full px-4 py-2 text-sm font-medium border rounded-lg cursor-pointer bg-gray-50 border-gray-300 peer-checked:bg-blue-500 peer-checked:text-white">
+                                                    {{ $quiz->{'option' . $i} ?? 'N/A' }}
+                                                </label>
+                                            </div>
+                                        @endfor
+                                    </div>
+                                @endforeach
+                            @else
+                                <p>No quizzes available for this exam.</p>
+                            @endif
+                        </div>
+
+                        <div class="mt-6 flex justify-between">
+                            <button type="button" id="prev-btn"
+                                    class="hidden bg-gray-200 text-gray-800 px-4 py-2 rounded-lg">Previous</button>
+                            <button type="button" id="next-btn"
+                                    class="bg-blue-500 text-white px-4 py-2 rounded-lg hidden">Next</button>
+                            <button type="submit" id="submit-btn"
+                                    class="bg-green-500 text-white px-4 py-2 rounded-lg hidden">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endif
 </div>
+
 <script>
     function initializeQuiz() {
         const fullscreenBtn = document.getElementById('fullscreen-btn');
@@ -81,7 +104,7 @@
         let currentQuestionIndex = 0;
         let tabSwitchCount = 0;
         let examCompleted = false;
-        let isSubmitting = false; // Prevent multiple submissions
+        let isSubmitting = false;
         let initialZoomLevel = window.devicePixelRatio || 1;
 
         if (!fullscreenBtn || !quizzesContainer || !quizForm) {
@@ -203,12 +226,11 @@
             isSubmitting = true;
             examCompleted = true;
             console.log('Submitting quiz...');
-            Livewire.dispatch('submitQuiz'); // Dispatch Livewire event
-            submitBtn.disabled = true; // Disable button to prevent further clicks
+            Livewire.dispatch('submitQuiz');
+            submitBtn.disabled = true;
             alert('Exam submitted successfully!');
         }
 
-        // Debounced tab switch handler
         let tabSwitchTimeout;
         document.addEventListener('visibilitychange', () => {
             if (document.hidden && !examCompleted && !isSubmitting) {
@@ -221,14 +243,14 @@
                         alert('Too many tab switches. Submitting exam now.');
                         submitQuiz();
                     }
-                }, 300); // Debounce by 300ms
+                }, 300);
             }
         });
 
         window.onbeforeunload = () => (examCompleted || isSubmitting) ? null : 'Are you sure you want to leave the exam?';
 
         submitBtn.addEventListener('click', (e) => {
-            e.preventDefault(); // Prevent any default form submission
+            e.preventDefault();
             if (!isSubmitting && confirm('Are you sure you want to submit the exam?')) {
                 submitQuiz();
             }
@@ -238,24 +260,20 @@
         return true;
     }
 
-    function waitForElements() {
-        const maxAttempts = 2;
-        let attempts = 0;
+    // Run initialization only after passcode is verified
+    document.addEventListener('livewire:init', () => {
+        console.log('Livewire initialized');
+    });
 
-        const interval = setInterval(() => {
-            attempts++;
-            console.log(`Attempt ${attempts} to initialize quiz...`);
+    // Listen for the passcode-verified event from Livewire
+    Livewire.on('passcode-verified', () => {
+        console.log('Passcode verified, initializing quiz...');
+        setTimeout(() => {
             if (initializeQuiz()) {
-                clearInterval(interval);
                 console.log('Quiz initialized successfully');
-            } else if (attempts >= maxAttempts) {
-                clearInterval(interval);
-                console.error('Failed to initialize quiz after max attempts.');
+            } else {
+                console.error('Failed to initialize quiz');
             }
-        }, 500);
-    }
-
-    document.addEventListener('livewire:init', () => setTimeout(initializeQuiz, 100));
-    document.addEventListener('livewire:navigated', () => setTimeout(initializeQuiz, 100));
-    document.addEventListener('DOMContentLoaded', waitForElements);
+        }, 100); // Small delay to ensure DOM is updated
+    });
 </script>

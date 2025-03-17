@@ -16,18 +16,20 @@ class ShowQuiz extends Component
     public $quizzes = null;
     public $courseId = null;
     public $examId = null;
-    public $selectedOptions = []; // Holds user-selected answers
+    public $selectedOptions = [];
     public $obtainedMarks = null;
     public $totalMarks = null;
     public $submitted = false;
+    public $passcode = '';
+    public $passcodeVerified = false;
+    public $passcodeError = null;
 
     public function mount($courseId)
     {
         $this->courseId = $courseId;
-        $this->showquiz($courseId);
     }
 
-    public function showquiz($courseId)
+    public function verifyPasscode()
     {
         if (!Auth::check()) {
             return redirect()->route('auth.login');
@@ -36,7 +38,7 @@ class ShowQuiz extends Component
         $user = Auth::user();
 
         $this->courses = $user->courses()
-            ->where('courses.id', $courseId)
+            ->where('courses.id', $this->courseId)
             ->with([
                 'exams' => fn($query) => $query->where('status', true),
                 'exams.quizzes' => fn($query) => $query->where('status', true),
@@ -47,7 +49,30 @@ class ShowQuiz extends Component
             return redirect()->route('v2.student.quiz')->with('error', 'Course not found or no active exams available.');
         }
 
-        $this->examId = $this->courses->exams->first()->id;
+        $exam = $this->courses->exams->first();
+        $this->examId = $exam->id;
+
+        if (!$exam->passcode) {
+            return redirect()->route('v2.student.quiz')->with('error', 'No passcode set for this exam.');
+        }
+
+        if ($this->passcode === $exam->passcode) {
+            $this->passcodeVerified = true;
+            $this->passcodeError = null;
+            $this->showquiz($this->courseId);
+            $this->dispatch('passcode-verified'); // Dispatch event to trigger JS
+        } else {
+            $this->passcodeError = 'Incorrect passcode. Please try again.';
+        }
+    }
+
+    public function showquiz($courseId)
+    {
+        if (!Auth::check()) {
+            return redirect()->route('auth.login');
+        }
+
+        $user = Auth::user();
 
         $attempt = ExamUser::where('user_id', $user->id)
             ->whereHas('exam', function ($query) use ($courseId) {
@@ -57,9 +82,9 @@ class ShowQuiz extends Component
 
         $value = $attempt ? $attempt->attempts : 0;
 
-        if ($value >= 2) {
+        if ($value >= 1) {
             return redirect()->route('v2.student.quiz')->with('error', 'You have reached the maximum number of attempts.');
-        }
+        }   
 
         $this->quizzes = $this->courses->exams
             ->flatMap(fn($exam) => $exam->quizzes->where('status', true))
@@ -70,7 +95,6 @@ class ShowQuiz extends Component
         $this->totalMarks = $this->quizzes->sum('marks');
     }
 
-    // ***** HANDLES FORM SUBMISSION FROM JAVASCRIPT *****
     #[On('submitQuiz')]
     public function storeAnswer()
     {
@@ -78,15 +102,22 @@ class ShowQuiz extends Component
             return redirect()->route('auth.login')->with('error', 'You must be logged in to access this page');
         }
 
-        $this->totalMarks = 0; // Maximum possible marks
-        $this->obtainedMarks = 0; // User's score
+        if (!$this->passcodeVerified) {
+            return redirect()->route('v2.student.quiz')->with('error', 'Passcode not verified.');
+        }
+
+        $this->totalMarks = 0;
+        $this->obtainedMarks = 0;
 
         $examUser = ExamUser::where('user_id', Auth::id())
             ->where('exam_id', $this->examId)
             ->first();
 
         if ($examUser) {
-            $examUser->attempts += 1;
+            if ($examUser->attempts >= 1) {
+                return redirect()->route('v2.student.quiz')->with('error', 'You have reached the maximum number of attempts.');
+            }
+            
         } else {
             $examUser = ExamUser::create([
                 'user_id' => Auth::id(),
@@ -119,13 +150,12 @@ class ShowQuiz extends Component
                 }
             }
 
-            $examUser->total_marks = $this->obtainedMarks; // Store user's score
+            $examUser->total_marks = $this->obtainedMarks;
             $examUser->save();
 
             session()->flash('obtained_marks', $this->obtainedMarks);
             session()->flash('exam_id', $this->examId);
         } else {
-            // If no answers are submitted (e.g., due to tab-switching), save with 0 marks
             $examUser->total_marks = 0;
             $examUser->save();
         }
@@ -140,13 +170,12 @@ class ShowQuiz extends Component
 
     public function render()
     {
-        if (!$this->courses || !$this->quizzes) {
-            \Log::info('Courses or quizzes not loaded', ['courses' => $this->courses, 'quizzes' => $this->quizzes]);
-        }
         return view('livewire.student.dashboard.takeexam.show-quiz', [
             'courses' => $this->courses,
             'quizzes' => $this->quizzes ?? collect(),
             'totalMarks' => $this->totalMarks,
+            'passcodeVerified' => $this->passcodeVerified,
+            'passcodeError' => $this->passcodeError,
         ]);
     }
 }

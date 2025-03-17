@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('exam_name');
             $table->boolean('status')->default(false);
             $table->date('exam_date')->nullable();
+            $table->string('passcode')->nullable(); 
             $table->timestamps();
         });
     }

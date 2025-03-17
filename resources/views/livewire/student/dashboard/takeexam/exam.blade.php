@@ -45,7 +45,7 @@
                                         $quizAvailable = true;
                                         $todayExam = $exam;
                                         $attemptCount = $attempts[$exam->id] ?? 0;
-                                        $maxAttemptsReached = $attemptCount >= 2;
+                                        $maxAttemptsReached = $attemptCount >=1;
                                     @endphp
                                     @break
                                 @endif
@@ -84,22 +84,23 @@
                                         </button>
                                     </a>
                                 @elseif ($quizAvailable && $maxAttemptsReached)
-                                    <button disabled class="flex-1 inline-flex items-center justify-center px-3 py-2 bg-gray-100 text-gray-400 rounded-md text-sm font-medium cursor-not-allowed">
+                                    {{-- <button disabled class="flex-1 inline-flex items-center justify-center px-3 py-2 bg-gray-100 text-gray-400 rounded-md text-sm font-medium cursor-not-allowed">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                                         </svg>
                                         Max Attempts
-                                    </button>
+                                    </button> --}}
+                                    <a wire:navigate href="{{ route('v2.student.allAttempts', $course->id) }}" class="flex-1">
+                                        <button class="w-full inline-flex items-center justify-center px-3 py-2 bg-white border border-gray-200 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                            </svg>
+                                            View Results
+                                        </button>
+                                    </a>
                                 @endif
                                 
-                                <a wire:navigate href="{{ route('v2.student.allAttempts', $course->id) }}" class="flex-1">
-                                    <button class="w-full inline-flex items-center justify-center px-3 py-2 bg-white border border-gray-200 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                                        </svg>
-                                        View Results
-                                    </button>
-                                </a>
+                               
                             </div>
                         </div>
                     </div>
