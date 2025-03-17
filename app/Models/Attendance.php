@@ -9,12 +9,23 @@ class Attendance extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'check_in'];
+    protected $fillable = ['user_id', 'check_in', 'course_id', 'batch_id'];
     protected $casts = [
-        'check_in' => 'datetime' // This ensures check_in is automatically cast to Carbon
+        'check_in' => 'datetime'
     ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
+
+    public function batch()
+    {
+        return $this->belongsTo(Batch::class);
     }
 }

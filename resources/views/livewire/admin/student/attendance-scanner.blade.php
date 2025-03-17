@@ -121,7 +121,10 @@
                                 </div>
                                 <div>
                                     <h4 class="text-2xl font-bold text-gray-800">{{ $student->name }}</h4>
-                                    <p class="text-gray-500">{{ $student->course->name }} - {{ $student->batch->name }}</p>
+                                    <p class="text-gray-500">
+                                        {{ $attendance->course->title ?? 'No Course' }} - 
+                                        {{ $attendance->batch->batch_name ?? 'No Batch' }}
+                                    </p>
                                 </div>
                             </div>
                             <span class="px-4 py-2 bg-green-100 text-green-700 rounded-full text-sm font-semibold">
@@ -177,9 +180,9 @@
                                         <td class="py-3 px-4 text-gray-600">{{ $record->created_at->format('h:i A') }}</td>
                                         <td class="py-3 px-4">
                                             <div class="font-medium text-gray-800">{{ $record->user->name }}</div>
-                                            <div class="text-sm text-gray-500">{{ $record->user->batches[0]->batch_name }}</div>
+                                            <div class="text-sm text-gray-500">{{ $record->batch->batch_name }}</div>
                                         </td>
-                                        <td class="py-3 px-4 text-gray-600">{{ $record->user->courses[0]->title }}</td>
+                                        <td class="py-3 px-4 text-gray-600">{{ $record->course->title }}</td>
                                         <td class="py-3 px-4">
                                             <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-semibold">
                                                 Present
@@ -189,8 +192,12 @@
                                 @empty
                                     <tr>
                                         <td colspan="4" class="py-8 text-center text-gray-500">
-                                            <i class="fas fa-inbox text-4xl mb-4"></i>
-                                            <p>No attendance records for today</p>
+                                            <div class="flex flex-col items-center">
+                                                <svg class="w-12 h-12 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                </svg>
+                                                <p>No attendance records for today</p>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforelse

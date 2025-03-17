@@ -130,6 +130,8 @@ class AttendanceScanner extends Component
         // Check for existing attendance
         $existingAttendance = Attendance::where('user_id', $this->pendingStudent->id)
             ->whereDate('check_in', today())
+            ->where('course_id', $this->selectedStudentCourse)
+            ->where('batch_id', $this->selectedStudentBatch)
             ->exists();
 
         if ($existingAttendance) {
@@ -153,6 +155,8 @@ class AttendanceScanner extends Component
             // Check for existing attendance
             $existingAttendance = Attendance::where('user_id', $this->pendingStudent->id)
                 ->whereDate('check_in', Carbon::today())
+                ->where('course_id', $this->selectedStudentCourse)
+                ->where('batch_id', $this->selectedStudentBatch)
                 ->exists();
 
             if ($existingAttendance) {
