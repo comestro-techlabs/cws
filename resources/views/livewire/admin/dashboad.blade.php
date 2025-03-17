@@ -1,271 +1,273 @@
 <div>
-    <div class="min-h-screen bg-gray-50">
-        <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-            <!-- Header with gradient -->
-            <div class="relative mb-8 bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl p-8 overflow-hidden">
-                <div class="relative z-10">
-                    <h2 class="text-2xl font-bold text-white mb-2">Welcome Back, Admin</h2>
-                    <p class="text-purple-100">Here's what's happening with your institute today.</p>
-                </div>
-                <div class="absolute right-0 top-0 w-1/3 h-full opacity-10">
-                    <svg class="w-full h-full" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
-                        <polyline points="13 2 13 9 20 9"></polyline>
-                    </svg>
-                </div>
-            </div>
+    <div class="min-h-screen bg-gradient-to-br from-gray-50 to-purple-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Welcome Header -->
+            <div class="relative mb-8">
+                <div class="flex flex-col lg:flex-row gap-6">
+                    <!-- Welcome Card -->
+                    <div class="flex-1 bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
+                        <div class="flex items-start justify-between">
+                            <div class="space-y-1">
+                                <span class="text-sm text-gray-500">Welcome back,</span>
+                                <h2 class="text-2xl font-bold text-gray-900">Admin Dashboard</h2>
+                                <p class="text-sm text-gray-600">{{ now()->format('l, F j, Y') }}</p>
+                            </div>
+                            <div class="p-3 bg-purple-50 rounded-xl">
+                                <svg class="w-8 h-8 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
 
-            <!-- Stats Grid with hover effects -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <!-- Enhanced stat cards with hover effects -->
-                <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-all p-6 border border-purple-100">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-gray-600 text-sm">Total Students</p>
-                            <h2 class="text-2xl font-bold text-gray-900">{{ $studentsCount }}</h2>
-                        </div>
-                        <div class="p-2 bg-purple-100 rounded-full">
-                            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 1.857h10M9 5a3 3 0 016 0 3 3 0 01-6 0zm-3 8h12" />
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-all p-6 border border-purple-100">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-gray-600 text-sm">Total Courses</p>
-                            <h2 class="text-2xl font-bold text-gray-900">{{ $coursesCount }}</h2>
-                        </div>
-                        <div class="p-2 bg-blue-100 rounded-full">
-                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5s3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18s-3.332.477-4.5 1.253" />
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-all p-6 border border-purple-100">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-gray-600 text-sm">Total Batches</p>
-                            <h2 class="text-2xl font-bold text-gray-900">{{ $batchesCount }}</h2>
-                        </div>
-                        <div class="p-2 bg-yellow-100 rounded-full">
-                            <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-all p-6 border border-purple-100">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-gray-600 text-sm">Total Payments</p>
-                            <button wire:click="togglePaymentDetails" class="mt-2" >
-                                <span class="flex items-center">
-                                    <span class="w-8 h-8 flex items-center justify-center bg-blue-100 rounded-full mr-3">
-                                        
-                                            @if($showPaymentDetails)
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7z" />
-                                              </svg>
-                                              
-                                            @else
-                                            <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-                                                </svg>
-                                            @endif
-                                        
-                                    </span>
-                                </span>
-                            </button>
-                                    </div>
-                        <div class="p-2 bg-green-100 rounded-full">
-                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
+                    <!-- Quick Actions Bar -->
+                    <div class="flex-1 bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
+                        <div class="flex items-center justify-between gap-4">
+                            <a href="{{ route('admin.student') }}" wire:navigate 
+                               class="flex flex-col items-center p-3 rounded-xl hover:bg-gray-50 transition-all group">
+                                <div class="p-2 bg-blue-50 rounded-lg group-hover:bg-blue-100 transition-colors">
+                                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+                                    </svg>
+                                </div>
+                                <span class="text-xs font-medium text-gray-700 mt-2">New Student</span>
+                            </a>
+
+                            <a href="{{ route('admin.course') }}" wire:navigate 
+                               class="flex flex-col items-center p-3 rounded-xl hover:bg-gray-50 transition-all group">
+                                <div class="p-2 bg-green-50 rounded-lg group-hover:bg-green-100 transition-colors">
+                                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5s3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18s-3.332.477-4.5 1.253"/>
+                                    </svg>
+                                </div>
+                                <span class="text-xs font-medium text-gray-700 mt-2">Add Course</span>
+                            </a>
+
+                            <a href="{{ route('admin.attendance') }}" wire:navigate 
+                               class="flex flex-col items-center p-3 rounded-xl hover:bg-gray-50 transition-all group">
+                                <div class="p-2 bg-indigo-50 rounded-lg group-hover:bg-indigo-100 transition-colors">
+                                    <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+                                    </svg>
+                                </div>
+                                <span class="text-xs font-medium text-gray-700 mt-2">Attendance</span>
+                            </a>
+
+                            <a href="{{ route('admin.exam') }}" wire:navigate 
+                               class="flex flex-col items-center p-3 rounded-xl hover:bg-gray-50 transition-all group">
+                                <div class="p-2 bg-yellow-50 rounded-lg group-hover:bg-yellow-100 transition-colors">
+                                    <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                    </svg>
+                                </div>
+                                <span class="text-xs font-medium text-gray-700 mt-2">Exams</span>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Payment Details Section with modern toggle -->
-            <div class="mb-8">
-               
-                @if($showPaymentDetails)
-                    <div class="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                        <div class="flex items-center">
-                            <!-- Calendar icon for Current Month -->
-                            <svg class="w-6 h-6 mr-2 text-gray-600" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                            </svg>
+            <!-- Quick Stats - Now 3 cards with animations -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <!-- Active Students Card -->
+                <div class="relative  border border-gray-100 shadow-sm  bg-white rounded-2xl p-6 overflow-hidden group animate-fade-in-up" 
+                     style="animation-delay: 100ms">
+                    <div class="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-transparent"></div>
+                    <div class="relative flex items-start justify-between">
+                        <div class="space-y-2">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-8 h-8 rounded-lg bg-indigo-500 flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                              d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 1.857h10M9 7a3 3 0 106 0 3 3 0 00-6 0z"/>
+                                    </svg>
+                                </div>
+                                <p class="text-gray-500 text-sm font-medium">Active Students</p>
+                            </div>
                             <div>
-                                <p class="text-gray-600">Current Month</p>
-                                <p class="text-xl font-bold text-gray-900">₹{{ number_format($currentMonthAmount) }}</p>
+                                <h2 class="text-3xl font-bold text-gray-900">{{ $studentsCount }}</h2>
+                                <p class="text-sm text-gray-600">Total enrolled students</p>
                             </div>
                         </div>
-                        <div class="flex items-center">
-                            <!-- Clock icon for Previous Month -->
-                            <svg class="w-6 h-6 mr-2 text-gray-600" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        <div class="hidden md:block opacity-10 group-hover:opacity-20 transition-opacity duration-300">
+                            <svg class="w-24 h-24 text-indigo-500" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 14c-3.313 0-6-2.687-6-6s2.687-6 6-6 6 2.687 6 6-2.687 6-6 6zm0-10c-2.206 0-4 1.794-4 4s1.794 4 4 4 4-1.794 4-4-1.794-4-4-4z"/>
                             </svg>
-                            <div>
-                                <p class="text-gray-600">Previous Month</p>
-                                <p class="text-xl font-bold text-gray-900">₹{{ number_format($previousMonthAmount) }}
-                                </p>
-                            </div>
-                        </div>
-                        <div class="flex items-center">
-                            <!-- Exclamation triangle icon for Total Overdue -->
-                            <svg class="w-6 h-6 mr-2 text-gray-600" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                            </svg>
-                            <div>
-                                <p class="text-gray-600">Total Overdue</p>
-                                <p class="text-xl font-bold text-gray-900">₹{{ number_format($overdueCount) }}</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center">
-                            <!-- Clock rewind icon for Current Month Overdue -->
-                            <svg class="w-6 h-6 mr-2 text-gray-600" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M12 16v.01M4 12h1m7-8a8 8 0 100 16 8 8 0 000-16z" />
-                            </svg>
-                            <div>
-                                <p class="text-gray-600">Current Month Overdue</p>
-                                <p class="text-xl font-bold text-gray-900">₹{{ number_format($currentMonthOverdue) }}
-                                </p>
-                            </div>
                         </div>
                     </div>
-                @endif
-            </div>
+                    <div class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 to-indigo-300 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
+                </div>
 
-            <!-- Chart Section -->
-            <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
-                <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-lg font-semibold text-gray-900">Payment Analytics</h3>
-                    <div class="flex gap-2">
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                            Captured
-                        </span>
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                            Overdue
-                        </span>
+                <!-- Active Courses Card -->
+                <div class="relative  border border-gray-100 shadow-sm  bg-white rounded-2xl p-6 overflow-hidden group animate-fade-in-up" 
+                     style="animation-delay: 200ms">
+                    <div class="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-transparent"></div>
+                    <div class="relative flex items-start justify-between">
+                        <div class="space-y-2">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-8 h-8 rounded-lg bg-purple-500 flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5s3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18s-3.332.477-4.5 1.253"/>
+                                    </svg>
+                                </div>
+                                <p class="text-gray-500 text-sm font-medium">Active Courses</p>
+                            </div>
+                            <div>
+                                <h2 class="text-3xl font-bold text-gray-900">{{ $coursesCount }}</h2>
+                                <p class="text-sm text-gray-600">Available courses</p>
+                            </div>
+                        </div>
+                        <div class="hidden md:block opacity-10 group-hover:opacity-20 transition-opacity duration-300">
+                            <svg class="w-24 h-24 text-purple-500" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M19 2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V4a2 2 0 00-2-2zm-2 8H7V8h10v2z"/>
+                            </svg>
+                        </div>
                     </div>
+                    <div class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 to-purple-300 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
                 </div>
-                <div class="h-72"> <!-- Changed from h-96 to h-72 -->
-                    <canvas id="paymentsChart"></canvas>
+
+                <!-- Monthly Revenue Card -->
+                <div class="relative border border-gray-100 bg-white rounded-2xl p-6 overflow-hidden group animate-fade-in-up" 
+                     style="animation-delay: 300ms">
+                    <div class="absolute inset-0 bg-gradient-to-r from-green-500/10 to-transparent"></div>
+                    <div class="relative flex items-start justify-between">
+                        <div class="space-y-2">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-8 h-8 rounded-lg bg-green-500 flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 8h6m-5 0a3 3 0 110 6H9l3 3m-3-6h6m6 1a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                </div>
+                                <p class="text-gray-500 text-sm font-medium">Monthly Revenue</p>
+                            </div>
+                            <div>
+                                <div class="flex items-baseline">
+                                    <span class="text-lg font-semibold text-gray-600 mr-1">₹</span>
+                                    <h2 class="text-3xl font-bold text-gray-900">{{ number_format($currentMonthAmount, 2) }}</h2>
+                                </div>
+                                <p class="text-sm text-gray-600">This month's earnings</p>
+                            </div>
+                        </div>
+                        <div class="hidden md:block opacity-10 group-hover:opacity-20 transition-opacity duration-300">
+                            <svg class="w-24 h-24 text-green-500" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-green-500 to-green-300 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
                 </div>
             </div>
 
-            <!-- Tables Grid -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-                <!-- Courses Table -->
+            <!-- Quick Actions Grid with animations -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <a href="{{ route('admin.attendance') }}" wire:navigate
+                   class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all border border-gray-100 group
+                          transform hover:-translate-y-1 duration-300 animate-fade-in-up"
+                   style="animation-delay: 400ms">
+                    <div class="p-3 bg-indigo-50 rounded-full w-12 h-12 flex items-center justify-center mb-4 group-hover:bg-indigo-100">
+                        <svg class="w-6 h-6 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-gray-900">Take Attendance</h3>
+                    <p class="text-sm text-gray-500 mt-1">Mark student attendance</p>
+                </a>
+
+                <a href="{{ route('admin.student') }}" wire:navigate
+                   class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all border border-gray-100 group
+                          transform hover:-translate-y-1 duration-300 animate-fade-in-up"
+                   style="animation-delay: 500ms">
+                    <div class="p-3 bg-purple-50 rounded-full w-12 h-12 flex items-center justify-center mb-4 group-hover:bg-purple-100">
+                        <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-gray-900">Manage Students</h3>
+                    <p class="text-sm text-gray-500 mt-1">View and edit students</p>
+                </a>
+
+                <a href="{{ route('admin.assignment.manage') }}" wire:navigate
+                   class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all border border-gray-100 group
+                          transform hover:-translate-y-1 duration-300 animate-fade-in-up"
+                   style="animation-delay: 600ms">
+                    <div class="p-3 bg-green-50 rounded-full w-12 h-12 flex items-center justify-center mb-4 group-hover:bg-green-100">
+                        <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-gray-900">Assignments</h3>
+                    <p class="text-sm text-gray-500 mt-1">Review assignments</p>
+                </a>
+
+                <a href="{{ route('admin.exam') }}" wire:navigate
+                   class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all border border-gray-100 group
+                          transform hover:-translate-y-1 duration-300 animate-fade-in-up"
+                   style="animation-delay: 700ms">
+                    <div class="p-3 bg-yellow-50 rounded-full w-12 h-12 flex items-center justify-center mb-4 group-hover:bg-yellow-100">
+                        <svg class="w-6 h-6 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-gray-900">Exams</h3>
+                    <p class="text-sm text-gray-500 mt-1">Manage exams</p>
+                </a>
+            </div>
+
+            <!-- Recent Activities Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-fade-in-up" style="animation-delay: 800ms">
+                <!-- Recent Courses -->
                 <div class="bg-white rounded-xl shadow-sm overflow-hidden">
-                    <div class="p-4 border-b border-gray-100">
+                    <div class="p-6 border-b border-gray-100">
                         <div class="flex items-center justify-between">
                             <h2 class="text-lg font-semibold text-gray-900">Recent Courses</h2>
                             <a wire:navigate href="{{ route('admin.course.manage') }}"
                                class="inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 transition-colors">
                                 <span class="mr-1">View All</span>
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                                 </svg>
                             </a>
                         </div>
                     </div>
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Duration</th>
-                                    <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                @foreach ($courses as $course)
-                                    <tr class="hover:bg-gray-50 transition-colors">
-                                        <td class="px-4 py-3 text-sm text-gray-900">{{$course->title}}</td>
-                                        <td class="px-4 py-3 text-sm text-gray-500">{{ $course->duration }} Weeks</td>
-                                        <td class="px-4 py-3 text-right">
-                                            <a wire:navigate href="{{ route('admin.course.update', $course->id) }}"
-                                               class="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium text-white bg-blue-500 hover:bg-blue-600 transition-colors">
-                                                View Details
-                                            </a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Users Table -->
-                <div class="bg-white rounded-xl shadow-sm overflow-hidden">
-                    <div class="p-4 border-b border-gray-100">
-                        <div class="flex items-center justify-between">
-                            <h2 class="text-lg font-semibold text-gray-900">Manage Users</h2>
-                            <a wire:navigate href="{{ route('admin.student') }}"
-                               class="inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 transition-colors">
-                                <span class="mr-1">View All</span>
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                </svg>
-                            </a>
+                    <div class="p-6">
+                        <div class="space-y-4">
+                            @forelse($courses as $course)
+                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors group">
+                                    <div class="flex items-center space-x-4">
+                                        <div class="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center">
+                                            <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                                      d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5s3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18s-3.332.477-4.5 1.253"/>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-sm font-semibold text-gray-900">{{ $course->title }}</h3>
+                                            <p class="text-xs text-gray-500">{{ $course->duration }} Weeks • {{ $course->category->name ?? 'Uncategorized' }}</p>
+                                        </div>
+                                    </div>
+                                    <a wire:navigate href="{{ route('admin.course.update', $course->id) }}"
+                                       class="inline-flex items-center px-3 py-1 rounded-lg text-xs font-medium text-purple-600 bg-purple-50 hover:bg-purple-100 transition-colors">
+                                        View Details
+                                        <svg class="w-4 h-4 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                        </svg>
+                                    </a>
+                                </div>
+                            @empty
+                                <div class="text-center py-4">
+                                    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                              d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5s3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18s-3.332.477-4.5 1.253"/>
+                                    </svg>
+                                    <h3 class="mt-2 text-sm font-medium text-gray-900">No courses yet</h3>
+                                    <p class="mt-1 text-sm text-gray-500">Get started by creating a new course.</p>
+                                </div>
+                            @endforelse
                         </div>
                     </div>
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                    <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                @foreach ($users as $user)
-                                    <tr class="hover:bg-gray-50 transition-colors">
-                                        <td class="px-4 py-3 text-sm text-gray-900">{{$user->name}}</td>
-                                        <td class="px-4 py-3 text-sm text-gray-500">{{$user->email}}</td>
-                                        <td class="px-4 py-3">
-                                            <span class="{{ $user->is_member == 1 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }} inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">
-                                                {{ $user->is_member == 1 ? 'Member' : 'Non-member' }}
-                                            </span>
-                                        </td>
-                                        <td class="px-4 py-3 text-right">
-                                            <a href="{{ route('admin.student.view', ['id' => $user->id]) }}"
-                                               class="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium text-white bg-blue-500 hover:bg-blue-600 transition-colors">
-                                                View Profile
-                                            </a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
                 </div>
-            </div>
 
-            <!-- Notifications and Quick Links -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <!-- Notifications -->
+                <!-- Recent Course Activity -->
                 <div class="bg-white rounded-xl shadow-sm overflow-hidden">
                     <div class="p-6 border-b border-gray-100">
                         <h2 class="text-lg font-semibold text-gray-900">Recent Notifications</h2>
@@ -297,108 +299,24 @@
                         @endif
                     </div>
                 </div>
-
-                <!-- Quick Links -->
-                <div class="bg-white rounded-xl shadow-sm overflow-hidden">
-                    <div class="p-6 border-b border-gray-100">
-                        <h2 class="text-lg font-semibold text-gray-900">Quick Links</h2>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4 p-6">
-                        <a href="{{route('admin.student')}}" wire:navigate
-                            class="bg-gray-100 hover:bg-gray-200 p-4 rounded-lg text-center">
-                            <i class="fas fa-users mb-2"></i>
-                            <p>View All Students</p>
-                        </a>
-                        <a href="{{route('admin.assignment.manage')}}" wire:navigate
-                            class="bg-gray-100 hover:bg-gray-200 p-4 rounded-lg text-center">
-                            <i class="fas fa-plus-circle mb-2"></i>
-                            <p>View Assignment</p>
-                        </a>
-                        <a href="{{('admin.exam')}}" wire:navigate
-                            class="bg-gray-100 hover:bg-gray-200 p-4 rounded-lg text-center">
-                            <i class="fas fa-file-alt mb-2"></i>
-                            <p>View Exams</p>
-                        </a>
-                        <a href="{{(route('admin.placedstudent.index'))}}" wire:navigate
-                            class="bg-gray-100 hover:bg-gray-200 p-4 rounded-lg text-center">
-                            <i class="fas fa-users mb-2"></i>
-                            <p>Placed Student</p>
-                        </a>
-                    </div>
-                </div>
             </div>
         </div>
-
-        <script>
-            let myChart;
-
-            document.addEventListener('DOMContentLoaded', () => {
-                initializeChart();
-            });
-
-            document.addEventListener('livewire:navigated', () => {
-                setTimeout(() => {
-                    initializeChart();
-                }, 100);
-            });
-
-            function initializeChart() {
-                const ctx = document.getElementById('paymentsChart')?.getContext('2d');
-                if (!ctx) {
-                    console.log('Canvas #paymentsChart not found');
-                    return;
-                }
-
-                if (myChart) {
-                    myChart.destroy();
-                }
-
-                myChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: @json($monthlyPaymentsLabels),
-                        datasets: [{
-                            label: 'Captured Payments',
-                            data: @json($monthlyCapturedValues),
-                            backgroundColor: 'rgba(75, 192, 192, 0.6)',
-                            borderColor: 'rgba(75, 192, 192, 1)',
-                            borderWidth: 1
-                        }, {
-                            label: 'Overdue Payments',
-                            data: @json($monthlyOverdueValues),
-                            backgroundColor: 'rgba(255, 99, 132, 0.6)',
-                            borderColor: 'rgba(255, 99, 132, 1)',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                ticks: {
-                                    callback: function(value) {
-                                        return '₹' + (value / 100).toLocaleString('en-IN');
-                                    }
-                                }
-                            }
-                        },
-                        plugins: {
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        let label = context.dataset.label || '';
-                                        if (label) {
-                                            label += ': ';
-                                        }
-                                        label += '₹' + (context.parsed.y / 100).toLocaleString('en-IN');
-                                        return label;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-            }
-        </script>
     </div>
+
+    <style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+    </style>
 </div>

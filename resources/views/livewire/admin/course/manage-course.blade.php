@@ -5,7 +5,7 @@
     <div class=" mx-auto px-4 sm:px-8">
         <div class="flex flex-col gap-3">
             <div class="w-full">
-                <div class=" p-2">
+                <div class="">
                     <div class="flex flex-wrap justify-between items-center py-4">
                         <h2
                             class="md:text-xl text-lg font-semibold text-slate-500 border-s-4 border-s-purple-800 pl-3 mb-5">
