@@ -337,13 +337,13 @@ Route::prefix('v2')->group(function () {
 
     Route::prefix("student")->group(function () {
         Route::get('/assignments/view', ManageAssignments::class)->name('student.assignments-view');
-        Route::get('/take-exam', Exam::class)->name('student.takeExam');
         Route::get('/explore-courses', ExploreCourse::class)->name('student.exploreCourses');
         Route::get('/view-courses/{courseId}', ViewCourse::class)->name('student.viewCourses');
         Route::get('/my-courses', MyCourse::class)->name('v2.student.mycourses');
         Route::get('/edit-profile', EditProfile::class)->name('student.v2edit.profile');
         Route::get('/view-assigment', ViewAssigment::class)->name('student.v2view.assigment');
         Route::get('/view-assigment/{id}', ViewAssigment::class)->name('student.v2view.assigment');
+        Route::get('/take-exam', Exam::class)->name('student.takeExam');
         Route::get('/show-quiz/{courseId}', ShowQuiz::class)->name('v2.student.quiz');
         Route::get('/show-all-attempt/{course_id}', ShowAllAttempt::class)->name('v2.student.allAttempts');
         route::get('show-quiz/result/{exam_id}', Result::class)->name('v2.student.examResult');

@@ -3,7 +3,7 @@
         <!-- Header with back button -->
         <div class="flex items-center justify-between mb-6">
             <h1 class="text-xl font-bold text-gray-900">Quiz Results</h1>
-            <a href="{{ route('v2.student.exam') }}" class="inline-flex items-center px-3 py-1.5 bg-blue-50 text-blue-600 rounded-md text-sm font-medium hover:bg-blue-100 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            <a href="{{ route('student.takeExam') }}" class="inline-flex items-center px-3 py-1.5 bg-blue-50 text-blue-600 rounded-md text-sm font-medium hover:bg-blue-100 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
@@ -47,7 +47,7 @@
                 </div>
                 
                 <div class="flex items-center">
-                    @if ($totalMarks >= 70)
+                    @if ($totalMarks >7)
                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                             <svg class="mr-1.5 h-2 w-2 text-green-500" fill="currentColor" viewBox="0 0 8 8">
                                 <circle cx="4" cy="4" r="3" />
@@ -77,11 +77,13 @@
     <div class="bg-white rounded-xl shadow-lg p-6">
         <h4 class="text-xl font-semibold text-gray-800 mb-4">Detailed Feedback</h4>
         <div class="p-4 bg-gray-50 rounded-lg border-l-4 border-indigo-500">
-            @if ($attempt == 1)
+            @if ($totalMarks >= 7)
                 <p class="text-lg text-gray-700">
-                    <strong class="text-indigo-600">Your first attempt was evaluated.</strong> 
-                    <span class="text-gray-500">Good luck on your second attempt!</span>
+                    <strong class="text-green-600">Congratulations!</strong> 
+                    <span class="text-gray-500">You have passed the quiz.</span>
                 </p>
+            
+                
             @else
                 <p class="text-lg text-gray-700">
                     <strong class="text-indigo-600">We recommend reviewing your results.</strong> 

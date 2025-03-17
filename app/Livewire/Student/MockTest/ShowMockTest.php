@@ -97,7 +97,7 @@ class ShowMockTest extends Component
         ]);
 
         $this->globalGemService  = new GemService();
-        $this->globalGemService->earnedGem($testdata->score, 'Earned by MockTest');
+        $this->globalGemService->earnedGem($testdata->score, 'Earned by Practice Test');
         
         $this->submitted = true;
         $this->attempted = true;
