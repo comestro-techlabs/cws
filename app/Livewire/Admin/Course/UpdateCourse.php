@@ -71,19 +71,19 @@ class UpdateCourse extends Component
     public $venue;
 
     protected $rules = [
-        'title' => 'required|min:3',
+        'title' => 'nullable|min:3|max:255',
+        'description' => 'nullable',
+        'duration' => 'nullable|numeric|min:0',
+        'instructor' => 'nullable|string',
+        'fees' => 'nullable|numeric|min:0',
+        'discounted_fees' => 'nullable|numeric|min:0',
+        'category_id' => 'nullable|exists:categories,id',
         'course_code' => 'nullable|string',
-        'description' => 'required',
-        'duration' => 'required|numeric|min:0',
-        'instructor' => 'required|string',
-        'fees' => 'required|numeric|min:0',
-        'discounted_fees' => 'required|numeric|min:0',
-        'category_id' => 'required|exists:categories,id',
-        'course_type' => 'required|in:online,offline',
-        'meeting_link' => 'required_if:course_type,online|nullable|url',
+        'course_type' => 'nullable|in:online,offline',
+        'meeting_link' => 'nullable|url',
         'meeting_id' => 'nullable|string',
         'meeting_password' => 'nullable|string',
-        'venue' => 'required_if:course_type,offline|nullable|string',
+        'venue' => 'nullable|string',
     ];
 
     public function updatedTempImage()
@@ -148,31 +148,49 @@ class UpdateCourse extends Component
 
     public function saveField($field)
     {
-        if ($this->editingField !== $field) {
-            $this->editField($field);
-            return;
-        }
-
-        $this->validate([
-            $field => $this->rules[$field] ?? 'required'
-        ]);
-
-        $updateData = [$field => $this->$field];
-
-        // Handle course type change
-        if ($field === 'course_type') {
-            if ($this->course_type === 'online') {
-                $updateData['venue'] = null;
-            } else {
-                $updateData['meeting_link'] = null;
-                $updateData['meeting_id'] = null;
-                $updateData['meeting_password'] = null;
+        try {
+            // First click - enter edit mode
+            if ($this->editingField === null) {
+                $this->editingField = $field;
+                $this->tempData[$field] = $this->{$field};
+                return;
             }
-        }
 
-        $this->course->update($updateData);
-        $this->editingField = null;
-        $this->dispatch('notice', type: 'success', text: 'Field updated successfully!');
+            // Second click - save changes
+            if ($this->editingField === $field) {
+                // Validate and save
+                $this->validateOnly($field);
+                
+                $updateData = [$field => $this->{$field}];
+
+                // Special handling for course type
+                if ($field === 'course_type') {
+                    if ($this->course_type === 'online') {
+                        $updateData['venue'] = null;
+                    } else {
+                        $updateData['meeting_link'] = null;
+                        $updateData['meeting_id'] = null;
+                        $updateData['meeting_password'] = null;
+                    }
+                }
+
+                // Update the course
+                $success = $this->course->update($updateData);
+
+                if (!$success) {
+                    throw new \Exception('Failed to update the course.');
+                }
+
+                // Reset states
+                $this->editingField = null;
+                $this->tempData = [];
+                
+                $this->dispatch('notice', type: 'success', text: 'Field updated successfully!');
+            }
+
+        } catch (\Exception $e) {
+            $this->dispatch('notice', type: 'error', text: 'Failed to update: ' . $e->getMessage());
+        }
     }
 
     // Ensure preview image is loaded when page refreshes
