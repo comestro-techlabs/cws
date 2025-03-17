@@ -1,4 +1,5 @@
-<div class="min-h-screen bg-gradient-to-br from-teal-50 to-gray-100 py-6">
+<div class="min-h-screen bg-gray-50 py-6">
+    <x-loader />
     <div class="container mx-auto px-4">
         <!-- Header Section -->
         <div class="flex justify-between items-center mb-8">
@@ -20,7 +21,7 @@
             <!-- Left Column - Scanner and Filters -->
             <div class="lg:col-span-1 space-y-6">
                 <!-- Scanner Card -->
-                <div class="bg-white rounded-2xl shadow-lg p-6">
+                <div class="bg-white rounded-2xl shadow-sm p-6">
                     <div class="mb-6">
                         <h3 class="text-xl font-semibold text-gray-800 mb-4">Scan Attendance</h3>
                         <div class="relative">
@@ -43,14 +44,14 @@
                                 class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-400 focus:border-teal-400">
                                 <option value="">All Courses</option>
                                 @foreach($courses as $course)
-                                    <option value="{{ $course->id }}">{{ $course->name }}</option>
+                                    <option value="{{ $course->id }}">{{ $course->title }}</option>
                                 @endforeach
                             </select>
                             <select wire:model.live="selectedBatch"
                                 class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-400 focus:border-teal-400">
                                 <option value="">All Batches</option>
                                 @foreach($batches as $batch)
-                                    <option value="{{ $batch->id }}">{{ $batch->name }}</option>
+                                    <option value="{{ $batch->id }}">{{ $batch->batch_name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -58,7 +59,7 @@
                 </div>
 
                 <!-- Stats Card -->
-                <div class="bg-white rounded-2xl shadow-lg p-6">
+                <div class="bg-white rounded-2xl shadow-sm p-6">
                     <h3 class="text-xl font-semibold text-gray-800 mb-4">Today's Overview</h3>
                     <div class="space-y-4">
                         <div class="flex items-center justify-between p-4 bg-green-50 rounded-xl">
@@ -67,7 +68,9 @@
                                 <p class="text-2xl font-bold text-green-700">{{ $todayStats['present'] }}</p>
                             </div>
                             <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                                <i class="fas fa-user-check text-xl text-green-600"></i>
+                                <svg class="w-6 h-6 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                                </svg>
                             </div>
                         </div>
                         <div class="flex items-center justify-between p-4 bg-red-50 rounded-xl">
@@ -76,7 +79,9 @@
                                 <p class="text-2xl font-bold text-red-700">{{ $todayStats['absent'] }}</p>
                             </div>
                             <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
-                                <i class="fas fa-user-times text-xl text-red-600"></i>
+                                <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
                             </div>
                         </div>
                         <div class="flex items-center justify-between p-4 bg-blue-50 rounded-xl">
@@ -85,7 +90,9 @@
                                 <p class="text-2xl font-bold text-blue-700">{{ $todayStats['total'] }}</p>
                             </div>
                             <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                                <i class="fas fa-users text-xl text-blue-600"></i>
+                                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-3-3h-4a3 3 0 00-3 3v2h5zM9 20H4v-2a3 3 0 013-3h4a3 3 0 013 3v2H9zM16 11a4 4 0 100-8 4 4 0 000 8zM8 11a4 4 0 100-8 4 4 0 000 8z" />
+                                </svg>
                             </div>
                         </div>
                     </div>
@@ -106,7 +113,7 @@
 
                 <!-- Student Details Card (if scanned) -->
                 @if($student)
-                    <div class="bg-white rounded-2xl shadow-lg p-6">
+                    <div class="bg-white rounded-2xl shadow-sm p-6">
                         <div class="flex items-center justify-between mb-6">
                             <div class="flex items-center">
                                 <div class="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center mr-4">
@@ -147,7 +154,7 @@
                 @endif
 
                 <!-- Recent Attendance Log -->
-                <div class="bg-white rounded-2xl shadow-lg p-6">
+                <div class="bg-white rounded-2xl shadow-sm p-6">
                     <div class="flex items-center justify-between mb-6">
                         <h3 class="text-xl font-semibold text-gray-800">Recent Attendance Log</h3>
                         <button wire:click="refreshAttendance" class="text-teal-600 hover:text-teal-700">
@@ -169,10 +176,10 @@
                                     <tr class="border-t border-gray-100 hover:bg-gray-50 transition-colors">
                                         <td class="py-3 px-4 text-gray-600">{{ $record->created_at->format('h:i A') }}</td>
                                         <td class="py-3 px-4">
-                                            <div class="font-medium text-gray-800">{{ $record->student->name }}</div>
-                                            <div class="text-sm text-gray-500">{{ $record->student->batch->name }}</div>
+                                            <div class="font-medium text-gray-800">{{ $record->user->name }}</div>
+                                            <div class="text-sm text-gray-500">{{ $record->user->batches[0]->batch_name }}</div>
                                         </td>
-                                        <td class="py-3 px-4 text-gray-600">{{ $record->student->course->name }}</td>
+                                        <td class="py-3 px-4 text-gray-600">{{ $record->user->courses[0]->title }}</td>
                                         <td class="py-3 px-4">
                                             <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-semibold">
                                                 Present
@@ -191,6 +198,46 @@
                         </table>
                     </div>
                 </div>
+
+                <!-- Course Selection Modal -->
+                @if($showCourseSelection)
+                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
+                        <div class="bg-white rounded-xl p-6 max-w-md w-full mx-4">
+                            <h3 class="text-xl font-semibold text-gray-900 mb-4">Select Course and Batch</h3>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Course</label>
+                                    <select wire:model.live="selectedStudentCourse" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-400">
+                                        <option value="">Select Course</option>
+                                        @foreach($studentCourses as $course)
+                                            <option value="{{ $course->id }}">{{ $course->title }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Batch</label>
+                                    <select wire:model="selectedStudentBatch" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-400">
+                                        <option value="">Select Batch</option>
+                                        @foreach($studentBatches as $batch)
+                                            <option value="{{ $batch->id }}">{{ $batch->batch_name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="mt-6 flex justify-end space-x-3">
+                                <button wire:click="cancelSelection" class="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 border border-gray-300 rounded-lg">
+                                    Cancel
+                                </button>
+                                <button wire:click="selectCourseAndBatch" class="px-4 py-2 text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 rounded-lg">
+                                    Mark Attendance
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
     </div>
