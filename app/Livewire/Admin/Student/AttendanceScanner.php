@@ -20,6 +20,12 @@ class AttendanceScanner extends Component
     public $student;
     public $selectedCourse = '';
     public $selectedBatch = '';
+    public $showCourseSelection = false;
+    public $studentCourses = [];
+    public $studentBatches = [];
+    public $selectedStudentCourse;
+    public $selectedStudentBatch;
+    public $pendingStudent;
     
     public function mount()
     {
@@ -46,44 +52,52 @@ class AttendanceScanner extends Component
 
     public function getTodayStats()
     {
-        $query = User::query();
-        if ($this->selectedCourse) {
-            $query->where('course_id', $this->selectedCourse);
-        }
-        if ($this->selectedBatch) {
-            $query->where('batch_id', $this->selectedBatch);
-        }
+        // Fix the query to use proper relationships
+        $query = User::query()
+            ->whereHas('courses', function($q) {
+                if ($this->selectedCourse) {
+                    $q->where('courses.id', $this->selectedCourse);
+                }
+            })
+            ->when($this->selectedBatch, function($q) {
+                $q->whereHas('batches', function($batchQuery) {
+                    $batchQuery->where('batches.id', $this->selectedBatch);
+                });
+            });
 
         $total = $query->count();
         $present = Attendance::whereDate('created_at', today())
-            ->whereIn('user_id', $query->pluck('id'))
+            ->whereIn('user_id', $query->pluck('users.id'))
             ->distinct('user_id')
             ->count();
 
         return [
             'total' => $total,
-            'present' => $present,
+            'present' => $present, 
             'absent' => $total - $present
         ];
     }
 
     public function getTodayAttendance()
     {
-        $query = Attendance::with(['student.course', 'student.batch'])
-            ->whereDate('created_at', today());
-
-        if ($this->selectedCourse || $this->selectedBatch) {
-            $query->whereHas('student', function ($q) {
-                if ($this->selectedCourse) {
-                    $q->where('course_id', $this->selectedCourse);
-                }
-                if ($this->selectedBatch) {
-                    $q->where('batch_id', $this->selectedBatch);
-                }
-            });
-        }
-
-        return $query->latest()->get();
+        return Attendance::with(['user.courses', 'user.batches'])
+            ->whereDate('created_at', today())
+            ->when($this->selectedCourse || $this->selectedBatch, function($query) {
+                $query->whereHas('user', function($q) {
+                    if ($this->selectedCourse) {
+                        $q->whereHas('courses', function($cq) {
+                            $cq->where('courses.id', $this->selectedCourse);
+                        });
+                    }
+                    if ($this->selectedBatch) {
+                        $q->whereHas('batches', function($bq) {
+                            $bq->where('batches.id', $this->selectedBatch);
+                        });
+                    }
+                });
+            })
+            ->latest()
+            ->get();
     }
 
     public function refreshAttendance()
@@ -98,34 +112,96 @@ class AttendanceScanner extends Component
             return;
         }
 
-        $student = User::where('barcode', $this->barcode)->first();
+        $student = User::where('barcode', $this->barcode)
+            ->with(['courses.batches'])
+            ->first();
 
         if (!$student) {
             $this->message = 'Student not found';
             return;
         }
 
-        // Check if student belongs to selected course/batch
-        if ($this->selectedCourse && $student->course_id != $this->selectedCourse) {
-            $this->message = 'Student does not belong to selected course';
+        // Check if student has any courses
+        if ($student->courses->isEmpty()) {
+            $this->message = 'This student is not enrolled in any course';
             return;
         }
 
-        if ($this->selectedBatch && $student->batch_id != $this->selectedBatch) {
-            $this->message = 'Student does not belong to selected batch';
+        // If student has multiple courses, show course selection
+        if ($student->courses->count() > 1) {
+            $this->pendingStudent = $student;
+            $this->studentCourses = $student->courses;
+            $this->showCourseSelection = true;
+            $this->message = 'Please select course and batch';
             return;
         }
 
+        // Get first course
+        $firstCourse = $student->courses->first();
+
+        // Check if course has any batches
+        if (!$firstCourse->batches || $firstCourse->batches->isEmpty()) {
+            $this->message = 'No batch assigned to this student. Please assign a batch first.';
+            return;
+        }
+
+        // If student has only one course and batch
+        $this->markAttendance($student, $firstCourse->id, $firstCourse->batches->first()->id);
+    }
+
+    public function selectCourseAndBatch()
+    {
+        $this->validate([
+            'selectedStudentCourse' => 'required',
+            'selectedStudentBatch' => 'required'
+        ]);
+
+        $this->markAttendance(
+            $this->pendingStudent, 
+            $this->selectedStudentCourse, 
+            $this->selectedStudentBatch
+        );
+
+        $this->resetCourseSelection();
+    }
+
+    public function cancelSelection()
+    {
+        $this->resetCourseSelection();
+    }
+
+    private function resetCourseSelection()
+    {
+        $this->showCourseSelection = false;
+        $this->pendingStudent = null;
+        $this->studentCourses = [];
+        $this->studentBatches = [];
+        $this->selectedStudentCourse = null;
+        $this->selectedStudentBatch = null;
+    }
+
+    private function markAttendance($student, $courseId, $batchId)
+    {
         // Create attendance record
         Attendance::create([
             'user_id' => $student->id,
-            'date' => today(),
-            'status' => 'present'
+            'check_in' => now(),
+            'course_id' => $courseId,
+            'batch_id' => $batchId
         ]);
 
         $this->student = $student;
         $this->message = 'Attendance marked successfully';
         $this->barcode = '';
         $this->refreshAttendance();
+    }
+
+    public function updatedSelectedStudentCourse($courseId)
+    {
+        if ($courseId && $this->pendingStudent) {
+            $course = $this->pendingStudent->courses->find($courseId);
+            $this->studentBatches = $course ? $course->batches : collect();
+            $this->selectedStudentBatch = null;
+        }
     }
 }
