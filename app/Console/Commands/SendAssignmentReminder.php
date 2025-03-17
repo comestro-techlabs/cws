@@ -30,8 +30,8 @@ class SendAssignmentReminder extends Command
     public function handle()
     {
         $this->info('Checking for assignments happening tomorrow...');
-        // $tomorrow = now()->addDay()->toDateString();
-        $tomorrow = now()->toDateString();// For testing ,uncomment and change the exam data as well to today's date in exam table
+        $tomorrow = now()->addDay()->toDateString();
+        // $tomorrow = now()->toDateString();// For testing ,uncomment and change the exam data as well to today's date in exam table
         $assignments = Assignments::whereDate('due_date', $tomorrow)->get();
         foreach ($assignments as $assignment) {
             // $this->info("testing: " . $assignment->course_id);

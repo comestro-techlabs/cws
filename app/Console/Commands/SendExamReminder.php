@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Jobs\SendExamNotification;
+use App\Jobs\SendNewExamReminder;
 use App\Models\Exam;
 use App\Models\User;
 use Illuminate\Console\Command;
@@ -42,7 +43,7 @@ class SendExamReminder extends Command
         })->get();
 
         foreach ($users as $user) { 
-            dispatch(new SendExamNotification($user, $exam)); // Dispatch the job
+            dispatch(new SendNewExamReminder($user, $exam)); // Dispatch the job
             $this->info("Job dispatched for: " . $user->email);
         }
     }

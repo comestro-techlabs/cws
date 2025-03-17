@@ -11,4 +11,4 @@ Artisan::command('inspire', function () {
 
 Schedule::command('exam:reminder')->dailyAt('07:00'); // Runs every day at 7 AM
 
-Schedule::command('assignment:reminder')->everyMinute();
+Schedule::command('assignment:reminder')->dailyAt('05:00');
