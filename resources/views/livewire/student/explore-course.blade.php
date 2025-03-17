@@ -135,12 +135,17 @@
                         @endif
                     </div>
 
-                    @if (auth()->user()->hasActiveSubscription())
+                    @if (auth()->check() && auth()->user()->hasActiveSubscription() && auth()->user()->courses()->count() === 0)
+                    <button wire:click="enrollCourse({{ $course->id }})" wire:loading.attr="disabled"
+                        class="px-4 py-2 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition duration-200 text-sm">
+                        Free
+                    </button>
+                @elseif (auth()->check() && auth()->user()->hasActiveSubscription())
                     <button wire:click="enrollCourse({{ $course->id }})" wire:loading.attr="disabled"
                         class="px-4 py-2 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition duration-200 text-sm">
                         Enroll Now
-                    </button>
-                    @else
+                    </button>             
+                @else
                     <a wire:navigate href="{{ route('student.viewCourses', ['courseId' => $course->id]) }}"
                         class="px-4 py-2 bg-purple-700 text-white font-medium rounded-lg hover:bg-purple-800 focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition duration-200 text-sm inline-flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-1.5">
@@ -149,7 +154,7 @@
                         </svg>
                         View Course
                     </a>
-                    @endif
+                @endif
                 </div>
             </div>
             @empty

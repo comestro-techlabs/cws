@@ -2,8 +2,8 @@
     <!-- Full Page Loader -->
     <x-loader />
 
-    <div class="container mx-auto px-4 sm:px-8">
-        <div class="py-8">
+    <div class=" mx-auto px-4 sm:px-8">
+        <div class="">
             <div class="flex gap-3 flex-col md:flex-row justify-between md:items-center mb-6">
                 <div class="flex flex-wrap justify-between items-center">
                     <h2 class="md:text-xl text-lg font-semibold text-slate-500 border-s-4 border-s-purple-800 pl-3 ">
@@ -24,7 +24,7 @@
             <div class="relative">
                 <!-- Categories Table -->
                 <div
-                    class="relative flex flex-col w-full h-full overflow-x-auto text-gray-700 bg-white shadow-md rounded-lg bg-clip-border {{ $isModalOpen ? 'blur-sm' : '' }}">
+                    class="relative flex flex-col w-full h-full overflow-x-auto text-gray-700 bg-white rounded-lg bg-clip-border {{ $isModalOpen ? 'blur-sm' : '' }}">
                     <table class="w-full text-left table-auto min-w-max">
                         <thead>
                             <tr>
