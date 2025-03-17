@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\Exam;
 
+use App\Jobs\SendExamNotification;
 use App\Models\Batch;
 use App\Models\Course;
 use App\Models\Exam;
@@ -113,7 +114,7 @@ class ManageExam extends Component
         $exam->delete();
         $this->dispatch('notice', type: 'info', text: 'Exam deleted successfully!');
     }
-
+ 
     public function toggleStatus(Exam $exam)
     {
         if ($exam->quizzes()->count() >= 10) {
@@ -135,15 +136,9 @@ class ManageExam extends Component
         $users = User::whereHas('batches', function ($query) use ($exam) {
             $query->where('batch_id', $exam->batch_id);
         })->get();
-
         foreach ($users as $user) {
-            Mail::send(
-                'emails.exam_notification',
-                ['user' => $user, 'exam' => $exam],
-                function ($message) use ($user) {
-                    $message->to($user->email, $user->name)->subject('New Exam Available');
-                }
-            );
+            // here dispatching the job to notify the students about exam
+            dispatch(new SendExamNotification($user, $exam)); 
         }
     }
 

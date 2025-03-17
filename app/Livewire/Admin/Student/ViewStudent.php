@@ -11,6 +11,10 @@ use App\Models\User;
 use App\Models\Payment;
 use Carbon\Carbon;
 use Livewire\Attributes\On;
+use App\Models\SubscriptionPlan;
+use App\Models\Subscription;
+use App\Models\Batch;
+use DB;
 
 #[Layout('components.layouts.admin')]
 #[Title('Manage Students')]
@@ -31,7 +35,11 @@ class ViewStudent extends Component
     public $dueDate;
     public $isModalOpen = false;
     public $availableCourses = [];
-
+    public $subscriptionPlans;
+    public $activeSubscription;
+    public $subscriptionHistory;
+    public $courseBatches = [];
+    public $selectedBatch;
 
     public function mount($id)
     {
@@ -60,6 +68,7 @@ class ViewStudent extends Component
             ->where('student_id', $id)
             ->where('status', 'captured')
             ->whereNotNull('course_id')
+            ->latest() // This will order by created_at desc
             ->get() ?? collect();
         $this->paymentsWithWorkshops = Payment::where('student_id', $id)
             ->whereNotNull('workshop_id')
@@ -67,6 +76,18 @@ class ViewStudent extends Component
         $this->availableCourses = ModelsCourse::all()->except($this->purchasedCourses->pluck('course_id')->toArray());
         $this->fetchPayments();
         // $this->renderMembership();
+
+        // Load subscription data
+        $this->subscriptionPlans = SubscriptionPlan::where('is_active', true)->get();
+        $this->activeSubscription = Subscription::where('user_id', $id)
+            ->where('status', 'active')
+            ->where('ends_at', '>', now())
+            ->with('plan')
+            ->first();
+        $this->subscriptionHistory = Subscription::where('user_id', $id)
+            ->with('plan')
+            ->orderBy('created_at', 'desc')
+            ->get();
     }
     #[On('updateMembershipData')]
     public function renderMembership(){
@@ -119,6 +140,7 @@ class ViewStudent extends Component
             ->where('student_id', $this->studentId)
             ->where('status', 'captured')
             ->whereNotNull('course_id')
+            ->latest() // This will order by created_at desc
             ->get() ?? collect();
         $this->availableCourses = ModelsCourse::all()->except($this->purchasedCourses->pluck('course_id')->toArray());
         // dd($this->availableCourses);
@@ -126,27 +148,39 @@ class ViewStudent extends Component
 
     public function enrollCourse($course_id)
     {
-        $course_data = ModelsCourse::find($course_id);
-        // dd($course_data);
-        if ($course_data) {
-            Payment::create([
-                'student_id' => $this->studentId,
-                'course_id' => $course_id,
-                'status' => 'captured',
-                'payment_id' => 'cash_payment',
-                'payment_status' => 'completed',
-                'method' => 'cash',
-                'month' => now()->month,
-                'year' => now()->year,
-                'transaction_fee' => $course_data->discounted_fees,
-                'amount' => $course_data->discounted_fees,
-                'total_amount' => $course_data->discounted_fees,
-                'payment_date' => now(),
-            ]);
+        try {
+            $course_data = ModelsCourse::find($course_id);
+            if ($course_data) {
+                Payment::create([
+                    'student_id' => $this->studentId,
+                    'course_id' => $course_id,
+                    'payment_type' => 'course',
+                    'amount' => $course_data->discounted_fees,
+                    'total_amount' => $course_data->discounted_fees,
+                    'transaction_fee' => 0,
+                    'currency' => 'INR',
+                    'payment_method' => 'cash',
+                    'payment_status' => 'completed',
+                    'status' => 'captured',
+                    'order_id' => 'ORD-' . uniqid(),
+                    'payment_id' => 'CASH-' . uniqid(),
+                    'receipt_no' => 'RCPT-CRS-' . time(),
+                    'notes' => "Course: {$course_data->title}",
+                    'payment_date' => now(),
+                    'month' => now()->month,
+                    'year' => now()->year,
+                    'ip_address' => request()->ip()
+                ]);
+                
+                $this->dispatch('courseEnrollDataUpdated')->self();
+                $this->isModalOpen = false; // Close modal after successful enrollment
+                session()->flash('success', 'Course enrolled successfully');
+            }
+        } catch (\Exception $e) {
+            session()->flash('error', 'Failed to enroll in course');
         }
-        // yha se course enroll k bad courseEnrollDataUpdated event dispatch krke updateCourseModal function call kra hai, isi component me
-        $this->dispatch('courseEnrollDataUpdated')->self();
     }
+
     public function enrollButtonOpenModal()
     {
         $this->isModalOpen = true;
@@ -183,13 +217,122 @@ class ViewStudent extends Component
     {
         $this->activeTab = $tab;
     }
+
+    public function subscribePlan($planId)
+    {
+        try {
+            $plan = SubscriptionPlan::findOrFail($planId);
+            
+            // Create new subscription
+            $subscription = Subscription::create([
+                'user_id' => $this->studentId,
+                'plan_id' => $planId,
+                'starts_at' => now(),
+                'ends_at' => now()->addDays($plan->duration_in_days),
+                'status' => 'active',
+                'payment_status' => 'completed',
+                'payment_method' => 'cash',
+                'transaction_id' => 'CASH-' . uniqid()
+            ]);
+
+            // Create payment record
+            Payment::create([
+                'student_id' => $this->studentId,
+                'payment_type' => 'subscription',
+                'amount' => $plan->price,
+                'total_amount' => $plan->price,
+                'transaction_fee' => 0,
+                'currency' => 'INR',
+                'payment_method' => 'cash',
+                'payment_status' => 'completed',
+                'status' => 'captured',
+                'order_id' => 'ORD-' . uniqid(),
+                'payment_id' => $subscription->transaction_id,
+                'receipt_no' => 'RCPT-SUB-' . time(),
+                'notes' => "Subscription Plan: {$plan->name}",
+                'payment_date' => now(),
+                'month' => now()->month,
+                'year' => now()->year,
+                'ip_address' => request()->ip()
+            ]);
+
+            // Update student status if needed
+            $this->student->is_active = true;
+            $this->student->save();
+
+            // Refresh subscription data and payments
+            $this->loadSubscriptionData();
+            $this->fetchPayments();
+
+            session()->flash('success', 'Subscription activated successfully');
+        } catch (\Exception $e) {
+            session()->flash('error', 'Failed to activate subscription');
+        }
+    }
+
+    private function loadSubscriptionData()
+    {
+        $this->activeSubscription = Subscription::where('user_id', $this->studentId)
+            ->where('status', 'active')
+            ->where('ends_at', '>', now())
+            ->with('plan')
+            ->first();
+            
+        $this->subscriptionHistory = Subscription::where('user_id', $this->studentId)
+            ->with('plan')
+            ->orderBy('created_at', 'desc')
+            ->get();
+    }
+
+    public function loadCourseBatches($courseId)
+    {
+        $this->courseBatches = Batch::where('course_id', $courseId)
+            ->whereDate('end_date', '>=', now())
+            ->get();
+    }
+
+    public function assignBatch($courseId, $batchId)
+    {
+        try {
+            if (empty($batchId)) {
+                return;
+            }
+            
+            DB::table('course_student')
+                ->updateOrInsert(
+                    [
+                        'user_id' => $this->studentId,
+                        'course_id' => $courseId,
+                    ],
+                    [
+                        'batch_id' => $batchId,
+                        'updated_at' => now()
+                    ]
+                );
+
+            session()->flash('success', 'Batch assigned successfully');
+            $this->courseBatches = []; // Hide the select after successful assignment
+            $this->courses = $this->student->courses()->withPivot('created_at', 'batch_id')->get();
+        } catch (\Exception $e) {
+            session()->flash('error', 'Failed to assign batch');
+        }
+    }
+
     public function render()
     {
+        $payments = Payment::where('student_id', $this->studentId)
+            ->with(['course'])
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return view('livewire.admin.student.view-student', [
             'student' => $this->student,
             'purchasedCourses' => $this->purchasedCourses,
             'courses' => $this->courses,
+            'subscriptionPlans' => $this->subscriptionPlans,
+            'activeSubscription' => $this->activeSubscription,
+            'subscriptionHistory' => $this->subscriptionHistory,
+            'payments' => $payments,
         ]);
     }
 }

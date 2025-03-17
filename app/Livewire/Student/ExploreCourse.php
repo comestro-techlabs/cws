@@ -34,51 +34,47 @@ class ExploreCourse extends Component
     {
         $user = auth()->user();
 
-        // Check if account is active
         if (!$user->is_active) {
             return redirect()->back()->with('error', 'Your account is inactive. Please contact support.');
         }
 
-        // Check for courses without batch
         $coursesWithoutBatch = $user->courses()->wherePivot('batch_id', null)->exists();
         if ($coursesWithoutBatch) {
             return redirect()->back()->with('error', 'Please update the batch for your existing course before enrolling in a new one.');
         }
 
-        // Check if already enrolled
         if ($user->courses()->where('course_id', $courseId)->exists()) {
             return redirect()->back()->with('error', 'You are already enrolled in this course.');
         }
 
-        if ($user->is_member) {
-            // Check for active free courses
-            $activeFreeCourse = $user->courses()
-                ->whereHas('batches', function ($query) {
-                    $query->whereDate('end_date', '>=', now());
-                })
-                ->withPivot('batch_id')
-                ->get()
-                ->pluck('pivot.batch_id')
-                ->filter()
-                ->isNotEmpty();
+        $batch = Batch::where('course_id', $courseId)
+            ->whereDate('end_date', '>=', now())
+            ->first();
 
-            if ($activeFreeCourse) {
+        if (!$batch) {
+            return redirect()->back()->with('error', 'No active batch available for this course.');
+        }
+
+        $activeCourseExists = $user->courses()
+            ->whereHas('batches', function ($query) {
+                $query->whereDate('end_date', '>=', now());
+            })
+            ->withPivot('batch_id')
+            ->get()
+            ->pluck('pivot.batch_id')
+            ->filter()
+            ->isNotEmpty();
+
+        if ($user->hasActiveSubscription()) {
+            if ($activeCourseExists) {
                 return redirect()->route('student.viewCourses', ['courseId' => $courseId])
-                    ->with('error', 'You can only have one active free course at a time...');
+                    ->with('warning', 'You can only enroll in one active course at a time with your subscription.');
             }
 
-            // Find active batch
-            $batch = Batch::where('course_id', $courseId)
-                ->whereDate('end_date', '>=', now())
-                ->first();
-
-            if (!$batch) {
-                return redirect()->back()->with('error', 'No active batch available for this course.');
-            }
-
-            $user->courses()->attach($courseId);
+            $user->courses()->attach($courseId, ['batch_id' => $batch->id]);
         } else {
-            return redirect()->route('student.viewCourses', ['courseId' => $courseId]);
+            return redirect()->route('student.viewCourses', ['courseId' => $courseId])
+                ->with('warning', 'You need an active subscription to enroll.');
         }
 
         return redirect()->route('student.dashboard')->with('success', 'You have successfully enrolled in the course.');

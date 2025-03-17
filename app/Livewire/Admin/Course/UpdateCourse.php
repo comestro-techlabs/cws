@@ -58,9 +58,33 @@ class UpdateCourse extends Component
 
     public $editing = false;
     public $editingField = null;
+    public $tempData = [];
 
     // Add new property for progress
     public $progress = 0;
+
+    // New properties for course type
+    public $course_type;
+    public $meeting_link;
+    public $meeting_id;
+    public $meeting_password;
+    public $venue;
+
+    protected $rules = [
+        'title' => 'nullable|min:3|max:255',
+        'description' => 'nullable',
+        'duration' => 'nullable|numeric|min:0',
+        'instructor' => 'nullable|string',
+        'fees' => 'nullable|numeric|min:0',
+        'discounted_fees' => 'nullable|numeric|min:0',
+        'category_id' => 'nullable|exists:categories,id',
+        'course_code' => 'nullable|string',
+        'course_type' => 'nullable|in:online,offline',
+        'meeting_link' => 'nullable|url',
+        'meeting_id' => 'nullable|string',
+        'meeting_password' => 'nullable|string',
+        'venue' => 'nullable|string',
+    ];
 
     public function updatedTempImage()
     {
@@ -107,23 +131,65 @@ class UpdateCourse extends Component
         }
     }
 
+    public function editField($field)
+    {
+        $this->editingField = $field;
+        $this->tempData[$field] = $this->{$field};
+    }
+
+    public function cancelEdit()
+    {
+        if ($this->editingField && isset($this->tempData[$this->editingField])) {
+            $this->{$this->editingField} = $this->tempData[$this->editingField];
+        }
+        $this->editingField = null;
+        $this->tempData = [];
+    }
+
     public function saveField($field)
     {
-        if ($this->editingField === $field) {
-            // Validate and save the field
-            $this->validate([
-                $field => 'required'
-            ]);
+        try {
+            // First click - enter edit mode
+            if ($this->editingField === null) {
+                $this->editingField = $field;
+                $this->tempData[$field] = $this->{$field};
+                return;
+            }
 
-            $this->course->update([
-                $field => $this->$field
-            ]);
+            // Second click - save changes
+            if ($this->editingField === $field) {
+                // Validate and save
+                $this->validateOnly($field);
+                
+                $updateData = [$field => $this->{$field}];
 
-            $this->editingField = null;
-            $this->editing = false;
-        } else {
-            $this->editingField = $field;
-            $this->editing = true;
+                // Special handling for course type
+                if ($field === 'course_type') {
+                    if ($this->course_type === 'online') {
+                        $updateData['venue'] = null;
+                    } else {
+                        $updateData['meeting_link'] = null;
+                        $updateData['meeting_id'] = null;
+                        $updateData['meeting_password'] = null;
+                    }
+                }
+
+                // Update the course
+                $success = $this->course->update($updateData);
+
+                if (!$success) {
+                    throw new \Exception('Failed to update the course.');
+                }
+
+                // Reset states
+                $this->editingField = null;
+                $this->tempData = [];
+                
+                $this->dispatch('notice', type: 'success', text: 'Field updated successfully!');
+            }
+
+        } catch (\Exception $e) {
+            $this->dispatch('notice', type: 'error', text: 'Failed to update: ' . $e->getMessage());
         }
     }
 
@@ -140,7 +206,12 @@ class UpdateCourse extends Component
             'fees',
             'discounted_fees',
             'course_code',
-            'category_id'
+            'category_id',
+            'course_type',
+            'meeting_link',
+            'meeting_id',
+            'meeting_password',
+            'venue'
         ]));
         $this->isPublished = (bool) $this->course->published;
         $this->categories = Category::all();

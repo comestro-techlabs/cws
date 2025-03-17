@@ -14,6 +14,33 @@ class Course extends Model
 
     protected $guarded = [];
 
+
+    protected $attributes = [
+        'course_type' => 'offline'
+    ];
+
+    public function isOnline()
+    {
+        return $this->course_type === 'online';
+    }
+
+    public function isOffline() 
+    {
+        return $this->course_type === 'offline';
+    }
+
+    public function getMeetingDetailsAttribute()
+    {
+        if ($this->isOnline()) {
+            return [
+                'link' => $this->meeting_link,
+                'id' => $this->meeting_id,
+                'password' => $this->meeting_password
+            ];
+        }
+        return null;
+    }
+
     public function payments()
     {
         return $this->hasMany(Payment::class);
@@ -123,5 +150,10 @@ class Course extends Model
     public function mockTests()
     {
         return $this->hasMany(MockTest::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(CourseReview::class);
     }
 }

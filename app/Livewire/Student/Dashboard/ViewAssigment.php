@@ -8,45 +8,51 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\Models\Assignments;
 use App\Models\Assignment_upload;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
-
 
 class ViewAssigment extends Component
 {
     use WithFileUploads;
 
-    public $assignment; // The assignment being viewed
-    public $uploadedFile; // The file already uploaded by the student (if any)
-    public $file; // The file being uploaded
-    public $assignment_id; // The ID of the assignment
+    public $assignment;
+    public $uploadedFile;
+    public $file;
+    public $assignment_id;
+    public $previewUrl;
 
     public function mount($id)
     {
         if (!Auth::check()) {
             return redirect()->route('auth.login')->with('error', 'You must be logged in to access this page.');
         }
-
+    
         $studentId = Auth::id();
-
-        // Find the assignment with a relationship check for the student's course
+    
+        // Fetch assignment
         $this->assignment = Assignments::where('id', $id)
             ->whereHas('course', function ($query) use ($studentId) {
                 $query->whereHas('users', function ($q) use ($studentId) {
                     $q->where('user_id', $studentId);
                 });
             })->first();
-
+    
         if (!$this->assignment) {
             return redirect()->back()->with('error', 'Assignment not found or access denied.');
         }
-
-        // Set the assignment_id property
-        $this->assignment_id = $this->assignment->id;
-
-        // Check if the file has already been uploaded
+    
+        // Fetch the uploaded file
         $this->uploadedFile = Assignment_upload::where('student_id', $studentId)
             ->where('assignment_id', $id)
             ->first();
+    
+        // Debugging: Check if file exists
+        if ($this->uploadedFile) {
+            \Log::info('File found: ' . $this->uploadedFile->file_path);
+        } else {
+            \Log::error('No file found for assignment ID: ' . $id);
+        }
+    
     }
 
     public function submit()
@@ -56,15 +62,25 @@ class ViewAssigment extends Component
         ]);
 
         try {
-            $accessToken = $this->token();
+            // Store file locally
+            $filePath = $this->file->store('uploads', 'public');
 
-            // Prepare file details
+            // Save file details to DB
+            $assignment_upload = new Assignment_upload();
+            $assignment_upload->student_id = auth()->id();
+            $assignment_upload->file_path = $filePath;
+            $assignment_upload->assignment_id = $this->assignment_id;
+            $assignment_upload->submitted_at = now();
+            $assignment_upload->status = 'submitted';
+            $assignment_upload->save();
+
+            // Upload to Google Drive
+            $accessToken = $this->token();
             $file = $this->file;
             $mimeType = $file->getMimeType();
             $fileName = $file->getClientOriginalName();
             $fileContent = file_get_contents($file->getRealPath());
 
-            // Step 1: Metadata request to Google Drive
             $metadataResponse = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $accessToken,
                 'Content-Type' => 'application/json',
@@ -81,35 +97,42 @@ class ViewAssigment extends Component
 
             $uploadUrl = $metadataResponse->header('Location');
 
-            // Step 2: Upload file content to Google Drive
             $uploadResponse = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $accessToken,
                 'Content-Type' => $mimeType,
             ])->withBody($fileContent, $mimeType)->put($uploadUrl);
 
             if ($uploadResponse->successful()) {
-                // Get the file ID from Google Drive
                 $fileId = json_decode($uploadResponse->body())->id;
-
-                // Save the file details to the database
-                $assignment_upload = new Assignment_upload();
-                $assignment_upload->student_id = auth()->id();
                 $assignment_upload->file_path = $fileId;
-                $assignment_upload->assignment_id = $this->assignment_id; // Use the assignment_id property
-                $assignment_upload->submitted_at = now(); // Set the submission time
-                $assignment_upload->status = 'submitted';
                 $assignment_upload->save();
-
-                if ($this->assignment->isOverdue()) {
-                    session()->flash('warning', 'Assignment submitted after due date.');
-                } else {
-                    session()->flash('success', 'Assignment submitted successfully.');
-                }
             }
+
+            session()->flash('success', 'Assignment submitted successfully.');
+            $this->previewUrl = $this->getPreviewUrl();
         } catch (\Exception $e) {
             session()->flash('error', 'Failed to upload assignment: ' . $e->getMessage());
         }
     }
+
+    private function getPreviewUrl()
+{
+    if ($this->uploadedFile) {
+        $filePath = asset('storage/' . $this->uploadedFile->file_path);
+        $fileExtension = pathinfo($this->uploadedFile->file_path, PATHINFO_EXTENSION);
+
+        if ($fileExtension === 'pdf') {
+            return $filePath; // Direct link for PDF preview
+        }
+
+        if (in_array($fileExtension, ['doc', 'docx'])) {
+            return "https://docs.google.com/gview?url=" . urlencode($filePath) . "&embedded=true";
+        }
+    }
+
+    return null;
+}
+
 
     private function token()
     {
@@ -130,9 +153,12 @@ class ViewAssigment extends Component
 
         throw new \Exception('Failed to fetch access token');
     }
+
     #[Layout('components.layouts.student')]
     public function render()
     {
-        return view('livewire.student.dashboard.view-assigment');
+        return view('livewire.student.dashboard.view-assigment', [
+            'previewUrl' => $this->previewUrl,
+        ]);
     }
 }

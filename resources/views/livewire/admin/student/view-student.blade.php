@@ -1,4 +1,6 @@
 <div class="min-h-screen bg-gray-50 py-8">
+    <x-loader /> <!-- Add loader component -->
+    
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Header Section -->
         <div class="mb-8">
@@ -6,7 +8,7 @@
             <p class="mt-1 text-sm text-gray-500">Manage student information, courses, and membership details</p>
         </div>
 
-        <!-- Student Details Cards -->
+        <!-- Extended Student Details Cards -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
             @foreach([
                 ['label' => 'Name', 'value' => $student->name],
@@ -14,7 +16,10 @@
                 ['label' => 'Contact', 'value' => $student->contact],
                 ['label' => 'Gender', 'value' => $student->gender],
                 ['label' => 'Education', 'value' => $student->education_qualification],
-                ['label' => 'Date of Birth', 'value' => $student->dob]
+                ['label' => 'Date of Birth', 'value' => $student->dob],
+                ['label' => 'Registration Date', 'value' => $student->created_at->format('d M Y')],
+                ['label' => 'Account Status', 'value' => $student->is_active ? 'Active' : 'Inactive'],
+                ['label' => 'Student ID', 'value' => 'STU'.str_pad($student->id, 5, '0', STR_PAD_LEFT)]
             ] as $detail)
                 <div class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-all duration-200">
                     <div class="text-sm font-medium text-gray-500">{{ $detail['label'] }}</div>
@@ -23,10 +28,15 @@
             @endforeach
         </div>
 
-        <!-- Tabs Navigation -->
+        <!-- Modified Tabs Navigation -->
         <div class="mb-8 border-b border-gray-200">
             <nav class="-mb-px flex space-x-8" aria-label="Tabs">
-                @foreach(['courses' => 'Courses', 'membership' => 'Membership', 'enrolled' => 'Enrolled Courses'] as $tab => $label)
+                @foreach([
+                    'courses' => 'Courses', 
+                    'subscription' => 'Subscription Plan', 
+                    'enrolled' => 'Enrolled Courses',
+                    'payments' => 'Payment History'
+                ] as $tab => $label)
                     <button wire:click="setActiveTab('{{ $tab }}')"
                             class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors
                                    {{ $activeTab === $tab
@@ -63,8 +73,6 @@
                                     <th class="p-2 text-center text-xs font-medium text-gray-600 border">Method</th>
                                     <th class="p-2 text-center text-xs font-medium text-gray-600 border">Payment Amount</th>
                                     <th class="p-2 text-center text-xs font-medium text-gray-600 border">Payment Date</th>
-                                    <th class="p-2 text-center text-xs font-medium text-gray-600 border">Payment Month</th>
-                                    <th class="p-2 text-center text-xs font-medium text-gray-600 border">Payment Year</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -73,11 +81,9 @@
                                     <td class="px-4 py-2 border">{{ $payment->course->title ?? 'Unknown Course' }}</td>
                                     <td class="px-4 py-2 border">{{ $payment->order_id }}</td>
                                     <td class="px-4 py-2 border text-green-500">Paid</td>
-                                    <td class="px-4 py-2 border">{{ $payment->method }}</td>
+                                    <td class="px-4 py-2 border">{{ $payment->payment_method }}</td>
                                     <td class="px-4 py-2 border">{{ $payment->total_amount }}</td>
-                                    <td class="px-4 py-2 border">{{ $payment->payment_date}}</td>
-                                    <td class="px-4 py-2 border">{{ $payment->month }}</td>
-                                    <td class="px-4 py-2 border">{{ $payment->year }}</td>
+                                    <td class="px-4 py-2 border">{{ $payment->formattedPaymentDate}}</td>
                                 </tr>
                                 @empty
                                 <tr>
@@ -90,108 +96,214 @@
                 </div>
             @endif
 
-            @if($activeTab === 'membership')
-                <div class="p-6">
-                    @if(!$isMember)
-                    <div class="flex justify-center">
-                        <button class="group relative mt-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-medium py-2.5 px-5 rounded-lg shadow-lg hover:shadow-blue-500/30 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" wire:click="createFuturePayment">
-                            <span class="flex items-center">
-                                <span>Activate membership</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 transform group-hover:rotate-45 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
-                                </svg>
+@if($activeTab === 'subscription')
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        @if($activeSubscription)
+        <div class="mb-8">
+            <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                <h3 class="text-lg font-semibold text-green-800">Current Active Subscription</h3>
+                <div class="mt-4 grid grid-cols-2 gap-4">
+                    <div>
+                        <p class="text-sm text-green-600">Plan:</p>
+                        <p class="font-medium">{{ $activeSubscription->plan->name }}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-green-600">Valid Until:</p>
+                        <p class="font-medium">{{ $activeSubscription->ends_at->format('d M Y') }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
+
+        <div class="text-center">
+            <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+                Subscription Plans
+            </h2>
+            <p class="mt-4 text-lg text-gray-500">
+                Choose the perfect plan for your learning journey
+            </p>
+        </div>
+
+        <div class="mt-12 grid gap-8 lg:grid-cols-3">
+            @foreach($subscriptionPlans as $plan)
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden {{ $plan->slug === 'pro' ? 'border-2 border-purple-500' : '' }}">
+                    <div class="px-6 py-8">
+                        <h3 class="text-2xl font-bold text-purple-600">{{ $plan->name }}</h3>
+                        <p class="mt-4 text-gray-500">{{ $plan->description }}</p>
+                        <p class="mt-8">
+                            <span class="text-4xl font-bold text-gray-900">₹{{ $plan->price }}</span>
+                            <span class="text-gray-500">/{{ $plan->duration_in_days }} days</span>
+                        </p>
+                        <button 
+                            wire:click="subscribePlan({{ $plan->id }})"
+                            wire:loading.attr="disabled"
+                            wire:target="subscribePlan({{ $plan->id }})"
+                            @if($activeSubscription) disabled @endif
+                            class="mt-8 w-full bg-purple-600 text-white rounded-md py-2 px-4 hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed">
+                            <span wire:loading.remove wire:target="subscribePlan({{ $plan->id }})">
+                                {{ $activeSubscription ? 'Already Subscribed' : 'Subscribe with Cash' }}
                             </span>
-                            <div class="absolute -top-1 -right-1 w-3 h-3 bg-yellow-400 rounded-full animate-pulse"></div>
+                            <span wire:loading wire:target="subscribePlan({{ $plan->id }})">
+                                Processing...
+                            </span>
                         </button>
                     </div>
-                    @endif
-                    <h3 class="text-lg font-semibold">Membership Details</h3>
-                    <div wire:key="payment-table">
-                    <table class="min-w-full bg-white border border-gray-200">
-                        <thead>
-                            <tr class="bg-gray-200">
-                                <th class="px-4 py-2 border">Due Date</th>
-                                <th class="px-4 py-2 border">Month</th>
-                                <th class="px-4 py-2 border">Amount</th>
-                                <th class="px-4 py-2 border">Method</th>
-                                <th class="px-4 py-2 border">Status</th>
-                                <th class="px-4 py-2 border">Payment Date</th>
-                                <th class="px-4 py-2 border">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if($isMember)
-                            @foreach($lastPayment as $payment)
-                            @if(empty($payment->course_id) && empty($payment->workshop_id))
-                            <tr class="hover:bg-gray-50 transition-colors">
-                                <td class="px-4 py-3 border-b text-sm text-gray-700 text-center">{{ $payment->due_date }}</td>
-                                <td class="px-4 py-3 border-b text-sm font-medium text-center">{{ \Carbon\Carbon::create((int)$payment->year, (int)$payment->month, 1)->format('M Y') }}</td>
-                                <td class="px-4 py-3 border-b text-sm font-semibold text-center">{{ $payment->total_amount }}</td>
-                                <td class="px-4 py-3 border-b text-sm text-center">
-                                    <span class="px-2 py-1 bg-gray-100 rounded-full text-xs">{{ $payment->method }}</span>
-                                </td>
-                                <td class="px-4 py-3 border-b text-center">
-                                    @if($payment->status == 'captured')
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                        {{ $payment->status }}
-                                    </span>
-                                    @else
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                        {{ $payment->status }}
-                                    </span>
-                                    @endif
-                                </td>
-                                <td class="px-4 py-3 border-b text-sm text-green-700 text-center">
-                                    @if($payment->status == 'captured')
-                                    {{ \Carbon\Carbon::parse($payment->payment_date)->format('d M Y, h:i A') }}
-                                    @endif
-                                </td>
-                                <td class="px-4 py-3 border-b text-center">
-                                    @if($payment->status != 'captured')
-                                    <button wire:click="payWithCash({{ $payment->id }})" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-md shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-                                        Pay with cash
-                                    </button>
-                                    @endif
-                                </td>
-                            </tr>
-                            @endif
-                            @endforeach
-                            @else
-                            <tr>
-                                <td colspan="6" class="px-4 py-2 text-center">Not a member</td>
-                            </tr>
-                            @endif
-                        </tbody>
-                    </table>
+                    <div class="px-6 pt-6 pb-8">
+                        <ul class="space-y-4">
+                            @php
+                                $planFeatures = is_string($plan->features) ? json_decode($plan->features, true) : $plan->features;
+                            @endphp
+                            @forelse($planFeatures ?? [] as $feature)
+                                <li class="flex items-center space-x-3">
+                                    <svg class="h-5 w-5 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                    <span class="text-gray-600">{{ $feature }}</span>
+                                </li>
+                            @empty
+                                <li class="text-gray-500 text-sm">No features listed</li>
+                            @endforelse
+                        </ul>
                     </div>
                 </div>
-            @endif
+            @endforeach
+        </div>
+    </div>
+@endif
 
-            @if($activeTab === 'enrolled')
-                <div class="p-6">
-                    <h3 class="text-lg font-semibold">Enrolled Courses</h3>
-                    <table class="min-w-full bg-white border border-gray-200">
-                        <thead>
-                            <tr class="bg-gray-200">
-                                <th class="px-4 py-2 border">Course Name</th>
-                                <th class="px-4 py-2 border">Batch ID</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($courses as $course)
+@if($activeTab === 'enrolled')
+    <div class="p-6">
+        <h3 class="text-lg font-semibold mb-4">Enrolled Courses</h3>
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white border border-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Course</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Enrollment Date</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Current Batch</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    @forelse($purchasedCourses as $payment)
+                        @if($payment->course)
                             <tr>
-                                <td class="px-4 py-2 border">{{ $course->title }}</td>
-                                <td class="px-4 py-2 border">{{ $course->pivot->batch_id ?? 'No Batch Selected' }} </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $payment->course->title }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                    {{ $payment->created_at ? Carbon\Carbon::parse($payment->created_at)->format('d M Y') : 'N/A' }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                    @php
+                                        $student_course = DB::table('course_student')
+                                            ->where('user_id', $studentId)
+                                            ->where('course_id', $payment->course->id)
+                                            ->first();
+                                        $batch = $student_course ? App\Models\Batch::find($student_course->batch_id) : null;
+                                    @endphp
+                                    <span class="{{ !empty($courseBatches) && $payment->course->id == $courseBatches->first()?->course_id ? 'hidden' : '' }}">
+                                        {{ $batch ? $batch->batch_name : 'No Batch Assigned' }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                    @if(!empty($courseBatches) && $payment->course->id == $courseBatches->first()?->course_id)
+                                        <div class="flex items-center space-x-2">
+                                            <select 
+                                                wire:model="selectedBatch"
+                                                wire:change="assignBatch({{ $payment->course->id }}, $event.target.value)"
+                                                class="mt-1 block w-64 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                                <option value="">Select Batch</option>
+                                                @foreach($courseBatches as $batch)
+                                                    <option value="{{ $batch->id }}"
+                                                        {{ $student_course && $student_course->batch_id == $batch->id ? 'selected' : '' }}>
+                                                        {{ $batch->batch_name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <button wire:click="$set('courseBatches', [])" class="text-gray-500 hover:text-gray-700">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    @else
+                                        <button wire:click="loadCourseBatches({{ $payment->course->id }})"
+                                            class="text-blue-600 hover:text-blue-800">
+                                            {{ $batch ? 'Change Batch' : 'Select Batch' }}
+                                        </button>
+                                    @endif
+                                </td>
                             </tr>
-                            @empty
-                            <tr>
-                                <td colspan="2" class="px-4 py-2 text-center">No courses enrolled.</td>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-            @endif
+                        @endif
+                    @empty
+                        <tr>
+                            <td colspan="4" class="px-6 py-4 text-center text-gray-500">No enrolled courses found</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+@endif
+
+@if($activeTab === 'payments')
+    <div class="p-6">
+        <h3 class="text-lg font-semibold mb-4">Payment History</h3>
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white border border-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Method</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    @forelse($payments as $payment)
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                {{ $payment->formatted_payment_date }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                @if($payment->payment_type === 'subscription')
+                                    {{ $payment->description }}
+                                @else
+                                    Payment for {{ $payment->course->title ?? 'Unknown Course' }}
+                                @endif
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                <span class="px-2 py-1 text-xs font-medium rounded-full 
+                                    {{ $payment->payment_type === 'subscription' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800' }}">
+                                    {{ ucfirst($payment->payment_type) }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                {{ ucfirst($payment->payment_method) }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                ₹{{ $payment->total_amount }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 text-xs font-medium rounded-full
+                                    {{ $payment->status === 'captured' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
+                                    {{ ucfirst($payment->status) }}
+                                </span>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="6" class="px-6 py-4 text-center text-gray-500">No payment history found</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+@endif
+
         </div>
 
         <!-- Enrollment Modal -->
@@ -230,12 +342,15 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <button wire:click="enrollCourse({{ $course->id }})" class="relative overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium py-2 px-5 rounded-lg shadow-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-                                        <span class="relative z-10 flex items-center">
-                                            <span>Enroll</span>
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                                            </svg>
+                                    <button wire:click="enrollCourse({{ $course->id }})"
+                                        wire:loading.attr="disabled"
+                                        wire:target="enrollCourse"
+                                        class="relative overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium py-2 px-5 rounded-lg shadow-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                                        <span wire:loading.remove wire:target="enrollCourse({{ $course->id }})">
+                                            Enroll Now
+                                        </span>
+                                        <span wire:loading wire:target="enrollCourse({{ $course->id }})">
+                                            Processing...
                                         </span>
                                     </button>
                                 </li>
@@ -274,3 +389,21 @@
         }
     </style>
 </div>
+
+@if(session()->has('success'))
+    <div x-data="{ show: true }"
+         x-show="show"
+         x-init="setTimeout(() => show = false, 3000)"
+         class="fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg">
+        {{ session('success') }}
+    </div>
+@endif
+
+@if(session()->has('error'))
+    <div x-data="{ show: true }"
+         x-show="show"
+         x-init="setTimeout(() => show = false, 3000)"
+         class="fixed bottom-4 right-4 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg">
+        {{ session('error') }}
+    </div>
+@endif

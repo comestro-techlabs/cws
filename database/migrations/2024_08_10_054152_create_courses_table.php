@@ -24,6 +24,11 @@ return new class extends Migration
             $table->foreignId('category_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('course_image')->nullable();
             $table->boolean('published')->default(false);
+            $table->enum('course_type', ['online', 'offline'])->default('offline');
+            $table->string('meeting_link')->nullable(); // For Zoom/Google Meet link
+            $table->string('meeting_id')->nullable(); // For meeting ID
+            $table->string('meeting_password')->nullable(); // For meeting password
+            $table->string('venue')->nullable(); // For offline course location
 
             $table->timestamps();
         });

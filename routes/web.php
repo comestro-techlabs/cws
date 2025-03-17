@@ -1,8 +1,6 @@
 <?php
 
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\AssignmentsController;
-use App\Http\Controllers\AssignmentUploadController;
 use App\Http\Controllers\BatchController;
 
 use App\Http\Controllers\CourseController;
@@ -83,11 +81,11 @@ use App\Livewire\Student\Subscriptions\Plans;
 // public routes
 Route::get('/', Home::class)->name('public.index');
 Route::get('/viewallcourses', AllCourses::class)->name('public.viewallcourses.all-courses');
-Route::get('/courses/{slug}', Ourcourses::class)->name('public.courseDetail');
 Route::get('/contact', ContactPage::class)->name('public.contactUs');
 Route::get('/workshops', Workshop::class)->name('public.workshop');
 Route::get('/course/{course_id}/chapter/show', CourseWithChapterAndTopic::class)->name('v2.courses.show');
 Route::get('/course/{course_id}/chapter/{chapter_id?}/topic/{topic_id?}/show', TopicWithPostContent::class)->name('v2.topics.show');
+Route::get('/courses/{slug}', Ourcourses::class)->name('public.courseDetail');
 
 //auth routes
 Route::prefix('auth')->group(function () {
@@ -97,15 +95,8 @@ Route::prefix('auth')->group(function () {
     Route::get('/google/callback', [GoogleLogin::class, 'handleGoogleCallback'])->name('auth.google.callback');
     Route::get('/github/redirect', [Github::class, 'redirectToGithub'])->name('github.redirect');
     Route::get('/github/callback', [Github::class, 'handleGithubCallback'])->name('github.callback');
-
-    
     Route::get('/linkedin/redirect', [LinkedinLogin::class, 'redirectToLinkedin'])->name('linkedin.redirect');
     Route::get('/linkedin-openid/callback', [LinkedinLogin::class, 'handleLinkedinCallback'])->name('linkedin.callback');
-
-    Route::get('/viewallcourses', AllCourses::class)->name('public.viewallcourses.all-courses');
-    Route::get('/courses/{slug}', Ourcourses::class)->name('public.courseDetail');
-    Route::get('/contact', ContactPage::class)->name('public.contactUs');
-    Route::get('/workshops', Workshop::class)->name('public.workshop');
     Route::get('/facebook/redirect', [Facebook::class, 'redirectToFacebook'])->name('facebook.redirect');
     Route::get('/facebook/callback', [Facebook::class, 'handleFacebookCallback'])->name('facebook.callback');
 
@@ -193,17 +184,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::put('/batches/update/{batch}', [BatchController::class, 'update'])->name('batches.update');
         Route::delete('/batches/{batch}/disable', [BatchController::class, 'destroy'])->name('batches.destroy');
 
-        // Assignment Management
-        Route::resource('assignment', AssignmentsController::class);
-        Route::patch('/assignment/{assignment}/toggle-status', [AssignmentsController::class, 'toggleStatus'])->name('assignment.toggleStatus');
-        Route::resource('assignment-submit', AssignmentUploadController::class);
-        Route::get('/assignments/review/{id}', [AssignmentUploadController::class, 'assignmentReviewWork'])->name('assignment.reviewWork');
-        Route::post('/assignments/{assignmentId}/students/{studentId}/grade', [AssignmentUploadController::class, 'insertGrade'])->name('assignments.insertGrade');
-        Route::get('/assignments/download/{fileId}', [AssignmentUploadController::class, 'downloadFile'])->name('assignments.download');
-        Route::get('/assignments/course', [AssignmentUploadController::class, 'assignmentCourse'])->name('assignments.course');
-        Route::get('/assignments/course/assignment-review/{slug}', [AssignmentUploadController::class, 'assignmentReview'])->name('assignments.review');
-        Route::get('/assignments/single-student/{id}', [AssignmentUploadController::class, 'manageSingleStudentAssignment'])->name('assignments.singleStudent.assignment');
-
+       
         // Exam Management
         Route::prefix('exam')->group(function () {
             Route::get('/create', [ExamController::class, 'create'])->name('exam.create');
@@ -267,7 +248,6 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         //course routes
         Route::get('/course', InsertCourse::class)->name('admin.course');
         Route::get('/course/update/{courseId}', UpdateCourse::class)->name('admin.course.update');
-        Route::get('/course/show/{courseId}', ShowCourse::class)->name('admin.course.show');
         Route::get('/course/manage', ManageCourse::class)->name('admin.course.manage');
         Route::get('/student/{id}', ViewStudent::class)->name('admin.student.view');
 
@@ -351,7 +331,7 @@ Route::prefix('v2')->group(function () {
         Route::get('/mocktest', SelectMockTest::class)->name('v2.student.mocktest');
         Route::get('/mocktest/{mockTestId}', ShowMockTest::class)->name('v2.student.mocktest.take');
         Route::get('/mocktest/result/{mockTestId}', MockTestResult::class)->name('v2.student.mocktest.result');
-
+        Route::get('/dashboard', StudentDashboard::class)->name('v2.student.dashboard.student-dashboard');
 
         Route::get('/products', OurProducts::class)->name('v2.student.products');
         Route::get('/products/{productId}/checkout', CheckOutPage::class)->name('v2.student.checkout');

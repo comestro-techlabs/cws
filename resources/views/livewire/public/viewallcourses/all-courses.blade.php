@@ -1,121 +1,224 @@
-<div>
-    <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
-        <livewire:page-heading 
-            title="Our Courses"
-            description="Learn Syntax offers comprehensive training in Full-Stack Web Development, C Programming, Laravel, SQL Database Management, and JavaScript & React. Our hands-on courses are designed to equip you with practical skills for real-world software and web development projects." 
-            image="about-header.png" 
-        />
-
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <!-- Course Stats -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                <div class="bg-white/80 backdrop-blur-sm rounded-lg p-4 border border-gray-100">
-                    <div class="flex items-center">
-                        <div class="p-2 bg-blue-100 rounded-lg">
-                            <svg class="w-6 h-6 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-                            </svg>
-                        </div>
-                        <div class="ml-4">
-                            <h4 class="text-sm font-medium text-gray-500">Total Courses</h4>
-                            <p class="text-2xl font-bold text-gray-900">{{ count($published_courses) }}</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-white/80 backdrop-blur-sm rounded-lg p-4 border border-gray-100">
-                    <div class="flex items-center">
-                        <div class="p-2 bg-green-100 rounded-lg">
-                            <svg class="w-6 h-6 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
-                            </svg>
-                        </div>
-                        <div class="ml-4">
-                            <h4 class="text-sm font-medium text-gray-500">Active Students</h4>
-                            <p class="text-2xl font-bold text-gray-900">500+</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-white/80 backdrop-blur-sm rounded-lg p-4 border border-gray-100">
-                    <div class="flex items-center">
-                        <div class="p-2 bg-purple-100 rounded-lg">
-                            <svg class="w-6 h-6 text-purple-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                            </svg>
-                        </div>
-                        <div class="ml-4">
-                            <h4 class="text-sm font-medium text-gray-500">Live Projects</h4>
-                            <p class="text-2xl font-bold text-gray-900">50+</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-white/80 backdrop-blur-sm rounded-lg p-4 border border-gray-100">
-                    <div class="flex items-center">
-                        <div class="p-2 bg-yellow-100 rounded-lg">
-                            <svg class="w-6 h-6 text-yellow-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
-                            </svg>
-                        </div>
-                        <div class="ml-4">
-                            <h4 class="text-sm font-medium text-gray-500">Success Rate</h4>
-                            <p class="text-2xl font-bold text-gray-900">95%</p>
-                        </div>
-                    </div>
-                </div>
+<div class="bg-gray-50 min-h-screen">
+    <!-- Hero Section with Animated Background -->
+    <div class="relative bg-gradient-to-r from-[#662d91] via-purple-600 to-[#662d91] bg-[size:400%] animate-gradient py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mt-5">
+                <h1 class="text-4xl font-bold text-white sm:text-5xl">
+                    Explore Our Courses
+                </h1>
+                <p class="mt-4 text-xl text-purple-100 max-w-2xl mx-auto">
+                    Transform your career with our industry-leading programming courses
+                </p>
             </div>
+        </div>
+        <div class="absolute inset-0 bg-[url('/img/grid.svg')] opacity-10"></div>
+    </div>
 
-            <!-- Search and Filter Section -->
-            <div class="mb-8">
-                <div class="bg-white/80 backdrop-blur-sm rounded-lg border border-gray-100 p-4">
-                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                        <div class="relative flex-1">
-                            <input type="text" 
-                                   wire:model.debounce.300ms="search"
-                                   placeholder="Search courses..." 
-                                   class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            >
-                            <svg class="absolute left-3 top-2.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                            </svg>
-                        </div>
-                        <div class="flex gap-4">
-                            <select wire:model="category" class="border border-gray-200 rounded-lg px-4 py-2 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                <option value="">All Categories</option>
-                                <option value="web">Web Development</option>
-                                <option value="programming">Programming</option>
-                                <option value="database">Database</option>
-                            </select>
-                            <select wire:model="sortBy" class="border border-gray-200 rounded-lg px-4 py-2 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                <option value="">Sort By</option>
-                                <option value="newest">Newest First</option>
-                                <option value="popular">Most Popular</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Course Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                @foreach ($published_courses as $course)
-                    <x-course-card :course="$course" />
-                @endforeach
-            </div>
-
-            <!-- Empty State -->
-            @if(count($published_courses) === 0)
-            <div class="text-center py-12">
-                <div class="bg-white/80 backdrop-blur-sm rounded-lg p-8 max-w-md mx-auto">
-                    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M12 12h.01M12 14h.01M12 16h.01M12 18h.01M12 20h.01M12 22h.01"/>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col lg:flex-row gap-8 py-12">
+            <!-- Sidebar Filters - Collapsible on Mobile -->
+            <div x-data="{ open: false }" class="lg:w-64 flex-shrink-0">
+                <!-- Mobile Filter Button -->
+                <button @click="open = !open" class="lg:hidden w-full mb-4 px-4 py-2 bg-white rounded-lg shadow-sm flex items-center justify-between">
+                    <span class="font-medium text-gray-700">Filters</span>
+                    <svg class="w-5 h-5" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                     </svg>
-                    <h3 class="mt-4 text-lg font-medium text-gray-900">No courses found</h3>
-                    <p class="mt-2 text-sm text-gray-500">We're constantly adding new courses. Check back later for updates.</p>
-                    <button wire:click="resetFilters" class="mt-4 text-sm text-blue-600 hover:text-blue-700 font-medium">
-                        Reset Filters
-                    </button>
+                </button>
+
+                <!-- Filter Content -->
+                <div :class="{'hidden': !open}" class="lg:block">
+                    <div class="bg-white rounded-xl shadow-sm p-6 sticky top-8">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Filters</h3>
+                        
+                        <!-- Search -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Search</label>
+                            <input type="text" 
+                                wire:model.live.debounce.300ms="search"
+                                class="w-full rounded-lg border-gray-300 focus:ring-purple-500 focus:border-purple-500"
+                                placeholder="Search courses...">
+                        </div>
+
+                        <!-- Course Type -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Course Type</label>
+                            <div class="space-y-2">
+                                <label class="flex items-center">
+                                    <input type="radio" wire:model.live="courseType" value="" class="text-purple-600">
+                                    <span class="ml-2 text-gray-700">All</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" wire:model.live="courseType" value="online" class="text-purple-600">
+                                    <span class="ml-2 text-gray-700">Online</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" wire:model.live="courseType" value="offline" class="text-purple-600">
+                                    <span class="ml-2 text-gray-700">Offline</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Price Range -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Price</label>
+                            <div class="space-y-2">
+                                <label class="flex items-center">
+                                    <input type="radio" wire:model.live="priceRange" value="" class="text-purple-600">
+                                    <span class="ml-2 text-gray-700">All</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" wire:model.live="priceRange" value="free" class="text-purple-600">
+                                    <span class="ml-2 text-gray-700">Free</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" wire:model.live="priceRange" value="paid" class="text-purple-600">
+                                    <span class="ml-2 text-gray-700">Paid</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Reset Filters -->
+                        <button wire:click="resetFilters" 
+                            class="w-full px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+                            Reset Filters
+                        </button>
+                    </div>
                 </div>
             </div>
-            @endif
+
+            <!-- Main Content -->
+            <div class="flex-1">
+                <!-- Grid/List View Toggle -->
+                <div class="flex justify-end mb-4">
+                    <div class="bg-white rounded-lg shadow-sm p-1">
+                        <button @click="gridView = true" :class="{'bg-purple-100 text-purple-600': gridView}" class="px-3 py-1 rounded-md">
+                            <i class="fas fa-grid-2"></i>
+                        </button>
+                        <button @click="gridView = false" :class="{'bg-purple-100 text-purple-600': !gridView}" class="px-3 py-1 rounded-md">
+                            <i class="fas fa-list"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Course Grid -->
+                <div x-data="{ gridView: true }" class="relative">
+                    <!-- Loader Component -->
+                    <x-loader />
+
+                    <div :class="{'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8': gridView, 'space-y-4': !gridView}">
+                        @forelse($courses as $course)
+                            <a href="{{ route('public.courseDetail', ['slug' => $course->slug]) }}" wire:navigate class="block">
+                                <div class="bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 flex" :class="{'flex-col': gridView, 'items-center': !gridView}">
+                                    <!-- Course Card Content -->
+                                    <div class="relative" :class="{'w-full': gridView, 'w-1/3': !gridView}">
+                                        <img src="{{ asset('storage/course_images/' . $course->course_image) }}" 
+                                            alt="{{ $course->title }}" 
+                                            class="object-cover rounded-t-2xl" 
+                                            :class="{'w-full h-48': gridView, 'h-full rounded-l-2xl rounded-tr-none': !gridView}">
+                                        
+                                        <!-- Course Type Badge -->
+                                        <div class="absolute top-4 left-4">
+                                            <div class="px-3 py-1 rounded-full text-sm font-medium {{ $course->course_type === 'online' ? 'bg-blue-600 text-white' : 'bg-green-600 text-white' }} flex items-center">
+                                                @if($course->course_type === 'online')
+                                                    <svg class="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                                                    </svg>
+                                                @else
+                                                    <svg class="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                                                    </svg>
+                                                @endif
+                                                {{ ucfirst($course->course_type) }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="p-6" :class="{'w-full': gridView, 'w-2/3': !gridView}">
+                                        <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $course->title }}</h3>
+                                        <p class="text-gray-600 line-clamp-2 mb-4">{{ $course->description }}</p>
+                                        
+                                        <div class="flex items-center text-sm text-gray-500 mb-4">
+                                            <svg class="w-5 h-5 mr-2 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                            {{ $course->duration }} Weeks
+                                        </div>
+
+                                        <div class="flex justify-between items-center">
+                                            <div>
+                                                @if($course->discounted_fees > 0)
+                                                    <p class="text-2xl font-bold text-purple-600">₹{{ $course->discounted_fees }}</p>
+                                                    <p class="text-sm text-gray-500 line-through">₹{{ $course->fees }}</p>
+                                                @else
+                                                    <p class="text-xl font-bold text-green-600">Free</p>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        @empty
+                            <div class="col-span-full text-center py-12">
+                                <div class="bg-white rounded-lg p-8 max-w-md mx-auto">
+                                    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                                    </svg>
+                                    <h3 class="mt-4 text-lg font-medium text-gray-900">No courses found</h3>
+                                    <p class="mt-2 text-gray-500">Try adjusting your search or filter criteria</p>
+                                </div>
+                            </div>
+                        @endforelse
+                    </div>
+
+                    <!-- Load More Button -->
+                    @if($hasMorePages)
+                        <div class="text-center mt-8">
+                            <button wire:click="loadMore" 
+                                class="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+                                Load More Courses
+                            </button>
+                        </div>
+                    @endif
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+@push('styles')
+<style>
+@keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+.animate-gradient {
+    animation: gradient 8s linear infinite;
+}
+</style>
+@endpush
+
+@push('scripts')
+<script>
+    // Infinite scroll
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                @this.loadMore()
+            }
+        })
+    }, {
+        root: null,
+        threshold: 0.5
+    })
+
+    // Observe the Load More button
+    document.addEventListener('livewire:load', function () {
+        const loadMoreButton = document.querySelector('[wire\\:click="loadMore"]')
+        if (loadMoreButton) {
+            observer.observe(loadMoreButton)
+        }
+    })
+</script>
+@endpush
