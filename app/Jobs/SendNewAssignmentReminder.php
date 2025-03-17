@@ -37,7 +37,7 @@ class SendNewAssignmentReminder implements ShouldQueue
     {
           
         try {
-            Mail::send('emails.assignment_notification', 
+            Mail::send('emails.assignment_reminder', 
                 ['user'=>$this->student, 'assignment' => $this->assignment],
                 function($message){
                     $message->to($this->student->email, $this->student->name)
