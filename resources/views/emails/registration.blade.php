@@ -4,50 +4,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registration Successful</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
-<body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f6f9fc; margin: 0; padding: 0;">
-    <div style="max-width: 600px; margin: 20px auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
-        <!-- Header with Gradient -->
-        <header style="background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%); color: #ffffff; text-align: center; padding: 30px 20px;">
-            <h1 style="margin: 0; font-size: 28px; font-weight: 700; letter-spacing: 0.5px;">Welcome to Learn Syntax!</h1>
-            <div style="margin-top: 15px; font-size: 16px;">Your registration was successful</div>
-        </header>
-
+<body style="font-family: 'Roboto', Arial, sans-serif; margin: 0; padding: 0; color: #202124; line-height: 1.5; background-color: #f5f5f5;">
+    <div style="max-width: 600px; margin: 20px auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 5px rgba(0,0,0,0.05);">
+        
+        <!-- Accent Bar -->
+        <div style="height: 6px; background: linear-gradient(to right, rgb(111, 57, 160), rgb(242, 243, 246));"></div>
+        
+        <!-- Logo Area -->
+        <div style="text-align: center; padding: 30px 20px 20px;">
+            <img src="{{ config('app.url') }}/images/LearnSyntax.png" alt="Learn Syntax Logo" style="max-width: 150px; height: auto;" />
+        </div>
+        
         <!-- Main Content -->
-        <main style="padding: 30px; color: #333333;">
-            <p style="font-size: 16px; line-height: 1.6; color: #4B5563;">
-                Hi <strong>{{ $user->name }}</strong>,
-            </p>
+        <div style="padding: 0 30px 30px;">
             
-            <div style="background-color: #EEF2FF; padding: 20px; margin: 25px 0; border-radius: 8px; text-align: center;">
-                <div style="font-size: 24px; margin-bottom: 10px;">🎉</div>
-                <div style="font-size: 18px; font-weight: 600; color: #4F46E5; margin-bottom: 5px;">Your account is ready!</div>
-                <p style="margin: 0; color: #6B7280;">You now have access to our platform</p>
+            <!-- Icon + Title -->
+            <div style="display: flex; align-items: center; margin-bottom: 25px;">
+                <div style="width: 40px; height: 40px; border-radius: 50%; background-color: #e8f0fe; display: flex; align-items: center; justify-content: center; margin-right: 15px;">
+                    <span style="color: rgb(111, 57, 160); font-size: 22px;">🎉</span>
+                </div>
+                <h2 style="font-size: 20px; font-weight: 500; margin: 0; color: rgb(165, 121, 207);">Registration Successful</h2>
             </div>
-            
-            
-            
-            <p style="font-size: 16px; line-height: 1.6; color: #4B5563;">
-                If you have any questions, our support team is ready to help.
+
+            <!-- Greeting -->
+            <p style="font-size: 15px; color: #5f6368; margin-bottom: 20px;">
+                Dear <strong>{{ $user->name }}</strong>,
             </p>
-            
-            <p style="font-size: 16px; line-height: 1.6; color: #4B5563;">
-                We're excited to have you on board!
+
+            <!-- Message -->
+            <p style="font-size: 15px; color: #5f6368; margin-bottom: 25px;">
+                Congratulations! Your registration on <strong style="color:rgb(111, 57, 160);">Learn Syntax</strong> was successful. You now have access to our platform and learning resources.
             </p>
-            
-            <p style="font-size: 16px; line-height: 1.6; color: #4B5563; margin-top: 25px;">
-                Best regards,<br>
-                <strong>Learn Syntax Team</strong>
+
+            <p style="font-size: 15px; color: #5f6368; margin-bottom: 25px;">
+                Click the button below to explore your dashboard and get started with your learning journey.
             </p>
-        </main>
-        
-        
+
+            <!-- CTA Button -->
+            <div style="text-align: center; margin-bottom: 30px;">
+                <a href="{{ url('/') }}" style="display: inline-block; padding: 12px 30px; font-size: 14px; font-weight: 600; color: #ffffff; background-color: rgb(111, 57, 160); text-decoration: none; border-radius: 5px; transition: background 0.3s;">
+                    Go to Dashboard
+                </a>
+            </div>
+
+            <p style="font-size: 15px; color: #5f6368; margin-bottom: 25px;">
+                If you have any questions, feel free to reach out to our support team. We're excited to have you onboard!
+            </p>
+
+        </div>
+
         <!-- Footer -->
-        <footer style="background-color: #F3F4F6; padding: 20px; text-align: center; font-size: 14px; color: #6B7280;">
-            <p style="margin: 0;">© {{ date('Y') }} Learn Syntax. All rights reserved.</p>
-           
-        </footer>
+        <div style="padding: 20px 30px; background-color: #fafafa; border-top: 1px solid #f0f0f0; text-align: center;">
+            <p style="font-size: 13px; color: #5f6368; margin: 0;">
+                © {{ date('Y') }} Learn Syntax. All rights reserved.
+            </p>
+            <p style="font-size: 13px; color: #5f6368; margin: 0;">
+                Gandhi Nagar, Madhubani, Purnia, Bihar 854301
+            </p>
+            <p style="font-size: 13px; color: #5f6368; margin: 0;">
+                Need help? <a href="mailto:info@Learnsyntax.com" style="color: rgb(111, 57, 160); text-decoration: none;">Contact Support</a>
+            </p>
+        </div>
     </div>
 </body>
 </html>
