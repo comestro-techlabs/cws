@@ -99,7 +99,7 @@ Route::prefix('auth')->group(function () {
     Route::get('/linkedin-openid/callback', [LinkedinLogin::class, 'handleLinkedinCallback'])->name('linkedin.callback');
     Route::get('/facebook/redirect', [Facebook::class, 'redirectToFacebook'])->name('facebook.redirect');
     Route::get('/facebook/callback', [Facebook::class, 'handleFacebookCallback'])->name('facebook.callback');
-
+    Route::get('/register', App\Livewire\Auth\Register::class)->name('auth.register');
 });
 //protected routes
 Route::middleware('auth')->group(function () {
