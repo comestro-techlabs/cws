@@ -67,7 +67,7 @@
       {{-- <button class="bg-blue-600 text-white px-4 py-2 rounded shadow-md hover:bg-blue-700 w-full sm:w-auto">
         Attempt Exam Now
       </button> --}}
-      <a href="{{route('student.course.quiz')}}"><button class="bg-gray-300 text-gray-800 px-4 py-2 rounded shadow-md hover:bg-gray-400 w-full sm:w-auto">
+      <a href="{{route('v2.student.mycourses.quiz')}}"><button class="bg-gray-300 text-gray-800 px-4 py-2 rounded shadow-md hover:bg-gray-400 w-full sm:w-auto">
         Go Back
       </button></a>
       
