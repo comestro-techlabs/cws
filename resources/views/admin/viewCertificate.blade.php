@@ -65,7 +65,7 @@
 
           
             <div class="absolute top-[330px]  right-[-75px]  transform rotate-90 text-gray-800 font-semibold text-lg tracking-wider">
-                Certificate No: LS/course_code/{{ $year }}/0077
+                Certificate No: LS/course_code/{{ $year }}/certificate_no
             </div> 
 
             <div class="absolute bottom-[25px] left-[510px]">
