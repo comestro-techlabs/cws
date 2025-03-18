@@ -1,8 +1,8 @@
 <div>
     <div class="container mx-auto px-4 sm:px-8 py-8">
         <div class="flex flex-col gap-8">
-            <div class="w-full mb-8"> 
-                <div class="bg-white shadow-md rounded-lg p-6">
+            <div class="w-full"> 
+                <div class="bg-white shadow-lg rounded-xl p-6">
                     <h2 class="md:text-xl text-lg font-semibold text-slate-500 border-s-4 border-s-purple-800 pl-3 mb-5">Manage exams</h2>
                     <!-- Search and Create Section -->
                     <div class="flex flex-col md:flex-row justify-between items-center mb-6 space-y-4">
@@ -96,82 +96,82 @@
                         </div>
                     @endif
 
-                    <!-- Exams Table -->
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Exam Name</th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Course</th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Batch</th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Exam Date</th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Status</th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Action</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                @forelse ($exams as $exam)
-                                    <tr class="hover:bg-gray-50">
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                            {{ $exam->exam_name }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                            {{ $exam->course->title }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                            {{ $exam->batch->batch_name }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                            {{ $exam->exam_date }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                            <button wire:click="toggleStatus({{ $exam->id }})"
-                                                class="px-3 py-1 rounded-full text-sm {{ $exam->status ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                                {{ $exam->status ? 'Active' : 'Inactive' }}
-                                            </button>
-                                        </td>
-                                        <td class="flex gap-2 px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                            <button wire:click="edit({{ $exam->id }})"
-                                                class="px-3 py-2 text-xs rounded-xl font-medium text-white bg-blue-500 transition flex items-center gap-1">
-                                                Edit <i class="bi bi-pencil-square"></i>
-                                            </button>
-                                            <button wire:click="delete({{ $exam->id }})"
-                                                class="px-3 py-2 text-xs rounded-xl font-medium text-white bg-red-500 flex items-center gap-1"
-                                                onclick="return confirm('Are you sure you want to delete this exam?')">
-                                                Delete <i class="bi bi-trash3-fill font-bold"></i>
-                                            </button>
-                                            <a href="{{ route('admin.exam.questions', ['examId' => $exam->id]) }}"
-                                                wire:navigate
-                                                class="px-3 py-2 text-xs rounded-xl font-medium text-white bg-purple-800 transition flex items-center gap-1">
-                                                Questions <i class="bi bi-pencil-square"></i>
-                                            </a>
-                                            <button
-                                                wire:click="{{ $exam->passcode ? 'showPasscode(' . $exam->id . ')' : 'generatePasscode(' . $exam->id . ')' }}"
-                                                class="px-3 py-2 text-xs rounded-xl font-medium text-white {{ $exam->passcode ? 'bg-green-500' : 'bg-gray-500' }} transition flex items-center gap-1">
-                                                {{ $exam->passcode ? 'Generated' : 'Passcode' }} <i class="bi bi-key"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="8" class="px-6 py-4 text-center text-sm text-gray-500">No Exam
-                                            found.</td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
+                    <!-- Exams Grid Layout -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+                        @forelse ($exams as $exam)
+                            <div class="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                                <div class="p-5">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <h3 class="text-lg font-semibold text-gray-900">{{ $exam->exam_name }}</h3>
+                                        <button wire:click="toggleStatus({{ $exam->id }})"
+                                            class="px-3 py-1 rounded-full text-xs font-medium {{ $exam->status ? 'bg-purple-100 text-purple-800' : 'bg-gray-100 text-gray-800' }}">
+                                            {{ $exam->status ? 'Active' : 'Inactive' }}
+                                        </button>
+                                    </div>
+
+                                    <div class="space-y-2 mb-4">
+                                        <div class="flex items-center text-sm text-gray-600">
+                                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                                            </svg>
+                                            {{ $exam->course->title }}
+                                        </div>
+                                        <div class="flex items-center text-sm text-gray-600">
+                                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0"></path>
+                                            </svg>
+                                            {{ $exam->batch->batch_name }}
+                                        </div>
+                                        <div class="flex items-center text-sm text-gray-600">
+                                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                            </svg>
+                                            {{ $exam->exam_date }}
+                                        </div>
+                                    </div>
+
+                                    <div class="flex flex-wrap gap-2 mt-4 pt-4 border-t border-gray-100">
+                                        <button wire:click="edit({{ $exam->id }})"
+                                            class="inline-flex items-center px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium rounded-lg transition-colors">
+                                            <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                            </svg>
+                                            Edit
+                                        </button>
+
+                                        <a href="{{ route('admin.exam.questions', ['examId' => $exam->id]) }}"
+                                            class="inline-flex items-center px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium rounded-lg transition-colors">
+                                            <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                            Questions
+                                        </a>
+
+                                        <button wire:click="{{ $exam->passcode ? 'showPasscode(' . $exam->id . ')' : 'generatePasscode(' . $exam->id . ')' }}"
+                                            class="inline-flex items-center px-3 py-1.5 {{ $exam->passcode ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-600 hover:bg-gray-700' }} text-white text-sm font-medium rounded-lg transition-colors">
+                                            <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
+                                            </svg>
+                                            {{ $exam->passcode ? 'Show Code' : 'Generate' }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="col-span-full">
+                                <div class="text-center py-12 bg-gray-50 rounded-xl">
+                                    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                                    </svg>
+                                    <h3 class="mt-2 text-sm font-medium text-gray-900">No exams found</h3>
+                                    <p class="mt-1 text-sm text-gray-500">Get started by creating a new exam.</p>
+                                </div>
+                            </div>
+                        @endforelse
                     </div>
 
-                    <!-- Pagination -->
-                    <div class="flex justify-between items-center px-4 py-3">
+                    <!-- Improved Pagination -->
+                    <div class="mt-6 flex justify-center">
                         <div class="text-sm text-gray-500">
                             Showing
                             <b>{{ $exams->firstItem() }}-{{ $exams->lastItem() }}</b>

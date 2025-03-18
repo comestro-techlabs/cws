@@ -1,5 +1,5 @@
 <div>
-    <div class="p-6 bg-white rounded-lg shadow-md mt-12">
+    <div class="p-6 bg-white rounded-xl shadow-lg mt-12">
         <div class="mb-6">
             <h2 class="md:text-xl text-lg font-semibold text-slate-500 border-s-4 border-s-purple-800 pl-3 mb-5">{{ $exam->exam_name }} Questions</h2>
             <p class="text-gray-600">Course: {{ $exam->course->title }}</p>
@@ -17,45 +17,52 @@
             </a>
         </div>
 
-        <!-- Questions List -->
-        <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Question</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Options</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Correct Answer</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                    @foreach($questions as $question)
-                    <tr>
-                        <td class="px-6 py-4">{{ $question->question }}</td>
-                        <td class="px-6 py-4">
-                            <ul class="list-disc list-inside">
-                                <li>{{ $question->option1 }}</li>
-                                <li>{{ $question->option2 }}</li>
-                                <li>{{ $question->option3 }}</li>
-                                <li>{{ $question->option4 }}</li>
-                            </ul>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            {{ $question->{$question->correct_answer} }}
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-3 py-1 rounded-full text-sm {{ $question->status ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                {{ $question->status ? 'Active' : 'Inactive' }}
-                            </span>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+        <!-- Questions Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+            @foreach($questions as $question)
+                <div class="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow p-5">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-base font-medium text-gray-900">{{ $question->question }}</h3>
+                        <span class="px-3 py-1 rounded-full text-xs font-medium {{ $question->status ? 'bg-purple-100 text-purple-800' : 'bg-gray-100 text-gray-800' }}">
+                            {{ $question->status ? 'Active' : 'Inactive' }}
+                        </span>
+                    </div>
+
+                    <div class="space-y-2 mb-4">
+                        <p class="text-sm text-gray-600">Options:</p>
+                        <ul class="space-y-1 text-sm">
+                            <li class="flex items-center {{ $question->correct_answer === 'option1' ? 'text-green-600 font-medium' : 'text-gray-600' }}">
+                                <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                {{ $question->option1 }}
+                            </li>
+                            <li class="flex items-center {{ $question->correct_answer === 'option2' ? 'text-green-600 font-medium' : 'text-gray-600' }}">
+                                <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                {{ $question->option2 }}
+                            </li>
+                            <li class="flex items-center {{ $question->correct_answer === 'option3' ? 'text-green-600 font-medium' : 'text-gray-600' }}">
+                                <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                {{ $question->option3 }}
+                            </li>
+                            <li class="flex items-center {{ $question->correct_answer === 'option4' ? 'text-green-600 font-medium' : 'text-gray-600' }}">
+                                <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                {{ $question->option4 }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            @endforeach
         </div>
 
-        <!-- Pagination -->
-        <div class="mt-4">
+        <!-- Improved Pagination -->
+        <div class="mt-6">
             {{ $questions->links() }}
         </div>
     </div>

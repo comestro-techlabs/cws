@@ -179,7 +179,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
 
         Route::get('/assignments/review-work/{id}', ReviewWork::class)->name('assignment.reviewWork');//u
         //Certificate Routes
-        Route::get('/certificae',ManageCertificate::class)->name('admin.certificate');
+        // Route::get('/certificae',ManageCertificate::class)->name('admin.certificate');
         // Workshop Routes
         Route::get('/workshops', ManageWorkshop::class)->name('admin.workshops.index');
 
