@@ -17,13 +17,18 @@ class ProductsFactory extends Factory
      */
     public function definition(): array
     {
+        $name = fake()->unique()->word() . ' Product';
+
         return [
             'product_category_id' => ProductCategories::inRandomOrder()->first()->id ?? ProductCategories::factory(),
-            'name' => fake()->unique()->word() . ' Product',
+            'name' => $name,
             'description' => fake()->sentence(),
             'points' => fake()->numberBetween(50, 500),
             'imageUrl' => fake()->imageUrl(200, 200, 'product'),
             'availableQuantity' => fake()->numberBetween(5, 50),
+            'availableQuantity' => fake()->numberBetween(5, 50),
+            'status' => fake()->randomElement(['active', 'inactive']),
+            'slug' => \Illuminate\Support\Str::slug($name),
         ];
     }
 }
