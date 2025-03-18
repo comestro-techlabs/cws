@@ -128,12 +128,23 @@
 
                 <!-- Action Footer -->
                 <div class="px-5 py-4 bg-gray-50 flex justify-between items-center">
-                    <div>
+                <div>
+                    @php
+                        $isSubscribedUserWithoutCourses = auth()->check() && auth()->user()->hasActiveSubscription() && auth()->user()->courses()->count() === 0;
+                    @endphp
+
+                    @if ($isSubscribedUserWithoutCourses && $course->discounted_fees > 0)
+                        <span class="text-lg font-semibold text-gray-900"><del>₹{{ $course->discounted_fees }}</del></span>
+                   
+                    @elseif ($course->discounted_fees == 0)
+                        <span class="text-lg font-semibold text-gray-900">Free</span>
+                    @else
                         <span class="text-lg font-semibold text-gray-900">₹{{ $course->discounted_fees }}</span>
-                        @if(isset($course->original_fees) && $course->original_fees > $course->discounted_fees)
-                        <span class="text-sm text-gray-500 line-through ml-2">₹{{ $course->original_fees }}</span>
+                        @if (isset($course->original_fees) && $course->original_fees > $course->discounted_fees)
+                            <span class="text-sm text-gray-500 line-through ml-2">₹{{ $course->original_fees }}</span>
                         @endif
-                    </div>
+                    @endif
+                </div>
 
                     @if (auth()->check() && auth()->user()->hasActiveSubscription() && auth()->user()->courses()->count() === 0)
                     <button wire:click="enrollCourse({{ $course->id }})" wire:loading.attr="disabled"
