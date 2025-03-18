@@ -12,7 +12,10 @@ class Category extends Model
     protected $table = 'categories';
 
     protected $fillable = ['cat_title', 'cat_description', 'cat_slug'];
-
+    public function getRouteKeyName()
+    {
+        return 'cat_slug';
+    }
 
     public function setCatTitleAttribute($value)
     {
