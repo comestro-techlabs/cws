@@ -40,7 +40,6 @@ use App\Livewire\Admin\Workshops\ManageWorkshop;
 use App\Livewire\Admin\Course\ManageCourse;
 use App\Livewire\Admin\Course\ShowCourse;
 use App\Livewire\Admin\Certificate\CertificateEligibility;
-use App\Livewire\Admin\Certificate\ManageCertificate;
 use App\Livewire\Admin\Exam\ManageExam;
 use App\Livewire\Admin\Exam\ExamQuestions;
 use App\Livewire\Admin\Quiz\ManageQuiz;
@@ -69,6 +68,7 @@ use App\Livewire\Auth\GoogleLogin;
 use App\Livewire\Student\Dashboard\Product\CheckOutPage;
 use App\Livewire\Student\Rewards\GemsTransactions;
 use App\Http\Controllers\SubscriptionController;
+use App\Livewire\Admin\Store\ManageProducts;
 use App\Livewire\Student\Billing\ShowBilling;
 use App\Livewire\Student\Subscriptions\Plans;
 
@@ -125,8 +125,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/mocktest/result/{mockTestId}', MockTestResult::class)->name('v2.student.mocktest.result');
         Route::get('/products', OurProducts::class)->name('v2.student.products');
         Route::get('/products/{productId}/checkout', CheckOutPage::class)->name('v2.student.checkout');
-    });
 
+    });
 
 });
 
@@ -193,7 +193,9 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         //enquiry
         Route::get('/enquiry', ManageEnquiry::class)->name('admin.manage.enquiry');
         //manage-orders
+        Route::get('/products-manage',ManageProducts::class)->name('v2.admin.manageProducts');
         Route::get('/manage-orders', ManageOrders::class)->name('v2.student.manageOrders');
+
 
         //blog
         Route::get("/blog/post-course", PostCourse::class)->name('admin.blog.post-course');

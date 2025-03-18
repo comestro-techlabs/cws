@@ -112,7 +112,7 @@
                     @if($totalAvailableGems <= $product->points) bg-gray-400 text-gray-200 cursor-not-allowed pointer-events-none @else bg-primary text-white hover:bg-primary @endif">
                     Redeem Now
                     </a>
-                </div>
+                </div> 
             </div>
             @endforeach
 
