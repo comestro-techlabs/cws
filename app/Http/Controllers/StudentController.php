@@ -444,7 +444,7 @@ class StudentController extends Controller
         ])->first();
 
         if (!$courses) {
-            return redirect()->route('student.course.quiz')->with('error', 'Course not found or you do not have access to it.');
+            return redirect()->route('v2.student.mycourses.quiz')->with('error', 'Course not found or you do not have access to it.');
         }
 
         // Check if the user has already attempted the exam more than 2 times
@@ -458,7 +458,7 @@ class StudentController extends Controller
 
         // Allow a maximum of 2 attempts
         if ($value >= 2) {
-            return redirect()->route('student.course.quiz')->with('error', 'You have reached the maximum number of attempts.');
+            return redirect()->route('v2.student.mycourses.quiz')->with('error', 'You have reached the maximum number of attempts.');
         }
 
         // Fetch quizzes and check if there are enough questions

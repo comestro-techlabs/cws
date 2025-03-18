@@ -1,9 +1,6 @@
 <?php
 
-use App\Http\Controllers\BatchController;
-
 use App\Http\Controllers\PublicController;
-use App\Http\Controllers\ResultController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\WorkshopController;
@@ -23,9 +20,7 @@ use App\Livewire\Student\Dashboard\Takeexam\ShowAllAttempt;
 use App\Livewire\Student\Dashboard\Takeexam\ShowQuiz;
 use App\Livewire\Student\MyAttendance;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ExamController;
 use App\Http\Middleware\AdminMiddleware;
-use App\Http\Controllers\QuizController;
 use App\Livewire\Admin\Blog\PostCourse;
 use App\Livewire\Admin\Blog\ManageChapter;
 use App\Livewire\Admin\Blog\ManagePost;
@@ -73,11 +68,12 @@ use App\Livewire\Auth\GoogleLogin;
 use App\Livewire\Student\Dashboard\Product\CheckOutPage;
 use App\Livewire\Student\Rewards\GemsTransactions;
 use App\Http\Controllers\SubscriptionController;
+use App\Livewire\Student\Billing\ShowBilling;
 use App\Livewire\Student\Subscriptions\Plans;
 
 // public routes
 Route::get('/', Home::class)->name('public.index');
-Route::get('/viewallcourses', AllCourses::class)->name('public.viewallcourses.all-courses');
+Route::get('/courses', AllCourses::class)->name('public.viewallcourses.all-courses');
 Route::get('/contact', ContactPage::class)->name('public.contactUs');
 Route::get('/workshops', Workshop::class)->name('public.workshop');
 Route::get('/course/{course_id}/chapter/show', CourseWithChapterAndTopic::class)->name('v2.courses.show');
@@ -104,34 +100,33 @@ Route::middleware('auth')->group(function () {
     Route::prefix("student")->group(function () {
         Route::get('/dashboard', StudentDashboard::class)->name('student.dashboard');
         Route::get('/billing', ViewBilling::class)->name('student.billing');
-        Route::get('/billing/{paymentId}', \App\Livewire\Student\Billing\ShowBilling::class)->name('student.viewbilling');
+        Route::get('/billing/{paymentId}', ShowBilling::class)->name('student.viewbilling');
         Route::get('/rewards/gems', GemsTransactions::class)->name('student.rewards.gems');
         Route::get('/subscriptions/plans', Plans::class)->name('student.subscriptions.plans');
         Route::post('/subscriptions/process', [SubscriptionController::class, 'process'])->name('student.subscriptions.process');
         Route::post('/subscriptions/initiate', [Plans::class, 'initializePayment'])->name('student.subscriptions.initiate');
         Route::get('/subscription/success', [Plans::class, 'handleSuccess'])->name('student.subscriptions.success');
         Route::get('/subscription/cancel', [Plans::class, 'handleCancel'])->name('student.subscriptions.cancel');
+        Route::get('/assignments/view', ManageAssignments::class)->name('student.assignments-view');
+        Route::get('/explore-courses', ExploreCourse::class)->name('student.exploreCourses');
+        Route::get('/view-courses/{courseId}', ViewCourse::class)->name('student.viewCourses');
+        Route::get('/my-courses', MyCourse::class)->name('v2.student.mycourses');
+        Route::get('/edit-profile', EditProfile::class)->name('student.v2edit.profile');
+        Route::get('/view-assigment', ViewAssigment::class)->name('student.v2view.assigment');
+        Route::get('/view-assigment/{id}', ViewAssigment::class)->name('student.v2view.assigment');
+        Route::get('/take-exam', Exam::class)->name('student.takeExam');
+        Route::get('/show-quiz/{courseId}', ShowQuiz::class)->name('v2.student.quiz');
+        Route::get('/show-all-attempt/{course_id}', ShowAllAttempt::class)->name('v2.student.allAttempts');
+        route::get('show-quiz/result/{exam_id}', Result::class)->name('v2.student.examResult');
+        route::get('/my-attendance', MyAttendance::class)->name('student.my-attendance');
+        Route::get('/mocktest', SelectMockTest::class)->name('v2.student.mocktest');
+        Route::get('/mocktest/{mockTestId}', ShowMockTest::class)->name('v2.student.mocktest.take');
+        Route::get('/mocktest/result/{mockTestId}', MockTestResult::class)->name('v2.student.mocktest.result');
+        Route::get('/products', OurProducts::class)->name('v2.student.products');
+        Route::get('/products/{productId}/checkout', CheckOutPage::class)->name('v2.student.checkout');
     });
 
-    Route::controller(StudentController::class)->group(function () {
-        Route::get('course/quiz', 'courseQuiz')->name('student.course.quiz');
-        Route::get('/quiz/{courseId}', 'showquiz')->name('student.quiz');
-        Route::post('/quiz/submit', 'storeAnswer')->name('student.storeAnswer');
-        Route::get('quiz/result/{exam_id}', 'showResults')->name('student.examResult');
-        Route::get('course/result', 'courseResult')->name('student.course.result');
-        Route::get('quiz/all_attempts/{course_id}', 'showAllAttempts')->name('student.allAttempts');
-        Route::get('/edit-profile', 'editProfile')->name('student.editProfile');
-        Route::post('/update-profile', 'updateProfile')->name('student.updateProfile');
-        Route::get('/coursePurchase', 'coursePurchase')->name('student.coursePurchase');
-        Route::put('/courses/{course}/update-batch', 'updateBatch')->name('course.updateBatch');
-        Route::get('/course/{id}', 'buyCourse')->name('student.buyCourse');
-        Route::get('/course', 'course')->name('student.course');
-        Route::post('/course/{courseId}', 'enrollCourse')->name('course.enroll');
-        Route::get('/assignments/view', 'assignmentList')->name('student.assignments-view');
-        Route::get('/assignments/upload/{id}', 'viewAssignments')->name('student.assignment-upload');
-        Route::get('/viewCertificate/{userId}', 'showCertificate')->name('student.viewCertificate');
-        Route::get('/certificate/{userId}', 'Certificate')->name('student.certificate');
-    });
+
 });
 
 Route::get('/get-access-token', [StudentController::class, 'store']);
@@ -147,7 +142,7 @@ Route::get('/process-overdue-payments', [PaymentController::class, 'processOverd
 
 Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
     Route::prefix('admin')->group(function () {
-    
+
     });
 
     // Version 2 Routes (Livewire)
@@ -220,36 +215,6 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
 
 });
 
-
-
-
-
-Route::prefix('v2')->group(function () {
-
-
-    Route::prefix("student")->group(function () {
-        Route::get('/assignments/view', ManageAssignments::class)->name('student.assignments-view');
-        Route::get('/explore-courses', ExploreCourse::class)->name('student.exploreCourses');
-        Route::get('/view-courses/{courseId}', ViewCourse::class)->name('student.viewCourses');
-        Route::get('/my-courses', MyCourse::class)->name('v2.student.mycourses');
-        Route::get('/edit-profile', EditProfile::class)->name('student.v2edit.profile');
-        Route::get('/view-assigment', ViewAssigment::class)->name('student.v2view.assigment');
-        Route::get('/view-assigment/{id}', ViewAssigment::class)->name('student.v2view.assigment');
-        Route::get('/take-exam', Exam::class)->name('student.takeExam');
-        Route::get('/show-quiz/{courseId}', ShowQuiz::class)->name('v2.student.quiz');
-        Route::get('/show-all-attempt/{course_id}', ShowAllAttempt::class)->name('v2.student.allAttempts');
-        route::get('show-quiz/result/{exam_id}', Result::class)->name('v2.student.examResult');
-        route::get('/my-attendance', MyAttendance::class)->name('student.my-attendance');
-        Route::get('/mocktest', SelectMockTest::class)->name('v2.student.mocktest');
-        Route::get('/mocktest/{mockTestId}', ShowMockTest::class)->name('v2.student.mocktest.take');
-        Route::get('/mocktest/result/{mockTestId}', MockTestResult::class)->name('v2.student.mocktest.result');
-        Route::get('/dashboard', StudentDashboard::class)->name('v2.student.dashboard.student-dashboard');
-
-        Route::get('/products', OurProducts::class)->name('v2.student.products');
-        Route::get('/products/{productId}/checkout', CheckOutPage::class)->name('v2.student.checkout');
-    });
-
-});
 
 // public routes here:
 Route::controller(PublicController::class)->group(function () {
