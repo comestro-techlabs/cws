@@ -26,7 +26,7 @@
     <div class="border-b border-gray-300 py-4">
         <div class="container mx-auto px-6 flex items-center">
             <h1 class="text-2xl font-bold text-gray-800">My Courses</h1>
-            <a href="{{route('student.course')}}"
+            <a href="{{route('v2.student.mycourses')}}"
                 class="ml-auto bg-indigo-600 hover:bg-indigo-500 text-white py-2 px-4 rounded flex items-center shadow">
                 New Course
             </a>

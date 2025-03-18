@@ -3,7 +3,6 @@
         <div class="max-w-7xl mx-auto px-4 text-center">
             <ul class="flex flex-wrap justify-center space-x-4 text-sm">
                 <li><a href="{{ route('public.about') }}" class="hover:underline">About</a></li>
-                <li><a href="{{ route('public.training') }}" class="hover:underline">Courses</a></li>
                 <li><a href="{{ route('public.contact') }}" class="hover:underline">Contact</a></li>
                 <li><a href="{{ route('public.privacy') }}" class="hover:underline">Privacy Policy</a></li>
                 <li><a href="{{ route('public.terms-conditions') }}" class="hover:underline">Terms & Conditions</a>
@@ -56,7 +55,7 @@
             <h3 class="text-sm font-semibold leading-6 text-white">Learning</h3>
             <ul role="list" class="mt-6 space-y-4">
               <li>
-                <a href="{{ route('public.training') }}" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">Courses</a>
+                <a href="{{ route('public.viewallcourses.all-courses') }}" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">Courses</a>
               </li>
               <li>
                 <a href="#" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">Tutorials</a>
