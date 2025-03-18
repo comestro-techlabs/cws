@@ -199,6 +199,7 @@ class MyCourse extends Component
             ]);
 
             $this->editingCourseId = null;
+            $this->closeView(); // Add this line to close the modal
             $this->dispatch('alert', [
                 'type' => 'success',
                 'message' => 'Batch updated successfully!'
