@@ -1,10 +1,7 @@
 <?php
 
-use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BatchController;
 
-use App\Http\Controllers\CourseController;
-use App\Http\Controllers\PlacedStudentController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\ResultController;
 use App\Http\Controllers\StudentController;
@@ -99,7 +96,7 @@ Route::prefix('auth')->group(function () {
     Route::get('/linkedin-openid/callback', [LinkedinLogin::class, 'handleLinkedinCallback'])->name('linkedin.callback');
     Route::get('/facebook/redirect', [Facebook::class, 'redirectToFacebook'])->name('facebook.redirect');
     Route::get('/facebook/callback', [Facebook::class, 'handleFacebookCallback'])->name('facebook.callback');
-
+    Route::get('/register', App\Livewire\Auth\Register::class)->name('auth.register');
 });
 //protected routes
 Route::middleware('auth')->group(function () {
@@ -140,7 +137,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/get-access-token', [StudentController::class, 'store']);
 Route::post('/student/assignments/upload/{assignment_id}', [StudentController::class, 'store'])->name('assignments.store');
 
-//razorpay routes
+// //razorpay routes
 Route::post('/initiate-payment', [PaymentController::class, 'initiatePayment'])->name('store.payment.initiation');
 Route::post('/payment-response', [PaymentController::class, 'handlePaymentResponse'])->name('handle.payment.response');
 Route::post('/refresh-payment-status', [PaymentController::class, 'refreshPaymentStatus'])->name('refresh.payment.status');
@@ -150,92 +147,7 @@ Route::get('/process-overdue-payments', [PaymentController::class, 'processOverd
 
 Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
     Route::prefix('admin')->group(function () {
-        // Dashboard and General Admin Routes
-        Route::get('/', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-        Route::get('/manage-payment', [AdminController::class, 'managePayment'])->name('admin.manage-payment');
-        Route::get('/payment/{id}', [AdminController::class, 'viewPayment'])->name('admin.payment.view');
-        Route::get('/search', [AdminController::class, 'searchCourse'])->name('course.search');
-        Route::get('/enquiry', [AdminController::class, 'searchEnquiry'])->name('admin.manage.enquiry');
-        Route::get('/enquiry-view/{enquiry}', [AdminController::class, 'editEnquiry'])->name('admin.enquiry.show');
-        Route::put('/enquiry-view/{enquiry}', [AdminController::class, 'updateEnquiry'])->name('admin.enquiry.update');
-
-        // Student Management
-        Route::prefix('student')->group(function () {
-            Route::get('/', [StudentController::class, 'index'])->name('student.manage');
-            Route::get('/edit/{id}', [StudentController::class, 'edit'])->name('student.edit');
-            Route::patch('/edit/{student}/{field}', [StudentController::class, 'update'])->name('student.update');
-            Route::get('/search', [StudentController::class, 'search'])->name('student.search');
-            Route::post('/{student}/assign-course', [StudentController::class, 'assignCourse'])->name('students.assignCourse');
-            Route::delete('/{student}/remove-course/{course}', [StudentController::class, 'removeCourse'])->name('students.removeCourse');
-            Route::post('/{student}/process-payment', [StudentController::class, 'processPayment'])->name('students.processPayment');
-        });
-
-        // Course Management
-        Route::resource('course', CourseController::class);
-        Route::post('/courses/{id}/features', [CourseController::class, 'addFeature'])->name('course.addFeature');
-        Route::post('/courses/{course}/publish', [CourseController::class, 'publish'])->name('course.publish');
-        Route::post('/course/{id}/unpublish', [CourseController::class, 'unpublish'])->name('course.unpublish');
-        Route::patch('/courses/{course}/{field}', [CourseController::class, 'update'])->name('course.update');
-
-
-        // Batch Management
-        Route::get('/batches', [BatchController::class, 'index'])->name('batches.index');
-        Route::post('/batches', [BatchController::class, 'store'])->name('batches.store');
-        Route::put('/batches/update/{batch}', [BatchController::class, 'update'])->name('batches.update');
-        Route::delete('/batches/{batch}/disable', [BatchController::class, 'destroy'])->name('batches.destroy');
-
-       
-        // Exam Management
-        Route::prefix('exam')->group(function () {
-            Route::get('/create', [ExamController::class, 'create'])->name('exam.create');
-            Route::post('/store', [ExamController::class, 'store'])->name('exam.store');
-            Route::get('/show', [ExamController::class, 'show'])->name('exam.show');
-            Route::get('/show/{exam}/{course_title}/{exam_name}/questions', [ExamController::class, 'showQuestions'])->name('exam.showQuestions');
-            Route::get('/view/{exam}', [ExamController::class, 'view'])->name('exam.view');
-            Route::patch('/{exam}/toggle-status', [ExamController::class, 'toggleStatus'])->name('exam.toggleStatus');
-            Route::get('/{exam}/edit', [ExamController::class, 'edit'])->name('exam.edit');
-            Route::put('/{exam}/update', [ExamController::class, 'update'])->name('exam.update');
-            Route::delete('/{exam}', [ExamController::class, 'destroy'])->name('exam.destroy');
-        });
-
-        // Quiz Management
-        Route::prefix('quiz')->group(function () {
-            Route::get('/create/{exam_id?}', [QuizController::class, 'create'])->name('quiz.create');
-            Route::post('/store', [QuizController::class, 'store'])->name('quiz.store');
-            Route::get('/show', [QuizController::class, 'show'])->name('quiz.show');
-            Route::get('/view/{quiz}', [QuizController::class, 'view'])->name('quiz.view');
-            Route::patch('/{quiz}/toggle-status', [QuizController::class, 'toggleStatus'])->name('quiz.toggleStatus');
-            Route::get('/{quiz}/edit', [QuizController::class, 'edit'])->name('quiz.edit');
-            Route::put('/{quiz}/update', [QuizController::class, 'update'])->name('quiz.update');
-            Route::delete('/question/{question_id}', [QuizController::class, 'quizQuestionDestroy'])->name('quizQuestion.destroy');
-            Route::delete('/{quiz}', [QuizController::class, 'destroy'])->name('quiz.destroy');
-            Route::get('/answer', [QuizController::class, 'answerShow'])->name('answer.results');
-        });
-
-        // Results Management
-        Route::prefix('results')->group(function () {
-            Route::get('/exam', [ResultController::class, 'showExam'])->name('exam.results');
-            Route::get('/exam/{exam}/users', [ResultController::class, 'showExamUser'])->name('exam.user.results');
-            Route::get('/exams/{examId}/user/{userId}/attempts', [ResultController::class, 'getResultsByAttempts'])->name('attempt.results');
-            Route::get('/{examId}/{userId}/attempt/{attempt}', [ResultController::class, 'getAttemptDetails'])->name('attempt.details');
-            Route::get('/certificate', [ResultController::class, 'Certificate'])->name('admin.certificate');
-            Route::get('/viewCertificate/{userId}', [ResultController::class, 'index'])->name('admin.viewCertificate');
-        });
-
-        // Workshop Management
-        Route::prefix('workshops')->group(function () {
-            Route::get('/create', [WorkshopController::class, 'create'])->name('workshops.create');
-            Route::post('/store', [WorkshopController::class, 'store'])->name('workshops.store');
-            Route::get('/', [WorkshopController::class, 'show'])->name('workshops.admin.index');
-            Route::patch('/{id}/toggle-status', [WorkshopController::class, 'toggleStatus'])->name('workshops.toggleStatus');
-            Route::get('/{id}/edit', [WorkshopController::class, 'edit'])->name('admin.workshops.edit');
-            Route::put('/{id}', [WorkshopController::class, 'update'])->name('admin.workshops.update');
-            Route::delete('/{id}', [WorkshopController::class, 'destroy'])->name('admin.workshops.destroy');
-        });
-
-        // Placed Students
-        Route::resource('placedStudent', PlacedStudentController::class);
-        Route::post('/placed-students/{placedStudent}/toggle-status', [PlacedStudentController::class, 'toggleStatus'])->name('placedStudent.toggleStatus');
+    
     });
 
     // Version 2 Routes (Livewire)
@@ -341,13 +253,6 @@ Route::prefix('v2')->group(function () {
 
 // public routes here:
 Route::controller(PublicController::class)->group(function () {
-
-    Route::prefix('training')->group(function () {
-        Route::get("/", "training")->name('public.training');
-        Route::get("/register/success", "success")->name('public.success');
-        Route::get('/courses/{category_slug}/{slug}', 'courseDetails')->name('public.courseDetails');
-        Route::post('/courses/{courseId}', 'enrollCourse')->name('public.enrollCourse');
-    });
     Route::get('/about', 'aboutPage')->name('public.about');
     Route::get('/contact', 'contactUsPage')->name('public.contact');
     Route::get('/privacy-policy', 'privacyAndPolicy')->name('public.privacy');

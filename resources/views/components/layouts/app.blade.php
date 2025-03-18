@@ -28,7 +28,9 @@
     @if (Route::currentRouteName() === 'public.index')
         <livewire:public.herosection />
     @endif
-    {{ $slot }}
+   <div class="">
+   {{ $slot }}
+   </div>
     <div class="mt-auto">
         <livewire:public.footer />
     </div>

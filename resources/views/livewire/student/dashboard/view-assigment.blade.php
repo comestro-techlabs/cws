@@ -93,21 +93,16 @@
                                             clip-rule="evenodd" />
                                     </svg>
 
-                                    @if ($uploadedFile)
-                                   
-                                    <a href="{{ Storage::url('uploads/' . $uploadedFile->file_path) }}" target="_blank" class="text-sm text-blue-500 underline">View PDF</a>
-
-
+                                    @if ($previewUrl)
+                                    <iframe src="{{ $previewUrl }}"
+                                        class="w-full h-64 border border-gray-300 rounded-lg"></iframe>
                                     @else
-                                    <span class="text-sm text-gray-700">No file uploaded</span>
+                                    <div class="text-gray-500 text-center">
+                                        <p>No file uploaded or preview not available.</p>
+                                    </div>
                                     @endif
 
                                 </div>
-
-                                @if ($assignment?->uploadedFile)
-                                <iframe src="{{ asset('storage/uploads/' . $assignment->uploadedFile->file_path) }}"
-                                    class="w-full h-64 mt-4 border border-gray-300 rounded-lg" frameborder="0"></iframe>
-                                @endif
                             </div>
 
                         </div>
@@ -136,46 +131,25 @@
                             </div>
 
                             <div class="p-5">
-                                <div class="flex gap-4">
-                                    <!-- Upload Area (9/12 width) -->
-                                    <div class="w-9/12">
-                                        <div
-                                            class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:bg-gray-50 transition-colors duration-200">
-                                            <input type="file" wire:model="file" class="hidden" id="file-upload">
-                                            <label for="file-upload" class="cursor-pointer block">
-                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                    class="mx-auto h-16 w-16 text-gray-400" fill="none"
-                                                    viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                                                </svg>
-                                                <p class="mt-4 text-base font-medium text-gray-700">
-                                                    Drag and drop your file here or click to browse
-                                                </p>
-                                                <p class="mt-2 text-sm text-gray-500">
-                                                    PDF, DOC, DOCX up to 10MB
-                                                </p>
-                                            </label>
-                                        </div>
+                                <div class="w-12/12">
+                                    <div
+                                        class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:bg-gray-50 transition-colors duration-200">
+                                        <input type="file" wire:model="file" class="hidden" id="file-upload">
+                                        <label for="file-upload" class="cursor-pointer block">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                class="mx-auto h-16 w-16 text-gray-400" fill="none" viewBox="0 0 24 24"
+                                                stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                            </svg>
+                                            <p class="mt-4 text-base font-medium text-gray-700">
+                                                Drag and drop your file here or click to browse
+                                            </p>
+                                            <p class="mt-2 text-sm text-gray-500">
+                                                PDF, DOC, DOCX up to 10MB
+                                            </p>
+                                        </label>
                                     </div>
-
-                                    <!-- Preview Section (3/12 width) -->
-                                    <div class="w-3/12">
-                                        <div class="border-2 border-dashed border-gray-300 rounded-lg h-full p-4">
-                                            <p>Preview URL: {{ $previewUrl }}</p>
-
-                                            @if ($previewUrl)
-                                            <iframe src="{{ $previewUrl }}" class="w-full h-48"
-                                                frameborder="0"></iframe>
-                                            @else
-                                            <p>No preview available</p>
-                                            @endif
-
-                                        </div>
-                                    </div>
-
-
                                 </div>
 
                                 <!-- Validation Error -->

@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\Models\Assignments;
 use App\Models\Assignment_upload;
-use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
+
 
 class ViewAssigment extends Component
 {
@@ -19,40 +19,49 @@ class ViewAssigment extends Component
     public $uploadedFile;
     public $file;
     public $assignment_id;
-    public $previewUrl;
+    public $previewUrl; // Store the preview URL
 
     public function mount($id)
     {
         if (!Auth::check()) {
             return redirect()->route('auth.login')->with('error', 'You must be logged in to access this page.');
         }
-    
+
         $studentId = Auth::id();
-    
-        // Fetch assignment
+
+        // Fetch assignment details
         $this->assignment = Assignments::where('id', $id)
             ->whereHas('course', function ($query) use ($studentId) {
                 $query->whereHas('users', function ($q) use ($studentId) {
                     $q->where('user_id', $studentId);
                 });
             })->first();
-    
+
         if (!$this->assignment) {
             return redirect()->back()->with('error', 'Assignment not found or access denied.');
         }
-    
-        // Fetch the uploaded file
+
+        $this->assignment_id = $this->assignment->id;
+
+        // Fetch uploaded file
         $this->uploadedFile = Assignment_upload::where('student_id', $studentId)
             ->where('assignment_id', $id)
             ->first();
-    
-        // Debugging: Check if file exists
+
+        // Generate preview URL
+        $this->previewUrl = $this->getPreviewUrl();
+    }
+
+    private function getPreviewUrl()
+    {
         if ($this->uploadedFile) {
-            \Log::info('File found: ' . $this->uploadedFile->file_path);
-        } else {
-            \Log::error('No file found for assignment ID: ' . $id);
+            $filePath = $this->uploadedFile->file_path; // File ID from Google Drive
+
+            // Generate Google Drive Preview URL
+            return "https://drive.google.com/file/d/$filePath/preview";
         }
-    
+
+        return null;
     }
 
     public function submit()
@@ -62,25 +71,15 @@ class ViewAssigment extends Component
         ]);
 
         try {
-            // Store file locally
-            $filePath = $this->file->store('uploads', 'public');
-
-            // Save file details to DB
-            $assignment_upload = new Assignment_upload();
-            $assignment_upload->student_id = auth()->id();
-            $assignment_upload->file_path = $filePath;
-            $assignment_upload->assignment_id = $this->assignment_id;
-            $assignment_upload->submitted_at = now();
-            $assignment_upload->status = 'submitted';
-            $assignment_upload->save();
-
-            // Upload to Google Drive
             $accessToken = $this->token();
+
+            // File details
             $file = $this->file;
             $mimeType = $file->getMimeType();
             $fileName = $file->getClientOriginalName();
             $fileContent = file_get_contents($file->getRealPath());
 
+            // Upload file metadata to Google Drive
             $metadataResponse = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $accessToken,
                 'Content-Type' => 'application/json',
@@ -97,42 +96,38 @@ class ViewAssigment extends Component
 
             $uploadUrl = $metadataResponse->header('Location');
 
+            // Upload file content
             $uploadResponse = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $accessToken,
                 'Content-Type' => $mimeType,
             ])->withBody($fileContent, $mimeType)->put($uploadUrl);
 
             if ($uploadResponse->successful()) {
+                // Get file ID from Google Drive
                 $fileId = json_decode($uploadResponse->body())->id;
-                $assignment_upload->file_path = $fileId;
-                $assignment_upload->save();
-            }
 
-            session()->flash('success', 'Assignment submitted successfully.');
-            $this->previewUrl = $this->getPreviewUrl();
+                // Save file details in the database
+                $assignment_upload = new Assignment_upload();
+                $assignment_upload->student_id = auth()->id();
+                $assignment_upload->file_path = $fileId;
+                $assignment_upload->assignment_id = $this->assignment_id;
+                $assignment_upload->submitted_at = now();
+                $assignment_upload->status = 'submitted';
+                $assignment_upload->save();
+
+                // Generate new preview link
+                $this->previewUrl = $this->getPreviewUrl();
+
+                if ($this->assignment->isOverdue()) {
+                    session()->flash('warning', 'Assignment submitted after due date.');
+                } else {
+                    session()->flash('success', 'Assignment submitted successfully.');
+                }
+            }
         } catch (\Exception $e) {
             session()->flash('error', 'Failed to upload assignment: ' . $e->getMessage());
         }
     }
-
-    private function getPreviewUrl()
-{
-    if ($this->uploadedFile) {
-        $filePath = asset('storage/' . $this->uploadedFile->file_path);
-        $fileExtension = pathinfo($this->uploadedFile->file_path, PATHINFO_EXTENSION);
-
-        if ($fileExtension === 'pdf') {
-            return $filePath; // Direct link for PDF preview
-        }
-
-        if (in_array($fileExtension, ['doc', 'docx'])) {
-            return "https://docs.google.com/gview?url=" . urlencode($filePath) . "&embedded=true";
-        }
-    }
-
-    return null;
-}
-
 
     private function token()
     {
@@ -155,10 +150,11 @@ class ViewAssigment extends Component
     }
 
     #[Layout('components.layouts.student')]
+
     public function render()
     {
         return view('livewire.student.dashboard.view-assigment', [
-            'previewUrl' => $this->previewUrl,
+            'previewUrl' => $this->previewUrl, // Pass preview URL to the view
         ]);
     }
 }
