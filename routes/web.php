@@ -40,7 +40,6 @@ use App\Livewire\Admin\Workshops\ManageWorkshop;
 use App\Livewire\Admin\Course\ManageCourse;
 use App\Livewire\Admin\Course\ShowCourse;
 use App\Livewire\Admin\Certificate\CertificateEligibility;
-use App\Livewire\Admin\Certificate\ManageCertificate;
 use App\Livewire\Admin\Exam\ManageExam;
 use App\Livewire\Admin\Exam\ExamQuestions;
 use App\Livewire\Admin\Quiz\ManageQuiz;

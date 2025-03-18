@@ -63,6 +63,20 @@
                             </div>
                         </div>
 
+                        <div class="bg-white rounded-lg border border-gray-200 mb-6">
+                            <div class="bg-gray-50 px-4 py-3 border-b border-gray-200">
+                                <h2 class="font-semibold text-gray-900">Assignment Description</h2>
+                            </div>
+                            <div class="p-4 text-gray-800 prose max-w-none">
+                                {!! $assignment?->description !!}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column - Description and Upload Form -->
+                    <div class="lg:col-span-2">
+                        <!-- Assignment Description -->
+                        
                         @if ($uploadedFile)
                         <div class="bg-white rounded-lg border border-gray-200">
                             <div class="bg-gray-50 px-4 py-3 border-b border-gray-200">
@@ -112,19 +126,6 @@
                             </div>
                         </div>
                         @endif
-                    </div>
-
-                    <!-- Right Column - Description and Upload Form -->
-                    <div class="lg:col-span-2">
-                        <!-- Assignment Description -->
-                        <div class="bg-white rounded-lg border border-gray-200 mb-6">
-                            <div class="bg-gray-50 px-4 py-3 border-b border-gray-200">
-                                <h2 class="font-semibold text-gray-900">Assignment Description</h2>
-                            </div>
-                            <div class="p-4 text-gray-800 prose max-w-none">
-                                {!! $assignment?->description !!}
-                            </div>
-                        </div>
 
                         <!-- Enhanced Upload Form -->
                         @if (!$uploadedFile)
