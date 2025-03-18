@@ -40,6 +40,7 @@ use App\Livewire\Admin\Workshops\ManageWorkshop;
 use App\Livewire\Admin\Course\ManageCourse;
 use App\Livewire\Admin\Course\ShowCourse;
 use App\Livewire\Admin\Certificate\CertificateEligibility;
+use App\Livewire\Admin\Certificate\ManageCertificate;
 use App\Livewire\Admin\Exam\ManageExam;
 use App\Livewire\Admin\Exam\ExamQuestions;
 use App\Livewire\Admin\Quiz\ManageQuiz;
@@ -177,7 +178,8 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/assignment/manage', ManageAssignment::class)->name('admin.assignment.manage');
 
         Route::get('/assignments/review-work/{id}', ReviewWork::class)->name('assignment.reviewWork');//u
-
+        //Certificate Routes
+        Route::get('/certificae',ManageCertificate::class)->name('admin.certificate');
         // Workshop Routes
         Route::get('/workshops', ManageWorkshop::class)->name('admin.workshops.index');
 
