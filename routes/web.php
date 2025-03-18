@@ -69,6 +69,7 @@ use App\Livewire\Auth\GoogleLogin;
 use App\Livewire\Student\Dashboard\Product\CheckOutPage;
 use App\Livewire\Student\Rewards\GemsTransactions;
 use App\Http\Controllers\SubscriptionController;
+use App\Livewire\Admin\Store\ManageProducts;
 use App\Livewire\Student\Billing\ShowBilling;
 use App\Livewire\Student\Subscriptions\Plans;
 
@@ -125,8 +126,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/mocktest/result/{mockTestId}', MockTestResult::class)->name('v2.student.mocktest.result');
         Route::get('/products', OurProducts::class)->name('v2.student.products');
         Route::get('/products/{productId}/checkout', CheckOutPage::class)->name('v2.student.checkout');
-    });
 
+    });
 
 });
 
@@ -179,7 +180,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
 
         Route::get('/assignments/review-work/{id}', ReviewWork::class)->name('assignment.reviewWork');//u
         //Certificate Routes
-        Route::get('/certificae',ManageCertificate::class)->name('admin.certificate');
+        // Route::get('/certificae',ManageCertificate::class)->name('admin.certificate');
         // Workshop Routes
         Route::get('/workshops', ManageWorkshop::class)->name('admin.workshops.index');
 
@@ -193,7 +194,9 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         //enquiry
         Route::get('/enquiry', ManageEnquiry::class)->name('admin.manage.enquiry');
         //manage-orders
+        Route::get('/products-manage',ManageProducts::class)->name('v2.admin.manageProducts');
         Route::get('/manage-orders', ManageOrders::class)->name('v2.student.manageOrders');
+
 
         //blog
         Route::get("/blog/post-course", PostCourse::class)->name('admin.blog.post-course');
