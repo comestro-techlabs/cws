@@ -137,7 +137,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/get-access-token', [StudentController::class, 'store']);
 Route::post('/student/assignments/upload/{assignment_id}', [StudentController::class, 'store'])->name('assignments.store');
 
-//razorpay routes
+// //razorpay routes
 Route::post('/initiate-payment', [PaymentController::class, 'initiatePayment'])->name('store.payment.initiation');
 Route::post('/payment-response', [PaymentController::class, 'handlePaymentResponse'])->name('handle.payment.response');
 Route::post('/refresh-payment-status', [PaymentController::class, 'refreshPaymentStatus'])->name('refresh.payment.status');
