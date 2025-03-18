@@ -113,4 +113,9 @@ class User extends Authenticatable
             && $subscription->payment_status === 'completed'
             && $subscription->ends_at > now();
     }
+
+    public function exams()
+    {
+        return $this->hasMany(ExamUser::class, 'user_id');
+    }
 }
