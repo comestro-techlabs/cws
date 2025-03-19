@@ -25,6 +25,7 @@ class CheckOutPage extends Component
     public $totalPriceOfProduct;
     public $balanceGems;
     public $shippingDetailsFilled;
+    public $productImageUrl;
     // public $shippingDetailsAvailablity = true ;
 
 
@@ -59,6 +60,7 @@ class CheckOutPage extends Component
         $this->totalPriceOfProduct = $this->gems + $this->shipping_charge;
         // $this->refreshShipDetails();
         $this->shippingDetailsFilled = ShippingDetail::where('user_id', Auth::id())->first();
+        $this->productImageUrl =  $this->my_product->imageUrl;
         // dd($this->shippingDetailsFilled);
 
     }
@@ -114,7 +116,7 @@ class CheckOutPage extends Component
 
     public function completeRedemption()
     {
-        // dd('shaique');
+        // dd('shaique'); 
         try {
             Orders::create([
                 'user_id' => Auth::id(),

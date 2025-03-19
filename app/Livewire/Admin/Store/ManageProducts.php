@@ -4,14 +4,18 @@ namespace App\Livewire\Admin\Store;
 
 use App\Models\ProductCategories;
 use App\Models\Products;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 use Illuminate\Support\Str;
 use Livewire\Component;
+use Livewire\WithFileUploads;
+
 
 class ManageProducts extends Component
 {
+    use WithFileUploads;
     public $products;
     public $categories;
     public $productId;
@@ -26,6 +30,11 @@ class ManageProducts extends Component
     public $deleteModalOpen = false;
     public $isEditing = false;
     public $editing_products = null;
+    public $search = '';
+    public $product_image; 
+    public $existing_image;
+    public $imageUrl;
+
 
 
     public function mount()
@@ -48,16 +57,14 @@ class ManageProducts extends Component
     public function toggleStatus($id)
     {
         // dd($id);
-        $product = Products::findOrFail($id); 
+        $product = Products::findOrFail($id);
         // dd( $product->status);
-        if($product->status ==='active'){
-            $product->update(['status'=>'inactive']);
-        }      
-        else{
-            $product->update(['status'=>'active']);
+        if ($product->status === 'active') {
+            $product->update(['status' => 'inactive']);
+        } else {
+            $product->update(['status' => 'active']);
         }
         $this->dispatch('refreshProducts', categoryId: $this->category_id)->self();
-
     }
     public function editProduct($id)
     {
@@ -73,6 +80,7 @@ class ManageProducts extends Component
             $this->product_category_id = $this->editing_products->product_category_id;
             $this->product_gems = $this->editing_products->points;
             $this->product_stock = $this->editing_products->availableQuantity;
+            $this->product_image = $this->editing_products->imageUrl;
         }
         $this->isModalOpen = true;
     }
@@ -84,6 +92,16 @@ class ManageProducts extends Component
             $product = Products::findOrFail($this->productId);
         } else {
             $product = new Products();
+        }
+        if ($this->product_image) {
+            // Delete old image if exists (only during editing)
+            if ($this->isEditing && $product->image) {
+                Storage::delete('public/' . $product->image);
+            }
+
+            // Store new image
+            $imagePath = $this->product_image->store('products', 'public');
+            $product->imageUrl = $imagePath; 
         }
 
         $product->name = $this->product_name;
@@ -110,22 +128,45 @@ class ManageProducts extends Component
         $this->productId = $id;
     }
     public function deleteProduct()
-    {       
+    {
         $product = Products::findOrFail($this->productId);
         if ($product) {
             $product->delete();
         }
         $this->dispatch('refreshProducts', categoryId: $this->category_id)->self();
-       $this->deleteModalOpen = false;
+        $this->deleteModalOpen = false;
     }
-    public function addNewProduct(){
+    public function addNewProduct()
+    {
         $this->reset([
-            'product_name', 'product_description', 'product_category_id', 
-            'product_stock', 'product_gems', 'productId', 'isEditing'
+            'product_name',
+            'product_description',
+            'product_category_id',
+            'product_stock',
+            'product_gems',
+            'productId',
+            'isEditing',
+            'product_image',
         ]);
 
         $this->isModalOpen = true;
-        // $this->saveProduct();
+    }
+
+    //for the searching functionality
+    public function updatedSearch()
+    {
+        $this->filterProducts();
+    }
+
+    public function filterProducts()
+    {
+        $query = Products::query();
+
+        if (!empty($this->search)) {
+            $query->where('name', 'like', '%' . $this->search . '%');
+        }
+
+        $this->products = $query->get();
     }
 
     #[Layout('components.layouts.admin')]

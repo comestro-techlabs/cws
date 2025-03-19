@@ -66,8 +66,8 @@
              @if($product->status == 'active')
             <div class="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100 hover:border-purple-200 hover:shadow-md transition duration-200">
                 <div class="relative h-48">
-                    <img src="" alt="{{$product->name}}" class="w-full h-full object-cover">
-                    <div class="absolute top-2 right-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded-full">
+                <img src="{{ asset('storage/'.$product->imageUrl) }}" alt="{{ $product->name }}" class="w-full h-full object-cover rounded-lg" />
+                <div class="absolute top-2 right-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded-full">
                         Popular
                     </div>
                 </div>
@@ -78,7 +78,7 @@
                      </h2>
                     
                     <p class="text-sm text-gray-600 line-clamp-2">
-                    {{$product->description}}
+                            {{$product->description}}
                     </p>
                     
                     <!-- Product details -->
@@ -104,7 +104,6 @@
                         <span class="text-lg font-semibold text-gray-900">{{$product->points}}</span>
                         <span class="ml-1 text-sm text-gray-600">gems</span>
                     </div>
-                    
                     <a href="{{ route('v2.student.checkout', ['productId' => $product->id]) }}"
                     class="px-4 py-2 font-medium rounded-lg focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition duration-200 text-sm
                     @if($totalAvailableGems <= $product->points) bg-gray-400 text-gray-200 cursor-not-allowed pointer-events-none @else bg-primary text-white hover:bg-primary @endif">

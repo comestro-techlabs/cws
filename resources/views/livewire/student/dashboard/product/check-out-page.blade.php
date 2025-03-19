@@ -34,10 +34,9 @@
                     <div class="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100">
                         <div class="p-6">
                             <h2 class="text-lg font-semibold text-gray-900 mb-4">Product Summary</h2>
-
                             <div class="flex items-start">
                                 <div class="w-24 h-24 flex-shrink-0 rounded-md overflow-hidden">
-                                    <img src="/api/placeholder/400/320" alt="Product image" class="w-full h-full object-cover">
+                                    <img src="`{{ ('storage/'.$productImageUrl) }}` alt="Product image" class="w-full h-full object-cover">
                                 </div>
 
                                 <div class="ml-4 flex-grow">
