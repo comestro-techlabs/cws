@@ -7,6 +7,7 @@ use App\Models\Products;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
+use Illuminate\Support\Str;
 use Livewire\Component;
 
 class ManageProducts extends Component
@@ -90,6 +91,7 @@ class ManageProducts extends Component
         $product->points = $this->product_gems;
         $product->product_category_id = $this->product_category_id;
         $product->availableQuantity = $this->product_stock;
+        $product->slug = Str::slug($this->product_name);
         $product->save();
 
         $this->dispatch('refreshProducts', categoryId: $this->category_id)->self();
@@ -115,6 +117,15 @@ class ManageProducts extends Component
         }
         $this->dispatch('refreshProducts', categoryId: $this->category_id)->self();
        $this->deleteModalOpen = false;
+    }
+    public function addNewProduct(){
+        $this->reset([
+            'product_name', 'product_description', 'product_category_id', 
+            'product_stock', 'product_gems', 'productId', 'isEditing'
+        ]);
+
+        $this->isModalOpen = true;
+        // $this->saveProduct();
     }
 
     #[Layout('components.layouts.admin')]

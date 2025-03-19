@@ -7,7 +7,7 @@
                 <h1 class="text-2xl font-bold text-gray-900">Manage Products</h1>
                 <p class="text-gray-600 mt-1">Add, edit, and manage your rewards products</p>
             </div>
-            <button id="addProductBtn" class="px-4 py-2 bg-purple-700 text-white rounded-lg font-medium text-sm hover:bg-purple-700 transition duration-200 flex items-center">
+            <button wire:click="addNewProduct" id="addProductBtn" class="px-4 py-2 bg-purple-700 text-white rounded-lg font-medium text-sm hover:bg-purple-700 transition duration-200 flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-1">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                 </svg>
@@ -35,20 +35,9 @@
                         
                         @foreach($categories as $id => $name)
                             <option value="{{ $id }}">{{ ucfirst($name) }}</option>
-                        @endforeach
-                        
+                        @endforeach                  
                     </select>
-                </div>
-
-                <!-- Status Filter -->
-                <div class="w-full sm:w-auto">
-                    <select wire:model.live="status" class="w-full py-2.5 px-4 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none transition duration-200">
-                        <option value="">All Status</option>
-                        <option value="active">Active</option>
-                        <option value="inactive">Inactive</option>
-                        <option value="limited">Limited Stock</option>
-                    </select>
-                </div>
+                </div>  
             </div>
         </div>
 
