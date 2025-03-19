@@ -68,51 +68,7 @@
                     </div>
                 </div>
             </div>
-            
-            <!-- Active Products -->
-            <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-green-500">
-                <div class="flex items-center">
-                    <div class="p-3 rounded-full bg-green-100 mr-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-green-600">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 class="text-gray-500 text-sm font-medium">Active Products</h3>
-                       {{-- <p class="text-2xl font-bold text-gray-900">{{ $activeProducts }}</p>--}}
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Limited Stock -->
-            <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-yellow-500">
-                <div class="flex items-center">
-                    <div class="p-3 rounded-full bg-yellow-100 mr-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-yellow-600">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 class="text-gray-500 text-sm font-medium">Limited Stock</h3>
-                   {{--     <p class="text-2xl font-bold text-gray-900">{{ $limitedStockProducts }}</p>--}}
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Total Redeemed -->
-            <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-blue-500">
-                <div class="flex items-center">
-                    <div class="p-3 rounded-full bg-blue-100 mr-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-blue-600">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 class="text-gray-500 text-sm font-medium">Total Redeemed</h3>
-                       {{-- <p class="text-2xl font-bold text-gray-900">{{ $totalRedeemed }}</p>--}}
-                    </div>
-                </div>
-            </div>
+  
         </div>
 
         <!-- Products Table -->
@@ -136,9 +92,7 @@
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Stock
                             </th>
-                          {{--  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Redeemed
-                            </th>--}}
+                         
                             <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Actions
                             </th>
@@ -189,9 +143,7 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                 {{ $product->availableQuantity ?? 'Unlimited' }}
                             </td>
-                          {{--  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                {{ $product->redeemed_count }}
-                            </td>--}}
+                         
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                 <div class="flex justify-end space-x-2">
                                     <button wire:click="editProduct({{ $product->id }})" class="text-blue-600 hover:text-blue-900 transition duration-200">
@@ -213,27 +165,13 @@
                 </table>
             </div>
 
-            <!-- Pagination -->
-        {{--    <div class="px-6 py-4 bg-gray-50">
-                {{ $products->links() }}
-            </div>--}}
-        </div>
-
-        <!-- Empty State (hidden by default) -->
-        <div class="py-16 text-center hidden" id="emptyState">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-16 h-16 mx-auto text-gray-400 mb-4">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
-            </svg>
-            <h3 class="text-lg font-medium text-gray-900 mb-2">No products found</h3>
-            <p class="text-gray-600 max-w-md mx-auto">Try adjusting your search or filters to find what you're looking for.</p>
-            <button wire:click="resetFilters" class="mt-4 px-4 py-2 bg-gray-200 text-gray-800 font-medium rounded-lg hover:bg-gray-300 transition duration-200 text-sm">
-                Reset Filters
-            </button>
+      
         </div>
     </div>
 
     <!-- Add/Edit Product Modal -->
-    <div id="productModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50 hidden">
+     @if($isModalOpen)
+    <div id="productModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50 ">
         <div class="bg-white rounded-lg shadow-xl max-w-lg w-full mx-4">
             <div class="px-6 py-4 border-b border-gray-200">
                 <h3 class="text-lg font-medium text-gray-900" id="modalTitle">Add New Product</h3>
@@ -259,7 +197,7 @@
                                     <label for="image-upload" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition duration-200 text-sm cursor-pointer inline-block">
                                         Choose File
                                     </label>
-                                    <input id="image-upload" wire:model="image" type="file" class="hidden" accept="image/*" />
+                                    <input id="image-upload" wire:model="product_image" type="file" class="hidden" accept="image/*" />
                                     <p class="text-xs text-gray-500 mt-1">PNG, JPG up to 2MB</p>
                                 </div>
                             </div>
@@ -268,14 +206,14 @@
                         <!-- Product Name -->
                         <div>
                             <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
-                            <input type="text" id="name" wire:model="product.name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition duration-200">
-                            @error('product.name') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
+                            <input type="text" id="name" wire:model="product_name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition duration-200">
+                            @error('product_name') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
                         </div>
                         
                         <!-- Product Description -->
                         <div>
                             <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                            <textarea id="description" wire:model="product.description" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition duration-200"></textarea>
+                            <textarea id="description" wire:model="product_description" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition duration-200"></textarea>
                             @error('product.description') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
                         </div>
                         
@@ -283,58 +221,48 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <label for="category" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
-                                <select id="category" wire:model="product.category_id" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition duration-200">
-                                 {{--   <option value="">Select Category</option>
+                                <select id="category" wire:model="product_category_id" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition duration-200">
+                                   <option value="">Select Category</option>
                                     @foreach($categories as $id => $name)
                                         <option value="{{ $id }}">{{ ucfirst($name) }}</option>
                                     @endforeach
                                 </select>
-                                @error('product.category_id') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
+                                @error('product_category_id') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
                             </div>
-                            <div>
-                                <label for="points" class="block text-sm font-medium text-gray-700 mb-1">Gem Points</label>
-                                <input type="number" id="points" wire:model="product.points" min="1" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition duration-200">
-                                @error('product.points') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
-                            </div> --}}
                         </div>
                         
                         <!-- Status and Stock -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            {{--
+                           
+                            
                             <div>
-                                <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                                <select id="status" wire:model="product.status" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition duration-200">
-                                    <option value="active">Active</option>
-                                    <option value="inactive">Inactive</option>
-                                </select>
-                                @error('product.status') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
+                                <label for="stock" class="block text-sm font-medium text-gray-700 mb-1">Stock</label>
+                                <input type="number" id="stock" wire:model="product_stock" min="0" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition duration-200">
+                                @error('product_stock') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
                             </div>
+
                             <div>
-                                <label for="stock" class="block text-sm font-medium text-gray-700 mb-1">Stock (leave empty for unlimited)</label>
-                                <input type="number" id="stock" wire:model="product.stock" min="0" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition duration-200">
-                                @error('product.stock') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
-                            </div>--}}
+                                <label for="gems" class="block text-sm font-medium text-gray-700 mb-1">Gems</label>
+                                <input type="number" id="gems" wire:model="product_gems" min="0" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition duration-200">
+                                @error('product_gems') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
+                            </div>
                         </div>
 
-                        <!-- Featured/Popular -->
-                        <div class="flex items-center">
-                            <input type="checkbox" id="featured" wire:model="product.is_featured" class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded transition duration-200">
-                            <label for="featured" class="ml-2 block text-sm text-gray-700">Mark as Featured/Popular</label>
-                        </div>
                     </div>
                 </form>
             </div>
             
             <div class="px-6 py-4 bg-gray-50 flex justify-end space-x-3 rounded-b-lg">
-                <button id="closeModalBtn" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition duration-200">
+                <button wire:click="closeModalBtn" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition duration-200">
                     Cancel
                 </button>
-                <button wire:click="saveProduct" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition duration-200">
+                <button wire:click="saveProduct" class="px-4 py-2  text-white rounded-lg bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition duration-200">
                     Save Product
                 </button>
             </div>
         </div>
     </div>
+    @endif
 
     <!-- Delete Confirmation Modal -->
     <div id="deleteModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50 hidden">
@@ -345,5 +273,7 @@
                 </svg>
                 <h3 class="text-lg font-medium text-gray-900 mb-2">Confirm
 
-                </div>
+            </div>
+        </div>
+    </div>    
  

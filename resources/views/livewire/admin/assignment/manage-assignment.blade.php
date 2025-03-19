@@ -167,7 +167,7 @@
                                         <option value="">Select Batch</option>
                                         @foreach($batches as $batch)
                                             <option value="{{ $batch->id }}">{{ $batch->batch_name }}</option>
-                                        @endforeach
+                                        @endforeach 
                                     </select>
                                     @error('batch_id') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                                 </div>
