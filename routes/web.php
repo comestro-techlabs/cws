@@ -159,7 +159,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/logout', [Dashboad::class, 'logout'])->name('admin.logout');
         Route::get('/category', ManageCategory::class)->name('admin.category');
         Route::get('/student', ManageStudent::class)->name('admin.student');
-        Route::get('/student/{id}', ViewStudent::class)->name('admin.student.view');
+        // Route::get('/student/{id}', ViewStudent::class)->name('admin.student.view');
         //course routes
         Route::get('/course', InsertCourse::class)->name('admin.course');
         Route::get('/course/update/{courseId}', UpdateCourse::class)->name('admin.course.update');
