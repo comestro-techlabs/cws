@@ -26,6 +26,8 @@ class ManageProducts extends Component
     public $deleteModalOpen = false;
     public $isEditing = false;
     public $editing_products = null;
+    public $search = '';
+
 
 
     public function mount()
@@ -48,16 +50,14 @@ class ManageProducts extends Component
     public function toggleStatus($id)
     {
         // dd($id);
-        $product = Products::findOrFail($id); 
+        $product = Products::findOrFail($id);
         // dd( $product->status);
-        if($product->status ==='active'){
-            $product->update(['status'=>'inactive']);
-        }      
-        else{
-            $product->update(['status'=>'active']);
+        if ($product->status === 'active') {
+            $product->update(['status' => 'inactive']);
+        } else {
+            $product->update(['status' => 'active']);
         }
         $this->dispatch('refreshProducts', categoryId: $this->category_id)->self();
-
     }
     public function editProduct($id)
     {
@@ -110,22 +110,44 @@ class ManageProducts extends Component
         $this->productId = $id;
     }
     public function deleteProduct()
-    {       
+    {
         $product = Products::findOrFail($this->productId);
         if ($product) {
             $product->delete();
         }
         $this->dispatch('refreshProducts', categoryId: $this->category_id)->self();
-       $this->deleteModalOpen = false;
+        $this->deleteModalOpen = false;
     }
-    public function addNewProduct(){
+    public function addNewProduct()
+    {
         $this->reset([
-            'product_name', 'product_description', 'product_category_id', 
-            'product_stock', 'product_gems', 'productId', 'isEditing'
+            'product_name',
+            'product_description',
+            'product_category_id',
+            'product_stock',
+            'product_gems',
+            'productId',
+            'isEditing'
         ]);
 
         $this->isModalOpen = true;
-        // $this->saveProduct();
+    }
+
+    //for the searching functionality
+    public function updatedSearch()
+    {
+        $this->filterProducts();
+    }
+
+    public function filterProducts()
+    {
+        $query = Products::query();
+
+        if (!empty($this->search)) {
+            $query->where('name', 'like', '%' . $this->search . '%');
+        }
+
+        $this->products = $query->get();
     }
 
     #[Layout('components.layouts.admin')]
