@@ -10,7 +10,7 @@ use Livewire\Attributes\Layout;
 #[Layout('components.layouts.student')]
 class GemsTransactions extends Component
 {
-    use WithPagination;
+    use WithPagination; 
 
     public function render()
     {

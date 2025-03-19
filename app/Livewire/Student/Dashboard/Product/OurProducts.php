@@ -4,21 +4,28 @@ namespace App\Livewire\Student\Dashboard\Product;
 
 use App\Models\ProductCategories;
 use App\Models\Products;
+use App\Models\User;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Razorpay\Api\Product;
 
 class OurProducts extends Component
 {
-    public $categories;
+    public $categories; 
     public $products;
     public $selectedCategory='';
-    public $totalAvailableGems=1000;
+    public $totalAvailableGems;
+    public $user_id;
     public function mount(){
         $this->categories = ProductCategories::pluck('name', 'id');
         // dd($this->categories);
          $this->products = Products::all();  
         // dd($this->products);
+        $this->user_id = auth()->id();
+        // dd($this->user_id);
+        $this->totalAvailableGems = User::where('id',$this->user_id)->value('gem');
+        // dd($this->totalAvailableGems);
+        // $this->$totalAvailableGems = User::
     }
     public function updatedSelectedCategory($categoryId)
     {

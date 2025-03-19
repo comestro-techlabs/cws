@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use App\Models\Orders;
 use App\Models\Products;
 use App\Models\ShippingDetail;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\Layout;
@@ -20,12 +21,13 @@ class CheckOutPage extends Component
     public $belongToCategory;
     public $gems;
     //will make these dynamic
-    public $totalAvailableGems = 1000;
+    public $totalAvailableGems;
     public $shipping_charge = 0;
     public $totalPriceOfProduct;
     public $balanceGems;
     public $shippingDetailsFilled;
     public $productImageUrl;
+    public $user_id;
     // public $shippingDetailsAvailablity = true ;
 
 
@@ -56,12 +58,16 @@ class CheckOutPage extends Component
         $this->gems = $this->my_product->points;
         $this->belongToCategory = $this->my_product->category->name;
         // dd($this->belongToCategory);
+        $this->user_id = Auth::id();
+        // dd($this->user_id);
+        $this->totalAvailableGems = User::where('id',$this->user_id)->value('gem');
         $this->balanceGems = $this->totalAvailableGems - $this->gems;
         $this->totalPriceOfProduct = $this->gems + $this->shipping_charge;
         // $this->refreshShipDetails();
         $this->shippingDetailsFilled = ShippingDetail::where('user_id', Auth::id())->first();
         $this->productImageUrl =  $this->my_product->imageUrl;
         // dd($this->shippingDetailsFilled);
+        
 
     }
     public function editShippingAddress()
