@@ -26,13 +26,13 @@ class DatabaseSeeder extends Seeder
             SubscriptionPlanSeeder::class,  // Add this line
             CategorySeeder::class,        // Categories first
             CourseSeeder::class,          // Courses second
-            // PostCourseSeeder::class,
-            // PostChapterSeeder::class,
-            // PostTopicPostSeeder::class,
-            // PostMyPostSeeder::class,
+            PostCourseSeeder::class,
+            PostChapterSeeder::class,
+            PostTopicPostSeeder::class,
+            PostMyPostSeeder::class,
             MockTestSeeder::class,        // Mock tests after courses
-            // ProductCategorySeeder::class, // Product categories after mock tests
-            // ProductSeeder::class,         // Products after mock testsP
+            ProductCategorySeeder::class, // Product categories after mock tests
+            ProductSeeder::class,         // Products after mock testsP
             UserSeeder::class,            // Users must be first
             CategorySeeder::class,        // Categories before courses
             CourseSeeder::class,          // Courses before batches

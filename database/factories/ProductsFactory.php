@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\ProductCategories;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Products>
@@ -28,7 +29,7 @@ class ProductsFactory extends Factory
             'availableQuantity' => fake()->numberBetween(5, 50),
             'availableQuantity' => fake()->numberBetween(5, 50),
             'status' => fake()->randomElement(['active', 'inactive']),
-            'slug' => \Illuminate\Support\Str::slug($name),
+            'slug' => Str::slug($name),
         ];
     }
 }

@@ -23,6 +23,8 @@ class ProductSeeder extends Seeder
                 'points' => rand(0, 100),
                 'imageUrl' => 'http://example.com/image' . $i . '.jpg',
                 'availableQuantity' => rand(0, 100),
+                'status' => rand(0, 1) ? 'active' : 'inactive',
+                'slug' => Str::slug('Product ' . $i),
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
