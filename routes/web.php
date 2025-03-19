@@ -40,6 +40,8 @@ use App\Livewire\Admin\Workshops\ManageWorkshop;
 use App\Livewire\Admin\Course\ManageCourse;
 use App\Livewire\Admin\Course\ShowCourse;
 use App\Livewire\Admin\Certificate\CertificateEligibility;
+use App\Livewire\Admin\Certificate\ManageCertificate;
+use App\Livewire\Admin\Certificate\ViewCertificate;
 use App\Livewire\Admin\Exam\ManageExam;
 use App\Livewire\Admin\Exam\ExamQuestions;
 use App\Livewire\Admin\Quiz\ManageQuiz;
@@ -71,6 +73,8 @@ use App\Http\Controllers\SubscriptionController;
 use App\Livewire\Admin\Store\ManageProducts;
 use App\Livewire\Student\Billing\ShowBilling;
 use App\Livewire\Student\Subscriptions\Plans;
+use App\Livewire\Student\Marksheet\StudentMarksheet;
+use App\Livewire\Student\Certificate\ShowCertificate;
 
 // public routes
 Route::get('/', Home::class)->name('public.index');
@@ -125,6 +129,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/mocktest/result/{mockTestId}', MockTestResult::class)->name('v2.student.mocktest.result');
         Route::get('/products', OurProducts::class)->name('v2.student.products');
         Route::get('/products/{productId}/checkout', CheckOutPage::class)->name('v2.student.checkout');
+        Route::get('/certificates',ShowCertificate::class)->name('student.certificates');
+        Route::get('/marksheet',StudentMarksheet::class)->name('student.marksheet');
 
     });
 
@@ -179,8 +185,10 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
 
         Route::get('/assignments/review-work/{id}', ReviewWork::class)->name('assignment.reviewWork');//u
         //Certificate Routes
-        // Route::get('/certificae',ManageCertificate::class)->name('admin.certificate');
-        // Workshop Routes
+        Route::get('/certificate/course',ManageCertificate::class)->name('admin.certificate.course');
+        Route::get('/certificate/{certificateId}/view',ViewCertificate::class)->name('certificate.view');
+       
+        // Workshop Routes certificate/course
         Route::get('/workshops', ManageWorkshop::class)->name('admin.workshops.index');
 
         // Placed Student Routes
