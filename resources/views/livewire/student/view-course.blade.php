@@ -1,27 +1,3 @@
-<!-- Alert Messages with brand colors -->
-@if (session('success'))
-    <script>
-        Swal.fire({
-            title: 'Success!',
-            text: "{{ session('success') }}",
-            icon: 'success',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#2563EB'
-        });
-    </script>
-@endif
-
-@if (session('error'))
-    <script>
-        Swal.fire({
-            title: 'Error!',
-            text: "{{ session('error') }}",
-            icon: 'error',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#2563EB'
-        });
-    </script>
-@endif
 @php
     $subs = (auth()->check() && auth()->user()->hasActiveSubscription() && auth()->user()->courses()->wherePivot('is_subs', 1)->count() == 0)
 @endphp
@@ -125,11 +101,11 @@
                     <!-- Price Section -->
                     <div class="text-center pb-4 border-b border-gray-200">
                         @if ($subs)
-                        <p class="text-sm text-gray-600 mb-1">Free</p>
-                        <p class="text-4xl font-bold text-gray-900"><del>₹{{ $course->discounted_fees }}</del></p>
+                            <p class="text-sm text-gray-600 mb-1">Free</p>
+                            <p class="text-4xl font-bold text-gray-900"><del>₹{{ $course->discounted_fees }}</del></p>
                         @else
-                        <p class="text-sm text-gray-600 mb-1">Course Fee</p>
-                        <p class="text-4xl font-bold text-gray-900">₹{{ $course->discounted_fees }}</p>
+                            <p class="text-sm text-gray-600 mb-1">Course Fee</p>
+                            <p class="text-4xl font-bold text-gray-900">₹{{ $course->discounted_fees }}</p>
                         @endif
                     </div>
 
@@ -147,27 +123,27 @@
                             </a>
                         </div>
                     @else
-                                      
-                                        @if ($subs)
-                                            <button wire:click="enrollCourse({{ $course->id }})" wire:loading.attr="disabled"
-                                                class="w-full bg-orange-600 hover:bg-orange-700 text-white font-medium px-6 py-3 rounded-lg transition duration-200 flex items-center justify-center gap-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                                                Free
-                                            </button>
-                                        @else
-                                            <button id="pay-button"
-                                                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-3 rounded-lg transition duration-200 flex items-center justify-center gap-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                                                <img src="https://cdn.iconscout.com/icon/free/png-512/free-razorpay-logo-icon-download-in-svg-png-gif-file-formats--payment-gateway-brand-logos-icons-1399875.png?f=webp&w=256"
-                                                    alt="Razorpay" class="w-6 h-6 object-contain">
-                                                <span>Enroll Now with Razorpay</span>
-                                            </button>
-                                        @endif
-                                    @endif
+
+                        @if ($subs)
+                            <button wire:click="enrollCourse({{ $course->id }})" wire:loading.attr="disabled"
+                                class="w-full bg-orange-600 hover:bg-orange-700 text-white font-medium px-6 py-3 rounded-lg transition duration-200 flex items-center justify-center gap-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                                Free
+                            </button>
+                        @else
+                            <button id="pay-button"
+                                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-3 rounded-lg transition duration-200 flex items-center justify-center gap-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                                <img src="https://cdn.iconscout.com/icon/free/png-512/free-razorpay-logo-icon-download-in-svg-png-gif-file-formats--payment-gateway-brand-logos-icons-1399875.png?f=webp&w=256"
+                                    alt="Razorpay" class="w-6 h-6 object-contain">
+                                <span>Enroll Now with Razorpay</span>
+                            </button>
+                        @endif
+                    @endif
 
                     <!-- Course Features -->
                     <div class="pt-4 border-t border-gray-200">
                         @if ($subs)
                             <h3 class="text-lg font-semibold text-gray-900 mb-4">
-                            Enjoy one free course of your choice with your active subscription. Enroll now!
+                                Enjoy one free course of your choice with your active subscription. Enroll now!
                             </h3>
 
                         @else
@@ -212,7 +188,7 @@
                         "name": "LearnSyntax",
                         "description": "{{ $course->title }}",
                         "image": "{{ asset('front_assets/img/logo/logo.png') }}",
-                        "order_id": response.order_id, // Razorpay order ID
+                        "order_id": response.order_id,
                         "handler": async function (razorpayResponse) {
                             const result = await @this.handlePaymentResponse({
                                 payment_id: response.payment_id,
@@ -222,7 +198,7 @@
                             });
 
                             if (result.success) {
-                                window.location.href = '/student/dashboard';
+                                @this.dispatch('redirectToDashboard');
                             } else {
                                 Swal.fire({
                                     title: 'Error!',

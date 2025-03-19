@@ -20,58 +20,61 @@ class ViewCourse extends Component
     public $avgRating;
     public $enrolledCourses = [];
 
+    public $batch;
+
     #[Layout('components.layouts.student')]
     public function mount($courseId)
-    {
-        // Check if user is authenticated
-        if (!Auth::check()) {
-            return redirect()->route('auth.login')->with('error', 'You must be logged in to access this page');
-        }
+{
+    if (!Auth::check()) {
+        return redirect()->route('auth.login')->with('error', 'You must be logged in to access this page');
+    }
 
-        // Load enrolled courses
-        $this->enrolledCourses = Auth::user()
-            ->courses()
-            ->pluck('courses.id')
-            ->toArray();
+    $this->enrolledCourses = Auth::user()
+        ->courses()
+        ->pluck('courses.id')
+        ->toArray();
 
-        // Load course with features
-        $this->course = Course::with('features')->findOrFail($courseId);
-        $this->reviewedCourse = CourseReview::where('course_id', $courseId)->get();
-        $this->avgRating = CourseReview::where('course_id', $courseId)->avg('rating');
+    $this->course = Course::with('features')->findOrFail($courseId);
+    $this->reviewedCourse = CourseReview::where('course_id', $courseId)->get();
+    $this->avgRating = CourseReview::where('course_id', $courseId)->avg('rating');
 
-        $course_id = $this->course->id;
-        $user_id = Auth::id();
+    // Fetch the active batch
+    $this->batch = Batch::where('course_id', $courseId)
+        ->whereDate('end_date', '>=', now())
+        ->first();
 
-        // Check if payment exists with status "captured"
-        $this->payment_exist = Payment::where("student_id", $user_id)
-            ->where("course_id", $course_id)
-            ->where("status", "captured")
+    $course_id = $this->course->id;
+    $user_id = Auth::id();
+
+    $this->payment_exist = Payment::where("student_id", $user_id)
+        ->where("course_id", $course_id)
+        ->where("status", "captured")
+        ->exists();
+
+    if ($this->course->discounted_fees == 0) {
+        $already_enrolled = DB::table('course_student')
+            ->where('user_id', $user_id)
+            ->where('course_id', $course_id)
+            ->where('batch_id', $this->batch ? $this->batch->id : null)
             ->exists();
 
-        // Handle free course enrollment
-        if ($this->course->discounted_fees == 0) {
-            $already_enrolled = DB::table('course_student')
-                ->where('user_id', $user_id)
-                ->where('course_id', $course_id)
-                ->exists();
-
-            if (!$already_enrolled) {
-                try {
-                    DB::table('course_student')->insert([
-                        'user_id'    => $user_id,
-                        'course_id'  => $course_id,
-                        'batch_id'   => null,
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ]);
-                    $this->payment_exist = true;
-                    $this->enrolledCourses[] = $course_id;
-                } catch (\Exception $e) {
-                    session()->flash('error', 'Failed to enroll in free course: ' . $e->getMessage());
-                }
+        if (!$already_enrolled && $this->batch) {
+            try {
+                DB::table('course_student')->insert([
+                    'user_id'    => $user_id,
+                    'course_id'  => $course_id,
+                    'batch_id'   => $this->batch->id,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+                $this->payment_exist = true;
+                $this->enrolledCourses[] = $course_id;
+            } catch (\Exception $e) {
+                session()->flash('error', 'Failed to enroll in free course: ' . $e->getMessage());
             }
         }
     }
+}
 
     #[On('initiate-payment')]
     public function initiatePayment()
@@ -135,7 +138,7 @@ class ViewCourse extends Component
                     'message' => 'Payment record not found'
                 ];
             }
-
+    
             $payment->update([
                 'razorpay_payment_id' => $response['razorpay_payment_id'],
                 'razorpay_order_id' => $response['razorpay_order_id'],
@@ -144,18 +147,22 @@ class ViewCourse extends Component
                 'status' => 'captured',
                 'payment_date' => now(),
             ]);
-
-            // Enroll user in course
+    
+            if (!$this->batch) {
+                throw new \Exception('No active batch available for this course.');
+            }
+    
             DB::table('course_student')->insert([
-                'user_id' => Auth::id(),
-                'course_id' => $this->course->id,
+                'user_id'    => Auth::id(),
+                'course_id'  => $this->course->id,
+                'batch_id'   => $this->batch->id,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
-
+    
             $this->payment_exist = true;
             $this->enrolledCourses[] = $this->course->id;
-
+    
             return ['success' => true];
         } catch (\Exception $e) {
             \Log::error('Payment Verification Error: ' . $e->getMessage());
@@ -165,7 +172,11 @@ class ViewCourse extends Component
             ];
         }
     }
-
+    #[On('redirectToDashboard')]
+    public function redirectToDashboard()
+    {
+        return redirect()->route('student.dashboard')->with('success', 'You have successfully enrolled in the course.');
+    }
     public function enrollCourse($courseId)
     {
         try {
