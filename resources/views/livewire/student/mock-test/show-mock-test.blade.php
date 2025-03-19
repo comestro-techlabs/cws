@@ -1,3 +1,15 @@
+
+@php
+    $totalQuestions = count($questions);
+    $percentage = $totalQuestions > 0 
+        ? floor((count(array_filter($answers)) / $totalQuestions) * 100) 
+        : 0;
+    
+    $circumference = 2 * pi() * 40;
+    $dashOffset = $totalQuestions > 0
+        ? $circumference * (1 - count(array_filter($answers)) / $totalQuestions)
+        : $circumference;
+@endphp
 <div class="min-h-screen bg-gray-50">
     <!-- Fixed Header -->
     <div class="fixed top-0 left-0 right-0 bg-white border-b z-50">
@@ -26,21 +38,21 @@
     <!-- Main Content -->
     <div class="container mx-auto px-4 pt-20 pb-8">
         @if($attempted && !$submitted)
-            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-lg mb-6">
-                <p class="font-medium">You have already attempted this test.</p>
-                <a href="{{ route('v2.student.mocktest.result', $mockTestId) }}"
-                   class="mt-3 inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg shadow-md transition duration-300">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                    </svg>
-                    View Results
-                </a>
-            </div>
+        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-lg mb-6">
+            <p class="font-medium">You have already attempted this test.</p>
+            <a href="{{ route('v2.student.mocktest.result', $mockTestId) }}"
+                class="mt-3 inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg shadow-md transition duration-300">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+                View Results
+            </a>
+        </div>
         @else
-            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-                <!-- Enhanced Sidebar -->
-                <div class="lg:col-span-1">
-                    <div class="bg-white border rounded-xl p-6 sticky top-24">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <!-- Enhanced Sidebar -->
+            <div class="lg:col-span-1">
+                <div class="bg-white border rounded-xl p-6 sticky top-24">
                         <!-- Progress Circle -->
                         <div class="mb-6 flex justify-center">
                             <div class="relative inline-flex items-center justify-center">
@@ -62,12 +74,12 @@
                                         r="40"
                                         cx="48"
                                         cy="48"
-                                        stroke-dasharray="{{ 2 * pi() * 40 }}"
-                                        stroke-dashoffset="{{ 2 * pi() * 40 * (1 - count(array_filter($answers)) / count($questions)) }}"
+                                        stroke-dasharray="{{ $circumference }}"
+                                        stroke-dashoffset="{{$dashOffset }}"
                                     />
                                 </svg>
                                 <span class="absolute text-xl font-bold text-blue-600">
-                                    {{ floor((count(array_filter($answers)) / count($questions)) * 100) }}%
+                                    {{ $percentage }}%
                                 </span>
                             </div>
                         </div>
