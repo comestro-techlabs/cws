@@ -127,6 +127,9 @@ class CheckOutPage extends Component
     public function completeRedemption()
     {
         // dd('shaique'); 
+        if ($this->totalAvailableGems < $this->gems) {
+            return;
+        }
         try {
             Orders::create([
                 'user_id' => Auth::id(),
