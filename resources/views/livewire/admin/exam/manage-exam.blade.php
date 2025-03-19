@@ -77,13 +77,15 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Exam Name</label>
-                                <input wire:model="exam_name" type="text" class="mt-1 w-full border-gray-300 rounded-lg shadow-sm">
+                                <input wire:model="exam_name" type="text" 
+                                    class="mt-1 w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-300 focus:border-purple-300 transition-all duration-200">
                                 @error('exam_name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                             </div>
 
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Course</label>
-                                <select wire:model.live="course_id" class="mt-1 w-full border-gray-300 rounded-lg shadow-sm">
+                                <select wire:model.live="course_id" 
+                                    class="mt-1 w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-300 focus:border-purple-300 transition-all duration-200">
                                     <option value="">Select Course</option>
                                     @foreach($courses as $course)
                                         <option value="{{ $course->id }}">{{ $course->title }}</option>
@@ -94,19 +96,23 @@
 
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Batch</label>
-                                <select wire:model="batch_id" class="mt-1 w-full border-gray-300 rounded-lg shadow-sm" 
+                                <select wire:model="batch_id" 
+                                    class="mt-1 w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-300 focus:border-purple-300 transition-all duration-200 disabled:bg-gray-100 disabled:cursor-not-allowed" 
                                     {{ !$course_id ? 'disabled' : '' }}>
                                     <option value="">Select Batch</option>
-                                    @foreach($batches as $batch)
-                                        <option value="{{ $batch->id }}">{{ $batch->batch_name }}</option>
-                                    @endforeach
+                                    @if($batches)
+                                        @foreach($batches as $batch)
+                                            <option value="{{ $batch->id }}">{{ $batch->batch_name }}</option>
+                                        @endforeach
+                                    @endif
                                 </select>
                                 @error('batch_id') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                             </div>
 
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Exam Date</label>
-                                <input wire:model="exam_date" type="date" class="mt-1 w-full border-gray-300 rounded-lg shadow-sm">
+                                <input wire:model="exam_date" type="date" 
+                                    class="mt-1 w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-300 focus:border-purple-300 transition-all duration-200">
                                 @error('exam_date') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                             </div>
                         </div>

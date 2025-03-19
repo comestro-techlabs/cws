@@ -65,7 +65,12 @@ class ManageExam extends Component
     public function updatedCourseId($value)
     {
         if ($value) {
-            $this->batches = Batch::where('course_id', $value)->get();
+            $this->batch_id = ''; // Reset batch selection
+            $this->batches = Batch::where('course_id', $value)
+                ->orderBy('batch_name')
+                ->get();
+        } else {
+            $this->batches = [];
         }
     }
 
@@ -93,6 +98,9 @@ class ManageExam extends Component
         $this->editingExamId = $exam->id;
         $this->exam_name = $exam->exam_name;
         $this->course_id = $exam->course_id;
+        $this->batches = Batch::where('course_id', $exam->course_id)
+            ->orderBy('batch_name')
+            ->get();
         $this->batch_id = $exam->batch_id;
         $this->exam_date = $exam->exam_date;
         $this->status = $exam->status;
