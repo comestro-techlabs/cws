@@ -31,7 +31,7 @@ class Exam extends Model
     }
     public function examUser()
     {
-        return $this->belongsTo(ExamUser::class, 'exam_id', 'exam_id');
+        return $this->hasMany(ExamUser::class); // Changed from belongsTo to hasMany
     }
     
 }

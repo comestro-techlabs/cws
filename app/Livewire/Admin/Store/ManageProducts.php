@@ -7,6 +7,7 @@ use App\Models\Products;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
+use Illuminate\Support\Str;
 use Livewire\Component;
 
 class ManageProducts extends Component
@@ -22,6 +23,7 @@ class ManageProducts extends Component
     public $product_stock;
     public $product_gems;
     public $category_id;
+    public $deleteModalOpen = false;
     public $isEditing = false;
     public $editing_products = null;
 
@@ -42,6 +44,20 @@ class ManageProducts extends Component
         } else {
             $this->products = Products::where('product_category_id', $categoryId)->get();
         }
+    }
+    public function toggleStatus($id)
+    {
+        // dd($id);
+        $product = Products::findOrFail($id); 
+        // dd( $product->status);
+        if($product->status ==='active'){
+            $product->update(['status'=>'inactive']);
+        }      
+        else{
+            $product->update(['status'=>'active']);
+        }
+        $this->dispatch('refreshProducts', categoryId: $this->category_id)->self();
+
     }
     public function editProduct($id)
     {
@@ -75,6 +91,7 @@ class ManageProducts extends Component
         $product->points = $this->product_gems;
         $product->product_category_id = $this->product_category_id;
         $product->availableQuantity = $this->product_stock;
+        $product->slug = Str::slug($this->product_name);
         $product->save();
 
         $this->dispatch('refreshProducts', categoryId: $this->category_id)->self();
@@ -85,7 +102,32 @@ class ManageProducts extends Component
     public function closeModalBtn()
     {
         $this->isModalOpen = false;
+        $this->deleteModalOpen = false;
     }
+    public function confirmDelete($id)
+    {
+        $this->deleteModalOpen = true;
+        $this->productId = $id;
+    }
+    public function deleteProduct()
+    {       
+        $product = Products::findOrFail($this->productId);
+        if ($product) {
+            $product->delete();
+        }
+        $this->dispatch('refreshProducts', categoryId: $this->category_id)->self();
+       $this->deleteModalOpen = false;
+    }
+    public function addNewProduct(){
+        $this->reset([
+            'product_name', 'product_description', 'product_category_id', 
+            'product_stock', 'product_gems', 'productId', 'isEditing'
+        ]);
+
+        $this->isModalOpen = true;
+        // $this->saveProduct();
+    }
+
     #[Layout('components.layouts.admin')]
     #[Title('Manage Products')]
     public function render()

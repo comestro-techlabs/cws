@@ -24,7 +24,7 @@ class Assignment_upload extends Model
 
     public function assignment()
     {
-        return $this->belongsTo(Assignment_upload::class, 'assignment_id', 'id');
+        return $this->belongsTo(Assignments::class, 'assignment_id', 'id');
     }
 
     protected $casts = [

@@ -7,7 +7,7 @@
                 <h1 class="text-2xl font-bold text-gray-900">Manage Products</h1>
                 <p class="text-gray-600 mt-1">Add, edit, and manage your rewards products</p>
             </div>
-            <button id="addProductBtn" class="px-4 py-2 bg-purple-700 text-white rounded-lg font-medium text-sm hover:bg-purple-700 transition duration-200 flex items-center">
+            <button wire:click="addNewProduct" id="addProductBtn" class="px-4 py-2 bg-purple-700 text-white rounded-lg font-medium text-sm hover:bg-purple-700 transition duration-200 flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-1">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                 </svg>
@@ -35,41 +35,13 @@
                         
                         @foreach($categories as $id => $name)
                             <option value="{{ $id }}">{{ ucfirst($name) }}</option>
-                        @endforeach
-                        
+                        @endforeach                  
                     </select>
-                </div>
-
-                <!-- Status Filter -->
-                <div class="w-full sm:w-auto">
-                    <select wire:model.live="status" class="w-full py-2.5 px-4 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none transition duration-200">
-                        <option value="">All Status</option>
-                        <option value="active">Active</option>
-                        <option value="inactive">Inactive</option>
-                        <option value="limited">Limited Stock</option>
-                    </select>
-                </div>
+                </div>  
             </div>
         </div>
 
-        <!-- Stats Overview -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <!-- Total Products -->
-            <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-purple-500">
-                <div class="flex items-center">
-                    <div class="p-3 rounded-full bg-purple-100 mr-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-purple-600">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 class="text-gray-500 text-sm font-medium">Total Products</h3>
-                      {{--  <p class="text-2xl font-bold text-gray-900">{{ $totalProducts }}</p>--}}
-                    </div>
-                </div>
-            </div>
-  
-        </div>
+       
 
         <!-- Products Table -->
         <div class="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-200">
@@ -125,20 +97,19 @@
                                     <span class="text-sm font-medium text-gray-900">{{ $product->points }}</span>
                                 </div>
                             </td>
+                         
                             <td class="px-6 py-4 whitespace-nowrap">
-                                @if($product->status == 'active')
-                                <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                    Active
+                            <button wire:click="toggleStatus({{ $product->id }})" 
+                                class="relative px-3 py-1 rounded-full text-sm {{ $product->status =='active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}"
+                                wire:loading.class="opacity-50 cursor-wait"
+                                wire:target="toggleStatus({{ $product->id }})">
+                                <span wire:loading.remove wire:target="toggleStatus({{ $product->id }})">
+                                    {{ $product->status =='active' ? 'Active' : 'Inactive' }}
                                 </span>
-                                @elseif($product->status == 'inactive')
-                                <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                                    Inactive
+                                <span wire:loading wire:target="toggleStatus({{ $product->id }})" class="flex items-center"> 
+                                    Updating...
                                 </span>
-                                @else
-                                <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                    Out of Stock
-                                </span>
-                                @endif
+                            </button>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                 {{ $product->availableQuantity ?? 'Unlimited' }}
@@ -265,15 +236,26 @@
     @endif
 
     <!-- Delete Confirmation Modal -->
-    <div id="deleteModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50 hidden">
+     @if($deleteModalOpen)
+    <div id="deleteModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50 ">
         <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 p-6">
             <div class="text-center">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 mx-auto text-red-500 mb-4">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
                 </svg>
-                <h3 class="text-lg font-medium text-gray-900 mb-2">Confirm
+                <h3 class="text-lg font-medium text-gray-900 mb-2">Confirm</h3>
+                <p class="text-gray-600 max-w-md mx-auto">Are you sure you want to delete this product?</p>
 
+                <div class="flex justify-center space-x-4 mt-4">    
+                    <button wire:click="closeModalBtn" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg font-medium text-sm hover:bg-gray-300 transition duration-200">
+                        Cancel
+                    </button>
+                    <button wire:click="deleteProduct" class="px-4 py-2 bg-red-500 text-white rounded-lg font-medium text-sm hover:bg-red-600 transition duration-200">
+                        Delete
+                    </button>
+                </div>
             </div>
         </div>
-    </div>    
+    </div>
+    @endif    
  

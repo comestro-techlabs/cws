@@ -23,17 +23,17 @@ class DatabaseSeeder extends Seeder
         //     'education_qualification'=>' BCA'
         // ]);
         $this->call([
-            // SubscriptionPlanSeeder::class,  // Add this line
-            // CategorySeeder::class,        // Categories first
-            // CourseSeeder::class,          // Courses second
+            SubscriptionPlanSeeder::class,  // Add this line
+            CategorySeeder::class,        // Categories first
+            CourseSeeder::class,          // Courses second
             // PostCourseSeeder::class,
             // PostChapterSeeder::class,
             // PostTopicPostSeeder::class,
             // PostMyPostSeeder::class,
-            // MockTestSeeder::class,        // Mock tests after courses
+            MockTestSeeder::class,        // Mock tests after courses
             // ProductCategorySeeder::class, // Product categories after mock tests
             // ProductSeeder::class,         // Products after mock testsP
-            // UserSeeder::class,            // Users must be first
+            UserSeeder::class,            // Users must be first
             CategorySeeder::class,        // Categories before courses
             CourseSeeder::class,          // Courses before batches
             BatchSeeder::class,           // Batches before assignments

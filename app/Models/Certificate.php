@@ -6,7 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Certificate extends Model
 {
-  protected $guarded = [];
+    protected $guarded = [];
+
+    protected $casts = [
+        'date' => 'datetime',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -16,5 +21,4 @@ class Certificate extends Model
     {
         return $this->belongsTo(Course::class);
     }
-    
 }
