@@ -30,7 +30,14 @@ class MockTestResult extends Component
         $this->mockTest = MockTest::findOrFail($mockTestId);
         $this->answers = json_decode($this->result->answers, true) ?? [];
     }
-
+    public function calculatePercentage($score, $totalMarks)
+{
+    if ($totalMarks <= 0) {
+        return 0;
+    }
+    
+    return number_format(($score / $totalMarks) * 100, 2);
+}
     public function render()
     {
         return view('livewire.student.mock-test.mock-test-result');
