@@ -1,4 +1,4 @@
-<div class="p-6 bg-gray-100">
+<div class="p-6  ">
     @if(!$selectedCourse)
         <!-- Course Selection -->
         <div class="mb-6 bg-white rounded-lg shadow p-4">

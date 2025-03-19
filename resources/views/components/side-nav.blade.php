@@ -160,6 +160,16 @@
                             <span class="text-sm">Manage MockTest</span>
                         </div>
                     </a>
+                    <a wire:navigate href="{{ route('admin.certificate.course')}}"
+                        class="flex items-center px-3 py-2.5 rounded-lg text-gray-600 transition-all hover:bg-purple-50 hover:text-purple-700">
+                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path d="M4.5 3h15a1.5 1.5 0 011.5 1.5v15a1.5 1.5 0 01-1.5 1.5h-15a1.5 1.5 0 01-1.5-1.5v-15A1.5 1.5 0 014.5 3z"/>
+                            <path d="M9 8.25h6M9 12h6M9 15.75h3"/>
+                        </svg>
+                        <div class="flex items-center justify-between flex-1 ml-3">
+                            <span class="text-sm">Certificate</span>
+                        </div>
+                    </a>
                 </div>
             </div>
 
