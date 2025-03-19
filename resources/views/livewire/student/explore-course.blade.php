@@ -128,13 +128,21 @@
 
                 <!-- Action Footer -->
                 <div class="px-5 py-4 bg-gray-50 flex justify-between items-center">
+                    @php
+                    $subs = (auth()->check() && auth()->user()->hasActiveSubscription() && auth()->user()->courses()->wherePivot('is_subs', 1)->count() == 0)
+                    @endphp
                 <div>
+                    @if ($subs)
+                    <span class="text-lg font-semibold text-gray-900"><del>₹{{ $course->discounted_fees }}</del></span>
+                    @else
                     <span class="text-lg font-semibold text-gray-900">₹{{ $course->discounted_fees }}</span>
+                    @endif
+
                     @if (isset($course->original_fees) && $course->original_fees > $course->discounted_fees)
                         <span class="text-sm text-gray-500 line-through ml-2">₹{{ $course->original_fees }}</span>
                     @endif                    
                 </div>
-                @if (auth()->check() && auth()->user()->hasActiveSubscription())
+                @if (auth()->check() && auth()->user()->hasActiveSubscription() && auth()->user()->courses()->wherePivot('is_subs', 1)->count() == 0)
                     <button wire:click="enrollCourse({{ $course->id }})" wire:loading.attr="disabled"
                         class="px-4 py-2 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition duration-200 text-sm">
                         Free
