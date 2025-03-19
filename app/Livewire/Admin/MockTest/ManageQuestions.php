@@ -23,6 +23,9 @@ class ManageQuestions extends Component
     public $deleteId = null;
     public $jsonData = '';
     public $showJsonModal = false;
+    public $selectedQuestions = [];
+    public $selectAll = false;
+    public $bulkDeleteModal = false;
 
     protected $rules = [
         'question' => 'required|string',
@@ -45,6 +48,9 @@ class ManageQuestions extends Component
         $this->options = json_decode($question->options, true);
         $this->correct_answer = $question->correct_answer;
         $this->showQuestionForm = true;
+        
+        // Scroll to form
+        $this->dispatch('scrollTo', selector: '#question-form');
     }
 
     public function delete($id)
@@ -52,6 +58,7 @@ class ManageQuestions extends Component
         try {
             $question = MockTestQuestion::findOrFail($id);
             $question->delete();
+            $this->deleteId = null;
             $this->dispatch('notice', type: 'success', text: 'Question deleted successfully');
         } catch(\Exception $e) {
             $this->dispatch('notice', type: 'error', text: 'Error deleting question');
@@ -114,6 +121,40 @@ class ManageQuestions extends Component
     {
         $this->reset(['question', 'options', 'correct_answer', 'editingQuestionId']);
         $this->showQuestionForm = false;
+    }
+
+    public function updatedSelectAll($value)
+    {
+        if ($value) {
+            $this->selectedQuestions = MockTestQuestion::where('mocktest_id', $this->mockTestId)
+                ->pluck('id')
+                ->map(fn($id) => (string) $id)
+                ->toArray();
+        } else {
+            $this->selectedQuestions = [];
+        }
+    }
+
+    public function showBulkDeleteModal()
+    {
+        if (empty($this->selectedQuestions)) {
+            $this->dispatch('notice', type: 'error', text: 'Please select questions to delete');
+            return;
+        }
+        $this->bulkDeleteModal = true;
+    }
+
+    public function bulkDelete()
+    {
+        try {
+            MockTestQuestion::whereIn('id', $this->selectedQuestions)->delete();
+            $this->selectedQuestions = [];
+            $this->selectAll = false;
+            $this->bulkDeleteModal = false;
+            $this->dispatch('notice', type: 'success', text: 'Questions deleted successfully');
+        } catch(\Exception $e) {
+            $this->dispatch('notice', type: 'error', text: 'Error deleting questions');
+        }
     }
 
     public function render()
