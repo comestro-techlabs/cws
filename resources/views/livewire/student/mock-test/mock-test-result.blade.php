@@ -13,7 +13,7 @@
             <div class="text-center">
                 <h3 class="text-xl font-semibold text-gray-700 mb-2">Percentage</h3>
                 <p class="text-2xl text-blue-600 font-bold">
-                    {{ number_format(($result->score / collect($questions)->sum('marks')) * 100, 2) }}%
+                {{ $this->calculatePercentage($result->score, collect($questions)->sum('marks')) }}%
                 </p>
             </div>
             <div class="text-center">
