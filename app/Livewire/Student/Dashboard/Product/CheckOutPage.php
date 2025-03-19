@@ -7,6 +7,7 @@ use App\Models\Orders;
 use App\Models\Products;
 use App\Models\ShippingDetail;
 use App\Models\User;
+use App\Services\GemService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\Layout;
@@ -28,6 +29,8 @@ class CheckOutPage extends Component
     public $shippingDetailsFilled;
     public $productImageUrl;
     public $user_id;
+    protected $globalGemService;
+
     // public $shippingDetailsAvailablity = true ;
 
 
@@ -47,8 +50,9 @@ class CheckOutPage extends Component
         'phone' => 'required|string|max:50',
     ];
 
-    public function mount($productId)
+    public function mount($productId,GemService $gemService)
     {
+        $this->globalGemService = $gemService;
         // dd($productId);
         $this->my_product = Products::with('category')->findOrFail($productId);
         // dd($this->my_product);
@@ -134,6 +138,10 @@ class CheckOutPage extends Component
                 'payment_method' => 'gems',
                 'transaction_id' => Str::random(10),
             ]);
+            $this->globalGemService  = new GemService();
+            $this->globalGemService->redeemGem($this->totalPriceOfProduct);
+
+
             Mail::raw('Your redemption has been successfully completed.', function ($message) {
                 $message->to(auth()->user()->email)
                     ->subject('Redemption Confirmation');
