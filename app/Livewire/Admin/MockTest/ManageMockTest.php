@@ -38,8 +38,6 @@ class ManageMockTest extends Component
     public $courses;
     public $editingId = null;
     public $showModal = false;
-    public $showQuestionForm = false;
-    public $showQuestionsModal = false;
     public $viewQuestionsId = null;
     public $deleteId = null;
     
@@ -71,13 +69,10 @@ class ManageMockTest extends Component
 
     public function resetForm()
     {
-        $this->reset(['test_title', 'course_id', 'level', 'editingId', 'question', 'options', 'correct_answer']);
+        $this->reset(['test_title', 'course_id', 'level', 'editingId']);
         $this->status = true;
         $this->level = 'beginners';
-        $this->options = ['', '', '', ''];
         $this->showModal = false;
-        $this->showQuestionForm = false;
-        $this->showQuestionsModal = false;
     }
 
     public function save()
@@ -105,7 +100,6 @@ class ManageMockTest extends Component
             ]);
             $this->currentMockTestId = $mockTest->id;
             $this->showModal = false;
-            $this->showQuestionForm = true;
             $this->reset(['test_title', 'course_id', 'level', 'editingId']);
         }
         $this->loadingStates['saving'] = false;
@@ -146,9 +140,7 @@ class ManageMockTest extends Component
             
             if ($this->editingQuestionId) {
                 $this->editingQuestionId = null;
-                $this->showQuestionForm = false;
                 $this->viewQuestionsId = $this->currentMockTestId;
-                $this->showQuestionsModal = true;
             }
         } catch (\Exception $e) {
             $this->dispatch('notice', type: 'error', text: 'Error: ' . $e->getMessage());
@@ -172,12 +164,6 @@ class ManageMockTest extends Component
         $this->showModal = true;
     }
 
-    public function addQuestions($id)
-    {
-        $this->currentMockTestId = $id;
-        $this->showQuestionForm = true;
-    }
-
     public function viewQuestions($id)
     {
         return redirect()->route('admin.mock-test.questions', ['mockTestId' => $id]);
@@ -192,8 +178,6 @@ class ManageMockTest extends Component
             $this->question = $question->question;
             $this->options = json_decode($question->options, true) ?: ['', '', '', ''];
             $this->correct_answer = $question->correct_answer;
-            $this->showQuestionsModal = false;
-            $this->showQuestionForm = true;
         } catch (\Exception $e) {
             $this->dispatch('notice', type: 'error', text: 'Error loading question: ' . $e->getMessage());
         }
@@ -216,7 +200,6 @@ class ManageMockTest extends Component
             $this->dispatch('notice', type: 'error', text: 'Error deleting question: ' . $e->getMessage());
         } finally {
             $this->deleteQuestionId = null;
-            $this->showQuestionsModal = false;
             $this->reset(['question', 'options', 'correct_answer']);
         }
     }

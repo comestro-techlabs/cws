@@ -5,7 +5,7 @@
         <!-- Header with back button and details -->
         <div class="border-b border-gray-200 pb-6 mb-6">
             <div class="flex items-center gap-4 mb-4">
-                <a href="{{ route('admin.mocktest') }}" 
+                <a wire:navigate href="{{ route('admin.mocktest') }}" 
                     class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-lg inline-flex items-center gap-2">
                     <i class="bi bi-arrow-left"></i>
                     Back to Tests
@@ -113,7 +113,7 @@
                         <label class="block text-sm font-medium text-gray-700 mb-2">JSON Data</label>
                         <textarea wire:model="jsonData" rows="10"
                             class="w-full p-2 border rounded-md"
-                            placeholder='[
+                            placeholvader='[
     {
         "question": "What is...",
         "options": ["Option 1", "Option 2", "Option 3", "Option 4"],
