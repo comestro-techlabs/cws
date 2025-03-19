@@ -265,15 +265,26 @@
     @endif
 
     <!-- Delete Confirmation Modal -->
-    <div id="deleteModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50 hidden">
+     @if($deleteModalOpen)
+    <div id="deleteModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50 ">
         <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 p-6">
             <div class="text-center">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 mx-auto text-red-500 mb-4">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
                 </svg>
-                <h3 class="text-lg font-medium text-gray-900 mb-2">Confirm
+                <h3 class="text-lg font-medium text-gray-900 mb-2">Confirm</h3>
+                <p class="text-gray-600 max-w-md mx-auto">Are you sure you want to delete this product?</p>
 
+                <div class="flex justify-center space-x-4 mt-4">    
+                    <button wire:click="closeModalBtn" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg font-medium text-sm hover:bg-gray-300 transition duration-200">
+                        Cancel
+                    </button>
+                    <button wire:click="deleteProduct" class="px-4 py-2 bg-red-500 text-white rounded-lg font-medium text-sm hover:bg-red-600 transition duration-200">
+                        Delete
+                    </button>
+                </div>
             </div>
         </div>
-    </div>    
+    </div>
+    @endif    
  

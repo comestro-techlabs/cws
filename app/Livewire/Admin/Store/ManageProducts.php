@@ -22,6 +22,7 @@ class ManageProducts extends Component
     public $product_stock;
     public $product_gems;
     public $category_id;
+    public $deleteModalOpen = false;
     public $isEditing = false;
     public $editing_products = null;
 
@@ -85,7 +86,23 @@ class ManageProducts extends Component
     public function closeModalBtn()
     {
         $this->isModalOpen = false;
+        $this->deleteModalOpen = false;
     }
+    public function confirmDelete($id)
+    {
+        $this->deleteModalOpen = true;
+        $this->productId = $id;
+    }
+    public function deleteProduct()
+    {       
+        $product = Products::findOrFail($this->productId);
+        if ($product) {
+            $product->delete();
+        }
+        $this->dispatch('refreshProducts', categoryId: $this->category_id)->self();
+       $this->deleteModalOpen = false;
+    }
+
     #[Layout('components.layouts.admin')]
     #[Title('Manage Products')]
     public function render()
