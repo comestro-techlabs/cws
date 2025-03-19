@@ -52,24 +52,7 @@
             </div>
         </div>
 
-        <!-- Stats Overview -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <!-- Total Products -->
-            <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-purple-500">
-                <div class="flex items-center">
-                    <div class="p-3 rounded-full bg-purple-100 mr-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-purple-600">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 class="text-gray-500 text-sm font-medium">Total Products</h3>
-                      {{--  <p class="text-2xl font-bold text-gray-900">{{ $totalProducts }}</p>--}}
-                    </div>
-                </div>
-            </div>
-  
-        </div>
+       
 
         <!-- Products Table -->
         <div class="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-200">
@@ -125,20 +108,19 @@
                                     <span class="text-sm font-medium text-gray-900">{{ $product->points }}</span>
                                 </div>
                             </td>
+                         
                             <td class="px-6 py-4 whitespace-nowrap">
-                                @if($product->status == 'active')
-                                <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                    Active
+                            <button wire:click="toggleStatus({{ $product->id }})" 
+                                class="relative px-3 py-1 rounded-full text-sm {{ $product->status =='active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}"
+                                wire:loading.class="opacity-50 cursor-wait"
+                                wire:target="toggleStatus({{ $product->id }})">
+                                <span wire:loading.remove wire:target="toggleStatus({{ $product->id }})">
+                                    {{ $product->status =='active' ? 'Active' : 'Inactive' }}
                                 </span>
-                                @elseif($product->status == 'inactive')
-                                <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                                    Inactive
+                                <span wire:loading wire:target="toggleStatus({{ $product->id }})" class="flex items-center"> 
+                                    Updating...
                                 </span>
-                                @else
-                                <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                    Out of Stock
-                                </span>
-                                @endif
+                            </button>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                 {{ $product->availableQuantity ?? 'Unlimited' }}

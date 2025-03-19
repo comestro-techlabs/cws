@@ -44,6 +44,20 @@ class ManageProducts extends Component
             $this->products = Products::where('product_category_id', $categoryId)->get();
         }
     }
+    public function toggleStatus($id)
+    {
+        // dd($id);
+        $product = Products::findOrFail($id); 
+        // dd( $product->status);
+        if($product->status ==='active'){
+            $product->update(['status'=>'inactive']);
+        }      
+        else{
+            $product->update(['status'=>'active']);
+        }
+        $this->dispatch('refreshProducts', categoryId: $this->category_id)->self();
+
+    }
     public function editProduct($id)
     {
         // dd($id);

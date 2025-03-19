@@ -16,6 +16,7 @@ class Products extends Model
         'points',
         'imageUrl',
         'availableQuantity',
+        'status',
     ];
 
         public function category()
