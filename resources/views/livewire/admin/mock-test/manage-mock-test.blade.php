@@ -1,19 +1,86 @@
 <div class="container mx-auto px-4 sm:px-8 py-8">
-    <div class="flex flex-col gap-8">
+    @include('components.loader')
+
+    <div class="flex flex-col gap-8" wire:loading.remove>
         <div class="w-full mb-8">
             <div class="bg-white shadow-md rounded-lg p-6">
-
+                <!-- Header -->
                 <div class="flex flex-wrap justify-between items-center p-4">
                     <h2 class="md:text-xl text-lg font-semibold text-slate-500 border-s-4 border-s-purple-600 pl-3 mb-5">
-                        Mock Test
+                        Mock Test Management
                     </h2>
-                    <button wire:click="$toggle('showModal')"
-                        class="bg-purple-800 hover:bg-purple-600 text-white px-4 py-2 rounded">
-                        Add New Mock Test
-                    </button>
+                    <div class="flex gap-2">
+                        <button wire:click="$toggle('showModal')"
+                            class="bg-purple-800 hover:bg-purple-600 text-white px-4 py-2 rounded flex items-center gap-2">
+                            <i class="bi bi-plus-circle"></i> Add New Test
+                        </button>
+                        <button wire:click="$toggle('showJsonModal')"
+                            class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded flex items-center gap-2">
+                            <i class="bi bi-file-earmark-code"></i> Import JSON
+                        </button>
+                    </div>
                 </div>
 
+                <!-- Tabs -->
+                <div class="mb-4 border-b border-gray-200">
+                    <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" role="tablist">
+                        <li class="mr-2" role="presentation">
+                            <button wire:click="$set('activeTab', 'tests')" 
+                                class="inline-block p-4 rounded-t-lg {{ $activeTab === 'tests' ? 'border-b-2 border-purple-600 text-purple-600' : 'hover:text-gray-600 hover:border-gray-300' }}">
+                                Mock Tests
+                            </button>
+                        </li>
+                        <li class="mr-2" role="presentation">
+                            <button wire:click="$set('activeTab', 'questions')"
+                                class="inline-block p-4 rounded-t-lg {{ $activeTab === 'questions' ? 'border-b-2 border-purple-600 text-purple-600' : 'hover:text-gray-600 hover:border-gray-300' }}">
+                                Question Bank
+                            </button>
+                        </li>
+                    </ul>
+                </div>
 
+                <!-- JSON Import Modal -->
+                @if ($showJsonModal)
+                    <div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full"
+                        wire:click.self="$toggle('showJsonModal')">
+                        <div class="relative top-20 mx-auto p-5 border w-2/3 shadow-lg rounded-md bg-white" wire:click.stop>
+                            <h3 class="text-lg font-medium mb-4">Import Mock Test from JSON</h3>
+                            
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">JSON Data</label>
+                                <textarea wire:model="jsonData" rows="10"
+                                    class="w-full p-2 border rounded-md"
+                                    placeholder='{
+    "test_title": "Example Test",
+    "course_id": 1,
+    "level": "beginners",
+    "status": true,
+    "questions": [
+        {
+            "question": "What is...",
+            "options": ["Option 1", "Option 2", "Option 3", "Option 4"],
+            "correct_answer": "Option 1",
+            "marks": 1
+        }
+    ]
+}'></textarea>
+                                @error('jsonData') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            </div>
+
+                            <div class="flex justify-end gap-2">
+                                <button wire:click="$toggle('showJsonModal')"
+                                    class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
+                                    Cancel
+                                </button>
+                                <button wire:click="importJson" wire:loading.attr="disabled"
+                                    class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 disabled:opacity-50">
+                                    <span wire:loading.remove wire:target="importJson">Import</span>
+                                    <span wire:loading wire:target="importJson">Importing...</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                @endif
 
                 <!-- Mock Test Modal -->
                 @if ($showModal)
@@ -76,9 +143,10 @@
                                         class="px-4 py-2 text-gray-700 rounded hover:bg-gray-100">
                                         Cancel
                                     </button>
-                                    <button type="submit"
-                                        class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-                                        Save
+                                    <button type="submit" wire:loading.attr="disabled" 
+                                        class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50">
+                                        <span wire:loading.remove wire:target="save">Save</span>
+                                        <span wire:loading wire:target="save">Saving...</span>
                                     </button>
                                 </div>
                             </form>
@@ -110,13 +178,19 @@
                                 <div class="mb-4">
                                     <label class="block text-sm font-medium text-gray-700">Options</label>
                                     @for ($i = 0; $i < 4; $i++)
-                                        <input type="text" wire:model.live="options.{{ $i }}"
-                                            class="mt-1 p-2 block w-full rounded-md border border-gray-300 focus:outline-none focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 mb-2"
-                                            placeholder="Option {{ $i + 1 }}">
-                                        @error("options.$i")
-                                            <span class="text-red-500 text-sm">{{ $message }}</span>
-                                        @enderror
+                                        <div class="mt-1">
+                                            <input type="text" wire:model.live="options.{{ $i }}"
+                                                class="p-2 block w-full rounded-md border border-gray-300 focus:outline-none focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 mb-2 
+                                                @error('options.'.$i) border-red-500 @enderror"
+                                                placeholder="Option {{ $i + 1 }}">
+                                            @error('options.'.$i)
+                                                <span class="text-red-500 text-xs">{{ $message }}</span>
+                                            @enderror
+                                        </div>
                                     @endfor
+                                    @error('options') 
+                                        <span class="text-red-500 text-xs">{{ $message }}</span>
+                                    @enderror
                                 </div>
 
                                 <div class="mb-4">
@@ -225,94 +299,132 @@
                                     class="px-4 py-2 text-gray-700 rounded hover:bg-gray-100">
                                     Cancel
                                 </button>
-                                <button wire:click="delete"
-                                    class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
-                                    Delete
+                                <button wire:click="delete" wire:loading.attr="disabled"
+                                    class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 disabled:opacity-50">
+                                    <span wire:loading.remove wire:target="delete">Delete</span>
+                                    <span wire:loading wire:target="delete">Deleting...</span>
                                 </button>
                             </div>
                         </div>
                     </div>
                 @endif
 
-                <!-- Table -->
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th scope="col"
-                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Title</th>
-                                <th scope="col"
-                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Course</th>
-                                <th scope="col"
-                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Level</th>
-                                <th scope="col"
-                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Status</th>
-
-                                <th scope="col"
-                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Actions</th>
-                            </tr>
-                        </thead>
-
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            @forelse ($tests as $test)
-                                <tr class="hover:bg-gray-50 text-center">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {{ $test->test_title }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {{ $test->course->title }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {{ ucfirst($test->level) }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        <button wire:click="toggleStatus({{ $test->id }})"
-                                            class="px-2 py-1 rounded text-white {{ $test->status ? 'bg-green-500 hover:bg-green-600' : 'bg-red-500 hover:bg-red-600' }}">
-                                            {{ $test->status ? 'Active' : 'Inactive' }}
-                                        </button>
-                                    </td>
-
-                                    <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-                                        <div class="flex gap-2 item-center justify-center">
-                                            <button wire:click="edit({{ $test->id }})"
-                                                class="bg-blue-500 text-white py-1 px-4 rounded-lg">
-                                                Edit
-                                            </button>
-                                            <button wire:click="viewQuestions({{ $test->id }})"
-                                                class="bg-purple-800 text-white py-1 px-4 rounded-lg">
-                                                View
-                                            </button>
-                                            <button wire:click="addQuestions({{ $test->id }})"
-                                                class="bg-green-500 text-white py-1 px-4 rounded-lg">
-                                                Add Question
-                                            </button>
-
-                                            <button wire:click="confirmDelete({{ $test->id }})"
-                                                class="bg-red-500 text-white py-1 px-4 rounded-lg">
-                                                Delete
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-
-
-                            @empty
-                                <tr>
-                                    <td colspan="4" class="px-6 py-3 text-center">
-                                        No Test found
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
+                <!-- Tab Content -->
                 <div class="mt-4">
-                    {{ $tests->links() }}
+                    @if ($activeTab === 'tests')
+                        <!-- Table -->
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Title</th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Course</th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Level</th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Status</th>
+
+                                        <th scope="col"
+                                            class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Actions</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    @forelse ($tests as $test)
+                                        <tr class="hover:bg-gray-50 text-center">
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                {{ $test->test_title }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                {{ $test->course->title }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                {{ ucfirst($test->level) }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                <button wire:click="toggleStatus({{ $test->id }})" wire:loading.attr="disabled"
+                                                    class="px-2 py-1 rounded text-white {{ $test->status ? 'bg-green-500 hover:bg-green-600' : 'bg-red-500 hover:bg-red-600' }} disabled:opacity-50">
+                                                    <span wire:loading.remove wire:target="toggleStatus({{ $test->id }})">
+                                                        {{ $test->status ? 'Active' : 'Inactive' }}
+                                                    </span>
+                                                    <span wire:loading wire:target="toggleStatus({{ $test->id }})">
+                                                        Updating...
+                                                    </span>
+                                                </button>
+                                            </td>
+
+                                            <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+                                                <div class="flex gap-2 item-center justify-center">
+                                                    <button wire:click="edit({{ $test->id }})"
+                                                        class="bg-blue-500 text-white py-1 px-4 rounded-lg">
+                                                        Edit
+                                                    </button>
+                                                    <button wire:click="viewQuestions({{ $test->id }})"
+                                                        class="bg-purple-800 text-white py-1 px-4 rounded-lg">
+                                                        View
+                                                    </button>
+                                                    <button wire:click="addQuestions({{ $test->id }})"
+                                                        class="bg-green-500 text-white py-1 px-4 rounded-lg">
+                                                        Add Question
+                                                    </button>
+
+                                                    <button wire:click="confirmDelete({{ $test->id }})"
+                                                        class="bg-red-500 text-white py-1 px-4 rounded-lg">
+                                                        Delete
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+
+                                    @empty
+                                        <tr>
+                                            <td colspan="4" class="px-6 py-3 text-center">
+                                                No Test found
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="mt-4">
+                            {{ $tests->links() }}
+                        </div>
+                    @else
+                        <!-- Question Bank -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            @forelse ($allQuestions as $question)
+                                <div class="bg-white shadow-md rounded-lg p-4 border border-gray-200">
+                                    <p class="font-medium mb-2">{{ $question->question }}</p>
+                                    <ul class="list-disc pl-5 mb-2">
+                                        @foreach (json_decode($question->options) ?? [] as $option)
+                                            <li class="{{ $option === $question->correct_answer ? 'text-green-600 font-semibold' : '' }}">
+                                                {{ $option }}
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                    <div class="flex justify-between items-center mt-2 text-sm text-gray-600">
+                                        <span>Marks: {{ $question->marks }}</span>
+                                        <span>Test: {{ $question->mockTest->test_title ?? 'N/A' }}</span>
+                                    </div>
+                                </div>
+                            @empty
+                                <div class="col-span-full text-center py-4 text-gray-500">
+                                    No questions found in the question bank.
+                                </div>
+                            @endforelse
+                        </div>
+                        <div class="mt-4">
+                            {{ $allQuestions->links() }}
+                        </div>
+                    @endif
                 </div>
+
             </div>
         </div>
     </div>
-
 </div>
