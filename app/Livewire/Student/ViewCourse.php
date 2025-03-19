@@ -1,6 +1,7 @@
 <?php
 namespace App\Livewire\Student;
 
+use App\Models\Batch;
 use App\Models\CourseReview;
 use App\Models\Payment;
 use Livewire\Attributes\Layout;
@@ -17,6 +18,7 @@ class ViewCourse extends Component
     public $reviewedCourse;
     public $payment_exist = false;
     public $avgRating;
+    public $enrolledCourses = [];
 
     #[Layout('components.layouts.student')]
     public function mount($courseId)
@@ -26,15 +28,17 @@ class ViewCourse extends Component
             return redirect()->route('auth.login')->with('error', 'You must be logged in to access this page');
         }
 
+        // Load enrolled courses
+        $this->enrolledCourses = Auth::user()
+            ->courses()
+            ->pluck('courses.id')
+            ->toArray();
 
-        // Assign to public property instead of local variable
+        // Load course with features
         $this->course = Course::with('features')->findOrFail($courseId);
-        $this->reviewedCourse=CourseReview::where('course_id',  $courseId)->get();
+        $this->reviewedCourse = CourseReview::where('course_id', $courseId)->get();
         $this->avgRating = CourseReview::where('course_id', $courseId)->avg('rating');
 
-       
-
-        
         $course_id = $this->course->id;
         $user_id = Auth::id();
 
@@ -44,6 +48,7 @@ class ViewCourse extends Component
             ->where("status", "captured")
             ->exists();
 
+        // Handle free course enrollment
         if ($this->course->discounted_fees == 0) {
             $already_enrolled = DB::table('course_student')
                 ->where('user_id', $user_id)
@@ -60,8 +65,9 @@ class ViewCourse extends Component
                         'updated_at' => now(),
                     ]);
                     $this->payment_exist = true;
+                    $this->enrolledCourses[] = $course_id;
                 } catch (\Exception $e) {
-                    session()->flash('error', 'Failed to enroll in free course');
+                    session()->flash('error', 'Failed to enroll in free course: ' . $e->getMessage());
                 }
             }
         }
@@ -106,16 +112,13 @@ class ViewCourse extends Component
                 'order_id' => $razorpayOrder->id
             ]);
 
-            if ($payment) {
-                return [
-                    'payment_id' => $payment->id,
-                    'order_id' => $razorpayOrder->id // Use Razorpay order ID
-                ];
-            }
-            
-            return null;
+            return [
+                'payment_id' => $payment->id,
+                'order_id' => $razorpayOrder->id
+            ];
         } catch (\Exception $e) {
             \Log::error('Payment Initiation Error: ' . $e->getMessage());
+            session()->flash('error', 'Failed to initiate payment');
             return null;
         }
     }
@@ -126,37 +129,90 @@ class ViewCourse extends Component
         try {
             $payment = Payment::where('id', $response['payment_id'])->first();
             
-            if ($payment) {
-                $payment->update([
-                    'razorpay_payment_id' => $response['razorpay_payment_id'],
-                    'razorpay_order_id' => $response['razorpay_order_id'],
-                    'razorpay_signature' => $response['razorpay_signature'],
-                    'payment_status' => 'completed',
-                    'status' => 'captured',
-                    'payment_date' => now(),
-                ]);
-
-                // Enroll user in course
-                DB::table('course_student')->insert([
-                    'user_id' => Auth::id(),
-                    'course_id' => $this->course->id,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
-
-                // Return direct array instead of json response
-                return ['success' => true];
+            if (!$payment) {
+                return [
+                    'success' => false,
+                    'message' => 'Payment record not found'
+                ];
             }
 
-            return [
-                'success' => false,
-                'message' => 'Payment record not found'
-            ];
+            $payment->update([
+                'razorpay_payment_id' => $response['razorpay_payment_id'],
+                'razorpay_order_id' => $response['razorpay_order_id'],
+                'razorpay_signature' => $response['razorpay_signature'],
+                'payment_status' => 'completed',
+                'status' => 'captured',
+                'payment_date' => now(),
+            ]);
+
+            // Enroll user in course
+            DB::table('course_student')->insert([
+                'user_id' => Auth::id(),
+                'course_id' => $this->course->id,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            $this->payment_exist = true;
+            $this->enrolledCourses[] = $this->course->id;
+
+            return ['success' => true];
         } catch (\Exception $e) {
+            \Log::error('Payment Verification Error: ' . $e->getMessage());
             return [
                 'success' => false,
                 'message' => 'Payment verification failed: ' . $e->getMessage()
             ];
+        }
+    }
+
+    public function enrollCourse($courseId)
+    {
+        try {
+            $user = auth()->user();
+    
+            if (!$user->is_active) {
+                return redirect()->back()->with('error', 'Your account is inactive. Please contact support.');
+            }
+    
+            if ($user->courses()->where('course_id', $courseId)->exists()) {
+                return redirect()->back()->with('error', 'You are already enrolled in this course.');
+            }
+    
+            $hasSubscription = $user->hasActiveSubscription();
+            $subscriptionCourseCount = $user->courses()
+                ->whereHas('batches', function ($query) {
+                    $query->whereDate('end_date', '>=', now());
+                })
+                ->wherePivot('is_subs', 1)
+                ->count();
+    
+            if (!$hasSubscription) {
+                return redirect()->back()->with('warning', 'You need to purchase this course to enroll.');
+            }
+    
+            if ($hasSubscription && $subscriptionCourseCount >= 1) {
+                return redirect()->back()->with('warning', 'You have already enrolled in one course with your subscription. Please purchase this course to enroll.');
+            }
+    
+            $batch = Batch::where('course_id', $courseId)
+                ->whereDate('end_date', '>=', now())
+                ->first();
+    
+            if (!$batch) {
+                return redirect()->back()->with('error', 'No active batch available for this course.');
+            }
+    
+            $user->courses()->attach($courseId, [
+                'batch_id' => $batch->id,
+                'is_subs' => 1,
+            ]);
+    
+            $this->enrolledCourses[] = $courseId;
+    
+            return redirect()->route('student.dashboard')->with('success', 'You have successfully enrolled in the course.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Enrollment failed: ' . $e->getMessage());
         }
     }
 
