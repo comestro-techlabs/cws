@@ -228,8 +228,6 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
     });
 
 });
-
-
 // public routes here:
 Route::controller(PublicController::class)->group(function () {
     Route::get('/about', 'aboutPage')->name('public.about');
