@@ -63,6 +63,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             <!-- Product Card  -->
              @foreach ($products as $product)
+             @if($product->status == 'active')
             <div class="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100 hover:border-purple-200 hover:shadow-md transition duration-200">
                 <div class="relative h-48">
                     <img src="" alt="{{$product->name}}" class="w-full h-full object-cover">
@@ -111,6 +112,7 @@
                     </a>
                 </div> 
             </div>
+            @endif
             @endforeach
 
            

@@ -125,7 +125,7 @@ class ManageAssignment extends Component
         $this->resetForm();
         $this->showModal = true;
     }
-
+ 
     public function edit($assignmentId)
     {
         $this->editingAssignment = Assignments::find($assignmentId);
