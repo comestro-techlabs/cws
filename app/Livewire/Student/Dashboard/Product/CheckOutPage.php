@@ -2,10 +2,13 @@
 
 namespace App\Livewire\Student\Dashboard\Product;
 
+use App\Mail\ProductRedeem;
 use Illuminate\Support\Str;
 use App\Models\Orders;
 use App\Models\Products;
 use App\Models\ShippingDetail;
+use App\Models\User;
+use App\Services\GemService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\Layout;
@@ -20,12 +23,15 @@ class CheckOutPage extends Component
     public $belongToCategory;
     public $gems;
     //will make these dynamic
-    public $totalAvailableGems = 1000;
+    public $totalAvailableGems;
     public $shipping_charge = 0;
     public $totalPriceOfProduct;
     public $balanceGems;
     public $shippingDetailsFilled;
     public $productImageUrl;
+    public $user_id;
+    protected $globalGemService;
+
     // public $shippingDetailsAvailablity = true ;
 
 
@@ -45,8 +51,9 @@ class CheckOutPage extends Component
         'phone' => 'required|string|max:50',
     ];
 
-    public function mount($productId)
+    public function mount($productId,GemService $gemService)
     {
+        $this->globalGemService = $gemService;
         // dd($productId);
         $this->my_product = Products::with('category')->findOrFail($productId);
         // dd($this->my_product);
@@ -56,12 +63,16 @@ class CheckOutPage extends Component
         $this->gems = $this->my_product->points;
         $this->belongToCategory = $this->my_product->category->name;
         // dd($this->belongToCategory);
+        $this->user_id = Auth::id();
+        // dd($this->user_id);
+        $this->totalAvailableGems = User::where('id',$this->user_id)->value('gem');
         $this->balanceGems = $this->totalAvailableGems - $this->gems;
         $this->totalPriceOfProduct = $this->gems + $this->shipping_charge;
         // $this->refreshShipDetails();
         $this->shippingDetailsFilled = ShippingDetail::where('user_id', Auth::id())->first();
         $this->productImageUrl =  $this->my_product->imageUrl;
         // dd($this->shippingDetailsFilled);
+        
 
     }
     public function editShippingAddress()
@@ -117,6 +128,9 @@ class CheckOutPage extends Component
     public function completeRedemption()
     {
         // dd('shaique'); 
+        if ($this->totalAvailableGems < $this->gems) {
+            return;
+        }
         try {
             Orders::create([
                 'user_id' => Auth::id(),
@@ -128,10 +142,16 @@ class CheckOutPage extends Component
                 'payment_method' => 'gems',
                 'transaction_id' => Str::random(10),
             ]);
-            Mail::raw('Your redemption has been successfully completed.', function ($message) {
-                $message->to(auth()->user()->email)
-                    ->subject('Redemption Confirmation');
-            });
+            $this->globalGemService  = new GemService();
+            $this->globalGemService->redeemGem($this->totalPriceOfProduct);
+
+
+            // Mail::raw('Your redemption has been successfully completed.', function ($message) {
+            //     $message->to(auth()->user()->email)
+            //         ->subject('Redemption Confirmation');
+            // });
+            Mail::to(auth()->user()->email)->send(new ProductRedeem($this->shippingDetailsFilled,$this->my_product,));
+
 
             // session()->flash('message', 'Redemption email sent successfully!');
             $this->dispatch('showAlert', 'Redemption completed successfully!');

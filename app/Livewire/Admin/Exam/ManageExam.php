@@ -34,6 +34,12 @@ class ManageExam extends Component
     public $showPasscodeModal = false;
     public $selectedExamId;
     public $generatedPasscode;
+    public $filters = [
+        'course' => '',
+        'batch' => '',
+        'status' => '',
+        'date' => ''
+    ];
 
     protected $rules = [
         'exam_name' => 'required|string',
@@ -59,7 +65,12 @@ class ManageExam extends Component
     public function updatedCourseId($value)
     {
         if ($value) {
-            $this->batches = Batch::where('course_id', $value)->get();
+            $this->batch_id = ''; // Reset batch selection
+            $this->batches = Batch::where('course_id', $value)
+                ->orderBy('batch_name')
+                ->get();
+        } else {
+            $this->batches = [];
         }
     }
 
@@ -87,6 +98,9 @@ class ManageExam extends Component
         $this->editingExamId = $exam->id;
         $this->exam_name = $exam->exam_name;
         $this->course_id = $exam->course_id;
+        $this->batches = Batch::where('course_id', $exam->course_id)
+            ->orderBy('batch_name')
+            ->get();
         $this->batch_id = $exam->batch_id;
         $this->exam_date = $exam->exam_date;
         $this->status = $exam->status;
@@ -117,18 +131,13 @@ class ManageExam extends Component
  
     public function toggleStatus(Exam $exam)
     {
-        if ($exam->quizzes()->count() >= 10) {
-            $exam->status = !$exam->status;
-            $exam->save();
+        $exam->status = !$exam->status;
+        $exam->save();
 
-            if ($exam->status) {
-                $this->notifyUsers($exam);
-            }
-            $this->dispatch('notice', type: 'info', text: 'Exam status updated successfully!');
-        } else {
-            $this->dispatch('notice', type: 'error', text: 'Exam must have at least 10 quizzes to activate.');
-            session()->flash('error', 'Exam must have at least 10 quizzes to activate.');
+        if ($exam->status) {
+            $this->notifyUsers($exam);
         }
+        $this->dispatch('notice', type: 'success', text: 'Exam status updated successfully!');
     }
 
     private function notifyUsers(Exam $exam)
@@ -171,11 +180,28 @@ class ManageExam extends Component
         $this->generatedPasscode = null;
     }
 
+    public function resetFilters()
+    {
+        $this->reset('filters');
+    }
+
     public function render()
     {
         $exams = Exam::with(['course', 'batch'])
             ->when($this->search, function($query) {
                 $query->where('exam_name', 'like', '%' . $this->search . '%');
+            })
+            ->when($this->filters['course'], function($query) {
+                $query->where('course_id', $this->filters['course']);
+            })
+            ->when($this->filters['batch'], function($query) {
+                $query->where('batch_id', $this->filters['batch']);
+            })
+            ->when($this->filters['status'] !== '', function($query) {
+                $query->where('status', $this->filters['status']);
+            })
+            ->when($this->filters['date'], function($query) {
+                $query->whereDate('exam_date', $this->filters['date']);
             })
             ->latest()
             ->paginate(10);
