@@ -11,18 +11,17 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Address;
 
 
-class UserRegisterMail extends Mailable
+class ProductRedeem extends Mailable
 {
     use Queueable, SerializesModels;
 
-    /**
-     * Create a new message instance.
-     */
-    public $user;
-    public function __construct($user)
+    public $shippingDetails;
+    public $productDetail;
+    public function __construct($shippingData,$productData)
     {
-        $this->user = $user;
-    } 
+        $this->shippingDetails = $shippingData;
+        $this->productDetail = $productData;
+    }
 
     /**
      * Get the message envelope.
@@ -30,9 +29,10 @@ class UserRegisterMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Welcome to Learn Syntax!',
+            subject: 'Redeemed Succesfully',
             from: new Address(config('mail.from.address'), 'Learn Syntax'),
-            replyTo: [new Address($this->user->email ,  $this->user->name)]);
+            replyTo: [new Address($this->shippingDetails->email ,  $this->shippingDetails->first_name)],
+        );
     }
 
     /**
@@ -41,8 +41,10 @@ class UserRegisterMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.registration',
-            with: ['user' => $this->user]);
+            view: 'emails.product_redeemed',
+            with: ['user' => $this->shippingDetails->first_name,'productDetail'=>$this->productDetail]
+
+        );
     }
 
     /**
