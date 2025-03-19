@@ -30,15 +30,15 @@ class DatabaseSeeder extends Seeder
             // PostChapterSeeder::class,
             // PostTopicPostSeeder::class,
             // PostMyPostSeeder::class,
-            MockTestSeeder::class,        // Mock tests after courses
+            // MockTestSeeder::class,        // Mock tests after courses
             // UserSeeder::class,            // Users must be first
             // CategorySeeder::class,        // Categories before courses
             // CourseSeeder::class,          // Courses before batches
             // BatchSeeder::class,           // Batches before assignments
             // CourseUserSeeder::class,      // Enroll users in courses
             // AssignmentSeeder::class,      // Assignments last
-            // ProductCategoriesSeeder::class,
-            // ProductsSeeder::class,
+            ProductCategoriesSeeder::class,
+            ProductsSeeder::class,
         ]);
     }
 }

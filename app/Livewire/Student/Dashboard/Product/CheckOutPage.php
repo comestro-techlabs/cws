@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Student\Dashboard\Product;
 
+use App\Mail\ProductRedeem;
 use Illuminate\Support\Str;
 use App\Models\Orders;
 use App\Models\Products;
@@ -145,10 +146,12 @@ class CheckOutPage extends Component
             $this->globalGemService->redeemGem($this->totalPriceOfProduct);
 
 
-            Mail::raw('Your redemption has been successfully completed.', function ($message) {
-                $message->to(auth()->user()->email)
-                    ->subject('Redemption Confirmation');
-            });
+            // Mail::raw('Your redemption has been successfully completed.', function ($message) {
+            //     $message->to(auth()->user()->email)
+            //         ->subject('Redemption Confirmation');
+            // });
+            Mail::to(auth()->user()->email)->send(new ProductRedeem($this->shippingDetailsFilled,$this->my_product,));
+
 
             // session()->flash('message', 'Redemption email sent successfully!');
             $this->dispatch('showAlert', 'Redemption completed successfully!');
