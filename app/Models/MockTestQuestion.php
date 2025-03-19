@@ -13,6 +13,6 @@ class MockTestQuestion extends Model
     ];
     public function mockTest()
     {
-        return $this->belongsTo(MockTest::class);
+        return $this->belongsTo(MockTest::class, 'mocktest_id');
     }
 }

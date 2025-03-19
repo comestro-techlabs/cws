@@ -52,6 +52,18 @@ class ManageMockTest extends Component
         'correct_answer' => 'required|in_array:options.*',
     ];
 
+    public $activeTab = 'tests';
+    public $showJsonModal = false;
+    public $jsonData = '';
+    public $allQuestions;
+
+    protected $loadingStates = [
+        'saving' => false,
+        'deleting' => false,
+        'importing' => false,
+        'toggling' => false
+    ];
+
     public function mount()
     {
         $this->courses = Course::all();
@@ -70,6 +82,7 @@ class ManageMockTest extends Component
 
     public function save()
     {
+        $this->loadingStates['saving'] = true;
         $this->validateOnly('test_title');
         $this->validateOnly('course_id');
         $this->validateOnly('level');
@@ -95,34 +108,51 @@ class ManageMockTest extends Component
             $this->showQuestionForm = true;
             $this->reset(['test_title', 'course_id', 'level', 'editingId']);
         }
+        $this->loadingStates['saving'] = false;
     }
 
     public function saveQuestion()
     {
-        $this->validate($this->rules);
+        $this->validate([
+            'question' => 'required|string',
+            'options' => 'required|array|min:4|max:4',
+            'options.*' => 'required|string|distinct',
+            'correct_answer' => 'required|string|in:' . implode(',', $this->options),
+        ]);
 
-        if ($this->editingQuestionId) {
-            $question = MockTestQuestion::find($this->editingQuestionId);
-            $question->update([
-                'question' => $this->question,
-                'options' => json_encode($this->options),
-                'correct_answer' => $this->correct_answer,
-                'marks' => 1,
-            ]);
-            $this->editingQuestionId = null;
-            $this->showQuestionForm = false;
-            $this->showQuestionsModal = true;
-        } else {
-            MockTestQuestion::create([
-                'mocktest_id' => $this->currentMockTestId,
-                'question' => $this->question,
-                'options' => json_encode($this->options),
-                'correct_answer' => $this->correct_answer,
-                'marks' => 1,
-            ]);
+        try {
+            if ($this->editingQuestionId) {
+                $question = MockTestQuestion::findOrFail($this->editingQuestionId);
+                $question->update([
+                    'question' => $this->question,
+                    'options' => json_encode($this->options),
+                    'correct_answer' => $this->correct_answer,
+                    'marks' => 1,
+                ]);
+                $this->dispatch('notice', type: 'success', text: 'Question updated successfully!');
+            } else {
+                MockTestQuestion::create([
+                    'mocktest_id' => $this->currentMockTestId,
+                    'question' => $this->question,
+                    'options' => json_encode($this->options),
+                    'correct_answer' => $this->correct_answer,
+                    'marks' => 1,
+                ]);
+                $this->dispatch('notice', type: 'success', text: 'Question added successfully!');
+            }
+
+            $this->reset(['question', 'options', 'correct_answer']);
+            $this->options = ['', '', '', ''];
+            
+            if ($this->editingQuestionId) {
+                $this->editingQuestionId = null;
+                $this->showQuestionForm = false;
+                $this->viewQuestionsId = $this->currentMockTestId;
+                $this->showQuestionsModal = true;
+            }
+        } catch (\Exception $e) {
+            $this->dispatch('notice', type: 'error', text: 'Error: ' . $e->getMessage());
         }
-        $this->reset(['question', 'options', 'correct_answer']);
-        $this->options = ['', '', '', ''];
     }
 
     public function finishQuestions()
@@ -150,35 +180,53 @@ class ManageMockTest extends Component
 
     public function viewQuestions($id)
     {
-        $this->viewQuestionsId = $id;
-        $this->showQuestionsModal = true;
+        return redirect()->route('admin.mock-test.questions', ['mockTestId' => $id]);
     }
+
     public function editQuestion($id)
     {
-        $question = MockTestQuestion::findOrFail($id);
-        $this->editingQuestionId = $id;
-        $this->currentMockTestId = $question->mocktest_id;
-        $this->question = $question->question;
-        $this->options = json_decode($question->options, true);
-        $this->correct_answer = $question->correct_answer;
-        $this->showQuestionsModal = false;
-        $this->showQuestionForm = true;
+        try {
+            $question = MockTestQuestion::findOrFail($id);
+            $this->editingQuestionId = $id;
+            $this->currentMockTestId = $question->mocktest_id;
+            $this->question = $question->question;
+            $this->options = json_decode($question->options, true) ?: ['', '', '', ''];
+            $this->correct_answer = $question->correct_answer;
+            $this->showQuestionsModal = false;
+            $this->showQuestionForm = true;
+        } catch (\Exception $e) {
+            $this->dispatch('notice', type: 'error', text: 'Error loading question: ' . $e->getMessage());
+        }
     }
+
     public function confirmDeleteQuestion($id)
     {
         $this->deleteQuestionId = $id;
     }
+
     public function deleteQuestion()
     {
-        if ($this->deleteQuestionId) {
-            MockTestQuestion::find($this->deleteQuestionId)->delete();
+        try {
+            if ($this->deleteQuestionId) {
+                $question = MockTestQuestion::findOrFail($this->deleteQuestionId);
+                $question->delete();
+                $this->dispatch('notice', type: 'success', text: 'Question deleted successfully!');
+            }
+        } catch (\Exception $e) {
+            $this->dispatch('notice', type: 'error', text: 'Error deleting question: ' . $e->getMessage());
+        } finally {
             $this->deleteQuestionId = null;
+            $this->showQuestionsModal = false;
+            $this->reset(['question', 'options', 'correct_answer']);
         }
     }
+
     public function toggleStatus($id)
     {
+        $this->loadingStates['toggling'] = true;
         $test = MockTest::findOrFail($id);
         $test->update(['status' => !$test->status]);
+        $this->loadingStates['toggling'] = false;
     }
 
     public function confirmDelete($id)
@@ -188,13 +236,64 @@ class ManageMockTest extends Component
 
     public function delete()
     {
+        $this->loadingStates['deleting'] = true;
         MockTest::find($this->deleteId)->delete();
         $this->deleteId = null;
+        $this->loadingStates['deleting'] = false;
     }
-           public function render()
+
+    public function importJson()
+    {
+        $this->loadingStates['importing'] = true;
+        try {
+            $data = json_decode($this->jsonData, true);
+            
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new \Exception('Invalid JSON format');
+            }
+
+            $this->validate([
+                'jsonData' => 'required|json',
+            ]);
+
+            // Create mock test
+            $mockTest = MockTest::create([
+                'test_title' => $data['test_title'],
+                'course_id' => $data['course_id'],
+                'level' => $data['level'],
+                'status' => $data['status'] ?? true,
+            ]);
+
+            // Create questions
+            foreach ($data['questions'] as $questionData) {
+                MockTestQuestion::create([
+                    'mocktest_id' => $mockTest->id,
+                    'question' => $questionData['question'],
+                    'options' => json_encode($questionData['options']),
+                    'correct_answer' => $questionData['correct_answer'],
+                    'marks' => $questionData['marks'] ?? 1,
+                ]);
+            }
+
+            $this->showJsonModal = false;
+            $this->jsonData = '';
+            $this->dispatch('notice', type: 'success', text: 'Mock test imported successfully!');
+
+        } catch (\Exception $e) {
+            $this->dispatch('notice', type: 'error', text: 'Error: ' . $e->getMessage());
+        } finally {
+            $this->loadingStates['importing'] = false;
+        }
+    }
+
+    public function render()
     {
         $tests = MockTest::with('course')->latest()->paginate(10);
         $questions = $this->viewQuestionsId ? MockTestQuestion::where('mocktest_id', $this->viewQuestionsId)->get() : [];
-        return view('livewire.admin.mock-test.manage-mock-test', compact('tests', 'questions'));
+        $allQuestions = $this->activeTab === 'questions' 
+            ? MockTestQuestion::with('mockTest')->latest()->paginate(12)
+            : collect();
+
+        return view('livewire.admin.mock-test.manage-mock-test', compact('tests', 'questions', 'allQuestions'));
     }
 }

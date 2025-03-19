@@ -75,6 +75,7 @@ use App\Livewire\Student\Billing\ShowBilling;
 use App\Livewire\Student\Subscriptions\Plans;
 use App\Livewire\Student\Marksheet\StudentMarksheet;
 use App\Livewire\Student\Certificate\ShowCertificate;
+use App\Livewire\Admin\MockTest\ManageQuestions;
 
 // public routes
 Route::get('/', Home::class)->name('public.index');
@@ -180,6 +181,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
 
         //mocktest routes
         Route::get('/mocktest', ManageMockTest::class)->name('admin.mocktest');
+        Route::get('/mock-test/{mockTestId}/questions', ManageQuestions::class)->name('admin.mock-test.questions');
         // Assignment Routes
         Route::get('/assignment/manage', ManageAssignment::class)->name('admin.assignment.manage');
 
