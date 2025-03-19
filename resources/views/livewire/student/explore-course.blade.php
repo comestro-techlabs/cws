@@ -129,28 +129,16 @@
                 <!-- Action Footer -->
                 <div class="px-5 py-4 bg-gray-50 flex justify-between items-center">
                 <div>
-                    @php
-                        $isSubscribedUserWithoutCourses = auth()->check() && auth()->user()->hasActiveSubscription() && auth()->user()->courses()->count() === 0;
-                    @endphp
-
-                    @if ($isSubscribedUserWithoutCourses && $course->discounted_fees > 0)
-                        <span class="text-lg font-semibold text-gray-900"><del>₹{{ $course->discounted_fees }}</del></span>
-                   
-                    @elseif ($course->discounted_fees == 0)
-                        <span class="text-lg font-semibold text-gray-900">Free</span>
-                    @else
-                        <span class="text-lg font-semibold text-gray-900">₹{{ $course->discounted_fees }}</span>
-                        @if (isset($course->original_fees) && $course->original_fees > $course->discounted_fees)
-                            <span class="text-sm text-gray-500 line-through ml-2">₹{{ $course->original_fees }}</span>
-                        @endif
-                    @endif
+                    <span class="text-lg font-semibold text-gray-900">₹{{ $course->discounted_fees }}</span>
+                    @if (isset($course->original_fees) && $course->original_fees > $course->discounted_fees)
+                        <span class="text-sm text-gray-500 line-through ml-2">₹{{ $course->original_fees }}</span>
+                    @endif                    
                 </div>
-
-                    @if (auth()->check() && auth()->user()->hasActiveSubscription() && auth()->user()->courses()->count() === 0)
+                @if (auth()->check() && auth()->user()->hasActiveSubscription())
                     <button wire:click="enrollCourse({{ $course->id }})" wire:loading.attr="disabled"
                         class="px-4 py-2 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition duration-200 text-sm">
                         Free
-                    </button>
+                    </button>             
                 @elseif (auth()->check() && auth()->user()->hasActiveSubscription())
                     <button wire:click="enrollCourse({{ $course->id }})" wire:loading.attr="disabled"
                         class="px-4 py-2 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition duration-200 text-sm">
