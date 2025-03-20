@@ -90,7 +90,7 @@
                             </svg>
                             {{$product->category->name}}
                         </span>
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-blue-800">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium @if($product->availableQuantity <= 0) bg-red-100 text-red-800 @endif bg-purple-100 text-blue-800">
                             {{$product->availableQuantity}} available
                         </span>
                     </div>
@@ -106,10 +106,10 @@
                     </div>
                     <a href="{{ route('v2.student.checkout', ['productId' => $product->id]) }}"
                     class="px-4 py-2 font-medium rounded-lg focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition duration-200 text-sm
-                            {{ $totalAvailableGems <= $product->points ? 'bg-gray-400 text-gray-200 cursor-not-allowed pointer-events-none' : 'bg-primary text-white hover:bg-primary' }}"
-                    @if($totalAvailableGems < $product->points) onclick="return false;" @endif>
+                            {{ $totalAvailableGems <= $product->points || $product->availableQuantity <= 0 ? 'bg-gray-400 text-gray-200 cursor-not-allowed pointer-events-none' : 'bg-primary text-white hover:bg-primary' }}"
+                    @if($totalAvailableGems < $product->points || $product->availableQuantity <= 0) onclick="return false;" @endif>
                         Redeem Now
-                    </a>
+                    </a> 
                 </div> 
             </div>
             @endif

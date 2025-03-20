@@ -25,7 +25,7 @@ class OurProducts extends Component
         // dd($this->user_id);
         $this->totalAvailableGems = User::where('id',$this->user_id)->value('gem');
         // dd($this->totalAvailableGems);
-        // $this->$totalAvailableGems = User::
+        
     }
     public function updatedSelectedCategory($categoryId)
     {
