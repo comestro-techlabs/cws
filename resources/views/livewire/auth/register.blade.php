@@ -8,7 +8,7 @@
                         <h2 class="text-3xl font-bold text-gray-900 mb-2">Create Account</h2>
                         <p class="text-gray-600">Join our learning community today</p>
                     </div>
-
+ 
                     <form wire:submit.prevent="register" class="space-y-6">
                         <!-- Name Field -->
                         <div>
@@ -34,13 +34,13 @@
 
                         <!-- Phone Field -->
                         <div>
-                            <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                            <label for="contact" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
                             <input type="tel" 
-                                   wire:model="phone" 
-                                   id="phone"
+                                   wire:model="contact" 
+                                   id="contact"
                                    class="appearance-none block w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
-                                   placeholder="Enter your phone number">
-                            @error('phone') <span class="text-sm text-red-600 mt-1">{{ $message }}</span> @enderror
+                                   placeholder="Enter your contact number">
+                            @error('contact') <span class="text-sm text-red-600 mt-1">{{ $message }}</span> @enderror
                         </div>
 
                         <!-- Password Fields -->
