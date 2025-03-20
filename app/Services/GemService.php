@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Gem;
+use App\Models\Products;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -48,5 +49,11 @@ class GemService
         $this->user->save();
 
         return $this->user->gem;
+    }
+
+    public function reduceStock($product_id){
+        $product = Products::where('id', $product_id)->first();
+        $product->availableQuantity -= 1;
+        $product->save();
     }
 }

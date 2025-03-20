@@ -30,7 +30,9 @@ class CheckOutPage extends Component
     public $shippingDetailsFilled;
     public $productImageUrl;
     public $user_id;
+    public $product_id;
     protected $globalGemService;
+
 
     // public $shippingDetailsAvailablity = true ;
 
@@ -57,6 +59,7 @@ class CheckOutPage extends Component
         // dd($productId);
         $this->my_product = Products::with('category')->findOrFail($productId);
         // dd($this->my_product);
+        $this->product_id = $this->my_product->id;
         $this->title = $this->my_product->name;
         // dd($this->title);
         $this->description = $this->my_product->description;
@@ -144,17 +147,13 @@ class CheckOutPage extends Component
             ]);
             $this->globalGemService  = new GemService();
             $this->globalGemService->redeemGem($this->totalPriceOfProduct);
+            //this will reduce the stock of the product by one whenever it is redeemed and logic is in Gemservices
+            $this->globalGemService->reduceStock($this->product_id);
 
-
-            // Mail::raw('Your redemption has been successfully completed.', function ($message) {
-            //     $message->to(auth()->user()->email)
-            //         ->subject('Redemption Confirmation');
-            // });
             Mail::to(auth()->user()->email)->send(new ProductRedeem($this->shippingDetailsFilled,$this->my_product,));
 
-
-            // session()->flash('message', 'Redemption email sent successfully!');
             $this->dispatch('showAlert', 'Redemption completed successfully!');
+
         } catch (\Exception $e) {
             $this->dispatch('showAlert', 'Something went wrong! Please try again.');
         }
