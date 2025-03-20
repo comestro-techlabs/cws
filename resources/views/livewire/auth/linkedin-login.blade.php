@@ -5,7 +5,7 @@
         </div>
     @endif
 
-    <button wire:click="redirectToLinkedin" type="button"
+    <a wire:navigate href="{{ route('linkedin.redirect') }}"
         class="w-full bg-white text-gray-700 font-semibold py-3 px-6 rounded-lg border border-gray-300 hover:bg-gray-100 focus:ring-2 focus:ring-gray-800 focus:ring-offset-2 transition duration-200 flex items-center justify-center gap-2">
         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="25" viewBox="0 0 48 48">
             <path fill="#0288D1"
@@ -16,5 +16,5 @@
             </path>
         </svg>
         <span>Sign in with Linkedin</span>
-    </button>
+    </a>
 </div>
