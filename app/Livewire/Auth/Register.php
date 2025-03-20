@@ -10,14 +10,14 @@ class Register extends Component
 {
     public $name = '';
     public $email = '';
-    public $phone = '';
+    public $contact = '';
     public $password = '';
     public $password_confirmation = '';
 
     protected $rules = [
         'name' => 'required|min:3',
         'email' => 'required|email|unique:users',
-        'phone' => 'required|digits:10|unique:users',
+        'contact' => 'required|digits:10|unique:users',
         'password' => 'required|min:8|confirmed',
     ];
 
@@ -28,7 +28,7 @@ class Register extends Component
         $user = User::create([
             'name' => $this->name,
             'email' => $this->email,
-            'phone' => $this->phone,
+            'contact' => $this->contact,
             'password' => Hash::make($this->password),
         ]);
 
