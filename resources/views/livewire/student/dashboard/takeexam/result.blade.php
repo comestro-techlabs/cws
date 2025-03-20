@@ -1,4 +1,5 @@
 <div>
+    @include('components.loader')
     <div class="py-6 px-4 sm:px-6 lg:px-8">
         <!-- Header with back button -->
         <div class="flex items-center justify-between mb-6">

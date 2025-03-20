@@ -10,7 +10,7 @@ use Livewire\Attributes\On;
 use Livewire\Component;
 use App\Models\Course;  // Add this import
 
-#[Layout('components.layouts.student')]
+#[Layout('components.layouts.exam')] // Change layout to exam
 class ShowQuiz extends Component
 {
     public $courses = null;
@@ -42,6 +42,7 @@ class ShowQuiz extends Component
 
     public function verifyPasscode()
     {
+        $this->dispatch('loading');
         if (!Auth::check()) {
             return redirect()->route('auth.login');
         }
@@ -63,6 +64,7 @@ class ShowQuiz extends Component
         if ($this->passcode === $exam->passcode) {
             $this->passcodeVerified = true;
             $this->passcodeError = null;
+            $this->examId = $exam->id; // Save the exam ID
             $this->quizzes = collect($exam->quizzes)->shuffle()->take(10);
             
             // Initialize answers array with null values for each quiz
@@ -178,6 +180,7 @@ class ShowQuiz extends Component
 
     public function startExam()
     {
+        $this->dispatch('loading');
         $this->isFullscreen = true;
         $this->dispatch('enterFullscreen');
         $this->startTimer();
@@ -191,6 +194,11 @@ class ShowQuiz extends Component
 
     public function goToQuestion($index)
     {
+        $this->dispatch('loading');
+        if (!$this->courseId) {
+            return redirect()->route('student.takeExam');
+        }
+
         if ($index >= 0 && $index < ($this->quizzes ? $this->quizzes->count() : 0)) {
             $this->currentQuestion = $index;
         }
@@ -198,6 +206,7 @@ class ShowQuiz extends Component
 
     public function nextQuestion()
     {
+        $this->dispatch('loading');
         if ($this->currentQuestion < $this->quizzes->count() - 1) {
             $this->currentQuestion++;
         }
@@ -205,6 +214,7 @@ class ShowQuiz extends Component
 
     public function previousQuestion()
     {
+        $this->dispatch('loading');
         if ($this->currentQuestion > 0) {
             $this->currentQuestion--;
         }
@@ -222,9 +232,37 @@ class ShowQuiz extends Component
 
     public function submitExam()
     {
-        // ...existing submit logic...
+        $this->dispatch('loading');
+        if (!$this->courseId || !$this->examId) {
+            return redirect()->route('student.takeExam');
+        }
+
+        // Store answers and update total marks
+        $examUser = ExamUser::firstOrNew([
+            'user_id' => Auth::id(),
+            'exam_id' => $this->examId
+        ]);
+
+        if ($examUser->attempts >= 2) {
+            return redirect()->route('v2.student.quiz', ['courseId' => $this->courseId])
+                ->with('error', 'Maximum attempts reached');
+        }
+
+        $examUser->attempts = ($examUser->attempts ?? 0) + 1;
+        $totalMarks = 0;
+
+        foreach ($this->answers as $quizId => $answer) {
+            $quiz = Quiz::find($quizId);
+            if ($quiz && $answer === $quiz->correct_answer) {
+                $totalMarks += $quiz->marks;
+            }
+        }
+
+        $examUser->total_marks = $totalMarks;
+        $examUser->save();
+
         $this->dispatch('exitFullscreen');
-        return redirect()->route('v2.student.examResult', $this->examId);
+        return redirect()->route('v2.student.examResult', ['exam_id' => $this->examId]);
     }
 
     public function handleFullscreenChange($isFullscreen)

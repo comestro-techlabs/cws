@@ -16,6 +16,7 @@ class Result extends Component
 
     public function mount($exam_id = null)
     {
+        $this->dispatch('loading');
         if ($exam_id) {
             $this->showResults($exam_id);
         }
@@ -24,6 +25,7 @@ class Result extends Component
     // Show results for a specific exam
     public function showResults($exam_id)
     {
+        $this->dispatch('loading');
         if (!Auth::check()) {
             return redirect()->route('auth.login')->with('error', 'You must be logged in to access this page.');
         }
@@ -49,6 +51,7 @@ class Result extends Component
 
     public function courseResult()
     {
+        $this->dispatch('loading');
         if (!Auth::check()) {
             return redirect()->route('auth.login')->with('error', 'You must be logged in to access this page.');
         }
