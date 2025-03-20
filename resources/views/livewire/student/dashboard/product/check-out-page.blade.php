@@ -36,12 +36,11 @@
                             <h2 class="text-lg font-semibold text-gray-900 mb-4">Product Summary</h2>
                             <div class="flex items-start">
                                 <div class="w-24 h-24 flex-shrink-0 rounded-md overflow-hidden">
-                                    <img src=`{{ ('storage/'.$productImageUrl) }}` alt="Product image" class="w-full h-full object-cover">
+                                <img src="{{ asset('storage/' . $productImageUrl) }}" alt="Product image" class="w-full h-full object-cover">
                                 </div>
 
                                 <div class="ml-4 flex-grow">
                                     <h3 class="text-base font-medium text-gray-900">{{$title}}</h3>
-                                    <p class="text-sm text-gray-600 mt-1 line-clamp-2">{{$description}}</p>
 
                                     <div class="flex flex-wrap gap-2 mt-2">
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-blue-800">
@@ -77,16 +76,8 @@
 
                                 <div x-show="open" x-transition class="mt-4">
                                     <p class="text-sm text-gray-600">
-                                        This is a comprehensive description of the product. It includes all the details about what the product is, how it works, and what benefits it provides. The description can be quite detailed and provide all the information a user might need before making a decision to redeem their gems for this reward.
+                                    {{$description}}
                                     </p>
-                                    <p class="text-sm text-gray-600 mt-2">
-                                        Additional details about the product specifications, usage instructions, and any terms or conditions related to the reward redemption.
-                                    </p>
-                                    <ul class="mt-2 text-sm text-gray-600 list-disc pl-5">
-                                        <li>Feature 1: Detailed explanation</li>
-                                        <li>Feature 2: Detailed explanation</li>
-                                        <li>Feature 3: Detailed explanation</li>
-                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -195,7 +186,7 @@
 
                     </div>
                 </div>
-
+ 
                 <!-- Right Column - Order Summary -->
                 <div class="lg:col-span-1">
                     <div class="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100 sticky top-6">

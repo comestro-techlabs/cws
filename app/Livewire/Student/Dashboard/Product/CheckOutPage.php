@@ -53,7 +53,7 @@ class CheckOutPage extends Component
 
     public function mount($productId,GemService $gemService)
     {
-        $this->globalGemService = $gemService;
+        $this->globalGemService = $gemService; 
         // dd($productId);
         $this->my_product = Products::with('category')->findOrFail($productId);
         // dd($this->my_product);
