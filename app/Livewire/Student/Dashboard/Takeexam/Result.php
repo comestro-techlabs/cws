@@ -6,6 +6,7 @@ use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Answer;
 use App\Models\ExamUser;
+use App\Models\Quiz;
 
 #[Layout('components.layouts.student')]
 class Result extends Component
@@ -13,10 +14,16 @@ class Result extends Component
     public $results;
     public $totalMarks;
     public $attempt; 
+    public $examName;
+    public $percentage;
+    public $correctAnswers = 0;
+    public $incorrectAnswers = 0;
+    public $unattempted = 0;
 
     public function mount($exam_id = null)
     {
         $this->dispatch('loading');
+        
         if ($exam_id) {
             $this->showResults($exam_id);
         }
@@ -32,11 +39,12 @@ class Result extends Component
         
         $user = Auth::user();
 
-        $this->results = Answer::where('user_id', $user->id)
+        $this->results = Answer::with('quiz')
+            ->where('user_id', $user->id)
             ->where('exam_id', $exam_id)
             ->get();
 
-        $exam_user = ExamUser::where('user_id', $user->id)
+        $exam_user = ExamUser::with('exam')->where('user_id', $user->id)
             ->where('exam_id', $exam_id)
             ->first();
 
@@ -44,9 +52,21 @@ class Result extends Component
             return redirect()->route('student.takeExam')->with('error', 'No attempt found for this exam.');
         }
 
-        
+        $this->examName = $exam_user->exam->exam_name;
         $this->totalMarks = $exam_user->total_marks;
-        $this->attempt = $exam_user->attempts; 
+        $this->attempt = $exam_user->attempts;
+
+        // Calculate statistics
+        $totalQuestions = $this->results->count();
+        $this->correctAnswers = $this->results->where('obtained_marks', '>', 0)->count();
+        $this->incorrectAnswers = $totalQuestions - $this->correctAnswers;
+        $maxPossibleMarks = $this->results->sum(function($answer) {
+            return $answer->quiz->marks;
+        });
+        
+        $this->percentage = $maxPossibleMarks > 0 
+            ? round(($this->totalMarks / $maxPossibleMarks) * 100, 2)
+            : 0;
     }
 
     public function courseResult()
