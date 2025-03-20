@@ -81,6 +81,7 @@ class ManageProducts extends Component
             $this->product_gems = $this->editing_products->points;
             $this->product_stock = $this->editing_products->availableQuantity;
             $this->product_image = $this->editing_products->imageUrl;
+            // dd($this->product_image);
         }
         $this->isModalOpen = true;
     }
@@ -88,15 +89,15 @@ class ManageProducts extends Component
     {
 
         //validation to be applied here,which is left 
-        if ($this->isEditing) {
+        if ($this->isEditing) { 
             $product = Products::findOrFail($this->productId);
         } else {
             $product = new Products();
         }
         if ($this->product_image) {
             // Delete old image if exists (only during editing)
-            if ($this->isEditing && $product->image) {
-                Storage::delete('public/' . $product->image);
+            if ($this->isEditing && $this->product_image) {
+                Storage::delete('storage/' . $this->product_image);
             }
 
             // Store new image

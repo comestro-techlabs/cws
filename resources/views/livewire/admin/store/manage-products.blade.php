@@ -157,10 +157,14 @@
                                 <div class="flex items-center">
                                     <!-- Image Preview Section -->
                                     <div class="h-24 w-24 rounded-md border-2 border-dashed border-gray-300 flex items-center justify-center overflow-hidden bg-gray-50">
-                                        
+                                         
                                         @if ($product_image)
                                         <!-- Show Existing Image -->
-                                        <img src="{{ asset('storage/'.$product->imageUrl) }}" class="h-full w-full object-cover" />
+                                            @if(is_string($product_image))
+                                                <img src="{{ asset('storage/'.$product_image) }}" class="h-full w-full object-cover" />
+                                            @else
+                                                <img src="{{ $product_image->temporaryUrl() }}" class="h-full w-full object-cover" />
+                                            @endif                                      
                                         @else
                                         <!-- Placeholder Icon -->
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-gray-400">
