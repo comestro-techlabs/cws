@@ -39,7 +39,7 @@ class Result extends Component
             ->first();
 
         if (!$exam_user) {
-            return redirect()->route('student.showquiz')->with('error', 'No attempt found for this exam.');
+            return redirect()->route('student.takeExam')->with('error', 'No attempt found for this exam.');
         }
 
         

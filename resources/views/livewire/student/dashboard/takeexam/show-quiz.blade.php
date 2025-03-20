@@ -1,4 +1,7 @@
-<div>
+<div class="min-h-screen bg-gray-50" 
+    x-data="{ 
+        isFullscreen: @entangle('isFullscreen')
+    }">
     @if (!$passcodeVerified)
         <div class="container mx-auto py-12 px-6">
             <div class="bg-white rounded-lg p-6 max-w-md mx-auto">
@@ -20,70 +23,130 @@
             </div>
         </div>
     @else
-        <button id="fullscreen-btn" class="bg-gray-800 text-white mt-5 p-2 rounded-lg fixed top-18 right-4 z-50">
-            Fullscreen
-        </button>
-
-        <div class="container mx-auto py-12 px-6" id="quizzes">
-            <div class="sticky top-0 bg-white p-4 flex space-x-2 overflow-x-auto w-full">
-                @foreach ($courses->exams as $exam)
-                    @if ($exam->status)
-                        @foreach ($quizzes as $quiz)
-                            @if ($quiz->status)
-                                <button type="button"
-                                    class="w-24 md:w-16 h-10 flex items-center justify-center font-medium border rounded-lg bg-gray-50 hover:bg-gray-100 quiz-nav-button disabled:bg-gray-300 disabled:cursor-not-allowed"
-                                    data-target="question-{{ $quiz->id }}"
-                                    disabled>
-                                    {{ $loop->iteration }}
-                                </button>
-                            @endif
-                        @endforeach
-                    @endif
-                @endforeach
+        <div id="instructions" class="bg-white rounded-lg p-8 mb-6 mx-auto max-w-4xl" x-show="!isFullscreen">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-3">Exam Instructions</h2>
+                <p class="text-purple-600 font-semibold text-lg">Please read the instructions carefully</p>
+            </div>
+            
+            <div class="bg-purple-50 p-6 rounded-xl border border-purple-100 mb-6">
+                <ul class="space-y-4">
+                    <li class="flex items-start">
+                        <svg class="h-6 w-6 text-purple-600 mr-3 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span class="text-gray-700">Click the "Start Exam" button in the top-right corner to begin in fullscreen mode</span>
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="h-6 w-6 text-purple-600 mr-3 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                        <span class="text-gray-700">You must stay in fullscreen mode throughout the exam</span>
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="h-6 w-6 text-purple-600 mr-3 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                        <span class="text-gray-700">Switching tabs or exiting fullscreen will result in automatic submission</span>
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="h-6 w-6 text-purple-600 mr-3 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                        </svg>
+                        <span class="text-gray-700">Answer all questions before submitting your exam</span>
+                    </li>
+                </ul>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mt-6">
-                <div class="md:col-span-3 bg-white rounded-lg">
-                    <form id="quiz-form" wire:submit.prevent="storeAnswer" class="p-6">
-                        @csrf
-                        <div id="quiz-container">
-                            @if ($quizzes && $quizzes->count() > 0)
-                                @foreach ($quizzes as $quiz)
-                                    <div class="quiz-question hidden" id="question-{{ $quiz->id }}">
-                                        <div class="mb-4">
-                                            <h6 class="text-lg font-semibold">Question {{ $loop->iteration }}</h6>
-                                            <p class="text-gray-700">{{ $quiz->question }}</p>
-                                        </div>
-                                        @for ($i = 1; $i <= 4; $i++)
-                                            <div class="mb-2">
-                                                <input type="radio" 
-                                                    id="option{{ $i }}-{{ $quiz->id }}"
-                                                    name="selectedOptions[{{ $quiz->id }}]"
-                                                    value="option{{ $i }}"
-                                                    wire:model="selectedOptions.{{ $quiz->id }}"
-                                                    class="hidden peer quiz-option">
-                                                <label for="option{{ $i }}-{{ $quiz->id }}"
-                                                    class="inline-flex items-center gap-3 w-full px-4 py-2 text-sm font-medium border rounded-lg cursor-pointer bg-gray-50 border-gray-300 peer-checked:bg-blue-500 peer-checked:text-white">
-                                                    {{ $quiz->{'option' . $i} ?? 'N/A' }}
-                                                </label>
-                                            </div>
-                                        @endfor
+            <div class="flex justify-end pt-4 border-t border-gray-100">
+                <button wire:click="startExam" 
+                    class="inline-flex items-center gap-2 px-8 py-3 bg-purple-800 hover:bg-purple-700 text-white rounded-lg transition-all duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0 0l-5-5m-7 11h4m-4 0v4m0-4l5 5m5-9v4m0-4h-4m4 0l-5 5" />
+                    </svg>
+                    <span class="font-medium">Start Exam in Fullscreen</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="container mx-auto py-6" x-show="isFullscreen">
+            <!-- Quiz Header -->
+            <div class="bg-white border-b sticky top-0 z-10">
+                <div class="container mx-auto px-4">
+                    <div class="flex justify-between items-center py-4">
+                        <h1 class="text-xl font-bold text-gray-800">{{ $courses->exams->first()->exam_name ?? 'Exam' }}</h1>
+                        <div class="flex items-center gap-4">
+                            <span class="px-4 py-2 bg-purple-100 text-purple-800 rounded-lg font-medium">
+                                Time Remaining: <span>{{ $timeRemaining }}</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question Navigation -->
+            <div class="container mx-auto px-4 py-6">
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                    <!-- Question List -->
+                    <div class="lg:col-span-1">
+                        <div class="bg-white rounded-lg p-4 sticky top-24">
+                            <div class="grid grid-cols-5 gap-2">
+                                @foreach($quizzes as $index => $quiz)
+                                    <button wire:click="goToQuestion({{ $index }})"
+                                        class="aspect-square flex items-center justify-center text-sm font-medium border rounded-lg
+                                        {{ $currentQuestion === $index ? 'bg-purple-600 text-white' : '' }}
+                                        {{ isset($answers[$quiz->id]) ? 'bg-green-500 text-white' : 'bg-gray-50' }}">
+                                        {{ $index + 1 }}
+                                    </button>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question Area -->
+                    <div class="lg:col-span-3">
+                        <div class="bg-white rounded-lg p-6">
+                            @if($quizzes->count() > 0 && isset($quizzes[$currentQuestion]))
+                                <div class="mb-4">
+                                    <h6 class="text-lg font-semibold">Question {{ $currentQuestion + 1 }}</h6>
+                                    <p class="text-gray-700">{{ $quizzes[$currentQuestion]->question }}</p>
+                                </div>
+                                
+                                @foreach(range(1,4) as $optionNum)
+                                    <div class="mb-2">
+                                        <label class="inline-flex items-center gap-3 w-full px-4 py-2 text-sm font-medium border rounded-lg cursor-pointer 
+                                            {{ $answers[$quizzes[$currentQuestion]->id] == 'option'.$optionNum ? 'bg-blue-500 text-white' : 'bg-gray-50' }}">
+                                            <input type="radio" 
+                                                wire:model="answers.{{ $quizzes[$currentQuestion]->id }}"
+                                                value="option{{ $optionNum }}"
+                                                class="hidden">
+                                            {{ $quizzes[$currentQuestion]->{'option'.$optionNum} }}
+                                        </label>
                                     </div>
                                 @endforeach
-                            @else
-                                <p>No quizzes available for this exam.</p>
+
+                                <div class="flex justify-between mt-6">
+                                    <button wire:click="previousQuestion"
+                                        class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg"
+                                        {{ $currentQuestion === 0 ? 'disabled' : '' }}>
+                                        Previous
+                                    </button>
+                                    
+                                    @if($currentQuestion < $quizzes->count() - 1)
+                                        <button wire:click="nextQuestion"
+                                            class="px-4 py-2 bg-blue-500 text-white rounded-lg">
+                                            Next
+                                        </button>
+                                    @else
+                                        <button wire:click="submitExam"
+                                            class="px-4 py-2 bg-green-500 text-white rounded-lg">
+                                            Submit
+                                        </button>
+                                    @endif
+                                </div>
                             @endif
                         </div>
-
-                        <div class="mt-6 flex justify-between">
-                            <button type="button" id="prev-btn"
-                                    class="hidden bg-gray-200 text-gray-800 px-4 py-2 rounded-lg">Previous</button>
-                            <button type="button" id="next-btn"
-                                    class="bg-blue-500 text-white px-4 py-2 rounded-lg hidden">Next</button>
-                            <button type="submit" id="submit-btn"
-                                    class="bg-green-500 text-white px-4 py-2 rounded-lg hidden">Submit</button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -91,189 +154,17 @@
 </div>
 
 <script>
-    function initializeQuiz() {
-        const fullscreenBtn = document.getElementById('fullscreen-btn');
-        const quizzesContainer = document.getElementById('quizzes');
-        const questions = document.querySelectorAll('.quiz-question');
-        const navButtons = document.querySelectorAll('.quiz-nav-button');
-        const prevBtn = document.getElementById('prev-btn');
-        const nextBtn = document.getElementById('next-btn');
-        const submitBtn = document.getElementById('submit-btn');
-        const options = document.querySelectorAll('.quiz-option');
-        const quizForm = document.getElementById('quiz-form');
-        let currentQuestionIndex = 0;
-        let tabSwitchCount = 0;
-        let examCompleted = false;
-        let isSubmitting = false;
-        let initialZoomLevel = window.devicePixelRatio || 1;
-
-        if (!fullscreenBtn || !quizzesContainer || !quizForm) {
-            console.error('Critical elements not found.');
-            return false;
-        }
-
-        console.log('Quiz elements found, initializing...');
-
-        quizzesContainer.style.display = 'none';
-        navButtons.forEach(button => {
-            button.setAttribute('disabled', 'true');
-            button.classList.add('disabled');
-        });
-
-        fullscreenBtn.addEventListener('click', () => {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen()
-                    .then(() => console.log('Fullscreen enabled'))
-                    .catch(err => console.error(`Failed to enable fullscreen: ${err.message}`));
-            } else {
-                document.exitFullscreen()
-                    .then(() => console.log('Fullscreen exited'))
-                    .catch(err => console.error(`Failed to exit fullscreen: ${err.message}`));
-            }
-        });
-
-        document.addEventListener('fullscreenchange', () => {
-            const isFullscreen = !!document.fullscreenElement;
-            console.log('Fullscreen state:', isFullscreen);
-            quizzesContainer.style.display = isFullscreen ? 'block' : 'none';
-            navButtons.forEach(button => {
-                button.toggleAttribute('disabled', !isFullscreen);
-                button.classList.toggle('disabled', !isFullscreen);
-            });
-            if (isFullscreen && questions.length > 0) {
-                questions[currentQuestionIndex].classList.remove('hidden');
-                toggleButtonsVisibility();
-            }
-        });
-
-        window.addEventListener('resize', () => {
-            const currentZoom = window.devicePixelRatio || 1;
-            if (Math.abs(currentZoom - initialZoomLevel) > 0.1 && !examCompleted) {
-                console.warn('Zoom level changed:', currentZoom);
-                alert('Warning: Zooming is not allowed during the exam.');
-                document.body.style.zoom = `${initialZoomLevel * 100}%`;
-            }
-        });
-
-        function updateNavButtonStatus(index) {
-            const button = navButtons[index];
-            const answered = isQuestionAnswered(index);
-            button.classList.toggle('bg-green-500', answered);
-            button.classList.toggle('bg-red-500', !answered);
-            button.classList.toggle('text-white', true);
-            button.classList.remove('bg-gray-50');
-        }
-
-        function isQuestionAnswered(index) {
-            return !!questions[index].querySelector('input[type="radio"]:checked');
-        }
-
-        function toggleButtonsVisibility() {
-            prevBtn.classList.toggle('hidden', currentQuestionIndex === 0);
-            nextBtn.classList.toggle('hidden', currentQuestionIndex >= questions.length - 1);
-            submitBtn.classList.toggle('hidden', currentQuestionIndex < questions.length - 1);
-        }
-
-        ['cut', 'copy', 'paste'].forEach(event => {
-            document.addEventListener(event, e => e.preventDefault());
-        });
-
-        options.forEach(option => {
-            option.addEventListener('change', () => {
-                const questionId = option.closest('.quiz-question').id.split('-')[1];
-                const quizIndex = Array.from(questions).findIndex(q => q.id === `question-${questionId}`);
-                updateNavButtonStatus(quizIndex);
-            });
-        });
-
-        navButtons.forEach((button, index) => {
-            button.addEventListener('click', () => {
-                if (!button.disabled) {
-                    const targetQuestionId = button.getAttribute('data-target');
-                    const targetQuestion = document.getElementById(targetQuestionId);
-                    questions.forEach(q => q.classList.add('hidden'));
-                    targetQuestion.classList.remove('hidden');
-                    currentQuestionIndex = index;
-                    toggleButtonsVisibility();
-                }
-            });
-        });
-
-        nextBtn.addEventListener('click', () => {
-            if (currentQuestionIndex < questions.length - 1) {
-                updateNavButtonStatus(currentQuestionIndex);
-                questions[currentQuestionIndex].classList.add('hidden');
-                currentQuestionIndex++;
-                questions[currentQuestionIndex].classList.remove('hidden');
-                toggleButtonsVisibility();
-            }
-        });
-
-        prevBtn.addEventListener('click', () => {
-            if (currentQuestionIndex > 0) {
-                questions[currentQuestionIndex].classList.add('hidden');
-                currentQuestionIndex--;
-                questions[currentQuestionIndex].classList.remove('hidden');
-                toggleButtonsVisibility();
-            }
-        });
-
-        function submitQuiz() {
-            if (isSubmitting) {
-                console.log('Submission already in progress, ignoring.');
-                return;
-            }
-            isSubmitting = true;
-            examCompleted = true;
-            console.log('Submitting quiz...');
-            Livewire.dispatch('submitQuiz');
-            submitBtn.disabled = true;
-            alert('Exam submitted successfully!');
-        }
-
-        let tabSwitchTimeout;
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden && !examCompleted && !isSubmitting) {
-                tabSwitchCount++;
-                clearTimeout(tabSwitchTimeout);
-                tabSwitchTimeout = setTimeout(() => {
-                    if (tabSwitchCount === 1) {
-                        alert('Warning: Do not switch tabs during the exam.');
-                    } else if (tabSwitchCount >= 2) {
-                        alert('Too many tab switches. Submitting exam now.');
-                        submitQuiz();
-                    }
-                }, 300);
-            }
-        });
-
-        window.onbeforeunload = () => (examCompleted || isSubmitting) ? null : 'Are you sure you want to leave the exam?';
-
-        submitBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            if (!isSubmitting && confirm('Are you sure you want to submit the exam?')) {
-                submitQuiz();
-            }
-        });
-
-        toggleButtonsVisibility();
-        return true;
-    }
-
-    // Run initialization only after passcode is verified
-    document.addEventListener('livewire:init', () => {
-        console.log('Livewire initialized');
+document.addEventListener('livewire:initialized', () => {
+    Livewire.on('enterFullscreen', () => {
+        document.documentElement.requestFullscreen()
+            .catch(err => console.error('Error attempting to enable fullscreen:', err));
     });
 
-    // Listen for the passcode-verified event from Livewire
-    Livewire.on('passcode-verified', () => {
-        console.log('Passcode verified, initializing quiz...');
-        setTimeout(() => {
-            if (initializeQuiz()) {
-                console.log('Quiz initialized successfully');
-            } else {
-                console.error('Failed to initialize quiz');
-            }
-        }, 100); // Small delay to ensure DOM is updated
+    Livewire.on('exitFullscreen', () => {
+        if (document.fullscreenElement) {
+            document.exitFullscreen()
+                .catch(err => console.error('Error attempting to disable fullscreen:', err));
+        }
     });
+});
 </script>
