@@ -8,8 +8,9 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use App\Models\Course;  // Add this import
 
-#[Layout('components.layouts.student')]
+#[Layout('components.layouts.exam')] // Change layout to exam
 class ShowQuiz extends Component
 {
     public $courses = null;
@@ -23,6 +24,16 @@ class ShowQuiz extends Component
     public $passcode = '';
     public $passcodeVerified = false;
     public $passcodeError = null;
+    public $currentQuestion = 0;
+    public $answers = [];
+    public $isFullscreen = false;
+    public $timeRemaining = '45:00';
+    protected $timer;
+
+    protected $listeners = [
+        'startTimer' => 'startTimer',
+        'fullscreenChanged' => 'handleFullscreenChange'
+    ];
 
     public function mount($courseId)
     {
@@ -31,36 +42,35 @@ class ShowQuiz extends Component
 
     public function verifyPasscode()
     {
+        $this->dispatch('loading');
         if (!Auth::check()) {
             return redirect()->route('auth.login');
         }
 
         $user = Auth::user();
+        
+        $this->courses = Course::with(['exams' => function($query) {
+            $query->where('status', true);
+        }, 'exams.quizzes' => function($query) {
+            $query->where('status', true);
+        }])->find($this->courseId);
 
-        $this->courses = $user->courses()
-            ->where('courses.id', $this->courseId)
-            ->with([
-                'exams' => fn($query) => $query->where('status', true),
-                'exams.quizzes' => fn($query) => $query->where('status', true),
-            ])
-            ->first();
-
-        if (!$this->courses || $this->courses->exams->isEmpty()) {
-            return redirect()->route('v2.student.quiz')->with('error', 'Course not found or no active exams available.');
+        if (!$this->courses || !$this->courses->exams->first()) {
+            $this->passcodeError = 'No active exam found for this course.';
+            return;
         }
 
         $exam = $this->courses->exams->first();
-        $this->examId = $exam->id;
-
-        if (!$exam->passcode) {
-            return redirect()->route('v2.student.quiz')->with('error', 'No passcode set for this exam.');
-        }
-
         if ($this->passcode === $exam->passcode) {
             $this->passcodeVerified = true;
             $this->passcodeError = null;
-            $this->showquiz($this->courseId);
-            $this->dispatch('passcode-verified'); // Dispatch event to trigger JS
+            $this->examId = $exam->id; // Save the exam ID
+            $this->quizzes = collect($exam->quizzes)->shuffle()->take(10);
+            
+            // Initialize answers array with null values for each quiz
+            $this->answers = array_fill_keys($this->quizzes->pluck('id')->toArray(), null);
+            
+            $this->dispatch('passcode-verified');
         } else {
             $this->passcodeError = 'Incorrect passcode. Please try again.';
         }
@@ -166,6 +176,101 @@ class ShowQuiz extends Component
             'success' => 'Answer submitted successfully!',
             'exam_id' => $this->examId,
         ]);
+    }
+
+    public function startExam()
+    {
+        $this->dispatch('loading');
+        $this->isFullscreen = true;
+        $this->dispatch('enterFullscreen');
+        $this->startTimer();
+    }
+
+    public function exitExam()
+    {
+        $this->isFullscreen = false;
+        $this->submitExam();
+    }
+
+    public function goToQuestion($index)
+    {
+        $this->dispatch('loading');
+        if (!$this->courseId) {
+            return redirect()->route('student.takeExam');
+        }
+
+        if ($index >= 0 && $index < ($this->quizzes ? $this->quizzes->count() : 0)) {
+            $this->currentQuestion = $index;
+        }
+    }
+
+    public function nextQuestion()
+    {
+        $this->dispatch('loading');
+        if ($this->currentQuestion < $this->quizzes->count() - 1) {
+            $this->currentQuestion++;
+        }
+    }
+
+    public function previousQuestion()
+    {
+        $this->dispatch('loading');
+        if ($this->currentQuestion > 0) {
+            $this->currentQuestion--;
+        }
+    }
+
+    public function startTimer()
+    {
+        $timeLeft = 45 * 60; // 45 minutes
+        $this->timer = now()->addSeconds($timeLeft);
+        
+        $this->dispatch('timer', [
+            'timeLeft' => $timeLeft
+        ]);
+    }
+
+    public function submitExam()
+    {
+        $this->dispatch('loading');
+        if (!$this->courseId || !$this->examId) {
+            return redirect()->route('student.takeExam');
+        }
+
+        // Store answers and update total marks
+        $examUser = ExamUser::firstOrNew([
+            'user_id' => Auth::id(),
+            'exam_id' => $this->examId
+        ]);
+
+        if ($examUser->attempts >= 2) {
+            return redirect()->route('v2.student.quiz', ['courseId' => $this->courseId])
+                ->with('error', 'Maximum attempts reached');
+        }
+
+        $examUser->attempts = ($examUser->attempts ?? 0) + 1;
+        $totalMarks = 0;
+
+        foreach ($this->answers as $quizId => $answer) {
+            $quiz = Quiz::find($quizId);
+            if ($quiz && $answer === $quiz->correct_answer) {
+                $totalMarks += $quiz->marks;
+            }
+        }
+
+        $examUser->total_marks = $totalMarks;
+        $examUser->save();
+
+        $this->dispatch('exitFullscreen');
+        return redirect()->route('v2.student.examResult', ['exam_id' => $this->examId]);
+    }
+
+    public function handleFullscreenChange($isFullscreen)
+    {
+        $this->isFullscreen = $isFullscreen;
+        if (!$isFullscreen && !$this->submitted) {
+            $this->submitExam();
+        }
     }
 
     public function render()

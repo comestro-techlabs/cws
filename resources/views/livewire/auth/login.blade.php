@@ -9,7 +9,13 @@
                         <p class="text-gray-600">Sign in with your credentials</p>
                     </div>
 
-                    <form wire:submit.prevent="login" class="space-y-6">
+                    @if (session()->has('error'))
+                        <div class="mb-4 p-4 rounded-xl bg-red-50 border border-red-200">
+                            <p class="text-sm text-red-600">{{ session('error') }}</p>
+                        </div>
+                    @endif
+
+                    <form wire:submit="login" class="space-y-6">
                         <div>
                             <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email address</label>
                             <input type="email" 
