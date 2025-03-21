@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\Store;
 
+use App\Models\Category;
 use App\Models\ProductCategories;
 use App\Models\Products;
 use Illuminate\Support\Facades\Storage;
@@ -20,6 +21,7 @@ class ManageProducts extends Component
     public $categories;
     public $productId;
     public $isModalOpen = false;
+    public $catModal=false;
     public $selectedCategory = '';
     public $product_name;
     public $product_description;
@@ -34,9 +36,13 @@ class ManageProducts extends Component
     public $product_image; 
     public $existing_image;
     public $imageUrl;
+    //below these two are for category
+    public $name;
+    public $description;
 
 
 
+    #[On('refreshCategory')]
     public function mount()
     {
         $this->categories = ProductCategories::pluck('name', 'id');
@@ -54,6 +60,26 @@ class ManageProducts extends Component
             $this->products = Products::where('product_category_id', $categoryId)->get();
         }
     }
+    public function addCategory(){
+        $this->catModal=true;
+
+    }
+    public function saveCategory(){
+        $validated = $this->validate(
+            [
+                'name' =>'required|min:2',
+                'description'=>'required|min:5'
+            ]
+        );
+        if($validated){
+        ProductCategories::create($validated);
+        }
+        $this->dispatch('refreshCategory')->self();
+
+        $this->catModal=false;
+
+
+    }
     public function toggleStatus($id)
     {
         // dd($id);
@@ -66,6 +92,7 @@ class ManageProducts extends Component
         }
         $this->dispatch('refreshProducts', categoryId: $this->category_id)->self();
     }
+
     public function editProduct($id)
     {
         // dd($id);
@@ -87,7 +114,6 @@ class ManageProducts extends Component
     }
     public function saveProduct()
     {
-
         //validation to be applied here,which is left 
         if ($this->isEditing) { 
             $product = Products::findOrFail($this->productId);
@@ -122,6 +148,7 @@ class ManageProducts extends Component
     {
         $this->isModalOpen = false;
         $this->deleteModalOpen = false;
+        $this->catModal = false;
     }
     public function confirmDelete($id)
     {
@@ -152,6 +179,7 @@ class ManageProducts extends Component
 
         $this->isModalOpen = true;
     }
+
 
     //for the searching functionality
     public function updatedSearch()
