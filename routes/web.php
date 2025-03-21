@@ -77,6 +77,7 @@ use App\Livewire\Student\Marksheet\StudentMarksheet;
 use App\Livewire\Student\Certificate\ShowCertificate;
 use App\Livewire\Admin\MockTest\ManageQuestions;
 use App\Livewire\Public\Myeditor\Monaco;
+use App\Livewire\Student\Dashboard\Product\MyOrders;
 
 // public routes
 Route::get('/', Home::class)->name('public.index');
@@ -135,6 +136,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/certificates',ShowCertificate::class)->name('student.certificates');
         Route::get('/marksheet',StudentMarksheet::class)->name('student.marksheet');
         Route::get('/code-editor', Monaco::class)->name('v2.student.code-editor');
+
+        Route::get('/my-orders',MyOrders::class)->name('student.my-orders');
 
     });
 
