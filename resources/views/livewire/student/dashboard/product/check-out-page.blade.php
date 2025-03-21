@@ -38,7 +38,7 @@
                                 <div class="w-24 h-24 flex-shrink-0 rounded-md overflow-hidden">
                                 <img src="{{ asset('storage/' . $productImageUrl) }}" alt="Product image" class="w-full h-full object-cover">
                                 </div>
-
+ 
                                 <div class="ml-4 flex-grow">
                                     <h3 class="text-base font-medium text-gray-900">{{$title}}</h3>
 
