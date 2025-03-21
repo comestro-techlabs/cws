@@ -86,12 +86,20 @@
                                         </p>
                                     </div>
                                 @else
-                                    <button id="pay-button"
-                                        class="flex items-center justify-center w-full bg-orange-500 text-white font-medium rounded-lg py-3 px-6 transition duration-200 hover:bg-orange-600 focus:ring-2 focus:ring-orange-400 focus:ring-offset-2">
-                                        <span class="mr-2">Enroll Now</span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                            <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                        </svg>
+                                    <button type="button"
+                                            wire:click="initiatePayment"
+                                            wire:loading.attr="disabled"
+                                            class="w-full flex justify-center items-center px-4 py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition-colors disabled:opacity-50">
+                                        <span wire:loading.remove wire:target="initiatePayment">
+                                            Enroll Now - ₹{{ $course->discounted_fees }}
+                                        </span>
+                                        <span wire:loading wire:target="initiatePayment" class="flex items-center">
+                                            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                            </svg>
+                                            Processing...
+                                        </span>
                                     </button>
                                 @endif
                             @endauth
@@ -347,107 +355,60 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-    @auth
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    document.addEventListener('livewire:init', () => {
+        Livewire.on('initCoursePayment', (data) => {
+            console.log('Raw payment event data:', data);
 
-        <script>
-            document.getElementById('pay-button').onclick = function(e) {
-                const payButton = document.getElementById('pay-button');
-                payButton.disabled = true;
-                e.preventDefault();
+            if (!Array.isArray(data) || !data[0] || !Array.isArray(data[0])) {
+                console.error('Invalid payment data structure:', data);
+                return;
+            }
 
-                const receipt_no = `${Date.now()}`;
+            const paymentData = data[0][0]; // Access first element of nested array
+            console.log('Payment data:', paymentData);
 
-                // First, initiate payment by sending the details to the backend
-                fetch("{{ route('store.payment.initiation') }}", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                        },
-                        body: JSON.stringify({
-                            student_id: "{{ Auth::id() }}" ?? 99,
-                            course_id: "{{ $course->id }}",
-                            receipt_no: receipt_no,
-                            amount: "{{ $course->discounted_fees }}",
-                            ip_address: "{{ request()->ip() }}",
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            // Use the Razorpay order_id received from backend
-                            var options = {
-                                "key": "{{ env('RAZORPAY_KEY') }}",
-                                "amount": "{{ $course->discounted_fees }}" * 100, // amount in paise
-                                "currency": "INR",
-                                "name": "LearnSyntax",
-                                "description": "Processing Fee",
-                                "image": "{{ asset('front_assets/img/logo/logo.png') }}",
-                                "order_id": data.order_id, // Razorpay order ID
-                                "handler": function(response) {
-                                    // After successful payment, send the payment details to the backend
-                                    fetch("{{ route('handle.payment.response') }}", {
-                                            method: "POST",
-                                            headers: {
-                                                "Content-Type": "application/json",
-                                                "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                                            },
-                                            body: JSON.stringify({
-                                                payment_id: data
-                                                .payment_id, // Payment ID created in the backend
-                                                razorpay_payment_id: response.razorpay_payment_id,
-                                                razorpay_order_id: response.razorpay_order_id,
-                                                razorpay_signature: response.razorpay_signature,
-                                            })
-                                        })
-                                        .then(response => response.json())
-                                        .then(data => {
-                                            if (data.success) {
-                                                alert('Payment processed successfully');
-                                                window.location.href = '/student/billing';
-                                            } else {
-                                                alert('Payment failed: ' + data.message);
-                                                payButton.disabled = false;
-                                            }
-                                        })
-                                        .catch(error => {
-                                            console.error("Error in updating payment:", error);
-                                            payButton.disabled = false;
-                                        });
-                                },
-                                "prefill": {
-                                    "name": "{{ Auth::user()->name }}",
-                                    "email": "{{ Auth::user()->email }}"
-                                },
-                                "theme": {
-                                    "color": "#0a64a3"
-                                },
-                                "modal": {
-                                    "ondismiss": function() {
-                                        alert('Payment process was cancelled.');
-                                        payButton.disabled = false;
-                                        window.location.href = '/student/billing';
-                                        document.forms[0].submit();
-                                    }
-                                }
-                            };
+            if (!paymentData || typeof paymentData !== 'object') {
+                console.error('Payment data is not an object:', paymentData);
+                return;
+            }
 
-                            // Open the Razorpay payment modal
-                            var rzp1 = new Razorpay(options);
-                            rzp1.open();
-
-                        } else {
-                            alert("Error initiating payment: " + data.message);
-                            payButton.disabled = false;
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Error initiating payment:", error);
-                        payButton.disabled = false;
-                    });
+            const options = {
+                "key": paymentData.key,
+                "amount": paymentData.amount,
+                "currency": "INR",
+                "name": "LearnSyntax",
+                "description": paymentData.description,
+                "image": paymentData.image,
+                "order_id": paymentData.order_id,
+                "handler": function (response) {
+                    console.log('Payment success:', response);
+                    @this.call('handlePaymentSuccess', response);
+                },
+                "prefill": {
+                    "name": paymentData.prefill.name,
+                    "email": paymentData.prefill.email
+                },
+                "theme": {
+                    "color": "#662d91"
+                }
             };
-        </script>
-    @endauth
+
+            console.log('Razorpay options:', options);
+
+            try {
+                const rzp = new Razorpay(options);
+                rzp.on('payment.failed', function (response) {
+                    console.error('Payment failed:', response);
+                    @this.call('handlePaymentCancelled');
+                });
+                rzp.open();
+            } catch (error) {
+                console.error('Razorpay initialization error:', error);
+            }
+        });
+    });
+</script>
+
 </div>
