@@ -16,7 +16,8 @@ class ManageProductCategories extends Component
     public $category_id;
     public $category_name;
     public $category_description;
-    
+    public $search = '';
+
 
      // Validation Rules
      protected $rules = [
@@ -99,6 +100,20 @@ class ManageProductCategories extends Component
         $this->category_name = '';
         $this->category_description = '';
 
+    }
+    public function updatedSearch()
+    {
+        $this->filterProducts();
+    }
+    public function filterProducts()
+    {
+        $query = ProductCategories::query();
+
+        if (!empty($this->search)) {
+            $query->where('name', 'like', '%' . $this->search . '%');
+        }
+
+        $this->categories = $query->get();
     }
     public function toggleStatus($id)
     {
