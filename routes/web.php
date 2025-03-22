@@ -138,7 +138,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/code-editor', Monaco::class)->name('v2.student.code-editor');
 
         Route::get('/my-orders',MyOrders::class)->name('student.my-orders');
-        Route::get('/exam/result/{examId}', App\Livewire\Student\Dashboard\Takeexam\Result::class)->name('v2.student.examResult');
+        Route::get('/exam/result/{examId}', Result::class)->name('v2.student.examResult');
 
     });
 
