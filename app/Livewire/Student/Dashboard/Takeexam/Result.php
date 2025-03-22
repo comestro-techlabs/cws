@@ -3,101 +3,65 @@ namespace App\Livewire\Student\Dashboard\Takeexam;
 
 use Livewire\Attributes\Layout;
 use Livewire\Component;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Answer;
 use App\Models\ExamUser;
+use App\Models\Answer;
 use App\Models\Quiz;
+use Illuminate\Support\Facades\Auth;
 
 #[Layout('components.layouts.student')]
 class Result extends Component
 {
-    public $results;
-    public $totalMarks;
-    public $attempt; 
-    public $examName;
-    public $percentage;
-    public $correctAnswers = 0;
-    public $incorrectAnswers = 0;
-    public $unattempted = 0;
+    public $examId;
+    public $examUser;
+    public $answers;
+    public $stats = [];
+    public $quizzes;
 
-    public function mount($exam_id = null)
+    public function mount($examId)
     {
-        $this->dispatch('loading');
-        
-        if ($exam_id) {
-            $this->showResults($exam_id);
-        }
+        $this->examId = $examId;
+        $this->loadResults();
     }
 
-    // Show results for a specific exam
-    public function showResults($exam_id)
+    private function loadResults()
     {
-        $this->dispatch('loading');
-        if (!Auth::check()) {
-            return redirect()->route('auth.login')->with('error', 'You must be logged in to access this page.');
-        }
-        
-        $user = Auth::user();
+        $this->examUser = ExamUser::where('user_id', Auth::id())
+            ->where('exam_id', $this->examId)
+            ->firstOrFail();
 
-        $this->results = Answer::with('quiz')
-            ->where('user_id', $user->id)
-            ->where('exam_id', $exam_id)
+        $this->answers = Answer::where('user_id', Auth::id())
+            ->where('exam_id', $this->examId)
+            ->with('quiz') // Load quiz relationship
             ->get();
 
-        $exam_user = ExamUser::with('exam')->where('user_id', $user->id)
-            ->where('exam_id', $exam_id)
-            ->first();
+        $this->quizzes = Quiz::where('exam_id', $this->examId)->get();
 
-        if (!$exam_user) {
-            return redirect()->route('student.takeExam')->with('error', 'No attempt found for this exam.');
-        }
-
-        $this->examName = $exam_user->exam->exam_name;
-        $this->totalMarks = $exam_user->total_marks;
-        $this->attempt = $exam_user->attempts;
-
-        // Calculate statistics
-        $totalQuestions = $this->results->count();
-        $this->correctAnswers = $this->results->where('obtained_marks', '>', 0)->count();
-        $this->incorrectAnswers = $totalQuestions - $this->correctAnswers;
-        $maxPossibleMarks = $this->results->sum(function($answer) {
-            return $answer->quiz->marks;
-        });
-        
-        $this->percentage = $maxPossibleMarks > 0 
-            ? round(($this->totalMarks / $maxPossibleMarks) * 100, 2)
-            : 0;
+        $this->calculateStats();
     }
 
-    public function courseResult()
+    private function calculateStats()
     {
-        $this->dispatch('loading');
-        if (!Auth::check()) {
-            return redirect()->route('auth.login')->with('error', 'You must be logged in to access this page.');
-        }
+        $totalQuestions = $this->answers->count();
+        $correctAnswers = $this->answers->where('obtained_marks', '>', 0)->count();
+        $incorrectAnswers = $totalQuestions - $correctAnswers;
+        $totalPossibleMarks = $this->answers->count();
+        $obtainedMarks = $this->examUser->total_marks; 
 
-        $user = Auth::user();
-        $courses = $user->courses()
-            ->with([
-                'users',
-                'exams' => function ($query) use ($user) {
-                    $query->withCount(['examUsers' => function ($query) use ($user) {
-                        $query->where('user_id', $user->id); 
-                    }]);
-                }
-            ])
-            ->get();
-
-        return view('student.take-exam', compact('courses'));
+        $this->stats = [
+            'percentage' => $totalPossibleMarks > 0 ? round(($obtainedMarks / $totalPossibleMarks) * 100, 2) : 0,
+            'marks' => "$obtainedMarks/$totalPossibleMarks",
+            'correct' => $correctAnswers,
+            'incorrect' => $incorrectAnswers,
+        ];
     }
 
     public function render()
     {
         return view('livewire.student.dashboard.takeexam.result', [
-            'results' => $this->results,
-            'totalMarks' => $this->totalMarks,
-            'attempt' => $this->attempt,
-            'totalQuestions' => $this->results->count(),
+            'stats' => $this->stats,
+            'answers' => $this->answers,
+            'examUser' => $this->examUser,
+            'quizzes' => $this->quizzes,
         ]);
     }
 }

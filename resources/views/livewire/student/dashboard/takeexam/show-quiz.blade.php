@@ -33,7 +33,7 @@
                         <svg class="h-6 w-6 text-purple-600 mr-3 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                        <span class="text-gray-700">Click the "Start Exam" button in the top-right corner to begin in fullscreen mode</span>
+                        <span class="text-gray-700">Click the "Start Exam" button to begin in fullscreen mode</span>
                     </li>
                     <li class="flex items-start">
                         <svg class="h-6 w-6 text-purple-600 mr-3 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -45,7 +45,7 @@
                         <svg class="h-6 w-6 text-purple-600 mr-3 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                         </svg>
-                        <span class="text-gray-700">Switching tabs or exiting fullscreen will result in automatic submission</span>
+                        <span class="text-gray-700">Exiting fullscreen will result in automatic submission</span>
                     </li>
                     <li class="flex items-start">
                         <svg class="h-6 w-6 text-purple-600 mr-3 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -68,7 +68,6 @@
         </div>
 
         <div class="min-h-screen bg-gray-100" x-show="isFullscreen">
-            <!-- Fixed Header -->
             <div class="bg-white border-b shadow-sm sticky top-0 z-50">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between items-center py-4">
@@ -85,15 +84,16 @@
                                 </svg>
                                 <span>{{ $timeRemaining }}</span>
                             </div>
+                            <button wire:click="debugAnswers" class="text-sm text-gray-600 hover:text-gray-800">
+                                Debug Answers
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Main Content -->
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
                 <div class="grid grid-cols-12 gap-6">
-                    <!-- Question Navigation Sidebar -->
                     <div class="col-span-12 lg:col-span-3">
                         <div class="bg-white rounded-lg shadow-sm p-4 sticky top-24">
                             <h3 class="text-sm font-medium text-gray-700 mb-3">Questions Overview</h3>
@@ -102,7 +102,7 @@
                                     <button wire:click="goToQuestion({{ $index }})"
                                         class="aspect-square flex items-center justify-center text-sm font-medium border rounded-lg transition-all duration-200
                                         {{ $currentQuestion === $index ? 'ring-2 ring-purple-500 border-purple-500' : '' }}
-                                        {{ isset($answers[$quiz->id]) ? 'bg-green-500 border-green-500 text-white hover:bg-green-600' : 'bg-white hover:bg-gray-50' }}">
+                                        {{ isset($answers[$quiz->id]) && $answers[$quiz->id] ? 'bg-green-500 border-green-500 text-white hover:bg-green-600' : 'bg-white hover:bg-gray-50' }}">
                                         {{ $index + 1 }}
                                     </button>
                                 @endforeach
@@ -110,7 +110,6 @@
                         </div>
                     </div>
 
-                    <!-- Question Area -->
                     <div class="col-span-12 lg:col-span-9">
                         <div class="bg-white rounded-lg shadow-sm">
                             @if($quizzes->count() > 0 && isset($quizzes[$currentQuestion]))
@@ -119,21 +118,21 @@
                                     <p class="mt-2 text-gray-700">{{ $quizzes[$currentQuestion]->question }}</p>
                                 </div>
                                 
-                                <div class="p-6">
-                                    <div class="space-y-3">
+                                <div class="p-6" wire:key="question-{{ $quizzes[$currentQuestion]->id }}">
+                                    <form>
                                         @foreach(range(1,4) as $optionNum)
-                                            <label class="relative block">
+                                            <label class="relative block mb-3">
                                                 <input type="radio" 
-                                                    wire:model.live="answers.{{ $quizzes[$currentQuestion]->id }}"
+                                                    wire:model.live="currentAnswer"
                                                     value="option{{ $optionNum }}"
+                                                    name="question_{{ $quizzes[$currentQuestion]->id }}"
                                                     class="peer sr-only">
                                                 <div class="w-full p-4 border rounded-lg cursor-pointer transition-all duration-200
-                                                    peer-checked:border-purple-500 peer-checked:bg-purple-50 peer-checked:ring-2 peer-checked:ring-purple-500
-                                                    hover:bg-gray-50">
+                                                    {{ $currentAnswer === 'option'.$optionNum ? 'border-purple-500 bg-purple-50 ring-2 ring-purple-500' : 'border-gray-300 hover:bg-gray-50' }}">
                                                     <div class="flex items-center gap-3">
                                                         <div class="w-6 h-6 rounded-full border-2 flex items-center justify-center
-                                                            {{ isset($answers[$quizzes[$currentQuestion]->id]) && $answers[$quizzes[$currentQuestion]->id] == 'option'.$optionNum ? 'border-purple-500 bg-purple-500' : 'border-gray-300' }}">
-                                                            @if(isset($answers[$quizzes[$currentQuestion]->id]) && $answers[$quizzes[$currentQuestion]->id] == 'option'.$optionNum)
+                                                            {{ $currentAnswer === 'option'.$optionNum ? 'border-purple-500 bg-purple-500' : 'border-gray-300' }}">
+                                                            @if($currentAnswer === 'option'.$optionNum)
                                                                 <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 12 12">
                                                                     <circle cx="6" cy="6" r="3"/>
                                                                 </svg>
@@ -144,7 +143,7 @@
                                                 </div>
                                             </label>
                                         @endforeach
-                                    </div>
+                                    </form>
                                 </div>
 
                                 <div class="p-6 bg-gray-50 border-t flex items-center justify-between">
@@ -186,16 +185,39 @@
 
 <script>
 document.addEventListener('livewire:initialized', () => {
+    // Enter fullscreen
     Livewire.on('enterFullscreen', () => {
-        document.documentElement.requestFullscreen()
-            .catch(err => console.error('Error attempting to enable fullscreen:', err));
+        const elem = document.documentElement;
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen()
+                .then(() => console.log('Fullscreen enabled'))
+                .catch(err => console.error('Fullscreen error:', err.message));
+        } else {
+            console.error('Fullscreen API not supported');
+            alert('Your browser does not support fullscreen mode.');
+        }
     });
 
+    // Exit fullscreen
     Livewire.on('exitFullscreen', () => {
         if (document.fullscreenElement) {
             document.exitFullscreen()
-                .catch(err => console.error('Error attempting to disable fullscreen:', err));
+                .then(() => console.log('Exited fullscreen'))
+                .catch(err => console.error('Exit fullscreen error:', err.message));
         }
+    });
+
+    // Detect fullscreen changes
+    document.addEventListener('fullscreenchange', () => {
+        const isFullscreen = !!document.fullscreenElement;
+        console.log('Fullscreen state changed:', isFullscreen);
+        Livewire.dispatch('fullscreenChanged', { value: isFullscreen });
+    });
+
+    // Handle errors
+    document.addEventListener('fullscreenerror', (event) => {
+        console.error('Fullscreen error occurred:', event);
+        alert('An error occurred while trying to enable fullscreen mode.');
     });
 });
 </script>

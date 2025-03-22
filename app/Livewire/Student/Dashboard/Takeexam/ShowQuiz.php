@@ -8,24 +8,22 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Component;
-use App\Models\Course;  // Add this import
+use App\Models\Course;
 
-#[Layout('components.layouts.exam')] // Change layout to exam
+#[Layout('components.layouts.exam')]
 class ShowQuiz extends Component
 {
     public $courses = null;
     public $quizzes = null;
     public $courseId = null;
     public $examId = null;
-    public $selectedOptions = [];
-    public $obtainedMarks = null;
-    public $totalMarks = null;
     public $submitted = false;
     public $passcode = '';
     public $passcodeVerified = false;
     public $passcodeError = null;
     public $currentQuestion = 0;
-    public $answers = [];
+    public $answers = []; // Array to store answers, keyed by quiz ID
+    public $currentAnswer = null; // Temporary storage for the current question's answer
     public $isFullscreen = false;
     public $timeRemaining = '45:00';
     protected $timer;
@@ -37,11 +35,36 @@ class ShowQuiz extends Component
 
     public function mount($courseId)
     {
-        $this->courseId = $courseId;
+        try {
+            $this->courseId = $courseId;
+            $user = Auth::user();
+            
+            if (!$user) {
+                throw new \Exception('User not authenticated');
+            }
+
+            $examAttempt = ExamUser::where('user_id', $user->id)
+                ->whereHas('exam', function ($query) use ($courseId) {
+                    $query->where('course_id', $courseId);
+                })
+                ->first();
+
+            if ($examAttempt && $examAttempt->attempts >= 1) {
+                return redirect()->route('student.takeExam')
+                    ->with('error', 'You have already taken this exam. Multiple attempts are not allowed.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->route('auth.login')
+                ->with('error', 'An error occurred: ' . $e->getMessage());
+        }
     }
 
     public function verifyPasscode()
     {
+        $this->validate([
+            'passcode' => 'required|string',
+        ]);
+
         $this->dispatch('loading');
         if (!Auth::check()) {
             return redirect()->route('auth.login');
@@ -64,118 +87,17 @@ class ShowQuiz extends Component
         if ($this->passcode === $exam->passcode) {
             $this->passcodeVerified = true;
             $this->passcodeError = null;
-            $this->examId = $exam->id; // Save the exam ID
+            $this->examId = $exam->id;
             $this->quizzes = collect($exam->quizzes)->shuffle()->take(10);
             
-            // Initialize answers array with null values for each quiz
+            // Initialize answers array with null for each quiz
             $this->answers = array_fill_keys($this->quizzes->pluck('id')->toArray(), null);
+            $this->currentAnswer = $this->answers[$this->quizzes[$this->currentQuestion]->id] ?? null;
             
             $this->dispatch('passcode-verified');
         } else {
             $this->passcodeError = 'Incorrect passcode. Please try again.';
         }
-    }
-
-    public function showquiz($courseId)
-    {
-        if (!Auth::check()) {
-            return redirect()->route('auth.login');
-        }
-
-        $user = Auth::user();
-
-        $attempt = ExamUser::where('user_id', $user->id)
-            ->whereHas('exam', function ($query) use ($courseId) {
-                $query->where('course_id', $courseId);
-            })
-            ->first();
-
-        $value = $attempt ? $attempt->attempts : 0;
-
-        if ($value >= 1) {
-            return redirect()->route('v2.student.quiz')->with('error', 'You have reached the maximum number of attempts.');
-        }   
-
-        $this->quizzes = $this->courses->exams
-            ->flatMap(fn($exam) => $exam->quizzes->where('status', true))
-            ->shuffle()
-            ->take(10)
-            ->values();
-
-        $this->totalMarks = $this->quizzes->sum('marks');
-    }
-
-    #[On('submitQuiz')]
-    public function storeAnswer()
-    {
-        if (!Auth::check()) {
-            return redirect()->route('auth.login')->with('error', 'You must be logged in to access this page');
-        }
-
-        if (!$this->passcodeVerified) {
-            return redirect()->route('v2.student.quiz')->with('error', 'Passcode not verified.');
-        }
-
-        $this->totalMarks = 0;
-        $this->obtainedMarks = 0;
-
-        $examUser = ExamUser::where('user_id', Auth::id())
-            ->where('exam_id', $this->examId)
-            ->first();
-
-        if ($examUser) {
-            if ($examUser->attempts >= 1) {
-                return redirect()->route('v2.student.quiz')->with('error', 'You have reached the maximum number of attempts.');
-            }
-            
-        } else {
-            $examUser = ExamUser::create([
-                'user_id' => Auth::id(),
-                'exam_id' => $this->examId,
-                'attempts' => 1,
-            ]);
-        }
-
-        $currentAttempt = $examUser->attempts;
-
-        if (!empty($this->selectedOptions)) {
-            foreach ($this->selectedOptions as $quizId => $selectedOption) {
-                $quiz = Quiz::find($quizId);
-
-                if ($quiz) {
-                    $this->totalMarks += $quiz->marks;
-
-                    if ($selectedOption == $quiz->correct_answer) {
-                        $this->obtainedMarks += $quiz->marks;
-                    }
-
-                    Answer::create([
-                        'user_id' => Auth::id(),
-                        'quiz_id' => $quizId,
-                        'exam_id' => $this->examId,
-                        'selected_option' => $selectedOption,
-                        'obtained_marks' => ($selectedOption == $quiz->correct_answer) ? $quiz->marks : 0,
-                        'attempt' => $currentAttempt,
-                    ]);
-                }
-            }
-
-            $examUser->total_marks = $this->obtainedMarks;
-            $examUser->save();
-
-            session()->flash('obtained_marks', $this->obtainedMarks);
-            session()->flash('exam_id', $this->examId);
-        } else {
-            $examUser->total_marks = 0;
-            $examUser->save();
-        }
-
-        $this->submitted = true;
-
-        return redirect()->route('v2.student.examResult', $this->examId)->with([
-            'success' => 'Answer submitted successfully!',
-            'exam_id' => $this->examId,
-        ]);
     }
 
     public function startExam()
@@ -186,12 +108,6 @@ class ShowQuiz extends Component
         $this->startTimer();
     }
 
-    public function exitExam()
-    {
-        $this->isFullscreen = false;
-        $this->submitExam();
-    }
-
     public function goToQuestion($index)
     {
         $this->dispatch('loading');
@@ -200,7 +116,12 @@ class ShowQuiz extends Component
         }
 
         if ($index >= 0 && $index < ($this->quizzes ? $this->quizzes->count() : 0)) {
+            // Save the current answer before moving
+            if ($this->quizzes && isset($this->quizzes[$this->currentQuestion])) {
+                $this->answers[$this->quizzes[$this->currentQuestion]->id] = $this->currentAnswer;
+            }
             $this->currentQuestion = $index;
+            $this->currentAnswer = $this->answers[$this->quizzes[$this->currentQuestion]->id] ?? null;
         }
     }
 
@@ -208,7 +129,10 @@ class ShowQuiz extends Component
     {
         $this->dispatch('loading');
         if ($this->currentQuestion < $this->quizzes->count() - 1) {
+            // Save the current answer before moving
+            $this->answers[$this->quizzes[$this->currentQuestion]->id] = $this->currentAnswer;
             $this->currentQuestion++;
+            $this->currentAnswer = $this->answers[$this->quizzes[$this->currentQuestion]->id] ?? null;
         }
     }
 
@@ -216,8 +140,17 @@ class ShowQuiz extends Component
     {
         $this->dispatch('loading');
         if ($this->currentQuestion > 0) {
+            // Save the current answer before moving
+            $this->answers[$this->quizzes[$this->currentQuestion]->id] = $this->currentAnswer;
             $this->currentQuestion--;
+            $this->currentAnswer = $this->answers[$this->quizzes[$this->currentQuestion]->id] ?? null;
         }
+    }
+
+    public function updatedCurrentAnswer($value)
+    {
+        // Update the answers array for the current question
+        $this->answers[$this->quizzes[$this->currentQuestion]->id] = $value;
     }
 
     public function startTimer()
@@ -231,54 +164,72 @@ class ShowQuiz extends Component
     }
 
     public function submitExam()
-    {
-        $this->dispatch('loading');
-        if (!$this->courseId || !$this->examId) {
-            return redirect()->route('student.takeExam');
-        }
-
-        // Store answers and update total marks
-        $examUser = ExamUser::firstOrNew([
-            'user_id' => Auth::id(),
-            'exam_id' => $this->examId
-        ]);
-
-        if ($examUser->attempts >= 2) {
-            return redirect()->route('v2.student.quiz', ['courseId' => $this->courseId])
-                ->with('error', 'Maximum attempts reached');
-        }
-
-        $examUser->attempts = ($examUser->attempts ?? 0) + 1;
-        $totalMarks = 0;
-
-        foreach ($this->answers as $quizId => $answer) {
-            $quiz = Quiz::find($quizId);
-            if ($quiz && $answer === $quiz->correct_answer) {
-                $totalMarks += $quiz->marks;
-            }
-        }
-
-        $examUser->total_marks = $totalMarks;
-        $examUser->save();
-
-        $this->dispatch('exitFullscreen');
-        return redirect()->route('v2.student.examResult', ['exam_id' => $this->examId]);
+{
+    $this->dispatch('loading');
+    if (!$this->courseId || !$this->examId) {
+        return redirect()->route('student.takeExam');
     }
 
-    public function handleFullscreenChange($isFullscreen)
+    // Save the current answer before submitting
+    $this->answers[$this->quizzes[$this->currentQuestion]->id] = $this->currentAnswer;
+
+    $examUser = ExamUser::firstOrNew([
+        'user_id' => Auth::id(),
+        'exam_id' => $this->examId
+    ]);
+
+    if ($examUser->attempts >= 1) {
+        return redirect()->route('v2.student.quiz', ['courseId' => $this->courseId])
+            ->with('error', 'Maximum attempts reached');
+    }
+
+    $examUser->attempts = ($examUser->attempts ?? 0) + 1;
+    $totalMarks = 0;
+
+    // Loop through all quizzes, not just the answered ones
+    foreach ($this->quizzes as $quiz) {
+        $quizId = $quiz->id;
+        $selectedOption = $this->answers[$quizId] ?? null; // Null if no answer provided
+        
+        $isCorrect = $selectedOption === $quiz->correct_answer;
+        $marks = $isCorrect ? $quiz->marks : 0;
+        $totalMarks += $marks;
+
+        Answer::create([
+            'user_id' => Auth::id(),
+            'quiz_id' => $quizId,
+            'exam_id' => $this->examId,
+            'selected_option' => $selectedOption, // Will be null for unanswered questions
+            'obtained_marks' => $marks,
+            'attempt' => $examUser->attempts,
+        ]);
+    }
+
+    $examUser->total_marks = $totalMarks;
+    $examUser->save();
+
+    $this->submitted = true;
+    $this->dispatch('exitFullscreen');
+    return redirect()->route('v2.student.examResult', ['examId' => $this->examId])
+        ->with('success', 'Exam submitted successfully!');
+}
+
+    #[On('fullscreenChanged')]
+    public function handleFullscreenChange($value)
     {
-        $this->isFullscreen = $isFullscreen;
-        if (!$isFullscreen && !$this->submitted) {
+        $this->isFullscreen = $value;
+        if (!$value && !$this->submitted) {
             $this->submitExam();
         }
     }
+
+  
 
     public function render()
     {
         return view('livewire.student.dashboard.takeexam.show-quiz', [
             'courses' => $this->courses,
             'quizzes' => $this->quizzes ?? collect(),
-            'totalMarks' => $this->totalMarks,
             'passcodeVerified' => $this->passcodeVerified,
             'passcodeError' => $this->passcodeError,
         ]);

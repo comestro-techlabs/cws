@@ -94,6 +94,53 @@
                 </div>
             </form>
         </div>
+        <button wire:click="$toggle('showJsonModal')"
+    class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
+    Import JSON
+</button>
+
+<!-- JSON Import Modal -->
+@if($showJsonModal)
+    <div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full"
+        wire:click.self="$toggle('showJsonModal')">
+        <div class="relative top-20 mx-auto p-5 border w-2/3 shadow-lg rounded-md bg-white">
+            <h3 class="text-lg font-medium mb-4">Import Questions from JSON</h3>
+            
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">JSON Data (Multiple Questions)</label>
+                <textarea wire:model="jsonData" rows="15"
+                    class="w-full p-2 border rounded-md"
+                    placeholder='[
+    {
+        "question": "First question?",
+        "options": ["Option 1", "Option 2", "Option 3", "Option 4"],
+        "correct_answer": "option1",
+        "status": true
+    },
+    {
+        "question": "Second question?",
+        "options": ["Option 1", "Option 2", "Option 3", "Option 4"],
+        "correct_answer": "option2",
+        "status": true
+    }
+]'></textarea>
+                @error('jsonData') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+            </div>
+
+            <div class="flex justify-end gap-2">
+                <button wire:click="$toggle('showJsonModal')"
+                    class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
+                    Cancel
+                </button>
+                <button wire:click="importJson"
+                    class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+                    Import
+                </button>
+            </div>
+        </div>
+    </div>
+@endif
+
         <!-- Questions Table -->
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
@@ -167,3 +214,4 @@
         </div>
     </div>
 </div>
+

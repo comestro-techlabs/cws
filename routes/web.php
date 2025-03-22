@@ -127,7 +127,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/take-exam', Exam::class)->name('student.takeExam');
         Route::get('/show-quiz/{courseId}', ShowQuiz::class)->name('v2.student.quiz');
         Route::get('/show-all-attempt/{course_id}', ShowAllAttempt::class)->name('v2.student.allAttempts');
-        route::get('show-quiz/result/{exam_id}', Result::class)->name('v2.student.examResult');
+        // route::get('show-quiz/result/{exam_id}', Result::class)->name('v2.student.examResult');
         route::get('/my-attendance', MyAttendance::class)->name('student.my-attendance');
         Route::get('/mocktest', SelectMockTest::class)->name('v2.student.mocktest');
         Route::get('/mocktest/{mockTestId}', ShowMockTest::class)->name('v2.student.mocktest.take');
@@ -139,6 +139,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/code-editor', Monaco::class)->name('v2.student.code-editor');
 
         Route::get('/my-orders',MyOrders::class)->name('student.my-orders');
+        Route::get('/exam/result/{examId}', Result::class)->name('v2.student.examResult');
 
     });
 
