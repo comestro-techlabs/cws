@@ -41,7 +41,11 @@ class ViewCourse extends Component
                   ->orderBy('start_date');
         }])->findOrFail($courseId);
 
-        $this->activeBatches = $this->course->batches;
+        $this->activeBatches = $this->course->batches->map(function($batch) {
+            $batch->start_date = \Carbon\Carbon::parse($batch->start_date);
+            $batch->end_date = \Carbon\Carbon::parse($batch->end_date);
+            return $batch;
+        });
         
         if($this->activeBatches->isNotEmpty()) {
             $this->selectedBatchId = $this->activeBatches->first()->id;

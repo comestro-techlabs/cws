@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Razorpay\Api\Api;
+use Illuminate\Support\Facades\DB;
 
 class Ourcourses extends Component
 {
@@ -133,6 +134,19 @@ class Ourcourses extends Component
             ]);
 
             $this->payment_exist = true;
+            if ($response['razorpay_payment_id'] && $payment->course_id) {
+                DB::table('course_student')->updateOrInsert(
+                    [
+                        'course_id' => $payment->course_id,
+                        'user_id' => $payment->student_id,
+                    ],
+                    [
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]
+                );
+            }
+
             session()->flash('success', 'Payment successful!');
             return redirect()->route('student.dashboard');
 
