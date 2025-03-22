@@ -123,7 +123,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/take-exam', Exam::class)->name('student.takeExam');
         Route::get('/show-quiz/{courseId}', ShowQuiz::class)->name('v2.student.quiz');
         Route::get('/show-all-attempt/{course_id}', ShowAllAttempt::class)->name('v2.student.allAttempts');
-        route::get('show-quiz/result/{exam_id}', Result::class)->name('v2.student.examResult');
+        // route::get('show-quiz/result/{exam_id}', Result::class)->name('v2.student.examResult');
         route::get('/my-attendance', MyAttendance::class)->name('student.my-attendance');
         Route::get('/mocktest', SelectMockTest::class)->name('v2.student.mocktest');
         Route::get('/mocktest/{mockTestId}', ShowMockTest::class)->name('v2.student.mocktest.take');
@@ -132,6 +132,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/products/{productId}/checkout', CheckOutPage::class)->name('v2.student.checkout');
         Route::get('/certificates',ShowCertificate::class)->name('student.certificates');
         Route::get('/marksheet',StudentMarksheet::class)->name('student.marksheet');
+        Route::get('/exam/result/{examId}', App\Livewire\Student\Dashboard\Takeexam\Result::class)->name('v2.student.examResult');
 
     });
 

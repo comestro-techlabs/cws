@@ -37,7 +37,24 @@ class ShowQuiz extends Component
 
     public function mount($courseId)
     {
+        if (!Auth::check()) {
+            return redirect()->route('auth.login');
+        }
+
+        $user = Auth::user();
         $this->courseId = $courseId;
+
+        // Check if user has already taken the exam
+        $examAttempt = ExamUser::where('user_id', $user->id)
+            ->whereHas('exam', function ($query) use ($courseId) {
+                $query->where('course_id', $courseId);
+            })
+            ->first();
+
+        if ($examAttempt && $examAttempt->attempts >= 1) {
+            return redirect()->route('student.takeExam')
+                ->with('error', 'You have already taken this exam. Multiple attempts are not allowed.');
+        }
     }
 
     public function verifyPasscode()
