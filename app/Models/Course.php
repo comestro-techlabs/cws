@@ -14,9 +14,15 @@ class Course extends Model
 
     protected $guarded = [];
 
-
     protected $attributes = [
         'course_type' => 'offline'
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'start_date' => 'datetime', 
+        'end_date' => 'datetime'
     ];
 
     public function isOnline()

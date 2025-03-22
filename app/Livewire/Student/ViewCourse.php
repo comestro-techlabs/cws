@@ -19,62 +19,78 @@ class ViewCourse extends Component
     public $payment_exist = false;
     public $avgRating;
     public $enrolledCourses = [];
+    public $selectedBatchId;
+    public $activeBatches;
 
     public $batch;
 
     #[Layout('components.layouts.student')]
     public function mount($courseId)
-{
-    if (!Auth::check()) {
-        return redirect()->route('auth.login')->with('error', 'You must be logged in to access this page');
-    }
+    {
+        if (!Auth::check()) {
+            return redirect()->route('auth.login')->with('error', 'You must be logged in to access this page');
+        }
 
-    $this->enrolledCourses = Auth::user()
-        ->courses()
-        ->pluck('courses.id')
-        ->toArray();
+        $this->enrolledCourses = Auth::user()
+            ->courses()
+            ->pluck('courses.id')
+            ->toArray();
 
-    $this->course = Course::with('features')->findOrFail($courseId);
-    $this->reviewedCourse = CourseReview::where('course_id', $courseId)->get();
-    $this->avgRating = CourseReview::where('course_id', $courseId)->avg('rating');
+        $this->course = Course::with(['features', 'category', 'batches' => function($query) {
+            $query->whereDate('end_date', '>=', now())
+                  ->orderBy('start_date');
+        }])->findOrFail($courseId);
 
-    // Fetch the active batch
-    $this->batch = Batch::where('course_id', $courseId)
-        ->whereDate('end_date', '>=', now())
-        ->first();
+        $this->activeBatches = $this->course->batches->map(function($batch) {
+            $batch->start_date = \Carbon\Carbon::parse($batch->start_date);
+            $batch->end_date = \Carbon\Carbon::parse($batch->end_date);
+            return $batch;
+        });
+        
+        if($this->activeBatches->isNotEmpty()) {
+            $this->selectedBatchId = $this->activeBatches->first()->id;
+        }
 
-    $course_id = $this->course->id;
-    $user_id = Auth::id();
+        $this->reviewedCourse = CourseReview::where('course_id', $courseId)->get();
+        $this->avgRating = CourseReview::where('course_id', $courseId)->avg('rating');
 
-    $this->payment_exist = Payment::where("student_id", $user_id)
-        ->where("course_id", $course_id)
-        ->where("status", "captured")
-        ->exists();
+        // Fetch the active batch
+        $this->batch = Batch::where('course_id', $courseId)
+            ->whereDate('end_date', '>=', now())
+            ->first();
 
-    if ($this->course->discounted_fees == 0) {
-        $already_enrolled = DB::table('course_student')
-            ->where('user_id', $user_id)
-            ->where('course_id', $course_id)
-            ->where('batch_id', $this->batch ? $this->batch->id : null)
+        $course_id = $this->course->id;
+        $user_id = Auth::id();
+
+        $this->payment_exist = Payment::where("student_id", $user_id)
+            ->where("course_id", $course_id)
+            ->where("status", "captured")
             ->exists();
 
-        if (!$already_enrolled && $this->batch) {
-            try {
-                DB::table('course_student')->insert([
-                    'user_id'    => $user_id,
-                    'course_id'  => $course_id,
-                    'batch_id'   => $this->batch->id,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
-                $this->payment_exist = true;
-                $this->enrolledCourses[] = $course_id;
-            } catch (\Exception $e) {
-                session()->flash('error', 'Failed to enroll in free course: ' . $e->getMessage());
+        if ($this->course->discounted_fees == 0) {
+            $already_enrolled = DB::table('course_student')
+                ->where('user_id', $user_id)
+                ->where('course_id', $course_id)
+                ->where('batch_id', $this->batch ? $this->batch->id : null)
+                ->exists();
+
+            if (!$already_enrolled && $this->batch) {
+                try {
+                    DB::table('course_student')->insert([
+                        'user_id'    => $user_id,
+                        'course_id'  => $course_id,
+                        'batch_id'   => $this->batch->id,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+                    $this->payment_exist = true;
+                    $this->enrolledCourses[] = $course_id;
+                } catch (\Exception $e) {
+                    session()->flash('error', 'Failed to enroll in free course: ' . $e->getMessage());
+                }
             }
         }
     }
-}
 
     #[On('initiate-payment')]
     public function initiatePayment()
@@ -229,6 +245,19 @@ class ViewCourse extends Component
 
     public function render()
     {
-        return view('livewire.student.view-course');
+        return view('livewire.student.view-course', [
+            'course' => $this->course,
+            'activeBatches' => $this->activeBatches,
+            'courseType' => [
+                'type' => ucfirst($this->course->course_type),
+                'details' => $this->course->course_type === 'online' ? [
+                    'meeting_link' => $this->course->meeting_link,
+                    'meeting_id' => $this->course->meeting_id,
+                    'meeting_password' => $this->course->meeting_password
+                ] : [
+                    'venue' => $this->course->venue
+                ]
+            ]
+        ]);
     }
 }

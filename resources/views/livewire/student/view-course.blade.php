@@ -5,73 +5,123 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <!-- Left Column: Course Details -->
         <div class="lg:col-span-2 space-y-6">
-            <!-- Course Title -->
-            <div class="border-b border-gray-200 pb-4">
-                <h1 class="text-3xl font-bold text-gray-900">{{ $course->title }}</h1>
-            </div>
-
-
-            <!-- Course Description -->
+            <!-- Course Header -->
             <div class="bg-white rounded-lg shadow-sm p-6">
-                <div class="flex justify-between">
-                    <h2 class="text-xl font-semibold text-gray-900 mb-4">About This Course</h2>
+                <div class="flex items-center justify-between mb-4">
+                    <h1 class="text-3xl font-bold text-gray-900">{{ $course->title }}</h1>
+                    <span class="px-3 py-1 rounded-full text-sm font-medium 
+                        {{ $course->course_type === 'online' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800' }}">
+                        {{ ucfirst($course->course_type) }}
+                    </span>
                 </div>
-                <p class="text-gray-700 leading-relaxed">{{ $course->description }}</p>
+                <div class="flex items-center gap-4 text-sm text-gray-600">
+                    <div class="flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        <span>{{ $course->instructor }}</span>
+                    </div>
+                    <div class="flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span>{{ $course->duration }} weeks</span>
+                    </div>
+                </div>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-8">
+            <!-- Course Details Tabs -->
+            <div class="bg-white rounded-lg shadow-sm">
+                <nav class="flex divide-x divide-gray-200 border-b">
+                    <button class="px-6 py-4 text-sm font-medium text-purple-600 bg-white border-b-2 border-purple-600">
+                        Overview
+                    </button>
+                    <button class="px-6 py-4 text-sm font-medium text-gray-500 hover:text-gray-700">
+                        Curriculum
+                    </button>
+                    <button class="px-6 py-4 text-sm font-medium text-gray-500 hover:text-gray-700">
+                        Reviews
+                    </button>
+                </nav>
+                
+                <div class="p-6">
+                    <!-- Course Description -->
+                    <div class="prose max-w-none">
+                        <h2 class="text-xl font-semibold mb-4">About This Course</h2>
+                        <p class="text-gray-600">{{ $course->description }}</p>
+                    </div>
 
-                @foreach ($reviewedCourse as $review)
-                    <div
-                        class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transform transition-transform duration-300 hover:scale-105">
-                        <div class="flex flex-col justify-between">
-                            <div class="font-semibold text-lg text-gray-800">{{ $review->user->name }}</div>
-
-                            <div class="flex justify-between items-center">
-                                <div class="flex text-orange-400">
-                                    @for ($i = 1; $i <= 5; $i++)
-                                        @if ($i <= $review->rating)
-
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                                class="w-3 h-3">
-                                                <path fill-rule="evenodd"
-                                                    d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-                                        @else
-
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                                class="w-3 h-3 text-gray-300">
-                                                <path fill-rule="evenodd"
-                                                    d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-                                        @endif
-                                    @endfor
+                    <!-- Available Batches -->
+                    <div class="mt-8">
+                        <h2 class="text-xl font-semibold mb-4">Available Batches</h2>
+                        <div class="grid gap-4">
+                            @foreach($activeBatches as $batch)
+                                <div class="border rounded-lg p-4 hover:border-purple-200 transition-colors">
+                                    <div class="flex justify-between items-center">
+                                        <h3 class="font-medium text-gray-900">{{ $batch->batch_name }}</h3>
+                                        <span class="text-sm text-gray-500">
+                                            {{ $batch->start_date->format('d M Y') }} - {{ $batch->end_date->format('d M Y') }}
+                                        </span>
+                                    </div>
                                 </div>
-                                <span class="text-xs text-gray-500 ml-1.5">
-                                    {{ $review?->rating }} ({{ $review->course->rating->count() }} reviews)
-                                </span>
-                            </div>
-
-                        </div>
-
-                        <div class="mt-3 text-gray-600 text-sm">
-                            <p>{{ $review->review }}</p>
-                        </div>
-
-                        <div class="mt-4 text-xs text-gray-500">
-                            <small>Reviewed on: {{ $review->created_at->format('Y-m-d') }}</small>
+                            @endforeach
                         </div>
                     </div>
-                @endforeach
 
+                    <!-- Course Features -->
+                    <div class="mt-8">
+                        <h2 class="text-xl font-semibold mb-4">What You'll Learn</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            @foreach($course->features as $feature)
+                                <div class="flex items-start gap-3">
+                                    <svg class="w-5 h-5 text-green-500 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span class="text-gray-600">{{ $feature->name }}</span>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
 
+                    <!-- Course Type Specific Details -->
+                    @if($courseType['type'] === 'Online')
+                        <div class="mt-8">
+                            <h2 class="text-xl font-semibold mb-4">Online Class Details</h2>
+                            <div class="bg-blue-50 rounded-lg p-4">
+                                <div class="space-y-2">
+                                    <p class="flex items-center text-blue-700">
+                                        <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                        </svg>
+                                        Meeting Link: {{ $courseType['details']['meeting_link'] }}
+                                    </p>
+                                    <p class="flex items-center text-blue-700">
+                                        <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                                        </svg>
+                                        Meeting ID: {{ $courseType['details']['meeting_id'] }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    @else
+                        <div class="mt-8">
+                            <h2 class="text-xl font-semibold mb-4">Venue Details</h2>
+                            <div class="bg-green-50 rounded-lg p-4">
+                                <p class="flex items-center text-green-700">
+                                    <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+                                    {{ $courseType['details']['venue'] }}
+                                </p>
+                            </div>
+                        </div>
+                    @endif
+                </div>
             </div>
-
-
-
-
         </div>
 
         <!-- Right Column: Payment and Features -->

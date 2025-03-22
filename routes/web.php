@@ -76,6 +76,8 @@ use App\Livewire\Student\Subscriptions\Plans;
 use App\Livewire\Student\Marksheet\StudentMarksheet;
 use App\Livewire\Student\Certificate\ShowCertificate;
 use App\Livewire\Admin\MockTest\ManageQuestions;
+use App\Livewire\Public\Myeditor\Monaco;
+use App\Livewire\Student\Dashboard\Product\MyOrders;
 
 // public routes
 Route::get('/', Home::class)->name('public.index');
@@ -99,6 +101,7 @@ Route::prefix('auth')->group(function () {
     Route::get('/facebook/redirect', [Facebook::class, 'redirectToFacebook'])->name('facebook.redirect');
     Route::get('/facebook/callback', [Facebook::class, 'handleFacebookCallback'])->name('facebook.callback');
     Route::get('/register', App\Livewire\Auth\Register::class)->name('auth.register');
+
 });
 //protected routes
 Route::middleware('auth')->group(function () {
@@ -132,6 +135,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/products/{productId}/checkout', CheckOutPage::class)->name('v2.student.checkout');
         Route::get('/certificates',ShowCertificate::class)->name('student.certificates');
         Route::get('/marksheet',StudentMarksheet::class)->name('student.marksheet');
+        Route::get('/code-editor', Monaco::class)->name('v2.student.code-editor');
+
+        Route::get('/my-orders',MyOrders::class)->name('student.my-orders');
         Route::get('/exam/result/{examId}', App\Livewire\Student\Dashboard\Takeexam\Result::class)->name('v2.student.examResult');
 
     });

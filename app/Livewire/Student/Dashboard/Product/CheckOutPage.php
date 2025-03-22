@@ -158,7 +158,7 @@ class CheckOutPage extends Component
             $this->dispatch('showAlert', 'Something went wrong! Please try again.');
         }
     }
-
+ 
     #[Layout('components.layouts.student')]
     public function render()
     {

@@ -14,6 +14,11 @@ class Batch extends Model
         'course_id', 'batch_name', 'start_date', 'end_date', 'total_seats', 'available_seats',
     ];
 
+    protected $casts = [
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
+    ];
+
     public function course()
     {
         return $this->belongsTo(Course::class);

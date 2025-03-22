@@ -15,7 +15,7 @@
                         </div>
                     @endif
 
-                    <form wire:submit="login" class="space-y-6">
+                    <form wire:submit.prevent="login" class="space-y-6">
                         <div>
                             <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email address</label>
                             <input type="email" 
