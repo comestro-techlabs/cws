@@ -76,7 +76,7 @@
                            
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <button wire:click="toggleStatus({{ $category->id }})"
-                                    class="relative px-3 py-1 rounded-full text-sm {{ $category->status =='active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}"
+                                    class="relative px-3 py-1 rounded-full text-sm {{ $category->isActive  ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}"
                                     wire:loading.class="opacity-50 cursor-wait"
                                     wire:target="toggleStatus({{ $category->id }})">
                                     <span wire:loading.remove wire:target="toggleStatus({{ $category->id }})">

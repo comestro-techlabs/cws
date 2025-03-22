@@ -100,6 +100,18 @@ class ManageProductCategories extends Component
         $this->category_description = '';
 
     }
+    public function toggleStatus($id)
+    {
+        // dd($id);
+        $product = ProductCategories::findOrFail($id);
+        // dd( $product->status);
+        if ($product->isActive) {
+            $product->update(['isActive' => 0]);
+        } else {
+            $product->update(['isActive' => 1]);
+        }
+        $this->dispatch('refreshCategory')->self();
+    }
 
     #[Layout('components.layouts.admin')]
     public function render()
