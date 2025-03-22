@@ -5,12 +5,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
-use App\Models\ExamUser; 
+use App\Models\ExamUser;
+
 #[Layout('components.layouts.student')]
 class Exam extends Component
 {
     public $courses;
-    public $attempts = []; 
+    public $attempts = [];
     public $completedExams = [];
 
     public function mount()
@@ -46,12 +47,12 @@ class Exam extends Component
             ->toArray();
     }
 
-  
     public function render()
     {
         return view('livewire.student.dashboard.takeexam.exam', [
             'courses' => $this->courses,
             'attempts' => $this->attempts,
+            'completedExams' => $this->completedExams,
         ]);
     }
 }

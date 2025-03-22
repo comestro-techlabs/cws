@@ -31,36 +31,39 @@
                         <div class="p-5">
                             <!-- Course Title -->
                             <h2 class="text-lg font-semibold text-gray-900 mb-2">{{ $course->title }}</h2>
-                            
+
                             <!-- Quiz Status -->
                             @php
                                 $quizAvailable = false;
-                                $maxAttemptsReached = false;
                                 $todayExam = null;
+                                $hasAttempts = false;
                             @endphp
-                            
+
                             @foreach ($course->exams as $exam)
                                 @if ($exam->exam_date === now()->toDateString())
                                     @php
                                         $quizAvailable = true;
                                         $todayExam = $exam;
                                         $attemptCount = $attempts[$exam->id] ?? 0;
-                                        $maxAttemptsReached = $attemptCount >=1;
+                                        $hasAttempts = $attemptCount >= 1;
                                     @endphp
-                                    @break
+                                @endif
+                                <!-- Check for completed exams regardless of date -->
+                                @if (in_array($exam->id, $completedExams))
+                                    @php
+                                        $todayExam = $exam; // Use this exam for View Result if completed
+                                    @endphp
                                 @endif
                             @endforeach
-                            
+
                             <div class="mt-3 mb-4">
                                 @if ($quizAvailable)
                                     <div class="flex items-center">
                                         <span class="w-2 h-2 mr-2 rounded-full bg-green-500"></span>
                                         <span class="text-sm text-gray-700">
                                             Quiz available today
-                                            @if ($maxAttemptsReached)
-                                                <span class="text-red-600 ml-1">(Max attempts reached)</span>
-                                            @else
-                                                <span class="text-gray-500 ml-1">({{ $attemptCount }}/2 attempts used)</span>
+                                            @if ($hasAttempts)
+                                                <span class="text-red-600 ml-1">(Attempted)</span>
                                             @endif
                                         </span>
                                     </div>
@@ -71,10 +74,11 @@
                                     </div>
                                 @endif
                             </div>
-                            
+
                             <!-- Action Buttons -->
                             <div class="flex space-x-2 mt-auto pt-3 border-t border-gray-100">
-                                @if ($quizAvailable && !$maxAttemptsReached)
+                                <!-- Show Take Quiz button if exam is today and not attempted -->
+                                @if ($quizAvailable && !$hasAttempts)
                                     <a wire:navigate href="{{ route('v2.student.quiz', ['courseId' => $course->id]) }}" class="flex-1">
                                         <button id="start-quiz-btn" class="w-full inline-flex items-center justify-center px-3 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -83,24 +87,19 @@
                                             Take Quiz
                                         </button>
                                     </a>
-                                @elseif ($quizAvailable && $maxAttemptsReached)
-                                    {{-- <button disabled class="flex-1 inline-flex items-center justify-center px-3 py-2 bg-gray-100 text-gray-400 rounded-md text-sm font-medium cursor-not-allowed">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                                        </svg>
-                                        Max Attempts
-                                    </button> --}}
-                                    
                                 @endif
-                                
-                                <a wire:navigate href="{{ route('v2.student.examResult', ['examId' => $todayExam->id]) }}" class="flex-1">
-                                    <button class="w-full inline-flex items-center justify-center px-3 py-2 bg-white border border-gray-200 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                                        </svg>
-                                        View Results
-                                    </button>
-                                </a>
+
+                                <!-- Show View Result button if the exam has been attempted, regardless of date -->
+                                @if ($todayExam && in_array($todayExam->id, $completedExams))
+                                    <a wire:navigate href="{{ route('v2.student.examResult', ['examId' => $todayExam->id]) }}" class="flex-1">
+                                        <button class="w-full inline-flex items-center justify-center px-3 py-2 bg-white border border-gray-200 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                            </svg>
+                                            View Results
+                                        </button>
+                                    </a>
+                                @endif
                             </div>
                         </div>
                     </div>

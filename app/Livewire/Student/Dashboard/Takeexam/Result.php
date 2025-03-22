@@ -3,60 +3,65 @@ namespace App\Livewire\Student\Dashboard\Takeexam;
 
 use Livewire\Attributes\Layout;
 use Livewire\Component;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Answer;
 use App\Models\ExamUser;
+use App\Models\Answer;
 use App\Models\Quiz;
+use Illuminate\Support\Facades\Auth;
 
 #[Layout('components.layouts.student')]
 class Result extends Component
 {
+    public $examId;
     public $examUser;
     public $answers;
-    public $totalQuestions;
-    public $correctAnswers;
-    public $incorrectAnswers;
-    public $percentage;
-    public $examId;
+    public $stats = [];
+    public $quizzes;
 
-    public function mount()
+    public function mount($examId)
     {
-        // Update to use examId parameter name
-        if (!request()->route('examId')) {
-            return redirect()->route('student.dashboard');
-        }
+        $this->examId = $examId;
+        $this->loadResults();
+    }
 
-        $this->examId = request()->route('examId');
-        
-        $this->examUser = ExamUser::where('exam_id', $this->examId)
-            ->where('user_id', Auth::id())
+    private function loadResults()
+    {
+        $this->examUser = ExamUser::where('user_id', Auth::id())
+            ->where('exam_id', $this->examId)
             ->firstOrFail();
 
-        // Update the answers query to eager load quiz with all options
-        $this->answers = Answer::with(['quiz' => function($query) {
-            $query->select('id', 'question', 'option1', 'option2', 'option3', 'option4', 'correct_option');
-        }])
-        ->where('exam_id', $this->examId)
-        ->where('user_id', Auth::id())
-        ->get();
+        $this->answers = Answer::where('user_id', Auth::id())
+            ->where('exam_id', $this->examId)
+            ->with('quiz') // Load quiz relationship
+            ->get();
 
-        // Add debugging to check if answers are loaded
-        if ($this->answers->isEmpty()) {
-            session()->flash('error', 'No answers found for this exam.');
-        }
+        $this->quizzes = Quiz::where('exam_id', $this->examId)->get();
 
-        $this->totalQuestions = $this->answers->count();
-        $this->correctAnswers = $this->answers->where('obtained_marks', '>', 0)->count();
-        $this->incorrectAnswers = $this->totalQuestions - $this->correctAnswers;
-        $this->percentage = $this->totalQuestions > 0 
-            ? ($this->examUser->total_marks / ($this->totalQuestions * 5)) * 100 
-            : 0;
+        $this->calculateStats();
+    }
+
+    private function calculateStats()
+    {
+        $totalQuestions = $this->answers->count();
+        $correctAnswers = $this->answers->where('obtained_marks', '>', 0)->count();
+        $incorrectAnswers = $totalQuestions - $correctAnswers;
+        $totalPossibleMarks = $this->answers->count();
+        $obtainedMarks = $this->examUser->total_marks; 
+
+        $this->stats = [
+            'percentage' => $totalPossibleMarks > 0 ? round(($obtainedMarks / $totalPossibleMarks) * 100, 2) : 0,
+            'marks' => "$obtainedMarks/$totalPossibleMarks",
+            'correct' => $correctAnswers,
+            'incorrect' => $incorrectAnswers,
+        ];
     }
 
     public function render()
     {
         return view('livewire.student.dashboard.takeexam.result', [
-            'hasAnswers' => $this->answers->isNotEmpty()
+            'stats' => $this->stats,
+            'answers' => $this->answers,
+            'examUser' => $this->examUser,
+            'quizzes' => $this->quizzes,
         ]);
     }
 }
