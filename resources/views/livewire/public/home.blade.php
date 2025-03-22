@@ -1,5 +1,35 @@
 <div>
 
+    <!-- Programming Languages Section -->
+    <div class="bg-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-extrabold tracking-tight text-[#29235c] sm:text-4xl">
+                    Learn programming for <span class="text-[#662d91]">Free</span>
+                </h2>
+                <p class="mt-4 text-xl text-gray-500 max-w-3xl mx-auto">
+                    Quick-read tutorials with code examples that you can run
+                    and copy–perfect for self-paced learning.
+                </p>
+            </div>
+            <div class="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+                @foreach($blogCourses as $blogCourse)
+                <a href="{{ route('v2.courses.show', ['course_id' => $blogCourse->id]) }}" class="flex items-center p-4 border border-gray-200 rounded-md hover:shadow-md transition-all">
+                    <div class="flex items-center">
+                        <span class="text-blue-500 mr-3">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 0C5.372 0 0 5.372 0 12S5.372 24 12 24c6.627 0 12-5.372 12-12S18.627 0 12 0z"></path>
+                            </svg>
+                        </span>
+                        <span class="font-medium">{{ $blogCourse->title }}</span>
+                    </div>
+                </a>
+                @endforeach
+            </div>
+
+        </div>
+    </div>
+
 
     <!-- Features Section -->
     <div id="features" class="py-12 bg-white">
@@ -17,7 +47,7 @@
                         <dt>
                             <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-[#662d91] text-white">
                                 <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
                                 </svg>
                             </div>
                             <p class="ml-16 text-lg leading-6 font-medium text-gray-900">Live Classes</p>
@@ -70,15 +100,15 @@
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center">
                                     @if ($course->discounted_fees > 0)
-                                        <span class="text-2xl font-bold text-gray-900">₹{{ $course->discounted_fees }}</span>
-                                        <span class="ml-2 text-sm text-gray-500 line-through">₹{{ $course->fees }}</span>
+                                    <span class="text-2xl font-bold text-gray-900">₹{{ $course->discounted_fees }}</span>
+                                    <span class="ml-2 text-sm text-gray-500 line-through">₹{{ $course->fees }}</span>
                                     @else
-                                        <span class="text-xl font-semibold text-green-600">Free</span>
+                                    <span class="text-xl font-semibold text-green-600">Free</span>
                                     @endif
                                 </div>
                                 <div>
-                                    <a href="{{ route('public.courseDetail', ['slug' => $course->slug]) }}" 
-                                       class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[#662d91] hover:bg-purple-800">
+                                    <a href="{{ route('public.courseDetail', ['slug' => $course->slug]) }}"
+                                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[#662d91] hover:bg-purple-800">
                                         View Details
                                     </a>
                                 </div>
@@ -96,7 +126,7 @@
         <div class="max-w-7xl mx-auto py-12 px-4 sm:py-16 sm:px-6 lg:px-8">
             <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
                 <div class="text-center">
-                    <p class="text-5xl font-extrabold text-white">95%</                    </p>
+                    <p class="text-5xl font-extrabold text-white">95%</ </p>
                     <p class="mt-2 text-xl font-semibold text-purple-200">Placement Rate</p>
                 </div>
                 <div class="text-center">
@@ -132,11 +162,11 @@
                         <div class="px-6 py-8">
                             <div class="flex items-center">
                                 @if($student->image)
-                                    <img class="h-12 w-12 rounded-full object-cover" src="{{ asset('/storage/placedstudent/' . $student->image) }}" alt="{{ $student->name }}">
+                                <img class="h-12 w-12 rounded-full object-cover" src="{{ asset('/storage/placedstudent/' . $student->image) }}" alt="{{ $student->name }}">
                                 @else
-                                    <div class="h-12 w-12 rounded-full bg-[#662d91] flex items-center justify-center">
-                                        <span class="text-xl font-bold text-white">{{ substr($student->name, 0, 1) }}</span>
-                                    </div>
+                                <div class="h-12 w-12 rounded-full bg-[#662d91] flex items-center justify-center">
+                                    <span class="text-xl font-bold text-white">{{ substr($student->name, 0, 1) }}</span>
+                                </div>
                                 @endif
                                 <div class="ml-4">
                                     <h3 class="text-lg font-medium text-gray-900">{{ $student->name }}</h3>

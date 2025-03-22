@@ -85,8 +85,10 @@ Route::get('/', Home::class)->name('public.index');
 Route::get('/courses', AllCourses::class)->name('public.viewallcourses.all-courses');
 Route::get('/contact', ContactPage::class)->name('public.contactUs');
 Route::get('/workshops', Workshop::class)->name('public.workshop');
+//blog courses routes
 Route::get('/course/{course_id}/chapter/show', CourseWithChapterAndTopic::class)->name('v2.courses.show');
 Route::get('/course/{course_id}/chapter/{chapter_id?}/topic/{topic_id?}/show', TopicWithPostContent::class)->name('v2.topics.show');
+
 Route::get('/courses/{slug}', Ourcourses::class)->name('public.courseDetail');
 
 //auth routes

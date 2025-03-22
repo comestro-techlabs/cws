@@ -26,10 +26,10 @@ class DatabaseSeeder extends Seeder
             // SubscriptionPlanSeeder::class,  // Add this line
             // CategorySeeder::class,        // Categories first
             // CourseSeeder::class,          // Courses second
-            // PostCourseSeeder::class,
-            // PostChapterSeeder::class,
-            // PostTopicPostSeeder::class,
-            // PostMyPostSeeder::class,
+            PostCourseSeeder::class,
+            PostChapterSeeder::class,
+            PostTopicPostSeeder::class,
+            PostMyPostSeeder::class,
             // MockTestSeeder::class,        // Mock tests after courses
             // UserSeeder::class,            // Users must be first
             // CategorySeeder::class,        // Categories before courses
@@ -37,8 +37,8 @@ class DatabaseSeeder extends Seeder
             // BatchSeeder::class,           // Batches before assignments
             // CourseUserSeeder::class,      // Enroll users in courses
             // AssignmentSeeder::class,      // Assignments last
-            ProductCategoriesSeeder::class,
-            ProductsSeeder::class,
+            // ProductCategoriesSeeder::class,
+            // ProductsSeeder::class,
         ]);
     }
 }

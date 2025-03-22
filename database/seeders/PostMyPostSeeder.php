@@ -22,7 +22,7 @@ class PostMyPostSeeder extends Seeder
         $topics = PostTopicPost::all();
 
         foreach ($topics as $topic) {
-            PostMyPost::factory(10)->create([
+            PostMyPost::factory(5)->create([
                 'post_topic_post_id' => $topic->id,
             ]); // Creates 5 posts per topic
         }
