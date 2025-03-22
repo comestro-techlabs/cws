@@ -76,6 +76,7 @@ use App\Livewire\Student\Subscriptions\Plans;
 use App\Livewire\Student\Marksheet\StudentMarksheet;
 use App\Livewire\Student\Certificate\ShowCertificate;
 use App\Livewire\Admin\MockTest\ManageQuestions;
+use App\Livewire\Admin\Store\ManageProductCategories;
 use App\Livewire\Public\Myeditor\Monaco;
 use App\Livewire\Student\Dashboard\Product\MyOrders;
 
@@ -211,6 +212,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         //manage-orders
         Route::get('/products-manage',ManageProducts::class)->name('v2.admin.manageProducts');
         Route::get('/manage-orders', ManageOrders::class)->name('v2.student.manageOrders');
+        Route::get('/manage-product-categories',ManageProductCategories::class)->name('v2.admin.manageCategories');
 
 
         //blog
