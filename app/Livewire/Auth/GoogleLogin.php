@@ -6,8 +6,10 @@ use App\Mail\UserRegisterMail;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Livewire\Component;
+use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
+use Livewire\Component;
+
 class GoogleLogin extends Component
 {
     public $errorMessage = '';
@@ -22,48 +24,45 @@ class GoogleLogin extends Component
     public function handleGoogleCallback()
     {
         try {
-            $googleUser = Socialite::driver('googleAuth')
-                ->stateless() // Add stateless to prevent session issues
-                ->user();
+            // Get user data from Google
+            $googleUser = Socialite::driver('googleAuth')->stateless()->user();
 
-            $existingUser = User::where('email', $googleUser->getEmail())->first();
-
-            if ($existingUser) {
-                Auth::login($existingUser, true);
-                session(['user_avatar' => $googleUser->getAvatar()]);
-
-                return redirect()->intended(
-                    Auth::user()->isAdmin ? '/v2/admin/dashboard' : '/'
-                );
+            if (!$googleUser || !$googleUser->getEmail()) {
+                throw new \Exception('Failed to get user data from Google');
             }
 
-            $newUser = User::create([
-                'name' => $googleUser->getName(),
-                'email' => $googleUser->getEmail(),
-                'image' => $googleUser->getAvatar(),
-                'isAdmin' => 0,
-                'google_id' => $googleUser->getId(),
-                'password' => bcrypt(Str::random(16)),
-            ]);
+            // Find or create user
+            $user = User::updateOrCreate(
+                ['email' => $googleUser->getEmail()],
+                [
+                    'name' => $googleUser->getName() ?? explode('@', $googleUser->getEmail())[0],
+                    'google_id' => $googleUser->getId(),
+                    'image' => $googleUser->getAvatar(),
+                    'password' => bcrypt(Str::random(24)),
+                    'email_verified_at' => now(),
+                ]
+            );
 
-            Auth::login($newUser, true);
-            session(['user_avatar' => $googleUser->getAvatar()]);
+            // Login user
+            Auth::login($user, true);
 
-            // Send welcome email asynchronously
-            try {
-                Mail::to($newUser->email)->queue(new UserRegisterMail($newUser));
-            } catch (\Exception $e) {
-                \Log::error('Failed to send welcome email: ' . $e->getMessage());
-            }
+            // Store avatar in session
+            session()->put('user_avatar', $googleUser->getAvatar());
 
-            return redirect()->intended('/');
+            // Determine redirect path
+            $redirectPath = $user->isAdmin ? '/v2/admin/dashboard' : '/student/dashboard';
+
+            return redirect()->to($redirectPath);
 
         } catch (\Exception $e) {
-            \Log::error('Google login error: ' . $e->getMessage());
-            session()->flash('error', 'Unable to login with Google. Please try again.');
+            \Log::error('Google Auth Error: ' . $e->getMessage());
+
+            session()->flash('error', 'Google authentication failed. Please try again.');
+
             return redirect()->route('auth.login');
         }
     }
+
     public function render()
     {
         return view('livewire.auth.google-login');

@@ -95,8 +95,12 @@ Route::get('/courses/{slug}', Ourcourses::class)->name('public.courseDetail');
 Route::prefix('auth')->group(function () {
     Route::get('/login', Login::class)->name('auth.login');
     Route::get('/logout', Header::class)->name('auth.logout');
-    Route::get('/google', [GoogleLogin::class, 'redirectToGoogle'])->name('auth.google.login');
-    Route::get('/google/callback', [GoogleLogin::class, 'handleGoogleCallback'])->name('auth.google.callback');
+    Route::get('/google', [GoogleLogin::class, 'redirectToGoogle'])
+        ->name('auth.google.login')
+        ->middleware('guest');
+    Route::get('/google/callback', [GoogleLogin::class, 'handleGoogleCallback'])
+        ->name('auth.google.callback')
+        ->middleware('guest');
     Route::get('/github/redirect', [Github::class, 'redirectToGithub'])->name('github.redirect');
     Route::get('/github/callback', [Github::class, 'handleGithubCallback'])->name('github.callback');
     Route::get('/linkedin/redirect', [LinkedinLogin::class, 'redirectToLinkedin'])->name('linkedin.redirect');
@@ -199,7 +203,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         //Certificate Routes
         Route::get('/certificate/course',ManageCertificate::class)->name('admin.certificate.course');
         Route::get('/certificate/{certificateId}/view',ViewCertificate::class)->name('certificate.view');
-       
+
         // Workshop Routes certificate/course
         Route::get('/workshops', ManageWorkshop::class)->name('admin.workshops.index');
 
