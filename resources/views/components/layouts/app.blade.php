@@ -8,6 +8,7 @@
 
     <!-- Add these meta tags -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script src="https://cdn.tailwindcss.com"></script>
     <meta name="livewire:script-url" content="{{ asset('livewire/livewire.js') }}">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])

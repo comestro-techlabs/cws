@@ -5,9 +5,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    
+
     <!-- Replace Tailwind browser script with CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="livewire:script-url" content="{{ asset('livewire/livewire.js') }}">
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @livewireStyles
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -132,7 +136,12 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     @livewireScripts
-    <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+    <script>
+        // Add Livewire configuration
+        window.livewire_app_url = "{{ config('app.url') }}";
+        window.livewire_token = "{{ csrf_token() }}";
+    </script>
+        <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
     @stack('scripts')
 </body>
 
