@@ -83,9 +83,9 @@ use App\Livewire\Admin\Store\ManageProductCategories;
 use App\Livewire\Public\Myeditor\Monaco;
 use App\Livewire\Student\Dashboard\Product\MyOrders;
 
-Livewire::setUpdateRoute(function ($handle) {
-    return Route::post('/learnsyntax/public/livewire/update', $handle);
-});
+// Livewire::setUpdateRoute(function ($handle) {
+//     return Route::post('/learnsyntax/public/livewire/update', $handle);
+// });
 
 // public routes
 Route::get('/', Home::class)->name('public.index');
