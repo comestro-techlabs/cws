@@ -17,9 +17,7 @@
                 <a href="{{ route('v2.courses.show', ['course_id' => $blogCourse->id]) }}" class="flex items-center p-4 border border-gray-200 rounded-md hover:shadow-md transition-all">
                     <div class="flex items-center">
                         <span class="text-blue-500 mr-3">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 0C5.372 0 0 5.372 0 12S5.372 24 12 24c6.627 0 12-5.372 12-12S18.627 0 12 0z"></path>
-                            </svg>
+                            <img src="{{ asset('storage/' . $blogCourse->image) }}" alt="" class="w-6 h-6">
                         </span>
                         <span class="font-medium">{{ $blogCourse->title }}</span>
                     </div>

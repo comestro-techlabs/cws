@@ -16,7 +16,7 @@ class Home extends Component
     public $blogCourses;
     public function mount()
     {
-
+ 
         $this->blogCourses = PostCourse::take(9)->get();
         $this->courses = Course::where("published", true)->latest()->take(6)->get();
         $this->placedStudents = Cache::remember('placed_students_active_homepage', 60, function () {
