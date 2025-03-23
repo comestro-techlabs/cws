@@ -4,8 +4,8 @@ use App\Http\Controllers\PublicController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\WorkshopController;
-use Illuminate\Support\Facades\Artisan;
-use Livewire\Livewire;
+// use Illuminate\Support\Facades\Artisan;
+// use Livewire\Livewire;
 
 
 use App\Livewire\Admin\Assignment\ManageAssignment;
@@ -266,20 +266,20 @@ Route::get('generate', function () {
 });Route::get('/workshop/{id}/enroll', [WorkshopController::class, 'buyWorkshop'])->name('workshop.enroll');
 
 
-Route::get('/storage-link', function () {
-    Artisan::call('storage:link');
-    return 'Storage link has been created!';
-});
+// Route::get('/storage-link', function () {
+//     Artisan::call('storage:link');
+//     return 'Storage link has been created!';
+// });
 
-Route::get('/clear-cache', function () {
-    Artisan::call('cache:clear');
-    Artisan::call('config:cache');
-    Artisan::call('config:clear');
-    Artisan::call('view:clear');
-    Artisan::call('route:clear');
-    Artisan::call('optimize:clear');
-    return "All Caches are cleared by @Roni";
-});
+// Route::get('/clear-cache', function () {
+//     Artisan::call('cache:clear');
+//     Artisan::call('config:cache');
+//     Artisan::call('config:clear');
+//     Artisan::call('view:clear');
+//     Artisan::call('route:clear');
+//     Artisan::call('optimize:clear');
+//     return "All Caches are cleared by @Roni";
+// });
 
 
 
