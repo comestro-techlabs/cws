@@ -1,6 +1,7 @@
 @props(['hasCompleted' => false, 'main' => ''])
 
-<div x-data="{ sidebarOpen: false }">
+<div x-data="{ sidebarOpen: false }"
+     @toggle-sidebar.window="sidebarOpen = !sidebarOpen">
 
     <aside id="default-sidebar"
         class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"

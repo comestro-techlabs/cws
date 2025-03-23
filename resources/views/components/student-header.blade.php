@@ -3,7 +3,8 @@
         <div class="max-w-7xl mx-auto px-6 py-2">
             <div class="flex justify-between items-center h-12">
                 <div class="flex items-center">
-                    <button @click="sidebarOpen = !sidebarOpen" class="p-2 text-gray-700 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-100 lg:hidden">
+                    <button @click="$dispatch('toggle-sidebar')"
+                            class="p-2 text-gray-700 hover:text-purple-600 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-100 transition-colors duration-200">
                         <span class="sr-only">Open menu</span>
                         <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -12,12 +13,6 @@
 
                     <div class="flex-shrink-0 flex items-center ml-3 lg:ml-0">
                         <img class="h-7 w-auto" src="{{ asset('assets/LearnSyntax.png') }}" alt="Learn Syntax" />
-                    </div>
-
-                    <div class="hidden lg:ml-6 lg:flex lg:items-center lg:space-x-3">
-                        <a href="{{ route('student.dashboard') }}" class="text-gray-700 hover:text-blue-600 px-4 py-2 rounded-lg text-sm font-medium transition duration-200 hover:bg-blue-50">Dashboard</a>
-                        <a href="{{ route('student.exploreCourses') }}" class="text-gray-700 hover:text-blue-600 px-4 py-2 rounded-lg text-sm font-medium transition duration-200 hover:bg-blue-50">Explore Courses</a>
-                        <a href="{{ route('student.billing') }}" class="text-gray-700 hover:text-blue-600 px-4 py-2 rounded-lg text-sm font-medium transition duration-200 hover:bg-blue-50">Billing</a>
                     </div>
                 </div>
 
@@ -66,15 +61,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- Mobile menu -->
-        <div x-show="sidebarOpen" class="lg:hidden rounded-b-lg overflow-hidden" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95">
-            <div class="px-2 pt-2 pb-3 space-y-1 bg-white border-t">
-                <a href="{{ route('student.dashboard') }}" class="block text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-4 py-2 rounded-lg text-base font-medium transition duration-200">Dashboard</a>
-                <a href="{{ route('student.exploreCourses') }}" class="block text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-4 py-2 rounded-lg text-base font-medium transition duration-200">Explore Courses</a>
-                <a href="{{ route('student.billing') }}" class="block text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-4 py-2 rounded-lg text-base font-medium transition duration-200">Billing</a>
             </div>
         </div>
     </nav>
