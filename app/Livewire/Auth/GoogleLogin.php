@@ -11,7 +11,7 @@ use Laravel\Socialite\Facades\Socialite;
 class GoogleLogin extends Component
 {
     public $errorMessage = '';
- 
+
     // Method to initiate Google login
     public function redirectToGoogle()
     {
@@ -22,34 +22,46 @@ class GoogleLogin extends Component
     public function handleGoogleCallback()
     {
         try {
-            $googleUser = Socialite::driver('googleAuth')->scopes(['openid', 'profile', 'email'])
-            ->user();
-            \Log::info('Google User: ', (array) $googleUser);
+            $googleUser = Socialite::driver('googleAuth')
+                ->stateless() // Add stateless to prevent session issues
+                ->user();
 
             $existingUser = User::where('email', $googleUser->getEmail())->first();
 
             if ($existingUser) {
-                Auth::login($existingUser);
-            } else {
-                $newUser = User::create([
-                    'name' => $googleUser->getName(),
-                    'email' => $googleUser->getEmail(),
-                    'image' => $googleUser->getAvatar(),
-                    'isAdmin' => 0,
-                    'google_id' => $googleUser->getId(),
-                    'password' => '123456dummy', // Consider hashing this
-                ]);
-                Auth::login($newUser);
-                // Send email to the user
-                Mail::to($newUser->email)->send(new UserRegisterMail($newUser));
+                Auth::login($existingUser, true);
+                session(['user_avatar' => $googleUser->getAvatar()]);
+
+                return redirect()->intended(
+                    Auth::user()->isAdmin ? '/v2/admin/dashboard' : '/'
+                );
             }
+
+            $newUser = User::create([
+                'name' => $googleUser->getName(),
+                'email' => $googleUser->getEmail(),
+                'image' => $googleUser->getAvatar(),
+                'isAdmin' => 0,
+                'google_id' => $googleUser->getId(),
+                'password' => bcrypt(Str::random(16)),
+            ]);
+
+            Auth::login($newUser, true);
             session(['user_avatar' => $googleUser->getAvatar()]);
 
-            return redirect()->intended(Auth::user()->isAdmin == 1 ? '/v2/admin/dashboard' : '/');
-        } catch (\Exception $e) {
+            // Send welcome email asynchronously
+            try {
+                Mail::to($newUser->email)->queue(new UserRegisterMail($newUser));
+            } catch (\Exception $e) {
+                \Log::error('Failed to send welcome email: ' . $e->getMessage());
+            }
 
-            \Log::error($e->getMessage());
-            $this->errorMessage = 'Unable to login with Google, please try again.';
+            return redirect()->intended('/');
+
+        } catch (\Exception $e) {
+            \Log::error('Google login error: ' . $e->getMessage());
+            session()->flash('error', 'Unable to login with Google. Please try again.');
+            return redirect()->route('auth.login');
         }
     }
     public function render()
