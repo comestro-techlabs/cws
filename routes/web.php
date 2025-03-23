@@ -4,6 +4,9 @@ use App\Http\Controllers\PublicController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\WorkshopController;
+use Illuminate\Support\Facades\Artisan;
+use Livewire\Livewire;
+
 
 use App\Livewire\Admin\Assignment\ManageAssignment;
 use App\Livewire\Admin\Assignment\ReviewWork;
@@ -79,6 +82,10 @@ use App\Livewire\Admin\MockTest\ManageQuestions;
 use App\Livewire\Admin\Store\ManageProductCategories;
 use App\Livewire\Public\Myeditor\Monaco;
 use App\Livewire\Student\Dashboard\Product\MyOrders;
+
+Livewire::setUpdateRoute(function ($handle) {
+    return Route::post('/learnsyntax/public/livewire/update', $handle);
+});
 
 // public routes
 Route::get('/', Home::class)->name('public.index');
@@ -257,6 +264,22 @@ Route::get('generate', function () {
     \Illuminate\Support\Facades\Artisan::call('storage:link');
     echo 'ok';
 });Route::get('/workshop/{id}/enroll', [WorkshopController::class, 'buyWorkshop'])->name('workshop.enroll');
+
+
+Route::get('/storage-link', function () {
+    Artisan::call('storage:link');
+    return 'Storage link has been created!';
+});
+
+Route::get('/clear-cache', function () {
+    Artisan::call('cache:clear');
+    Artisan::call('config:cache');
+    Artisan::call('config:clear');
+    Artisan::call('view:clear');
+    Artisan::call('route:clear');
+    Artisan::call('optimize:clear');
+    return "All Caches are cleared by @Roni";
+});
 
 
 

@@ -11,7 +11,6 @@
     <meta name="livewire:script-url" content="{{ asset('livewire/livewire.js') }}">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @livewireStyles
     <script>
         tailwind.config = {
             darkMode: 'class',
