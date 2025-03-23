@@ -40,9 +40,6 @@ class ManageProducts extends Component
     public $name;
     public $description;
 
-
-
-    #[On('refreshCategory')]
     public function mount()
     {
         $this->categories = ProductCategories::pluck('name', 'id');
@@ -60,26 +57,8 @@ class ManageProducts extends Component
             $this->products = Products::where('product_category_id', $categoryId)->get();
         }
     }
-    public function addCategory(){
-        $this->catModal=true;
-
-    }
-    public function saveCategory(){
-        $validated = $this->validate(
-            [
-                'name' =>'required|min:2',
-                'description'=>'required|min:5'
-            ]
-        );
-        if($validated){
-        ProductCategories::create($validated);
-        }
-        $this->dispatch('refreshCategory')->self();
-
-        $this->catModal=false;
-
-
-    }
+  
+  
     public function toggleStatus($id)
     {
         // dd($id);

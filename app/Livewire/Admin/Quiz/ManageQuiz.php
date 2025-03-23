@@ -28,7 +28,8 @@ class ManageQuiz extends Component
     public $exams;
     public $isEditing = false;
     public $editingQuizId;
-    // public $showForm = false;
+    public $showJsonModal = false;
+    public $jsonData = '';
 
     protected $rules = [
         'exam_id' => 'required|exists:exams,id',
@@ -80,7 +81,6 @@ class ManageQuiz extends Component
         $this->option4 = $quiz->option4;
         $this->correct_answer = $quiz->correct_answer;
         $this->status = $quiz->status;
-        // $this->showForm = true;
     }
 
     public function update()
@@ -114,6 +114,50 @@ class ManageQuiz extends Component
         $quiz->status = !$quiz->status;
         $quiz->save();
         $this->dispatch('notice', type: 'info', text: 'Quiz status successfully!');
+    }
+
+    public function importJson()
+    {
+        try {
+            $data = json_decode($this->jsonData, true);
+            
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new \Exception('Invalid JSON format');
+            }
+
+            $questions = is_array($data) ? $data : [];
+            if (empty($questions)) {
+                throw new \Exception('No questions found in JSON');
+            }
+
+            foreach ($questions as $questionData) {
+                if (!isset($questionData['question']) || !isset($questionData['options']) || !isset($questionData['correct_answer'])) {
+                    throw new \Exception('Each question must have question, options, and correct_answer fields');
+                }
+
+                if (count($questionData['options']) !== 4) {
+                    throw new \Exception('Each question must have exactly 4 options');
+                }
+
+                Quiz::create([
+                    'exam_id' => $this->exam_id,
+                    'question' => $questionData['question'],
+                    'option1' => $questionData['options'][0],
+                    'option2' => $questionData['options'][1],
+                    'option3' => $questionData['options'][2],
+                    'option4' => $questionData['options'][3],
+                    'correct_answer' => $questionData['correct_answer'],
+                    'status' => $questionData['status'] ?? true,
+                ]);
+            }
+
+            $this->showJsonModal = false;
+            $this->jsonData = '';
+            $this->dispatch('notice', type: 'success', text: count($questions) . ' questions imported successfully!');
+
+        } catch (\Exception $e) {
+            $this->dispatch('notice', type: 'error', text: 'Error: ' . $e->getMessage());
+        }
     }
 
     public function render()

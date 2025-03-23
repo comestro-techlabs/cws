@@ -56,7 +56,6 @@ class UpdateCourse extends Component
     public $isPublished = false;
     public $previewImage = null;
 
-    public $editing = false;
     public $editingField = null;
     public $tempData = [];
 
@@ -88,17 +87,14 @@ class UpdateCourse extends Component
 
     public function updatedTempImage()
     {
-        // Validate the image
         $this->validate([
             'tempImage' => 'nullable|image|max:2048',
         ]);
 
         if ($this->tempImage) {
             try {
-                // Reset progress at start
                 $this->progress = 0;
 
-                // Simulate upload progress (since local uploads are usually too fast)
                 $this->js("
                     let progress = 0;
                     const interval = setInterval(() => {
@@ -111,14 +107,10 @@ class UpdateCourse extends Component
                     }, 200);
                 ");
 
-                // Store image temporarily (not yet saved to the course)
                 $imagePath = $this->tempImage->store('course_images', 'public');
-
-                // Set progress to 100% when complete
                 $this->progress = 100;
                 $this->previewImage = asset('storage/' . $imagePath);
 
-                // Reset progress after a delay
                 $this->js("
                     setTimeout(() => {
                         $wire.set('progress', 0);
@@ -149,51 +141,34 @@ class UpdateCourse extends Component
     public function saveField($field)
     {
         try {
-            // First click - enter edit mode
-            if ($this->editingField === null) {
-                $this->editingField = $field;
-                $this->tempData[$field] = $this->{$field};
-                return;
+            $this->validateOnly($field);
+
+            $updateData = [$field => $this->{$field}];
+
+            if ($field === 'course_type') {
+                if ($this->course_type === 'online') {
+                    $updateData['venue'] = null;
+                } else {
+                    $updateData['meeting_link'] = null;
+                    $updateData['meeting_id'] = null;
+                    $updateData['meeting_password'] = null;
+                }
             }
 
-            // Second click - save changes
-            if ($this->editingField === $field) {
-                // Validate and save
-                $this->validateOnly($field);
-                
-                $updateData = [$field => $this->{$field}];
+            $success = $this->course->update($updateData);
 
-                // Special handling for course type
-                if ($field === 'course_type') {
-                    if ($this->course_type === 'online') {
-                        $updateData['venue'] = null;
-                    } else {
-                        $updateData['meeting_link'] = null;
-                        $updateData['meeting_id'] = null;
-                        $updateData['meeting_password'] = null;
-                    }
-                }
-
-                // Update the course
-                $success = $this->course->update($updateData);
-
-                if (!$success) {
-                    throw new \Exception('Failed to update the course.');
-                }
-
-                // Reset states
-                $this->editingField = null;
-                $this->tempData = [];
-                
-                $this->dispatch('notice', type: 'success', text: 'Field updated successfully!');
+            if (!$success) {
+                throw new \Exception('Failed to update the course.');
             }
 
+            $this->editingField = null;
+            $this->tempData = [];
+
+            $this->dispatch('notice', type: 'success', text: 'Field updated successfully!');
         } catch (\Exception $e) {
             $this->dispatch('notice', type: 'error', text: 'Failed to update: ' . $e->getMessage());
         }
     }
-
-    // Ensure preview image is loaded when page refreshes
 
     public function mount($courseId)
     {
@@ -219,9 +194,8 @@ class UpdateCourse extends Component
         $this->selectedFeatures = $this->course->features->pluck('id')->toArray();
 
         $this->previewImage = $this->course->course_image
-        ? asset('storage/' . $this->course->course_image)
-        : null;
-
+            ? asset('storage/' . $this->course->course_image)
+            : null;
     }
 
     public function openFeaturesModal()
@@ -233,6 +207,7 @@ class UpdateCourse extends Component
     {
         $this->showFeaturesModal = false;
     }
+
     public function updateFeatures()
     {
         try {
@@ -240,39 +215,37 @@ class UpdateCourse extends Component
             $this->course->features()->sync($this->selectedFeatures);
             $this->closeFeaturesModal();
             $this->dispatch('notice', type: 'info', text: 'Features Updated Successfully!');
-
         } catch (\Exception $e) {
             $this->dispatch('notice', type: 'info', text: 'Failed to update features!');
         }
     }
 
-    private function handleImageUpload()
+    public function handleImageUpload()
     {
-        // Validate the image
         $this->validate([
             'tempImage' => 'nullable|image|max:2048',
         ]);
 
-        // Delete old image if it exists
-        if ($this->course->course_image) {
-            Storage::disk('public')->delete($this->course->course_image);
+        if ($this->tempImage) {
+            try {
+                // Delete old image if it exists
+                if ($this->course->course_image) {
+                    Storage::disk('public')->delete($this->course->course_image);
+                }
+
+                // Use the temporary image path from updatedTempImage
+                $imagePath = $this->tempImage->store('course_images', 'public');
+                $this->course->update(['course_image' => $imagePath]);
+
+                // Reset temp data
+                $this->reset('tempImage');
+                $this->previewImage = asset('storage/' . $imagePath);
+
+                $this->dispatch('notice', type: 'info', text: 'Course image updated successfully!');
+            } catch (\Exception $e) {
+                $this->dispatch('notice', type: 'error', text: 'Failed to update image: ' . $e->getMessage());
+            }
         }
-
-        // Define a unique filename with the course ID and timestamp
-        $filename = 'course_' . $this->course->id . '_' . time() . '.' . $this->tempImage->getClientOriginalExtension();
-
-        // Store the file using 'storeAs'
-        $filePath = $this->tempImage->storeAs('course_images', $filename, 'public');
-
-        // Update course record with new image path
-        $this->course->update(['course_image' => $filePath]);
-
-        // Reset temp data
-        $this->reset('tempImage', 'previewImage');
-
-        // Show success message
-        $this->dispatch('notice', type: 'info', text: 'Course image updated successfully!');
-
     }
 
     public function checkAndPublish()
@@ -304,8 +277,8 @@ class UpdateCourse extends Component
         $this->isPublished = !$this->isPublished;
         $this->course->update(['published' => $this->isPublished]);
         $this->dispatch('notice', type: 'info', text: $this->isPublished
-        ? 'Course published successfully.'
-        : 'Course unpublished successfully.');
+            ? 'Course published successfully.'
+            : 'Course unpublished successfully.');
     }
 
     public function deleteImage()
@@ -313,8 +286,8 @@ class UpdateCourse extends Component
         if ($this->course->course_image) {
             Storage::disk('public')->delete($this->course->course_image);
             $this->course->update(['course_image' => null]);
+            $this->previewImage = null;
             $this->dispatch('notice', type: 'info', text: 'Course image removed successfully!');
-
         }
     }
 

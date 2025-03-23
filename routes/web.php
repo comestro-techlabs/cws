@@ -76,6 +76,7 @@ use App\Livewire\Student\Subscriptions\Plans;
 use App\Livewire\Student\Marksheet\StudentMarksheet;
 use App\Livewire\Student\Certificate\ShowCertificate;
 use App\Livewire\Admin\MockTest\ManageQuestions;
+use App\Livewire\Admin\Store\ManageProductCategories;
 use App\Livewire\Public\Myeditor\Monaco;
 use App\Livewire\Student\Dashboard\Product\MyOrders;
 
@@ -84,8 +85,10 @@ Route::get('/', Home::class)->name('public.index');
 Route::get('/courses', AllCourses::class)->name('public.viewallcourses.all-courses');
 Route::get('/contact', ContactPage::class)->name('public.contactUs');
 Route::get('/workshops', Workshop::class)->name('public.workshop');
+//blog courses routes
 Route::get('/course/{course_id}/chapter/show', CourseWithChapterAndTopic::class)->name('v2.courses.show');
 Route::get('/course/{course_id}/chapter/{chapter_id?}/topic/{topic_id?}/show', TopicWithPostContent::class)->name('v2.topics.show');
+
 Route::get('/courses/{slug}', Ourcourses::class)->name('public.courseDetail');
 
 //auth routes
@@ -126,7 +129,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/take-exam', Exam::class)->name('student.takeExam');
         Route::get('/show-quiz/{courseId}', ShowQuiz::class)->name('v2.student.quiz');
         Route::get('/show-all-attempt/{course_id}', ShowAllAttempt::class)->name('v2.student.allAttempts');
-        route::get('show-quiz/result/{exam_id}', Result::class)->name('v2.student.examResult');
+        // route::get('show-quiz/result/{exam_id}', Result::class)->name('v2.student.examResult');
         route::get('/my-attendance', MyAttendance::class)->name('student.my-attendance');
         Route::get('/mocktest', SelectMockTest::class)->name('v2.student.mocktest');
         Route::get('/mocktest/{mockTestId}', ShowMockTest::class)->name('v2.student.mocktest.take');
@@ -138,6 +141,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/code-editor', Monaco::class)->name('v2.student.code-editor');
 
         Route::get('/my-orders',MyOrders::class)->name('student.my-orders');
+        Route::get('/exam/result/{examId}', Result::class)->name('v2.student.examResult');
 
     });
 
@@ -211,6 +215,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         //manage-orders
         Route::get('/products-manage',ManageProducts::class)->name('v2.admin.manageProducts');
         Route::get('/manage-orders', ManageOrders::class)->name('v2.student.manageOrders');
+        Route::get('/manage-product-categories',ManageProductCategories::class)->name('v2.admin.manageCategories');
 
 
         //blog

@@ -21,8 +21,9 @@ class ExamUser extends Model
 
     public function answers()
     {
-        return $this->hasMany(Answer::class, 'exam_id', 'exam_id')
-                    ->where('user_id', '=', 'user_id');
+        return $this->hasMany(Answer::class)
+                    ->where('user_id', $this->user_id)
+                    ->where('exam_id', $this->exam_id);
     }
     protected $guarded = [];
 }
