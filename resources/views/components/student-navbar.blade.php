@@ -1,11 +1,16 @@
 @props(['hasCompleted' => false, 'main' => ''])
 
 <div x-data="{ sidebarOpen: false }"
-     @toggle-sidebar.window="sidebarOpen = !sidebarOpen">
+     @toggle-sidebar.window="sidebarOpen = !sidebarOpen"
+     class="relative">
+    <!-- Backdrop for mobile -->
+    <div x-show="sidebarOpen"
+         class="fixed inset-0 bg-gray-900/50 sm:hidden z-30"
+         @click="sidebarOpen = false"></div>
 
     <aside id="default-sidebar"
-        class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
-        :class="{'translate-x-0': sidebarOpen, '-translate-x-full': !sidebarOpen}">
+        class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full bg-white border-r border-gray-100"
+        :class="{'translate-x-0': sidebarOpen, '-translate-x-full': !sidebarOpen, 'sm:translate-x-0': !sidebarOpen}">
         <div class="h-full px-3 py-4 overflow-y-auto bg-white border-r border-gray-100">
             <div class="flex flex-col items-center pb-3 border-b border-gray-100">
                 <div class="relative flex items-center w-full px-2">
@@ -250,9 +255,16 @@
         </div>
     </aside>
 
-    <div class="sm:ml-64 transition-all duration-300">
+    <!-- Close button for mobile -->
+    <button x-show="sidebarOpen"
+            @click="sidebarOpen = false"
+            class="sm:hidden fixed top-3 right-3 z-50 rounded-full bg-gray-100/95 p-2 text-gray-700 hover:bg-gray-200">
+        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+    </button>
+
+    <div :class="{'sm:ml-64': !sidebarOpen}" class="transition-all duration-300">
         {{ $main ?? '' }}
     </div>
-
-
 </div>
