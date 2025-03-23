@@ -94,7 +94,7 @@ Route::get('/courses/{slug}', Ourcourses::class)->name('public.courseDetail');
 //auth routes
 Route::prefix('auth')->group(function () {
     Route::get('/login', Login::class)->name('auth.login');
-    Route::get('/logout', Header::class)->name('auth.logout');
+    Route::post('/logout', [Header::class, 'logout'])->name('auth.logout'); // Changed to POST
     Route::get('/google', [GoogleLogin::class, 'redirectToGoogle'])
         ->name('auth.google.login')
         ->middleware('guest');
