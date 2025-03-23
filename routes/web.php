@@ -271,15 +271,15 @@ Route::get('generate', function () {
 //     return 'Storage link has been created!';
 // });
 
-// Route::get('/clear-cache', function () {
-//     Artisan::call('cache:clear');
-//     Artisan::call('config:cache');
-//     Artisan::call('config:clear');
-//     Artisan::call('view:clear');
-//     Artisan::call('route:clear');
-//     Artisan::call('optimize:clear');
-//     return "All Caches are cleared by @Roni";
-// });
+Route::get('/clear-cache', function () {
+    Artisan::call('cache:clear');
+    Artisan::call('config:cache');
+    Artisan::call('config:clear');
+    Artisan::call('view:clear');
+    Artisan::call('route:clear');
+    Artisan::call('optimize:clear');
+    return "All Caches are cleared by @Roni";
+});
 
 
 
