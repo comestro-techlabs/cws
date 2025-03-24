@@ -13,7 +13,7 @@
                     </button>
 
                     <div class="flex-shrink-0 flex items-center lg:ml-0">
-                        <img class="lg:h-6 h-4 w-auto" src="{{ asset('assets/LearnSyntax.png') }}" alt="Learn Syntax" />
+                        <img class="lg:h-6 h-5 w-auto" src="{{ asset('assets/LearnSyntax.png') }}" alt="Learn Syntax" />
                     </div>
                 </div>
 
