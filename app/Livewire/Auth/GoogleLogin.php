@@ -15,67 +15,43 @@ class GoogleLogin extends Component
     public $errorMessage = '';
 
     // Method to initiate Google login
-    public function redirectToGoogle()
+    public function redirectToGoogle() 
     {
-        try {
-            $parameters = [
-                'client_id' => config('services.google.client_id'),
-                'redirect_uri' => url(config('services.google.redirect')),
-                'response_type' => 'code',
-                'scope' => 'openid profile email',
-                'access_type' => 'online',
-            ];
-
-            return redirect('https://accounts.google.com/o/oauth2/v2/auth?' . http_build_query($parameters));
-        } catch (\Exception $e) {
-            session()->flash('error', 'Unable to connect to Google. Please try again.');
-            return null;
-        }
+        return redirect()->to(Socialite::driver('googleAuth')->redirect()->getTargetUrl());
     }
-
-    // This will be called after the callback in a view or route
-    public function handleGoogleCallback()
+    
+    public function handleGoogleCallback() 
     {
         try {
-            // Get user data from Google
             $googleUser = Socialite::driver('googleAuth')->stateless()->user();
+            \Log::info('google User: ', (array) $googleUser);
 
-            if (!$googleUser || !$googleUser->getEmail()) {
-                throw new \Exception('Failed to get user data from Google');
-            }
+            $existingUser = User::where('email', $googleUser->getEmail())->first();
 
-            // Find or create user
-            $user = User::updateOrCreate(
-                ['email' => $googleUser->getEmail()],
-                [
-                    'name' => $googleUser->getName() ?? explode('@', $googleUser->getEmail())[0],
-                    'google_id' => $googleUser->getId(),
+            if ($existingUser) {
+                Auth::login($existingUser);
+            } else {
+                $newUser = User::create([
+                    'name' => $googleUser->getName() ?? $googleUser->getNickname(), 
+                    'email' => $googleUser->getEmail(),
                     'image' => $googleUser->getAvatar(),
-                    'password' => bcrypt(Str::random(24)),
-                    'email_verified_at' => now(),
-                ]
-            );
+                    'isAdmin' => 0,
+                    'google_id' => $googleUser->getId(),
+                    'password' => bcrypt('123456dummy'),
+                ]);
+                Auth::login($newUser);
+                 // Send email to the user
+                 Mail::to($newUser->email)->send(new UserRegisterMail($newUser));
+            }
+            session(['user_avatar' => $googleUser->getAvatar()]);
 
-            // Login user
-            Auth::login($user, true);
-
-            // Store avatar in session
-            session()->put('user_avatar', $googleUser->getAvatar());
-
-            // Determine redirect path
-            $redirectPath = $user->isAdmin ? '/v2/admin/dashboard' : '/student/dashboard';
-
-            return redirect()->to($redirectPath);
-
+            return redirect()->intended(Auth::user()->isAdmin == 1 ? '/v2/admin/dashboard' : '/');
         } catch (\Exception $e) {
-            \Log::error('Google Auth Error: ' . $e->getMessage());
-
-            session()->flash('error', 'Google authentication failed. Please try again.');
-
-            return redirect()->route('auth.login');
+            \Log::error('google login error: ' . $e->getMessage());
+            $this->errorMessage = 'Unable to login with google, please try again.';
+            return null; 
         }
     }
-
     public function render()
     {
         return view('livewire.auth.google-login');
