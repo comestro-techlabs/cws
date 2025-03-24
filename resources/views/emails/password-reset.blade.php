@@ -27,7 +27,7 @@
             
            <!-- CTA Button -->
            <div style="text-align: center; margin: 35px 0 25px;">
-                <a href="{{ url(config('app.url') . route('password.reset', ['token' => $token], false)) }}" style="display: inline-block; background-color: rgb(111, 57, 160); color: #ffffff; text-decoration: none; padding: 12px 28px; border-radius: 6px; font-size: 15px; font-weight: 500; letter-spacing: 0.2px;">
+                <a href="{{ url(config('app.url') . route('password.reset', ['token' => $token, 'email' => $email], false)) }}"  style="display: inline-block; background-color: rgb(111, 57, 160); color: #ffffff; text-decoration: none; padding: 12px 28px; border-radius: 6px; font-size: 15px; font-weight: 500; letter-spacing: 0.2px;">
                     Reset Password
                 </a>
             </div>
