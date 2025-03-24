@@ -29,11 +29,9 @@ return [
     ],
 
     'google' => [
-        'client_id' => env('GOOGLE_DRIVE_CLIENT_ID'),
-        'client_secret' => env('GOOGLE_DRIVE_CLIENT_SECRET'),
-        'refresh_token' => env('GOOGLE_DRIVE_REFRESH_TOKEN'),
-        'folder_id' => env('GOOGLE_DRIVE_FOLDER_ID'),
-        // 'redirect' => env('GOOGLE_REDIRECT_URL'),
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_REDIRECT_URI', '/auth/google/callback'),
     ],
     'googleAuth' => [
         'client_id' => env('GOOGLE_CLIENT_ID'),

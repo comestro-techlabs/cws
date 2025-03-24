@@ -17,7 +17,20 @@ class GoogleLogin extends Component
     // Method to initiate Google login
     public function redirectToGoogle()
     {
-        return redirect()->to(Socialite::driver('googleAuth')->redirect()->getTargetUrl());
+        try {
+            $parameters = [
+                'client_id' => config('services.google.client_id'),
+                'redirect_uri' => url(config('services.google.redirect')),
+                'response_type' => 'code',
+                'scope' => 'openid profile email',
+                'access_type' => 'online',
+            ];
+
+            return redirect('https://accounts.google.com/o/oauth2/v2/auth?' . http_build_query($parameters));
+        } catch (\Exception $e) {
+            session()->flash('error', 'Unable to connect to Google. Please try again.');
+            return null;
+        }
     }
 
     // This will be called after the callback in a view or route
