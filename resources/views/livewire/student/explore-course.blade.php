@@ -29,8 +29,8 @@
                 </div>
 
                 <!-- Course Type Filter -->
-                <select wire:model.live="courseTypeFilter"
-                        class="rounded-lg border-gray-300 text-gray-700 focus:ring-purple-500">
+                <select wire:model.live="courseTypeFilter" 
+                        class="rounded-lg border-gray-300 text-gray-700 focus:ring-purple-500 p-2">
                     <option value="">All Courses</option>
                     <option value="online">Online Courses</option>
                     <option value="offline">Offline Courses</option>
@@ -39,9 +39,9 @@
         </div>
 
         <!-- Courses Grid with Animation -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 ">
             @forelse ($courses as $course)
-                <div class="flex flex-col bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 hover:border-purple-200 hover:shadow-lg transition-all duration-300">
+                <div class="flex flex-col bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 hover:border-purple-200 hover:shadow-lg transition-all duration-300 p-4">
                     <a href="{{ route('student.viewCourses', ['courseId' => $course->id]) }}" class="relative">
                         <!-- Course Image -->
                         <div class="relative aspect-w-16 aspect-h-9">
