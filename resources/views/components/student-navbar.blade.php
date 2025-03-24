@@ -1,15 +1,22 @@
 @props(['hasCompleted' => false, 'main' => ''])
 
-<div x-data="{ sidebarOpen: false }">
-    <button @click="sidebarOpen = !sidebarOpen" type="button" class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-700 rounded-lg sm:hidden hover:bg-purple-50 focus:outline-none focus:ring-2 focus:ring-purple-200">
-        <span class="sr-only">Open sidebar</span>
-        <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-            <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
-        </svg>
-    </button>
+<div x-data="{ sidebarOpen: false }"
+     @toggle-sidebar.window="sidebarOpen = !sidebarOpen"
+     class="relative">
+    <!-- Backdrop for mobile -->
+    <div x-show="sidebarOpen"
+         x-cloak
+         class="fixed inset-0 bg-gray-900/50 sm:hidden z-30"
+         @click="sidebarOpen = false"></div>
+
     <aside id="default-sidebar"
-        class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
-        :class="{'translate-x-0': sidebarOpen, '-translate-x-full': !sidebarOpen}">
+        x-cloak
+        class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform duration-300 bg-white border-r border-gray-100 transform"
+        :class="{
+            'translate-x-0': sidebarOpen,
+            '-translate-x-full': !sidebarOpen,
+            'sm:translate-x-0': true
+        }">
         <div class="h-full px-3 py-4 overflow-y-auto bg-white border-r border-gray-100">
             <div class="flex flex-col items-center pb-3 border-b border-gray-100">
                 <div class="relative flex items-center w-full px-2">
@@ -73,7 +80,7 @@
                                 <span class="text-xs font-medium text-blue-600">Active</span>
                             </div>
                             <div class="flex items-center justify-between mt-1">
-                                <a href="{{ route('student.subscriptions.plans') }}" 
+                                <a href="{{ route('student.subscriptions.plans') }}"
                                    class="text-xs text-purple-600 hover:text-purple-800">
                                     Upgrade to Premium
                                 </a>
@@ -87,11 +94,11 @@
                                 <span class="text-sm text-yellow-700">No Active Plan</span>
                             </div>
                             <div class="flex items-center justify-between space-x-2">
-                                <a href="{{ route('student.exploreCourses') }}" 
+                                <a href="{{ route('student.exploreCourses') }}"
                                    class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded hover:bg-purple-200">
                                     Buy Course
                                 </a>
-                                <a href="{{ route('student.subscriptions.plans') }}" 
+                                <a href="{{ route('student.subscriptions.plans') }}"
                                    class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded hover:bg-green-200">
                                     Subscribe
                                 </a>
@@ -186,7 +193,7 @@
                         Take Examinations
                     </a>
 
-                  
+
                     <a wire:navigate href="{{ route('student.marksheet')}}"
                         class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-purple-50 hover:text-purple-700 group transition duration-200">
                         <svg class="flex-shrink-0 w-5 h-5 mr-3 text-rose-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -194,9 +201,9 @@
                         </svg>
                        Marksheet
                     </a>
-                   
 
-                 
+
+
                     <a href="{{ route('student.certificates')}}"
                         class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-purple-50 hover:text-purple-700 group transition duration-200">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
@@ -208,13 +215,13 @@
 
                         <span class="flex-1 ms-3 whitespace-nowrap">Certificate</span>
                     </a>
-          
+
                 </div>
 
                 <!-- Account Section -->
                 <div class="py-2">
                     <p class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Account</p>
-                   
+
 
                     <a wire:navigate href="{{ route('v2.student.products') }}"
                         class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-purple-50 hover:text-purple-700 group transition duration-200">
@@ -235,26 +242,36 @@
 
                         <span class="flex-1 ms-3 whitespace-nowrap">My Attendance</span>
                     </a>
-                    
-                    <a wire:navigate href="{{ route('auth.logout') }}"
-                        class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-purple-50 hover:text-purple-700 group transition duration-200">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                            class="size-6 fill-red-600">
-                            <path fill-rule="evenodd"
-                                d="M12 2.25a.75.75 0 0 1 .75.75v9a.75.75 0 0 1-1.5 0V3a.75.75 0 0 1 .75-.75ZM6.166 5.106a.75.75 0 0 1 0 1.06 8.25 8.25 0 1 0 11.668 0 .75.75 0 1 1 1.06-1.06c3.808 3.807 3.808 9.98 0 13.788-3.807 3.808-9.98 3.808-13.788 0-3.808-3.807-3.808-9.98 0-13.788a.75.75 0 0 1 1.06 0Z"
-                                clip-rule="evenodd" />
-                        </svg>
 
-                        <span class="flex-1 ms-3 whitespace-nowrap">Logout</span>
-                    </a>
+                    <form method="POST" action="{{ route('auth.logout') }}" class="inline-block">
+                        @csrf
+                        <button type="submit"
+                                class="flex w-full items-center px-4 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-purple-50 hover:text-purple-700 group transition duration-200">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                class="size-6 fill-red-600">
+                                <path fill-rule="evenodd"
+                                    d="M12 2.25a.75.75 0 0 1 .75.75v9a.75.75 0 0 1-1.5 0V3a.75.75 0 0 1 .75-.75ZM6.166 5.106a.75.75 0 0 1 0 1.06 8.25 8.25 0 1 0 11.668 0 .75.75 0 1 1 1.06-1.06c3.808 3.807 3.808 9.98 0 13.788-3.807 3.808-9.98 3.808-13.788 0-3.808-3.807-3.808-9.98 0-13.788a.75.75 0 0 1 1.06 0Z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            <span class="flex-1 ms-3 whitespace-nowrap">Logout</span>
+                        </button>
+                    </form>
                 </div>
             </nav>
         </div>
     </aside>
 
-    <div class="sm:ml-64 transition-all duration-300">
+    <!-- Close button for mobile -->
+    <button x-show="sidebarOpen"
+            x-cloak
+            @click="sidebarOpen = false"
+            class="sm:hidden fixed top-3 right-3 z-50 rounded-full bg-gray-100/95 p-2 text-gray-700 hover:bg-gray-200">
+        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+    </button>
+
+    <div :class="{'sm:ml-64': !sidebarOpen}" class="transition-all duration-300">
         {{ $main ?? '' }}
     </div>
-
-  
 </div>

@@ -12,14 +12,17 @@ class Header extends Component
     public function logout()
     {
         Auth::logout();
-        $this->redirect(route('auth.login'), navigate: true);
-
+        session()->invalidate();
+        session()->regenerateToken();
+        return redirect()->route('auth.login');
     }
+
     public function toggleDropdown()
     {
         $this->isDropdownOpen = !$this->isDropdownOpen;
         $this->dispatch('dropdownToggled', ['isOpen' => $this->isDropdownOpen]);
     }
+
     public function render()
     {
         return view('livewire.public.header');

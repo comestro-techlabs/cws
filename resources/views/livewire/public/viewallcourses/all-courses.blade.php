@@ -30,11 +30,11 @@
                 <div :class="{'hidden': !open}" class="lg:block">
                     <div class="bg-white rounded-xl shadow-sm p-6 sticky top-8">
                         <h3 class="text-lg font-semibold text-gray-900 mb-4">Filters</h3>
-                        
+
                         <!-- Search -->
                         <div class="mb-6">
                             <label class="block text-sm font-medium text-gray-700 mb-2">Search</label>
-                            <input type="text" 
+                            <input type="text"
                                 wire:model.live.debounce.300ms="search"
                                 class="w-full rounded-lg border-gray-300 focus:ring-purple-500 focus:border-purple-500"
                                 placeholder="Search courses...">
@@ -79,7 +79,7 @@
                         </div>
 
                         <!-- Reset Filters -->
-                        <button wire:click="resetFilters" 
+                        <button wire:click="resetFilters"
                             class="w-full px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
                             Reset Filters
                         </button>
@@ -88,21 +88,25 @@
             </div>
 
             <!-- Main Content -->
-            <div class="flex-1">
+            <div class="flex-1" x-data="{ gridView: true }">
                 <!-- Grid/List View Toggle -->
                 <div class="flex justify-end mb-4">
                     <div class="bg-white rounded-lg shadow-sm p-1">
-                        <button @click="gridView = true" :class="{'bg-purple-100 text-purple-600': gridView}" class="px-3 py-1 rounded-md">
+                        <button @click="gridView = true"
+                                :class="{'bg-purple-100 text-purple-600': gridView}"
+                                class="px-3 py-1 rounded-md">
                             <i class="fas fa-grid-2"></i>
                         </button>
-                        <button @click="gridView = false" :class="{'bg-purple-100 text-purple-600': !gridView}" class="px-3 py-1 rounded-md">
+                        <button @click="gridView = false"
+                                :class="{'bg-purple-100 text-purple-600': !gridView}"
+                                class="px-3 py-1 rounded-md">
                             <i class="fas fa-list"></i>
                         </button>
                     </div>
                 </div>
 
                 <!-- Course Grid -->
-                <div x-data="{ gridView: true }" class="relative">
+                <div class="relative">
                     <!-- Loader Component -->
                     <x-loader />
 
@@ -112,11 +116,11 @@
                                 <div class="bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 flex" :class="{'flex-col': gridView, 'items-center': !gridView}">
                                     <!-- Course Card Content -->
                                     <div class="relative" :class="{'w-full': gridView, 'w-1/3': !gridView}">
-                                        <img src="{{ asset('storage/course_images/' . $course->course_image) }}" 
-                                            alt="{{ $course->title }}" 
-                                            class="object-cover rounded-t-2xl" 
+                                        <img src="{{ asset('storage/' . $course->course_image) }}"
+                                            alt="{{ $course->title }}"
+                                            class="object-cover rounded-t-2xl"
                                             :class="{'w-full h-48': gridView, 'h-full rounded-l-2xl rounded-tr-none': !gridView}">
-                                        
+
                                         <!-- Course Type Badge -->
                                         <div class="absolute top-4 left-4">
                                             <div class="px-3 py-1 rounded-full text-sm font-medium {{ $course->course_type === 'online' ? 'bg-blue-600 text-white' : 'bg-green-600 text-white' }} flex items-center">
@@ -137,7 +141,7 @@
                                     <div class="p-6" :class="{'w-full': gridView, 'w-2/3': !gridView}">
                                         <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $course->title }}</h3>
                                         <p class="text-gray-600 line-clamp-2 mb-4">{{ $course->description }}</p>
-                                        
+
                                         <div class="flex items-center text-sm text-gray-500 mb-4">
                                             <svg class="w-5 h-5 mr-2 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -174,7 +178,7 @@
                     <!-- Load More Button -->
                     @if($hasMorePages)
                         <div class="text-center mt-8">
-                            <button wire:click="loadMore" 
+                            <button wire:click="loadMore"
                                 class="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
                                 Load More Courses
                             </button>

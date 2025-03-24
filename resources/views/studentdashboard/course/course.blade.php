@@ -55,7 +55,7 @@
                 <div
                     class="bg-white flex-1 border border-gray-200 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
                     <!-- Course Image -->
-                    <img src="{{ asset('storage/course_images/' . $course->course_image) }}" alt="Course Image"
+                    <img src="{{ asset('storage/' . $course->course_image) }}" alt="Course Image"
                         class="w-full h-48 object-cover">
                     <!-- Course Content -->
                     <div class="p-5 space-y-4">

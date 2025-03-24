@@ -30,7 +30,7 @@ class PostCourse extends Component
     protected $rules = [
         'title' => 'required|min:3',
         'description' => 'nullable',
-        'image' => 'nullable|image|max:1024', // max 1MB
+        'image' => 'nullable|mimes:jpg,jpeg,png,gif,svg|max:1024', // max 1MB
         'status' => 'boolean'
     ];
 
@@ -81,7 +81,7 @@ class PostCourse extends Component
         $this->validate([
             'title' => 'required|min:3',
             'description' => 'nullable',
-            'image' => 'nullable|image|max:1024',
+            'image' => 'nullable|mimes:jpg,jpeg,png,gif,svg|max:1024',
         ]);
 
         $course = PostCourseModel::findOrFail($this->courseId);

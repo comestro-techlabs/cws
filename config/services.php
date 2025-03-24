@@ -33,7 +33,7 @@ return [
         'client_secret' => env('GOOGLE_DRIVE_CLIENT_SECRET'),
         'refresh_token' => env('GOOGLE_DRIVE_REFRESH_TOKEN'),
         'folder_id' => env('GOOGLE_DRIVE_FOLDER_ID'),
-        // 'redirect' => env('GOOGLE_REDIRECT_URL'),
+        // 'redirect' => env('GOOGLE_REDI9kio,.9ii'l.RECT_URL'),
     ],
     'googleAuth' => [
         'client_id' => env('GOOGLE_CLIENT_ID'),
@@ -45,7 +45,7 @@ return [
         'client_secret' => env('GITHUB_CLIENT_SECRET'),
         'redirect' => env('GITHUB_REDIRECT_URI'),
     ],
- 
+
     'linkedin-openid' => [
         'client_id' => env('LINKEDIN_CLIENT_ID'),
         'client_secret' => env('LINKEDIN_CLIENT_SECRET'),

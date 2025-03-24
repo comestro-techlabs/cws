@@ -4,6 +4,9 @@ use App\Http\Controllers\PublicController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\WorkshopController;
+// use Illuminate\Support\Facades\Artisan;
+// use Livewire\Livewire;
+
 
 use App\Livewire\Admin\Assignment\ManageAssignment;
 use App\Livewire\Admin\Assignment\ReviewWork;
@@ -74,24 +77,40 @@ use App\Livewire\Student\Subscriptions\Plans;
 use App\Livewire\Student\Marksheet\StudentMarksheet;
 use App\Livewire\Student\Certificate\ShowCertificate;
 use App\Livewire\Admin\MockTest\ManageQuestions;
+use App\Livewire\Admin\Store\ManageProductCategories;
+use App\Livewire\Auth\ForgetPassword;
+use App\Livewire\Auth\ResetPassword;
 use App\Livewire\Public\Myeditor\Monaco;
 use App\Livewire\Student\Dashboard\Product\MyOrders;
+
+// Livewire::setUpdateRoute(function ($handle) {
+//     return Route::post('/learnsyntax/public/livewire/update', $handle);
+// });
 
 // public routes
 Route::get('/', Home::class)->name('public.index');
 Route::get('/courses', AllCourses::class)->name('public.viewallcourses.all-courses');
 Route::get('/contact', ContactPage::class)->name('public.contactUs');
 Route::get('/workshops', Workshop::class)->name('public.workshop');
+//blog courses routes
 Route::get('/course/{course_id}/chapter/show', CourseWithChapterAndTopic::class)->name('v2.courses.show');
 Route::get('/course/{course_id}/chapter/{chapter_id?}/topic/{topic_id?}/show', TopicWithPostContent::class)->name('v2.topics.show');
+
 Route::get('/courses/{slug}', Ourcourses::class)->name('public.courseDetail');
 
 //auth routes
 Route::prefix('auth')->group(function () {
     Route::get('/login', Login::class)->name('auth.login');
-    Route::get('/logout', Header::class)->name('auth.logout');
-    Route::get('/google', [GoogleLogin::class, 'redirectToGoogle'])->name('auth.google.login');
-    Route::get('/google/callback', [GoogleLogin::class, 'handleGoogleCallback'])->name('auth.google.callback');
+    Route::get('/forget-password', ForgetPassword::class)->name('auth.forget-password');
+    Route::get('/reset-password/{token}', ResetPassword::class)->name('password.reset');
+
+    Route::post('/logout', [Header::class, 'logout'])->name('auth.logout'); // Changed to POST
+    Route::get('/google', [GoogleLogin::class, 'redirectToGoogle'])
+        ->name('auth.google.login')
+        ->middleware('guest');
+    Route::get('/google/callback', [GoogleLogin::class, 'handleGoogleCallback'])
+        ->name('auth.google.callback')
+        ->middleware('guest');
     Route::get('/github/redirect', [Github::class, 'redirectToGithub'])->name('github.redirect');
     Route::get('/github/callback', [Github::class, 'handleGithubCallback'])->name('github.callback');
     Route::get('/linkedin/redirect', [LinkedinLogin::class, 'redirectToLinkedin'])->name('linkedin.redirect');
@@ -195,6 +214,8 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/certificate/course',ManageCertificate::class)->name('admin.certificate.course');
         Route::get('/certificate/view-detail/{studentId}/{courseId}', ViewDetail::class)->name('certificate.view-detail');
        
+        Route::get('/certificate/{certificateId}/view',ViewCertificate::class)->name('certificate.view');
+
         // Workshop Routes certificate/course
         Route::get('/workshops', ManageWorkshop::class)->name('admin.workshops.index');
 
@@ -210,6 +231,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         //manage-orders
         Route::get('/products-manage',ManageProducts::class)->name('v2.admin.manageProducts');
         Route::get('/manage-orders', ManageOrders::class)->name('v2.student.manageOrders');
+        Route::get('/manage-product-categories',ManageProductCategories::class)->name('v2.admin.manageCategories');
 
 
         //blog
@@ -247,6 +269,22 @@ Route::get('generate', function () {
     \Illuminate\Support\Facades\Artisan::call('storage:link');
     echo 'ok';
 });Route::get('/workshop/{id}/enroll', [WorkshopController::class, 'buyWorkshop'])->name('workshop.enroll');
+
+
+// Route::get('/storage-link', function () {
+//     Artisan::call('storage:link');
+//     return 'Storage link has been created!';
+// });
+
+Route::get('/clear-cache', function () {
+    Artisan::call('cache:clear');
+    Artisan::call('config:cache');
+    Artisan::call('config:clear');
+    Artisan::call('view:clear');
+    Artisan::call('route:clear');
+    Artisan::call('optimize:clear');
+    return "All Caches are cleared by @Roni";
+});
 
 
 

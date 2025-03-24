@@ -8,12 +8,14 @@
                     <p class="text-gray-600 mt-1">Add, edit, and manage your rewards products</p>
                 </div>
                 <div class="flex space-x-3"> <!-- Added flex container with space-x-3 for buttons -->
-                <button wire:click="addCategory" id="addCategoryBtn" class="px-4 py-2 bg-purple-700 text-white rounded-lg font-medium text-sm hover:bg-purple-700 transition duration-200 flex items-center">
+                
+                <a href="{{ route('v2.admin.manageCategories') }}" class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium text-sm hover:bg-blue-700 transition duration-200 flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-1">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-3-3v6m8-6c0-4.418-3.582-8-8-8S4 7.582 4 12s3.582 8 8 8 8-3.582 8-8z" />
                     </svg>
-                    Add Category
-                </button>
+                    Manage Category
+                </a>
+               
                 <button wire:click="addNewProduct" id="addProductBtn" class="px-4 py-2 bg-purple-700 text-white rounded-lg font-medium text-sm hover:bg-purple-700 transition duration-200 flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-1">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -251,47 +253,6 @@
                     </button>
                     <button wire:click="saveProduct" class="px-4 py-2  text-white rounded-lg bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition duration-200">
                         Save Product
-                    </button>
-                </div>
-            </div>
-        </div>
-        @endif
-
-        <!-- category modal -->
-         @if($catModal)
-        <div id="categoryModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50 ">
-            <div class="bg-white rounded-lg shadow-xl max-w-lg w-full mx-4">
-                <div class="px-6 py-4 border-b border-gray-200">
-                    <h3 class="text-lg font-medium text-gray-900" id="modalTitle">Add New Category</h3>
-                </div>
-
-                <div class="p-6">
-                    <form wire:submit.prevent="saveCategory">
-                        <div class="space-y-6">
-                            <div>
-                                <!-- cat_name Name -->
-                                <div>
-                                    <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Category Name</label>
-                                    <input type="text" id="name" wire:model="name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition duration-200">
-                                    @error('name') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
-                                </div>
-
-                                <!-- Product Description -->
-                                <div>
-                                    <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Category description</label>
-                                    <textarea id="description" wire:model="description" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition duration-200"></textarea>
-                                    @error('description') <span class="text-red-600 text-xs">{{ $message }}</span> @enderror
-                                </div>
-                            </div>
-                    </form>
-                </div>
-
-                <div class="px-6 py-4 bg-gray-50 flex justify-end space-x-3 rounded-b-lg">
-                    <button wire:click="closeModalBtn" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition duration-200">
-                        Cancel
-                    </button>
-                    <button wire:click="saveCategory" class="px-4 py-2  text-white rounded-lg bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition duration-200">
-                        Save Category
                     </button>
                 </div>
             </div>

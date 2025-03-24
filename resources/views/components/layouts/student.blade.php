@@ -74,7 +74,7 @@
                         confirmButtonText: 'OK',
                         confirmButtonColor: '#662d91'
                     });
-                @endif  
+                @endif
                     });
 
             // Function to trigger confetti

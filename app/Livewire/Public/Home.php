@@ -4,6 +4,7 @@ namespace App\Livewire\Public;
 
 use App\Models\Course;
 use App\Models\PlacedStudent;
+use App\Models\PostCourse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Attributes\Layout;
@@ -12,9 +13,11 @@ use Livewire\Component;
 class Home extends Component
 {
     public $courses, $placedStudents, $title;
-
+    public $blogCourses;
     public function mount()
     {
+ 
+        $this->blogCourses = PostCourse::take(9)->get();
         $this->courses = Course::where("published", true)->latest()->take(6)->get();
         $this->placedStudents = Cache::remember('placed_students_active_homepage', 60, function () {
             return PlacedStudent::where('status', 1)
