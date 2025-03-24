@@ -81,12 +81,12 @@
                         <p class="text-gray-600">Sign up with your social accounts</p>
                     </div>
 
-                    <div class="space-y-4">
+                    {{-- <div class="space-y-4">
                         @livewire('auth.google-login')
                         @livewire('auth.github')
                         @livewire('auth.linkedin-login')
                         @livewire('auth.facebook')
-                    </div>
+                    </div> --}}
 
                     <div class="mt-8 text-center">
                         <p class="text-sm text-gray-600">
