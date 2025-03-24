@@ -42,7 +42,7 @@
                 <div class="flex md:flex-col">
                     <!-- Course Image -->
                     <div class="basis-1/3">
-                        <img src="{{ asset('storage/course_images/' . $course->course_image) }}"
+                        <img src="{{ asset('storage/' . $course->course_image) }}"
                              alt="{{ $course->title }}"
                              class="w-full h-full object-cover">
                     </div>

@@ -74,23 +74,25 @@
                                         <td class="px-6 py-4">{{ number_format($student['assignment_percent'], 2) }}%</td>
                                         <td class="px-6 py-4">{{ number_format($student['overall_percent'], 2) }}%</td>
                                         <td class="px-6 py-4">
-                                            @if(!$student['certificate'])
-                                                <button wire:click="approveCertificate({{ $student['id'] }}, {{ $selectedCourse }})"
-                                                    class="bg-blue-500 text-white px-3 py-1 rounded">
-                                                    Generate
-                                                </button>
-                                            @elseif(!$student['certificate']->admin_approve)
-                                                <button wire:click="approvePendingCertificate({{ $student['certificate']->id }})"
-                                                    class="bg-yellow-500 text-white px-3 py-1 rounded">
-                                                    Approve
-                                                </button>
-                                            @else
-                                                <a href="{{ route('certificate.view', ['certificateId' => $student['certificate']->id]) }}"
-                                                   
-                                                    class="bg-green-500 text-white px-3 py-1 rounded inline-block">
-                                                    View
+                                            <div class="flex space-x-2">
+                                                <a wire:navigate href="{{ route('certificate.view-detail', ['studentId' => $student['id'], 'courseId' => $selectedCourse]) }}"
+                                                    class="bg-blue-500 text-white px-3 py-1 rounded inline-block">
+                                                    View Details
                                                 </a>
-                                            @endif
+                                                @if($student['certificate'])
+                                                    @if(!$student['certificate']->admin_approve)
+                                                        <button wire:click="approvePendingCertificate({{ $student['certificate']->id }})"
+                                                            class="bg-yellow-500 text-white px-3 py-1 rounded">
+                                                            Approve
+                                                        </button>
+                                                    @else
+                                                        <button 
+                                                            class="bg-green-500 text-white px-3 py-1 rounded">
+                                                            Approved
+                                                        </button>
+                                                    @endif
+                                                @endif
+                                            </div>
                                         </td>
                                     </tr>
                                 @empty

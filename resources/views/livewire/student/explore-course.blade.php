@@ -29,7 +29,7 @@
                 </div>
 
                 <!-- Course Type Filter -->
-                <select wire:model.live="courseTypeFilter" 
+                <select wire:model.live="courseTypeFilter"
                         class="rounded-lg border-gray-300 text-gray-700 focus:ring-purple-500">
                     <option value="">All Courses</option>
                     <option value="online">Online Courses</option>
@@ -45,7 +45,7 @@
                     <a href="{{ route('student.viewCourses', ['courseId' => $course->id]) }}" class="relative">
                         <!-- Course Image -->
                         <div class="relative aspect-w-16 aspect-h-9">
-                            <img src="{{ asset('storage/course_images/' . $course->course_image) }}"
+                            <img src="{{ asset('storage/' . $course->course_image) }}"
                                 class="w-full h-48 object-cover transform group-hover:scale-105 transition-transform duration-300"
                                 alt="{{ $course->title }}">
                         </div>
@@ -61,7 +61,7 @@
 
                         <!-- Course Type Badge -->
                         <div class="absolute top-4 left-4">
-                            <span class="px-3 py-1 rounded-full text-xs font-medium 
+                            <span class="px-3 py-1 rounded-full text-xs font-medium
                                 {{ $course->course_type === 'online' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800' }}">
                                 {{ ucfirst($course->course_type) }}
                             </span>
@@ -73,7 +73,7 @@
                         <div class="space-y-4">
                             <!-- Title -->
                             <h2 class="text-lg font-semibold text-gray-900 leading-tight line-clamp-2">
-                                <a href="{{ route('student.viewCourses', ['courseId' => $course->id]) }}" 
+                                <a href="{{ route('student.viewCourses', ['courseId' => $course->id]) }}"
                                 class="hover:text-purple-700 transition-colors">
                                     {{ $course->title }}
                                 </a>

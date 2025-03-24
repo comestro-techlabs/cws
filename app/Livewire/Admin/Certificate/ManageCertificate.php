@@ -87,39 +87,6 @@ class ManageCertificate extends Component
         return ($assignmentPercentage * 0.5) + ($examPercentage * 0.5);
     }
 
-    public function approveCertificate($userId, $courseId)
-    {
-        $course = Course::find($courseId);
-        $overallPercent = $this->calculatePercentage(
-            $course->students->find($userId), 
-            $course
-        );
-
-        if ($overallPercent && $overallPercent >= 60) {
-            $year = Carbon::now()->format('Y');
-            $certificate = Certificate::create([
-                'user_id' => $userId,
-                'course_id' => $courseId,
-                'certificate_no' => "LS/{$course->course_code}/{$year}/{$userId}",
-                'overall_percentage' => $overallPercent,
-                'admin_approve' => false,
-                'date' => Carbon::now(),
-            ]);
-            
-            $this->selectedCertificate = $certificate->id;
-        }
-        
-        $this->loadCourses();
-    }
-
-    public function approvePendingCertificate($certificateId)
-    {
-        Certificate::where('id', $certificateId)->update([
-            'admin_approve' => true
-        ]);
-        $this->loadCourses();
-    }
-
     public function getStudentsForTable($courseId)
     {
         $course = $this->courses->find($courseId);
@@ -140,7 +107,8 @@ class ManageCertificate extends Component
                 'assignment_percent' => $assignmentPercent,
                 'overall_percent' => $overallPercent,
                 'certificate' => $certificate,
-                'is_eligible' => $overallPercent && $overallPercent >= 60
+                'is_eligible' => $overallPercent && $overallPercent >= 60,
+                'course_id' => $course->id
             ];
         });
     }

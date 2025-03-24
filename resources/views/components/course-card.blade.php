@@ -2,7 +2,7 @@
     <a href="{{ route('public.courseDetail', [ 'slug' => $course->slug]) }}" class="block">
         <!-- Course Image with Overlay -->
         <div class="relative aspect-w-16 aspect-h-9 bg-gray-100">
-            <img src="storage/course_images/{{ $course->course_image }}"
+            <img src="storage/{{ $course->course_image }}"
                  alt="{{ $course->title }}"
                  class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
             />

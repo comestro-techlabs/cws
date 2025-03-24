@@ -41,10 +41,8 @@ use App\Livewire\Student\EditProfile;
 use App\Livewire\Student\Dashboard\ViewAssigment;
 use App\Livewire\Admin\Workshops\ManageWorkshop;
 use App\Livewire\Admin\Course\ManageCourse;
-use App\Livewire\Admin\Course\ShowCourse;
-use App\Livewire\Admin\Certificate\CertificateEligibility;
 use App\Livewire\Admin\Certificate\ManageCertificate;
-use App\Livewire\Admin\Certificate\ViewCertificate;
+use App\Livewire\Admin\Certificate\ViewDetail;
 use App\Livewire\Admin\Exam\ManageExam;
 use App\Livewire\Admin\Exam\ExamQuestions;
 use App\Livewire\Admin\Quiz\ManageQuiz;
@@ -214,6 +212,8 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/assignments/review-work/{id}', ReviewWork::class)->name('assignment.reviewWork');//u
         //Certificate Routes
         Route::get('/certificate/course',ManageCertificate::class)->name('admin.certificate.course');
+        Route::get('/certificate/view-detail/{studentId}/{courseId}', ViewDetail::class)->name('certificate.view-detail');
+       
         Route::get('/certificate/{certificateId}/view',ViewCertificate::class)->name('certificate.view');
 
         // Workshop Routes certificate/course
@@ -225,7 +225,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/placedstudent/{placedStudent?}', InsertPlacedStudent::class)->name('admin.placedstudent.edit')->whereNumber("placedStudent");
 
         //    certificate
-        Route::get('/certificate', CertificateEligibility::class)->name('admin.certificate');
+        // Route::get('/certificate', CertificateEligibility::class)->name('admin.certificate');
         //enquiry
         Route::get('/enquiry', ManageEnquiry::class)->name('admin.manage.enquiry');
         //manage-orders

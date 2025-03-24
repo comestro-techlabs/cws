@@ -33,7 +33,7 @@
 
                 <!-- Course Image -->
                 <div class="relative mb-6">
-                    <img src="{{ asset('storage/course_images/' . $course->course_image) }}" alt="Course Image"
+                    <img src="{{ asset('storage/' . $course->course_image) }}" alt="Course Image"
                         class="w-full h-64 object-cover rounded-lg shadow-md">
                 </div>
 
@@ -43,7 +43,7 @@
                     <p class="text-gray-600 bg-gray-50 border border-gray-200 rounded-md p-4">{{ $course->description }}</p>
                 </div>
 
-                
+
                 <!-- Course Chapters -->
                 <div>
                     <h2 class="text-xl font-semibold text-gray-700 mb-4">Chapters</h2>
@@ -197,5 +197,5 @@
                     });
             };
         </script>
-    @endauth   
+    @endauth
 @endsection
