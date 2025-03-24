@@ -214,7 +214,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/certificate/course',ManageCertificate::class)->name('admin.certificate.course');
         Route::get('/certificate/view-detail/{studentId}/{courseId}', ViewDetail::class)->name('certificate.view-detail');
        
-        Route::get('/certificate/{certificateId}/view',ViewCertificate::class)->name('certificate.view');
+        // Route::get('/certificate/{certificateId}/view',ViewCertificate::class)->name('certificate.view');
 
         // Workshop Routes certificate/course
         Route::get('/workshops', ManageWorkshop::class)->name('admin.workshops.index');
