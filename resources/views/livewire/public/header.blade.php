@@ -2,7 +2,7 @@
     <!-- Navbar -->
     <div class="fixed top-0 left-0 right-0 z-50 px-5 sm:px-4 lg:px-8 py-2">
         <div class="max-w-7xl mx-auto">
-            <div class="bg-white/90 backdrop-blur-xl rounded-full border border-slate-200  px-6 md:px-10 py-2 md:py-4 flex items-center justify-between transition-all duration-300">
+            <div class="bg-white/90 backdrop-blur-xl rounded-full border border-slate-200 px-4 md:px-8 py-2 md:py-4 flex items-center justify-between transition-all duration-300">
                 <!-- Hamburger Menu Button (Mobile) -->
                 <button id="menu-toggle" class="lg:hidden focus:outline-none group p-2 rounded-lg hover:bg-gray-100">
                     <div class="relative w-6 h-6 flex items-center justify-center">
@@ -15,9 +15,11 @@
                 </button>
 
                 <!-- Logo -->
-                <div class="flex-shrink-0 lg:ml-0">
+                <div class="flex-1 flex justify-center lg:flex-initial lg:ml-0">
                     <a href="{{route('public.index')}}" wire:navigate class="flex items-center">
-                        <img src="{{ asset('assets/LearnSyntax.png') }}" class="md:h-8 h-5  transition-transform duration-200 hover:scale-105" alt="Learn Syntax Logo">
+                        <img src="{{ asset('assets/LearnSyntax.png') }}"
+                             class="h-6 sm:h-7 md:h-8 transition-transform duration-200 hover:scale-105"
+                             alt="Learn Syntax Logo">
                     </a>
                 </div>
 
@@ -66,7 +68,7 @@
                 </nav>
 
                 <!-- Auth Buttons -->
-                <div class="flex items-center space-x-3">
+                <div class="flex items-center space-x-2 sm:space-x-3">
                     @auth
                         @if (Auth::user()->isAdmin)
                             <a href="{{ route('admin.dashboard') }}" wire:navigate
@@ -118,10 +120,10 @@
                     @endauth
                     @guest
                         <a href="{{ route('auth.login') }}" wire:navigate
-                            class="relative inline-flex items-center px-6 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 rounded-lg hover:from-blue-700 hover:via-indigo-700 hover:to-blue-800 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 shadow-md hover:shadow-xl group overflow-hidden">
-                            <span class="relative z-10">Join Us</span>
+                            class="relative inline-flex items-center px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 text-xs sm:text-sm font-semibold text-white bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 rounded-lg hover:from-blue-700 hover:via-indigo-700 hover:to-blue-800 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 shadow-md hover:shadow-xl group overflow-hidden">
+                            <span class="relative z-10">Join Now</span>
                             <span class="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-gradient"></span>
-                            <svg class="w-5 h-5 ml-2 -mr-1 transition-transform duration-300 transform group-hover:translate-x-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg class="hidden sm:block w-4 sm:w-5 h-4 sm:h-5 ml-2 -mr-1 transition-transform duration-300 transform group-hover:translate-x-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                             </svg>
                         </a>

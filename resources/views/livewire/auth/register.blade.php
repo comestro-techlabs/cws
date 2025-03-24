@@ -1,4 +1,4 @@
-<div class="min-h-screen pt-10 flex items-center justify-center bg-gradient-to-br from-purple-50 via-white to-purple-100 py-12 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen pt-24 flex items-center justify-center bg-gradient-to-br from-purple-50 via-white to-purple-100 py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-5xl w-full">
         <div class="bg-white/80 backdrop-blur-lg rounded-2xl shadow-sm border border-gray-100">
             <div class="grid md:grid-cols-2 gap-0">
@@ -8,13 +8,13 @@
                         <h2 class="text-3xl font-bold text-gray-900 mb-2">Create Account</h2>
                         <p class="text-gray-600">Join our learning community today</p>
                     </div>
- 
+
                     <form wire:submit.prevent="register" class="space-y-6">
                         <!-- Name Field -->
                         <div>
                             <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                            <input type="text" 
-                                   wire:model="name" 
+                            <input type="text"
+                                   wire:model="name"
                                    id="name"
                                    class="appearance-none block w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
                                    placeholder="Enter your full name">
@@ -24,8 +24,8 @@
                         <!-- Email Field -->
                         <div>
                             <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email address</label>
-                            <input type="email" 
-                                   wire:model="email" 
+                            <input type="email"
+                                   wire:model="email"
                                    id="email"
                                    class="appearance-none block w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
                                    placeholder="Enter your email">
@@ -35,8 +35,8 @@
                         <!-- Phone Field -->
                         <div>
                             <label for="contact" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
-                            <input type="tel" 
-                                   wire:model="contact" 
+                            <input type="tel"
+                                   wire:model="contact"
                                    id="contact"
                                    class="appearance-none block w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
                                    placeholder="Enter your contact number">
@@ -48,8 +48,8 @@
                             <div>
                                 <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
                                 <div class="relative">
-                                    <input type="password" 
-                                           wire:model="password" 
+                                    <input type="password"
+                                           wire:model="password"
                                            id="password"
                                            class="appearance-none block w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
                                            placeholder="Create password">
@@ -59,8 +59,8 @@
 
                             <div>
                                 <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
-                                <input type="password" 
-                                       wire:model="password_confirmation" 
+                                <input type="password"
+                                       wire:model="password_confirmation"
                                        id="password_confirmation"
                                        class="appearance-none block w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
                                        placeholder="Confirm password">
