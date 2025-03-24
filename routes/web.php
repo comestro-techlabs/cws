@@ -80,6 +80,8 @@ use App\Livewire\Student\Marksheet\StudentMarksheet;
 use App\Livewire\Student\Certificate\ShowCertificate;
 use App\Livewire\Admin\MockTest\ManageQuestions;
 use App\Livewire\Admin\Store\ManageProductCategories;
+use App\Livewire\Auth\ForgetPassword;
+use App\Livewire\Auth\ResetPassword;
 use App\Livewire\Public\Myeditor\Monaco;
 use App\Livewire\Student\Dashboard\Product\MyOrders;
 
@@ -101,6 +103,9 @@ Route::get('/courses/{slug}', Ourcourses::class)->name('public.courseDetail');
 //auth routes
 Route::prefix('auth')->group(function () {
     Route::get('/login', Login::class)->name('auth.login');
+    Route::get('/forget-password', ForgetPassword::class)->name('auth.forget-password');
+    Route::get('/reset-password/{token}', ResetPassword::class)->name('password.reset');
+
     Route::post('/logout', [Header::class, 'logout'])->name('auth.logout'); // Changed to POST
     Route::get('/google', [GoogleLogin::class, 'redirectToGoogle'])
         ->name('auth.google.login')
