@@ -55,7 +55,7 @@
                 style="transform: translateY(-50px);">
                 <!-- Course Preview Image -->
                 <div class="overflow-hidden rounded-lg mb-4">
-                    <img src="{{ asset('storage/course_images/' . $course->course_image) }}"
+                    <img src="{{ asset('storage/' . $course->course_image) }}"
                         alt="{{ $course->title }}" class="w-full h-auto object-cover rounded-lg">
                 </div>
 

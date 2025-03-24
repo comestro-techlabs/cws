@@ -57,7 +57,7 @@
                     <div class="bg-white rounded-xl shadow-xl overflow-hidden">
                         <!-- Course Preview Image -->
                         <div class="overflow-hidden">
-                            <img src="{{ asset('storage/course_images/' . $course->course_image) }}"
+                            <img src="{{ asset('storage/' . $course->course_image) }}"
                                 alt="{{ $course->title }}" class="w-full h-56 object-cover">
                         </div>
 
@@ -180,7 +180,7 @@
                 <!-- Course Details Card -->
                 <div class="bg-white rounded-xl shadow-sm p-6">
                     <h2 class="text-2xl font-bold text-gray-900 mb-6">Course Overview</h2>
-                    
+
                     <!-- Course Type Specific Features -->
                     @if($course->course_type === 'online')
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
@@ -288,7 +288,7 @@
                                 </svg>
                                 <div>
                                     <p class="text-gray-600">{{ $course->venue }}</p>
-                                    <a href="https://maps.google.com/?q={{ urlencode($course->venue) }}" 
+                                    <a href="https://maps.google.com/?q={{ urlencode($course->venue) }}"
                                         target="_blank"
                                         class="text-sm text-blue-600 hover:underline mt-1 inline-block">
                                         View on Google Maps

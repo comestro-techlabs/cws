@@ -45,7 +45,7 @@
                             <div class="flex flex-col sm:flex-row">
                                 <!-- Course Image with Progress -->
                                 <div class="relative w-full sm:w-48 h-48">
-                                    <img src="{{ asset('storage/course_images/' . $course->course_image) }}"
+                                    <img src="{{ asset('storage/' . $course->course_image) }}"
                                         alt="{{ $course->title }}" class="h-full w-full object-cover">
                                     <!-- New Progress Overlay -->
                                     <div
@@ -222,7 +222,7 @@
                         <div class="relative bg-white rounded-2xl shadow-xl overflow-hidden">
                             <!-- Modal Header with Image -->
                             <div class="relative h-64">
-                                <img src="{{ asset('storage/course_images/' . $selectedCourse->course_image) }}"
+                                <img src="{{ asset('storage/' . $selectedCourse->course_image) }}"
                                     alt="{{ $selectedCourse->title }}" class="w-full h-full object-cover">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent">
                                 </div>

@@ -9,7 +9,7 @@
             <div class="bg-white rounded-lg shadow-sm p-6">
                 <div class="flex items-center justify-between mb-4">
                     <h1 class="text-3xl font-bold text-gray-900">{{ $course->title }}</h1>
-                    <span class="px-3 py-1 rounded-full text-sm font-medium 
+                    <span class="px-3 py-1 rounded-full text-sm font-medium
                         {{ $course->course_type === 'online' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800' }}">
                         {{ ucfirst($course->course_type) }}
                     </span>
@@ -17,14 +17,14 @@
                 <div class="flex items-center gap-4 text-sm text-gray-600">
                     <div class="flex items-center">
                         <svg class="w-5 h-5 mr-2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
                         <span>{{ $course->instructor }}</span>
                     </div>
                     <div class="flex items-center">
                         <svg class="w-5 h-5 mr-2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                         <span>{{ $course->duration }} weeks</span>
@@ -45,7 +45,7 @@
                         Reviews
                     </button>
                 </nav>
-                
+
                 <div class="p-6">
                     <!-- Course Description -->
                     <div class="prose max-w-none">
@@ -130,7 +130,7 @@
             <div class="bg-white rounded-lg shadow-lg overflow-hidden sticky top-24">
                 <!-- Course Preview Image -->
                 <div class="relative h-48">
-                    <img src="{{ asset('storage/course_images/' . $course->course_image) }}" alt="{{ $course->title }}"
+                    <img src="{{ asset('storage/' . $course->course_image) }}" alt="{{ $course->title }}"
                         class="w-full h-full object-cover">
                     <!-- Gradient Overlay -->
                     <div class="absolute inset-0 bg-gradient-to-t from-gray-900/70 to-transparent"></div>
