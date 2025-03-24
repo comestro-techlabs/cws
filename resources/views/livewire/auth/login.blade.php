@@ -72,10 +72,10 @@
                         <h2 class="text-3xl font-bold text-gray-900 mb-2">Quick Access</h2>
                         <p class="text-gray-600">Sign in with your social accounts</p>
                     </div>
+                    @livewire('auth.github')
 
                     {{-- <div class="space-y-4">
                         @livewire('auth.google-login')
-                        @livewire('auth.github')
                         @livewire('auth.linkedin-login')
                         @livewire('auth.facebook')
                     </div> --}}
