@@ -32,15 +32,12 @@ class InsertSubscription extends Component
         'price' => 'required|numeric|min:0',
         'duration_in_days' => 'required|integer|min:1',
         'is_active' => 'boolean',
-        'featuresInput' => 'nullable|string' // Validate the string input
+        'featuresInput' => 'nullable|string'
     ];
 
     public function mount()
     {
-        // Ensure features is initialized as array on component mount
-        if (!is_array($this->features)) {
-            $this->features = [''];
-        }
+        $this->features = [];
     }
 
     public function render()
@@ -79,6 +76,7 @@ class InsertSubscription extends Component
     {
         $this->search = '';
         $this->filter_active = '';
+        $this->resetPage(); // Reset pagination when clearing filters
     }
 
     public function resetInputFields()
@@ -113,7 +111,7 @@ class InsertSubscription extends Component
         ];
 
         if ($this->updateMode && $this->planId) {
-            SubscriptionPlan::find($this->planId)->update($data);
+            SubscriptionPlan::findOrFail($this->planId)->update($data);
             session()->flash('message', 'Subscription Plan Updated Successfully.');
         } else {
             SubscriptionPlan::create($data);
@@ -130,18 +128,19 @@ class InsertSubscription extends Component
 
         $this->planId = $id;
         $this->name = $plan->name;
-        $this->description = $plan->description;
+        $this->description = $plan->description ?? '';
         $this->price = $plan->price;
         $this->duration_in_days = $plan->duration_in_days;
         $this->is_active = $plan->is_active;
 
         $decodedFeatures = json_decode($plan->features, true);
         $this->features = is_array($decodedFeatures) && !empty($decodedFeatures) ? $decodedFeatures : [];
-        $this->featuresInput = implode(', ', $this->features); // Convert array to string for textarea
+        $this->featuresInput = implode(', ', $this->features);
 
         $this->updateMode = true;
         $this->showModal = true;
     }
+
     public function toggleStatus($id)
     {
         $plan = SubscriptionPlan::findOrFail($id);
@@ -151,7 +150,7 @@ class InsertSubscription extends Component
 
     public function delete($id)
     {
-        $plan = SubscriptionPlan::find($id);
+        $plan = SubscriptionPlan::findOrFail($id);
         if ($plan->subscriptions()->count() > 0) {
             session()->flash('error', 'Cannot delete plan with active subscriptions.');
             return;
