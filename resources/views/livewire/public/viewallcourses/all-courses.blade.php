@@ -1,4 +1,7 @@
 <div class="bg-gray-50 min-h-screen">
+    <x-slot:title>Our Courses | Learn Syntax | Coding Classes in Purnea – C, C++, Python, JavaScript (Bihar)</x-slot>
+    <x-slot:description>Learn Syntax in Purnea, Bihar offers expert-led courses in C, C++, Python, JavaScript, Web Development, DBMS, Bootstrap, and more. Start coding with hands-on training, real-world projects, and certification!</x-slot>
+
     <!-- Hero Section with Animated Background -->
     <div class="relative bg-gradient-to-r from-[#662d91] via-purple-600 to-[#662d91] bg-[size:400%] animate-gradient py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">

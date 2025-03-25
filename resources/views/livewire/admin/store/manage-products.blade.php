@@ -12,7 +12,7 @@
                 <a href="{{ route('v2.admin.manageCategories') }}" class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium text-sm hover:bg-blue-700 transition duration-200 flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-1">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-3-3v6m8-6c0-4.418-3.582-8-8-8S4 7.582 4 12s3.582 8 8 8 8-3.582 8-8z" />
-                    </svg>
+                    </svg> 
                     Manage Category
                 </a>
                

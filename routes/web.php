@@ -94,8 +94,8 @@ Route::get('/courses', AllCourses::class)->name('public.viewallcourses.all-cours
 Route::get('/contact', ContactPage::class)->name('public.contactUs');
 Route::get('/workshops', Workshop::class)->name('public.workshop');
 //blog courses routes
-Route::get('/course/{course_id}/chapter/show', CourseWithChapterAndTopic::class)->name('v2.courses.show');
-Route::get('/course/{course_id}/chapter/{chapter_id?}/topic/{topic_id?}/show', TopicWithPostContent::class)->name('v2.topics.show');
+Route::get('/course/{course_slug}/chapter/show', CourseWithChapterAndTopic::class)->name('v2.courses.show');
+Route::get('/course/{course_slug}/chapter/{chapter_slug?}/topic/{topic_slug?}/show', TopicWithPostContent::class)->name('v2.topics.show');
 
 Route::get('/courses/{slug}', Ourcourses::class)->name('public.courseDetail');
 
@@ -220,9 +220,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/workshops', ManageWorkshop::class)->name('admin.workshops.index');
 
         // Placed Student Routes
-        Route::get('/placedstudent/create', InsertPlacedStudent::class)->name('admin.placedstudent.create');
         Route::get('/placedstudent/manage', CallingPlacedStudent::class)->name('admin.placedstudent.index');
-        Route::get('/placedstudent/{placedStudent?}', InsertPlacedStudent::class)->name('admin.placedstudent.edit')->whereNumber("placedStudent");
 
        
         //enquiry

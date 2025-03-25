@@ -30,15 +30,37 @@ class ManageAssignment extends Component
     public $status = false;
     public $editingAssignment = null;
     public $batches = [];
+    public $activeTab = 'latest';
 
     protected $paginationTheme = 'tailwind';
     public function render()
     {
-        $assignments = Assignments::when($this->course_id, fn ($query) => 
-            $query->where('course_id', $this->course_id)
-        )->when($this->search, fn ($query) => 
-            $query->where('title', 'like', '%' . $this->search . '%')
-        )->with(['course', 'batch', 'uploads.user'])->paginate($this->perPage);
+        $assignments = Assignments::query()
+            ->when($this->course_id, fn ($query) => 
+                $query->where('course_id', $this->course_id)
+            )
+            ->when($this->search, fn ($query) => 
+                $query->where('title', 'like', '%' . $this->search . '%')
+            )
+            ->when($this->activeTab === 'latest', fn ($query) => 
+                $query->where('updated_at', '>=', now()->subDays(7))
+                     ->orderBy('updated_at', 'desc')
+            )
+            ->when($this->activeTab === 'graded', fn ($query) => 
+                $query->whereHas('uploads', function($q) {
+                    $q->where('status', 'graded');
+                })
+                ->whereDoesntHave('uploads', function($q) {
+                    $q->where('status', '!=', 'graded');
+                })
+                ->has('uploads') 
+                ->orderBy('updated_at', 'desc')
+            )
+            ->when($this->activeTab === 'all', fn ($query) => 
+                $query->orderBy('updated_at', 'desc')
+            )
+            ->with(['course', 'batch', 'uploads.user'])
+            ->paginate($this->perPage);
 
         return view('livewire.admin.assignment.manage-assignment', [
             'assignments' => $assignments,

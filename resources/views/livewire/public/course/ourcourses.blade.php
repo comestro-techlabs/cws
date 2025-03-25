@@ -1,4 +1,6 @@
 <div>
+    <x-slot:title> {{$course->title}} | Learn Syntax | Coding Classes in Purnea – C, C++, Python, JavaScript (Bihar)</x-slot>
+    <x-slot:description> {{$course->title}} - Learn Syntax in Purnea, Bihar offers expert-led courses in C, C++, Python, JavaScript, Web Development, DBMS, Bootstrap, and more. Start coding with hands-on training, real-world projects, and certification!</x-slot>
     <!-- Course Header Section with Theme Color -->
     <div class="bg-[#662d91] text-white pt-28 pb-12 relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
