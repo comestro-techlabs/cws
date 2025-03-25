@@ -1,7 +1,7 @@
 <div>
 
     <!-- Programming Languages Section -->
-    <div class="bg-white py-12">
+    <div class="bg-white py-12"> 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
                 <h2 class="text-3xl font-extrabold tracking-tight text-[#29235c] sm:text-4xl">
@@ -14,7 +14,7 @@
             </div>
             <div class="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
                 @foreach($blogCourses as $blogCourse)
-                <a href="{{ route('v2.courses.show', ['course_id' => $blogCourse->id]) }}" class="flex items-center p-4 border border-gray-200 rounded-md hover:shadow-md transition-all">
+                <a href="{{ route('v2.courses.show', ['course_slug' => $blogCourse->course_slug]) }}" class="flex items-center p-4 border border-gray-200 rounded-md hover:shadow-md transition-all">
                     <div class="flex items-center">
                         <span class="text-blue-500 mr-3">
                             <img src="{{ asset('storage/' . $blogCourse->image) }}" alt="" class="w-6 h-6">
