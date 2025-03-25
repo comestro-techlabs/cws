@@ -148,17 +148,31 @@
                                     $subs = (auth()->check() && auth()->user()->hasActiveSubscription() && auth()->user()->courses()->wherePivot('is_subs', 1)->count() == 0);
                                 @endphp
                                 @if ($subs)
-                                    <span class="text-lg font-semibold text-gray-900 line-through">₹{{ $course->discounted_fees }}</span>
-                                    <span class="text-sm font-medium px-2 py-1 bg-orange-100 text-orange-800 rounded">Free</span>
+                                    @if ($course->discounted_fees === null)
+                                        <span class="text-lg font-semibold text-gray-900">₹{{ $course->fees }}</span>
+                                    @elseif ($course->discounted_fees == 0)
+                                        <span class="text-lg font-semibold text-gray-900">Free</span>
+                                        <span class="text-sm font-medium px-2 py-1 bg-orange-100 text-orange-800 rounded">Free</span>
+                                    @else
+                                        <span class="text-lg font-semibold text-gray-900 line-through">₹{{ $course->fees }}</span>
+                                        <span class="text-sm font-medium px-2 py-1 bg-orange-100 text-orange-800 rounded">Free</span>
+                                    @endif
                                 @else
-                                    <span class="text-lg font-semibold text-gray-900">₹{{ $course->discounted_fees }}</span>
-                                    @if (isset($course->original_fees) && $course->original_fees > $course->discounted_fees)
-                                        <span class="text-sm text-gray-500 line-through">₹{{ $course->original_fees }}</span>
+                                    @if ($course->discounted_fees === null)
+                                        <span class="text-lg font-semibold text-gray-900">₹{{ $course->fees }}</span>
+                                    @elseif ($course->discounted_fees == 0)
+                                        <span class="text-lg font-semibold text-gray-900">Free</span>
+                                    @else
+                                        <span class="text-lg font-semibold text-gray-900">₹{{ $course->discounted_fees }}</span>
+                                        @if ($course->fees > 0)
+                                            <span class="text-sm text-gray-500 line-through">₹{{ $course->fees }}</span>
+                                        @endif
                                     @endif
                                 @endif
                             </div>
                         </div>
                     </div>
+
                 </div>
             @empty
                 <div class="col-span-full">

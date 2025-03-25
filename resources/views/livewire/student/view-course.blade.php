@@ -152,12 +152,13 @@
                     <div class="text-center pb-4 border-b border-gray-200">
                         @if ($subs)
                             <p class="text-sm text-gray-600 mb-1">Free</p>
-                            <p class="text-4xl font-bold text-gray-900"><del>₹{{ $course->discounted_fees }}</del></p>
+                            <p class="text-4xl font-bold text-gray-900"><del>₹{{ $course->discounted_fees ?? $course->fees }}</del></p>
                         @else
                             <p class="text-sm text-gray-600 mb-1">Course Fee</p>
-                            <p class="text-4xl font-bold text-gray-900">₹{{ $course->discounted_fees }}</p>
+                            <p class="text-4xl font-bold text-gray-900">₹{{ $course->discounted_fees ?? $course->fees }}</p>
                         @endif
                     </div>
+
 
                     <!-- Enrollment Status -->
                     @if ($payment_exist)
@@ -221,74 +222,76 @@
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 @auth
-    <script>
-        document.getElementById('pay-button').onclick = async function (e) {
-            e.preventDefault();
-            const payButton = document.getElementById('pay-button');
-            payButton.disabled = true;
+<script>
+    document.getElementById('pay-button').onclick = async function (e) {
+        e.preventDefault();
+        const payButton = document.getElementById('pay-button');
+        payButton.disabled = true;
 
-            try {
-                const response = await @this.initiatePayment();
+        try {
+            const response = await @this.initiatePayment();
 
-                if (response && response.payment_id && response.order_id) {
-                    var options = {
-                        "key": "{{ env('RAZORPAY_KEY') }}",
-                        "amount": {{ $course->discounted_fees }} * 100,
-                        "currency": "INR",
-                        "name": "LearnSyntax",
-                        "description": "{{ $course->title }}",
-                        "image": "{{ asset('front_assets/img/logo/logo.png') }}",
-                        "order_id": response.order_id,
-                        "handler": async function (razorpayResponse) {
-                            const result = await @this.handlePaymentResponse({
-                                payment_id: response.payment_id,
-                                razorpay_payment_id: razorpayResponse.razorpay_payment_id,
-                                razorpay_order_id: razorpayResponse.razorpay_order_id,
-                                razorpay_signature: razorpayResponse.razorpay_signature
+            if (response && response.payment_id && response.order_id) {
+                const amountToPay = {{ $course->discounted_fees ?? 0 }} > 0 ? {{ $course->discounted_fees ?? 0 }} : {{ $course->fees }};                
+                var options = {
+                    "key": "{{ env('RAZORPAY_KEY') }}",
+                    "amount": amountToPay * 100,
+                    "currency": "INR",
+                    "name": "LearnSyntax",
+                    "description": "{{ $course->title }}",
+                    "image": "{{ asset('front_assets/img/logo/logo.png') }}",
+                    "order_id": response.order_id,
+                    "handler": async function (razorpayResponse) {
+                        const result = await @this.handlePaymentResponse({
+                            payment_id: response.payment_id,
+                            razorpay_payment_id: razorpayResponse.razorpay_payment_id,
+                            razorpay_order_id: razorpayResponse.razorpay_order_id,
+                            razorpay_signature: razorpayResponse.razorpay_signature
+                        });
+
+                        if (result.success) {
+                            @this.dispatch('redirectToDashboard');
+                        } else {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: result.message || 'Payment verification failed',
+                                icon: 'error',
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#2563EB'
                             });
-
-                            if (result.success) {
-                                @this.dispatch('redirectToDashboard');
-                            } else {
-                                Swal.fire({
-                                    title: 'Error!',
-                                    text: result.message || 'Payment verification failed',
-                                    icon: 'error',
-                                    confirmButtonText: 'OK',
-                                    confirmButtonColor: '#2563EB'
-                                });
-                            }
-                        },
-                        "prefill": {
-                            "name": "{{ Auth::user()->name }}",
-                            "email": "{{ Auth::user()->email }}"
-                        },
-                        "theme": {
-                            "color": "#2563EB"
-                        },
-                        "modal": {
-                            "ondismiss": function () {
-                                payButton.disabled = false;
-                            }
                         }
-                    };
+                    },
+                    "prefill": {
+                        "name": "{{ Auth::user()->name }}",
+                        "email": "{{ Auth::user()->email }}"
+                    },
+                    "theme": {
+                        "color": "#2563EB"
+                    },
+                    "modal": {
+                        "ondismiss": function () {
+                            payButton.disabled = false;
+                        }
+                    }
+                };
 
-                    var rzp1 = new Razorpay(options);
-                    rzp1.open();
-                } else {
-                    throw new Error('Payment initialization failed');
-                }
-            } catch (error) {
-                console.error("Payment Error:", error);
-                Swal.fire({
-                    title: 'Error!',
-                    text: 'Payment initiation failed: ' + (error.message || ''),
-                    icon: 'error',
-                    confirmButtonText: 'OK',
-                    confirmButtonColor: '#2563EB'
-                });
-                payButton.disabled = false;
+                var rzp1 = new Razorpay(options);
+                rzp1.open();
+            } else {
+                throw new Error('Payment initialization failed');
             }
-        };
-    </script>
+        } catch (error) {
+            console.error("Payment Error:", error);
+            Swal.fire({
+                title: 'Error!',
+                text: 'Payment initiation failed: ' + (error.message || ''),
+                icon: 'error',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#2563EB'
+            });
+            payButton.disabled = false;
+        }
+    };
+</script>
 @endauth
+
