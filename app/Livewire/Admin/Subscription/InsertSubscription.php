@@ -9,9 +9,8 @@ use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-
 #[Layout('components.layouts.admin')]
-#[Title('Manage Assignments')]
+#[Title('Manage Subscription Plans')]
 class InsertSubscription extends Component
 {
     use WithPagination;
@@ -23,7 +22,6 @@ class InsertSubscription extends Component
     public $search = '';
     public $filter_active = '';
 
-    // Don't make $plans public since it's a paginator
     protected $plans;
 
     protected $rules = [
@@ -47,10 +45,13 @@ class InsertSubscription extends Component
             $query->where('is_active', $this->filter_active);
         }
 
-        // Store the paginator in the protected property
         $this->plans = $query->paginate(9);
 
-        // Pass the paginator directly to the view
+        // Log all plans' features for debugging
+        \Log::info('Rendering Plans', [
+            'plans' => $this->plans->pluck('features')->toArray()
+        ]);
+
         return view('livewire.admin.subscription.insert-subscription', [
             'plans' => $this->plans
         ]);
@@ -117,15 +118,24 @@ class InsertSubscription extends Component
     public function edit($id)
     {
         $plan = SubscriptionPlan::findOrFail($id);
+        
         $this->planId = $id;
         $this->name = $plan->name;
         $this->description = $plan->description;
         $this->price = $plan->price;
         $this->duration_in_days = $plan->duration_in_days;
         $this->is_active = $plan->is_active;
-        $this->features = is_array($plan->features) ? implode(',', $plan->features) : '';
+        $this->features = is_array($plan->features) && !empty($plan->features) ? implode(', ', $plan->features) : '';
+
         $this->updateMode = true;
         $this->showModal = true;
+
+        // Log to confirm features are loaded
+        \Log::info('Edit Mode Features', [
+            'id' => $id,
+            'features' => $plan->features,
+            'display_value' => $this->features
+        ]);
     }
 
     public function toggleStatus($id)
