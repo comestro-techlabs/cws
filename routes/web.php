@@ -193,7 +193,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
 
         Route::get('/course/update/{courseId}', UpdateCourse::class)->name('admin.course.update');
         Route::get("/admin/attendace", AttendanceScanner::class)->name('admin.attendance');
-        Route::post("/subscription/insert-subscription", InsertSubscription::class)->name('admin.insert_subscription');
+        Route::get("/subscription/insert-subscription", InsertSubscription::class)->name('admin.insert_subscription');
 
         //exam routes
         Route::get('/exam', ManageExam::class)->name('admin.exam');
