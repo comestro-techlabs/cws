@@ -6,6 +6,7 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use App\Models\PlacedStudent;
+use Illuminate\Support\Facades\Storage;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 
@@ -20,7 +21,7 @@ class CallingPlacedStudent extends Component
     public $search = '';
     public $perPage = 10;
     public $isModalOpen = false;
-    public $editMode=false;
+    public $editMode = false;
     public $student;
 
     public $content;
@@ -49,18 +50,20 @@ class CallingPlacedStudent extends Component
             session()->flash('error', 'Student not found.');
         }
     }
-    public function addNewStudent(){
+    public function addNewStudent()
+    {
         $this->resetInputFields();
         $this->isModalOpen = true;
     }
-    public function editStudent($studentId){
+    public function editStudent($studentId)
+    {
 
         $this->resetInputFields();
         $this->editMode = true;
 
         $this->isModalOpen = true;
         $this->editMode = true;
-        $this->student = PlacedStudent::findOrFail($studentId); 
+        $this->student = PlacedStudent::findOrFail($studentId);
         $this->name = $this->student->name;
         $this->position = $this->student->position;
         $this->content = $this->student->content;
@@ -68,7 +71,8 @@ class CallingPlacedStudent extends Component
 
         $this->isModalOpen = true;
     }
-    public function closeModal(){
+    public function closeModal()
+    {
         $this->isModalOpen = false;
         $this->editMode = false;
     }
@@ -79,26 +83,48 @@ class CallingPlacedStudent extends Component
         $this->content = '';
         $this->position = '';
         $this->image = '';
-
     }
-    public function save(){
+    public function save()
+    {
         $this->validate();
+
+        // Common data for both create and update
         $studentData = [
             'name' => $this->name,
             'content' => $this->content,
             'position' => $this->position,
-            'image' => $this->image,
         ];
-        if($this->editMode){
+
+        if ($this->editMode) {
+            // Update logic
+            if ($this->image) {
+                // Delete the old image if a new one is uploaded
+                if ($this->student->image) {
+                    Storage::delete('public/' . $this->student->image);
+                }
+
+                // Store new image
+                $imagePath = $this->image->store('placedstudent', 'public');
+                $studentData['image'] = $imagePath;
+            }
+
             $this->student->update($studentData);
             session()->flash('success', 'Student updated successfully.');
-        }else{
+        } else {
+            // Create logic
+            if ($this->image) {
+                $imagePath = $this->image->store('placedstudent', 'public');
+                $studentData['image'] = $imagePath;
+            }
+
             PlacedStudent::create($studentData);
             session()->flash('success', 'Student created successfully.');
         }
+
         $this->closeModal();
         $this->resetInputFields();
     }
+
 
     // Delete student
     public function deleteStudent($id)
@@ -113,12 +139,12 @@ class CallingPlacedStudent extends Component
         }
     }
 
-    public function render() 
+    public function render()
     {
         $placedStudents = PlacedStudent::query()
             ->when($this->search, function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%')
-                      ->orWhere('position', 'like', '%' . $this->search . '%');
+                    ->orWhere('position', 'like', '%' . $this->search . '%');
             })
             ->paginate($this->perPage);
 
