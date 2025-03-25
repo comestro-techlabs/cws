@@ -15,12 +15,15 @@ class InsertSubscription extends Component
 {
     use WithPagination;
 
-    public $name, $description, $price, $duration_in_days, $is_active = true, $features;
+    public $name, $description, $price, $duration_in_days;
+    public $is_active = true;
+    public array $features = [];
     public $updateMode = false;
     public $planId;
     public $showModal = false;
     public $search = '';
     public $filter_active = '';
+    public string $featuresInput = '';
 
     protected $plans;
 
@@ -29,8 +32,16 @@ class InsertSubscription extends Component
         'price' => 'required|numeric|min:0',
         'duration_in_days' => 'required|integer|min:1',
         'is_active' => 'boolean',
-        'features' => 'nullable'
+        'featuresInput' => 'nullable|string' // Validate the string input
     ];
+
+    public function mount()
+    {
+        // Ensure features is initialized as array on component mount
+        if (!is_array($this->features)) {
+            $this->features = [''];
+        }
+    }
 
     public function render()
     {
@@ -38,7 +49,7 @@ class InsertSubscription extends Component
 
         if ($this->search) {
             $query->where('name', 'like', '%' . $this->search . '%')
-                  ->orWhere('description', 'like', '%' . $this->search . '%');
+                ->orWhere('description', 'like', '%' . $this->search . '%');
         }
 
         if ($this->filter_active !== '') {
@@ -46,11 +57,6 @@ class InsertSubscription extends Component
         }
 
         $this->plans = $query->paginate(9);
-
-        // Log all plans' features for debugging
-        \Log::info('Rendering Plans', [
-            'plans' => $this->plans->pluck('features')->toArray()
-        ]);
 
         return view('livewire.admin.subscription.insert-subscription', [
             'plans' => $this->plans
@@ -82,7 +88,8 @@ class InsertSubscription extends Component
         $this->price = '';
         $this->duration_in_days = '';
         $this->is_active = true;
-        $this->features = '';
+        $this->features = [];
+        $this->featuresInput = '';
         $this->updateMode = false;
         $this->planId = null;
     }
@@ -91,7 +98,9 @@ class InsertSubscription extends Component
     {
         $this->validate();
 
-        $featuresArray = $this->features ? array_filter(explode(',', trim($this->features))) : [];
+        $featuresArray = $this->featuresInput
+            ? array_filter(array_map('trim', explode(',', $this->featuresInput)), fn($value) => !empty($value))
+            : [];
 
         $data = [
             'name' => $this->name,
@@ -118,26 +127,21 @@ class InsertSubscription extends Component
     public function edit($id)
     {
         $plan = SubscriptionPlan::findOrFail($id);
-        
+
         $this->planId = $id;
         $this->name = $plan->name;
         $this->description = $plan->description;
         $this->price = $plan->price;
         $this->duration_in_days = $plan->duration_in_days;
         $this->is_active = $plan->is_active;
-        $this->features = is_array($plan->features) && !empty($plan->features) ? implode(', ', $plan->features) : '';
+
+        $decodedFeatures = json_decode($plan->features, true);
+        $this->features = is_array($decodedFeatures) && !empty($decodedFeatures) ? $decodedFeatures : [];
+        $this->featuresInput = implode(', ', $this->features); // Convert array to string for textarea
 
         $this->updateMode = true;
         $this->showModal = true;
-
-        // Log to confirm features are loaded
-        \Log::info('Edit Mode Features', [
-            'id' => $id,
-            'features' => $plan->features,
-            'display_value' => $this->features
-        ]);
     }
-
     public function toggleStatus($id)
     {
         $plan = SubscriptionPlan::findOrFail($id);

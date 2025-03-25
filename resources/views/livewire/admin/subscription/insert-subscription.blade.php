@@ -62,97 +62,97 @@
         <!-- Subscription Plans Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @forelse($plans as $plan)
-                <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-all">
-                    <div class="p-6">
-                        <div class="flex justify-between items-start mb-4">
-                            <h3 class="text-lg font-semibold text-gray-900">{{ $plan->name }}</h3>
-                            <button wire:click="toggleStatus({{ $plan->id }})"
-                                class="relative px-3 py-1 rounded-full text-sm {{ $plan->is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}"
-                                wire:loading.class="opacity-50 cursor-wait" wire:target="toggleStatus({{ $plan->id }})">
-                                <span wire:loading.remove wire:target="toggleStatus({{ $plan->id }})">
-                                    {{ $plan->is_active ? 'Active' : 'Inactive' }}
-                                </span>
-                                <span wire:loading wire:target="toggleStatus({{ $plan->id }})" class="flex items-center">
-                                    Updating...
-                                </span>
-                            </button>
-                        </div>
-
-                        <div class="space-y-4">
-                            <!-- Price and Duration -->
-                            <div class="flex items-center text-sm text-gray-600">
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
-                                </svg>
-                                <span class="font-medium">${{ number_format($plan->price, 2) }} /
-                                    {{ $plan->duration_in_days }} days</span>
-                            </div>
-
-                            <!-- Description -->
-                            @if($plan->description)
-                                <div class="text-sm text-gray-600">
-                                    <span class="font-medium">Description:</span> {{ $plan->description }}
+                        <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-all">
+                            <div class="p-6">
+                                <div class="flex justify-between items-start mb-4">
+                                    <h3 class="text-lg font-semibold text-gray-900">{{ $plan->name }}</h3>
+                                    <button wire:click="toggleStatus({{ $plan->id }})"
+                                        class="relative px-3 py-1 rounded-full text-sm {{ $plan->is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}"
+                                        wire:loading.class="opacity-50 cursor-wait" wire:target="toggleStatus({{ $plan->id }})">
+                                        <span wire:loading.remove wire:target="toggleStatus({{ $plan->id }})">
+                                            {{ $plan->is_active ? 'Active' : 'Inactive' }}
+                                        </span>
+                                        <span wire:loading wire:target="toggleStatus({{ $plan->id }})" class="flex items-center">
+                                            Updating...
+                                        </span>
+                                    </button>
                                 </div>
-                            @endif
-                            
-                            <div class="flex items-center text-sm text-gray-600">
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20a3 3 0 00-5.356-1.857M7 20v-2c0-.656-.126-1.283-.356-1.857m0 0a5 5 0 01-5-5v-.5m0 0a5 5 0 015-5h.5" />
-                                </svg>
-                                <span>Subscribers: {{ $plan->subscriptions()->count() }}</span>
-                            </div>
-                            <!-- Features -->
 
-                            <div class="text-sm text-gray-600">
-                                <div class="flex items-center mb-1">
-                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                                    </svg>
-                                    <span class="font-medium">Features:</span>
+                                <div class="space-y-4">
+                                    <!-- Price and Duration -->
+                                    <div class="flex items-center text-sm text-gray-600">
+                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+                                        </svg>
+                                        <span class="font-medium">${{ number_format($plan->price, 2) }} /
+                                            {{ $plan->duration_in_days }} days</span>
+                                    </div>
+
+                                    <!-- Description -->
+                                    @if($plan->description)
+                                        <div class="text-sm text-gray-600">
+                                            <span class="font-medium">Description:</span> {{ $plan->description }}
+                                        </div>
+                                    @endif
+
+                                    <div class="flex items-center text-sm text-gray-600">
+                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20a3 3 0 00-5.356-1.857M7 20v-2c0-.656-.126-1.283-.356-1.857m0 0a5 5 0 01-5-5v-.5m0 0a5 5 0 015-5h.5" />
+                                        </svg>
+                                        <span>Subscribers: {{ $plan->subscriptions()->count() }}</span>
+                                    </div>
+                                    <!-- Features -->
+
+                                    <div class="text-sm text-gray-600">
+                                        <div class="flex items-center mb-1">
+                                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                            </svg>
+                                            <span class="font-medium">Features:</span>
+                                        </div>
+                                        @php
+                                            $features = json_decode($plan->features, true);
+                                        @endphp
+                                        <ul class="list-disc list-inside ml-4">
+                                            @foreach($features as $feature)
+                                                <li>{{ $feature }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                    <!-- Created At -->
+                                    <div class="flex items-center text-sm text-gray-500">
+                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                        Created: {{ $plan->created_at->format('M d, Y H:i') }}
+                                    </div>
                                 </div>
-                                @php
-                                    $features = json_decode($plan->features, true);
-                                @endphp
-                                <ul class="list-disc list-inside ml-4">
-                                    @foreach($features as $feature)
-                                        <li>{{ $feature }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                            <!-- Created At -->
-                            <div class="flex items-center text-sm text-gray-500">
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                </svg>
-                                Created: {{ $plan->created_at->format('M d, Y H:i') }}
-                            </div>
-                        </div>
 
-                        <!-- Actions -->
-                        <div class="mt-6 flex items-center justify-between">
-                            <div class="flex items-center space-x-4">
-                                <button wire:click="edit({{ $plan->id }})" class="text-gray-600 hover:text-gray-900"
-                                    title="Edit">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                    </svg>
-                                </button>
-                                <button wire:click="delete({{ $plan->id }})" class="text-red-600 hover:text-red-900"
-                                    title="Delete" onclick="return confirm('Are you sure you want to delete this plan?')">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5-4h4M9 7h6" />
-                                    </svg>
-                                </button>
+                                <!-- Actions -->
+                                <div class="mt-6 flex items-center justify-between">
+                                    <div class="flex items-center space-x-4">
+                                        <button wire:click="edit({{ $plan->id }})" class="text-gray-600 hover:text-gray-900"
+                                            title="Edit">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                            </svg>
+                                        </button>
+                                        <button wire:click="delete({{ $plan->id }})" class="text-red-600 hover:text-red-900"
+                                            title="Delete" onclick="return confirm('Are you sure you want to delete this plan?')">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5-4h4M9 7h6" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
             @empty
                 <div class="col-span-full text-center py-12">
                     <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -212,9 +212,10 @@
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Features (comma
                                         separated)</label>
-                                    <textarea wire:model="features" rows="3"
+                                    <textarea wire:model="featuresInput" rows="3"
                                         class="w-full px-4 py-2.5 text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 shadow-sm resize-none"></textarea>
-                                    @error('features') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                                    @error('featuresInput') <span class="text-red-500 text-sm">{{ $message }}</span>
+                                    @enderror
                                 </div>
 
                                 <div class="flex items-center">
