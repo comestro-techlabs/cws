@@ -15,6 +15,7 @@ use App\Livewire\Admin\Dashboad;
 use App\Livewire\Admin\ManageEnquiry;
 use App\Livewire\Admin\Student\AttendanceCalendar;
 use App\Livewire\Admin\Student\ManageStudent;
+use App\Livewire\Admin\Subscription\InsertSubscription;
 use App\Livewire\Auth\Facebook;
 use App\Livewire\Auth\Github;
 use App\Livewire\Auth\LinkedinLogin;
@@ -191,6 +192,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
 
         Route::get('/course/update/{courseId}', UpdateCourse::class)->name('admin.course.update');
         Route::get("/admin/attendace", AttendanceScanner::class)->name('admin.attendance');
+        Route::get("/subscription/insert-subscription", InsertSubscription::class)->name('admin.insert_subscription');
 
         //exam routes
         Route::get('/exam', ManageExam::class)->name('admin.exam');

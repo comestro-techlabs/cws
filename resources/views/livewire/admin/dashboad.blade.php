@@ -23,40 +23,40 @@
                     <!-- Quick Actions Bar -->
                     <div class="flex-1 bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
                         <div class="flex items-center justify-between gap-4">
-                            <a href="{{ route('admin.student') }}" wire:navigate 
+                            <a href="{{ route('admin.student') }}" wire:navigate
                                class="flex flex-col items-center p-3 rounded-xl hover:bg-gray-50 transition-all group">
                                 <div class="p-2 bg-blue-50 rounded-lg group-hover:bg-blue-100 transition-colors">
-                                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="lg:w-6 w-4 lg:h-6 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
                                     </svg>
                                 </div>
                                 <span class="text-xs font-medium text-gray-700 mt-2">New Student</span>
                             </a>
 
-                            <a href="{{ route('admin.course') }}" wire:navigate 
+                            <a href="{{ route('admin.course') }}" wire:navigate
                                class="flex flex-col items-center p-3 rounded-xl hover:bg-gray-50 transition-all group">
                                 <div class="p-2 bg-green-50 rounded-lg group-hover:bg-green-100 transition-colors">
-                                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="lg:w-6 w-4 lg:h-6 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5s3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18s-3.332.477-4.5 1.253"/>
                                     </svg>
                                 </div>
                                 <span class="text-xs font-medium text-gray-700 mt-2">Add Course</span>
                             </a>
 
-                            <a href="{{ route('admin.attendance') }}" wire:navigate 
+                            <a href="{{ route('admin.attendance') }}" wire:navigate
                                class="flex flex-col items-center p-3 rounded-xl hover:bg-gray-50 transition-all group">
                                 <div class="p-2 bg-indigo-50 rounded-lg group-hover:bg-indigo-100 transition-colors">
-                                    <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="lg:w-6 w-4 lg:h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
                                     </svg>
                                 </div>
                                 <span class="text-xs font-medium text-gray-700 mt-2">Attendance</span>
                             </a>
 
-                            <a href="{{ route('admin.exam') }}" wire:navigate 
+                            <a href="{{ route('admin.exam') }}" wire:navigate
                                class="flex flex-col items-center p-3 rounded-xl hover:bg-gray-50 transition-all group">
                                 <div class="p-2 bg-yellow-50 rounded-lg group-hover:bg-yellow-100 transition-colors">
-                                    <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="lg:w-6 w-4 lg:h-6 h-4 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                                     </svg>
                                 </div>
@@ -64,13 +64,14 @@
                             </a>
                         </div>
                     </div>
+
                 </div>
             </div>
 
             <!-- Quick Stats - Now 3 cards with animations -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 <!-- Active Students Card -->
-                <div class="relative  border border-gray-100 shadow-sm  bg-white rounded-2xl p-6 overflow-hidden group animate-fade-in-up" 
+                <div class="relative  border border-gray-100 shadow-sm  bg-white rounded-2xl p-6 overflow-hidden group animate-fade-in-up"
                      style="animation-delay: 100ms">
                     <div class="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-transparent"></div>
                     <div class="relative flex items-start justify-between">
@@ -78,7 +79,7 @@
                             <div class="flex items-center space-x-2">
                                 <div class="w-8 h-8 rounded-lg bg-indigo-500 flex items-center justify-center">
                                     <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                               d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 1.857h10M9 7a3 3 0 106 0 3 3 0 00-6 0z"/>
                                     </svg>
                                 </div>
@@ -99,7 +100,7 @@
                 </div>
 
                 <!-- Active Courses Card -->
-                <div class="relative  border border-gray-100 shadow-sm  bg-white rounded-2xl p-6 overflow-hidden group animate-fade-in-up" 
+                <div class="relative  border border-gray-100 shadow-sm  bg-white rounded-2xl p-6 overflow-hidden group animate-fade-in-up"
                      style="animation-delay: 200ms">
                     <div class="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-transparent"></div>
                     <div class="relative flex items-start justify-between">
@@ -127,7 +128,7 @@
                 </div>
 
                 <!-- Monthly Revenue Card -->
-                <div class="relative border border-gray-100 bg-white rounded-2xl p-6 overflow-hidden group animate-fade-in-up" 
+                <div class="relative border border-gray-100 bg-white rounded-2xl p-6 overflow-hidden group animate-fade-in-up"
                      style="animation-delay: 300ms">
                     <div class="absolute inset-0 bg-gradient-to-r from-green-500/10 to-transparent"></div>
                     <div class="relative flex items-start justify-between">
@@ -236,13 +237,13 @@
                                     <div class="flex items-center space-x-4">
                                         <div class="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center">
                                             <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                       d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5s3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18s-3.332.477-4.5 1.253"/>
                                             </svg>
                                         </div>
                                         <div>
                                             <h3 class="text-sm font-semibold text-gray-900">{{ $course->title }}</h3>
-                                            <p class="text-xs text-gray-500">{{ $course->duration }} Weeks • {{ $course->category->name ?? 'Uncategorized' }}</p>
+                                            <p class="text-xs text-gray-500">{{ $course->duration }} Weeks • {{ $course->category->cat_title ?? 'Uncategorized' }}</p>
                                         </div>
                                     </div>
                                     <a wire:navigate href="{{ route('admin.course.update', $course->id) }}"
@@ -256,7 +257,7 @@
                             @empty
                                 <div class="text-center py-4">
                                     <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                               d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5s3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18s-3.332.477-4.5 1.253"/>
                                     </svg>
                                     <h3 class="mt-2 text-sm font-medium text-gray-900">No courses yet</h3>

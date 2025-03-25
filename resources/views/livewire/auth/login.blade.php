@@ -1,4 +1,5 @@
-<div class="min-h-screen pt-24 flex items-center justify-center bg-gradient-to-br from-purple-50 via-white to-purple-100 py-12 px-4 sm:px-6 lg:px-8">
+<div
+    class="min-h-screen pt-24 flex items-center justify-center bg-gradient-to-br from-purple-50 via-white to-purple-100 py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-5xl w-full">
         <div class="bg-white/80 backdrop-blur-lg rounded-2xl shadow-sm border border-gray-100">
             <div class="grid md:grid-cols-2 gap-0">
@@ -17,29 +18,28 @@
 
                     <form wire:submit.prevent="login" class="space-y-6">
                         <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email address</label>
-                            <input type="email"
-                                   wire:model="email"
-                                   id="email"
-                                   class="appearance-none block w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
-                                   placeholder="Enter your email">
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email
+                                address</label>
+                            <input type="email" wire:model="email" id="email"
+                                class="appearance-none block w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                                placeholder="Enter your email">
                             @error('email') <span class="text-sm text-red-600 mt-1">{{ $message }}</span> @enderror
                         </div>
 
                         <div>
                             <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
                             <div class="relative">
-                                <input type="password"
-                                       wire:model="password"
-                                       id="password"
-                                       class="appearance-none block w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
-                                       placeholder="Enter your password">
-                                <button type="button"
-                                        onclick="togglePassword()"
-                                        class="absolute inset-y-0 right-0 pr-3 flex items-center">
-                                    <svg class="h-5 w-5 text-gray-400" id="eye-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                <input type="password" wire:model="password" id="password"
+                                    class="appearance-none block w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                                    placeholder="Enter your password">
+                                <button type="button" onclick="togglePassword()"
+                                    class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                    <svg class="h-5 w-5 text-gray-400" id="eye-icon" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                     </svg>
                                 </button>
                             </div>
@@ -48,19 +48,18 @@
 
                         <div class="flex items-center justify-between">
                             <div class="flex items-center">
-                                <input type="checkbox"
-                                       wire:model="remember"
-                                       id="remember"
-                                       class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                                <input type="checkbox" wire:model="remember" id="remember"
+                                    class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
                                 <label for="remember" class="ml-2 block text-sm text-gray-700">Remember me</label>
                             </div>
-                            <a href="{{route('auth.forget-password')}}" class="text-sm font-medium text-purple-600 hover:text-purple-500">
+                            <a href="{{route('auth.forget-password')}}"
+                                class="text-sm font-medium text-purple-600 hover:text-purple-500">
                                 Forgot password?
                             </a>
                         </div>
 
                         <button type="submit"
-                                class="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors duration-200">
+                            class="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors duration-200">
                             Sign in
                         </button>
                     </form>
@@ -72,10 +71,11 @@
                         <h2 class="text-3xl font-bold text-gray-900 mb-2">Quick Access</h2>
                         <p class="text-gray-600">Sign in with your social accounts</p>
                     </div>
-
-                    {{-- <div class="space-y-4">
+                    <div class="space-y-4">
                         @livewire('auth.google-login')
                         @livewire('auth.github')
+                    </div>
+                    {{-- <div class="space-y-4">
                         @livewire('auth.linkedin-login')
                         @livewire('auth.facebook')
                     </div> --}}
@@ -83,7 +83,8 @@
                     <div class="mt-8 text-center">
                         <p class="text-sm text-gray-600">
                             Don't have an account?
-                            <a href="{{route('auth.register')}}" class="font-medium text-purple-600 hover:text-purple-500">
+                            <a href="{{route('auth.register')}}"
+                                class="font-medium text-purple-600 hover:text-purple-500">
                                 Sign up for free
                             </a>
                         </p>

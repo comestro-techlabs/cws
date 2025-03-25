@@ -21,14 +21,17 @@ class ShowMockTest extends Component
     public $mockTest;
     public $attempted = false;
     public $submitted = false;
+    public $timeLeft; // Timer in seconds (45 minutes)
+
     protected $globalGemService;
 
-    public function mount($mockTestId , GemService $gemService)
+    public function mount($mockTestId, GemService $gemService)
     {
         $this->globalGemService = $gemService;
         $this->mockTestId = $mockTestId;
         $this->mockTest = MockTest::findOrFail($mockTestId);
         $this->questions = MockTestQuestion::where('mocktest_id', $mockTestId)->get()->toArray();
+        $this->timeLeft = 45 * 60; // 45 minutes in seconds
 
         $existingResult = MockTestResult::where('user_id', auth()->id())
             ->where('mock_test_id', $mockTestId)
@@ -38,6 +41,16 @@ class ShowMockTest extends Component
             $this->attempted = true;
             $this->submitted = true;
             $this->answers = json_decode($existingResult->answers, true) ?? [];
+        }
+    }
+
+    // Timer logic
+    public function decrementTime()
+    {
+        if ($this->timeLeft > 0) {
+            $this->timeLeft--;
+        } else {
+            $this->submitTest();
         }
     }
 
@@ -73,37 +86,39 @@ class ShowMockTest extends Component
     }
 
     public function submitTest()
-    {
-        if ($this->submitted) {
-            return redirect()->route('v2.student.mocktest')
-                ->with('error', 'You have already submitted this test');
+{
+    if ($this->submitted) {
+        return redirect()->route('v2.student.mocktest')
+            ->with('error', 'You have already submitted this test');
+    }
+
+    $score = 0;
+    foreach ($this->questions as $question) {
+        if (isset($this->answers[$question['id']]) &&
+            $this->answers[$question['id']] === $question['correct_answer']) {
+            $score += $question['marks'];
         }
+    }
 
-        $score = 0;
-        foreach ($this->questions as $question) {
-            if (isset($this->answers[$question['id']]) &&
-                $this->answers[$question['id']] === $question['correct_answer']) {
-                $score += $question['marks'];
-            }
-        }
+    $testdata = MockTestResult::create([
+        'user_id' => auth()->id(),
+        'mock_test_id' => $this->mockTestId,
+        'answers' => json_encode($this->answers),
+        'score' => $score,
+        'total_questions' => count($this->questions),
+        'completed_at' => now(),
+    ]);
 
-        $testdata = MockTestResult::create([
-            'user_id' => auth()->id(),
-            'mock_test_id' => $this->mockTestId,
-            'answers' => json_encode($this->answers),
-            'score' => $score,
-            'total_questions' => count($this->questions),
-            'completed_at' => now(),
-        ]);
+    // Re-initialize the GemService
+    $gemService = new GemService();
+    $gemService->earnedGem($testdata->score, 'Earned by Practice Test');
 
-        $this->globalGemService  = new GemService();
-        $this->globalGemService->earnedGem($testdata->score, 'Earned by Practice Test');
-        
-        $this->submitted = true;
-        $this->attempted = true;
+    $this->submitted = true;
+    $this->attempted = true;
 
-        return redirect()->route('v2.student.mocktest.result', ['mockTestId' => $this->mockTestId])
-            ->with('success', 'Test submitted successfully');
+    return redirect()->route('v2.student.mocktest.result', ['mockTestId' => $this->mockTestId])
+        ->with('success', 'Test submitted successfully');
+
     }
 
     public function render()

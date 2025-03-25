@@ -28,10 +28,16 @@
                            placeholder="Enter your email">
                     @error('email') <span class="text-sm text-red-600 mt-1">{{ $message }}</span> @enderror
                 </div>
-
+                
                 <button type="submit"
-                        class="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors duration-200">
-                    Send Reset Link
+                        class="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors duration-200">
+                    
+                    <span wire:loading.remove wire:target="sendResetLink">Send Reset Link</span>
+
+                    <span wire:loading wire:target="sendResetLink" class="flex items-center">
+                        Sending...
+                    </span>
+                    
                 </button>
             </form>
 

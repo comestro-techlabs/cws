@@ -6,8 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class SubscriptionPlan extends Model
 {
-    protected $guarded = [];
-    
+    protected $fillable = [
+        'name',
+        'slug',
+        'description',
+        'price',
+        'duration_in_days',
+        'is_active',
+        'features'
+    ];
     protected $casts = [
         'features' => 'array',
         'is_active' => 'boolean',
