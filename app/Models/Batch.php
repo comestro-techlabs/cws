@@ -23,11 +23,27 @@ class Batch extends Model
     {
         return $this->belongsTo(Course::class);
     }
+
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'course_student', 'batch_id', 'user_id')
-                    ->withPivot('course_id')
+                    ->withPivot('course_id', 'is_subs')
+                    ->join('courses', 'courses.id', '=', 'course_student.course_id')
+                    ->select('users.*', 'courses.course_type')
                     ->withTimestamps();
     }
-    
+
+    public function getOfflineStudentsAttribute()
+    {
+        return $this->users()
+                    ->where('courses.course_type', 'offline')
+                    ->get();
+    }
+
+    public function getOnlineStudentsAttribute()
+    {
+        return $this->users()
+                    ->where('courses.course_type', 'online')
+                    ->get();
+    }
 }

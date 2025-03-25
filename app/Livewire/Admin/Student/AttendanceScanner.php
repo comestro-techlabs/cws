@@ -26,7 +26,7 @@ class AttendanceScanner extends Component
     public $selectedStudentCourse;
     public $selectedStudentBatch;
     public $pendingStudent;
-    
+
     public function mount()
     {
         $this->refreshAttendance();
@@ -73,7 +73,7 @@ class AttendanceScanner extends Component
 
         return [
             'total' => $total,
-            'present' => $present, 
+            'present' => $present,
             'absent' => $total - $present
         ];
     }
@@ -113,7 +113,9 @@ class AttendanceScanner extends Component
         }
 
         $this->pendingStudent = User::where('barcode', $this->barcode)
-            ->with(['courses', 'batches'])
+            ->with(['courses' => function($q) {
+                $q->where('course_type', 'offline'); // Only get offline courses
+            }, 'batches'])
             ->first();
 
         if (!$this->pendingStudent) {
@@ -121,9 +123,9 @@ class AttendanceScanner extends Component
             return;
         }
 
-        // Check if student has courses
+        // Check if student has offline courses
         if ($this->pendingStudent->courses->isEmpty()) {
-            $this->message = 'Student is not enrolled in any course';
+            $this->message = 'Student is not enrolled in any offline course';
             return;
         }
 
@@ -176,7 +178,7 @@ class AttendanceScanner extends Component
             // Update display
             $this->student = User::with(['courses', 'batches'])->find($this->pendingStudent->id);
             $this->message = 'Attendance marked successfully';
-            
+
             // Reset and refresh
             $this->resetSelections();
             $this->refreshAttendance();
@@ -205,12 +207,18 @@ class AttendanceScanner extends Component
 
     private function markAttendance($student, $courseId, $batchId)
     {
-        // Create attendance record
+        // Verify this is an offline course
+        $course = Course::find($courseId);
+        if (!$course || $course->course_type !== 'offline') {
+            throw new \Exception('Attendance can only be marked for offline courses');
+        }
+
         Attendance::create([
             'user_id' => $student->id,
             'check_in' => now(),
             'course_id' => $courseId,
-            'batch_id' => $batchId
+            'batch_id' => $batchId,
+            'attendance_type' => 'offline'
         ]);
 
         $this->student = $student;

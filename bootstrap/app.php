@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\MarkOnlineAttendance;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -17,6 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->redirectGuestsTo('/auth/login');
+        $middleware->append(MarkOnlineAttendance::class);
     })
     ->withSchedule(function (Schedule $schedule) {
         $schedule->command('subscriptions:check-expiry')
