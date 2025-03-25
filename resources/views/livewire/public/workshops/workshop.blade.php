@@ -1,4 +1,7 @@
 <div>
+    <x-slot:title> 1 Day Workshops | Learn Syntax | Coding Classes in Purnea – C, C++, Python, JavaScript (Bihar)</x-slot>
+    <x-slot:description> 1 Day Training Workshops - Learn Syntax in Purnea, Bihar offers expert-led courses in C, C++, Python, JavaScript, Web Development, DBMS, Bootstrap, and more. Start coding with hands-on training, real-world projects, and certification!</x-slot>
+
 <div class="bg-white overflow-x-hidden">
         <livewire:page-heading title="Welcome To My Workshop"
             description="Dive into a space where creativity meets innovation. Learn, build, and transform ideas into impactful solutions through hands-on experience and expert guidance."
