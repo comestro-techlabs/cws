@@ -1,4 +1,5 @@
 <div>
+    
     <div class="bg-white
     overflow-x-hidden">
         <livewire:page-heading title="Our Contact"
@@ -68,7 +69,7 @@
                 <span class="elementor-divider-separator"></span>
             </div>
 
-          
+
 
 
             <form action="{{ route('enquiry.store') }}" method="post" class="mt-5">

@@ -1,20 +1,4 @@
 <div>
-{{--<footer class="bg-blue-600 text-gray-50 py-4">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            <ul class="flex flex-wrap justify-center space-x-4 text-sm">
-                <li><a href="{{ route('public.about') }}" class="hover:underline">About</a></li>
-                <li><a href="{{ route('public.contact') }}" class="hover:underline">Contact</a></li>
-                <li><a href="{{ route('public.privacy') }}" class="hover:underline">Privacy Policy</a></li>
-                <li><a href="{{ route('public.terms-conditions') }}" class="hover:underline">Terms & Conditions</a>
-                </li>
-            </ul>
-            <p class="text-gray-300 text-xs my-2">Learn Syntax is a unit of <strong>Comestro Techlabs Pvt. Ltd.</strong>
-            </p>
-            <p class="text-gray-300 text-xs">&copy; 2024 Learn Syntax. All rights reserved.</p>
-        </div>
-    </footer> --}}
-
-
 <footer class="bg-gray-800" aria-labelledby="footer-heading">
   <h2 id="footer-heading" class="sr-only">Footer</h2>
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-8 pt-16 sm:pt-24 lg:pt-32">

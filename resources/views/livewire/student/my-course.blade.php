@@ -8,7 +8,7 @@
                     <h1 class="text-2xl font-bold text-gray-900">My Learning Journey</h1>
                     <p class="mt-1 text-sm text-gray-500">Track your progress and manage your enrolled courses</p>
                 </div>
-                <a href="{{ route('v2.student.mycourses') }}"
+                <a wire:navigate href="{{ route('student.exploreCourses') }}"
                     class="mt-4 sm:mt-0 group inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg text-sm font-medium hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200">
                     <span class="mr-2">Explore New Courses</span>
                     <svg xmlns="http://www.w3.org/2000/svg"
@@ -32,7 +32,7 @@
                     <h3 class="mt-4 text-lg font-medium text-gray-900">Start Your Learning Journey</h3>
                     <p class="mt-2 text-gray-500">Explore our courses and enroll in the ones that match your learning goals.
                     </p>
-                    <a href="{{ route('v2.student.mycourses') }}"
+                    <a wire:navigate href="{{ route('student.exploreCourses') }}"
                         class="mt-6 inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
                         Browse Available Courses
                     </a>

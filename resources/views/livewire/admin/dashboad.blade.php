@@ -23,14 +23,14 @@
                     <!-- Quick Actions Bar -->
                     <div class="flex-1 bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
                         <div class="flex items-center justify-between gap-4">
-                            <a href="{{ route('admin.student') }}" wire:navigate
+                            <a href="{{ route('admin.placedstudent.index') }}" wire:navigate
                                class="flex flex-col items-center p-3 rounded-xl hover:bg-gray-50 transition-all group">
                                 <div class="p-2 bg-blue-50 rounded-lg group-hover:bg-blue-100 transition-colors">
                                     <svg class="lg:w-6 w-4 lg:h-6 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
                                     </svg>
                                 </div>
-                                <span class="text-xs font-medium text-gray-700 mt-2">New Student</span>
+                                <span class="text-xs font-medium text-gray-700 mt-2">Placed Student</span>
                             </a>
 
                             <a href="{{ route('admin.course') }}" wire:navigate
