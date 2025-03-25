@@ -9,6 +9,7 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use App\Models\Course;
+use Carbon\Carbon;
 
 #[Layout('components.layouts.exam')]
 class ShowQuiz extends Component
@@ -25,88 +26,119 @@ class ShowQuiz extends Component
     public $answers = []; // Array to store answers, keyed by quiz ID
     public $currentAnswer = null; // Temporary storage for the current question's answer
     public $isFullscreen = false;
-    public $timeRemaining = '45:00';
-    protected $timer;
+
 
     protected $listeners = [
         'startTimer' => 'startTimer',
         'fullscreenChanged' => 'handleFullscreenChange'
     ];
 
+    public $timeRemainingInSeconds = 30 * 60; // 30 minutes in seconds
+    public $endTime;
+
+
     public function mount($courseId)
     {
         try {
             $this->courseId = $courseId;
             $user = Auth::user();
-            
+    
             if (!$user) {
                 throw new \Exception('User not authenticated');
             }
-
+    
             $examAttempt = ExamUser::where('user_id', $user->id)
                 ->whereHas('exam', function ($query) use ($courseId) {
                     $query->where('course_id', $courseId);
                 })
                 ->first();
-
+    
             if ($examAttempt && $examAttempt->attempts >= 1) {
                 return redirect()->route('student.takeExam')
                     ->with('error', 'You have already taken this exam. Multiple attempts are not allowed.');
             }
+    
+            // **Reset the timer each time a new exam starts**
+            $this->timeRemainingInSeconds = 1800; // 30 minutes (reset timer)
+            $this->endTime = now()->addSeconds($this->timeRemainingInSeconds)->timestamp;
+            session(['exam_end_time' => $this->endTime]); // Store fresh end time
+    
         } catch (\Exception $e) {
             return redirect()->route('auth.login')
                 ->with('error', 'An error occurred: ' . $e->getMessage());
         }
     }
+    
+    
 
-    public function verifyPasscode()
-    {
-        $this->validate([
-            'passcode' => 'required|string',
-        ]);
+   // Remove these lines from functions:
+// $this->dispatch('loading');
 
-        $this->dispatch('loading');
-        if (!Auth::check()) {
-            return redirect()->route('auth.login');
-        }
+public function verifyPasscode()
+{
+    $this->validate([
+        'passcode' => 'required|string',
+    ]);
 
-        $user = Auth::user();
+    if (!Auth::check()) {
+        return redirect()->route('auth.login');
+    }
+
+    $user = Auth::user();
+    
+    $this->courses = Course::with(['exams' => function($query) {
+        $query->where('status', true);
+    }, 'exams.quizzes' => function($query) {
+        $query->where('status', true);
+    }])->find($this->courseId);
+
+    if (!$this->courses || !$this->courses->exams->first()) {
+        $this->passcodeError = 'No active exam found for this course.';
+        return;
+    }
+
+    $exam = $this->courses->exams->first();
+    if ($this->passcode === $exam->passcode) {
+        $this->passcodeVerified = true;
+        $this->passcodeError = null;
+        $this->examId = $exam->id;
+        $this->quizzes = collect($exam->quizzes)->shuffle()->take(10);
         
-        $this->courses = Course::with(['exams' => function($query) {
-            $query->where('status', true);
-        }, 'exams.quizzes' => function($query) {
-            $query->where('status', true);
-        }])->find($this->courseId);
-
-        if (!$this->courses || !$this->courses->exams->first()) {
-            $this->passcodeError = 'No active exam found for this course.';
-            return;
-        }
-
-        $exam = $this->courses->exams->first();
-        if ($this->passcode === $exam->passcode) {
-            $this->passcodeVerified = true;
-            $this->passcodeError = null;
-            $this->examId = $exam->id;
-            $this->quizzes = collect($exam->quizzes)->shuffle()->take(10);
-            
-            // Initialize answers array with null for each quiz
-            $this->answers = array_fill_keys($this->quizzes->pluck('id')->toArray(), null);
-            $this->currentAnswer = $this->answers[$this->quizzes[$this->currentQuestion]->id] ?? null;
-            
-            $this->dispatch('passcode-verified');
-        } else {
-            $this->passcodeError = 'Incorrect passcode. Please try again.';
-        }
+        $this->answers = array_fill_keys($this->quizzes->pluck('id')->toArray(), null);
+        $this->currentAnswer = $this->answers[$this->quizzes[$this->currentQuestion]->id] ?? null;
+        
+        // **Removed the unnecessary event dispatch**
+        // $this->dispatch('passcode-verified');
+    } else {
+        $this->passcodeError = 'Incorrect passcode. Please try again.';
     }
+}
 
+
+    // public function startExam()
+    // {
+    //     $this->dispatch('loading');
+    //     $this->isFullscreen = true;
+    //     $this->dispatch('enterFullscreen');
+    // }
     public function startExam()
-    {
-        $this->dispatch('loading');
-        $this->isFullscreen = true;
-        $this->dispatch('enterFullscreen');
-        $this->startTimer();
+{
+    $this->dispatch('loading');
+    $this->isFullscreen = true;
+    $this->dispatch('enterFullscreen');
+    \Log::info('Livewire event dispatched: enterFullscreen');
+}
+
+    public function updateTimer()
+{
+    $this->timeRemainingInSeconds = max(0, $this->endTime - now()->timestamp);
+
+    // **Auto-submit when time runs out**
+    if ($this->timeRemainingInSeconds <= 0) {
+        $this->submitExam();
     }
+}
+
 
     public function goToQuestion($index)
     {
@@ -151,16 +183,6 @@ class ShowQuiz extends Component
     {
         // Update the answers array for the current question
         $this->answers[$this->quizzes[$this->currentQuestion]->id] = $value;
-    }
-
-    public function startTimer()
-    {
-        $timeLeft = 45 * 60; // 45 minutes
-        $this->timer = now()->addSeconds($timeLeft);
-        
-        $this->dispatch('timer', [
-            'timeLeft' => $timeLeft
-        ]);
     }
 
     public function submitExam()
@@ -222,7 +244,13 @@ class ShowQuiz extends Component
             $this->submitExam();
         }
     }
-
+    #[On('timerStarted')]
+    public function enableTimer()
+    {
+        $this->dispatch('updateTimer')->self()->everySecond();
+    }
+    
+    
   
 
     public function render()

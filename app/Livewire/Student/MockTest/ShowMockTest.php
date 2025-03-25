@@ -21,7 +21,7 @@ class ShowMockTest extends Component
     public $mockTest;
     public $attempted = false;
     public $submitted = false;
-    public $timeLeft; // Timer in seconds (45 minutes)
+    public $timeLeft;
 
     protected $globalGemService;
 
@@ -31,7 +31,7 @@ class ShowMockTest extends Component
         $this->mockTestId = $mockTestId;
         $this->mockTest = MockTest::findOrFail($mockTestId);
         $this->questions = MockTestQuestion::where('mocktest_id', $mockTestId)->get()->toArray();
-        $this->timeLeft = 45 * 60; // 45 minutes in seconds
+        $this->timeLeft = 60 * 60; // 60 minutes in seconds
 
         $existingResult = MockTestResult::where('user_id', auth()->id())
             ->where('mock_test_id', $mockTestId)
