@@ -4,7 +4,7 @@ use App\Http\Controllers\PublicController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\WorkshopController;
-// use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Artisan;
 // use Livewire\Livewire;
 
 
@@ -144,7 +144,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/take-exam', Exam::class)->name('student.takeExam');
         Route::get('/show-quiz/{courseId}', ShowQuiz::class)->name('v2.student.quiz');
         Route::get('/show-all-attempt/{course_id}', ShowAllAttempt::class)->name('v2.student.allAttempts');
-        // route::get('show-quiz/result/{exam_id}', Result::class)->name('v2.student.examResult');
+        Route::get('/exam/result/{examId}', Result::class)->name('v2.student.examResult');
         route::get('/my-attendance', MyAttendance::class)->name('student.my-attendance');
         Route::get('/mocktest', SelectMockTest::class)->name('v2.student.mocktest');
         Route::get('/mocktest/{mockTestId}', ShowMockTest::class)->name('v2.student.mocktest.take');
@@ -156,7 +156,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/code-editor', Monaco::class)->name('v2.student.code-editor');
 
         Route::get('/my-orders',MyOrders::class)->name('student.my-orders');
-        Route::get('/exam/result/{examId}', Result::class)->name('v2.student.examResult');
 
     });
 
@@ -216,7 +215,6 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/certificate/course',ManageCertificate::class)->name('admin.certificate.course');
         Route::get('/certificate/view-detail/{studentId}/{courseId}', ViewDetail::class)->name('certificate.view-detail');
        
-        // Route::get('/certificate/{certificateId}/view',ViewCertificate::class)->name('certificate.view');
 
         // Workshop Routes certificate/course
         Route::get('/workshops', ManageWorkshop::class)->name('admin.workshops.index');
@@ -226,8 +224,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/placedstudent/manage', CallingPlacedStudent::class)->name('admin.placedstudent.index');
         Route::get('/placedstudent/{placedStudent?}', InsertPlacedStudent::class)->name('admin.placedstudent.edit')->whereNumber("placedStudent");
 
-        //    certificate
-        // Route::get('/certificate', CertificateEligibility::class)->name('admin.certificate');
+       
         //enquiry
         Route::get('/enquiry', ManageEnquiry::class)->name('admin.manage.enquiry');
         //manage-orders

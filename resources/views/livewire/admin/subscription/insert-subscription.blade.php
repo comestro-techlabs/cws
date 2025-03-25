@@ -1,9 +1,7 @@
-<!-- resources/views/livewire/admin/subscription/insert-subscription.blade.php -->
 <div class="bg-gray-50 min-h-screen">
     <x-loader />
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <!-- Header Section -->
         <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
                 <h1 class="text-2xl font-bold text-gray-900">Manage Subscription Plans</h1>
@@ -80,12 +78,9 @@
                         </div>
 
                         <div class="mt-4 space-y-3">
-                            <div class="flex items-center text-sm text-gray-600">
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
-                                </svg>
-                                ${{ $plan->price }}
+                            <div class="flex items-center text-sm text-gray-600  gap-2">
+                            <strong>Plan Price </strong>
+                                 ₹{{ $plan->price }}
                             </div>
 
                             <div class="flex items-center text-sm text-gray-600">

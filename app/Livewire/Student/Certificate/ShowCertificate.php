@@ -14,6 +14,8 @@ class ShowCertificate extends Component
     public function selectCourse($courseId)
     {
         $this->selectedCourse = $courseId;
+        // This will trigger the confetti and congratulation message
+        $this->dispatch('courseSelected');
     }
 
     public function render()

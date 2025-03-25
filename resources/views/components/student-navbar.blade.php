@@ -94,11 +94,11 @@
                                 <span class="text-sm text-yellow-700">No Active Plan</span>
                             </div>
                             <div class="flex items-center justify-between space-x-2">
-                                <a href="{{ route('student.exploreCourses') }}"
+                                <a wire:navigate href="{{ route('student.exploreCourses') }}"
                                    class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded hover:bg-purple-200">
                                     Buy Course
                                 </a>
-                                <a href="{{ route('student.subscriptions.plans') }}"
+                                <a wire:navigate href="{{ route('student.subscriptions.plans') }}"
                                    class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded hover:bg-green-200">
                                     Subscribe
                                 </a>
