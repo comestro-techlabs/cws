@@ -221,9 +221,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/workshops', ManageWorkshop::class)->name('admin.workshops.index');
 
         // Placed Student Routes
-        Route::get('/placedstudent/create', InsertPlacedStudent::class)->name('admin.placedstudent.create');
         Route::get('/placedstudent/manage', CallingPlacedStudent::class)->name('admin.placedstudent.index');
-        Route::get('/placedstudent/{placedStudent?}', InsertPlacedStudent::class)->name('admin.placedstudent.edit')->whereNumber("placedStudent");
 
        
         //enquiry
