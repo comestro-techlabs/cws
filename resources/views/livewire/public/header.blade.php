@@ -35,7 +35,7 @@
                         </span>
                         <span class="absolute inset-0 bg-blue-50 rounded-lg scale-95 opacity-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-200"></span>
                     </a>
-                    <a href="{{route('public.viewallcourses.all-courses')}}" wire:navigate
+                    <a href="{{route('public.free-courses')}}" wire:navigate
                         class="relative px-4 py-2 text-sm font-medium text-gray-600 rounded-lg transition-all duration-200 group hover:text-blue-600">
                         <span class="relative z-10 flex items-center">
                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -154,7 +154,7 @@
                     </svg>
                     Explore
                 </a>
-                <a href="{{route('public.viewallcourses.all-courses')}}" wire:navigate
+                <a href="{{route('public.free-courses')}}" wire:navigate
                     class="flex items-center px-4 py-2.5 text-base font-medium text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 group">
                     <svg class="w-5 h-5 mr-2 text-gray-500 group-hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
