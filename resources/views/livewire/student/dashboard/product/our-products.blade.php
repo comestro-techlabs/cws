@@ -103,7 +103,7 @@
                             </div>
                             <a href="{{ route('v2.student.checkout', ['productId' => $product->id]) }}"
                                 class="px-4 py-2 font-medium rounded-lg focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition duration-200 text-sm
-                                {{ $totalAvailableGems <= $product->points || $product->availableQuantity <= 0 ? 'bg-gray-400 text-gray-200 cursor-not-allowed pointer-events-none' : 'bg-primary text-white hover:bg-primary' }}"
+                                {{ $totalAvailableGems <= $product->points || $product->availableQuantity <= 0 ? 'bg-gray-400 text-gray-200 cursor-not-allowed pointer-events-none' : 'bg-purple-500 text-white hover:bg-primary' }}"
                                 @if($totalAvailableGems < $product->points || $product->availableQuantity <= 0) onclick="return false;" @endif>
                                 Redeem Now
                             </a>
