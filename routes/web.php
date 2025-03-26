@@ -42,6 +42,7 @@ use App\Livewire\Student\EditProfile;
 use App\Livewire\Student\Dashboard\ViewAssigment;
 use App\Livewire\Admin\Workshops\ManageWorkshop;
 use App\Livewire\Admin\Course\ManageCourse;
+use App\Livewire\Admin\Course\ShowBatch;
 use App\Livewire\Admin\Certificate\ManageCertificate;
 use App\Livewire\Admin\Certificate\ViewDetail;
 use App\Livewire\Admin\Exam\ManageExam;
@@ -189,7 +190,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/course/update/{courseId}', UpdateCourse::class)->name('admin.course.update');
         Route::get('/course/manage', ManageCourse::class)->name('admin.course.manage');
         Route::get('/student/{id}', ViewStudent::class)->name('admin.student.view');
-
+        Route::get('/batch',ShowBatch::class)->name('admin.batch');
         Route::get('/course/update/{courseId}', UpdateCourse::class)->name('admin.course.update');
         Route::get("/admin/attendace", AttendanceScanner::class)->name('admin.attendance');
         Route::get("/subscription/insert-subscription", InsertSubscription::class)->name('admin.insert_subscription');
