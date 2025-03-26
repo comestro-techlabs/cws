@@ -41,8 +41,6 @@ class StudentDashboard extends Component
     public $studentId;
     public $attendancePercentage;
     
-    public $hasAccess;
-    public $accessStatus;
     public function mount()
     {
         if (!Auth::check()) {
@@ -305,9 +303,7 @@ class StudentDashboard extends Component
             'messages' => $this->messages,
             'exams' => $this->exams,
             'attendancePercentage' => $this->attendancePercentage,
-            'showPercentage' => $this->loadAttendance()['showPercentage'],
-            'hasAccess' => $this->hasAccess,
-            'accessStatus' => $this->accessStatus
+            'showPercentage' => $this->loadAttendance()['showPercentage']
         ]);
     }
 }
