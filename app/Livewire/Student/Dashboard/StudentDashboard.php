@@ -181,113 +181,107 @@ class StudentDashboard extends Component
 
     }
     public function loadAttendance()
-{
-    $student = User::find($this->studentId);
-
-    if (!$student) {
+    {
+        $student = User::find($this->studentId);
+    
+        if (!$student) {
+            return [
+                'weekDays' => collect(),
+                'attendancePercentage' => 0,
+                'showPercentage' => false
+            ];
+        }
+    
+        $joinDate = Carbon::parse($student->created_at)->startOfDay();
+        $today = Carbon::today();
+        $weekDays = collect();
+    
+        $hasOnlineCourses = Course::whereHas('students', function ($query) {
+            $query->where('user_id', $this->studentId);
+        })->where('course_type', 'online')->exists();
+    
+        // Get online course IDs
+        $onlineCourseIds = Course::whereHas('students', function ($query) {
+            $query->where('user_id', $this->studentId);
+        })->where('course_type', 'online')->pluck('id')->toArray();
+    
+        // Calculate weekdays (excluding Saturdays and Sundays) since joining
+        $weekdaysSinceJoining = 0;
+        $tempDate = $joinDate->copy();
+        while ($tempDate->lte($today)) {
+            if (!$tempDate->isSaturday() && !$tempDate->isSunday()) {
+                $weekdaysSinceJoining++;
+            }
+            $tempDate->addDay();
+        }
+        
+        $weekdaysSinceJoining = max(0, $weekdaysSinceJoining - 1);
+        $showPercentage = $weekdaysSinceJoining >= 7;
+    
+        if ($joinDate->isToday()) {
+            $attendanceRecords = Attendance::where('user_id', $this->studentId)
+                ->where(function ($query) use ($onlineCourseIds) {
+                    $query->whereIn('course_id', $onlineCourseIds)
+                          ->orWhereNull('course_id');
+                })
+                ->whereDate('check_in', $today)
+                ->exists(); 
+    
+            $dateKey = $today->format('Y-m-d');
+            $isPresent = $attendanceRecords;
+    
+            if (!$today->isSaturday() && !$today->isSunday()) {
+                $weekDays->push([
+                    'present' => $isPresent,
+                    'name' => $today->format('l'),
+                    'date' => $dateKey
+                ]);
+            }
+    
+            $attendancePercentage = 0;
+        } else { // Joined before today
+            $startDate = $joinDate->gt(Carbon::now()->startOfWeek()) ? $joinDate : Carbon::now()->startOfWeek();
+            $endDate = Carbon::now();
+    
+            $attendanceRecords = Attendance::where('user_id', $this->studentId)
+                ->whereBetween('check_in', [$startDate, $endDate])
+                ->orderBy('check_in', 'asc')
+                ->get()
+                ->keyBy(function ($item) {
+                    return date('Y-m-d', strtotime($item->check_in));
+                });
+    
+            $start = $startDate;
+            
+            for ($i = 0; $start->copy()->addDays($i)->lte($today); $i++) {
+                $date = $start->copy()->addDays($i);
+                if ($date->isSaturday() || $date->isSunday()) {
+                    continue;
+                }
+    
+                $dateKey = $date->format('Y-m-d');
+                $isPresent = isset($attendanceRecords[$dateKey]);
+    
+                $weekDays->push([
+                    'present' => $isPresent,
+                    'name' => $date->format('l'),
+                    'date' => $dateKey
+                ]);
+            }
+    
+            $weekDays = $weekDays->take(-5);
+            $totalDays = $weekDays->count();
+            $presentDays = $weekDays->where('present', true)->count();
+            $attendancePercentage = $totalDays > 0 && $showPercentage ? 
+                round(($presentDays / $totalDays) * 100) : 0;
+        }
+    
         return [
-            'weekDays' => collect(),
-            'attendancePercentage' => 0,
-            'showPercentage' => false
+            'weekDays' => $weekDays,
+            'attendancePercentage' => $attendancePercentage,
+            'showPercentage' => $showPercentage
         ];
     }
-
-    $joinDate = Carbon::parse($student->created_at)->startOfDay();
-    $today = Carbon::today();
-    $weekDays = collect();
-
-    $hasOnlineCourses = Course::whereHas('students', function ($query) {
-        $query->where('user_id', $this->studentId);
-    })->where('course_type', 'online')->exists();
-
-    // Get online course IDs
-    $onlineCourseIds = Course::whereHas('students', function ($query) {
-        $query->where('user_id', $this->studentId);
-    })->where('course_type', 'online')->pluck('id')->toArray();
-
-    // Calculate weekdays (excluding Saturdays and Sundays) since joining
-    $weekdaysSinceJoining = 0;
-    $tempDate = $joinDate->copy();
-    while ($tempDate->lte($today)) {
-        if (!$tempDate->isSaturday() && !$tempDate->isSunday()) {
-            $weekdaysSinceJoining++;
-        }
-        $tempDate->addDay();
-    }
-    
-    // Subtract 1 because we don't count today yet unless attendance is recorded
-    $weekdaysSinceJoining = max(0, $weekdaysSinceJoining - 1);
-    $showPercentage = $weekdaysSinceJoining >= 7; // Show percentage after 7 weekdays
-
-    if ($joinDate->isToday()) {
-        $attendanceRecords = Attendance::where('user_id', $this->studentId)
-            ->where(function ($query) use ($onlineCourseIds) {
-                $query->whereIn('course_id', $onlineCourseIds)
-                    ->orWhereNull('course_id'); 
-            })
-            ->whereBetween('check_in', [$joinDate, $today])
-            ->get()
-            ->groupBy(function ($item) {
-                return date('Y-m-d', strtotime($item->check_in));
-            });
-
-        $dateKey = $today->format('Y-m-d');
-        $isPresent = $hasOnlineCourses && isset($attendanceRecords[$dateKey]);
-
-        // Only include if it's not Saturday or Sunday
-        if (!$today->isSaturday() && !$today->isSunday()) {
-            $weekDays->push([
-                'present' => $isPresent,
-                'name' => $today->format('l'),
-                'date' => $dateKey
-            ]);
-        }
-
-        $attendancePercentage = 0;
-    } else { // Joined before today
-        $startDate = $joinDate->gt(Carbon::now()->startOfWeek()) ? $joinDate : Carbon::now()->startOfWeek();
-        $endDate = Carbon::now();
-
-        $attendanceRecords = Attendance::where('user_id', $this->studentId)
-            ->whereBetween('check_in', [$startDate, $endDate])
-            ->orderBy('check_in', 'asc')
-            ->get()
-            ->keyBy(function ($item) {
-                return date('Y-m-d', strtotime($item->check_in));
-            });
-
-        $start = $startDate;
-        
-        for ($i = 0; $start->copy()->addDays($i)->lte($today); $i++) {
-            $date = $start->copy()->addDays($i);
-            // Skip Saturdays and Sundays entirely
-            if ($date->isSaturday() || $date->isSunday()) {
-                continue;
-            }
-
-            $dateKey = $date->format('Y-m-d');
-            $isPresent = isset($attendanceRecords[$dateKey]);
-
-            $weekDays->push([
-                'present' => $isPresent,
-                'name' => $date->format('l'),
-                'date' => $dateKey
-            ]);
-        }
-
-        $weekDays = $weekDays->take(-5); // Last 5 weekdays
-        $totalDays = $weekDays->count();
-        $presentDays = $weekDays->where('present', true)->count();
-        $attendancePercentage = $totalDays > 0 && $showPercentage ? 
-            round(($presentDays / $totalDays) * 100) : 0;
-    }
-
-    return [
-        'weekDays' => $weekDays,
-        'attendancePercentage' => $attendancePercentage,
-        'showPercentage' => $showPercentage
-    ];
-}
     public function hasCompletedExamOrAssignment($userId)
     {
         return ExamUser::where('user_id', $userId)->exists()
