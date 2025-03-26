@@ -83,6 +83,7 @@ use App\Livewire\Admin\Store\ManageProductCategories;
 use App\Livewire\Auth\ForgetPassword;
 use App\Livewire\Auth\ResetPassword;
 use App\Livewire\Public\Myeditor\Monaco;
+use App\Livewire\Public\Viewallcourses\FreeCourses;
 use App\Livewire\Student\Dashboard\Product\MyOrders;
 
 // Livewire::setUpdateRoute(function ($handle) {
@@ -92,6 +93,7 @@ use App\Livewire\Student\Dashboard\Product\MyOrders;
 // public routes
 Route::get('/', Home::class)->name('public.index');
 Route::get('/courses', AllCourses::class)->name('public.viewallcourses.all-courses');
+Route::get('/free-courses',FreeCourses::class)->name('public.free-courses');
 Route::get('/contact', ContactPage::class)->name('public.contactUs');
 Route::get('/workshops', Workshop::class)->name('public.workshop');
 //blog courses routes

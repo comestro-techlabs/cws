@@ -103,7 +103,7 @@ class ManageProductCategories extends Component
     }
     public function updatedSearch()
     {
-        $this->filterProducts();
+        $this->filterProducts(); 
     }
     public function filterProducts()
     {
