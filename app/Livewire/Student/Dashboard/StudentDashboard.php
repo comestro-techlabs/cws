@@ -50,7 +50,33 @@ class StudentDashboard extends Component
         $studentId = Auth::id();
         $this->studentId = $studentId;
         $user = User::findOrFail($studentId);
-
+        $onlineCourse = Course::whereHas('students', function ($query) {
+            $query->where('user_id', $this->studentId);
+        })->where('course_type', 'online')->with('batches')->first();
+        
+        if ($onlineCourse) {
+            $today = Carbon::today();
+            $courseStudent = $user->courses()->where('courses.id', $onlineCourse->id)->first();
+            $batchId = $courseStudent->pivot->batch_id ?? null;
+            $batch = $batchId ? $onlineCourse->batches->find($batchId) : $onlineCourse->batches->first();
+        
+            if ($batch) {
+                $existingAttendance = Attendance::where('user_id', $this->studentId)
+                    ->where('course_id', $onlineCourse->id)
+                    ->where('batch_id', $batch->id)
+                    ->whereDate('check_in', $today)
+                    ->exists();
+        
+                if (!$existingAttendance) {
+                    Attendance::create([
+                        'user_id' => $this->studentId,
+                        'check_in' => now(),
+                        'course_id' => $onlineCourse->id,
+                        'batch_id' => $batch->id,
+                    ]);
+                }
+            }
+        }
         $attendanceData = $this->loadAttendance();
         $this->weekDays = $attendanceData['weekDays'];
         $this->attendancePercentage = $attendanceData['attendancePercentage'];
@@ -170,6 +196,15 @@ class StudentDashboard extends Component
     $today = Carbon::today();
     $weekDays = collect();
 
+    $hasOnlineCourses = Course::whereHas('students', function ($query) {
+        $query->where('user_id', $this->studentId);
+    })->where('course_type', 'online')->exists();
+
+    // Get online course IDs
+    $onlineCourseIds = Course::whereHas('students', function ($query) {
+        $query->where('user_id', $this->studentId);
+    })->where('course_type', 'online')->pluck('id')->toArray();
+
     // Calculate weekdays (excluding Saturdays and Sundays) since joining
     $weekdaysSinceJoining = 0;
     $tempDate = $joinDate->copy();
@@ -184,16 +219,20 @@ class StudentDashboard extends Component
     $weekdaysSinceJoining = max(0, $weekdaysSinceJoining - 1);
     $showPercentage = $weekdaysSinceJoining >= 7; // Show percentage after 7 weekdays
 
-    if ($joinDate->isToday()) { // Joined today
+    if ($joinDate->isToday()) {
         $attendanceRecords = Attendance::where('user_id', $this->studentId)
-            ->whereDate('check_in', $today->toDateString())
+            ->where(function ($query) use ($onlineCourseIds) {
+                $query->whereIn('course_id', $onlineCourseIds)
+                    ->orWhereNull('course_id'); 
+            })
+            ->whereBetween('check_in', [$joinDate, $today])
             ->get()
-            ->keyBy(function ($item) {
+            ->groupBy(function ($item) {
                 return date('Y-m-d', strtotime($item->check_in));
             });
 
         $dateKey = $today->format('Y-m-d');
-        $isPresent = isset($attendanceRecords[$dateKey]);
+        $isPresent = $hasOnlineCourses && isset($attendanceRecords[$dateKey]);
 
         // Only include if it's not Saturday or Sunday
         if (!$today->isSaturday() && !$today->isSunday()) {
