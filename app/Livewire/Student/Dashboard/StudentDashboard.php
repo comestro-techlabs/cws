@@ -40,7 +40,9 @@ class StudentDashboard extends Component
     public $weekDays = [];
     public $studentId;
     public $attendancePercentage;
-
+    
+    public $hasAccess;
+    public $accessStatus;
     public function mount()
     {
         if (!Auth::check()) {
@@ -50,7 +52,10 @@ class StudentDashboard extends Component
         $studentId = Auth::id();
         $this->studentId = $studentId;
         $user = User::findOrFail($studentId);
-
+// Check access status
+$this->hasAccess = $user->hasAccess();
+// dd($this->hasAccess);
+$this->accessStatus = $user->getAccessStatus();
         $attendanceData = $this->loadAttendance();
         $this->weekDays = $attendanceData['weekDays'];
         $this->attendancePercentage = $attendanceData['attendancePercentage'];
@@ -270,7 +275,9 @@ class StudentDashboard extends Component
             'messages' => $this->messages,
             'exams' => $this->exams,
             'attendancePercentage' => $this->attendancePercentage,
-            'showPercentage' => $this->loadAttendance()['showPercentage']
+            'showPercentage' => $this->loadAttendance()['showPercentage'],
+            'hasAccess' => $this->hasAccess,
+            'accessStatus' => $this->accessStatus
         ]);
     }
 }

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Log;
 
 class User extends Authenticatable
 {
@@ -111,7 +112,7 @@ class User extends Authenticatable
     public function hasActiveSubscription()
     {
         $subscription = $this->currentSubscription;
-        return $subscription && $subscription->status === 'active' 
+        return $subscription 
             && $subscription->payment_status === 'completed'
             && $subscription->ends_at > now();
     }
@@ -124,4 +125,71 @@ class User extends Authenticatable
     {
         $this->notify(new CustomResetPasswordNotification($token));
     }
+     
+    public function hasAccess(): bool
+    {
+        // Check subscription-based access first
+        if ($this->hasActiveSubscription()) {
+            Log::info('User has access via active subscription', ['user_id' => $this->id]);
+            return true;
+        }
+
+        // Check course enrollment with full payment (non-subscription)
+        $hasActiveCourseEnrollment = $this->courses()
+            ->wherePivot('is_subs', false) // Full payment, not subscription
+            ->whereHas('batches', function ($query) {
+                $query->where('end_date', '>', now()); // Batch still active
+            })
+            ->exists();
+
+        Log::info('User hasAccess check', [
+            'user_id' => $this->id,
+            'has_active_course_enrollment' => $hasActiveCourseEnrollment,
+            'result' => $hasActiveCourseEnrollment
+        ]);
+
+        return $hasActiveCourseEnrollment;
+    }
+    public function getAccessStatus(): array
+    {
+        $status = [
+            'has_access' => false,
+            'reasons' => [],
+            'can_view' => true // Allow viewing listings, but restrict detailed access
+        ];
+
+        // Check subscription status
+        if (!$this->hasActiveSubscription()) {
+            $status['reasons'][] = 'Subscription has ended or is inactive';
+        }
+
+        // Check active course enrollments
+        $activeCourses = $this->courses()
+            ->wherePivot('is_subs', false)
+            ->whereHas('batches', function ($query) {
+                $query->where('end_date', '>', now());
+            })
+            ->count();
+
+        if ($activeCourses === 0) {
+            $status['reasons'][] = 'No active course batches (all completed or not enrolled)';
+        }
+
+        // User has access if there are no restriction reasons
+        $status['has_access'] = count($status['reasons']) === 0;
+
+        Log::info('User getAccessStatus', [
+            'user_id' => $this->id,
+            'active_courses_count' => $activeCourses,
+            'status' => $status
+        ]);
+
+        return $status;
+    }
+
+   
+
+   
+
+
 }
