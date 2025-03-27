@@ -27,7 +27,24 @@
                 </div>
             @endforeach
         </div>
+        <button wire:click="generateBarcode({{ $studentId }})" class="bg-blue-500 text-white py-2 px-4 rounded">Generate Barcode</button>
 
+        <!-- Modal for barcode display -->
+        @if ($showBarcodeModal)
+            <div class="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
+                <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+                    <div class="text-center">
+                        <h2 class="text-2xl font-semibold mb-4">Generated Barcode</h2>
+                        <div class="mb-4">
+                            <!-- Display the barcode here -->
+                            <p class="text-xl">{{ $barcode }}</p>
+                        </div>
+                        <!-- Close Button -->
+                        <button wire:click="closeBarcodeModal" class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600">Close</button>
+                    </div>
+                </div>
+            </div>
+        @endif
         <!-- Modified Tabs Navigation -->
         <div class="mb-8 border-b border-gray-200">
             <nav class="-mb-px flex space-x-8" aria-label="Tabs">

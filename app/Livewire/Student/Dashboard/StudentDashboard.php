@@ -40,6 +40,8 @@ class StudentDashboard extends Component
     public $weekDays = [];
     public $studentId;
     public $attendancePercentage;
+    public $onlineThursdayAttendance = null; // 'present', 'absent', or null
+    public $offlineThursdayAttendance = null;
 
     public function mount()
     {
@@ -92,7 +94,7 @@ class StudentDashboard extends Component
             $batchId = $courseStudent->pivot->batch_id ?? null;
             $batch = $batchId ? $onlineCourse->batches->find($batchId) : $onlineCourse->batches->first();
 
-            if ($batch) {
+            if ($batch && $today->lte(Carbon::parse($batch->end_date))) {
                 $existingAttendance = Attendance::where('user_id', $this->studentId)
                     ->where('course_id', $onlineCourse->id)
                     ->where('batch_id', $batch->id)
@@ -109,11 +111,21 @@ class StudentDashboard extends Component
                 }
             }
         }
-        $attendanceData = $this->loadAttendance();
-        $this->weekDays = $attendanceData['weekDays'];
-        $this->attendancePercentage = $attendanceData['attendancePercentage'];
-        $this->attendance = $attendanceData['showPercentage'] ? $this->attendancePercentage : 0;
 
+        // Load attendance data
+        $attendanceData = $this->loadAttendance();
+        $this->onlineWeekDays = $attendanceData['onlineWeekDays'];
+        $this->offlineWeekDays = $attendanceData['offlineWeekDays'];
+        $this->onlineAttendancePercentage = $attendanceData['onlineAttendancePercentage'];
+        $this->offlineAttendancePercentage = $attendanceData['offlineAttendancePercentage'];
+        $this->onlineThursdayAttendance = $attendanceData['onlineThursdayAttendance'];
+        $this->offlineThursdayAttendance = $attendanceData['offlineThursdayAttendance'];
+
+        // Calculate combined attendance percentage
+        $totalWeekdays = $attendanceData['onlineTotalWeekdays'] + $attendanceData['offlineTotalWeekdays'];
+        $totalPresentDays = $attendanceData['onlinePresentDays'] + $attendanceData['offlinePresentDays'];
+        $this->attendancePercentage = $totalWeekdays > 0 ?
+            round(($totalPresentDays / $totalWeekdays) * 100) : 0;
         // Initialize student stats
         $this->gems = $user->gem ?? 0;
         $this->points = $user->points ?? 0;
@@ -218,101 +230,140 @@ class StudentDashboard extends Component
 
         if (!$student) {
             return [
-                'weekDays' => collect(),
-                'attendancePercentage' => 0,
+                'onlineWeekDays' => collect(),
+                'offlineWeekDays' => collect(),
+                'onlineAttendancePercentage' => 0,
+                'offlineAttendancePercentage' => 0,
+                'onlineThursdayAttendance' => null,
+                'offlineThursdayAttendance' => null,
                 'showPercentage' => false
             ];
         }
 
-        $joinDate = Carbon::parse($student->created_at)->startOfDay();
-        $today = Carbon::today();
-        $weekDays = collect();
+        $courses = $student->courses()->with('batches')->get();
 
-        $hasOnlineCourses = Course::whereHas('students', function ($query) {
-            $query->where('user_id', $this->studentId);
-        })->where('course_type', 'online')->exists();
-
-        // Get online course IDs
-        $onlineCourseIds = Course::whereHas('students', function ($query) {
-            $query->where('user_id', $this->studentId);
-        })->where('course_type', 'online')->pluck('id')->toArray();
-
-        // Calculate weekdays (excluding Saturdays and Sundays) since joining
-        $weekdaysSinceJoining = 0;
-        $tempDate = $joinDate->copy();
-        while ($tempDate->lte($today)) {
-            if (!$tempDate->isSaturday() && !$tempDate->isSunday()) {
-                $weekdaysSinceJoining++;
-            }
-            $tempDate->addDay();
+        if ($courses->isEmpty()) {
+            return [
+                'onlineWeekDays' => collect(),
+                'offlineWeekDays' => collect(),
+                'onlineAttendancePercentage' => 0,
+                'offlineAttendancePercentage' => 0,
+                'onlineThursdayAttendance' => null,
+                'offlineThursdayAttendance' => null,
+                'showPercentage' => false
+            ];
         }
 
-        $weekdaysSinceJoining = max(0, $weekdaysSinceJoining - 1);
-        $showPercentage = $weekdaysSinceJoining >= 7;
+        $onlineWeekDays = collect();
+        $offlineWeekDays = collect();
+        $onlineTotalWeekdays = 0;
+        $onlinePresentDays = 0;
+        $offlineTotalWeekdays = 0;
+        $offlinePresentDays = 0;
+        $today = Carbon::today();
+        $onlineThursdayAttendance = null;
+        $offlineThursdayAttendance = null;
 
-        if ($joinDate->isToday()) {
-            $attendanceRecords = Attendance::where('user_id', $this->studentId)
-                ->where(function ($query) use ($onlineCourseIds) {
-                    $query->whereIn('course_id', $onlineCourseIds)
-                        ->orWhereNull('course_id');
-                })
-                ->whereDate('check_in', $today)
-                ->exists();
+        foreach ($courses as $course) {
+            $courseStudent = $student->courses()->where('courses.id', $course->id)->first();
+            $batchId = $courseStudent->pivot->batch_id ?? null;
+            $batch = $batchId ? $course->batches->find($batchId) : $course->batches->first();
 
-            $dateKey = $today->format('Y-m-d');
-            $isPresent = $attendanceRecords;
+            if (!$batch)
+                continue;
 
-            if (!$today->isSaturday() && !$today->isSunday()) {
-                $weekDays->push([
-                    'present' => $isPresent,
-                    'name' => $today->format('l'),
-                    'date' => $dateKey
-                ]);
-            }
-
-            $attendancePercentage = 0;
-        } else { // Joined before today
-            $startDate = $joinDate->gt(Carbon::now()->startOfWeek()) ? $joinDate : Carbon::now()->startOfWeek();
-            $endDate = Carbon::now();
+            $startDate = Carbon::parse($courseStudent->pivot->created_at ?? $batch->start_date)->startOfDay();
+            $endDate = Carbon::parse($batch->end_date)->startOfDay();
+            $effectiveEnd = $today->gt($endDate) ? $endDate : $today;
 
             $attendanceRecords = Attendance::where('user_id', $this->studentId)
-                ->whereBetween('check_in', [$startDate, $endDate])
+                ->where('course_id', $course->id)
+                ->where('batch_id', $batch->id)
+                ->whereBetween('check_in', [$startDate, $today->endOfDay()])
                 ->orderBy('check_in', 'asc')
                 ->get()
                 ->keyBy(function ($item) {
-                    return date('Y-m-d', strtotime($item->check_in));
+                    return Carbon::parse($item->check_in)->format('Y-m-d');
                 });
 
-            $start = $startDate;
-
-            for ($i = 0; $start->copy()->addDays($i)->lte($today); $i++) {
-                $date = $start->copy()->addDays($i);
-                if ($date->isSaturday() || $date->isSunday()) {
-                    continue;
+            $tempDate = $startDate->copy();
+            if ($course->course_type === 'online') {
+                while ($tempDate->lte($effectiveEnd)) {
+                    if (!$tempDate->isSaturday() && !$tempDate->isSunday()) {
+                        $onlineTotalWeekdays++;
+                    }
+                    $tempDate->addDay();
                 }
+            } else {
+                while ($tempDate->lte($effectiveEnd)) {
+                    if (!$tempDate->isSaturday() && !$tempDate->isSunday()) {
+                        $offlineTotalWeekdays++;
+                    }
+                    $tempDate->addDay();
+                }
+            }
+
+            $displayStart = $startDate->gt(Carbon::now()->startOfWeek()) ? $startDate : Carbon::now()->startOfWeek();
+            for ($i = 0; $displayStart->copy()->addDays($i)->lte($effectiveEnd); $i++) {
+                $date = $displayStart->copy()->addDays($i);
+                if ($date->isSaturday() || $date->isSunday())
+                    continue;
 
                 $dateKey = $date->format('Y-m-d');
                 $isPresent = isset($attendanceRecords[$dateKey]);
 
-                $weekDays->push([
-                    'present' => $isPresent,
-                    'name' => $date->format('l'),
-                    'date' => $dateKey
-                ]);
+                if ($course->course_type === 'online' && $date->gte($startDate) && $date->lte($endDate)) {
+                    $dayData = [
+                        'present' => $isPresent,
+                        'name' => $date->format('l'),
+                        'date' => $dateKey,
+                        'course_type' => 'online'
+                    ];
+                    $onlineWeekDays->push($dayData);
+                    if ($isPresent)
+                        $onlinePresentDays++;
+                    if ($date->isThursday()) {
+                        $onlineThursdayAttendance = $isPresent ? 'present' : 'absent';
+                    }
+                } elseif ($course->course_type !== 'online') {
+                    $dayData = [
+                        'present' => $isPresent,
+                        'name' => $date->format('l'),
+                        'date' => $dateKey,
+                        'course_type' => 'offline'
+                    ];
+                    $offlineWeekDays->push($dayData);
+                    if ($isPresent)
+                        $offlinePresentDays++;
+                    if ($date->isThursday()) {
+                        $offlineThursdayAttendance = $isPresent ? 'present' : 'absent';
+                    }
+                }
             }
-
-            $weekDays = $weekDays->take(-5);
-            $totalDays = $weekDays->count();
-            $presentDays = $weekDays->where('present', true)->count();
-            $attendancePercentage = $totalDays > 0 && $showPercentage ?
-                round(($presentDays / $totalDays) * 100) : 0;
         }
 
-        return [
-            'weekDays' => $weekDays,
-            'attendancePercentage' => $attendancePercentage,
-            'showPercentage' => $showPercentage
-        ];
+        $onlineWeekDays = $onlineWeekDays->sortBy('date')->take(-5);
+        $offlineWeekDays = $offlineWeekDays->sortBy('date')->take(-5);
+        $showPercentage = ($onlineTotalWeekdays >= 7 || $offlineTotalWeekdays >= 7);
+
+        $onlineAttendancePercentage = $onlineTotalWeekdays > 0 ?
+            round(($onlinePresentDays / $onlineTotalWeekdays) * 100) : 0;
+        $offlineAttendancePercentage = $offlineTotalWeekdays > 0 ?
+            round(($offlinePresentDays / $offlineTotalWeekdays) * 100) : 0;
+
+            return [
+                'onlineWeekDays' => $onlineWeekDays,
+                'offlineWeekDays' => $offlineWeekDays,
+                'onlineAttendancePercentage' => $onlineAttendancePercentage,
+                'offlineAttendancePercentage' => $offlineAttendancePercentage,
+                'onlineThursdayAttendance' => $onlineThursdayAttendance,
+                'offlineThursdayAttendance' => $offlineThursdayAttendance,
+                'onlineTotalWeekdays' => $onlineTotalWeekdays, // Add these for combined calc
+                'offlineTotalWeekdays' => $offlineTotalWeekdays,
+                'onlinePresentDays' => $onlinePresentDays,
+                'offlinePresentDays' => $offlinePresentDays,
+                'showPercentage' => $showPercentage
+            ];
     }
     public function hasCompletedExamOrAssignment($userId)
     {
@@ -335,6 +386,12 @@ class StudentDashboard extends Component
             'messages' => $this->messages,
             'exams' => $this->exams,
             'attendancePercentage' => $this->attendancePercentage,
+            'onlineWeekDays' => $this->onlineWeekDays,
+            'offlineWeekDays' => $this->offlineWeekDays,
+            'onlineAttendancePercentage' => $this->onlineAttendancePercentage,
+            'offlineAttendancePercentage' => $this->offlineAttendancePercentage,
+            'onlineThursdayAttendance' => $this->onlineThursdayAttendance,
+            'offlineThursdayAttendance' => $this->offlineThursdayAttendance,
             'showPercentage' => $this->loadAttendance()['showPercentage']
         ]);
     }
