@@ -37,11 +37,15 @@ class StudentDashboard extends Component
     public $completedTasks = 0;
     public $totalTasks = 0;
     public $nextMilestone = 100;
-    public $weekDays = [];
+    public $weekDays = []; // You can keep this if still needed elsewhere, or remove it
     public $studentId;
     public $attendancePercentage;
-    public $onlineThursdayAttendance = null; // 'present', 'absent', or null
-    public $offlineThursdayAttendance = null;
+    public $onlineWeekDays = []; // Added missing property
+    public $offlineWeekDays = []; // Added missing property
+    public $onlineAttendancePercentage = 0; // Added missing property
+    public $offlineAttendancePercentage = 0; // Added missing property
+    public $onlineThursdayAttendance = null; // Already declared
+    public $offlineThursdayAttendance = null; // Already declared
 
     public function mount()
     {
@@ -70,6 +74,8 @@ class StudentDashboard extends Component
             $this->secondAttempts = [];
             $this->weekDays = collect();
             $this->attendancePercentage = 0;
+            $this->onlineWeekDays = collect(); // Initialize here too
+            $this->offlineWeekDays = collect(); // Initialize here too
 
             $restrictionMessage = 'Your access to the dashboard is restricted: ';
             $reasons = $accessStatus['reasons'];
@@ -84,6 +90,7 @@ class StudentDashboard extends Component
             session()->flash('error', $restrictionMessage);
             return;
         }
+
         $onlineCourse = Course::whereHas('students', function ($query) {
             $query->where('user_id', $this->studentId);
         })->where('course_type', 'online')->with('batches')->first();
@@ -117,6 +124,8 @@ class StudentDashboard extends Component
         $this->onlineWeekDays = $attendanceData['onlineWeekDays'];
         $this->offlineWeekDays = $attendanceData['offlineWeekDays'];
         $this->onlineAttendancePercentage = $attendanceData['onlineAttendancePercentage'];
+        $
+
         $this->offlineAttendancePercentage = $attendanceData['offlineAttendancePercentage'];
         $this->onlineThursdayAttendance = $attendanceData['onlineThursdayAttendance'];
         $this->offlineThursdayAttendance = $attendanceData['offlineThursdayAttendance'];
@@ -126,18 +135,17 @@ class StudentDashboard extends Component
         $totalPresentDays = $attendanceData['onlinePresentDays'] + $attendanceData['offlinePresentDays'];
         $this->attendancePercentage = $totalWeekdays > 0 ?
             round(($totalPresentDays / $totalWeekdays) * 100) : 0;
+
         // Initialize student stats
         $this->gems = $user->gem ?? 0;
         $this->points = $user->points ?? 0;
         $this->completedTasks = Assignment_upload::where('student_id', $studentId)->where('status', 'submitted')->count();
         $this->totalTasks = Assignments::whereIn('course_id', $user->courses->pluck('id'))->count();
 
-        // Calculate attendance percentage
+        // Calculate attendance percentage (alternative method, you might want to remove one)
         $totalClasses = $user->courses->sum('total_classes') ?? 0;
         $attendedClasses = $user->courses->sum('attended_classes') ?? 0;
         $this->attendance = $totalClasses > 0 ? round(($attendedClasses / $totalClasses) * 100) : 0;
-
-        // Generate weekly attendance data
 
         $this->hasCompleted = $this->hasCompletedExamOrAssignment($studentId);
 
@@ -172,7 +180,6 @@ class StudentDashboard extends Component
             $this->secondAttempts = [];
         }
 
-        // Fetch only the logged-in student's courses
         $this->courses = Course::whereHas('students', function ($query) use ($studentId) {
             $query->where('user_id', $studentId);
         })->take(2)->get();
@@ -186,16 +193,6 @@ class StudentDashboard extends Component
         $courseIds = $this->courses->pluck('id')->toArray();
         $batchIds = $user->courses()->pluck('course_student.batch_id')->toArray();
 
-        // $this->assignments = Assignments::whereIn('course_id', $courseIds)
-        //     ->whereHas('batch', function ($query) use ($batchIds) {
-        //         $query->whereIn('id', $batchIds);
-        //     })
-        //     ->whereHas('assignmentUploads', function ($query) use ($studentId) {
-        //         $query->where('student_id', $studentId);
-        //     })
-        //     ->latest()
-        //     ->take(4)
-        //     ->get();
         $this->assignments = Assignments::whereIn('course_id', $courseIds)
             ->whereHas('batch', function ($query) use ($batchIds) {
                 $query->whereIn('id', $batchIds);
@@ -209,9 +206,6 @@ class StudentDashboard extends Component
             ->take(4)
             ->get();
 
-
-
-        // Fetch only exams for logged-in student's courses
         $this->exams = ExamUser::where('user_id', $studentId)
             ->whereHas('exam', function ($query) use ($courseIds) {
                 $query->whereIn('course_id', $courseIds);
@@ -222,8 +216,8 @@ class StudentDashboard extends Component
         foreach ($this->payments as $payment) {
             $payment->progress = $payment->course_progress ?? 0;
         }
-
     }
+
     public function loadAttendance()
     {
         $student = User::find($this->studentId);
@@ -236,6 +230,10 @@ class StudentDashboard extends Component
                 'offlineAttendancePercentage' => 0,
                 'onlineThursdayAttendance' => null,
                 'offlineThursdayAttendance' => null,
+                'onlineTotalWeekdays' => 0,
+                'offlineTotalWeekdays' => 0,
+                'onlinePresentDays' => 0,
+                'offlinePresentDays' => 0,
                 'showPercentage' => false
             ];
         }
@@ -250,6 +248,10 @@ class StudentDashboard extends Component
                 'offlineAttendancePercentage' => 0,
                 'onlineThursdayAttendance' => null,
                 'offlineThursdayAttendance' => null,
+                'onlineTotalWeekdays' => 0,
+                'offlineTotalWeekdays' => 0,
+                'onlinePresentDays' => 0,
+                'offlinePresentDays' => 0,
                 'showPercentage' => false
             ];
         }
@@ -269,8 +271,7 @@ class StudentDashboard extends Component
             $batchId = $courseStudent->pivot->batch_id ?? null;
             $batch = $batchId ? $course->batches->find($batchId) : $course->batches->first();
 
-            if (!$batch)
-                continue;
+            if (!$batch) continue;
 
             $startDate = Carbon::parse($courseStudent->pivot->created_at ?? $batch->start_date)->startOfDay();
             $endDate = Carbon::parse($batch->end_date)->startOfDay();
@@ -306,8 +307,7 @@ class StudentDashboard extends Component
             $displayStart = $startDate->gt(Carbon::now()->startOfWeek()) ? $startDate : Carbon::now()->startOfWeek();
             for ($i = 0; $displayStart->copy()->addDays($i)->lte($effectiveEnd); $i++) {
                 $date = $displayStart->copy()->addDays($i);
-                if ($date->isSaturday() || $date->isSunday())
-                    continue;
+                if ($date->isSaturday() || $date->isSunday()) continue;
 
                 $dateKey = $date->format('Y-m-d');
                 $isPresent = isset($attendanceRecords[$dateKey]);
@@ -320,8 +320,7 @@ class StudentDashboard extends Component
                         'course_type' => 'online'
                     ];
                     $onlineWeekDays->push($dayData);
-                    if ($isPresent)
-                        $onlinePresentDays++;
+                    if ($isPresent) $onlinePresentDays++;
                     if ($date->isThursday()) {
                         $onlineThursdayAttendance = $isPresent ? 'present' : 'absent';
                     }
@@ -333,8 +332,7 @@ class StudentDashboard extends Component
                         'course_type' => 'offline'
                     ];
                     $offlineWeekDays->push($dayData);
-                    if ($isPresent)
-                        $offlinePresentDays++;
+                    if ($isPresent) $offlinePresentDays++;
                     if ($date->isThursday()) {
                         $offlineThursdayAttendance = $isPresent ? 'present' : 'absent';
                     }
@@ -351,20 +349,21 @@ class StudentDashboard extends Component
         $offlineAttendancePercentage = $offlineTotalWeekdays > 0 ?
             round(($offlinePresentDays / $offlineTotalWeekdays) * 100) : 0;
 
-            return [
-                'onlineWeekDays' => $onlineWeekDays,
-                'offlineWeekDays' => $offlineWeekDays,
-                'onlineAttendancePercentage' => $onlineAttendancePercentage,
-                'offlineAttendancePercentage' => $offlineAttendancePercentage,
-                'onlineThursdayAttendance' => $onlineThursdayAttendance,
-                'offlineThursdayAttendance' => $offlineThursdayAttendance,
-                'onlineTotalWeekdays' => $onlineTotalWeekdays, // Add these for combined calc
-                'offlineTotalWeekdays' => $offlineTotalWeekdays,
-                'onlinePresentDays' => $onlinePresentDays,
-                'offlinePresentDays' => $offlinePresentDays,
-                'showPercentage' => $showPercentage
-            ];
+        return [
+            'onlineWeekDays' => $onlineWeekDays,
+            'offlineWeekDays' => $offlineWeekDays,
+            'onlineAttendancePercentage' => $onlineAttendancePercentage,
+            'offlineAttendancePercentage' => $offlineAttendancePercentage,
+            'onlineThursdayAttendance' => $onlineThursdayAttendance,
+            'offlineThursdayAttendance' => $offlineThursdayAttendance,
+            'onlineTotalWeekdays' => $onlineTotalWeekdays,
+            'offlineTotalWeekdays' => $offlineTotalWeekdays,
+            'onlinePresentDays' => $onlinePresentDays,
+            'offlinePresentDays' => $offlinePresentDays,
+            'showPercentage' => $showPercentage
+        ];
     }
+
     public function hasCompletedExamOrAssignment($userId)
     {
         return ExamUser::where('user_id', $userId)->exists()
