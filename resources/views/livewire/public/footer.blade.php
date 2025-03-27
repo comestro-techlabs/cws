@@ -92,7 +92,7 @@
             <h3 class="text-sm font-semibold leading-6 text-white">Legal</h3>
             <ul role="list" class="mt-6 space-y-4">
               <li>
-                <a href="{{ route('public.privacy') }}" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">Privacy Policy</a>
+                <a href="{{ route('privacy-policy') }}" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">Privacy Policy</a>
               </li>
               <li>
                 <a href="{{ route('public.terms') }}" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">Terms & Conditions</a>
