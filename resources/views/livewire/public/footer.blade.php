@@ -65,7 +65,7 @@
                 <a href="#" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">Guides</a>
               </li>
               <li>
-                <a href="{{ route('public.contact') }}" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">Contact Us</a>
+                <a href="{{ route('public.contact.us') }}" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">Contact Us</a>
               </li>
             </ul>
           </div>
@@ -75,7 +75,7 @@
             <h3 class="text-sm font-semibold leading-6 text-white">Company</h3>
             <ul role="list" class="mt-6 space-y-4">
               <li>
-                <a href="{{ route('public.about') }}" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">About</a>
+                <a href="{{ route('public.about.us') }}" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">About</a>
               </li>
               <li>
                 <a href="#" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">Blog</a>
@@ -95,7 +95,7 @@
                 <a href="{{ route('public.privacy') }}" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">Privacy Policy</a>
               </li>
               <li>
-                <a href="{{ route('public.terms-conditions') }}" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">Terms & Conditions</a>
+                <a href="{{ route('public.terms') }}" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">Terms & Conditions</a>
               </li>
               <li>
                 <a href="#" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">Cookie Policy</a>
