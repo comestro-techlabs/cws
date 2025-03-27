@@ -58,20 +58,51 @@
                 </div>
 
                 @if(auth()->check() && auth()->user()->hasActiveSubscription())
-                    <div class="w-full mt-2 p-2 bg-green-50 rounded-lg border border-green-200">
-                        <div class="flex flex-col space-y-1">
-                            <div class="flex items-center justify-between">
-                                <span class="text-sm text-green-700">Active Subscription</span>
-                                <span class="text-xs font-medium text-green-600">Premium</span>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-xs text-green-600">Valid till:</span>
-                                <span class="text-xs font-medium text-green-600">
-                                    {{ auth()->user()->currentSubscription?->ends_at?->format('M d, Y') ?? 'N/A' }}
-                                </span>
+                    @php
+                        $currentSubscription = auth()->user()->currentSubscription()->first();
+                        $daysUntilExpiry = (int) now()->diffInDays($currentSubscription->ends_at, false); 
+                    @endphp
+                    
+                    @if($daysUntilExpiry >= 1 && $daysUntilExpiry <= 5)
+                        <div class="w-full mt-2 p-2 bg-yellow-50 rounded-lg border border-yellow-200">
+                            <div class="flex flex-col space-y-1">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm text-yellow-700">Plan Expires in {{ $daysUntilExpiry }} Day{{ $daysUntilExpiry > 1 ? 's' : '' }}</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs text-yellow-600">Valid till:</span>
+                                    <span class="text-xs font-medium text-yellow-600">
+                                        {{ $currentSubscription->ends_at->format('M d, Y') }}
+                                    </span>
+                                </div>
+                                <div class="flex items-center justify-between space-x-2">
+                                    <a wire:navigate href="{{ route('student.exploreCourses') }}"
+                                    class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded hover:bg-purple-200">
+                                        Buy Course
+                                    </a>
+                                    <a wire:navigate href="{{ route('student.subscriptions.plans') }}"
+                                    class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded hover:bg-green-200">
+                                        Renew Plan
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @else
+                        <div class="w-full mt-2 p-2 bg-green-50 rounded-lg border border-green-200">
+                            <div class="flex flex-col space-y-1">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm text-green-700">Active Subscription</span>
+                                    <span class="text-xs font-medium text-green-600">Premium</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs text-green-600">Valid till:</span>
+                                    <span class="text-xs font-medium text-green-600">
+                                        {{ $currentSubscription->ends_at->format('M d, Y') }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                 @elseif(auth()->check() && auth()->user()->is_member)
                     <div class="w-full mt-2 p-2 bg-blue-50 rounded-lg border border-blue-200">
                         <div class="flex flex-col space-y-1">
@@ -81,12 +112,48 @@
                             </div>
                             <div class="flex items-center justify-between mt-1">
                                 <a href="{{ route('student.subscriptions.plans') }}"
-                                   class="text-xs text-purple-600 hover:text-purple-800">
+                                class="text-xs text-purple-600 hover:text-purple-800">
                                     Upgrade to Premium
                                 </a>
                             </div>
                         </div>
                     </div>
+                @elseif(auth()->check() && auth()->user()->subscriptions()->exists())
+                    @php
+                        $latestSubscription = auth()->user()->subscriptions()->latest('ends_at')->first();
+                        $endsAt = $latestSubscription->ends_at;
+                        $isPast = $endsAt->isPast();
+                        
+                        if ($isPast) {
+                            $daysAgo = (int) $endsAt->diffInDays(now(), false);
+                            $message = $daysAgo === 0 ? 'Plan Expired Today' : "Plan Expired $daysAgo Day" . ($daysAgo > 1 ? 's' : '') . " Ago";
+                            $bgColor = 'bg-red-50';
+                            $borderColor = 'border-red-200';
+                            $textColor = 'text-red-700';
+                        } else {
+                            $message = null; // No message if not past and not in active subscription block
+                        }
+                    @endphp
+                    
+                    @if($message)
+                        <div class="w-full mt-2 p-2 {{ $bgColor }} rounded-lg border {{ $borderColor }}">
+                            <div class="flex flex-col space-y-2">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm {{ $textColor }}">{{ $message }}</span>
+                                </div>
+                                <div class="flex items-center justify-between space-x-2">
+                                    <a wire:navigate href="{{ route('student.exploreCourses') }}"
+                                    class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded hover:bg-purple-200">
+                                        Buy Course
+                                    </a>
+                                    <a wire:navigate href="{{ route('student.subscriptions.plans') }}"
+                                    class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded hover:bg-green-200">
+                                        Renew Plan
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                 @else
                     <div class="w-full mt-2 p-2 bg-yellow-50 rounded-lg border border-yellow-200">
                         <div class="flex flex-col space-y-2">
@@ -95,18 +162,17 @@
                             </div>
                             <div class="flex items-center justify-between space-x-2">
                                 <a wire:navigate href="{{ route('student.exploreCourses') }}"
-                                   class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded hover:bg-purple-200">
+                                class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded hover:bg-purple-200">
                                     Buy Course
                                 </a>
                                 <a wire:navigate href="{{ route('student.subscriptions.plans') }}"
-                                   class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded hover:bg-green-200">
+                                class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded hover:bg-green-200">
                                     Subscribe
                                 </a>
                             </div>
                         </div>
                     </div>
                 @endif
-            </div>
 
             <nav class="space-y-1 mt-2">
                 <!-- Main Navigation -->
