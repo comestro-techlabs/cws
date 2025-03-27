@@ -85,6 +85,9 @@ use App\Livewire\Auth\ResetPassword;
 use App\Livewire\Public\Myeditor\Monaco;
 use App\Livewire\Public\Viewallcourses\FreeCourses;
 use App\Livewire\Student\Dashboard\Product\MyOrders;
+use App\Livewire\Public\AboutUs;
+use App\Livewire\Public\ContactUs;
+
 
 // Livewire::setUpdateRoute(function ($handle) {
 //     return Route::post('/learnsyntax/public/livewire/update', $handle);
@@ -94,8 +97,11 @@ use App\Livewire\Student\Dashboard\Product\MyOrders;
 Route::get('/', Home::class)->name('public.index');
 Route::get('/courses', AllCourses::class)->name('public.viewallcourses.all-courses');
 Route::get('/free-courses',FreeCourses::class)->name('public.free-courses');
-Route::get('/contact', ContactPage::class)->name('public.contactUs');
+//Route::get('/contact', ContactPage::class)->name('public.contactUs');
 Route::get('/workshops', Workshop::class)->name('public.workshop');
+Route::get('/about-us', AboutUs::class)->name('public.about.us');
+Route::get('/contact-us', ContactUs::class)->name('public.contact.us');
+
 //blog courses routes
 Route::get('/course/{course_slug}/chapter/show', CourseWithChapterAndTopic::class)->name('v2.courses.show');
 Route::get('/course/{course_slug}/chapter/{chapter_slug?}/topic/{topic_slug?}/show', TopicWithPostContent::class)->name('v2.topics.show');

@@ -35,6 +35,9 @@
         window.livewire_app_url = "{{ config('app.url') }}";
         window.livewire_token = "{{ csrf_token() }}";
     </script>
+    <!-- Add to your layout file -->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 
