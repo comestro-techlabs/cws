@@ -95,7 +95,7 @@
                 <a href="{{ route('public.privacy') }}" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">Privacy Policy</a>
               </li>
               <li>
-                <a href="{{ route('public.terms-conditions') }}" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">Terms & Conditions</a>
+                <a href="{{ route('public.terms') }}" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">Terms & Conditions</a>
               </li>
               <li>
                 <a href="#" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">Cookie Policy</a>
