@@ -85,6 +85,10 @@ use App\Livewire\Auth\ResetPassword;
 use App\Livewire\Public\Myeditor\Monaco;
 use App\Livewire\Public\Viewallcourses\FreeCourses;
 use App\Livewire\Student\Dashboard\Product\MyOrders;
+use App\Livewire\Public\AboutUs;
+use App\Livewire\Public\ContactUs;
+use App\Livewire\Public\TermsAndConditions;
+use App\Livewire\Public\PrivacyPolicy;
 
 // Livewire::setUpdateRoute(function ($handle) {
 //     return Route::post('/learnsyntax/public/livewire/update', $handle);
@@ -96,6 +100,11 @@ Route::get('/courses', AllCourses::class)->name('public.viewallcourses.all-cours
 Route::get('/free-courses',FreeCourses::class)->name('public.free-courses');
 Route::get('/contact', ContactPage::class)->name('public.contactUs');
 Route::get('/workshops', Workshop::class)->name('public.workshop');
+Route::get('/about-us', AboutUs::class)->name('public.about.us');
+Route::get('/contact-us', ContactUs::class)->name('public.contact.us');
+Route::get('/terms-and-conditions', TermsAndConditions::class)->name('public.terms');
+Route::get('/privacy-policy', PrivacyPolicy::class)->name('privacy-policy');
+
 //blog courses routes
 Route::get('/course/{course_slug}/chapter/show', CourseWithChapterAndTopic::class)->name('v2.courses.show');
 Route::get('/course/{course_slug}/chapter/{chapter_slug?}/topic/{topic_slug?}/show', TopicWithPostContent::class)->name('v2.topics.show');
@@ -257,10 +266,10 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
 });
 // public routes here:
 Route::controller(PublicController::class)->group(function () {
-    Route::get('/about', 'aboutPage')->name('public.about');
-    Route::get('/contact', 'contactUsPage')->name('public.contact');
-    Route::get('/privacy-policy', 'privacyAndPolicy')->name('public.privacy');
-    Route::get('/terms-conditions', 'termsAndConditions')->name('public.terms-conditions');
+   // Route::get('/about', 'aboutPage')->name('public.about');
+    //Route::get('/contact', 'contactUsPage')->name('public.contact');
+    //Route::get('/privacy-policy', 'privacyAndPolicy')->name('public.privacy');
+    //Route::get('/terms-conditions', 'termsAndConditions')->name('public.terms-conditions');
     Route::post('/enquiry-store', 'storeEnquiry')->name('enquiry.store');
 });
 

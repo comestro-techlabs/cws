@@ -8,7 +8,7 @@
                     {{$description}}
                 </p>
                 <div class="flex justify-center">
-                    <a href="{{route('public.contact')}}"
+                    <a href="{{route('public.contact.us')}}"
                         class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-lg inline-flex items-center justify-center gap-2 transition duration-200 focus:ring-2 focus:ring-orange-400 focus:ring-offset-2">
                         Get Started
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
