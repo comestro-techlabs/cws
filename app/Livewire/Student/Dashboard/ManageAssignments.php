@@ -15,6 +15,7 @@ class ManageAssignments extends Component
 
     public $hasAccess = false; // Add property to track access status
     public $accessStatus = [];
+    public $showAccessModal = false;
 
     public function mount()
     {
@@ -28,6 +29,9 @@ class ManageAssignments extends Component
 
         // Check access status
         $this->hasAccess = $user->hasAccess();
+        if (!$this->hasAccess) {
+            $this->showAccessModal = true;
+        }
         // dd($this->hasAccess);
         $this->accessStatus = $user->getAccessStatus();
 

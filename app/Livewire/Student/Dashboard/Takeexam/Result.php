@@ -19,6 +19,17 @@ class Result extends Component
 
     public function mount($examId)
     {
+        $user = Auth::user();
+        if (!$user) {
+            return redirect()->route('auth.login');
+        }
+
+        $this->hasAccess = $user->hasAccess();
+        if (!$this->hasAccess) {
+            session()->flash('showAccessModal', true);
+            return redirect()->route('student.takeExam');
+        }
+
         $this->examId = $examId;
         $this->loadResults();
     }

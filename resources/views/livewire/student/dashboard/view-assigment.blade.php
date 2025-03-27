@@ -1,5 +1,6 @@
 <div>
     <x-loader />
+    <x-access-restriction-modal />
     <div class="py-6 px-4 sm:px-6 lg:px-8">
         <div class="bg-white rounded-lg border border-gray-200">
             <!-- Header with status badge -->
@@ -210,10 +211,8 @@
                                 @endforeach
                             </ul>
                             <div class="flex space-x-4">
-                                {{-- <a href="{{ route('subscription.plans') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition-colors">
-                                    Renew Subscription
-                                </a> --}}
-                                <a href="{{ route('student.manage.assignments') }}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors">
+                              
+                                <a href="{{ route('student.assignments-view') }}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors">
                                     Back to Assignments
                                 </a>
                             </div>

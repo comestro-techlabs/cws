@@ -22,6 +22,8 @@ class ViewAssigment extends Component
     public $previewUrl; // Store the preview URL
     public $hasAccess = false; // Tracks if the user has access
     public $accessStatus = [];
+    public $showAccessModal = false;
+
     public function mount($id)
     {
         $user = Auth::user();
@@ -32,6 +34,10 @@ class ViewAssigment extends Component
         $studentId = Auth::id();
         $this->hasAccess = $user->hasAccess();
         $this->accessStatus = $user->getAccessStatus();
+        
+        if (!$this->hasAccess) {
+            $this->showAccessModal = true;
+        }
         // Fetch assignment details
         $this->assignment = Assignments::where('id', $id)
             ->whereHas('course', function ($query) use ($studentId) {

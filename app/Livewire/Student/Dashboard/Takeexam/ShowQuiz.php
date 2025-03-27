@@ -40,13 +40,19 @@ class ShowQuiz extends Component
     public function mount($courseId)
     {
         try {
-            $this->courseId = $courseId;
             $user = Auth::user();
-    
             if (!$user) {
                 throw new \Exception('User not authenticated');
             }
-    
+
+            // Check access first and redirect if no access
+            $this->hasAccess = $user->hasAccess();
+            if (!$this->hasAccess) {
+                session()->flash('showAccessModal', true); // Set flag for modal
+                return redirect()->route('student.takeExam');
+            }
+
+            $this->courseId = $courseId;
             $examAttempt = ExamUser::where('user_id', $user->id)
                 ->whereHas('exam', function ($query) use ($courseId) {
                     $query->where('course_id', $courseId);

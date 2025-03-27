@@ -1,22 +1,7 @@
 <div>
-   
-<x-loader />
-@if(!$hasAccess)
-            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-8">
-                <div class="flex">
-                    <div class="flex-shrink-0">
-                        <svg class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
-                        </svg>
-                    </div>
-                    <div class="ml-3">
-                        <p class="text-sm text-yellow-700">
-                            You need an active course enrollment or subscription to access mock tests. Please enroll in a course or purchase a subscription to continue.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        @endif
+    <x-loader />
+    <x-access-restriction-modal />
+
 <div class="py-6 px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between mb-6">
         <h1 class="text-xl font-bold text-gray-900">My Assignments</h1>
@@ -111,7 +96,7 @@
                                         @endif
                                         
                                         <div class="flex space-x-2">
-                                            @if($hasAccess)
+                                            
                                             <a href="{{ route('student.v2view.assigment', $assignment->id) }}"
                                                 wire:loading.attr="disabled"
                                                 class="inline-flex items-center justify-center px-3 py-1.5 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
@@ -121,9 +106,8 @@
                                                 </svg>
                                                 View
                                             </a>
-                                            @else
-                                            <h1 class="text-red-500">not </h1>
-                                            @endif
+                                           
+                                            
                                             <button wire:loading.attr="disabled" class="inline-flex items-center justify-center px-3 py-1.5 border border-gray-200 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />

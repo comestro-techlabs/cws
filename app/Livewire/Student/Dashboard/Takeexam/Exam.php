@@ -13,6 +13,9 @@ class Exam extends Component
     public $courses;
     public $attempts = [];
     public $completedExams = [];
+    public $hasAccess = false;
+    public $accessStatus = [];
+    public $showAccessModal = false;
 
     public function mount()
     {
@@ -21,6 +24,19 @@ class Exam extends Component
         }
 
         $user = Auth::user();
+
+        $this->hasAccess = $user->hasAccess();
+        $this->accessStatus = $user->getAccessStatus();
+        
+        // Show modal if redirected from quiz or result page
+        if (session()->has('showAccessModal')) {
+            $this->showAccessModal = true;
+            session()->forget('showAccessModal');
+        }
+
+        if (!$this->hasAccess) {
+            $this->showAccessModal = true;
+        }
 
         // Get the batch IDs for the courses the user is enrolled in
         $batchIds = DB::table('course_student')

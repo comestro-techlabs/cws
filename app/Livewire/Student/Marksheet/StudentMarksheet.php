@@ -10,6 +10,24 @@ use Livewire\Attributes\Layout;
 class StudentMarksheet extends Component
 {
     public $selectedCourse = null;
+    public $hasAccess = false;
+    public $accessStatus = [];
+    public $showAccessModal = false;
+
+    public function mount()
+    {
+        $user = Auth::user();
+        if (!$user) {
+            return redirect()->route('auth.login');
+        }
+
+        $this->hasAccess = $user->hasAccess();
+        $this->accessStatus = $user->getAccessStatus();
+        
+        if (!$this->hasAccess) {
+            $this->showAccessModal = true;
+        }
+    }
 
     public function selectCourse($courseId)
     {
@@ -77,6 +95,15 @@ class StudentMarksheet extends Component
 
     public function render()
     {
+        if (!$this->hasAccess) {
+            return view('livewire.student.marksheet.student-marksheet', [
+                'courses' => collect([]),
+                'marksheetData' => null,
+                'hasAccess' => $this->hasAccess,
+                'accessStatus' => $this->accessStatus
+            ]);
+        }
+
         $courses = Auth::user()->courses()
             ->with(['assignments.uploads', 'exams.quizzes', 'exams.examUser'])
             ->get();
@@ -103,7 +130,9 @@ class StudentMarksheet extends Component
 
         return view('livewire.student.marksheet.student-marksheet', [
             'courses' => $courses,
-            'marksheetData' => $marksheetData
+            'marksheetData' => $marksheetData,
+            'hasAccess' => $this->hasAccess,
+            'accessStatus' => $this->accessStatus
         ]);
     }
 }

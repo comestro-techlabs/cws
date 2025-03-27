@@ -10,6 +10,24 @@ use Livewire\Attributes\Layout;
 class ShowCertificate extends Component
 {
     public $selectedCourse = null;
+    public $hasAccess = false;
+    public $accessStatus = [];
+    public $showAccessModal = false;
+    
+    public function mount()
+    {
+        $user = Auth::user();
+        if (!$user) {
+            return redirect()->route('auth.login');
+        }
+
+        $this->hasAccess = $user->hasAccess();
+        $this->accessStatus = $user->getAccessStatus();
+        
+        if (!$this->hasAccess) {
+            $this->showAccessModal = true;
+        }
+    }
     
     public function selectCourse($courseId)
     {
@@ -20,6 +38,15 @@ class ShowCertificate extends Component
 
     public function render()
     {
+        if (!$this->hasAccess) {
+            return view('livewire.student.certificate.show-certificate', [
+                'courses' => collect([]),
+                'certificate' => null,
+                'hasAccess' => $this->hasAccess,
+                'accessStatus' => $this->accessStatus
+            ]);
+        }
+
         $courses = Auth::user()
             ->courses()
             ->whereHas('certificates', function($query) {
@@ -35,7 +62,9 @@ class ShowCertificate extends Component
         return view('livewire.student.certificate.show-certificate', [
             'courses' => $courses,
             'certificate' => $this->selectedCourse ? 
-                $courses->find($this->selectedCourse)->certificates->first() : null
+                $courses->find($this->selectedCourse)->certificates->first() : null,
+            'hasAccess' => $this->hasAccess,
+            'accessStatus' => $this->accessStatus
         ]);
     }
 }

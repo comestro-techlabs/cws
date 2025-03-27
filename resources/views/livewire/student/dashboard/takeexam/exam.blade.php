@@ -1,4 +1,7 @@
 <div>
+    <x-loader />
+    <x-access-restriction-modal />
+
     <div class="py-6 px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between mb-6">
             <h1 class="text-xl font-bold text-gray-900">My Quizzes</h1>
@@ -48,25 +51,22 @@
                                         $hasAttempts = $attemptCount >= 1;
                                     @endphp
                                 @endif
-                                <!-- Check for completed exams regardless of date -->
-                                @if (in_array($exam->id, $completedExams))
-                                    @php
-                                        $todayExam = $exam; // Use this exam for View Result if completed
-                                    @endphp
-                                @endif
                             @endforeach
 
                             <div class="mt-3 mb-4">
                                 @if ($quizAvailable)
                                     <div class="flex items-center">
-                                        <span class="w-2 h-2 mr-2 rounded-full bg-green-500"></span>
-                                        <span class="text-sm text-gray-700">
+                                        <span class="w-2 h-2 mr-2 rounded-full {{ $hasAccess ? 'bg-green-500' : 'bg-yellow-500' }}"></span>
+                                        <span class="text-sm {{ $hasAccess ? 'text-gray-700' : 'text-yellow-700' }}">
                                             Quiz available today
                                             @if ($hasAttempts)
                                                 <span class="text-red-600 ml-1">(Attempted)</span>
                                             @endif
                                         </span>
                                     </div>
+                                    @if (!$hasAccess)
+                                        <p class="mt-2 p-2 rounded-md  text-sm border-l-2 border-red-600 bg-red-100 text-red-600">Action required to take quiz or view result</p>
+                                    @endif
                                 @else
                                     <div class="flex items-center">
                                         <span class="w-2 h-2 mr-2 rounded-full bg-gray-400"></span>
@@ -77,28 +77,47 @@
 
                             <!-- Action Buttons -->
                             <div class="flex space-x-2 mt-auto pt-3 border-t border-gray-100">
-                                <!-- Show Take Quiz button if exam is today and not attempted -->
                                 @if ($quizAvailable && !$hasAttempts)
-                                    <a wire:navigate href="{{ route('v2.student.quiz', ['courseId' => $course->id]) }}" class="flex-1">
-                                        <button id="start-quiz-btn" class="w-full inline-flex items-center justify-center px-3 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                    @if ($hasAccess)
+                                        <a href="{{ route('v2.student.quiz', ['courseId' => $course->id]) }}" class="flex-1">
+                                            <button class="w-full inline-flex items-center justify-center px-3 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700">
+                                                <svg class="h-4 w-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                                                </svg>
+                                                Take Quiz
+                                            </button>
+                                        </a>
+                                    @else
+                                        <button 
+                                            class="flex-1 inline-flex items-center justify-center px-3 py-2 bg-gray-100 text-gray-500 rounded-md text-sm font-medium cursor-not-allowed"
+                                            @click="$dispatch('openModal')"
+                                        >
+                                            <svg class="h-4 w-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
                                             </svg>
-                                            Take Quiz
+                                            Quiz Locked
                                         </button>
-                                    </a>
+                                    @endif
                                 @endif
 
-                                <!-- Show View Result button if the exam has been attempted, regardless of date -->
                                 @if ($todayExam && in_array($todayExam->id, $completedExams))
-                                    <a wire:navigate href="{{ route('v2.student.examResult', ['examId' => $todayExam->id]) }}" class="flex-1">
-                                        <button class="w-full inline-flex items-center justify-center px-3 py-2 bg-white border border-gray-200 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                    @if ($hasAccess)
+                                        <a href="{{ route('v2.student.examResult', ['examId' => $todayExam->id]) }}" class="flex-1">
+                                            <button class="w-full inline-flex items-center justify-center px-3 py-2 bg-white border border-gray-200 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-50">
+                                                View Results
+                                            </button>
+                                        </a>
+                                    @else
+                                        <button 
+                                            class="flex-1 inline-flex items-center justify-center px-3 py-2 bg-gray-100 text-gray-500 rounded-md text-sm font-medium cursor-not-allowed"
+                                            @click="$dispatch('openModal')"
+                                        >
+                                            <svg class="h-4 w-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
                                             </svg>
-                                            View Results
+                                            Results Locked
                                         </button>
-                                    </a>
+                                    @endif
                                 @endif
                             </div>
                         </div>
