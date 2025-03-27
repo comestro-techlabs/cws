@@ -14,13 +14,19 @@ class TopicWithPostContent extends Component
     public $selectedTopic;
     public $posts = []; 
 
-    public function mount($course_id, $chapter_id = null, $topic_id = null)
+    public function mount($course_slug, $chapter_slug = null, $topic_slug = null)
     {
-        $this->course = PostCourse::with('chapters.topics')->findOrFail($course_id);
+        //  dd($course_slug,$topic_slug);
+        $this->course = PostCourse::where('course_slug', $course_slug)->with('chapters.topics')->first();
+        // dd( $this->course);
         $this->chapters = $this->course->chapters;
-
-        if ($topic_id) {
-            $this->selectedTopic = PostTopicPost::findOrFail($topic_id);
+        // dd($this->chapters);
+        // dd($topic_slug);
+        if ($topic_slug) {
+            // dd($topic_slug);
+            $this->selectedTopic = PostTopicPost::where('topic_slug', $topic_slug)->first();
+            // dd('shaique');
+            // dd($this->selectedTopic->posts);
             $this->posts = $this->selectedTopic->posts; 
         }
     }

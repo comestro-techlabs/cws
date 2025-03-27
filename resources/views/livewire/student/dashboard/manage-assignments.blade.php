@@ -1,4 +1,5 @@
 <div>
+   
 <x-loader />
 <div class="py-6 px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between mb-6">
@@ -94,6 +95,7 @@
                                         @endif
                                         
                                         <div class="flex space-x-2">
+                                            @if($hasAccess)
                                             <a href="{{ route('student.v2view.assigment', $assignment->id) }}"
                                                 wire:loading.attr="disabled"
                                                 class="inline-flex items-center justify-center px-3 py-1.5 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
@@ -103,6 +105,9 @@
                                                 </svg>
                                                 View
                                             </a>
+                                            @else
+                                            <h1 class="text-red-500">not </h1>
+                                            @endif
                                             <button wire:loading.attr="disabled" class="inline-flex items-center justify-center px-3 py-1.5 border border-gray-200 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
@@ -131,23 +136,30 @@
                 </div>
             @endforeach
         </div>
-    @else
-        <div class="bg-white rounded-lg border border-gray-200 p-8 text-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-300 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-            </svg>
-            <p class="text-lg font-medium text-gray-700">No courses available</p>
-            <p class="text-gray-500 mt-1">You are not enrolled in any courses at the moment.</p>
-            <button wire:loading.attr="disabled" class="mt-4 inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                </svg>
-                Explore Courses
-            </button>
+   
+</div>
+@else
+        <!-- Restricted view -->
+        <div class="restricted-content">
+            <div class="alert alert-warning">
+                <h3>Access Restricted</h3>
+                <p>You cannot access assignments due to the following reasons:</p>
+                <ul>
+                    @foreach($accessStatus['reasons'] as $reason)
+                        <li>{{ $reason }}</li>
+                    @endforeach
+                </ul>
+                <div class="action-buttons">
+                    {{-- <a href="{{ route('subscription.plans') }}" class="btn btn-primary">
+                        View Subscription Plans
+                    </a>
+                    <a href="{{ route('courses.index') }}" class="btn btn-secondary">
+                        Browse Courses
+                    </a> --}}
+                </div>
+            </div>
         </div>
     @endif
-</div>
-
 <style>
 .hide-scrollbar::-webkit-scrollbar {
     display: none;

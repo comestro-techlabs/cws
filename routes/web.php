@@ -42,6 +42,7 @@ use App\Livewire\Student\EditProfile;
 use App\Livewire\Student\Dashboard\ViewAssigment;
 use App\Livewire\Admin\Workshops\ManageWorkshop;
 use App\Livewire\Admin\Course\ManageCourse;
+use App\Livewire\Admin\Course\ShowBatch;
 use App\Livewire\Admin\Certificate\ManageCertificate;
 use App\Livewire\Admin\Certificate\ViewDetail;
 use App\Livewire\Admin\Exam\ManageExam;
@@ -82,6 +83,7 @@ use App\Livewire\Admin\Store\ManageProductCategories;
 use App\Livewire\Auth\ForgetPassword;
 use App\Livewire\Auth\ResetPassword;
 use App\Livewire\Public\Myeditor\Monaco;
+use App\Livewire\Public\Viewallcourses\FreeCourses;
 use App\Livewire\Student\Dashboard\Product\MyOrders;
 
 // Livewire::setUpdateRoute(function ($handle) {
@@ -91,11 +93,12 @@ use App\Livewire\Student\Dashboard\Product\MyOrders;
 // public routes
 Route::get('/', Home::class)->name('public.index');
 Route::get('/courses', AllCourses::class)->name('public.viewallcourses.all-courses');
+Route::get('/free-courses',FreeCourses::class)->name('public.free-courses');
 Route::get('/contact', ContactPage::class)->name('public.contactUs');
 Route::get('/workshops', Workshop::class)->name('public.workshop');
 //blog courses routes
-Route::get('/course/{course_id}/chapter/show', CourseWithChapterAndTopic::class)->name('v2.courses.show');
-Route::get('/course/{course_id}/chapter/{chapter_id?}/topic/{topic_id?}/show', TopicWithPostContent::class)->name('v2.topics.show');
+Route::get('/course/{course_slug}/chapter/show', CourseWithChapterAndTopic::class)->name('v2.courses.show');
+Route::get('/course/{course_slug}/chapter/{chapter_slug?}/topic/{topic_slug?}/show', TopicWithPostContent::class)->name('v2.topics.show');
 
 Route::get('/courses/{slug}', Ourcourses::class)->name('public.courseDetail');
 
@@ -189,7 +192,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/course/update/{courseId}', UpdateCourse::class)->name('admin.course.update');
         Route::get('/course/manage', ManageCourse::class)->name('admin.course.manage');
         Route::get('/student/{id}', ViewStudent::class)->name('admin.student.view');
-
+        Route::get('/batch',ShowBatch::class)->name('admin.batch');
         Route::get('/course/update/{courseId}', UpdateCourse::class)->name('admin.course.update');
         Route::get("/admin/attendace", AttendanceScanner::class)->name('admin.attendance');
         Route::get("/subscription/insert-subscription", InsertSubscription::class)->name('admin.insert_subscription');
@@ -220,9 +223,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/workshops', ManageWorkshop::class)->name('admin.workshops.index');
 
         // Placed Student Routes
-        Route::get('/placedstudent/create', InsertPlacedStudent::class)->name('admin.placedstudent.create');
         Route::get('/placedstudent/manage', CallingPlacedStudent::class)->name('admin.placedstudent.index');
-        Route::get('/placedstudent/{placedStudent?}', InsertPlacedStudent::class)->name('admin.placedstudent.edit')->whereNumber("placedStudent");
 
        
         //enquiry

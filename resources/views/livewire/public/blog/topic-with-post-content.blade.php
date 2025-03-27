@@ -43,7 +43,7 @@
                         >
                             @foreach($chapter->topics as $topic)
                             <a 
-                                href="{{ route('v2.topics.show', ['course_id' => $course->id, 'chapter_id' => $chapter->id, 'topic_id' => $topic->id]) }}"
+                                href="{{ route('v2.topics.show', ['course_slug' => $course->course_slug, 'chapter_slug' => $chapter->chapter_slug, 'topic_slug' => $topic->topic_slug]) }}"
                                 class="block py-2 px-4 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition {{ $selectedTopic && $selectedTopic->id === $topic->id ? 'bg-blue-50 text-blue-600' : '' }}"
                                 wire:navigate
                             >

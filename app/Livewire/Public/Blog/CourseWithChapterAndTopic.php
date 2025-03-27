@@ -10,10 +10,12 @@ class CourseWithChapterAndTopic extends Component
     public $course;
     public $chapters;
 
-    public function mount($course_id)
+    public function mount($course_slug)
     {
-        $this->course = PostCourse::with('chapters.topics')->findOrFail($course_id);
-       
+        // dd($course_slug);
+        // $this->course = PostCourse::with('chapters.topics')->findOrFail($course_slug);
+        $this->course = PostCourse::where('course_slug', $course_slug)->with('chapters.topics')->first();
+    //    dd($this->course);
         $this->chapters = $this->course->chapters;
         // dd($this->chapters);
     }

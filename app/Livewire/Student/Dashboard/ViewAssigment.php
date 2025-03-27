@@ -20,15 +20,18 @@ class ViewAssigment extends Component
     public $file;
     public $assignment_id;
     public $previewUrl; // Store the preview URL
-
+    public $hasAccess = false; // Tracks if the user has access
+    public $accessStatus = [];
     public function mount($id)
     {
+        $user = Auth::user();
         if (!Auth::check()) {
             return redirect()->route('auth.login')->with('error', 'You must be logged in to access this page.');
         }
 
         $studentId = Auth::id();
-
+        $this->hasAccess = $user->hasAccess();
+        $this->accessStatus = $user->getAccessStatus();
         // Fetch assignment details
         $this->assignment = Assignments::where('id', $id)
             ->whereHas('course', function ($query) use ($studentId) {
@@ -42,7 +45,7 @@ class ViewAssigment extends Component
         }
 
         $this->assignment_id = $this->assignment->id;
-
+        if ($this->hasAccess) {
         // Fetch uploaded file
         $this->uploadedFile = Assignment_upload::where('student_id', $studentId)
             ->where('assignment_id', $id)
@@ -50,6 +53,7 @@ class ViewAssigment extends Component
 
         // Generate preview URL
         $this->previewUrl = $this->getPreviewUrl();
+    }
     }
 
     private function getPreviewUrl()
@@ -66,6 +70,10 @@ class ViewAssigment extends Component
 
     public function submit()
     {
+        if (!$this->hasAccess) {
+            session()->flash('error', 'You do not have access to submit assignments.');
+            return;
+        }
         $this->validate([
             'file' => 'required|file|mimes:pdf,doc,docx|max:10240',
         ]);
@@ -155,6 +163,9 @@ class ViewAssigment extends Component
     {
         return view('livewire.student.dashboard.view-assigment', [
             'previewUrl' => $this->previewUrl, // Pass preview URL to the view
+            
+            'hasAccess' => $this->hasAccess,
+            'accessStatus' => $this->accessStatus
         ]);
     }
 }

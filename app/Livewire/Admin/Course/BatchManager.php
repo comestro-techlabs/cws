@@ -17,10 +17,14 @@ class BatchManager extends Component
     public $endDate;
     public $editingBatchId = null;
     public $isEditing = false;
+    public $totalSeats;
+    public $availableSeats;
 
     protected $rules = [
         'batchName' => 'required|string|max:255',
         'startDate' => 'required|date|after_or_equal:today',
+        'totalSeats' => 'required|integer|min:1',
+        'availableSeats' => 'required|integer|lte:totalSeats',
     ];
 
     public function mount(Course $course)
@@ -53,8 +57,10 @@ class BatchManager extends Component
         if ($batch) {
             $this->editingBatchId = $batchId;
             $this->batchName = $batch->batch_name;
-            $this->startDate = $batch->start_date;
-            $this->endDate = $batch->end_date;
+            $this->startDate = $batch->start_date->format('Y-m-d');
+            $this->endDate = $batch->end_date->format('Y-m-d');
+            $this->totalSeats = $batch->total_seats;
+            $this->availableSeats = $batch->available_seats;
             $this->isEditing = true;
         }
     }
@@ -76,6 +82,8 @@ class BatchManager extends Component
                 'batch_name' => $this->batchName,
                 'start_date' => $this->startDate,
                 'end_date' => $this->endDate,
+                'total_seats' => $this->totalSeats,
+                'available_seats' => $this->availableSeats,
             ]);
 
             $this->cancelEdit();
@@ -93,9 +101,11 @@ class BatchManager extends Component
             'batch_name' => $this->batchName,
             'start_date' => $this->startDate,
             'end_date' => $this->endDate,
+            'total_seats' => $this->totalSeats,
+            'available_seats' => $this->availableSeats,
         ]);
 
-        $this->reset(['batchName', 'startDate', 'endDate']);
+        $this->reset(['batchName', 'startDate', 'endDate', 'totalSeats', 'availableSeats']);
         $this->dispatch('notice', type: 'success', text: 'Batch added successfully!');
     }
 

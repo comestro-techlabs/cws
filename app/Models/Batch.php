@@ -10,20 +10,29 @@ class Batch extends Model
 {
     use HasFactory;
 
+    // Mass assignable attributes
     protected $fillable = [
-        'course_id', 'batch_name', 'start_date', 'end_date', 'total_seats', 'available_seats',
+        'course_id',      // Foreign key to courses table
+        'batch_name',     // Name/identifier of the batch
+        'start_date',     // Batch start date
+        'end_date',       // Batch end date
+        'total_seats',    // Total available seats in batch
+        'available_seats' // Currently available seats
     ];
 
+    // Automatic date casting
     protected $casts = [
         'start_date' => 'datetime',
         'end_date' => 'datetime',
     ];
 
+    // Relationship: Batch belongs to a Course
     public function course()
     {
         return $this->belongsTo(Course::class);
     }
 
+    // Relationship: Many-to-Many with Users through course_student table
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'course_student', 'batch_id', 'user_id')
@@ -33,6 +42,7 @@ class Batch extends Model
                     ->withTimestamps();
     }
 
+    // Get only offline students for this batch
     public function getOfflineStudentsAttribute()
     {
         return $this->users()
@@ -40,6 +50,7 @@ class Batch extends Model
                     ->get();
     }
 
+    // Get only online students for this batch
     public function getOnlineStudentsAttribute()
     {
         return $this->users()
