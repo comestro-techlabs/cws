@@ -47,6 +47,11 @@ class StudentDashboard extends Component
     public $onlineThursdayAttendance = null; // Already declared
     public $offlineThursdayAttendance = null; // Already declared
 
+    public function __toString()
+    {
+        return 'StudentDashboard Component';
+    }
+
     public function mount()
     {
         if (!Auth::check()) {
@@ -119,13 +124,11 @@ class StudentDashboard extends Component
             }
         }
 
-        // Load attendance data
+        // Load attendance data - Fix the truncated line
         $attendanceData = $this->loadAttendance();
         $this->onlineWeekDays = $attendanceData['onlineWeekDays'];
         $this->offlineWeekDays = $attendanceData['offlineWeekDays'];
         $this->onlineAttendancePercentage = $attendanceData['onlineAttendancePercentage'];
-        $
-
         $this->offlineAttendancePercentage = $attendanceData['offlineAttendancePercentage'];
         $this->onlineThursdayAttendance = $attendanceData['onlineThursdayAttendance'];
         $this->offlineThursdayAttendance = $attendanceData['offlineThursdayAttendance'];
