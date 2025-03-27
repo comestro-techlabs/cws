@@ -128,35 +128,25 @@ class User extends Authenticatable
 
     public function hasAccess(): bool
     {
-        // First check if user has any active non-subscription course
-        $hasActiveNonSubscriptionCourse = $this->courses()
+        // Check if user has an active subscription
+        if ($this->hasActiveSubscription()) {
+            Log::info('User has access via active subscription', ['user_id' => $this->id]);
+            return true;
+        }
+    
+        // Check for any course (subscription or non-subscription) with an active batch
+        $hasActiveCourse = $this->courses()
             ->join('batches', 'batches.course_id', '=', 'courses.id')
-            ->where('course_student.is_subs', false)
             ->where('batches.end_date', '>', now())
             ->where('course_student.batch_id', '=', 'batches.id')
             ->exists();
-
-        if ($hasActiveNonSubscriptionCourse) {
-            Log::info('User has access via active non-subscription course', ['user_id' => $this->id]);
+    
+        if ($hasActiveCourse) {
+            Log::info('User has access via at least one active course', ['user_id' => $this->id]);
             return true;
         }
-
-        // If no active non-subscription course, check subscription
-        if ($this->hasActiveSubscription()) {
-            $hasActiveSubscriptionBatches = $this->courses()
-                ->join('batches', 'batches.course_id', '=', 'courses.id')
-                ->where('course_student.is_subs', true)
-                ->where('batches.end_date', '>', now())
-                ->where('course_student.batch_id', '=', 'batches.id')
-                ->exists();
-
-            if ($hasActiveSubscriptionBatches) {
-                Log::info('User has access via active subscription with active batches', ['user_id' => $this->id]);
-                return true;
-            }
-        }
-
-        Log::info('User does not have access', ['user_id' => $this->id]);
+    
+        Log::info('User does not have access - no active subscription or courses', ['user_id' => $this->id]);
         return false;
     }
 
@@ -167,44 +157,37 @@ class User extends Authenticatable
             'reasons' => [],
             'can_view' => true
         ];
-
-        // Check for active non-subscription course first
-        $activeNonSubscriptionBatches = $this->courses()
-            ->join('batches', 'batches.course_id', '=', 'courses.id')
-            ->where('course_student.is_subs', false)
-            ->where('batches.end_date', '>', now())
-            ->where('course_student.batch_id', '=', 'batches.id')
-            ->count();
-
-        if ($activeNonSubscriptionBatches > 0) {
+    
+        // Check subscription
+        $hasActiveSubscription = $this->hasActiveSubscription();
+        if ($hasActiveSubscription) {
             $status['has_access'] = true;
-            Log::info('User has access via active non-subscription course', ['user_id' => $this->id]);
+            Log::info('User has access via active subscription', ['user_id' => $this->id]);
             return $status;
-        }
-
-        // Only check subscription if no active non-subscription courses
-        if ($this->hasActiveSubscription()) {
-            $activeSubscriptionBatches = $this->courses()
-                ->join('batches', 'batches.course_id', '=', 'courses.id')
-                ->where('course_student.is_subs', true)
-                ->where('batches.end_date', '>', now())
-                ->where('course_student.batch_id', '=', 'batches.id')
-                ->count();
-
-            if ($activeSubscriptionBatches === 0) {
-                $status['reasons'][] = 'No active batches for subscription-based courses';
-            }
         } else {
             $status['reasons'][] = 'No active subscription';
         }
-
-        $status['has_access'] = count($status['reasons']) === 0;
-
+    
+        // Check for any active course (subscription or non-subscription)
+        $activeCourses = $this->courses()
+            ->join('batches', 'batches.course_id', '=', 'courses.id')
+            ->where('batches.end_date', '>', now())
+            ->where('course_student.batch_id', '=', 'batches.id')
+            ->count();
+    
+        if ($activeCourses > 0) {
+            $status['has_access'] = true;
+            Log::info('User has access via at least one active course', ['user_id' => $this->id]);
+        } else {
+            $status['reasons'][] = 'No active courses with active batches';
+        }
+    
         Log::info('User getAccessStatus', [
             'user_id' => $this->id,
+            'active_courses_count' => $activeCourses,
             'status' => $status
         ]);
-
+    
         return $status;
     }
 }
