@@ -75,12 +75,21 @@
                                                     ₹{{ $course->discounted_fees }}
                                                 </span>
                                             </div>
-                                            <div class="mt-2 flex items-center text-sm text-gray-500">
+                                            <div class="mt-2 flex items-start text-sm text-gray-500 justify-between">
+                                                <div class="div flex">
                                                 <svg class="h-4 w-4 mr-1.5 text-gray-400" fill="currentColor"
                                                     viewBox="0 0 20 20">
                                                     <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" />
                                                 </svg>
                                                 {{ $course->instructor }}
+                                                </div>
+                                                <span
+                                                    class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-blue-50 text-blue-700">
+                                                    {{ $course->course_type }}
+                                                </span>
+                                            </div>
+                                            <div class="mt-2 flex items-center text-sm text-gray-500">
+                                                
                                             </div>
 
                                             <!-- Batch Information -->
@@ -220,45 +229,7 @@
                     wire:click.self="closeView">
                     <div class="relative max-w-4xl mx-auto my-8">
                         <div class="relative bg-white rounded-2xl shadow-xl overflow-hidden">
-                            <!-- Modal Header with Image -->
-                            <div class="relative h-64">
-                                <img src="{{ asset('storage/' . $selectedCourse->course_image) }}"
-                                    alt="{{ $selectedCourse->title }}" class="w-full h-full object-cover">
-                                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent">
-                                </div>
-                                <button wire:click="closeView"
-                                    class="absolute top-4 right-4 text-white hover:text-gray-200 rounded-full bg-black/20 p-2">
-                                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                </button>
-                                <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
-                                    <h2 class="text-3xl font-bold">{{ $selectedCourse->title }}</h2>
-                                    <div class="mt-2 flex items-center">
-                                        <svg class="h-5 w-5 mr-2 opacity-75" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" />
-                                        </svg>
-                                        <span class="opacity-90">{{ $selectedCourse->instructor }}</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Modal Content -->
                             <div class="p-6 space-y-6">
-                                <!-- Progress Section -->
-                                <div class="bg-gray-50 p-4 rounded-lg">
-                                    <h3 class="text-lg font-medium text-gray-900">Your Progress</h3>
-                                    <div class="mt-2">
-                                        <div class="w-full bg-gray-200 rounded-full h-2.5">
-                                            <div class="bg-blue-600 h-2.5 rounded-full"
-                                                style="width: {{ $selectedCourse->progress }}%"></div>
-                                        </div>
-                                        <p class="mt-2 text-sm text-gray-600">{{ $selectedCourse->progress }}% Complete</p>
-                                    </div>
-                                </div>
-
-                                <!-- Enhanced Batch Selection -->
                                 <div class="bg-gray-50 rounded-xl p-5">
                                     <div class="flex items-center justify-between mb-4">
                                         <h3 class="text-lg font-semibold text-gray-900">Current Batch</h3>
