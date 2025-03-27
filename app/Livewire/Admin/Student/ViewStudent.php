@@ -40,6 +40,8 @@ class ViewStudent extends Component
     public $subscriptionHistory;
     public $courseBatches = [];
     public $selectedBatch;
+    public $barcode;
+    public $showBarcodeModal = false;
 
     public function mount($id)
     {
@@ -90,16 +92,17 @@ class ViewStudent extends Component
             ->get();
     }
     #[On('updateMembershipData')]
-    public function renderMembership(){
+    public function renderMembership()
+    {
         $this->isMember = true;
         // dd("testing by shaique");
         $this->lastPayment = Payment::where('student_id', $this->studentId)
-        ->whereIn('status', ['captured', 'unpaid', 'overdue'])
-        ->latest()
-        ->get();
+            ->whereIn('status', ['captured', 'unpaid', 'overdue'])
+            ->latest()
+            ->get();
 
 
-            // dd($this->lastPayment);
+        // dd($this->lastPayment);
 
     }
     public function createFuturePayment()
@@ -122,17 +125,17 @@ class ViewStudent extends Component
                 'status' => 'unpaid',
                 'month' => $month,
                 'year' => $year,
-                'total_amount' =>  700,
+                'total_amount' => 700,
             ]);
 
-           
+
         }
         $this->student->is_member = 1;
         $this->student->save();
         $this->dispatch('updateMembershipData')->self();
     }
 
-    
+
     #[On('courseEnrollDataUpdated')]
     public function updateCourseModal()
     {
@@ -145,7 +148,22 @@ class ViewStudent extends Component
         $this->availableCourses = ModelsCourse::all()->except($this->purchasedCourses->pluck('course_id')->toArray());
         // dd($this->availableCourses);
     }
+    public function generateBarcode($studentId)
+    {
+        $student = User::find($studentId);
+        if ($student) {
+            $this->barcode = 'STU' . str_pad($studentId, 8, '0', STR_PAD_LEFT);
+            $student->barcode = $this->barcode;
+            $student->save();
+            $this->showBarcodeModal = true;  // Show the modal
+        }
+    }
 
+    public function closeBarcodeModal()
+    {
+        $this->showBarcodeModal = false;  // Close the modal
+        $this->barcode = null;  // Clear the barcode
+    }
     public function enrollCourse($course_id)
     {
         try {
@@ -171,7 +189,7 @@ class ViewStudent extends Component
                     'year' => now()->year,
                     'ip_address' => request()->ip()
                 ]);
-                
+
                 $this->dispatch('courseEnrollDataUpdated')->self();
                 $this->isModalOpen = false; // Close modal after successful enrollment
                 session()->flash('success', 'Course enrolled successfully');
@@ -222,7 +240,7 @@ class ViewStudent extends Component
     {
         try {
             $plan = SubscriptionPlan::findOrFail($planId);
-            
+
             // Create new subscription
             $subscription = Subscription::create([
                 'user_id' => $this->studentId,
@@ -277,7 +295,7 @@ class ViewStudent extends Component
             ->where('ends_at', '>', now())
             ->with('plan')
             ->first();
-            
+
         $this->subscriptionHistory = Subscription::where('user_id', $this->studentId)
             ->with('plan')
             ->orderBy('created_at', 'desc')
@@ -297,7 +315,7 @@ class ViewStudent extends Component
             if (empty($batchId)) {
                 return;
             }
-            
+
             DB::table('course_student')
                 ->updateOrInsert(
                     [
