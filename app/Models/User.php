@@ -131,10 +131,10 @@ class User extends Authenticatable
         // Check subscription with active batches
         if ($this->hasActiveSubscription()) {
             $hasActiveSubscriptionBatches = $this->courses()
-                ->wherePivot('is_subs', true)
-                ->whereHas('batches', function ($query) {
-                    $query->where('end_date', '>', now());
-                })
+                ->join('batches', 'batches.course_id', '=', 'courses.id')
+                ->where('course_student.is_subs', true)
+                ->where('batches.end_date', '>', now())
+                ->where('course_student.batch_id', '=', 'batches.id')
                 ->exists();
 
             if ($hasActiveSubscriptionBatches) {
@@ -145,10 +145,10 @@ class User extends Authenticatable
 
         // Check non-subscription courses with active batches
         $hasActiveNonSubscriptionEnrollment = $this->courses()
-            ->wherePivot('is_subs', false)
-            ->whereHas('batches', function ($query) {
-                $query->where('end_date', '>', now());
-            })
+            ->join('batches', 'batches.course_id', '=', 'courses.id')
+            ->where('course_student.is_subs', false)
+            ->where('batches.end_date', '>', now())
+            ->where('course_student.batch_id', '=', 'batches.id')
             ->exists();
 
         Log::info('User hasAccess check (non-subscription)', [
@@ -167,32 +167,33 @@ class User extends Authenticatable
             'reasons' => [],
             'can_view' => true
         ];
+        
 
         // Check subscription and subscription-based courses
         if ($this->hasActiveSubscription()) {
-            $activeSubscriptionCourses = $this->courses()
-                ->wherePivot('is_subs', true)
-                ->whereHas('batches', function ($query) {
-                    $query->where('end_date', '>', now());
-                })
+            $activeSubscriptionBatches = $this->courses()
+                ->join('batches', 'batches.course_id', '=', 'courses.id')
+                ->where('course_student.is_subs', true)
+                ->where('batches.end_date', '>', now())
+                ->where('course_student.batch_id', '=', 'batches.id')
                 ->count();
 
-            if ($activeSubscriptionCourses === 0) {
+            if ($activeSubscriptionBatches === 0) {
                 $status['reasons'][] = 'No active batches for subscription-based courses';
             }
         } else {
-            $status['reasons'][] = 'No active subscription for subscription-based courses';
+            $status['reasons'][] = 'No active subscription';
         }
 
         // Check non-subscription courses
-        $activeNonSubscriptionCourses = $this->courses()
-            ->wherePivot('is_subs', false)
-            ->whereHas('batches', function ($query) {
-                $query->where('end_date', '>', now());
-            })
+        $activeNonSubscriptionBatches = $this->courses()
+            ->join('batches', 'batches.course_id', '=', 'courses.id')
+            ->where('course_student.is_subs', false)
+            ->where('batches.end_date', '>', now())
+            ->where('course_student.batch_id', '=', 'batches.id')
             ->count();
 
-        if ($activeNonSubscriptionCourses === 0) {
+        if ($activeNonSubscriptionBatches === 0) {
             $status['reasons'][] = 'No active batches for non-subscription courses';
         }
 
@@ -200,7 +201,7 @@ class User extends Authenticatable
 
         Log::info('User getAccessStatus', [
             'user_id' => $this->id,
-            'active_non_subscription_courses_count' => $activeNonSubscriptionCourses,
+            'active_non_subscription_batches' => $activeNonSubscriptionBatches,
             'status' => $status
         ]);
 
