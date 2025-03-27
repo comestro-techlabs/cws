@@ -18,10 +18,14 @@ class SelectMockTest extends Component
     public $courses;
     public $levels = ['beginners', 'intermediate', 'hard'];
     public $hasAccess = false;
+    public $showAccessModal = false;
 
     public function mount()
     {
         $this->hasAccess = auth()->user()->hasAccess();
+        if (!$this->hasAccess) {
+            $this->showAccessModal = true;
+        }
         $this->courses = $this->hasAccess ? Course::has('mockTests')->with(['mockTests'])->get() : collect();
     }
 
@@ -42,12 +46,16 @@ class SelectMockTest extends Component
     }
     public function render()
     {
+        if (!$this->hasAccess) {
+            $this->showAccessModal = true;
+        }
+
         $mockTests = [];
         if ($this->selectedCourseId && $this->selectedLevel) {
-            $mockTests = $this->hasAccess ? MockTest::where('course_id', $this->selectedCourseId)
+            $mockTests = MockTest::where('course_id', $this->selectedCourseId)
                 ->where('level', $this->selectedLevel)
                 ->where('status', true)
-                ->get() : collect();
+                ->get();
         }
 
         return view('livewire.student.mock-test.select-mock-test', [
