@@ -180,7 +180,7 @@
                     </div>
                     <div class="p-6">
                         @if($onlineWeekDays->isNotEmpty())
-                            <div class="mt-0">
+                            <div class="mb-1">
                                 <h3 class="text-md font-medium text-gray-700 mb-2">Online Courses</h3>
                                 <div class="grid grid-cols-7 gap-2 justify-between">
                                     @foreach($onlineWeekDays as $day)
@@ -206,7 +206,7 @@
                         @endif
 
                         @if($offlineWeekDays->isNotEmpty())
-                            <div class="mt-6">
+                            <div class="">
                                 <h3 class="text-md font-medium text-gray-700 mb-2">Offline Courses</h3>
                                 <div class="grid grid-cols-7 gap-2 justify-between">
                                     @foreach($offlineWeekDays as $day)
