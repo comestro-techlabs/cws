@@ -233,10 +233,7 @@
                         slotDuration: '00:30:00'
                     }
                 },
-                eventClick: function (info) {
-                    info.jsEvent.preventDefault();
-                    alert('Event: ' + info.event.title + '\nDate: ' + info.event.start.toLocaleDateString());
-                },
+                
                 eventLongPressDelay: 500,
             });
             calendar.render();
