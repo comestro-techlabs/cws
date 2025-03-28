@@ -42,10 +42,10 @@
                 <a href="{{ route('public.viewallcourses.all-courses') }}" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">Courses</a>
               </li>
               <li>
-                <a href="#" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">Tutorials</a>
+                <a href="{{route('public.free-courses')}}" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">Free Courses</a>
               </li>
               <li>
-                <a href="#" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">Workshops</a>
+                <a href="{{route('public.workshop')}}" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">Workshops</a>
               </li>
               <li>
                 <a href="#" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">Resources</a>
