@@ -16,29 +16,46 @@ class OurProducts extends Component
     public $selectedCategory='';
     public $totalAvailableGems;
     public $user_id;
+    public $showAccessModal = false;
+    public $hasAccess = false;
+
     public function mount(){
         $this->categories = ProductCategories::pluck('name', 'id');
-        // dd($this->categories);
-         $this->products = Products::all();  
-        // dd($this->products);
+        $this->products = Products::all();  
         $this->user_id = auth()->id();
-        // dd($this->user_id);
         $this->totalAvailableGems = User::where('id',$this->user_id)->value('gem');
-        // dd($this->totalAvailableGems);
-        
+        $this->hasAccess = auth()->user()->hasAccess();
+        if (!$this->hasAccess) {
+            $this->showAccessModal = true;
+        }
     }
+
     public function updatedSelectedCategory($categoryId)
     {
-        // dd($categoryId);
-
         if ($categoryId == '') {
             $this->products = Products::all(); 
         } else {
             $this->products = Products::where('product_category_id', $categoryId)->get();
         }
     }
-  
 
+    public function checkAccess()
+    {
+        if (!$this->hasAccess) {
+            $this->showAccessModal = true;
+            return false;
+        }
+        return true;
+    }
+
+    public function navigateToCheckout($productId)
+    {
+        if (!$this->hasAccess) {
+            $this->showAccessModal = true;
+            return;
+        }
+        return redirect()->route('v2.student.checkout', ['productId' => $productId]);
+    }
 
     #[Layout('components.layouts.student')]
     public function render()

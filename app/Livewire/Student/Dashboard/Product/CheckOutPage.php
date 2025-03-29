@@ -55,6 +55,10 @@ class CheckOutPage extends Component
 
     public function mount($productId,GemService $gemService)
     {
+        if (!auth()->user()->hasAccess()) {
+            return redirect()->route('v2.student.products');
+        }
+        
         $this->globalGemService = $gemService; 
         // dd($productId);
         $this->my_product = Products::with('category')->findOrFail($productId);

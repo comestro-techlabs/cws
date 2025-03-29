@@ -30,6 +30,9 @@ class MyCourse extends Component
     public $user_id;
     public $isRated = false;
 
+    public $hasAccess = false;
+    public $showAccessModal = false;
+
     protected $rules = [
         'course_id' => 'required|exists:courses,id',
         'review' => 'required|string',
@@ -40,6 +43,10 @@ class MyCourse extends Component
     public function mount()
     {
         $this->user_id = Auth::id();
+        $this->hasAccess = auth()->user()->hasAccess();
+        if (!$this->hasAccess) {
+            $this->showAccessModal = true;
+        }
         $this->loadCourses();
         $this->initializeBatchSelections();
         $this->calculateProgress();
@@ -97,6 +104,10 @@ class MyCourse extends Component
 
     public function viewCourse($courseId)
     {
+        if (!$this->hasAccess) {
+            $this->showAccessModal = true;
+            return;
+        }
         $this->selectedCourse = $this->courses->find($courseId);
         $this->viewingCourse = true;
     }
@@ -189,6 +200,11 @@ class MyCourse extends Component
 
     public function updateBatch($courseId)
     {
+        if (!$this->hasAccess) {
+            $this->showAccessModal = true;
+            return;
+        }
+
         $this->validate([
             "selectedBatch.$courseId" => 'required|exists:batches,id'
         ]);

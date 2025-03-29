@@ -190,10 +190,16 @@
 
                     <!-- Rewards -->
                     <a wire:navigate href="{{ route('student.rewards.gems') }}"
-                        class="flex items-center px-4 py-2.5 text-sm font-medium {{ request()->routeIs('student.rewards.gems') ? 'text-purple-700 bg-purple-50' : 'text-gray-700 hover:bg-purple-50 hover:text-purple-700' }} rounded-lg transition duration-200">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 1.5l3 6 7.5.75-5.5 4.75L18.5 21l-6.5-4-6.5 4 1.5-7.75L1.5 8.25l7.5-.75z"/>
-                        </svg>
+                        class="flex items-center px-4 py-2.5 text-sm font-medium {{ !auth()->user()->hasAccess() ? 'cursor-not-allowed opacity-60' : (request()->routeIs('student.rewards.gems') ? 'text-purple-700 bg-purple-50' : 'text-gray-700 hover:bg-purple-50 hover:text-purple-700') }} rounded-lg transition duration-200">
+                        @if(!auth()->user()->hasAccess())
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                        @else
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 1.5l3 6 7.5.75-5.5 4.75L18.5 21l-6.5-4-6.5 4 1.5-7.75L1.5 8.25l7.5-.75z"/>
+                            </svg>
+                        @endif
                         <span class="ml-3">Rewards & Points</span>
                     </a>
                 </div>
@@ -241,10 +247,16 @@
 
                     <!-- Mock Tests -->
                     <a wire:navigate href="{{ route('v2.student.mocktest') }}"
-                        class="flex items-center px-4 py-2.5 text-sm font-medium {{ request()->routeIs('v2.student.mocktest') ? 'text-purple-700 bg-purple-50' : 'text-gray-700 hover:bg-purple-50 hover:text-purple-700' }} rounded-lg transition duration-200">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z"/>
-                        </svg>
+                        class="flex items-center px-4 py-2.5 text-sm font-medium {{ !auth()->user()->hasAccess() ? 'cursor-not-allowed opacity-60' : (request()->routeIs('v2.student.mocktest') ? 'text-purple-700 bg-purple-50' : 'text-gray-700 hover:bg-purple-50 hover:text-purple-700') }} rounded-lg transition duration-200">
+                        @if(!auth()->user()->hasAccess())
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                        @else
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z"/>
+                            </svg>
+                        @endif
                         <span class="ml-3">Practice Tests</span>
                     </a>
 
@@ -290,12 +302,17 @@
 
 
                     <a wire:navigate href="{{ route('v2.student.products') }}"
-                        class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-purple-50 hover:text-purple-700 group transition duration-200">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 fill-green-600">
-                            <path d="M2.25 2.25a.75.75 0 000 1.5h1.386c.17 0 .318.114.362.278l2.558 9.592a3.752 3.752 0 00-2.806 3.63c0 .414.336.75.75.75h15.75a.75.75 0 000-1.5H5.378A2.25 2.25 0 017.5 15h11.218a.75.75 0 00.674-.421 60.358 60.358 0 002.96-7.228.75.75 0 00-.525-.965A60.864 60.864 0 005.68 4.509l-.232-.867A1.875 1.875 0 003.636 2.25H2.25zM3.75 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zM16.5 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z" />
-                        </svg>
-
-                        <span class="flex-1 ms-3 whitespace-nowrap">Our Store</span>
+                        class="flex items-center px-4 py-2.5 text-sm font-medium {{ !auth()->user()->hasAccess() ? 'cursor-not-allowed opacity-60' : 'text-gray-700 hover:bg-purple-50 hover:text-purple-700' }} group transition duration-200">
+                        @if(!auth()->user()->hasAccess())
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                        @else
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 fill-green-600">
+                                <path d="M2.25 2.25a.75.75 0 000 1.5h1.386c.17 0 .318.114.362.278l2.558 9.592a3.752 3.752 0 00-2.806 3.63c0 .414.336.75.75.75h15.75a.75.75 0 000-1.5H5.378A2.25 2.25 0 017.5 15h11.218a.75.75 0 00.674-.421 60.358 60.358 0 002.96-7.228.75.75 0 00-.525-.965A60.864 60.864 0 005.68 4.509l-.232-.867A1.875 1.875 0 003.636 2.25H2.25zM3.75 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zM16.5 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z" />
+                            </svg>
+                        @endif
+                        <span class="flex-1 ms-3">Our Store</span>
                     </a>
 
                     @if (auth()->check() && auth()->user()->courses()->exists())
