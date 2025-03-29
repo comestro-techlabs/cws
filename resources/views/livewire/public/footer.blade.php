@@ -39,16 +39,16 @@
             <h3 class="text-sm font-semibold leading-6 text-white">Learning</h3>
             <ul role="list" class="mt-6 space-y-4">
               <li>
-                <a href="{{ route('public.viewallcourses.all-courses') }}" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">Courses</a>
+                <a href="{{ route('public.viewallcourses.all-courses') }}"   class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200" wire:navigate>Courses</a>
               </li>
               <li>
-                <a href="{{route('public.free-courses')}}" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">Free Courses</a>
+                <a href="{{route('public.free-courses')}}"  class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200" wire:navigate>Free Courses</a>
               </li>
               <li>
-                <a href="{{route('public.workshop')}}" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">Workshops</a>
+                <a href="{{route('public.workshop')}}"  class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200" wire:navigate>Workshops</a>
               </li>
               <li>
-                <a href="#" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">Resources</a>
+                <a href="#"  class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200" wire:navigate>Resources</a>
               </li>
             </ul>
           </div>
@@ -56,16 +56,16 @@
             <h3 class="text-sm font-semibold leading-6 text-white">Support</h3>
             <ul role="list" class="mt-6 space-y-4">
               <li>
-                <a href="#" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">Pricing</a>
+                <a href="#"  class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200"  wire:navigate>Pricing</a>
               </li>
               <li>
-                <a href="#" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">Documentation</a>
+                <a href="#"  class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200"  wire:navigate>Documentation</a>
               </li>
               <li>
-                <a href="#" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">Guides</a>
+                <a href="#"  class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200"  wire:navigate>Guides</a>
               </li>
               <li>
-                <a href="{{ route('public.contact.us') }}" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">Contact Us</a>
+                <a href="{{ route('public.contact.us') }}"  class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200"  wire:navigate>Contact Us</a>
               </li>
             </ul>
           </div>
@@ -75,16 +75,16 @@
             <h3 class="text-sm font-semibold leading-6 text-white">Company</h3>
             <ul role="list" class="mt-6 space-y-4">
               <li>
-                <a href="{{ route('public.about.us') }}" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">About</a>
+                <a href="{{ route('public.about.us') }}"  class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200"  wire:navigate>About</a>
               </li>
               <li>
-                <a href="#" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">Blog</a>
+                <a href="#"  class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200"  wire:navigate>Blog</a>
               </li>
               <li>
-                <a href="#" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">Careers</a>
+                <a href="#"  class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200"  wire:navigate>Careers</a>
               </li>
               <li>
-                <a href="#" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">Partners</a>
+                <a href="#"  class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200"  wire:navigate>Partners</a>
               </li>
             </ul>
           </div>
@@ -92,13 +92,13 @@
             <h3 class="text-sm font-semibold leading-6 text-white">Legal</h3>
             <ul role="list" class="mt-6 space-y-4">
               <li>
-                <a href="{{ route('privacy-policy') }}" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">Privacy Policy</a>
+                <a href="{{ route('privacy-policy') }}"  class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200"  wire:navigate>Privacy Policy</a>
               </li>
               <li>
-                <a href="{{ route('public.terms') }}" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">Terms & Conditions</a>
+                <a href="{{ route('public.terms') }}"  class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200"  wire:navigate>Terms & Conditions</a>
               </li>
               <li>
-                <a href="#" class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200">Cookie Policy</a>
+                <a href="#"  class="text-sm leading-6 text-gray-300 hover:text-blue-600 transition duration-200"  wire:navigate>Cookie Policy</a>
               </li>
             </ul>
           </div>
