@@ -101,12 +101,21 @@
                                 <span class="text-lg font-semibold text-gray-900">{{$product->points}}</span>
                                 <span class="ml-1 text-sm text-gray-600">gems</span>
                             </div>
-                            <a href="{{ route('v2.student.checkout', ['productId' => $product->id]) }}"
+                            <button 
+                                wire:click="navigateToCheckout({{ $product->id }})"
                                 class="px-4 py-2 font-medium rounded-lg focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition duration-200 text-sm
-                                {{ $totalAvailableGems <= $product->points || $product->availableQuantity <= 0 ? 'bg-gray-400 text-gray-200 cursor-not-allowed pointer-events-none' : 'bg-purple-500 text-white hover:bg-primary' }}"
-                                @if($totalAvailableGems < $product->points || $product->availableQuantity <= 0) onclick="return false;" @endif>
-                                Redeem Now
-                            </a>
+                                {{ (!$hasAccess || $totalAvailableGems <= $product->points || $product->availableQuantity <= 0) 
+                                    ? 'bg-gray-400 text-gray-200 cursor-not-allowed' 
+                                    : 'bg-purple-500 text-white hover:bg-primary' }}"
+                                @if(!$hasAccess || $totalAvailableGems < $product->points || $product->availableQuantity <= 0) 
+                                    disabled 
+                                @endif>
+                                @if(!$hasAccess)
+                                    Access Required
+                                @else
+                                    Redeem Now
+                                @endif
+                            </button>
                         </div>
                     </div>
                 @endif
@@ -124,5 +133,8 @@
                 </button>
             </div>
         </div>
+
+        <!-- Access Restriction Modal -->
+        @include('components.access-restriction-modal')
     </div>
 </div>
