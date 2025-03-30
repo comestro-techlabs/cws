@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->boolean('is_subs')->default(false);
             $table->foreignId('batch_id')->nullable()->constrained('batches')->onDelete('cascade');
+            $table->boolean('batch_updated')->default(false);
             $table->timestamps();
         });
     }
