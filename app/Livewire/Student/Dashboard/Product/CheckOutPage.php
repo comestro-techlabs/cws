@@ -105,7 +105,7 @@ class CheckOutPage extends Component
                 if ($postOffice) {
                     $this->city = $postOffice['District'];
                     $this->state = $postOffice['State'];
-                    $this->country = "India";
+                    $this->country = "india";
                 }
             } else {
                 session()->flash('error', 'Invalid postal code or no data found.');
