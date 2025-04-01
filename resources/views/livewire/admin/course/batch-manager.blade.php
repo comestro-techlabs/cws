@@ -44,19 +44,9 @@
                                 readonly>
                         </div>
 
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Total Seats</label>
-                            <input type="number" wire:model="totalSeats"
-                                class="mt-1 p-2 block w-full rounded-md border border-gray-300 focus:border-purple-300 focus:ring focus:ring-purple-200 focus:ring-opacity-50">
-                            @error('totalSeats') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                        </div>
+                       
 
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Available Seats</label>
-                            <input type="number" wire:model="availableSeats"
-                                class="mt-1 p-2 block w-full rounded-md border border-gray-300 focus:border-purple-300 focus:ring focus:ring-purple-200 focus:ring-opacity-50">
-                            @error('availableSeats') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                        </div>
+                       
 
                         <button type="submit"
                             class="w-full bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
