@@ -206,7 +206,7 @@ class StudentDashboard extends Component
                 });
             })
             ->latest()
-            ->take(4)
+            ->take(2)
             ->get();
 
         $this->exams = ExamUser::where('user_id', $studentId)

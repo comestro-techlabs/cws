@@ -29,6 +29,9 @@ class ManageMockTest extends Component
     #[Rule('boolean')]
     public $status = true;
 
+    #[Rule('boolean')]
+    public $is_public = false;
+
     // Question Properties
     public $question;
     public $options = ['', '', '', ''];
@@ -71,6 +74,7 @@ class ManageMockTest extends Component
     {
         $this->reset(['test_title', 'course_id', 'level', 'editingId']);
         $this->status = true;
+        $this->is_public = false;
         $this->level = 'beginners';
         $this->showModal = false;
     }
@@ -89,6 +93,7 @@ class ManageMockTest extends Component
                 'course_id' => $this->course_id,
                 'level' => $this->level,
                 'status' => $this->status,
+                'is_public' => $this->is_public,
             ]);
             $this->resetForm();
         } else {
@@ -97,6 +102,7 @@ class ManageMockTest extends Component
                 'course_id' => $this->course_id,
                 'level' => $this->level,
                 'status' => $this->status,
+                'is_public' => $this->is_public,
             ]);
             $this->currentMockTestId = $mockTest->id;
             $this->showModal = false;
@@ -245,6 +251,7 @@ class ManageMockTest extends Component
                 'course_id' => $data['course_id'],
                 'level' => $data['level'],
                 'status' => $data['status'] ?? true,
+                'is_public' => $data['is_public'] ?? false,
             ]);
 
             // Create questions

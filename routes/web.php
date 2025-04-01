@@ -61,6 +61,9 @@ use App\Livewire\Public\Header;
 use App\Livewire\Public\Home;
 use App\Livewire\Public\Viewallcourses\AllCourses;
 use App\Livewire\Public\Workshops\Workshop;
+use App\Livewire\Public\MockTest\SelectMockTest as PublicSelectMockTest;
+use App\Livewire\Public\MockTest\ShowMockTest as PublicShowMockTest;
+use App\Livewire\Public\MockTest\MockTestResult as PublicMockTestResult;
 use App\Livewire\Student\Billing\ViewBilling;
 use App\Livewire\Student\Dashboard\ManageAssignments;
 use App\Livewire\Student\Dashboard\Product\OurProducts;
@@ -104,6 +107,9 @@ Route::get('/about-us', AboutUs::class)->name('public.about.us');
 Route::get('/contact-us', ContactUs::class)->name('public.contact.us');
 Route::get('/terms-and-conditions', TermsAndConditions::class)->name('public.terms');
 Route::get('/privacy-policy', PrivacyPolicy::class)->name('privacy-policy');
+Route::get('/practice-tests', PublicSelectMockTest::class)->name('public.mocktest');
+Route::get('/practice-tests/{mockTestId}', PublicShowMockTest::class)->name('public.mocktest.take');
+Route::get('/practice-tests/result/{mockTestId}', PublicMockTestResult::class)->name('public.mocktest.result');
 
 //blog courses routes
 Route::get('/course/{course_slug}/chapter/show', CourseWithChapterAndTopic::class)->name('v2.courses.show');

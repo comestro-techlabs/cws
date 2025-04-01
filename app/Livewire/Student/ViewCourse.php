@@ -11,6 +11,7 @@ use App\Models\Course;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Razorpay\Api\Api;
+use App\Services\GemService;
 
 class ViewCourse extends Component
 {
@@ -83,6 +84,16 @@ class ViewCourse extends Component
                         'created_at' => now(),
                         'updated_at' => now(),
                     ]);
+
+                    // Award gems based on course fees
+                    try {
+                        $gemService = new GemService();
+                        $gemsToAward = (int)($this->course->discounted_fees * 0.10); // 10% of course fees
+                        $gemService->earnedGem($gemsToAward, 'Welcome bonus for enrolling in course');
+                    } catch (\Exception $e) {
+                        \Log::error('Failed to award enrollment gems: ' . $e->getMessage());
+                    }
+
                     $this->payment_exist = true;
                     $this->enrolledCourses[] = $course_id;
                 } catch (\Exception $e) {
@@ -175,11 +186,21 @@ class ViewCourse extends Component
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
+
+            // Award gems based on course fees
+            try {
+                $gemService = new GemService();
+                $gemsToAward = (int)($this->course->discounted_fees * 0.10); // 10% of course fees
+                $gemService->earnedGem($gemsToAward, 'Welcome bonus for enrolling in course');
+            } catch (\Exception $e) {
+                \Log::error('Failed to award enrollment gems: ' . $e->getMessage());
+            }
     
             $this->payment_exist = true;
             $this->enrolledCourses[] = $this->course->id;
     
             return ['success' => true];
+
         } catch (\Exception $e) {
             \Log::error('Payment Verification Error: ' . $e->getMessage());
             return [
@@ -234,10 +255,22 @@ class ViewCourse extends Component
                 'batch_id' => $batch->id,
                 'is_subs' => 1,
             ]);
+
+            // Award gems based on course fees
+            try {
+                $gemService = new GemService();
+                $course = Course::find($courseId);
+                $gemsToAward = (int)($course->discounted_fees * 0.10); // 10% of course fees
+                $gemService->earnedGem($gemsToAward, 'Welcome bonus for enrolling in course');
+            } catch (\Exception $e) {
+                \Log::error('Failed to award enrollment gems: ' . $e->getMessage());
+            }
     
             $this->enrolledCourses[] = $courseId;
     
-            return redirect()->route('student.dashboard')->with('success', 'You have successfully enrolled in the course.');
+            return redirect()->route('student.dashboard')
+                ->with('success', "You have successfully enrolled in the course and earned {$gemsToAward} gems!");
+
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Enrollment failed: ' . $e->getMessage());
         }

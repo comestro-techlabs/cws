@@ -21,4 +21,9 @@ class MockTest extends Model
     {
         return $this->hasMany(MockTestResult::class);
     }
+
+    public function scopePublic($query)
+    {
+        return $query->where('is_public', true)->where('status', true);
+    }
 }
