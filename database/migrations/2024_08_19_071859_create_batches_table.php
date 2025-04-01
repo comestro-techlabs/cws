@@ -16,9 +16,7 @@ return new class extends Migration
             $table->foreignId('course_id')->constrained()->onDelete('cascade');
             $table->string('batch_name');
             $table->date('start_date');
-            $table->date('end_date');
-            $table->integer('total_seats');
-            $table->integer('available_seats');
+            $table->date('end_date');            
             $table->timestamps();
         });
     }

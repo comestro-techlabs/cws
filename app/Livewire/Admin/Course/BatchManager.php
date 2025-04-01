@@ -17,14 +17,11 @@ class BatchManager extends Component
     public $endDate;
     public $editingBatchId = null;
     public $isEditing = false;
-    public $totalSeats;
-    public $availableSeats;
+    
 
     protected $rules = [
         'batchName' => 'required|string|max:255',
-        'startDate' => 'required|date|after_or_equal:today',
-        'totalSeats' => 'required|integer|min:1',
-        'availableSeats' => 'required|integer|lte:totalSeats',
+        'startDate' => 'required|date|after_or_equal:today',        
     ];
 
     public function mount(Course $course)
@@ -58,9 +55,7 @@ class BatchManager extends Component
             $this->editingBatchId = $batchId;
             $this->batchName = $batch->batch_name;
             $this->startDate = $batch->start_date->format('Y-m-d');
-            $this->endDate = $batch->end_date->format('Y-m-d');
-            $this->totalSeats = $batch->total_seats;
-            $this->availableSeats = $batch->available_seats;
+            $this->endDate = $batch->end_date->format('Y-m-d');            
             $this->isEditing = true;
         }
     }
@@ -81,9 +76,7 @@ class BatchManager extends Component
             $batch->update([
                 'batch_name' => $this->batchName,
                 'start_date' => $this->startDate,
-                'end_date' => $this->endDate,
-                'total_seats' => $this->totalSeats,
-                'available_seats' => $this->availableSeats,
+                'end_date' => $this->endDate,                
             ]);
 
             $this->cancelEdit();
@@ -101,11 +94,10 @@ class BatchManager extends Component
             'batch_name' => $this->batchName,
             'start_date' => $this->startDate,
             'end_date' => $this->endDate,
-            'total_seats' => $this->totalSeats,
-            'available_seats' => $this->availableSeats,
+            
         ]);
 
-        $this->reset(['batchName', 'startDate', 'endDate', 'totalSeats', 'availableSeats']);
+        $this->reset(['batchName', 'startDate', 'endDate']);
         $this->dispatch('notice', type: 'success', text: 'Batch added successfully!');
     }
 
