@@ -102,15 +102,7 @@
                                     <div class="flex justify-between text-sm">
                                         <span class="text-gray-600">End Date:</span>
                                         <span class="font-medium">{{ \Carbon\Carbon::parse($batch->end_date)->format('M d, Y') }}</span>
-                                    </div>
-                                    <div class="flex justify-between text-sm">
-                                        <span class="text-gray-600">Seats:</span>
-                                        <div class="flex items-center space-x-1">
-                                            <span class="px-2 py-1 rounded-full text-xs {{ $batch->available_seats > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                                {{ $batch->available_seats }}/{{ $batch->total_seats }}
-                                            </span>
-                                        </div>
-                                    </div>
+                                    </div>                                    
                                 </div>
 
                                 @if(DB::table('course_student')->where('batch_id', $batch->id)->exists())
