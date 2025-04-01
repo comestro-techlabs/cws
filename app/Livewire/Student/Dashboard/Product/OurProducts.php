@@ -5,9 +5,12 @@ namespace App\Livewire\Student\Dashboard\Product;
 use App\Models\ProductCategories;
 use App\Models\Products;
 use App\Models\User;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Razorpay\Api\Product;
+use Illuminate\Support\Facades\Log;
+
 
 class OurProducts extends Component
 {
@@ -21,7 +24,10 @@ class OurProducts extends Component
 
     public function mount(){
         $this->categories = ProductCategories::pluck('name', 'id');
-        $this->products = Products::all();  
+        //cached the product for 180 seconds
+        $this->products = Cache::remember('all_products',180, function () {
+            return Products::all();
+        });
         $this->user_id = auth()->id();
         $this->totalAvailableGems = User::where('id',$this->user_id)->value('gem');
         $this->hasAccess = auth()->user()->hasAccess();
