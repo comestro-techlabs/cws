@@ -1,3 +1,21 @@
+@if (session('welcome'))
+    <script>
+        Swal.fire({
+            title: 'Welcome!',
+            text: "{{ session('welcome') }}",
+            icon: 'success',
+            confirmButtonText: 'Get Started',
+            confirmButtonColor: '#2563EB',
+            showClass: {
+                popup: 'animate__animated animate__fadeInDown'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__fadeOutUp'
+            }
+        });
+    </script>
+@endif
+
 @if (session('success'))
     <script>
         Swal.fire({

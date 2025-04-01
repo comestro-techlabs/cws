@@ -62,6 +62,12 @@ class StudentDashboard extends Component
         $this->studentId = $studentId;
         $user = User::findOrFail($studentId);
 
+        // Add first login check using session
+        if (!session()->has('welcomed')) {
+            session()->flash('welcome', 'Welcome to CWS Learning Dashboard! Start your learning journey.');
+            session()->put('welcomed', true);
+        }
+
         $hasAccess = $user->hasAccess();
         $accessStatus = $user->getAccessStatus();
 
@@ -82,17 +88,17 @@ class StudentDashboard extends Component
             $this->onlineWeekDays = collect(); // Initialize here too
             $this->offlineWeekDays = collect(); // Initialize here too
 
-            $restrictionMessage = 'Your access to the dashboard is restricted: ';
-            $reasons = $accessStatus['reasons'];
-            if (
-                in_array('No active batches for non-subscription courses', $reasons) ||
-                in_array('No active batches for subscription-based courses', $reasons)
-            ) {
-                $restrictionMessage .= 'Your batch has ended already.';
-            } else {
-                $restrictionMessage .= implode(', ', $reasons);
-            }
-            session()->flash('error', $restrictionMessage);
+            // $restrictionMessage = 'Your access to the dashboard is restricted: ';
+            // $reasons = $accessStatus['reasons'];
+            // if (
+            //     in_array('No active batches for non-subscription courses', $reasons) ||
+            //     in_array('No active batches for subscription-based courses', $reasons)
+            // ) {
+            //     $restrictionMessage .= 'Your batch has ended already.';
+            // } else {
+            //     $restrictionMessage .= implode(', ', $reasons);
+            // }
+            // session()->flash('error', $restrictionMessage);
             return;
         }
 
