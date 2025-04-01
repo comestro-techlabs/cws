@@ -3,13 +3,13 @@
 namespace App\Livewire\Student;
 
 use App\Models\CourseReview;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Course;
 use App\Models\Batch;
 use Livewire\Attributes\Layout;
-
 class MyCourse extends Component
 {
     public $courses;
@@ -17,6 +17,9 @@ class MyCourse extends Component
     public $selectedBatch = [];
     public $editingCourseId = null;
     public $progress = [];
+    public $studentUpdatedBatch = [];
+
+
 
     public $showModal = false;
 
@@ -44,15 +47,21 @@ class MyCourse extends Component
     {
         $this->user_id = Auth::id();
         $this->hasAccess = auth()->user()->hasAccess();
+        
         if (!$this->hasAccess) {
             $this->showAccessModal = true;
         }
+        
         $this->loadCourses();
         $this->initializeBatchSelections();
         $this->calculateProgress();
-        $this->courses = auth()->user()->courses;
+        
+        // Initialize batch update tracking
         foreach ($this->courses as $course) {
             $this->selectedBatch[$course->id] = $course->pivot->batch_id;
+            
+            // Check if student previously updated this batch
+            $this->studentUpdatedBatch[$course->id] = (bool) $course->pivot->batch_updated;
         }
     }
 
@@ -163,7 +172,7 @@ class MyCourse extends Component
 
     private function calculateProgress()
     {
-        $currentDate = now(); 
+        $currentDate = now();
         foreach ($this->courses as $course) {
             $purchaseDate = $course->pivot->created_at ?? null;
 
@@ -182,11 +191,9 @@ class MyCourse extends Component
 
             if ($currentDate->greaterThan($endDate)) {
                 $this->progress[$course->id] = 100;
-            }
-            elseif ($currentDate->lessThan($purchaseDate)) {
+            } elseif ($currentDate->lessThan($purchaseDate)) {
                 $this->progress[$course->id] = 0;
-            }
-            else {
+            } else {
                 $progressPercentage = ($daysElapsed / $totalDays) * 100;
                 $this->progress[$course->id] = min(100, max(0, round($progressPercentage)));
             }
@@ -204,30 +211,53 @@ class MyCourse extends Component
             $this->showAccessModal = true;
             return;
         }
-
-        $this->validate([
-            "selectedBatch.$courseId" => 'required|exists:batches,id'
-        ]);
-
+    
         try {
+            DB::beginTransaction();
+    
+            $enrollment = auth()->user()->courses()
+                ->where('course_id', $courseId)
+                ->firstOrFail();
+    
+            if (empty($this->selectedBatch[$courseId])) {
+                throw new \Exception('Please select a batch');
+            }
+    
+            $batch = Batch::where('id', $this->selectedBatch[$courseId])
+                ->where('course_id', $courseId)
+                ->firstOrFail();
+    
             auth()->user()->courses()->updateExistingPivot($courseId, [
-                'batch_id' => $this->selectedBatch[$courseId]
+                'batch_id' => $batch->id,
+                'batch_updated' => true
             ]);
-
+    
+            $this->studentUpdatedBatch[$courseId] = true;
             $this->editingCourseId = null;
-            $this->closeView(); // Add this line to close the modal
-            $this->dispatch('alert', [
+            $this->viewingCourse = false;
+            $this->selectedCourse = null;
+    
+            $this->loadCourses();
+            $this->initializeBatchSelections();
+    
+            DB::commit();
+    
+            $this->dispatch('notify', [
                 'type' => 'success',
-                'message' => 'Batch updated successfully!'
+                'message' => 'Batch selection updated successfully!',
+                'timeout' => 3000
             ]);
+    
         } catch (\Exception $e) {
-            $this->dispatch('alert', [
+            DB::rollBack();
+            
+            $this->dispatch('notify', [
                 'type' => 'error',
-                'message' => 'Failed to update batch. Please try again.'
+                'message' => $e->getMessage(),
+                'timeout' => 5000
             ]);
         }
     }
-
     #[Layout('components.layouts.student')]
     public function render()
     {

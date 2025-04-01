@@ -152,7 +152,7 @@ class ViewStudent extends Component
     {
         $student = User::find($studentId);
         if ($student) {
-            $this->barcode = 'STU' . str_pad($studentId, 8, '0', STR_PAD_LEFT);
+            $this->barcode = 'LS' . str_pad($studentId, 8, '0', STR_PAD_LEFT);
             $student->barcode = $this->barcode;
             $student->save();
             $this->showBarcodeModal = true;  // Show the modal

@@ -10,6 +10,7 @@ use App\Models\ShippingDetail;
 use App\Models\User;
 use App\Services\GemService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
@@ -82,6 +83,38 @@ class CheckOutPage extends Component
         
 
     }
+
+    //updating postal code and address 
+    public function updatedPostalCode($value)
+    {
+        // dd("shaique");
+        if (strlen($value) == 6) { // Ensure it's a valid 6-digit Indian PIN code
+            $this->fetchAddressFromPostalCode($value);
+        }
+    }
+
+    public function fetchAddressFromPostalCode($postalCode)
+    {
+        try {
+            $response = Http::get("https://api.postalpincode.in/pincode/{$postalCode}");
+            $data = $response->json();
+
+            if (isset($data[0]['Status']) && $data[0]['Status'] === "Success") {
+                $postOffice = $data[0]['PostOffice'][0] ?? null;
+
+                if ($postOffice) {
+                    $this->city = $postOffice['District'];
+                    $this->state = $postOffice['State'];
+                    $this->country = "india";
+                }
+            } else {
+                session()->flash('error', 'Invalid postal code or no data found.');
+            }
+        } catch (\Exception $e) {
+            session()->flash('error', 'Failed to fetch postal data.');
+        }
+    }
+
     public function editShippingAddress()
     {
         $this->shippingDetailsFilled = ShippingDetail::where('user_id', Auth::id())->first();
@@ -130,7 +163,7 @@ class CheckOutPage extends Component
 
         // $this->reset();
 
-    }
+    } 
 
     public function completeRedemption()
     {
