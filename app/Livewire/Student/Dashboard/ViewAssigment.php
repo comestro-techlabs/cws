@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Http;
 use App\Models\Assignments;
 use App\Models\Assignment_upload;
 use Livewire\Attributes\Layout;
-
+use App\Services\GemService;
 
 class ViewAssigment extends Component
 {
@@ -74,6 +74,17 @@ class ViewAssigment extends Component
         return null;
     }
 
+    private function checkConsecutiveSubmissions($studentId)
+    {
+        $onTimeCount = Assignment_upload::where('student_id', $studentId)
+            ->whereHas('assignment', function($query) {
+                $query->whereRaw('submitted_at <= due_date');
+            })
+            ->count();
+
+        return $onTimeCount % 7 === 0 ? true : false;
+    }
+
     public function submit()
     {
         if (!$this->hasAccess) {
@@ -135,7 +146,24 @@ class ViewAssigment extends Component
                 if ($this->assignment->isOverdue()) {
                     session()->flash('warning', 'Assignment submitted after due date.');
                 } else {
-                    session()->flash('success', 'Assignment submitted successfully.');
+                    try {
+                        $gemService = new GemService();
+                        $studentId = auth()->id();
+                        
+                        // Award regular 10 gems for on-time submission
+                        $gemService->earnedGem(10, 'Earned By Submitting Assignment.');
+                        
+                        // Check if student has completed 7 on-time submissions
+                        if ($this->checkConsecutiveSubmissions($studentId)) {
+                            // Award bonus 100 gems
+                            $gemService->earnedGem(100, 'Bonus for completing 7 on-time assignments!');
+                            session()->flash('success', 'Assignment submitted successfully. You earned 10 gems plus 100 bonus gems for completing 7 assignments on time!');
+                        } else {
+                            session()->flash('success', 'Assignment submitted successfully. You earned 10 gems!');
+                        }
+                    } catch (\Exception $e) {
+                        session()->flash('success', 'Assignment submitted successfully, but failed to award gems.');
+                    }
                 }
             }
         } catch (\Exception $e) {

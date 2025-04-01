@@ -50,6 +50,7 @@
     "course_id": 1,
     "level": "beginners",
     "status": true,
+    "is_public": false,
     "questions": [
         {
             "question": "What is...",
@@ -130,6 +131,15 @@
                                             class="rounded border-gray-300 text-indigo-600 shadow-sm"
                                             {{ $status ? 'checked' : '' }}>
                                         <span class="ml-2 text-sm text-gray-600">Active</span>
+                                    </label>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="flex items-center">
+                                        <input type="checkbox" wire:model="is_public"
+                                            class="rounded border-gray-300 text-indigo-600 shadow-sm"
+                                            {{ $is_public ? 'checked' : '' }}>
+                                        <span class="ml-2 text-sm text-gray-600">Public</span>
                                     </label>
                                 </div>
 

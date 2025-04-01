@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('course_id')->constrained()->onDelete('cascade');
             $table->enum('level', ['beginners', 'intermediate', 'hard']);
             $table->boolean('status')->default(true);
+            $table->boolean('is_public')->default(false);
             $table->timestamps();
         });
     }

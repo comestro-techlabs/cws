@@ -10,6 +10,7 @@ use Livewire\Attributes\On;
 use Livewire\Component;
 use App\Models\Course;
 use Carbon\Carbon;
+use App\Services\GemService;
 
 #[Layout('components.layouts.exam')]
 class ShowQuiz extends Component
@@ -192,55 +193,78 @@ public function verifyPasscode()
     }
 
     public function submitExam()
-{
-    $this->dispatch('loading');
-    if (!$this->courseId || !$this->examId) {
-        return redirect()->route('student.takeExam');
-    }
+    {
+        $this->dispatch('loading');
+        if (!$this->courseId || !$this->examId) {
+            return redirect()->route('student.takeExam');
+        }
 
-    // Save the current answer before submitting
-    $this->answers[$this->quizzes[$this->currentQuestion]->id] = $this->currentAnswer;
+        // Save the current answer before submitting
+        $this->answers[$this->quizzes[$this->currentQuestion]->id] = $this->currentAnswer;
 
-    $examUser = ExamUser::firstOrNew([
-        'user_id' => Auth::id(),
-        'exam_id' => $this->examId
-    ]);
-
-    if ($examUser->attempts >= 1) {
-        return redirect()->route('v2.student.quiz', ['courseId' => $this->courseId])
-            ->with('error', 'Maximum attempts reached');
-    }
-
-    $examUser->attempts = ($examUser->attempts ?? 0) + 1;
-    $totalMarks = 0;
-
-    // Loop through all quizzes, not just the answered ones
-    foreach ($this->quizzes as $quiz) {
-        $quizId = $quiz->id;
-        $selectedOption = $this->answers[$quizId] ?? null; // Null if no answer provided
-        
-        $isCorrect = $selectedOption === $quiz->correct_answer;
-        $marks = $isCorrect ? $quiz->marks : 0;
-        $totalMarks += $marks;
-
-        Answer::create([
+        $examUser = ExamUser::firstOrNew([
             'user_id' => Auth::id(),
-            'quiz_id' => $quizId,
-            'exam_id' => $this->examId,
-            'selected_option' => $selectedOption, // Will be null for unanswered questions
-            'obtained_marks' => $marks,
-            'attempt' => $examUser->attempts,
+            'exam_id' => $this->examId
         ]);
+
+        if ($examUser->attempts >= 1) {
+            return redirect()->route('v2.student.quiz', ['courseId' => $this->courseId])
+                ->with('error', 'Maximum attempts reached');
+        }
+
+        $examUser->attempts = ($examUser->attempts ?? 0) + 1;
+        $totalMarks = 0;
+        $correctAnswers = 0;
+
+        try {
+            // Loop through all quizzes first to count correct answers
+            foreach ($this->quizzes as $quiz) {
+                $quizId = $quiz->id;
+                $selectedOption = $this->answers[$quizId] ?? null;
+                
+                $isCorrect = $selectedOption === $quiz->correct_answer;
+                $marks = $isCorrect ? $quiz->marks : 0;
+                $totalMarks += $marks;
+
+                if ($isCorrect) {
+                    $correctAnswers++;
+                }
+
+                Answer::create([
+                    'user_id' => Auth::id(),
+                    'quiz_id' => $quizId,
+                    'exam_id' => $this->examId,
+                    'selected_option' => $selectedOption,
+                    'obtained_marks' => $marks,
+                    'attempt' => $examUser->attempts,
+                ]);
+            }
+
+            // Award gems based on total correct answers
+            $totalGems = $correctAnswers * 10;
+            if ($totalGems > 0) {
+                $gemService = new GemService();
+                $gemService->earnedGem($totalGems, "Earned {$totalGems} gems for correct answers in exam");
+            }
+
+            $examUser->total_marks = $totalMarks;
+            $examUser->save();
+
+            $this->submitted = true;
+            $this->dispatch('exitFullscreen');
+
+            $message = $totalGems > 0 
+                ? "Exam submitted successfully! You earned {$totalGems} gems for {$correctAnswers} correct answers!" 
+                : "Exam submitted successfully!";
+
+            return redirect()->route('v2.student.examResult', ['examId' => $this->examId])
+                ->with('success', $message);
+
+        } catch (\Exception $e) {
+            return redirect()->route('v2.student.examResult', ['examId' => $this->examId])
+                ->with('success', 'Exam submitted successfully, but there was an error awarding gems.');
+        }
     }
-
-    $examUser->total_marks = $totalMarks;
-    $examUser->save();
-
-    $this->submitted = true;
-    $this->dispatch('exitFullscreen');
-    return redirect()->route('v2.student.examResult', ['examId' => $this->examId])
-        ->with('success', 'Exam submitted successfully!');
-}
 
     #[On('fullscreenChanged')]
     public function handleFullscreenChange($value)

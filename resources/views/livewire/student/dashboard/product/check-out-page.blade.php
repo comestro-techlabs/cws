@@ -116,6 +116,12 @@
                                     @error('address_line') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
 
                                 </div>
+                                <div>
+                                    <label for="postal-code" class="block text-sm font-medium text-gray-700 mb-1">Postal Code</label>
+                                    <input type="text" id="postal-code" wire:model.live.debounce.500ms="postal_code" class="w-full px-3 py-2 text-gray-800 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none transition duration-200">
+                                    @error('postal_code') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+
+                                </div>
 
                                 <div>
                                     <label for="city" class="block text-sm font-medium text-gray-700 mb-1">City</label>
@@ -128,13 +134,6 @@
                                     <label for="state" class="block text-sm font-medium text-gray-700 mb-1">State/Province</label>
                                     <input type="text" id="state" wire:model="state" class="w-full px-3 py-2 text-gray-800 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none transition duration-200">
                                     @error('state') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-
-                                </div>
-
-                                <div>
-                                    <label for="postal-code" class="block text-sm font-medium text-gray-700 mb-1">Postal Code</label>
-                                    <input type="text" id="postal-code" wire:model="postal_code" class="w-full px-3 py-2 text-gray-800 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none transition duration-200">
-                                    @error('postal_code') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
 
                                 </div>
 
@@ -157,7 +156,7 @@
                                 </div>
 
                                 <div class="md:col-span-2 flex justify-end">
-                                    <button type="submit" class="px-4 py-2 bg-primary text-white rounded-lg focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition duration-200">
+                                    <button type="submit" class="px-4 py-2 bg-purple-500 text-white rounded-lg focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition duration-200">
                                         Submit
                                     </button>
                                 </div>
