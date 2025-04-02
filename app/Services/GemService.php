@@ -12,9 +12,9 @@ class GemService
     public $user_id;
     public $user;
 
-    public function __construct()
+    public function __construct($user_id = null)
     {
-        $this->user_id = Auth::id();
+        $this->user_id =  $user_id ?? Auth::id();
         $this->user = User::where('id', $this->user_id)->first();
     }
 
