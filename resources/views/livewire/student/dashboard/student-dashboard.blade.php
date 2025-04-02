@@ -300,7 +300,8 @@
                             </div>
                             <div class="w-full bg-gray-200 rounded-full h-2">
                                 <div class="bg-blue-600 h-2 rounded-full"
-                                    style="width: {{ ($gems / $nextMilestone) * 100 }}%"></div>
+                                    style="width: {{ $nextMilestone > 0 ? min(($gems / $nextMilestone) * 100, 100) : 0 }}%">
+                                </div>
                             </div>
                             <div class="flex items-center mt-2">
                                 @if($nextProductImage)
@@ -308,7 +309,11 @@
                                          class="w-8 h-8 object-cover rounded-full mr-2">
                                 @endif
                                 <p class="text-sm text-gray-500">
-                                    {{ $nextMilestone - $gems }} gems until {{ $nextProductName }}
+                                    @if($gems > 0)
+                                        {{ $nextMilestone - $gems }} gems until {{ $nextProductName }}
+                                    @else
+                                        Earn your first gems to unlock rewards!
+                                    @endif
                                 </p>
                             </div>
                         </div>

@@ -236,7 +236,7 @@ class StudentDashboard extends Component
         }
 
         // Calculate next milestone from products (only active ones)
-        $nextProduct = Products::where('points', '>', $this->gems)
+        $nextProduct = Products::where('points', '>', 0)
             ->where('status', 'active')
             ->orderBy('points', 'asc')
             ->first();
@@ -246,9 +246,8 @@ class StudentDashboard extends Component
             $this->nextProductName = $nextProduct->name;
             $this->nextProductImage = $nextProduct->imageUrl;
         } else {
-            // Set defaults when no product is found
-            $this->nextMilestone = $this->gems + 100; // Set next milestone 100 points higher than current gems
-            $this->nextProductName = 'Next Level';
+            $this->nextMilestone = 100; // Default milestone
+            $this->nextProductName = 'First Reward';
             $this->nextProductImage = null;
         }
 
@@ -291,8 +290,6 @@ class StudentDashboard extends Component
                 'offlineThursdayAttendance' => null,
                 'onlineTotalWeekdays' => 0,
                 'offlineTotalWeekdays' => 0,
-                'onlinePresentDays' => 0,
-                'offlinePresentDays' => 0,
                 'showPercentage' => false
             ];
         }
