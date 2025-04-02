@@ -13,6 +13,8 @@ use App\Models\Assignments;
 use App\Models\ExamUser;
 use App\Models\CourseUser;
 use App\Models\Assignment;
+use App\Models\Products;
+use Picqer\Barcode\BarcodeGeneratorPNG;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -36,7 +38,7 @@ class StudentDashboard extends Component
     public $attendance = 0;
     public $completedTasks = 0;
     public $totalTasks = 0;
-    public $nextMilestone = 100;
+    public $nextMilestone;
     public $weekDays = []; // You can keep this if still needed elsewhere, or remove it
     public $studentId;
     public $attendancePercentage;
@@ -46,6 +48,10 @@ class StudentDashboard extends Component
     public $offlineAttendancePercentage = 0; // Added missing property
     public $onlineThursdayAttendance = null; // Already declared
     public $offlineThursdayAttendance = null; // Already declared
+    public $nextProductName;
+    public $nextProductImage;
+    public $barcode;
+    public $barcodeImage;
 
     public function __toString()
     {
@@ -60,7 +66,10 @@ class StudentDashboard extends Component
 
         $studentId = Auth::id();
         $this->studentId = $studentId;
-        $user = User::findOrFail($studentId);
+        $user = User::with('courses.batches')->findOrFail($studentId);
+        
+        // Get barcode from user model
+        $this->barcode = $user->barcode;
 
         // Add first login check using session
         if (!session()->has('welcomed')) {
@@ -224,6 +233,21 @@ class StudentDashboard extends Component
 
         foreach ($this->payments as $payment) {
             $payment->progress = $payment->course_progress ?? 0;
+        }
+
+        // Calculate next milestone from products (only active ones)
+        $nextProduct = Products::where('points', '>', $this->gems)
+            ->where('status', 'active')
+            ->orderBy('points', 'asc')
+            ->first();
+        $this->nextMilestone = $nextProduct ? $nextProduct->points : $this->gems;
+        $this->nextProductName = $nextProduct ? $nextProduct->name : 'No reward available';
+        $this->nextProductImage = $nextProduct ? $nextProduct->imageUrl : null;
+
+        // Generate barcode image if user has a barcode
+        if ($user->barcode) {
+            $generator = new BarcodeGeneratorPNG();
+            $this->barcodeImage = base64_encode($generator->getBarcode($user->barcode, $generator::TYPE_CODE_128));
         }
     }
 
@@ -442,7 +466,10 @@ class StudentDashboard extends Component
             'offlineAttendancePercentage' => $this->offlineAttendancePercentage,
             'onlineThursdayAttendance' => $this->onlineThursdayAttendance,
             'offlineThursdayAttendance' => $this->offlineThursdayAttendance,
-            'showPercentage' => $this->loadAttendance()['showPercentage']
+            'showPercentage' => $this->loadAttendance()['showPercentage'],
+            'nextProductName' => $this->nextProductName,
+            'nextProductImage' => $this->nextProductImage,
+            'barcodeImage' => $this->barcodeImage,
         ]);
     }
 }

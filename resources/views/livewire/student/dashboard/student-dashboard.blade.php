@@ -189,6 +189,43 @@
 
             <!-- Sidebar -->
             <div class="space-y-6">
+                <!-- Student Barcode -->
+                @if(Auth::user()->barcode)
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                    <div class="border-b border-gray-200">
+                        <div class="px-6 py-4 flex justify-between items-center">
+                            <h2 class="text-lg font-semibold text-gray-900">My Barcode</h2>
+                            <span class="text-sm text-gray-500">ID: {{ Auth::user()->id }}</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex flex-col items-center space-y-4">
+                            <!-- Barcode Image -->
+                            <div class="bg-white p-4 rounded-lg shadow-inner w-full">
+                                <div class="flex justify-center">
+                                    <img src="data:image/png;base64,{{ $barcodeImage }}" 
+                                         alt="Student Barcode"
+                                         class="max-w-[200px]">
+                                </div>
+                                <p class="text-center mt-2 font-mono text-sm text-gray-700">{{ Auth::user()->barcode }}</p>
+                            </div>
+                            
+                            <!-- Instructions -->
+                            <div class="text-center">
+                                <p class="text-sm text-gray-600">Scan this barcode for attendance</p>
+                                <div class="mt-2 flex items-center justify-center text-xs text-gray-500">
+                                    <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm0-2a6 6 0 100-12 6 6 0 000 12z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Keep this code private
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endif
+
                 <!-- Weekly Attendance -->
                 <div class="bg-white rounded-lg shadow-sm overflow-hidden">
                     <div class="border-b border-gray-200">
@@ -268,8 +305,15 @@
                                 <div class="bg-blue-600 h-2 rounded-full"
                                     style="width: {{ ($gems / $nextMilestone) * 100 }}%"></div>
                             </div>
-                            <p class="text-sm text-gray-500 mt-2">{{ $nextMilestone - $gems }} gems until next reward
-                            </p>
+                            <div class="flex items-center mt-2">
+                                @if($nextProductImage)
+                                    <img src="{{ asset('storage/' . $nextProductImage) }}" alt="{{ $nextProductName }}" 
+                                         class="w-8 h-8 object-cover rounded-full mr-2">
+                                @endif
+                                <p class="text-sm text-gray-500">
+                                    {{ $nextMilestone - $gems }} gems until {{ $nextProductName }}
+                                </p>
+                            </div>
                         </div>
                         <button
                             class="w-full px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-200">
