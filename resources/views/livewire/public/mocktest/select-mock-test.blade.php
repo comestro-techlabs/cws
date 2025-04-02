@@ -96,9 +96,9 @@
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-xl font-semibold text-gray-800">Available Tests</h2>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         @forelse($mockTests as $test)
-                            <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300">
+                            <div class="bg-gray-50 rounded-xl shadow-sm hover:shadow-md transition-all duration-300">
                                 <div class="p-5">
                                     <h3 class="text-lg font-medium text-gray-900">{{ $test->test_title }}</h3>
                                     <div class="mt-4 space-y-2">
@@ -117,13 +117,12 @@
                                             <span>{{ count($test->questions) }} Questions</span>
                                         </div>
                                     </div>
-                                    <div class="mt-6">
+                                    <div class="">
                                         @if($test->attempted)
-                                            <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                            <div class="text-center   rounded-lg">
                                                 <p class="text-sm text-gray-600 mb-2">Test Completed</p>
-                                                <p class="font-medium text-gray-800">Score: {{ $test->score }}/{{ $test->total_questions }}</p>
                                                 <a href="{{ route('public.mocktest.result', $test->id) }}"
-                                                    class="mt-3 inline-flex justify-center items-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700">
+                                                    class=" inline-flex justify-center items-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700">
                                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
                                                     </svg>
