@@ -20,7 +20,7 @@ class OurProducts extends Component
     public $totalAvailableGems;
     public $user_id;
     public $showAccessModal = false;
-    public $hasAccess = false;
+    public $hasAccess = false; 
 
     public function mount(){
         $this->categories = ProductCategories::pluck('name', 'id');

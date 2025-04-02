@@ -45,7 +45,7 @@
                             </div>
                             @error('password') <span class="text-sm text-red-600 mt-1">{{ $message }}</span> @enderror
                         </div>
-
+ 
                         <div class="flex items-center justify-between">
                             <div class="flex items-center">
                                 <input type="checkbox" wire:model="remember" id="remember"
