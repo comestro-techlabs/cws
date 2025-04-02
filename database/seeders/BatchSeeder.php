@@ -38,9 +38,7 @@ class BatchSeeder extends Seeder
                     'course_id' => $course->id,
                     'batch_name' => $batchNames[array_rand($batchNames)] . ' Batch ' . ($i + 1),
                     'start_date' => $startDate,
-                    'end_date' => $startDate->copy()->addWeeks($duration),
-                    'total_seats' => rand(20, 40),
-                    'available_seats' => rand(5, 20),
+                    'end_date' => $startDate->copy()->addWeeks($duration),                    
                 ]);
             }
         }
