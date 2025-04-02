@@ -240,9 +240,17 @@ class StudentDashboard extends Component
             ->where('status', 'active')
             ->orderBy('points', 'asc')
             ->first();
-        $this->nextMilestone = $nextProduct ? $nextProduct->points : $this->gems;
-        $this->nextProductName = $nextProduct ? $nextProduct->name : 'No reward available';
-        $this->nextProductImage = $nextProduct ? $nextProduct->imageUrl : null;
+
+        if ($nextProduct) {
+            $this->nextMilestone = $nextProduct->points;
+            $this->nextProductName = $nextProduct->name;
+            $this->nextProductImage = $nextProduct->imageUrl;
+        } else {
+            // Set defaults when no product is found
+            $this->nextMilestone = $this->gems + 100; // Set next milestone 100 points higher than current gems
+            $this->nextProductName = 'Next Level';
+            $this->nextProductImage = null;
+        }
 
         // Generate barcode image if user has a barcode
         if ($user->barcode) {
