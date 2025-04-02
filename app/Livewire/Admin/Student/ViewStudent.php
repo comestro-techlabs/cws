@@ -6,7 +6,7 @@ use App\Livewire\Student\Course;
 use App\Models\Course as ModelsCourse;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
-use Livewire\Component;
+use Livewire\Component; 
 use App\Models\User;
 use App\Models\Payment;
 use Carbon\Carbon;
@@ -14,6 +14,7 @@ use Livewire\Attributes\On;
 use App\Models\SubscriptionPlan;
 use App\Models\Subscription;
 use App\Models\Batch;
+use App\Services\GemService;
 use DB;
 
 #[Layout('components.layouts.admin')]
@@ -168,6 +169,7 @@ class ViewStudent extends Component
     {
         try {
             $course_data = ModelsCourse::find($course_id);
+            // dd($course_data);
             if ($course_data) {
                 Payment::create([
                     'student_id' => $this->studentId,
@@ -189,7 +191,18 @@ class ViewStudent extends Component
                     'year' => now()->year,
                     'ip_address' => request()->ip()
                 ]);
+                try { //here we have to find the student first then add the gems to his row
+                    // $user = User::where('id', $this->studentId)->first();
 
+                    $gemService = new GemService($this->studentId);
+                    $gemsToAward = (int)($course_data->discounted_fees * 0.10); // 10% of course fees
+                    // dd($gemsToAward);
+                    $gemService->earnedGem($gemsToAward, 'Welcome bonus for enrolling in course');
+                } catch (\Exception $e) {
+                    // \Log::error('Failed to award enrollment gems: ' . $e->getMessage());
+                session()->flash('success', 'Course enrolled successfully');
+
+                }
                 $this->dispatch('courseEnrollDataUpdated')->self();
                 $this->isModalOpen = false; // Close modal after successful enrollment
                 session()->flash('success', 'Course enrolled successfully');
@@ -226,6 +239,8 @@ class ViewStudent extends Component
             $payment->method = 'cash';
             $payment->payment_date = now();
             $payment->save();
+
+           
 
             // yha se paymentUpdated event dispatch krke fetchPayments function call kra hai, isi component me
             $this->dispatch('paymentUpdated')->self();
