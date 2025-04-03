@@ -338,13 +338,26 @@
                             </button>
                         </div>
 
-                        <div class="relative mb-6">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                </svg>
+                        <div class="flex space-x-4 mb-6">
+                            <div class="flex-1 relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                    </svg>
+                                </div>
+                                <input type="text" 
+                                    wire:model.live.debounce.300ms="searchTerm" 
+                                    placeholder="Search courses..." 
+                                    class="w-full pl-10 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
                             </div>
-                            <input type="text" wire:model="searchTerm" placeholder="Search courses..." class="w-full pl-10 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+                            
+                            <select wire:model.live="courseFilter" 
+                                class="bg-gray-50 border border-gray-200 rounded-lg py-3 px-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+                                <option value="all">All Courses</option>
+                                @foreach($allCourses as $course)
+                                    <option value="{{ $course->id }}">{{ $course->title }}</option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <div class="max-h-64 overflow-y-auto pr-1 mb-6">
@@ -372,7 +385,13 @@
                                     </button>
                                 </li>
                                 @empty
-                                <li class="p-6 text-center text-gray-500">No courses available.</li>
+                                <li class="p-6 text-center text-gray-500">
+                                    @if($searchTerm)
+                                        No courses found matching "{{ $searchTerm }}"
+                                    @else
+                                        No courses available.
+                                    @endif
+                                </li>
                                 @endforelse
                             </ul>
                         </div>

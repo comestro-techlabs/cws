@@ -43,6 +43,9 @@ class ViewStudent extends Component
     public $selectedBatch;
     public $barcode;
     public $showBarcodeModal = false;
+    public $searchTerm = '';
+    public $courseFilter = 'all';
+    public $allCourses;
 
     public function mount($id)
     {
@@ -91,6 +94,7 @@ class ViewStudent extends Component
             ->with('plan')
             ->orderBy('created_at', 'desc')
             ->get();
+        $this->allCourses = ModelsCourse::orderBy('title')->get();
     }
     #[On('updateMembershipData')]
     public function renderMembership()
@@ -349,6 +353,32 @@ class ViewStudent extends Component
         } catch (\Exception $e) {
             session()->flash('error', 'Failed to assign batch');
         }
+    }
+
+    public function getFilteredCoursesProperty()
+    {
+        $query = ModelsCourse::query()
+            ->when($this->searchTerm, function ($query) {
+                $query->where('title', 'like', '%' . $this->searchTerm . '%')
+                    ->orWhere('description', 'like', '%' . $this->searchTerm . '%');
+            })
+            ->whereNotIn('id', $this->purchasedCourses->pluck('course_id')->toArray());
+
+        if ($this->courseFilter !== 'all') {
+            $query->where('id', $this->courseFilter);
+        }
+
+        return $query->orderBy('title')->get();
+    }
+
+    public function updatedSearchTerm()
+    {
+        $this->availableCourses = $this->filteredCourses;
+    }
+
+    public function updatedCourseFilter()
+    {
+        $this->availableCourses = $this->filteredCourses;
     }
 
     public function render()
