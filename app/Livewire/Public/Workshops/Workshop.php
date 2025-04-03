@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Illuminate\Support\Facades\Log;
 use Razorpay\Api\Api;
+use Str;
 
 class Workshop extends Component
 {
@@ -58,7 +59,7 @@ class Workshop extends Component
             $receipt = 'WS_' . time();
 
             $api = new Api(config('services.razorpay.key'), config('services.razorpay.secret'));
-            
+
             $order = $api->order->create([
                 'amount' => $workshop->fees * 100,
                 'currency' => 'INR',
@@ -87,6 +88,28 @@ class Workshop extends Component
 
         } catch (\Exception $e) {
             return $this->dispatch('showError', message: 'Payment initialization failed: ' . $e->getMessage());
+        }
+    }
+
+    public function share($workshopId)
+    {
+        $workshop = ModelsWorkshop::find($workshopId);
+    
+        if ($workshop && $workshop->active) {
+            $imageUrl = $workshop->image ? asset('storage/workshops/' . $workshop->image) : asset('images/default-image.png');
+            $title = $workshop->title ?? 'Untitled Workshop';
+    
+            $data = [
+                'title' => $title,
+                'image' => $imageUrl,
+            ];
+    
+            Log::info('Dispatching shareWorkshop event', $data);
+            $this->dispatch('shareWorkshop', $data);
+    
+            $this->shareMessage = "Link for '{$title}' is ready to share!";
+        } else {
+            $this->shareMessage = 'Workshop not found or unpublished.';
         }
     }
 

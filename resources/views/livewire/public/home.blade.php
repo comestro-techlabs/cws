@@ -325,40 +325,36 @@
 
 </div>
 <script>
-    document.addEventListener('livewire:initialized', function () {
-        Livewire.on('shareCourse', (event) => {
-            console.log('Share event received:', event);
-
-            const data = Array.isArray(event) ? event[0] : event;
-            const url = data.url || window.location.href;
-            const title = data.title || 'Untitled Course';
-            const description = data.description || 'Learn something new!';
-            const image = data.image || '';
-
-            if (navigator.share) {
-                navigator.share({
-                    title: title,
-                    text: description,
-                    url: url,
-                })
-                    .then(() => console.log('Shared successfully'))
-                    .catch((error) => console.log('Error sharing:', error));
-            } else {
-                // If native sharing is not available, open social media links
-                const socialMediaLinks = [
-                    { name: "Facebook", url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}` },
-                    { name: "Twitter", url: `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}` },
-                    { name: "LinkedIn", url: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}` },
-                    { name: "WhatsApp", url: `https://api.whatsapp.com/send?text=${encodeURIComponent(title + ' ' + url)}` }
-                ];
-
-                let popup = window.open("", "Share", "width=500,height=400,left=100,top=100");
-                let shareHTML = `<h3>Share this course:</h3>`;
-                socialMediaLinks.forEach(link => {
-                    shareHTML += `<p><a href="${link.url}" target="_blank">${link.name}</a></p>`;
-                });
-                popup.document.write(shareHTML);
-            }
-        });
-    });
+     document.addEventListener('livewire:initialized', function () {
+         Livewire.on('shareCourse', (event) => {
+             console.log('Share event received:', event);
+ 
+             const data = Array.isArray(event) ? event[0] : event;
+             const url = data.url || window.location.href;
+             const title = data.title || 'Untitled Course';
+             const description = data.description || 'Learn something new!';
+             const image = data.image || '';
+ 
+             const shareText = `${title}\n${description}\n${url}\nImage: ${image}`;
+ 
+             if (navigator.share) {
+                 navigator.share({
+                     title: title,
+                     text: `${title}\n${description}`,
+                     url: url,
+                 })
+                 .then(() => console.log('Shared successfully'))
+                 .catch((error) => console.log('Error sharing:', error));
+             } else {
+                 navigator.clipboard.writeText(shareText)
+                     .then(() => {
+                         alert(`Copied to clipboard:\n${shareText}`);
+                     })
+                     .catch((error) => {
+                         console.log('Error copying:', error);
+                         alert(`Failed to copy. Here’s the info:\n${shareText}`);
+                     });
+             }
+         });
+     });
 </script>
