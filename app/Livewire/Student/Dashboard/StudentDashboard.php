@@ -23,7 +23,7 @@ use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 
 class StudentDashboard extends Component
-{
+{ 
     public $courses;
     public $messages;
     public $exams;
@@ -197,10 +197,10 @@ class StudentDashboard extends Component
             $this->firstAttempts = [];
             $this->secondAttempts = [];
         }
-
+        //using this to show enrolled course meeting links and more
         $this->courses = Course::whereHas('students', function ($query) use ($studentId) {
             $query->where('user_id', $studentId);
-        })->take(2)->get();
+        })->get();
 
         $this->payments = Payment::where('student_id', $studentId)
             ->whereNotNull('course_id')

@@ -61,9 +61,12 @@ class ManageWorkshop extends Component
     {
         $this->loading = true; 
         $validated = $this->validate();
-
-        $imagePath = $this->image->store('workshops', 'public');
-
+    
+        $imagePath = null;
+        if ($this->image) {
+            $imagePath = $this->image->store('workshops', 'public');
+        }
+    
         Workshop::create([
             'title' => $validated['title'],
             'date' => $validated['date'],
@@ -73,7 +76,7 @@ class ManageWorkshop extends Component
             'fees' => $validated['fees'],
             'status' => $validated['status'],
         ]);
-
+    
         $this->resetFields();
         $this->showForm = false;
         $this->dispatch('notice', type: 'info', text: 'Workshop created successfully!');
