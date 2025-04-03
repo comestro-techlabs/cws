@@ -40,6 +40,13 @@
                                 {{ $mockTest->status ? 'Active' : 'Inactive' }}
                             </span>
                         </p>
+                        <p class="flex items-center gap-2 text-gray-600">
+                            <i class="bi bi-globe {{ $mockTest->is_public ? 'text-green-500' : 'text-red-500' }}"></i>
+                            <span class="font-medium">Access:</span> 
+                            <span class="px-2 py-1 rounded-full text-xs {{ $mockTest->is_public ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                {{ $mockTest->is_public ? 'Public' : 'Student' }}
+                            </span>
+                        </p>
                     </div>
                 </div>
 
