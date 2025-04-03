@@ -27,7 +27,10 @@ return [
     'resend' => [
         'key' => env('RESEND_KEY'),
     ],
-
+    'razorpay'=>[
+        'key' => env('RAZORPAY_KEY'),
+        'secret' => env('RAZORPAY_SECRET'),
+    ],
     'google' => [
         'client_id' => env('GOOGLE_DRIVE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_DRIVE_CLIENT_SECRET'),

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->date('date');
             $table->time('time');
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->string('active')->default(false);
             $table->string('fees');
             $table->enum('status', ['pending', 'success', 'failed'])->default('pending');
