@@ -198,7 +198,9 @@
                                         <th scope="col"
                                             class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Status</th>
-
+                                        <th scope="col"
+                                            class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Public</th>
                                         <th scope="col"
                                             class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Actions</th>
@@ -225,7 +227,17 @@
                                                     </span>
                                                 </button>
                                             </td>
-
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                <button wire:click="togglePublic({{ $test->id }})" wire:loading.attr="disabled"
+                                                    class="px-2 py-1 rounded text-white {{ $test->is_public ? 'bg-green-500 hover:bg-green-600' : 'bg-red-500 hover:bg-red-600' }} disabled:opacity-50">
+                                                    <span wire:loading.remove wire:target="togglePublic({{ $test->id }})">
+                                                        {{ $test->is_public ? 'Public' : 'Student' }}
+                                                    </span>
+                                                    <span wire:loading wire:target="togglePublic({{ $test->id }})">
+                                                        Updating...
+                                                    </span>
+                                                </button>
+                                            </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                                                 <div class="flex gap-2 item-center justify-center">
                                                     <button wire:click="edit({{ $test->id }})"

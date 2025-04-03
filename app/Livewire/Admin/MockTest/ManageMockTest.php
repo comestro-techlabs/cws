@@ -218,6 +218,20 @@ class ManageMockTest extends Component
         $this->loadingStates['toggling'] = false;
     }
 
+    public function togglePublic($id)
+    {
+        $this->loadingStates['toggling'] = true;
+        try {
+            $test = MockTest::findOrFail($id);
+            $test->update(['is_public' => !$test->is_public]);
+            $this->dispatch('notice', type: 'success', text: 'Public status updated successfully!');
+        } catch (\Exception $e) {
+            $this->dispatch('notice', type: 'error', text: 'Error updating public status');
+        } finally {
+            $this->loadingStates['toggling'] = false;
+        }
+    }
+
     public function confirmDelete($id)
     {
         $this->deleteId = $id;
