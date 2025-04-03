@@ -138,27 +138,7 @@
         </div>
    
 </div>
-@else
-        <!-- Restricted view -->
-        <div class="restricted-content">
-            <div class="alert alert-warning">
-                <h3>Access Restricted</h3>
-                <p>You cannot access assignments due to the following reasons:</p>
-                <ul>
-                    @foreach($accessStatus['reasons'] as $reason)
-                        <li>{{ $reason }}</li>
-                    @endforeach
-                </ul>
-                <div class="action-buttons">
-                    {{-- <a href="{{ route('subscription.plans') }}" class="btn btn-primary">
-                        View Subscription Plans
-                    </a>
-                    <a href="{{ route('courses.index') }}" class="btn btn-secondary">
-                        Browse Courses
-                    </a> --}}
-                </div>
-            </div>
-        </div>
+
     @endif
 <style>
 .hide-scrollbar::-webkit-scrollbar {
