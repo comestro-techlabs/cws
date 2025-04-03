@@ -15,10 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->date('date');
-            $table->time('time');
+            $table->string('time');
             $table->string('image')->nullable();
             $table->string('active')->default(false);
             $table->string('fees');
+            $table->json('description')->nullable();
             $table->enum('status', ['pending', 'success', 'failed'])->default('pending');
             // $table->string('transaction_id');
             $table->timestamps();

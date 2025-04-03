@@ -15,6 +15,7 @@ class Workshop extends Model
         'image',
         'active',
         'fees',
+        'description',
         'status'
     ];
 
@@ -22,6 +23,7 @@ class Workshop extends Model
     protected $casts = [
         'active' => 'boolean',
         'date' => 'date:Y-m-d', // Ensure proper date casting
+        'description'=>'array',
     ];
     public function payment()
     {

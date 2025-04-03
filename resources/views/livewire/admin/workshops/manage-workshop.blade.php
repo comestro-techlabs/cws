@@ -3,20 +3,20 @@
         <div class="w-full mb-8">
             <div class="bg-white shadow-md rounded-lg p-6">
                 <div class="flex flex-wrap justify-between items-center py-4">
-                    <h2 class="md:text-xl text-lg font-semibold text-slate-500 border-s-4 border-s-purple-800 pl-3 mb-5">
+                    <h2
+                        class="md:text-xl text-lg font-semibold text-slate-500 border-s-4 border-s-purple-800 pl-3 mb-5">
                         Manage Workshops
                     </h2>
                 </div>
                 <div class="mb-6 flex flex-col md:flex-row md:justify-between md:items-center gap-4">
-                    
-            
+
+
                     <div class="w-full md:w-1/3">
-                        <input wire:model.debounce.500ms="search" type="text" 
-                               placeholder="Search workshops by title..." 
-                               class="w-full rounded-md border p-2 border-gray-300  focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                        <input wire:model.debounce.500ms="search" type="text" placeholder="Search workshops by title..."
+                            class="w-full rounded-md border p-2 border-gray-300  focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                     </div>
-                    <button wire:click="showCreateForm" 
-                            class="bg-purple-800 text-white px-4 py-2 rounded-md hover:bg-purple-600">
+                    <button wire:click="showCreateForm"
+                        class="bg-purple-800 text-white px-4 py-2 rounded-md hover:bg-purple-600">
                         Create New Workshop
                     </button>
                 </div>
@@ -61,11 +61,11 @@
 
                                         <div>
                                             <label class="block text-sm font-medium text-gray-700">Time</label>
-                                            <input wire:model="time" type="time"
+                                            <input wire:model="time" type="text"
                                                 class="mt-1 p-2 block w-full rounded-md border-gray-300  focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                                             @error('time')
                                                 <span class="text-red-500 text-sm">{{ $message }}</span>
-                                            @enderror
+                                            @enderror                                           
                                         </div>
 
                                         <div>
@@ -98,8 +98,7 @@
                                                         class="mt-2 max-w-full h-auto rounded">
                                                 @elseif ($editing && $existingImage)
                                                     <p class="text-sm text-gray-600">Current Image:</p>
-                                                    <img src="{{ Storage::url($existingImage) }}"
-                                                        alt="Current workshop image"
+                                                    <img src="{{ Storage::url($existingImage) }}" alt="Current workshop image"
                                                         class="mt-2 max-w-full h-auto rounded">
                                                 @endif
                                             </div>
@@ -128,13 +127,33 @@
                                             @enderror
                                         </div>
 
-                                        <div class="flex items-center">
-                                            <input wire:model="active" type="checkbox"
-                                                class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
-                                            <label class="ml-2 block text-sm text-gray-900">Active</label>
-                                        </div>
-                                    </div>
 
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700">Description</label>
+                                        @foreach ($description as $index => $desc)
+                                            <div class="flex items-center gap-2 mt-1">
+                                                <input wire:model="description.{{ $index }}" type="text"
+                                                    class="p-2 block w-full rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                                <button type="button" wire:click="removeDescriptionField({{ $index }})"
+                                                    class="bg-red-600 text-white px-2 py-1 rounded-md hover:bg-red-700">
+                                                    Remove
+                                                </button>
+                                            </div>
+                                            @error("description.{$index}")
+                                                <span class="text-red-500 text-sm">{{ $message }}</span>
+                                            @enderror
+                                        @endforeach
+                                        <button type="button" wire:click="addDescriptionField"
+                                            class="mt-2 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">
+                                            Add Description
+                                        </button>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input wire:model="active" type="checkbox"
+                                            class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                                        <label class="ml-2 block text-sm text-gray-900">Active</label>
+                                    </div>
                                     <div class="mt-6 flex gap-4 justify-end">
                                         <button type="submit"
                                             class="bg-purple-800 text-white px-4 py-2 rounded-md hover:bg-purple-600">
@@ -187,18 +206,22 @@
                             @forelse ($workshops as $workshop)
                                 <tr class="hover:bg-gray-50">
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {{ $workshop->title }}</td>
+                                        {{ $workshop->title }}
+                                    </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {{ $workshop->date->format('Y-m-d') }}</td>
+                                        {{ $workshop->date->format('Y-m-d') }}
+                                    </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {{ $workshop->time }}</td>
+                                        {{ $workshop->time }}
+                                    </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                         <img src="{{ Storage::url($workshop->image) }}" alt="{{ $workshop->title }}"
                                             class="h-16 w-16 object-cover rounded">
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
 
-                                        {{ $workshop->fees == 0 ? 'Free' : '₹' . $workshop->fees }}</td>
+                                        {{ $workshop->fees == 0 ? 'Free' : '₹' . $workshop->fees }}
+                                    </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                         {{ $workshop->status }}
                                     </td>
