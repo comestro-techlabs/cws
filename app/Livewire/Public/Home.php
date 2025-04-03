@@ -45,15 +45,18 @@ class Home extends Component
     $course = Course::find($courseId);
     
     if ($course && $course->published) {
-        $shareUrl = route('public.courseDetail', ['slug' => $course->slug]);
-        $imageUrl = $course->image ? asset('storage/' . $course->image) : asset('images/default-course.jpg');
+        $shareUrl = route('public.courseDetail', ['slug' => $course->slug]);            
+        $imageUrl = asset('storage/course_images/' . $course->course_image);
+        dd($imageUrl);
         $title = $course->title ?? 'Untitled Course';
-        $description = $course->description ? Str::limit($course->description, 100) : "{$course->duration} Weeks • " . ucfirst($course->course_type);
-
+        $description = $course->description 
+            ? Str::limit($course->description, 100) 
+            : "{$course->duration} Weeks • " . ucfirst($course->course->course_type);
+            
         $data = [
             'url' => $shareUrl,
             'title' => $title,
-            'image' => $imageUrl,
+            'image' => $imageUrl, 
             'description' => $description,
         ];
 
@@ -65,7 +68,6 @@ class Home extends Component
         $this->shareMessage = 'Course not found or unpublished.';
     }
 }
-
 
     #[Layout('components.layouts.app')]
     public function render()
