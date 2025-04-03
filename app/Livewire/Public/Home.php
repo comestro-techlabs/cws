@@ -47,7 +47,6 @@ class Home extends Component
     if ($course && $course->published) {
         $shareUrl = route('public.courseDetail', ['slug' => $course->slug]);            
         $imageUrl = asset('storage/course_images/' . $course->course_image);
-        dd($imageUrl);
         $title = $course->title ?? 'Untitled Course';
         $description = $course->description 
             ? Str::limit($course->description, 100) 
