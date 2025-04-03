@@ -41,28 +41,31 @@ class Home extends Component
     }
 
     public function share($courseId)
-    {
-        $course = $this->courses->firstWhere('id', $courseId) ?? Course::find($courseId);
-        
-        if ($course && $course->published) {
-            $shareUrl = route('public.courseDetail', ['slug' => $course->slug]);
-            $imageUrl = $course->image ? asset('storage/' . $course->image) : asset('images/default-course.jpg');
-            $title = $course->title ?? 'Untitled Course';
-            $description = $course->description ? Str::limit($course->description, 100) : "{$course->duration} Weeks • " . ucfirst($course->course_type);
+{
+    $course = Course::find($courseId);
+    
+    if ($course && $course->published) {
+        $shareUrl = route('public.courseDetail', ['slug' => $course->slug]);
+        $imageUrl = $course->image ? asset('storage/' . $course->image) : asset('images/default-course.jpg');
+        $title = $course->title ?? 'Untitled Course';
+        $description = $course->description ? Str::limit($course->description, 100) : "{$course->duration} Weeks • " . ucfirst($course->course_type);
 
-            $data = [
-                'url' => $shareUrl,
-                'title' => $title,
-                'image' => $imageUrl,
-                'description' => $description,
-            ];
-            \Log::info('Dispatching shareCourse', $data);
-            $this->dispatch('shareCourse', $data);
-            $this->shareMessage = "Link for '{$title}' ready to share!";
-        } else {
-            $this->shareMessage = 'Course not found or unpublished.';
-        }
+        $data = [
+            'url' => $shareUrl,
+            'title' => $title,
+            'image' => $imageUrl,
+            'description' => $description,
+        ];
+
+        \Log::info('Dispatching shareCourse event', $data);
+
+        $this->dispatch('shareCourse', $data);
+        $this->shareMessage = "Link for '{$title}' ready to share!";
+    } else {
+        $this->shareMessage = 'Course not found or unpublished.';
     }
+}
+
 
     #[Layout('components.layouts.app')]
     public function render()
