@@ -9,6 +9,7 @@ use App\Models\Workshop;
 use Livewire\Attributes\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
+
 #[Layout('components.layouts.admin')] 
 #[Title('Manage Workshop')]
 class ManageWorkshop extends Component
@@ -22,7 +23,7 @@ class ManageWorkshop extends Component
     public $date;
 
     #[Rule('required')]
-    public $time;
+    public $time; 
 
     #[Rule('nullable|image|max:1024')]
     public $image;
@@ -31,6 +32,10 @@ class ManageWorkshop extends Component
     public $imagePreview;
 
     public $active = false;
+
+    #[Rule('array')] // Validate as an array
+    #[Rule(['description.*' => 'nullable|string|max:1000'])] // Each item in the array
+    public $description = [];
 
     #[Rule('required|numeric|min:0')]
     public $fees;
@@ -57,26 +62,38 @@ class ManageWorkshop extends Component
         $this->editing = false;
     }
 
+    public function addDescriptionField()
+    {
+        $this->description[] = ''; // Add a new empty description field
+    }
+
+    public function removeDescriptionField($index)
+    {
+        unset($this->description[$index]); // Remove the description at the given index
+        $this->description = array_values($this->description); // Re-index the array
+    }
+
     public function create()
     {
         $this->loading = true; 
         $validated = $this->validate();
-    
+
         $imagePath = null;
         if ($this->image) {
             $imagePath = $this->image->store('workshops', 'public');
         }
-    
+
         Workshop::create([
             'title' => $validated['title'],
             'date' => $validated['date'],
-            'time' => $validated['time'],
+            'time'=> $validated['time'],
             'image' => $imagePath,
             'active' => $this->active,
             'fees' => $validated['fees'],
+            'description' => $validated['description'], // Store as JSON or array
             'status' => $validated['status'],
         ]);
-    
+
         $this->resetFields();
         $this->showForm = false;
         $this->dispatch('notice', type: 'info', text: 'Workshop created successfully!');
@@ -85,13 +102,14 @@ class ManageWorkshop extends Component
 
     public function edit($id)
     {
-        $this->loading = true; // Show loading
+        $this->loading = true;
         $workshop = Workshop::findOrFail($id);
         $this->workshopId = $id;
         $this->title = $workshop->title;
         $this->date = $workshop->date->toDateString();
         $this->time = $workshop->time;
         $this->existingImage = $workshop->image;
+        $this->description = $workshop->description ?? []; // Load as array, default to empty if null
         $this->image = null;
         $this->imagePreview = null;
         $this->active = $workshop->active;
@@ -99,12 +117,12 @@ class ManageWorkshop extends Component
         $this->status = $workshop->status;
         $this->editing = true;
         $this->showForm = true;
-        $this->loading = false; // Hide loading
+        $this->loading = false;
     }
 
     public function update()
     {
-        $this->loading = true; // Show loading
+        $this->loading = true;
         $validated = $this->validate();
 
         $workshop = Workshop::findOrFail($this->workshopId);
@@ -112,7 +130,8 @@ class ManageWorkshop extends Component
         $data = [
             'title' => $validated['title'],
             'date' => $validated['date'],
-            'time' => $validated['time'],
+            'time'=>$validated['time'],
+            'description' => $validated['description'], // Update description
             'active' => $this->active,
             'fees' => $validated['fees'],
             'status' => $validated['status'],
@@ -129,15 +148,15 @@ class ManageWorkshop extends Component
         $this->resetFields();
         $this->showForm = false;
         $this->dispatch('notice', type: 'info', text: 'Workshop updated successfully!');
-        $this->loading = false; // Hide loading
+        $this->loading = false;
     }
 
     public function delete($id)
     {
-        $this->loading = true; // Show loading
+        $this->loading = true;
         Workshop::findOrFail($id)->delete();
         $this->dispatch('notice', type: 'info', text: 'Workshop deleted successfully!');
-        $this->loading = false; // Hide loading
+        $this->loading = false;
     }
 
     public function cancel()
@@ -151,6 +170,7 @@ class ManageWorkshop extends Component
         $this->title = '';
         $this->date = '';
         $this->time = '';
+        $this->description = []; // Reset to empty array
         $this->image = null;
         $this->existingImage = null;
         $this->imagePreview = null;
@@ -164,9 +184,9 @@ class ManageWorkshop extends Component
 
     public function render()
     {
-        $workshops = Workshop::where('title', 'like', '%' . $this->search . '%') // Add search filter
+        $workshops = Workshop::where('title', 'like', '%' . $this->search . '%')
             ->latest()
             ->paginate(10);
-        return view('livewire.admin.workshops.manage-workshop',compact('workshops'));
+        return view('livewire.admin.workshops.manage-workshop', compact('workshops'));
     }
 }
