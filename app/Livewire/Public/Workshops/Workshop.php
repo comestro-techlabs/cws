@@ -12,8 +12,7 @@ use Str;
 
 class Workshop extends Component
 {
-    public $workshops, $user_id, $userPayments;
-
+    public $workshops, $user_id, $userPayments, $shareMessage;
     public function mount()
     {
         $this->workshops = ModelsWorkshop::get();
@@ -122,7 +121,30 @@ class Workshop extends Component
             $this->dispatch('showError', message: 'Failed to process payment: ' . $e->getMessage());
         }
     }
+    public function share($workshopId)
+    {
+        $workshop = ModelsWorkshop::find($workshopId);
 
+        if ($workshop) {
+            $shareUrl = route('workshops.view', $workshop->id); 
+            $imageUrl = asset('storage/' . $workshop->image);
+            $title = $workshop->title ?? 'Untitled Workshop';
+            
+            $data = [
+                'url' => $shareUrl,
+                'title' => $title,
+                'image' => $imageUrl,
+                
+            ];
+
+            Log::info('Dispatching shareWorkshop event', $data);
+
+            $this->dispatch('shareWorkshop', $data); // Changed event name to 'shareWorkshop'
+            $this->shareMessage = "Link for '{$title}' ready to share!";
+        } else {
+            $this->shareMessage = 'Workshop not found.';
+        }
+    }
     public function render()
     {
         return view('livewire.public.workshops.workshop');
