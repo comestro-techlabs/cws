@@ -49,6 +49,16 @@ class ManageStudent extends Component
         $this->resetPage();
     }
 
+    public function status($studentId)
+    {
+        $student = User::find($studentId);
+        if ($student) {
+            $student->is_active = !$student->is_active;
+            $student->save();
+        }
+        // No need to set $this->status here; Livewire will re-render the list
+    }
+
     public function generateBarcode($studentId)
     {
         $student = User::find($studentId);
