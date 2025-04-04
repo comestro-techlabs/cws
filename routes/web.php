@@ -83,6 +83,7 @@ use App\Livewire\Student\Marksheet\StudentMarksheet;
 use App\Livewire\Student\Certificate\ShowCertificate;
 use App\Livewire\Admin\MockTest\ManageQuestions;
 use App\Livewire\Admin\Store\ManageProductCategories;
+use App\Livewire\Admin\Subscription\ViewSubcriptions;
 use App\Livewire\Auth\ForgetPassword;
 use App\Livewire\Auth\ResetPassword;
 use App\Livewire\Public\Myeditor\Monaco;
@@ -204,6 +205,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/logout', [Dashboad::class, 'logout'])->name('admin.logout');
         Route::get('/category', ManageCategory::class)->name('admin.category');
         Route::get('/student', ManageStudent::class)->name('admin.student');
+        Route::get('/view-subscription', ViewSubcriptions::class)->name('admin.view-subscription');
         // Route::get('/student/{id}', ViewStudent::class)->name('admin.student.view');
         //course routes
         Route::get('/course', InsertCourse::class)->name('admin.course');

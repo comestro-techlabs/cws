@@ -139,7 +139,7 @@ class CallingPlacedStudent extends Component
         }
     }
 
-    public function render()
+    public function render() 
     {
         $placedStudents = PlacedStudent::query()
             ->when($this->search, function ($query) {

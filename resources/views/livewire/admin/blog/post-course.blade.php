@@ -9,7 +9,7 @@
             </div>
             <div class="flex gap-3 items-center"> 
                 <input type="text" wire:model.live.debounce.500ms="search"
-                    placeholder="Search courses..."
+                    placeholder="Search courses..." 
                     class="border rounded px-3 py-2 w-full md:w-64">
                 <button wire:click="openModal"
                     class="bg-purple-800 hover:bg-purple-600 text-white font-bold px-4 py-2 rounded">

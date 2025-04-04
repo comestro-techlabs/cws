@@ -58,7 +58,7 @@ class Dashboad extends Component
         $this->users = User::latest()->take(3)->get();
         $this->enquiries = Enquiry::latest()->take(3)->get();
         $this->subscriptions = Subscription::where('status', 'active')
-        ->whereBetween('ends_at', [Carbon::now(), Carbon::now()->addDays(15)])
+        ->whereBetween('ends_at', [Carbon::now(), Carbon::now()->addDays(15)])->take(4)
         ->get();
     }
        
