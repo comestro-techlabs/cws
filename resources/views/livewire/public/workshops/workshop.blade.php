@@ -21,7 +21,7 @@
         <div class="p-2 sm:p-8 bg-gray-100">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 ml-4 md:ml-36">
                 @forelse ($workshops as $workshop)
-                    <a href="{{ route('workshops.view', $workshop->id) }}" class="block">
+                    <a wire:navigate href="{{ route('workshops.view', $workshop->id) }}" class="block">
                         <div class="flex flex-col rounded-lg p-5 bg-white relative hover:shadow-lg transition-shadow">
                             <img src="{{ asset('storage/' . $workshop->image) }}" alt=""
                                 class="w-full h-64 object-cover object-top rounded mb-4">
