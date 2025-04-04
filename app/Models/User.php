@@ -32,6 +32,9 @@ class User extends Authenticatable
         'education_qualification',
         'is_member',
         'gem',
+        'image',
+        'status',
+        'barcode'
     ];
 
     /**
