@@ -55,7 +55,7 @@ class Workshop extends Component
 
             Log::info('Payment created with ID: ' . $payment->id);
 
-            return $this->dispatch('initWorkshopPayment', [ 
+            return $this->dispatch('initWorkshopPayment', [ // Changed event name for clarity
                 'key' => config('services.razorpay.key'),
                 'amount' => (int)($workshop->fees * 100),
                 'order_id' => $order->id,
