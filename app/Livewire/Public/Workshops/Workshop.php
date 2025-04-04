@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Illuminate\Support\Facades\Log;
 use Razorpay\Api\Api;
-use Str; 
+use Str;
 
 class Workshop extends Component
 {
@@ -24,40 +24,14 @@ class Workshop extends Component
             ->toArray();
     }
 
-    public function enrollWorkshop($workshopId)
-    {
-        try {
-            $workshop = ModelsWorkshop::findOrFail($workshopId);
-            $receipt_no = 'WS_' . time();
-
-            $payment = Payment::create([
-                'student_id' => auth()->id(),
-                'workshop_id' => $workshopId,
-                'receipt_no' => $receipt_no,
-                'total_amount' => $workshop->fees,
-                'status' => 'pending',
-                'payment_status' => 'initiated',
-                'ip_address' => request()->ip(),
-            ]);
-
-            return $this->dispatch('initiateWorkshopPayment', [
-                'workshop_id' => $workshopId,
-                'amount' => $workshop->fees,
-                'payment_id' => $payment->id,
-                'receipt_no' => $receipt_no
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Workshop enrollment error: ' . $e->getMessage());
-            session()->flash('error', 'Failed to initiate enrollment');
-        }
-    }
-
     public function initiatePayment($workshopId)
     {
-        // dd($workshopId);
-                try {
+        try {
+            if (in_array($workshopId, $this->userPayments)) {
+                return $this->dispatch('showError', message: 'You have already enrolled in this workshop.');
+            }
+
             $workshop = ModelsWorkshop::findOrFail($workshopId);
-            // dd($workshop);
             $receipt = 'WS_' . time();
 
             $api = new Api(config('services.razorpay.key'), config('services.razorpay.secret'));
@@ -69,7 +43,6 @@ class Workshop extends Component
                 'payment_capture' => 1
             ]);
 
-            // Create initial payment record
             $payment = Payment::create([
                 'student_id' => auth()->id(),
                 'workshop_id' => $workshopId,
@@ -79,39 +52,74 @@ class Workshop extends Component
                 'payment_status' => 'initiated',
                 'order_id' => $order->id
             ]);
-// dd($payment);
-            return $this->dispatch('initializePayment', [
+
+            Log::info('Payment created with ID: ' . $payment->id);
+
+            return $this->dispatch('initWorkshopPayment', [ 
                 'key' => config('services.razorpay.key'),
-                'amount' => $workshop->fees * 100,
+                'amount' => (int)($workshop->fees * 100),
                 'order_id' => $order->id,
                 'payment_id' => $payment->id,
-                'workshop_title' => $workshop->title
+                'workshop_title' => $workshop->title,
+                'prefill' => [
+                    'name' => Auth::user()->name,
+                    'email' => Auth::user()->email
+                ]
             ]);
-
         } catch (\Exception $e) {
+            Log::error('Initiate payment error: ' . $e->getMessage());
             return $this->dispatch('showError', message: 'Payment initialization failed: ' . $e->getMessage());
         }
     }
 
-    public function share($workshopId)
+    public function handlePaymentSuccess($response)
     {
-        $workshop = ModelsWorkshop::find($workshopId);
-    
-        if ($workshop && $workshop->active) {
-            $imageUrl = $workshop->image ? asset('storage/workshops/' . $workshop->image) : asset('images/default-image.png');
-            $title = $workshop->title ?? 'Untitled Workshop';
-    
-            $data = [
-                'title' => $title,
-                'image' => $imageUrl,
+        Log::info('handlePaymentSuccess called with response:', $response);
+
+        try {
+            $payment = Payment::where('order_id', $response['razorpay_order_id'])->first();
+            if (!$payment) {
+                Log::error('Payment not found for order_id: ' . $response['razorpay_order_id']);
+                return $this->dispatch('showError', message: 'Payment record not found.');
+            }
+
+            $api = new Api(config('services.razorpay.key'), config('services.razorpay.secret'));
+            $attributes = [
+                'razorpay_signature' => $response['razorpay_signature'],
+                'razorpay_payment_id' => $response['razorpay_payment_id'],
+                'razorpay_order_id' => $response['razorpay_order_id']
             ];
-            // dd('sharing shareWorkshop shaique');
-            Log::info('Dispatching shareWorkshop event', $data);
-            $this->dispatch('shareWorkshop', $data);
-    
-            $this->shareMessage = "Link for '{$title}' is ready to share!";
-        } else {
-            $this->shareMessage = 'Workshop not found or unpublished.';
+
+            $api->utility->verifyPaymentSignature($attributes);
+            Log::info('Payment signature verified successfully');
+
+            $updated = $payment->update([
+                'status' => 'captured',
+                'payment_status' => 'completed',
+                'razorpay_payment_id' => $response['razorpay_payment_id'],
+                'razorpay_order_id' => $response['razorpay_order_id'],
+                'razorpay_signature' => $response['razorpay_signature'],
+                'payment_date' => now()
+            ]);
+
+            if ($updated) {
+                Log::info('Payment updated successfully:', $payment->fresh()->toArray());
+            } else {
+                Log::error('Failed to update payment for order_id: ' . $response['razorpay_order_id']);
+                return $this->dispatch('showError', message: 'Failed to update payment status.');
+            }
+
+            $this->userPayments = Payment::where("student_id", $this->user_id)
+                ->where("status", "captured")
+                ->pluck('workshop_id')
+                ->toArray();
+            Log::info('Updated userPayments:', $this->userPayments);
+
+            session()->flash('message', 'Payment successful! You are now enrolled in the workshop.');
+            $this->dispatch('paymentCompleted');
+        } catch (\Exception $e) {
+            Log::error('Payment handling error: ' . $e->getMessage());
+            $this->dispatch('showError', message: 'Failed to process payment: ' . $e->getMessage());
         }
     }
 

@@ -10,7 +10,12 @@
     <!-- Add these meta tags -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://cdn.tailwindcss.com"></script>
-    <meta name="livewire:script-url" content="{{ asset('livewire/livewire.js') }}">
+
+    <meta property="og:title" content="{{ $title ?? 'Untitled Course' }}">
+    <meta property="og:description" content="{{ $description ?? 'Check out this course!' }}">
+    <meta property="og:url" content="{{ $url ?? url()->current() }}">
+    <meta property="og:image" content="{{ $image ?? asset('storage/default_image.jpg') }}">
+    <meta property="og:type" content="website">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
