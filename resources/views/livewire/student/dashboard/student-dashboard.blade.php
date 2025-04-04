@@ -142,7 +142,7 @@
                                 </svg>
                                 <div>
                                     <h4 class="text-gray-900 font-medium">Course Details</h4>
-                                    <p class="text-sm text-gray-500 mt-1">{{ $course->description }}</p>
+                                    
                                 </div>
                             </div>
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
