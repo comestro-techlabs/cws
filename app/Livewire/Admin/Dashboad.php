@@ -17,6 +17,7 @@ use App\Models\Payment;
 use App\Models\Course;
 use App\Models\Batch;
 use App\Models\Enquiry;
+use App\Models\Subscription;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -45,6 +46,7 @@ class Dashboad extends Component
     public $courses;
     public $users;
     public $enquiries;
+    public $subscriptions;
 
 
 
@@ -55,14 +57,19 @@ class Dashboad extends Component
         $this->courses = Course::latest()->take(3)->get();
         $this->users = User::latest()->take(3)->get();
         $this->enquiries = Enquiry::latest()->take(3)->get();
+        $this->subscriptions = Subscription::where('status', 'active')
+        ->whereBetween('ends_at', [Carbon::now(), Carbon::now()->addDays(15)])->take(4)
+        ->get();
     }
+       
+    
        
     public function togglePaymentDetails()
     {
         $this->showPaymentDetails = !$this->showPaymentDetails;
     }
 
-    private function calculateStats()
+    private function calculateStats() 
     {
         $currentYear = Carbon::now()->year;
         $currentMonth = Carbon::now()->month;

@@ -83,6 +83,7 @@ use App\Livewire\Student\Marksheet\StudentMarksheet;
 use App\Livewire\Student\Certificate\ShowCertificate;
 use App\Livewire\Admin\MockTest\ManageQuestions;
 use App\Livewire\Admin\Store\ManageProductCategories;
+use App\Livewire\Admin\Subscription\ViewSubcriptions;
 use App\Livewire\Auth\ForgetPassword;
 use App\Livewire\Auth\ResetPassword;
 use App\Livewire\Public\Myeditor\Monaco;
@@ -92,6 +93,7 @@ use App\Livewire\Public\AboutUs;
 use App\Livewire\Public\ContactUs;
 use App\Livewire\Public\TermsAndConditions;
 use App\Livewire\Public\PrivacyPolicy;
+use App\Livewire\Public\Workshops\ViewWorkshop;
 
 // Livewire::setUpdateRoute(function ($handle) {
 //     return Route::post('/learnsyntax/public/livewire/update', $handle);
@@ -103,6 +105,8 @@ Route::get('/courses', AllCourses::class)->name('public.viewallcourses.all-cours
 Route::get('/free-courses',FreeCourses::class)->name('public.free-courses');
 Route::get('/contact', ContactPage::class)->name('public.contactUs');
 Route::get('/workshops', Workshop::class)->name('public.workshop');
+Route::get('/workshops/{id}', ViewWorkshop::class)->name('workshops.view');
+
 Route::get('/about-us', AboutUs::class)->name('public.about.us');
 Route::get('/contact-us', ContactUs::class)->name('public.contact.us');
 Route::get('/terms-and-conditions', TermsAndConditions::class)->name('public.terms');
@@ -201,6 +205,7 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/logout', [Dashboad::class, 'logout'])->name('admin.logout');
         Route::get('/category', ManageCategory::class)->name('admin.category');
         Route::get('/student', ManageStudent::class)->name('admin.student');
+        Route::get('/view-subscription', ViewSubcriptions::class)->name('admin.view-subscription');
         // Route::get('/student/{id}', ViewStudent::class)->name('admin.student.view');
         //course routes
         Route::get('/course', InsertCourse::class)->name('admin.course');
