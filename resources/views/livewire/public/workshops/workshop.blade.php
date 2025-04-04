@@ -107,8 +107,8 @@
                         });
                     },
                     prefill: {
-                        name: "{{ auth()->user()->name }}",
-                        email: "{{ auth()->user()->email }}"
+                        name: "{{ auth()->user()->name ?? '' }}",
+                        email: "{{ auth()->user()->email ?? ''}}"
                     },
                     theme: {
                         color: "#2563EB"
