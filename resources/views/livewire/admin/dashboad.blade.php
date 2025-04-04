@@ -20,7 +20,7 @@
                             </div>
                         </div>
                     </div>
-
+ 
                     <div class="flex-1 bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
                         <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
                             <a href="{{ route('admin.placedstudent.index') }}" wire:navigate
@@ -303,7 +303,7 @@
                 </div>
 
                 <!-- Recent Course Activity -->
-                <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+               {{-- <div class="bg-white rounded-xl shadow-sm overflow-hidden">
                     <div class="p-6 border-b border-gray-100">
                         <h2 class="text-lg font-semibold text-gray-900">Recent Notifications</h2>
                     </div>
@@ -338,10 +338,54 @@
                                 </div>
                             @endforeach
                         @endif
+                        
+
                     </div>
                 </div>
             </div>
-        </div>
+        </div>--}}
+        <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+    <div class="p-6 border-b border-gray-100">
+        <h2 class="text-lg font-semibold text-gray-900">Expiring Subscriptions</h2>
+    </div>
+    <div class="divide-y divide-gray-100">
+        @if ($subscriptions->isEmpty())
+            <div class="p-4 flex items-center justify-center text-gray-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400 mr-2" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M13 16h-1v-4h-1m1-4h.01M12 18.5a1.5 1.5 0 01-1.5-1.5h3a1.5 1.5 0 01-1.5 1.5zM12 3a9 9 0 00-9 9v3.5l-1.5 1.5h21l-1.5-1.5V12a9 9 0 00-9-9z" />
+                </svg>
+                No expiring subscriptions
+            </div>
+        @else
+            @foreach ($subscriptions as $subscription)
+                <div class="p-4 hover:bg-gray-50 transition-colors">
+                    <div class="flex items-start">
+                        <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-yellow-100 rounded-full">
+                            <svg class="w-4 h-4 text-yellow-600" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
+                                </path>
+                            </svg>
+                        </span>
+                        <div class="ml-3">
+                            <p class="text-sm font-medium text-gray-900">{{ $subscription->user->name }}</p>
+                            <p class="text-sm text-gray-500">
+                                Subscription ends on: 
+                                <span class="font-semibold text-red-600">
+                                    {{ $subscription->ends_at->format('M d, Y') }}
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        @endif
+    </div>
+</div>
+
     </div>
 
     <style>
