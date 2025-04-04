@@ -92,6 +92,7 @@ use App\Livewire\Public\AboutUs;
 use App\Livewire\Public\ContactUs;
 use App\Livewire\Public\TermsAndConditions;
 use App\Livewire\Public\PrivacyPolicy;
+use App\Livewire\Public\Workshops\ViewWorkshop;
 
 // Livewire::setUpdateRoute(function ($handle) {
 //     return Route::post('/learnsyntax/public/livewire/update', $handle);
@@ -103,6 +104,8 @@ Route::get('/courses', AllCourses::class)->name('public.viewallcourses.all-cours
 Route::get('/free-courses',FreeCourses::class)->name('public.free-courses');
 Route::get('/contact', ContactPage::class)->name('public.contactUs');
 Route::get('/workshops', Workshop::class)->name('public.workshop');
+Route::get('/workshops/{id}', ViewWorkshop::class)->name('workshops.view');
+
 Route::get('/about-us', AboutUs::class)->name('public.about.us');
 Route::get('/contact-us', ContactUs::class)->name('public.contact.us');
 Route::get('/terms-and-conditions', TermsAndConditions::class)->name('public.terms');
