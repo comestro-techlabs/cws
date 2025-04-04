@@ -34,7 +34,8 @@ class User extends Authenticatable
         'gem',
         'image',
         'status',
-        'barcode'
+        'barcode',
+        'is_active',
     ];
 
     /**
