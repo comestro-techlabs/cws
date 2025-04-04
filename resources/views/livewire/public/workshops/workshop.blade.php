@@ -15,9 +15,9 @@
                         @forelse ($workshops as $workshop)
 
                             <div class="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 p-6">
-                                <img src="{{ asset('storage/' . $workshop->image) }}" alt="{{ $workshop->title }}"
+                   {{--             <img src="{{ asset('storage/' . $workshop->image) }}" alt="{{ $workshop->title }}"
                                     class="w-full h-56 object-cover rounded-lg mb-4"
-                                    onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">
+                                    onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">--}}
 
                                 <h3 class="text-xl font-semibold text-gray-900 mb-3 text-center">
                                     {{ $workshop->title }}
@@ -122,10 +122,11 @@
             @this.on('showError', (data) => {
                 alert(data.message);
             });
-        });
-
-
-        document.addEventListener('livewire:initialized', function () {
+        });      
+    </script>
+@endpush
+<script>
+ document.addEventListener('livewire:initialized', function () {
             Livewire.on('shareWorkshop', (event) => {
                 console.log('Share event received:', event);
 
@@ -156,5 +157,4 @@
                 }
             });
         });
-    </script>
-@endpush
+</script>

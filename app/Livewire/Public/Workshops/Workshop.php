@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Illuminate\Support\Facades\Log;
 use Razorpay\Api\Api;
-use Str;
+use Str; 
 
 class Workshop extends Component
 {
@@ -54,8 +54,10 @@ class Workshop extends Component
 
     public function initiatePayment($workshopId)
     {
-        try {
+        // dd($workshopId);
+                try {
             $workshop = ModelsWorkshop::findOrFail($workshopId);
+            // dd($workshop);
             $receipt = 'WS_' . time();
 
             $api = new Api(config('services.razorpay.key'), config('services.razorpay.secret'));
@@ -77,7 +79,7 @@ class Workshop extends Component
                 'payment_status' => 'initiated',
                 'order_id' => $order->id
             ]);
-
+// dd($payment);
             return $this->dispatch('initializePayment', [
                 'key' => config('services.razorpay.key'),
                 'amount' => $workshop->fees * 100,
@@ -103,7 +105,7 @@ class Workshop extends Component
                 'title' => $title,
                 'image' => $imageUrl,
             ];
-    
+            // dd('sharing shareWorkshop shaique');
             Log::info('Dispatching shareWorkshop event', $data);
             $this->dispatch('shareWorkshop', $data);
     
