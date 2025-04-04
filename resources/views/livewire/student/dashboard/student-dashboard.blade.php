@@ -291,7 +291,7 @@
                             <!-- Barcode Image -->
                             <div class="bg-white p-4 rounded-lg shadow-inner w-full">
                                 <div class="flex justify-center">
-                                    <img src="data:image/png;base64,{{ $barcodeImage }}" 
+                                    <img src="data:image/png;base64,{{ Auth::user()->barcode }}" 
                                          alt="Student Barcode"
                                          class="max-w-[200px]">
                                 </div>

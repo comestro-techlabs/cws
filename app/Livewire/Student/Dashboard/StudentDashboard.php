@@ -259,191 +259,187 @@ class StudentDashboard extends Component
     }
 
     public function loadAttendance()
-    {
-        $student = User::find($this->studentId);
-    
-        if (!$student) {
-            return [
-                'onlineWeekDays' => collect(),
-                'offlineWeekDays' => collect(),
-                'onlineAttendancePercentage' => 0,
-                'offlineAttendancePercentage' => 0,
-                'onlineThursdayAttendance' => null,
-                'offlineThursdayAttendance' => null,
-                'onlineTotalWeekdays' => 0,
-                'offlineTotalWeekdays' => 0,
-                'onlinePresentDays' => 0,
-                'offlinePresentDays' => 0,
-                'showPercentage' => false
-            ];
-        }
-    
-        $courses = $student->courses()->with('batches')->get();
-    
-        if ($courses->isEmpty()) {
-            return [
-                'onlineWeekDays' => collect(),
-                'offlineWeekDays' => collect(),
-                'onlineAttendancePercentage' => 0,
-                'offlineAttendancePercentage' => 0,
-                'onlineThursdayAttendance' => null,
-                'offlineThursdayAttendance' => null,
-                'onlineTotalWeekdays' => 0,
-                'offlineTotalWeekdays' => 0,
-                'showPercentage' => false
-            ];
-        }
-    
-        $onlineWeekDays = collect();
-        $offlineWeekDays = collect();
-        $onlineTotalWeekdays = 0;
-        $offlineTotalWeekdays = 0;
-        $today = Carbon::today();
-        $onlineThursdayAttendance = null;
-        $offlineThursdayAttendance = null;
-    
-        // Get earliest start date and latest end date across all courses
-        $startDate = null;
-        $endDate = null;
-        $onlineCourseIds = [];
-        $offlineCourseIds = [];
-    
-        foreach ($courses as $course) {
-            $courseStudent = $student->courses()->where('courses.id', $course->id)->first();
-            $batchId = $courseStudent->pivot->batch_id ?? null;
-            $batch = $batchId ? $course->batches->find($batchId) : $course->batches->first();
-    
-            if (!$batch) {
-                continue;
-            }
-    
-            $courseStart = Carbon::parse($courseStudent->pivot->created_at ?? $batch->start_date)->startOfDay();
-            $courseEnd = Carbon::parse($batch->end_date)->startOfDay();
-    
-            if (!$startDate || $courseStart->lt($startDate)) {
-                $startDate = $courseStart;
-            }
-            if (!$endDate || $courseEnd->gt($endDate)) {
-                $endDate = $courseEnd;
-            }
-    
-            if ($course->course_type === 'online') {
-                $onlineCourseIds[] = $course->id;
-            } else {
-                $offlineCourseIds[] = $course->id;
-            }
-        }
-    
-        $effectiveEnd = $today->gt($endDate) ? $endDate : $today;
-    
-        // Fetch attendance records grouped by day for online and offline courses
-        $onlineAttendanceRecords = Attendance::where('user_id', $this->studentId)
-            ->whereIn('course_id', $onlineCourseIds)
-            ->whereBetween('check_in', [$startDate, $today->endOfDay()])
-            ->orderBy('check_in', 'asc')
-            ->get()
-            ->groupBy(function ($item) {
-                return Carbon::parse($item->check_in)->format('Y-m-d');
-            })
-            ->map(function ($group) {
-                return $group->first(); 
-            });
-    
-        $offlineAttendanceRecords = Attendance::where('user_id', $this->studentId)
-            ->whereIn('course_id', $offlineCourseIds)
-            ->whereBetween('check_in', [$startDate, $today->endOfDay()])
-            ->orderBy('check_in', 'asc')
-            ->get()
-            ->groupBy(function ($item) {
-                return Carbon::parse($item->check_in)->format('Y-m-d');
-            })
-            ->map(function ($group) {
-                return $group->first(); 
-            });
-    
-        $tempDate = $startDate->copy();
-        while ($tempDate->lte($effectiveEnd)) {
-            if (!$tempDate->isSaturday() && !$tempDate->isSunday()) {
-                if ($onlineCourseIds) {
-                    $onlineTotalWeekdays++;
-                }
-                if ($offlineCourseIds) {
-                    $offlineTotalWeekdays++;
-                }
-            }
-            $tempDate->addDay();
-        }
-    
-        $onlinePresentDays = 0;
-        $offlinePresentDays = 0;
-    
-        $displayStart = $startDate->gt(Carbon::now()->startOfWeek()) ? $startDate : Carbon::now()->startOfWeek();
-        for ($i = 0; $displayStart->copy()->addDays($i)->lte($effectiveEnd); $i++) {
-            $date = $displayStart->copy()->addDays($i);
-            if ($date->isSaturday() || $date->isSunday()) {
-                continue;
-            }
-    
-            $dateKey = $date->format('Y-m-d');
-            $onlineIsPresent = $onlineAttendanceRecords->has($dateKey);
-            $offlineIsPresent = $offlineAttendanceRecords->has($dateKey);
-    
-            if ($onlineCourseIds && $date->gte($startDate) && $date->lte($endDate)) {
-                $dayData = [
-                    'present' => $onlineIsPresent,
-                    'name' => $date->format('l'),
-                    'date' => $dateKey,
-                    'course_type' => 'online'
-                ];
-                $onlineWeekDays->push($dayData);
-                if ($onlineIsPresent) {
-                    $onlinePresentDays++;
-                }
-                if ($date->isThursday()) {
-                    $onlineThursdayAttendance = $onlineIsPresent ? 'present' : 'absent';
-                }
-            }
-    
-            if ($offlineCourseIds && $date->gte($startDate) && $date->lte($endDate)) {
-                $dayData = [
-                    'present' => $offlineIsPresent,
-                    'name' => $date->format('l'),
-                    'date' => $dateKey,
-                    'course_type' => 'offline'
-                ];
-                $offlineWeekDays->push($dayData);
-                if ($offlineIsPresent) {
-                    $offlinePresentDays++;
-                }
-                if ($date->isThursday()) {
-                    $offlineThursdayAttendance = $offlineIsPresent ? 'present' : 'absent';
-                }
-            }
-        }
-    
-        $onlineWeekDays = $onlineWeekDays->sortBy('date')->take(-5);
-        $offlineWeekDays = $offlineWeekDays->sortBy('date')->take(-5);
-        $showPercentage = ($onlineTotalWeekdays >= 7 || $offlineTotalWeekdays >= 7);
-    
-        $onlineAttendancePercentage = $onlineTotalWeekdays > 0 ?
-            round(($onlinePresentDays / $onlineTotalWeekdays) * 100) : 0;
-        $offlineAttendancePercentage = $offlineTotalWeekdays > 0 ?
-            round(($offlinePresentDays / $offlineTotalWeekdays) * 100) : 0;
-    
-        return [
-            'onlineWeekDays' => $onlineWeekDays,
-            'offlineWeekDays' => $offlineWeekDays,
-            'onlineAttendancePercentage' => $onlineAttendancePercentage,
-            'offlineAttendancePercentage' => $offlineAttendancePercentage,
-            'onlineThursdayAttendance' => $onlineThursdayAttendance,
-            'offlineThursdayAttendance' => $offlineThursdayAttendance,
-            'onlineTotalWeekdays' => $onlineTotalWeekdays,
-            'offlineTotalWeekdays' => $offlineTotalWeekdays,
-            'onlinePresentDays' => $onlinePresentDays,
-            'offlinePresentDays' => $offlinePresentDays,
-            'showPercentage' => $showPercentage
-        ];
+{
+    $student = User::find($this->studentId);
+
+    // Default return array to ensure all keys are always present
+    $defaultData = [
+        'onlineWeekDays' => collect(),
+        'offlineWeekDays' => collect(),
+        'onlineAttendancePercentage' => 0,
+        'offlineAttendancePercentage' => 0,
+        'onlineThursdayAttendance' => null,
+        'offlineThursdayAttendance' => null,
+        'onlineTotalWeekdays' => 0,
+        'offlineTotalWeekdays' => 0,
+        'onlinePresentDays' => 0,
+        'offlinePresentDays' => 0,
+        'showPercentage' => false
+    ];
+
+    if (!$student) {
+        return $defaultData;
     }
+
+    $courses = $student->courses()->with('batches')->get();
+
+    if ($courses->isEmpty()) {
+        return $defaultData;
+    }
+
+    $onlineWeekDays = collect();
+    $offlineWeekDays = collect();
+    $onlineTotalWeekdays = 0;
+    $offlineTotalWeekdays = 0;
+    $onlinePresentDays = 0;
+    $offlinePresentDays = 0;
+    $today = Carbon::today();
+    $onlineThursdayAttendance = null;
+    $offlineThursdayAttendance = null;
+
+    // Get earliest start date and latest end date across all courses
+    $startDate = null;
+    $endDate = null;
+    $onlineCourseIds = [];
+    $offlineCourseIds = [];
+
+    foreach ($courses as $course) {
+        $courseStudent = $student->courses()->where('courses.id', $course->id)->first();
+        $batchId = $courseStudent->pivot->batch_id ?? null;
+        $batch = $batchId ? $course->batches->find($batchId) : $course->batches->first();
+
+        if (!$batch) {
+            continue;
+        }
+
+        $courseStart = Carbon::parse($courseStudent->pivot->created_at ?? $batch->start_date)->startOfDay();
+        $courseEnd = Carbon::parse($batch->end_date)->startOfDay();
+
+        if (!$startDate || $courseStart->lt($startDate)) {
+            $startDate = $courseStart;
+        }
+        if (!$endDate || $courseEnd->gt($endDate)) {
+            $endDate = $courseEnd;
+        }
+
+        if ($course->course_type === 'online') {
+            $onlineCourseIds[] = $course->id;
+        } else {
+            $offlineCourseIds[] = $course->id;
+        }
+    }
+
+    if (!$startDate || !$endDate) {
+        return $defaultData;
+    }
+
+    $effectiveEnd = $today->gt($endDate) ? $endDate : $today;
+
+    // Fetch attendance records grouped by day for online and offline courses
+    $onlineAttendanceRecords = Attendance::where('user_id', $this->studentId)
+        ->whereIn('course_id', $onlineCourseIds)
+        ->whereBetween('check_in', [$startDate, $today->endOfDay()])
+        ->orderBy('check_in', 'asc')
+        ->get()
+        ->groupBy(function ($item) {
+            return Carbon::parse($item->check_in)->format('Y-m-d');
+        })
+        ->map(function ($group) {
+            return $group->first();
+        });
+
+    $offlineAttendanceRecords = Attendance::where('user_id', $this->studentId)
+        ->whereIn('course_id', $offlineCourseIds)
+        ->whereBetween('check_in', [$startDate, $today->endOfDay()])
+        ->orderBy('check_in', 'asc')
+        ->get()
+        ->groupBy(function ($item) {
+            return Carbon::parse($item->check_in)->format('Y-m-d');
+        })
+        ->map(function ($group) {
+            return $group->first();
+        });
+
+    $tempDate = $startDate->copy();
+    while ($tempDate->lte($effectiveEnd)) {
+        if (!$tempDate->isSaturday() && !$tempDate->isSunday()) {
+            if ($onlineCourseIds) {
+                $onlineTotalWeekdays++;
+            }
+            if ($offlineCourseIds) {
+                $offlineTotalWeekdays++;
+            }
+        }
+        $tempDate->addDay();
+    }
+
+    $displayStart = $startDate->gt(Carbon::now()->startOfWeek()) ? $startDate : Carbon::now()->startOfWeek();
+    for ($i = 0; $displayStart->copy()->addDays($i)->lte($effectiveEnd); $i++) {
+        $date = $displayStart->copy()->addDays($i);
+        if ($date->isSaturday() || $date->isSunday()) {
+            continue;
+        }
+
+        $dateKey = $date->format('Y-m-d');
+        $onlineIsPresent = $onlineAttendanceRecords->has($dateKey);
+        $offlineIsPresent = $offlineAttendanceRecords->has($dateKey);
+
+        if ($onlineCourseIds && $date->gte($startDate) && $date->lte($endDate)) {
+            $dayData = [
+                'present' => $onlineIsPresent,
+                'name' => $date->format('l'),
+                'date' => $dateKey,
+                'course_type' => 'online'
+            ];
+            $onlineWeekDays->push($dayData);
+            if ($onlineIsPresent) {
+                $onlinePresentDays++;
+            }
+            if ($date->isThursday()) {
+                $onlineThursdayAttendance = $onlineIsPresent ? 'present' : 'absent';
+            }
+        }
+
+        if ($offlineCourseIds && $date->gte($startDate) && $date->lte($endDate)) {
+            $dayData = [
+                'present' => $offlineIsPresent,
+                'name' => $date->format('l'),
+                'date' => $dateKey,
+                'course_type' => 'offline'
+            ];
+            $offlineWeekDays->push($dayData);
+            if ($offlineIsPresent) {
+                $offlinePresentDays++;
+            }
+            if ($date->isThursday()) {
+                $offlineThursdayAttendance = $offlineIsPresent ? 'present' : 'absent';
+            }
+        }
+    }
+
+    $onlineWeekDays = $onlineWeekDays->sortBy('date')->take(-5);
+    $offlineWeekDays = $offlineWeekDays->sortBy('date')->take(-5);
+    $showPercentage = ($onlineTotalWeekdays >= 7 || $offlineTotalWeekdays >= 7);
+
+    $onlineAttendancePercentage = $onlineTotalWeekdays > 0 ?
+        round(($onlinePresentDays / $onlineTotalWeekdays) * 100) : 0;
+    $offlineAttendancePercentage = $offlineTotalWeekdays > 0 ?
+        round(($offlinePresentDays / $offlineTotalWeekdays) * 100) : 0;
+
+    return [
+        'onlineWeekDays' => $onlineWeekDays,
+        'offlineWeekDays' => $offlineWeekDays,
+        'onlineAttendancePercentage' => $onlineAttendancePercentage,
+        'offlineAttendancePercentage' => $offlineAttendancePercentage,
+        'onlineThursdayAttendance' => $onlineThursdayAttendance,
+        'offlineThursdayAttendance' => $offlineThursdayAttendance,
+        'onlineTotalWeekdays' => $onlineTotalWeekdays,
+        'offlineTotalWeekdays' => $offlineTotalWeekdays,
+        'onlinePresentDays' => $onlinePresentDays,
+        'offlinePresentDays' => $offlinePresentDays,
+        'showPercentage' => $showPercentage
+    ];
+}
     public function hasCompletedExamOrAssignment($userId)
     {
         return ExamUser::where('user_id', $userId)->exists()
