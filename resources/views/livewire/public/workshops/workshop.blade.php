@@ -1,11 +1,11 @@
 <div>
     @if (session()->has('message'))
-        <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4">
+        <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4 rounded-lg shadow">
             {{ session('message') }}
         </div>
     @endif
     @if (session()->has('error'))
-        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4">
+        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4 rounded-lg shadow">
             {{ session('error') }}
         </div>
     @endif
@@ -18,37 +18,37 @@
             description="Dive into a space where creativity meets innovation. Learn, build, and transform ideas into impactful solutions through hands-on experience and expert guidance."
             image="about-header.png" />
 
-        <div class="p-2 sm:p-8 bg-gray-100">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 ml-4 md:ml-36">
+        <div class="p-4 sm:p-8 bg-gray-100">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 @forelse ($workshops as $workshop)
-                    <a wire:navigate href="{{ route('workshops.view', $workshop->id) }}" class="block">
-                        <div class="flex flex-col rounded-lg p-5 bg-white relative hover:shadow-lg transition-shadow">
-                            <img src="{{ asset('storage/' . $workshop->image) }}" alt=""
+                <div class="flex flex-col rounded-lg p-5 bg-white shadow-md hover:shadow-lg transition-shadow">
+                            <a wire:navigate href="{{ route('workshops.view', $workshop->id) }}" class="block">
+                            <img src="{{ asset('storage/' . $workshop->image) }}" alt="{{ $workshop->title }}"
                                 class="w-full h-64 object-cover object-top rounded mb-4">
-
-                            <h3 class="text-xl sm:text-2xl font-semibold text-black mb-2 text-center">
+                            </a>
+                            <h3 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-2 text-center">
                                 {{ $workshop->title }}
                             </h3>
 
-                            <p class="text-gray-600">Date: <span
-                                    class="font-medium">{{ \Carbon\Carbon::parse($workshop->date)->format('F j, y') }}</span>
+                            <p class="text-gray-600 text-sm mb-1">Date: <span
+                                    class="font-medium">{{ \Carbon\Carbon::parse($workshop->date)->format('F j, Y') }}</span>
                             </p>
-                            <p class="text-gray-600">Time: <span class="font-medium">{{ $workshop->time }}</span></p>
+                            <p class="text-gray-600 text-sm mb-1">Time: <span class="font-medium">{{ $workshop->time }}</span></p>
 
-                            <p class="text-gray-600">Fees:
+                            <p class="text-gray-600 text-sm mb-4">Fees:
                                 @if ($workshop->fees > 0)
-                                    ₹{{ $workshop->fees }}
+                                    <span class="font-medium text-green-600">₹{{ $workshop->fees }}</span>
                                 @else
-                                    Free
+                                    <span class="font-medium text-blue-600">Free</span>
                                 @endif
                             </p>
 
                             @if (!Auth::check())
                                 <button disabled
                                     class="bg-gray-400 mt-4 text-white font-medium rounded-lg px-4 py-2 cursor-not-allowed">
-                                    <div class="flex gap-2">
+                                    <div class="flex items-center gap-2">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor" class="size-6">
+                                            stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                 d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
                                         </svg>
@@ -58,9 +58,9 @@
                             @elseif (in_array($workshop->id, $userPayments))
                                 <button disabled
                                     class="bg-green-600 mt-4 text-white font-medium rounded-lg px-4 py-2 cursor-not-allowed">
-                                    <div class="flex gap-2">
+                                    <div class="flex items-center gap-2">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor" class="size-6">
+                                            stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                 d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                         </svg>
@@ -69,10 +69,10 @@
                                 </button>
                             @elseif ($workshop->fees > 0)
                                 <button wire:click.prevent="initiatePayment({{ $workshop->id }})"
-                                    class="bg-blue-600 mt-8 text-white font-medium rounded-lg px-4 py-2 hover:bg-blue-700 transition-colors">
-                                    <div class="flex gap-2">
+                                    class="bg-blue-600 mt-4 text-white font-medium rounded-lg px-4 py-2 hover:bg-blue-700 transition-colors">
+                                    <div class="flex items-center gap-2">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor" class="size-6">
+                                            stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                 d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" />
                                         </svg>
@@ -82,9 +82,9 @@
                             @else
                                 <a href="{{ route('workshop.enroll', $workshop->id) }}"
                                     class="bg-blue-600 mt-4 text-white font-medium rounded-lg px-4 py-2 hover:bg-blue-700 transition-colors">
-                                    <div class="flex gap-2">
+                                    <div class="flex items-center gap-2">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor" class="size-6">
+                                            stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                 d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" />
                                         </svg>
@@ -92,8 +92,7 @@
                                     </div>
                                 </a>
                             @endif
-                        </div>
-                    </a>
+                        </div>                    
                 @empty
                     <div class="flex flex-col items-center justify-center col-span-1 md:col-span-3 p-8 bg-gray-100 rounded-lg text-center">
                         <h2 class="text-gray-800 text-2xl md:text-3xl font-bold mb-2">
