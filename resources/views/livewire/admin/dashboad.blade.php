@@ -2,7 +2,7 @@
     <div class="min-h-screen bg-gradient-to-br from-gray-50 to-purple-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Welcome Header -->
-            <div class="relative mb-8">
+            <div class=" mb-8">
                 <div class="flex flex-col lg:flex-row gap-6">
                     <div class="flex-1 bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
                         <div class="flex items-start justify-between">
