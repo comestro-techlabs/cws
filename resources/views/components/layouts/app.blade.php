@@ -10,6 +10,7 @@
     <!-- Add these meta tags -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <meta property="og:title" content="{{ $title ?? 'Untitled Course' }}">
     <meta property="og:description" content="{{ $description ?? 'Check out this course!' }}">
@@ -35,7 +36,51 @@
     </div>
 
     @livewireScripts
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
     <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+                if (typeof Swal === 'undefined') {
+                    console.error('SweetAlert2 is not loaded.');
+                    return;
+                }
+
+                @if (session('success'))
+                    Swal.fire({
+                        title: 'Success!',
+                        text: "{{ session('success') }}",
+                        icon: 'success',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#662d91'
+                    }).then(() => {
+                        confetti({
+                            particleCount: 100,
+                            spread: 150,
+                            origin: { y: 0.6 }
+                        });
+                    });
+                @endif
+
+                @if (session('error'))
+                    Swal.fire({
+                        title: 'Error!',
+                        text: "{{ session('error') }}",
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#662d91'
+                    });
+                @endif
+
+                @if (session('warning'))
+                    Swal.fire({
+                        title: 'Warning!',
+                        text: "{{ session('warning') }}",
+                        icon: 'warning',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#662d91'
+                    });
+                @endif
+            });
         // Add Livewire configuration
         window.livewire_app_url = "{{ config('app.url') }}";
         window.livewire_token = "{{ csrf_token() }}";

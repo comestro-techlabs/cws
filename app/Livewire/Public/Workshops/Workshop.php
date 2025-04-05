@@ -5,6 +5,7 @@ namespace App\Livewire\Public\Workshops;
 use App\Models\Payment;
 use App\Models\Workshop as ModelsWorkshop;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Illuminate\Support\Facades\Log;
 use Razorpay\Api\Api;
@@ -120,6 +121,11 @@ class Workshop extends Component
             Log::error('Payment handling error: ' . $e->getMessage());
             $this->dispatch('showError', message: 'Failed to process payment: ' . $e->getMessage());
         }
+    }
+    #[On('redirectToDashboard')]
+    public function redirectToDashboard()
+    {
+        return redirect()->route('student.dashboard')->with('success', 'You have successfully enrolled in the Workshop.');
     }
     public function share($workshopId)
     {

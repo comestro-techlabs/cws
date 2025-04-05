@@ -1,14 +1,4 @@
 <div>
-    @if (session()->has('message'))
-        <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4 rounded-lg shadow">
-            {{ session('message') }}
-        </div>
-    @endif
-    @if (session()->has('error'))
-        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4 rounded-lg shadow">
-            {{ session('error') }}
-        </div>
-    @endif
 
     <x-slot:title> 1 Day Workshops | Learn Syntax | Coding Classes in Purnea – C, C++, Python, JavaScript
         (Bihar)</x-slot>
@@ -54,24 +44,24 @@
 
                                     <div class="flex items-center justify-between space-x-2">
                                         @if (!Auth::check())
-                                            <button disabled
-                                                class="bg-gray-400 text-white font-medium rounded-lg px-4 py-2 cursor-not-allowed">
-                                                Enroll
+                                            <button 
+                                                class="bg-purple-600 text-white font-medium rounded-lg px-4 py-2 cursor-not-allowed">
+                                                <a wire:navigate href="{{ route('auth.login') }}">Login To Enroll</a>
                                             </button>
                                         @elseif (in_array($workshop->id, $userPayments))
                                             <button disabled
-                                                class="bg-green-600 text-white font-medium rounded-lg px-4 py-2 cursor-not-allowed">
-                                                Enrolled
+                                                class="bg-gray-500 text-white font-medium rounded-lg px-4 py-2 cursor-not-allowed">
+                                                Already Enrolled
                                             </button>
                                         @elseif ($workshop->fees > 0)
                                             <button wire:click.prevent="initiatePayment({{ $workshop->id }})"
                                                 class="bg-blue-600 text-white font-medium rounded-lg px-4 py-2 hover:bg-blue-700 transition-colors">
-                                                Enroll
+                                                Enroll Now
                                             </button>
                                         @else
                                             <a href="{{ route('workshop.enroll', $workshop->id) }}"
                                                 class="bg-blue-600 text-white font-medium rounded-lg px-4 py-2 hover:bg-blue-700 transition-colors">
-                                                Enroll
+                                                Enroll Now
                                             </a>
                                         @endif
 
@@ -138,6 +128,8 @@
                             "handler": function (response) {
                                 console.log('Payment success:', response);
                                 @this.call('handlePaymentSuccess', response);
+                                @this.dispatch('redirectToDashboard');
+
                             },
                             "prefill": {
                                 "name": paymentData.prefill.name,
