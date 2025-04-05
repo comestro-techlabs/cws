@@ -26,6 +26,11 @@ class Batch extends Model
         'end_date' => 'datetime',
     ];
 
+    public function students()
+    {
+        return $this->belongsToMany(User::class, 'course_student')
+                    ->where('course_student.batch_id', $this->id);
+    }
     // Relationship: Batch belongs to a Course
     public function course()
     {

@@ -158,7 +158,24 @@ class StudentDashboard extends Component
         $this->gems = $user->gem ?? 0;
         $this->points = $user->points ?? 0;
         $this->completedTasks = Assignment_upload::where('student_id', $studentId)->where('status', 'submitted')->count();
-        $this->totalTasks = Assignments::whereIn('course_id', $user->courses->pluck('id'))->count();
+        // $this->totalTasks = Assignments::whereIn('course_id', $user->courses->pluck('id'))->count();
+
+        $this->totalTasks = Assignments::query()
+    ->select('assignments.*')
+    ->join('course_student', function($join) use ($studentId) {
+        $join->on('assignments.course_id', '=', 'course_student.course_id')
+            ->where('course_student.user_id', '=', $studentId);
+    })
+    ->join('batches', function($join) {
+        $join->on('course_student.batch_id', '=', 'batches.id')
+            ->where('batches.end_date', '>=', now());
+    })
+    ->where(function($query) {
+        $query->whereNull('assignments.batch_id')
+            ->orWhereColumn('assignments.batch_id', '=', 'course_student.batch_id');
+    })
+    ->distinct()
+    ->count();
 
         // Calculate attendance percentage (alternative method, you might want to remove one)
         $totalClasses = $user->courses->sum('total_classes') ?? 0;
