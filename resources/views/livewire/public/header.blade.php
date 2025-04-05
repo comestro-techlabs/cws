@@ -55,7 +55,7 @@
                         </span>
                         <span class="absolute inset-0 bg-blue-50 rounded-lg scale-95 opacity-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-200"></span>
                     </a>
-                    <a href="{{route('public.workshop')}}" wire:navigate
+                    <a href="{{route('public.workshop')}}"
                         class="relative px-4 py-2 text-sm font-medium text-gray-600 rounded-lg transition-all duration-200 group hover:text-blue-600">
                         <span class="relative z-10 flex items-center">
                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
