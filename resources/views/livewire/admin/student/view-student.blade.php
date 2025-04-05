@@ -66,51 +66,54 @@
         </div>
         <!-- Tab Content -->
         <div class="bg-white rounded-xl shadow-sm overflow-hidden">
-            @if($activeTab === 'courses')
-                <div class="p-6">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-lg font-semibold text-gray-900">Purchased Courses</h2>
-                        <button wire:click="enrollButtonOpenModal"
-                                class="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-                            </svg>
-                            Enroll in New Course
-                        </button>
-                    </div>
+    @if($activeTab === 'courses')
+        <div class="p-4 sm:p-6">
+            <!-- Header with Button -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 space-y-3 sm:space-y-0">
+                <h2 class="text-base sm:text-lg font-semibold text-gray-900">Purchased Courses</h2>
+                <button wire:click="enrollButtonOpenModal"
+                        class="w-full sm:w-auto inline-flex items-center justify-center px-3 sm:px-4 py-2 bg-blue-600 text-white text-xs sm:text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                    <svg class="w-4 sm:w-5 h-4 sm:h-5 mr-1 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                    </svg>
+                    Enroll in New Course
+                </button>
+            </div>
 
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full bg-white border border-gray-200">
-                            <thead class="bg-gray-200 text-center">
-                                <tr>
-                                    <th class="p-2 text-centert text-xs font-medium text-gray-600 border">Course</th>
-                                    <th class="p-2 text-center text-xs font-medium text-gray-600 border">Order Id</th>
-                                    <th class="p-2 text-center text-xs font-medium text-gray-600 border">Payment Status</th>
-                                    <th class="p-2 text-center text-xs font-medium text-gray-600 border">Method</th>
-                                    <th class="p-2 text-center text-xs font-medium text-gray-600 border">Payment Amount</th>
-                                    <th class="p-2 text-center text-xs font-medium text-gray-600 border">Payment Date</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse($purchasedCourses as $payment)
-                                <tr class="text-center">
-                                    <td class="px-4 py-2 border">{{ $payment->course->title ?? 'Unknown Course' }}</td>
-                                    <td class="px-4 py-2 border">{{ $payment->order_id }}</td>
-                                    <td class="px-4 py-2 border text-green-500">Paid</td>
-                                    <td class="px-4 py-2 border">{{ $payment->payment_method }}</td>
-                                    <td class="px-4 py-2 border">{{ $payment->total_amount }}</td>
-                                    <td class="px-4 py-2 border">{{ $payment->formattedPaymentDate}}</td>
-                                </tr>
-                                @empty
-                                <tr>
-                                    <td colspan="2" class="px-4 py-2 text-center">No courses purchased.</td>
-                                </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            @endif
+            <!-- Table Section -->
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white border border-gray-200 text-xs sm:text-sm">
+                    <thead class="bg-gray-200 text-center">
+                        <tr>
+                            <th class="p-2 sm:p-3 font-medium text-gray-600 border">Course</th>
+                            <th class="p-2 sm:p-3 font-medium text-gray-600 border">Order Id</th>
+                            <th class="p-2 sm:p-3 font-medium text-gray-600 border">Payment Status</th>
+                            <th class="p-2 sm:p-3 font-medium text-gray-600 border">Method</th>
+                            <th class="p-2 sm:p-3 font-medium text-gray-600 border">Amount</th>
+                            <th class="p-2 sm:p-3 font-medium text-gray-600 border">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($purchasedCourses as $payment)
+                        <tr class="text-center">
+                            <td class="px-2 sm:px-4 py-2 border break-words">{{ $payment->course->title ?? 'Unknown Course' }}</td>
+                            <td class="px-2 sm:px-4 py-2 border break-all">{{ $payment->order_id }}</td>
+                            <td class="px-2 sm:px-4 py-2 border text-green-500">Paid</td>
+                            <td class="px-2 sm:px-4 py-2 border">{{ $payment->payment_method }}</td>
+                            <td class="px-2 sm:px-4 py-2 border">{{ $payment->total_amount }}</td>
+                            <td class="px-2 sm:px-4 py-2 border">{{ $payment->formattedPaymentDate }}</td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="6" class="px-2 sm:px-4 py-2 text-center">No courses purchased.</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    @endif
+
 
 @if($activeTab === 'subscription')
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
