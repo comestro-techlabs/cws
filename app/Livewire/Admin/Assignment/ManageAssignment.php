@@ -193,7 +193,16 @@ class ManageAssignment extends Component
             session()->flash('error', 'Failed to save assignment: ' . $e->getMessage());
         }
     }
-
+    public function assignmentdelete($assignmentId)
+    {
+        try {
+            $assignment = Assignments::findOrFail($assignmentId);
+            $assignment->delete();
+            session()->flash('success', 'Assignment deleted successfully!');
+        } catch (\Exception $e) {
+            session()->flash('error', 'Failed to delete assignment: ' . $e->getMessage());
+        }
+    }
     public function closeModal()
     {
         $this->showModal = false;
