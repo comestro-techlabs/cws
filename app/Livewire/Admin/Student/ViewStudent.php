@@ -6,7 +6,7 @@ use App\Livewire\Student\Course;
 use App\Models\Course as ModelsCourse;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
-use Livewire\Component; 
+use Livewire\Component;
 use App\Models\User;
 use App\Models\Payment;
 use Carbon\Carbon;
@@ -16,6 +16,7 @@ use App\Models\Subscription;
 use App\Models\Batch;
 use App\Services\GemService;
 use DB;
+use Log;
 use Picqer\Barcode\BarcodeGeneratorPNG;
 
 #[Layout('components.layouts.admin')]
@@ -48,7 +49,7 @@ class ViewStudent extends Component
     public $courseFilter = 'all';
     public $allCourses;
     public $barcodeImage;
-    
+    public $offlineCourse;
 
     public function mount($id)
     {
@@ -72,6 +73,11 @@ class ViewStudent extends Component
         //     $this->isPaymentDue = true;
         //     $this->overdueDays = null;
         // }
+
+        // In mount:
+        $this->offlineCourse = ModelsCourse::whereHas('students', function ($query) {
+            $query->where('user_id', $this->studentId);
+        })->where('course_type', 'offline')->with('batches')->first();
 
         $this->purchasedCourses = Payment::with('course')
             ->where('student_id', $id)
@@ -157,25 +163,56 @@ class ViewStudent extends Component
         // dd($this->availableCourses);
     }
     public function generateBarcode($studentId)
-{
-    $student = User::find($studentId);
-    if ($student) {
-        // Generate the barcode string
-        $this->barcode = 'LS' . str_pad($studentId, 8, '0', STR_PAD_LEFT);
-        
-        // Save the barcode to the student record
-        $student->barcode = $this->barcode;
-        $student->save();
+    {
+        $startDate = null;
+        $endDate = null;
 
-        // Generate the barcode image
-        $generator = new \Picqer\Barcode\BarcodeGeneratorPNG();
-        $this->barcodeImage = base64_encode($generator->getBarcode($this->barcode, $generator::TYPE_CODE_128));
+        $courses = $this->courses;
 
-        // Show the modal
-        $this->showBarcodeModal = true;
+        if ($courses->isEmpty()) {
+            session()->flash('error', 'No courses found for barcode generation');
+            return;
+        }
+
+        foreach ($courses as $course) {
+            $batchId = $course->pivot->batch_id ?? null;
+            $batch = $batchId
+                ? $course->batches->find($batchId)
+                : $course->batches->first();
+
+            if (!$batch) {
+                continue;
+            }
+
+            $courseStart = Carbon::parse($course->pivot->created_at ?? $batch->start_date)->startOfDay();
+            $courseEnd = Carbon::parse($batch->end_date)->startOfDay();
+
+            $startDate = (!$startDate || $courseStart->lt($startDate)) ? $courseStart : $startDate;
+            $endDate = (!$endDate || $courseEnd->gt($endDate)) ? $courseEnd : $endDate;
+        }
+
+        if ($this->student && $courses->count() > 0) {
+            $this->barcode = 'LS' . str_pad($studentId, 8, '0', STR_PAD_LEFT);
+
+            $this->student->barcode = $this->barcode;
+            $this->student->save();
+
+            try {
+                $generator = new \Picqer\Barcode\BarcodeGeneratorPNG();
+                $this->barcodeImage = base64_encode(
+                    $generator->getBarcode($this->barcode, $generator::TYPE_CODE_128)
+                );
+
+                // Show barcode modal
+                $this->showBarcodeModal = true;
+                session()->flash('success', 'Barcode generated successfully');
+            } catch (\Exception $e) {
+                \Log::error('Barcode generation failed: ' . $e->getMessage());
+                $this->showBarcodeModal = false;
+                session()->flash('error', 'Failed to generate barcode');
+            }
+        }
     }
-}
-
     public function closeBarcodeModal()
     {
         $this->showBarcodeModal = false;  // Close the modal
@@ -211,12 +248,12 @@ class ViewStudent extends Component
                     // $user = User::where('id', $this->studentId)->first();
 
                     $gemService = new GemService($this->studentId);
-                    $gemsToAward = (int)($course_data->discounted_fees * 0.10); // 10% of course fees
+                    $gemsToAward = (int) ($course_data->discounted_fees * 0.10); // 10% of course fees
                     // dd($gemsToAward);
                     $gemService->earnedGem($gemsToAward, 'Welcome bonus for enrolling in course');
                 } catch (\Exception $e) {
                     // \Log::error('Failed to award enrollment gems: ' . $e->getMessage());
-                session()->flash('success', 'Course enrolled successfully');
+                    session()->flash('success', 'Course enrolled successfully');
 
                 }
                 $this->dispatch('courseEnrollDataUpdated')->self();
@@ -256,7 +293,7 @@ class ViewStudent extends Component
             $payment->payment_date = now();
             $payment->save();
 
-           
+
 
             // yha se paymentUpdated event dispatch krke fetchPayments function call kra hai, isi component me
             $this->dispatch('paymentUpdated')->self();
