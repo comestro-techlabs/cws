@@ -43,9 +43,11 @@ class ManageAssignment extends Component
                 $query->where('title', 'like', '%' . $this->search . '%')
             )
             ->when($this->activeTab === 'latest', fn ($query) => 
-                $query->where('updated_at', '>=', now()->subDays(7))
-                     ->orderBy('updated_at', 'desc')
-            )
+                $query->whereHas('assignmentUploads', function ($q) {
+                    $q->where('status', 'submitted')
+                    ->whereNull('grade');
+                })
+            ) 
             ->when($this->activeTab === 'graded', fn ($query) => 
                 $query->whereHas('uploads', function($q) {
                     $q->where('status', 'graded');

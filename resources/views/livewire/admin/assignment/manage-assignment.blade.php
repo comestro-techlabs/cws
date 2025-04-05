@@ -2,7 +2,7 @@
     <!-- Full Page Loader -->
     <x-loader />
 
-
+ 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Header Section -->
         <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
