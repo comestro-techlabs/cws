@@ -10,36 +10,47 @@
 
         <!-- Extended Student Details Cards -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            @foreach([
-                ['label' => 'Name', 'value' => $student->name],
-                ['label' => 'Email', 'value' => $student->email],
-                ['label' => 'Contact', 'value' => $student->contact],
-                ['label' => 'Gender', 'value' => $student->gender],
-                ['label' => 'Education', 'value' => $student->education_qualification],
-                ['label' => 'Date of Birth', 'value' => $student->dob],
-                ['label' => 'Registration Date', 'value' => $student->created_at->format('d M Y')],
-                ['label' => 'Account Status', 'value' => $student->is_active ? 'Active' : 'Inactive'],
-                ['label' => 'Student ID', 'value' => 'STU'.str_pad($student->id, 5, '0', STR_PAD_LEFT)]
-            ] as $detail)
-                <div class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-all duration-200">
-                    <div class="text-sm font-medium text-gray-500">{{ $detail['label'] }}</div>
-                    <div class="mt-1 text-lg font-semibold text-gray-900">{{ $detail['value'] }}</div>
+        @foreach([
+            ['label' => 'Name', 'value' => $student->name],
+            ['label' => 'Email', 'value' => $student->email],
+            ['label' => 'Contact', 'value' => $student->contact],
+            ['label' => 'Gender', 'value' => $student->gender],
+            ['label' => 'Education', 'value' => $student->education_qualification],
+            ['label' => 'Date of Birth', 'value' => $student->dob],
+            ['label' => 'Registration Date', 'value' => $student->created_at->format('d M Y')],
+            ['label' => 'Account Status', 'value' => $student->is_active ? 'Active' : 'Inactive'],
+            ['label' => 'Student ID', 'value' => 'STU'.str_pad($student->id, 5, '0', STR_PAD_LEFT)],
+            ['label' => 'Barcode', 'value' => $student->barcode ?? 'Not Generated'],
+            ['label' => 'Barcode Scan', 'value' => null, 'is_image' => true], // We'll handle the image separately
+        ] as $detail)
+            <div class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-all duration-200">
+                <div class="text-sm font-medium text-gray-500">{{ $detail['label'] }}</div>
+                <div class="mt-1 text-lg font-semibold text-gray-900">
+                    @if(isset($detail['is_image']) && $detail['is_image'])
+                        @if($barcodeImage)
+                            <img src="data:image/png;base64,{{ $barcodeImage }}" 
+                                alt="Student Barcode"
+                                class="max-w-[200px] mx-auto">
+                        
+                        @endif
+                    @else
+                        {{ $detail['value'] }}
+                    @endif
                 </div>
-            @endforeach
+            </div>
+        @endforeach
         </div>
         <button wire:click="generateBarcode({{ $studentId }})" class="bg-blue-500 text-white py-2 px-4 rounded">Generate Barcode</button>
 
-        <!-- Modal for barcode display -->
         @if ($showBarcodeModal)
             <div class="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
                 <div class="bg-white p-6 rounded-lg shadow-lg w-96">
                     <div class="text-center">
                         <h2 class="text-2xl font-semibold mb-4">Generated Barcode</h2>
                         <div class="mb-4">
-                            <!-- Display the barcode here -->
-                            <p class="text-xl">{{ $barcode }}</p>
+                            <p class="text-xl">{{ $student->name }}</p>
+                            <p class="text-xl">{{ $barcode }}</p>                           
                         </div>
-                        <!-- Close Button -->
                         <button wire:click="closeBarcodeModal" class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600">Close</button>
                     </div>
                 </div>

@@ -16,6 +16,7 @@ use App\Models\Subscription;
 use App\Models\Batch;
 use App\Services\GemService;
 use DB;
+use Picqer\Barcode\BarcodeGeneratorPNG;
 
 #[Layout('components.layouts.admin')]
 #[Title('Manage Students')]
@@ -46,6 +47,8 @@ class ViewStudent extends Component
     public $searchTerm = '';
     public $courseFilter = 'all';
     public $allCourses;
+    public $barcodeImage;
+    
 
     public function mount($id)
     {
@@ -154,15 +157,24 @@ class ViewStudent extends Component
         // dd($this->availableCourses);
     }
     public function generateBarcode($studentId)
-    {
-        $student = User::find($studentId);
-        if ($student) {
-            $this->barcode = 'LS' . str_pad($studentId, 8, '0', STR_PAD_LEFT);
-            $student->barcode = $this->barcode;
-            $student->save();
-            $this->showBarcodeModal = true;  // Show the modal
-        }
+{
+    $student = User::find($studentId);
+    if ($student) {
+        // Generate the barcode string
+        $this->barcode = 'LS' . str_pad($studentId, 8, '0', STR_PAD_LEFT);
+        
+        // Save the barcode to the student record
+        $student->barcode = $this->barcode;
+        $student->save();
+
+        // Generate the barcode image
+        $generator = new \Picqer\Barcode\BarcodeGeneratorPNG();
+        $this->barcodeImage = base64_encode($generator->getBarcode($this->barcode, $generator::TYPE_CODE_128));
+
+        // Show the modal
+        $this->showBarcodeModal = true;
     }
+}
 
     public function closeBarcodeModal()
     {
