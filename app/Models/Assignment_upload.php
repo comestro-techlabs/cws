@@ -16,17 +16,39 @@ class Assignment_upload extends Model
     {
         return $this->belongsTo(User::class, 'student_id');
     }
-    // public function assignment()
-    // {
-    //     return $this->belongsTo(Assignments::class, 'assignment_id', 'id');
-        
-    // }
-
     public function assignment()
     {
-        return $this->belongsTo(Assignments::class, 'assignment_id', 'id');
+        return $this->belongsTo(Assignments::class, 'assignment_id')
+            ->whereHas('course.batches', function($query) {
+                $query->whereHas('students', function($q) {
+                    $q->where('users.id', $this->student_id);
+                });
+            });
     }
 
+    // Get batch through assignment
+    public function batch()
+    {
+        return $this->hasOneThrough(
+            Batch::class,
+            Assignments::class,
+            'id', // Foreign key on assignments table
+            'course_id', // Foreign key on batches table
+            'assignment_id', // Local key on assignment_uploads table
+            'course_id' // Local key on assignments table
+        );
+    }
+
+    // Scope for current batch assignments
+    public function scopeCurrentBatch($query)
+    {
+        return $query->whereHas('assignment.course.batches', function($q) {
+            $q->where('end_date', '>=', now())
+                ->whereHas('students', function($sq) {
+                    $sq->where('users.id', $this->student_id);
+                });
+        });
+    }
     protected $casts = [
         'submitted_at' => 'datetime',
     ];
