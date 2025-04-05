@@ -125,7 +125,7 @@ class Workshop extends Component
     #[On('redirectToDashboard')]
     public function redirectToDashboard()
     {
-        return redirect()->route('student.dashboard')->with('success', 'You have successfully enrolled in the Workshop.');
+        return redirect()->route('public.index')->with('success', 'You have successfully enrolled in the Workshop.');
     }
     public function share($workshopId)
     {
