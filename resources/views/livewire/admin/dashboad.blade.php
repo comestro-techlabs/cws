@@ -20,7 +20,7 @@
                             </div>
                         </div>
                     </div>
- 
+
                     <div class="flex-1 bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
                         <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
                             <a href="{{ route('admin.placedstudent.index') }}" wire:navigate
@@ -165,7 +165,8 @@
                                 <div class="flex items-baseline">
                                     <span class="text-lg font-semibold text-gray-600 mr-1">₹</span>
                                     <h2 class="text-3xl font-bold text-gray-900">
-                                        {{ number_format($currentMonthAmount, 2) }}</h2>
+                                        {{ number_format($currentMonthAmount, 2) }}
+                                    </h2>
                                 </div>
                                 <p class="text-sm text-gray-600">This month's earnings</p>
                             </div>
@@ -262,48 +263,49 @@
                     <div class="p-6">
                         <div class="space-y-4">
                             @forelse($courses as $course)
-                                <div
-                                    class="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors group">
-                                    <div class="flex items-center space-x-4">
-                                        <div class="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center">
-                                            <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5s3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18s-3.332.477-4.5 1.253" />
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <h3 class="text-sm font-semibold text-gray-900">{{ $course->title }}</h3>
-                                            <p class="text-xs text-gray-500">{{ $course->duration }} Weeks •
-                                                {{ $course->category->cat_title ?? 'Uncategorized' }}</p>
-                                        </div>
-                                    </div>
-                                    <a wire:navigate href="{{ route('admin.course.update', $course->id) }}"
-                                        class="inline-flex items-center px-3 py-1 rounded-lg text-xs font-medium text-purple-600 bg-purple-50 hover:bg-purple-100 transition-colors">
-                                        View Details
-                                        <svg class="w-4 h-4 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div
+                                class="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors group">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center">
+                                        <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M9 5l7 7-7 7" />
+                                                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5s3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18s-3.332.477-4.5 1.253" />
                                         </svg>
-                                    </a>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-sm font-semibold text-gray-900">{{ $course->title }}</h3>
+                                        <p class="text-xs text-gray-500">{{ $course->duration }} Weeks •
+                                            {{ $course->category->cat_title ?? 'Uncategorized' }}
+                                        </p>
+                                    </div>
                                 </div>
-                            @empty
-                                <div class="text-center py-4">
-                                    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
+                                <a wire:navigate href="{{ route('admin.course.update', $course->id) }}"
+                                    class="inline-flex items-center px-3 py-1 rounded-lg text-xs font-medium text-purple-600 bg-purple-50 hover:bg-purple-100 transition-colors">
+                                    View Details
+                                    <svg class="w-4 h-4 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5s3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18s-3.332.477-4.5 1.253" />
+                                            d="M9 5l7 7-7 7" />
                                     </svg>
-                                    <h3 class="mt-2 text-sm font-medium text-gray-900">No courses yet</h3>
-                                    <p class="mt-1 text-sm text-gray-500">Get started by creating a new course.</p>
-                                </div>
+                                </a>
+                            </div>
+                            @empty
+                            <div class="text-center py-4">
+                                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5s3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18s-3.332.477-4.5 1.253" />
+                                </svg>
+                                <h3 class="mt-2 text-sm font-medium text-gray-900">No courses yet</h3>
+                                <p class="mt-1 text-sm text-gray-500">Get started by creating a new course.</p>
+                            </div>
                             @endforelse
                         </div>
                     </div>
                 </div>
 
                 <!-- Recent Course Activity -->
-               {{-- <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                {{-- <div class="bg-white rounded-xl shadow-sm overflow-hidden">
                     <div class="p-6 border-b border-gray-100">
                         <h2 class="text-lg font-semibold text-gray-900">Recent Notifications</h2>
                     </div>
@@ -332,77 +334,86 @@
                                         </span>
                                         <div class="ml-3">
                                             <p class="text-sm font-medium text-gray-900">{{ $enquiry->name }}</p>
-                                            <p class="text-sm text-gray-500">{{ $enquiry->message }}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-                        @endif
-                        
-
-                    </div>
-                </div>
+                <p class="text-sm text-gray-500">{{ $enquiry->message }}</p>
             </div>
-        </div>--}}
-        <div class="bg-white rounded-xl shadow-sm overflow-hidden">
-    <div class="p-6 border-b border-gray-100">
-        <h2 class="text-lg font-semibold text-gray-900">Expiring Subscriptions</h2>
+        </div>
     </div>
+    @endforeach
+    @endif
+
+
+</div>
+</div>
+</div>
+</div>--}}
+<div class="bg-white rounded-xl shadow-sm overflow-hidden">
+    <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+        <h2 class="text-lg font-semibold text-gray-900">Expiring Subscriptions</h2>
+        <a wire:navigate href="{{ route('admin.view-subscription') }}"
+            class="inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 transition-colors">
+            <span class="mr-1">View All</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 5l7 7-7 7" />
+            </svg>
+        </a>
+    </div>
+
     <div class="divide-y divide-gray-100">
         @if ($subscriptions->isEmpty())
-            <div class="p-4 flex items-center justify-center text-gray-500">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400 mr-2" fill="none"
-                    viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M13 16h-1v-4h-1m1-4h.01M12 18.5a1.5 1.5 0 01-1.5-1.5h3a1.5 1.5 0 01-1.5 1.5zM12 3a9 9 0 00-9 9v3.5l-1.5 1.5h21l-1.5-1.5V12a9 9 0 00-9-9z" />
-                </svg>
-                No expiring subscriptions
-            </div>
+        <div class="p-4 flex items-center justify-center text-gray-500">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400 mr-2" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M12 18.5a1.5 1.5 0 01-1.5-1.5h3a1.5 1.5 0 01-1.5 1.5zM12 3a9 9 0 00-9 9v3.5l-1.5 1.5h21l-1.5-1.5V12a9 9 0 00-9-9z" />
+            </svg>
+            No expiring subscriptions
+        </div>
         @else
-            @foreach ($subscriptions as $subscription)
-                <div class="p-4 hover:bg-gray-50 transition-colors">
-                    <div class="flex items-start">
-                        <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-yellow-100 rounded-full">
-                            <svg class="w-4 h-4 text-yellow-600" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
-                                </path>
-                            </svg>
+        @foreach ($subscriptions as $subscription)
+        <div class="p-4 hover:bg-gray-50 transition-colors">
+            <div class="flex items-start">
+                <span class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-yellow-100 rounded-full">
+                    <svg class="w-4 h-4 text-yellow-600" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
+                        </path>
+                    </svg>
+                </span>
+                <div class="ml-3">
+                    <p class="text-sm font-medium text-gray-900">{{ $subscription->user->name }}</p>
+                    <p class="text-sm text-gray-500">
+                        Subscription ends on:
+                        <span class="font-semibold text-red-600">
+                            {{ $subscription->ends_at->format('M d, Y') }}
                         </span>
-                        <div class="ml-3">
-                            <p class="text-sm font-medium text-gray-900">{{ $subscription->user->name }}</p>
-                            <p class="text-sm text-gray-500">
-                                Subscription ends on: 
-                                <span class="font-semibold text-red-600">
-                                    {{ $subscription->ends_at->format('M d, Y') }}
-                                </span>
-                            </p>
-                        </div>
-                    </div>
+                    </p>
                 </div>
-            @endforeach
+            </div>
+        </div>
+        @endforeach
         @endif
     </div>
 </div>
 
-    </div>
+</div>
 
-    <style>
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+<style>
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
         }
 
-        .animate-fade-in-up {
-            animation: fadeInUp 0.6s ease-out forwards;
+        to {
+            opacity: 1;
+            transform: translateY(0);
         }
-    </style>
+    }
+
+    .animate-fade-in-up {
+        animation: fadeInUp 0.6s ease-out forwards;
+    }
+</style>
 </div>

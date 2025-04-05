@@ -51,7 +51,7 @@
                             </select>
                         </div>
 
-                        <div>
+                        <div> 
                             <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
                             <select wire:model.live="statusFilter"
                                 class="w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 py-2.5 px-3">
@@ -96,6 +96,8 @@
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             @forelse ($students as $student)
+                            @if($student->subscriptions->isNotEmpty() || $student->courses->isNotEmpty())
+
                                                 <tr class="hover:bg-gray-50">
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $student->id }}</td>
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $student->name }}</td>
@@ -106,11 +108,14 @@
                                                             <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">
                                                                 {{ $student->subscriptions->first()->plan->name }}
                                                             </span>
-                                                        @else
-                                                            <span class="px-2 py-1 bg-gray-100 text-gray-800 rounded-full text-xs">
-                                                                No Subscription
+                                                        @elseif($student->courses->isNotEmpty())
+                                                            @if($student->Courses->first()->title)
+                                                            <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs">
+                                                                Course Enrolled
                                                             </span>
+                                                            @endif
                                                         @endif
+                                                        
                                                     </td>
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm">
                                                         <div class="flex flex-wrap gap-1">
@@ -145,6 +150,7 @@
                                                         </div>
                                                     </td>
                                                 </tr>
+                                    @endif
                             @empty
                                 <tr>
                                     <td colspan="8" class="px-6 py-4 text-center text-gray-500">
