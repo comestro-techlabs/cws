@@ -89,17 +89,32 @@ class ManageStudent extends Component
                       ->orWhere('contact', 'like', '%'.$this->search.'%');
                 });
             })
-            ->when($this->subscriptionFilter, function($query) {
-                $query->whereHas('subscriptions', function($q) {
-                    $q->where('plan_id', $this->subscriptionFilter)
-                      ->where('status', 'active')
-                      ->whereDate('ends_at', '>=', now());
-                });
+            ->when($this->subscriptionFilter, function ($query) {
+                if ($this->subscriptionFilter === 'none') {
+                    // Only users with NO active subscriptions
+                    $query->whereDoesntHave('subscriptions', function ($q) {
+                        $q->where('status', 'active')
+                          ->whereDate('ends_at', '>=', now());
+                    });
+                } else {
+                    // Users with a specific active subscription
+                    $query->whereHas('subscriptions', function ($q) {
+                        $q->where('plan_id', $this->subscriptionFilter)
+                          ->where('status', 'active')
+                          ->whereDate('ends_at', '>=', now());
+                    });
+                }
             })
-            ->when($this->courseFilter, function($query) {
-                $query->whereHas('courses', function($q) {
-                    $q->where('courses.id', $this->courseFilter);
-                });
+            ->when($this->courseFilter, function ($query) {
+                if ($this->courseFilter === 'none') {
+                    // Students with NO courses
+                    $query->whereDoesntHave('courses');
+                } else {
+                    // Students with a specific course
+                    $query->whereHas('courses', function ($q) {
+                        $q->where('courses.id', $this->courseFilter);
+                    });
+                }
             })
             ->when($this->membershipFilter, function($query) {
                 $query->where('is_member', $this->membershipFilter === 'member');
