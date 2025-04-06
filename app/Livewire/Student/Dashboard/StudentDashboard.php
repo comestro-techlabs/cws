@@ -45,9 +45,7 @@ class StudentDashboard extends Component
     public $onlineWeekDays = []; // Added missing property
     public $offlineWeekDays = []; // Added missing property
     public $onlineAttendancePercentage = 0; // Added missing property
-    public $offlineAttendancePercentage = 0; // Added missing property
-    public $onlineThursdayAttendance = null; // Already declared
-    public $offlineThursdayAttendance = null; // Already declared
+    public $offlineAttendancePercentage = 0; // Added missing property    d
     public $nextProductName;
     public $nextProductImage;
     public $barcode;
@@ -145,8 +143,7 @@ class StudentDashboard extends Component
         $this->offlineWeekDays = $attendanceData['offlineWeekDays'];
         $this->onlineAttendancePercentage = $attendanceData['onlineAttendancePercentage'];
         $this->offlineAttendancePercentage = $attendanceData['offlineAttendancePercentage'];
-        $this->onlineThursdayAttendance = $attendanceData['onlineThursdayAttendance'];
-        $this->offlineThursdayAttendance = $attendanceData['offlineThursdayAttendance'];
+        
 
         // Calculate combined attendance percentage
         $totalWeekdays = $attendanceData['onlineTotalWeekdays'] + $attendanceData['offlineTotalWeekdays'];
@@ -284,9 +281,7 @@ class StudentDashboard extends Component
         'onlineWeekDays' => collect(),
         'offlineWeekDays' => collect(),
         'onlineAttendancePercentage' => 0,
-        'offlineAttendancePercentage' => 0,
-        'onlineThursdayAttendance' => null,
-        'offlineThursdayAttendance' => null,
+        'offlineAttendancePercentage' => 0,        
         'onlineTotalWeekdays' => 0,
         'offlineTotalWeekdays' => 0,
         'onlinePresentDays' => 0,
@@ -310,9 +305,7 @@ class StudentDashboard extends Component
     $offlineTotalWeekdays = 0;
     $onlinePresentDays = 0;
     $offlinePresentDays = 0;
-    $today = Carbon::today();
-    $onlineThursdayAttendance = null;
-    $offlineThursdayAttendance = null;
+    $today = Carbon::today();    
 
     // Get earliest start date and latest end date across all courses
     $startDate = null;
@@ -447,9 +440,7 @@ class StudentDashboard extends Component
         'onlineWeekDays' => $onlineWeekDays,
         'offlineWeekDays' => $offlineWeekDays,
         'onlineAttendancePercentage' => $onlineAttendancePercentage,
-        'offlineAttendancePercentage' => $offlineAttendancePercentage,
-        'onlineThursdayAttendance' => $onlineThursdayAttendance,
-        'offlineThursdayAttendance' => $offlineThursdayAttendance,
+        'offlineAttendancePercentage' => $offlineAttendancePercentage,        
         'onlineTotalWeekdays' => $onlineTotalWeekdays,
         'offlineTotalWeekdays' => $offlineTotalWeekdays,
         'onlinePresentDays' => $onlinePresentDays,
@@ -481,9 +472,7 @@ class StudentDashboard extends Component
             'onlineWeekDays' => $this->onlineWeekDays,
             'offlineWeekDays' => $this->offlineWeekDays,
             'onlineAttendancePercentage' => $this->onlineAttendancePercentage,
-            'offlineAttendancePercentage' => $this->offlineAttendancePercentage,
-            'onlineThursdayAttendance' => $this->onlineThursdayAttendance,
-            'offlineThursdayAttendance' => $this->offlineThursdayAttendance,
+            'offlineAttendancePercentage' => $this->offlineAttendancePercentage,            
             'showPercentage' => $this->loadAttendance()['showPercentage'],
             'nextProductName' => $this->nextProductName,
             'nextProductImage' => $this->nextProductImage,
