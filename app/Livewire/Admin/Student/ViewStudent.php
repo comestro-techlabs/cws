@@ -56,7 +56,14 @@ class ViewStudent extends Component
         // dd($id); this is user/student id
         $this->studentId = $id;
         $this->student = USer::findOrFail($id);
-        $this->courses = $this->student->courses()->withPivot('created_at', 'batch_id')->get();
+        $this->courses = $this->student->courses()
+            ->with([
+                'batches' => function ($query) {
+                    $query->whereDate('end_date', '>=', now());
+                }
+            ])
+            ->withPivot('created_at', 'batch_id')
+            ->get();
         $this->isMember = $this->student->is_member == 1;
         $this->isActive = $this->student->is_active == 1;
         // $this->lastPayment = Payment::where('student_id', $id)
@@ -162,57 +169,81 @@ class ViewStudent extends Component
         $this->availableCourses = ModelsCourse::all()->except($this->purchasedCourses->pluck('course_id')->toArray());
         // dd($this->availableCourses);
     }
-    public function generateBarcode($studentId)
+
+
+    public function hasActiveBatch()
     {
-        $startDate = null;
-        $endDate = null;
-
-        $courses = $this->courses;
-
-        if ($courses->isEmpty()) {
-            session()->flash('error', 'No courses found for barcode generation');
-            return;
+        if ($this->courses->isEmpty()) {
+            return false;
         }
 
-        foreach ($courses as $course) {
+        $currentDate = Carbon::today();
+        foreach ($this->courses as $course) {
             $batchId = $course->pivot->batch_id ?? null;
             $batch = $batchId
                 ? $course->batches->find($batchId)
                 : $course->batches->first();
 
-            if (!$batch) {
-                continue;
+            if ($batch) {
+                $startDate = Carbon::parse($batch->start_date)->startOfDay();
+                $endDate = Carbon::parse($batch->end_date)->startOfDay();
+                if ($currentDate->between($startDate, $endDate)) {
+                    return true;
+                }
             }
-
-            $courseStart = Carbon::parse($course->pivot->created_at ?? $batch->start_date)->startOfDay();
-            $courseEnd = Carbon::parse($batch->end_date)->startOfDay();
-
-            $startDate = (!$startDate || $courseStart->lt($startDate)) ? $courseStart : $startDate;
-            $endDate = (!$endDate || $courseEnd->gt($endDate)) ? $courseEnd : $endDate;
+        }
+        return false;
+    }
+    public function generateBarcode($studentId)
+    {
+        if (!$this->student || $this->courses->isEmpty()) {
+            session()->flash('error', 'No courses found for barcode generation');
+            return;
         }
 
-        if ($this->student && $courses->count() > 0) {
-            $this->barcode = 'LS' . str_pad($studentId, 8, '0', STR_PAD_LEFT);
+        $currentDate = Carbon::today();
+        $hasActiveBatch = false;
 
-            $this->student->barcode = $this->barcode;
-            $this->student->save();
+        foreach ($this->courses as $course) {
+            $batchId = $course->pivot->batch_id ?? null;
+            $batch = $batchId
+                ? $course->batches->find($batchId)
+                : $course->batches->first();
 
-            try {
-                $generator = new \Picqer\Barcode\BarcodeGeneratorPNG();
-                $this->barcodeImage = base64_encode(
-                    $generator->getBarcode($this->barcode, $generator::TYPE_CODE_128)
-                );
+            if ($batch) {
+                $startDate = Carbon::parse($batch->start_date)->startOfDay();
+                $endDate = Carbon::parse($batch->end_date)->startOfDay();
 
-                // Show barcode modal
-                $this->showBarcodeModal = true;
-                session()->flash('success', 'Barcode generated successfully');
-            } catch (\Exception $e) {
-                \Log::error('Barcode generation failed: ' . $e->getMessage());
-                $this->showBarcodeModal = false;
-                session()->flash('error', 'Failed to generate barcode');
+                if ($currentDate->between($startDate, $endDate)) {
+                    $hasActiveBatch = true;
+                    break;
+                }
             }
+        }
+
+        if (!$hasActiveBatch) {
+            session()->flash('error', 'No active batches found for barcode generation');
+            return;
+        }
+
+        $this->barcode = 'LS' . str_pad($studentId, 8, '0', STR_PAD_LEFT);
+        $this->student->barcode = $this->barcode;
+        $this->student->save();
+
+        try {
+            $generator = new BarcodeGeneratorPNG();
+            $this->barcodeImage = base64_encode(
+                $generator->getBarcode($this->barcode, $generator::TYPE_CODE_128)
+            );
+            $this->showBarcodeModal = true;
+            session()->flash('success', 'Barcode generated successfully');
+        } catch (\Exception $e) {
+            Log::error('Barcode generation failed: ' . $e->getMessage());
+            $this->showBarcodeModal = false;
+            session()->flash('error', 'Failed to generate barcode');
         }
     }
+
     public function closeBarcodeModal()
     {
         $this->showBarcodeModal = false;  // Close the modal
