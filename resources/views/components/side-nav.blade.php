@@ -1,10 +1,6 @@
 <div x-data="{ expanded: true, showMobileNav: false }" class="h-auto bg-white border-r border-gray-200">
     <!-- Mobile Toggle Button -->
-    <button @click="showMobileNav = !showMobileNav" class="md:hidden p-2 m-2 rounded-lg bg-purple-600 text-white">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-        </svg>
-    </button>
+ 
 
     <!-- Side Navigation -->
     <div :class="{'hidden': !showMobileNav, 'block': showMobileNav}" class="md:block h-auto bg-white border-r border-gray-200">
