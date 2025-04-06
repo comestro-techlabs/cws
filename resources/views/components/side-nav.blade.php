@@ -1,6 +1,5 @@
 <div x-data="{ expanded: true, showMobileNav: false }" class="h-auto bg-white border-r border-gray-200">
     <!-- Mobile Toggle Button -->
- 
 
     <!-- Sidebar -->
     <div :class="{ 'hidden': !showMobileNav }" class="md:block">
