@@ -33,7 +33,7 @@
                                 class="w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 py-2.5 px-3">
                                 <option value="">All Plans</option>
                                 @foreach($subscriptionPlans as $plan)
-                                    <option value="{{ $plan->id }}">{{ $plan->name }}</option>
+                                <option value="{{ $plan->id }}">{{ $plan->name }}</option>
                                 @endforeach
                                 <option value="none">No Subscription</option>
                             </select>
@@ -46,12 +46,14 @@
                                 class="w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 py-2.5 px-3">
                                 <option value="">All Courses</option>
                                 @foreach($courses as $course)
-                                    <option value="{{ $course->id }}">{{ $course->title }}</option>
+                                <option value="{{ $course->id }}">{{ $course->title }}</option>
                                 @endforeach
+                                <option value="none">Not Enrolled</option>
+
                             </select>
                         </div>
 
-                        <div> 
+                        <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
                             <select wire:model.live="statusFilter"
                                 class="w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 py-2.5 px-3">
@@ -64,17 +66,17 @@
 
                     <!-- Active Filters -->
                     @if($search || $subscriptionFilter || $courseFilter || $statusFilter)
-                        <div class="flex items-center gap-2 mt-4">
-                            <span class="text-sm text-gray-600">Active Filters:</span>
-                            <button wire:click="resetFilters"
-                                class="inline-flex items-center px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm hover:bg-red-200">
-                                Clear All
-                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                            </button>
-                        </div>
+                    <div class="flex items-center gap-2 mt-4">
+                        <span class="text-sm text-gray-600">Active Filters:</span>
+                        <button wire:click="resetFilters"
+                            class="inline-flex items-center px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm hover:bg-red-200">
+                            Clear All
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
                     @endif
                 </div>
 
@@ -95,68 +97,64 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
+                            @php
+                            $isFiltered = $this->subscriptionFilter || $this->courseFilter;
+                            @endphp
                             @forelse ($students as $student)
-                            @if($student->subscriptions->isNotEmpty() || $student->courses->isNotEmpty())
+                            @if (!$isFiltered && is_null($student->subscriptions->first()) && $student->courses->isEmpty())
+                            @continue
+                            @endif
 
-                                                <tr class="hover:bg-gray-50">
-                                                    <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $student->id }}</td>
-                                                    <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $student->name }}</td>
-                                                    <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $student->email }}</td>
-                                                    <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $student->contact }}</td>
-                                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                                        @if($student->subscriptions->isNotEmpty())
-                                                            <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">
-                                                                {{ $student->subscriptions->first()->plan->name }}
-                                                            </span>
-                                                        @elseif($student->courses->isNotEmpty())
-                                                            @if($student->Courses->first()->title)
-                                                            <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs">
-                                                                Course Enrolled
-                                                            </span>
-                                                            @endif
-                                                        @endif
-                                                        
-                                                    </td>
-                                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                                        <div class="flex flex-wrap gap-1">
-                                                            @forelse($student->courses->take(2) as $course)
-                                                                <span class="px-2 py-1 bg-purple-100 text-purple-800 rounded-full text-xs">
-                                                                    {{ Str::limit($course->title, 15) }}
-                                                                </span>
-                                                            @empty
-                                                                <span class="text-gray-500">No courses</span>
-                                                            @endforelse
-                                                            @if($student->courses->count() > 2)
-                                                                <span class="px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-xs">
-                                                                    +{{ $student->courses->count() - 2 }}
-                                                                </span>
-                                                            @endif
-                                                        </div>
-                                                    </td>
-                                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                                        <button wire:click="status({{ $student->id }})"
-                                                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium transition-colors duration-200 
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $student->id }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $student->name }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $student->email }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $student->contact }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                    <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">
+                                        {{ $student->subscriptions->first()->plan->name ?? 'No Subscription' }}
+                                    </span>
+
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                    <div class="flex flex-wrap gap-1">
+                                        @forelse($student->courses->take(2) as $course)
+                                        <span class="px-2 py-1 bg-purple-100 text-purple-800 rounded-full text-xs">
+                                            {{ Str::limit($course->title, 15) }}
+                                        </span>
+                                        @empty
+                                        <span class="text-gray-500">No courses</span>
+                                        @endforelse
+                                        @if($student->courses->count() > 2)
+                                        <span class="px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-xs">
+                                            +{{ $student->courses->count() - 2 }}
+                                        </span>
+                                        @endif
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                    <button wire:click="status({{ $student->id }})"
+                                        class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium transition-colors duration-200 
                                    {{ $student->is_active ? 'bg-green-100 text-green-800 hover:bg-green-200' : 'bg-red-100 text-red-800 hover:bg-red-200' }}"
-                                                            title="Click to toggle status">
-                                                            {{ $student->is_active ? 'Active' : 'Inactive' }}
-                                                        </button>
-                                                    </td>
-                                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                                        <div class="flex gap-2">
-                                                            <a href="{{ route('admin.student.view', ['id' => $student->id]) }}"
-                                                                class="inline-flex items-center px-3 py-1 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
-                                                                View Details
-                                                            </a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                    @endif
+                                        title="Click to toggle status">
+                                        {{ $student->is_active ? 'Active' : 'Inactive' }}
+                                    </button>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                    <div class="flex gap-2">
+                                        <a href="{{ route('admin.student.view', ['id' => $student->id]) }}"
+                                            class="inline-flex items-center px-3 py-1 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
+                                            View Details
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
                             @empty
-                                <tr>
-                                    <td colspan="8" class="px-6 py-4 text-center text-gray-500">
-                                        No students found matching the criteria.
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td colspan="8" class="px-6 py-4 text-center text-gray-500">
+                                    No students found matching the criteria.
+                                </td>
+                            </tr>
                             @endforelse
                         </tbody>
                     </table>
