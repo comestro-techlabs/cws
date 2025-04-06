@@ -266,9 +266,13 @@ class StudentDashboard extends Component
         }
 
         // Generate barcode image if user has a barcode
-        if ($user->barcode) {
+        if (!empty($this->barcode)) {
             $generator = new BarcodeGeneratorPNG();
-            $this->barcodeImage = base64_encode($generator->getBarcode($user->barcode, $generator::TYPE_CODE_128));
+            $this->barcodeImage = base64_encode(
+                $generator->getBarcode($this->barcode, $generator::TYPE_CODE_128)
+            );
+        } else {
+            $this->barcodeImage = null;  // Set barcode image to null if barcode is not available
         }
     }
 
