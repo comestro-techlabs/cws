@@ -40,22 +40,31 @@
             </div>
         @endforeach
         </div>
-        <button wire:click="generateBarcode({{ $studentId }})" class="bg-blue-500 text-white py-2 px-4 rounded">Generate Barcode</button>
+                <button 
+            wire:click="generateBarcode({{ $studentId }})" 
+            class="bg-blue-600 text-white py-3 px-6 rounded-lg transition duration-300 ease-in-out transform hover:bg-blue-700 focus:ring-4 focus:ring-blue-500 focus:outline-none {{ !$this->hasActiveBatch() ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105' }}"
+            @if(!$this->hasActiveBatch()) disabled @endif
+        >
+            Generate Barcode
+        </button>
 
         @if ($showBarcodeModal)
-            <div class="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
-                <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+            <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
+                <div class="bg-white p-8 rounded-lg shadow-xl w-full sm:w-96 max-w-md">
                     <div class="text-center">
-                        <h2 class="text-2xl font-semibold mb-4">Generated Barcode</h2>
-                        <div class="mb-4">
-                            <p class="text-xl">{{ $student->name }}</p>
-                            <p class="text-xl">{{ $barcode }}</p>                           
+                        <h2 class="text-3xl font-semibold text-gray-900 mb-6">Generated Barcode</h2>
+                        <div class="mb-6">
+                            <p class="text-xl text-gray-800 font-medium">{{ $student->name }}</p>
+                            <p class="text-lg text-gray-600 mt-2">{{ $barcode }}</p>                              
                         </div>
-                        <button wire:click="closeBarcodeModal" class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600">Close</button>
+                        <button wire:click="closeBarcodeModal" class="bg-red-600 text-white py-3 px-6 rounded-lg hover:bg-red-700 transition duration-300 ease-in-out transform">
+                            Close
+                        </button>
                     </div>
                 </div>
             </div>
         @endif
+
         <!-- Modified Tabs Navigation -->
         <div class="mb-8 border-b border-gray-200">
             <nav class="-mb-px flex flex-col sm:flex-row sm:space-x-8" aria-label="Tabs">
