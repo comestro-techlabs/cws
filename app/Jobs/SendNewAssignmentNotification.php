@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Mail;
 class SendNewAssignmentNotification implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
+ 
     public $student;
     public $assignment;
 
@@ -29,6 +29,7 @@ class SendNewAssignmentNotification implements ShouldQueue
         $this->student = $student;
         $this->assignment = $assignment;
         // dd($assignment->course->title);
+        // dd($this->student->email);
 
     }
 
