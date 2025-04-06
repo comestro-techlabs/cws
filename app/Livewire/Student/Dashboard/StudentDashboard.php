@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
-
+ 
 class StudentDashboard extends Component
 { 
     public $courses;
