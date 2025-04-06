@@ -146,8 +146,9 @@
                                 </div>
                             </div>
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                Enrolled
+                                {{$course->course_type}}
                             </span>
+                           
                         </div>
                         
                         @if($course->meeting_link || $course->meeting_id)
@@ -194,7 +195,7 @@
                             </div>
                         @else
                             <div class="mt-4 pl-8">
-                                <p class="text-sm text-gray-500">No meeting has been scheduled for this course yet.</p>
+                                <p class="text-sm text-gray-500">Venue : {{$course->venue}}</p>
                             </div>
                         @endif
                     </div>
