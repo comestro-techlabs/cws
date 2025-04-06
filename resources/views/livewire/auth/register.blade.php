@@ -14,10 +14,10 @@
                         <div>
                             <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
                             <input type="text"
-                                   wire:model="name"
-                                   id="name"
-                                   class="appearance-none block w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
-                                   placeholder="Enter your full name">
+                                wire:model="name"
+                                id="name"
+                                class="appearance-none block w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                                placeholder="Enter your full name">
                             @error('name') <span class="text-sm text-red-600 mt-1">{{ $message }}</span> @enderror
                         </div>
 
@@ -25,10 +25,10 @@
                         <div>
                             <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email address</label>
                             <input type="email"
-                                   wire:model="email"
-                                   id="email"
-                                   class="appearance-none block w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
-                                   placeholder="Enter your email">
+                                wire:model="email"
+                                id="email"
+                                class="appearance-none block w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                                placeholder="Enter your email">
                             @error('email') <span class="text-sm text-red-600 mt-1">{{ $message }}</span> @enderror
                         </div>
 
@@ -36,10 +36,10 @@
                         <div>
                             <label for="contact" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
                             <input type="tel"
-                                   wire:model="contact"
-                                   id="contact"
-                                   class="appearance-none block w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
-                                   placeholder="Enter your contact number">
+                                wire:model="contact"
+                                id="contact"
+                                class="appearance-none block w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                                placeholder="Enter your contact number">
                             @error('contact') <span class="text-sm text-red-600 mt-1">{{ $message }}</span> @enderror
                         </div>
 
@@ -49,10 +49,10 @@
                                 <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
                                 <div class="relative">
                                     <input type="password"
-                                           wire:model="password"
-                                           id="password"
-                                           class="appearance-none block w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
-                                           placeholder="Create password">
+                                        wire:model="password"
+                                        id="password"
+                                        class="appearance-none block w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                                        placeholder="Create password">
                                 </div>
                                 @error('password') <span class="text-sm text-red-600 mt-1">{{ $message }}</span> @enderror
                             </div>
@@ -60,16 +60,26 @@
                             <div>
                                 <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
                                 <input type="password"
-                                       wire:model="password_confirmation"
-                                       id="password_confirmation"
-                                       class="appearance-none block w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
-                                       placeholder="Confirm password">
+                                    wire:model="password_confirmation"
+                                    id="password_confirmation"
+                                    class="appearance-none block w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                                    placeholder="Confirm password">
                             </div>
                         </div>
 
                         <button type="submit"
-                                class="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors duration-200">
-                            Create Account
+                            class="w-full flex justify-center items-center gap-2 py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors duration-200"
+                            wire:loading.attr="disabled">
+
+                            <svg wire:loading.delay wire:target="register" class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z">
+                                </path>
+                            </svg>
+
+                            <span wire:loading.remove wire:target="register">Sign Up</span>
+                            <span wire:loading.inline wire:target="register">Signing Up...</span>
                         </button>
                     </form>
                 </div>

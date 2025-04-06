@@ -2,8 +2,10 @@
 
 namespace App\Livewire\Auth;
 
+use App\Mail\UserRegisterMail;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 
 class Register extends Component
@@ -31,8 +33,12 @@ class Register extends Component
             'contact' => $this->contact,
             'password' => Hash::make($this->password),
         ]);
+        // Send email to the user
+        if($user){
+            Mail::to($user->email)->send(new UserRegisterMail($user));
+            auth()->login($user);
+        }
 
-        auth()->login($user);
 
         return redirect()->route('student.dashboard');
     }
