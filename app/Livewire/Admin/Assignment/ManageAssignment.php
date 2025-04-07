@@ -102,7 +102,7 @@ class ManageAssignment extends Component
         $this->course_id = '';
         $this->search = '';
     }
-
+ 
     private function notifyStudents(Assignments $assignment)
     {
 

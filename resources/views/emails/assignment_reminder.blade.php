@@ -58,9 +58,9 @@
                 </div>
             </div>
             
-            <!-- CTA Button -->
+            <!-- CTA Button --> 
             <div style="text-align: center; margin: 35px 0 15px;">
-                <a href="{{ route('student.assignment-upload', $assignment->id) }}" style="display: inline-block; background-color: rgb(111, 57, 160); color: #ffffff; text-decoration: none; padding: 12px 28px; border-radius: 6px; font-size: 15px; font-weight: 500; letter-spacing: 0.2px;">
+                <a href="{{ route('student.assignments-view') }}" style="display: inline-block; background-color: rgb(111, 57, 160); color: #ffffff; text-decoration: none; padding: 12px 28px; border-radius: 6px; font-size: 15px; font-weight: 500; letter-spacing: 0.2px;">
                     View Assignment
                 </a>
             </div>

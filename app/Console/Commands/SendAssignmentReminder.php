@@ -30,22 +30,22 @@ class SendAssignmentReminder extends Command
     public function handle()
     {
         $this->info('Checking for assignments happening tomorrow...');
-        $tomorrow = now()->addDay()->toDateString();
-        // $tomorrow = now()->toDateString();// For testing ,uncomment and change the exam data as well to today's date in exam table
+        // $tomorrow = now()->addDay()->toDateString();
+        $tomorrow = now()->toDateString();// For testing ,uncomment and change the exam data as well to today's date in exam table
         $assignments = Assignments::whereDate('due_date', $tomorrow)->get();
         foreach ($assignments as $assignment) {
             // $this->info("testing: " . $assignment->course_id);
             $users = User::whereHas('courses', function ($query) use ($assignment) {
                 $query->where('course_id', $assignment->course_id);
             })->get();
-            // $this->info("Job dispatched for: " . $users);
-
+            $this->info("Job dispatched for: " . $users->count());
+//jo jo assign ment jma kr chuka h usko mail na jaye ispe kaam krna h
 
             foreach ($users as $user) {
-               
+               //currently its dipatching 4 times
                 dispatch(new SendNewAssignmentReminder($user, $assignment)); // Dispatch the job
                 // $this->info("Job dispatched for: " . $user->email);
-
+ 
             }
         }
         // $this->info('Assignment reminders sent successfully!');
