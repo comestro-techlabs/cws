@@ -408,10 +408,7 @@ class StudentDashboard extends Component
             $onlineWeekDays->push($dayData);
             if ($onlineIsPresent) {
                 $onlinePresentDays++;
-            }
-            if ($date->isThursday()) {
-                $onlineThursdayAttendance = $onlineIsPresent ? 'present' : 'absent';
-            }
+            }         
         }
 
         if ($offlineCourseIds && $date->gte($startDate) && $date->lte($endDate)) {
@@ -424,10 +421,7 @@ class StudentDashboard extends Component
             $offlineWeekDays->push($dayData);
             if ($offlineIsPresent) {
                 $offlinePresentDays++;
-            }
-            if ($date->isThursday()) {
-                $offlineThursdayAttendance = $offlineIsPresent ? 'present' : 'absent';
-            }
+            }          
         }
     }
 
