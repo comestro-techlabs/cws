@@ -423,7 +423,7 @@
 
                                 <p class="text-sm text-gray-500">
                                     @if($gems > 0)
-                                        you can redeem {{ $nextProductName }} for {{ $nextMilestone }} gems
+                                        You can redeem {{ $nextProductName }} for {{ $nextMilestone }} gems
                                     @else
                                         Earn your first gems to unlock rewards!
                                     @endif

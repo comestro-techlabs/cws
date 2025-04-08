@@ -60,6 +60,7 @@
                                 <option value="">All Status</option>
                                 <option value="active">Active</option>
                                 <option value="inactive">Inactive</option>
+                                <option value="viewall">View all</option>
                             </select>
                         </div>
                     </div>
@@ -97,13 +98,9 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            @php
-                            $isFiltered = $this->subscriptionFilter || $this->courseFilter;
-                            @endphp
+                           
                             @forelse ($students as $student)
-                            @if (!$isFiltered && is_null($student->subscriptions->first()) && $student->courses->isEmpty())
-                            @continue
-                            @endif
+                            
 
                             <tr class="hover:bg-gray-50">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $student->id }}</td>
@@ -139,7 +136,7 @@
                                         title="Click to toggle status">
                                         {{ $student->is_active ? 'Active' : 'Inactive' }}
                                     </button>
-                                </td>
+                                </td> 
                                 <td class="px-6 py-4 whitespace-nowrap text-sm">
                                     <div class="flex gap-2">
                                         <a href="{{ route('admin.student.view', ['id' => $student->id]) }}"
