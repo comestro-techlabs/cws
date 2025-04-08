@@ -57,6 +57,12 @@ class ViewStudent extends Component
     public $order_id;
     public $total_amount;
     public $selectedCourseId;
+
+    public $isEditSubscriptionModalOpen = false;
+    public $editSubscriptionId;
+    public $editPlanId;
+    public $editEndsAt;
+    public $editStatus;
     public function mount($id)
     {
         $this->studentId = $id;
@@ -185,7 +191,45 @@ class ViewStudent extends Component
         }
         return false;
     }
-
+    public function openEditSubscriptionModal($subscriptionId)
+    {
+        $subscription = Subscription::findOrFail($subscriptionId);
+        $this->editSubscriptionId = $subscription->id;
+        $this->editPlanId = $subscription->plan_id;
+        $this->editEndsAt = $subscription->ends_at->format('Y-m-d');
+        $this->editStatus = $subscription->status;
+        $this->isEditSubscriptionModalOpen = true;
+    }
+    
+    public function saveEditedSubscription()
+    {
+        $this->validate([
+            'editPlanId' => 'required|exists:subscription_plans,id',
+            'editEndsAt' => 'required|date|after_or_equal:today',
+            'editStatus' => 'required|in:active,inactive,cancelled',
+        ]);
+    
+        try {
+            $subscription = Subscription::findOrFail($this->editSubscriptionId);
+            $subscription->update([
+                'plan_id' => $this->editPlanId,
+                'ends_at' => Carbon::parse($this->editEndsAt),
+                'status' => $this->editStatus,
+            ]);
+    
+            $this->loadSubscriptionData(); // Refresh subscription data
+            $this->isEditSubscriptionModalOpen = false;
+            session()->flash('success', 'Subscription updated successfully');
+        } catch (\Exception $e) {
+            session()->flash('error', 'Failed to update subscription');
+        }
+    }
+    
+    public function closeEditSubscriptionModal()
+    {
+        $this->isEditSubscriptionModalOpen = false;
+        $this->reset(['editSubscriptionId', 'editPlanId', 'editEndsAt', 'editStatus']);
+    }
     public function generateBarcode($studentId)
     {
         if (!$this->student || $this->courses->isEmpty()) {
@@ -221,7 +265,7 @@ class ViewStudent extends Component
         $this->showBarcodeModal = false;
     }
 
-    
+
     public function saveEnrollment()
     {
         $this->validate([
@@ -254,7 +298,7 @@ class ViewStudent extends Component
 
                 try {
                     $gemService = new GemService($this->studentId);
-                    $gemsToAward = (int) ($this->total_amount * 0.10); 
+                    $gemsToAward = (int) ($this->total_amount * 0.10);
                     $gemService->earnedGem($gemsToAward, 'Welcome bonus for enrolling in course');
                 } catch (\Exception $e) {
                     Log::error('Failed to award enrollment gems: ' . $e->getMessage());
@@ -503,7 +547,7 @@ class ViewStudent extends Component
         if ($payment) {
             $payment->delete();
             session()->flash('success', 'Payment history deleted successfully');
-            $this->dispatch('paymentUpdated')->self(); 
+            $this->dispatch('paymentUpdated')->self();
         } else {
             session()->flash('error', 'Payment history not found');
         }
