@@ -420,9 +420,10 @@
                                     <img src="{{ asset('storage/' . $nextProductImage) }}" alt="{{ $nextProductName }}"
                                         class="w-8 h-8 object-cover rounded-full mr-2">
                                 @endif
+
                                 <p class="text-sm text-gray-500">
                                     @if($gems > 0)
-                                        {{ $nextMilestone - $gems }} gems until {{ $nextProductName }}
+                                        you can redeem {{ $nextProductName }} for {{ $nextMilestone }} gems
                                     @else
                                         Earn your first gems to unlock rewards!
                                     @endif
