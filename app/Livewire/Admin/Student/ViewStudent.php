@@ -51,11 +51,16 @@ class ViewStudent extends Component
     public $barcodeImage;
     public $offlineCourse;
 
+    public $showModal = false;
+    public $paymentId;
+    public $course_title;
+    public $order_id;
+    public $total_amount;
+    public $selectedCourseId;
     public function mount($id)
     {
-        // dd($id); this is user/student id
         $this->studentId = $id;
-        $this->student = USer::findOrFail($id);
+        $this->student = User::findOrFail($id); // Fixed typo: 'USer' to 'User'
         $this->courses = $this->student->courses()
             ->with([
                 'batches' => function ($query) {
@@ -66,22 +71,7 @@ class ViewStudent extends Component
             ->get();
         $this->isMember = $this->student->is_member == 1;
         $this->isActive = $this->student->is_active == 1;
-        // $this->lastPayment = Payment::where('student_id', $id)
-        //     ->where('status', 'captured')
-        //     ->latest()
-        //     ->first();
 
-        // if ($this->lastPayment) {
-        //     $this->dueDate = $this->lastPayment->created_at->addMonth();
-        //     $this->isPaymentDue = now()->greaterThan($this->dueDate);
-        //     $this->overdueDays = $this->isPaymentDue ? now()->diffInDays($this->dueDate) : 0;
-        // } else {
-        //     $this->dueDate = null;
-        //     $this->isPaymentDue = true;
-        //     $this->overdueDays = null;
-        // }
-
-        // In mount:
         $this->offlineCourse = ModelsCourse::whereHas('students', function ($query) {
             $query->where('user_id', $this->studentId);
         })->where('course_type', 'offline')->with('batches')->first();
@@ -90,16 +80,14 @@ class ViewStudent extends Component
             ->where('student_id', $id)
             ->where('status', 'captured')
             ->whereNotNull('course_id')
-            ->latest() // This will order by created_at desc
+            ->latest()
             ->get() ?? collect();
         $this->paymentsWithWorkshops = Payment::where('student_id', $id)
             ->whereNotNull('workshop_id')
             ->get() ?? collect();
         $this->availableCourses = ModelsCourse::all()->except($this->purchasedCourses->pluck('course_id')->toArray());
         $this->fetchPayments();
-        // $this->renderMembership();
 
-        // Load subscription data
         $this->subscriptionPlans = SubscriptionPlan::where('is_active', true)->get();
         $this->activeSubscription = Subscription::where('user_id', $id)
             ->where('status', 'active')
@@ -124,26 +112,22 @@ class ViewStudent extends Component
             }
         }
     }
+
     #[On('updateMembershipData')]
     public function renderMembership()
     {
         $this->isMember = true;
-        // dd("testing by shaique");
         $this->lastPayment = Payment::where('student_id', $this->studentId)
             ->whereIn('status', ['captured', 'unpaid', 'overdue'])
             ->latest()
             ->get();
-
-
-        // dd($this->lastPayment);
-
     }
+
     public function createFuturePayment()
     {
         $startDate = Carbon::now();
         $studentId = $this->studentId;
 
-        // Create 12 payments (total 12)
         for ($i = 1; $i <= 12; $i++) {
             $dueDate = $startDate->copy()->addDays(28 * $i);
             $year = $dueDate->year;
@@ -160,14 +144,11 @@ class ViewStudent extends Component
                 'year' => $year,
                 'total_amount' => 700,
             ]);
-
-
         }
         $this->student->is_member = 1;
         $this->student->save();
         $this->dispatch('updateMembershipData')->self();
     }
-
 
     #[On('courseEnrollDataUpdated')]
     public function updateCourseModal()
@@ -176,127 +157,128 @@ class ViewStudent extends Component
             ->where('student_id', $this->studentId)
             ->where('status', 'captured')
             ->whereNotNull('course_id')
-            ->latest() // This will order by created_at desc
+            ->latest()
             ->get() ?? collect();
         $this->availableCourses = ModelsCourse::all()->except($this->purchasedCourses->pluck('course_id')->toArray());
-        // dd($this->availableCourses);
     }
 
-
     public function hasActiveBatch()
-{
-    if ($this->courses->isEmpty()) {
+    {
+        if ($this->courses->isEmpty()) {
+            return false;
+        }
+
+        $currentDate = Carbon::today();
+        foreach ($this->courses as $course) {
+            $batchId = $course->pivot->batch_id ?? null;
+            $batch = $batchId
+                ? $course->batches->find($batchId)
+                : $course->batches->first();
+
+            if ($batch) {
+                $startDate = Carbon::parse($batch->start_date)->startOfDay();
+                $endDate = Carbon::parse($batch->end_date)->startOfDay();
+                if ($currentDate->between($startDate, $endDate)) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
-    $currentDate = Carbon::today();
-    foreach ($this->courses as $course) {
-        $batchId = $course->pivot->batch_id ?? null;
-        $batch = $batchId
-            ? $course->batches->find($batchId)
-            : $course->batches->first();
+    public function generateBarcode($studentId)
+    {
+        if (!$this->student || $this->courses->isEmpty()) {
+            session()->flash('error', 'No courses found for barcode generation');
+            return;
+        }
 
-        if ($batch) {
-            $startDate = Carbon::parse($batch->start_date)->startOfDay();
-            $endDate = Carbon::parse($batch->end_date)->startOfDay();
-            if ($currentDate->between($startDate, $endDate)) {
-                return true;
-            }
+        if (!$this->hasActiveBatch()) {
+            session()->flash('error', 'No active batches found for barcode generation');
+            return;
+        }
+
+        $this->barcode = 'LS' . str_pad($studentId, 8, '0', STR_PAD_LEFT);
+        $this->student->barcode = $this->barcode;
+        $this->student->save();
+
+        try {
+            $generator = new BarcodeGeneratorPNG();
+            $this->barcodeImage = base64_encode(
+                $generator->getBarcode($this->barcode, $generator::TYPE_CODE_128)
+            );
+            $this->showBarcodeModal = true;
+            session()->flash('success', 'Barcode generated successfully');
+        } catch (\Exception $e) {
+            Log::error('Barcode generation failed: ' . $e->getMessage());
+            $this->showBarcodeModal = false;
+            session()->flash('error', 'Failed to generate barcode');
         }
     }
-    return false;
-}
 
-public function generateBarcode($studentId)
-{
-    if (!$this->student || $this->courses->isEmpty()) {
-        session()->flash('error', 'No courses found for barcode generation');
-        return;
-    }
-
-    if (!$this->hasActiveBatch()) {
-        session()->flash('error', 'No active batches found for barcode generation');
-        return;
-    }
-
-    // Generate and save barcode
-    $this->barcode = 'LS' . str_pad($studentId, 8, '0', STR_PAD_LEFT);
-    $this->student->barcode = $this->barcode;
-    $this->student->save();
-
-    try {
-        $generator = new BarcodeGeneratorPNG();
-        $this->barcodeImage = base64_encode(
-            $generator->getBarcode($this->barcode, $generator::TYPE_CODE_128)
-        );
-        $this->showBarcodeModal = true;
-        session()->flash('success', 'Barcode generated successfully');
-    } catch (\Exception $e) {
-        Log::error('Barcode generation failed: ' . $e->getMessage());
-        $this->showBarcodeModal = false;
-        session()->flash('error', 'Failed to generate barcode');
-    }
-}
-
-public function closeBarcodeModal()
-{
-    $this->showBarcodeModal = false;
-}
-    public function enrollCourse($course_id)
+    public function closeBarcodeModal()
     {
+        $this->showBarcodeModal = false;
+    }
+
+    
+    public function saveEnrollment()
+    {
+        $this->validate([
+            'total_amount' => 'required|numeric|min:0',
+        ]);
+
         try {
-            $course_data = ModelsCourse::find($course_id);
-            // dd($course_data);
-            if ($course_data) {
+            $course = ModelsCourse::find($this->selectedCourseId);
+            if ($course) {
                 Payment::create([
                     'student_id' => $this->studentId,
-                    'course_id' => $course_id,
+                    'course_id' => $this->selectedCourseId,
                     'payment_type' => 'course',
-                    'amount' => $course_data->discounted_fees,
-                    'total_amount' => $course_data->discounted_fees,
+                    'amount' => $this->total_amount,
+                    'total_amount' => $this->total_amount,
                     'transaction_fee' => 0,
                     'currency' => 'INR',
                     'payment_method' => 'cash',
                     'payment_status' => 'completed',
                     'status' => 'captured',
-                    'order_id' => 'ORD-' . uniqid(),
+                    'order_id' => $this->order_id,
                     'payment_id' => 'CASH-' . uniqid(),
                     'receipt_no' => 'RCPT-CRS-' . time(),
-                    'notes' => "Course: {$course_data->title}",
+                    'notes' => "Course: {$course->title}",
                     'payment_date' => now(),
                     'month' => now()->month,
                     'year' => now()->year,
                     'ip_address' => request()->ip()
                 ]);
-                try { //here we have to find the student first then add the gems to his row
-                    // $user = User::where('id', $this->studentId)->first();
 
+                try {
                     $gemService = new GemService($this->studentId);
-                    $gemsToAward = (int) ($course_data->discounted_fees * 0.10); // 10% of course fees
-                    // dd($gemsToAward);
+                    $gemsToAward = (int) ($this->total_amount * 0.10); 
                     $gemService->earnedGem($gemsToAward, 'Welcome bonus for enrolling in course');
                 } catch (\Exception $e) {
-                    // \Log::error('Failed to award enrollment gems: ' . $e->getMessage());
-                    session()->flash('success', 'Course enrolled successfully');
-
+                    Log::error('Failed to award enrollment gems: ' . $e->getMessage());
                 }
+
                 $this->dispatch('courseEnrollDataUpdated')->self();
-                $this->isModalOpen = false; // Close modal after successful enrollment
+                $this->isModalOpen = false;
+                $this->closeModal();
                 session()->flash('success', 'Course enrolled successfully');
             }
         } catch (\Exception $e) {
             session()->flash('error', 'Failed to enroll in course');
         }
     }
-
     public function enrollButtonOpenModal()
     {
         $this->isModalOpen = true;
     }
+
     public function enrollButtonCloseModal()
     {
         $this->isModalOpen = false;
     }
+
     #[On('paymentUpdated')]
     public function fetchPayments()
     {
@@ -304,7 +286,15 @@ public function closeBarcodeModal()
             ->whereIn('status', ['captured', 'unpaid'])
             ->orderBy('created_at')
             ->get();
+        // Update purchasedCourses to reflect changes after payment updates
+        $this->purchasedCourses = Payment::with('course')
+            ->where('student_id', $this->studentId)
+            ->where('status', 'captured')
+            ->whereNotNull('course_id')
+            ->latest()
+            ->get() ?? collect();
     }
+
     public function payWithCash($id)
     {
         $payment = Payment::find($id);
@@ -313,16 +303,14 @@ public function closeBarcodeModal()
             $payment->status = 'captured';
             $payment->payment_id = 'cash_payment';
             $payment->payment_status = 'completed';
-            $payment->method = 'cash';
+            $payment->payment_method = 'cash'; // Fixed: Changed 'method' to 'payment_method'
             $payment->payment_date = now();
             $payment->save();
 
-
-
-            // yha se paymentUpdated event dispatch krke fetchPayments function call kra hai, isi component me
             $this->dispatch('paymentUpdated')->self();
         }
     }
+
     public function setActiveTab($tab)
     {
         $this->activeTab = $tab;
@@ -333,7 +321,6 @@ public function closeBarcodeModal()
         try {
             $plan = SubscriptionPlan::findOrFail($planId);
 
-            // Create new subscription
             $subscription = Subscription::create([
                 'user_id' => $this->studentId,
                 'plan_id' => $planId,
@@ -345,7 +332,6 @@ public function closeBarcodeModal()
                 'transaction_id' => 'CASH-' . uniqid()
             ]);
 
-            // Create payment record
             Payment::create([
                 'student_id' => $this->studentId,
                 'payment_type' => 'subscription',
@@ -366,11 +352,9 @@ public function closeBarcodeModal()
                 'ip_address' => request()->ip()
             ]);
 
-            // Update student status if needed
             $this->student->is_active = true;
             $this->student->save();
 
-            // Refresh subscription data and payments
             $this->loadSubscriptionData();
             $this->fetchPayments();
 
@@ -421,7 +405,7 @@ public function closeBarcodeModal()
                 );
 
             session()->flash('success', 'Batch assigned successfully');
-            $this->courseBatches = []; // Hide the select after successful assignment
+            $this->courseBatches = [];
             $this->courses = $this->student->courses()->withPivot('created_at', 'batch_id')->get();
         } catch (\Exception $e) {
             session()->flash('error', 'Failed to assign batch');
@@ -454,6 +438,76 @@ public function closeBarcodeModal()
         $this->availableCourses = $this->filteredCourses;
     }
 
+    public function openModal($paymentId)
+    {
+        $payment = Payment::find($paymentId);
+        if ($payment) {
+            $this->paymentId = $payment->id;
+            $this->course_title = $payment->course->title ?? 'Unknown Course';
+            $this->order_id = $payment->order_id;
+            $this->total_amount = $payment->total_amount;
+            $this->showModal = true;
+        }
+    }
+    public function openModalForEnrollment($courseId)
+    {
+        $course = ModelsCourse::find($courseId);
+        if ($course) {
+            $this->selectedCourseId = $courseId;
+            $this->course_title = $course->title;
+            $this->total_amount = $course->discounted_fees; // Pre-fill with discounted fees
+            $this->order_id = 'ORD-' . uniqid(); // Generate a default order ID
+            $this->showModal = true;
+        }
+    }
+    public function closeModal()
+    {
+        $this->showModal = false;
+        $this->reset(['paymentId', 'course_title', 'order_id', 'total_amount']);
+    }
+
+    public function save()
+    {
+        $this->validate([
+            'course_title' => 'required|string|max:255',
+            'order_id' => 'required|string|max:255',
+            'total_amount' => 'required|numeric|min:0',
+        ]);
+
+        $payment = Payment::find($this->paymentId);
+        if ($payment) {
+            $payment->update([
+                'order_id' => $this->order_id,
+                'total_amount' => $this->total_amount,
+            ]);
+        }
+
+        $this->closeModal();
+        $this->dispatch('paymentUpdated')->self(); // Fixed: Replaced emit with dispatch
+    }
+
+    public function deletePayment($paymentId)
+    {
+        $payment = Payment::find($paymentId);
+        if ($payment) {
+            $payment->delete();
+            session()->flash('success', 'Payment deleted successfully');
+            $this->dispatch('paymentUpdated')->self(); // Fixed: Replaced emit with dispatch
+        } else {
+            session()->flash('error', 'Payment not found');
+        }
+    }
+    public function deletePaymentHistory($paymentId)
+    {
+        $payment = Payment::find($paymentId);
+        if ($payment) {
+            $payment->delete();
+            session()->flash('success', 'Payment history deleted successfully');
+            $this->dispatch('paymentUpdated')->self(); 
+        } else {
+            session()->flash('error', 'Payment history not found');
+        }
+    }
     public function render()
     {
         $payments = Payment::where('student_id', $this->studentId)
