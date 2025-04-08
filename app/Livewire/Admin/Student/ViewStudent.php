@@ -497,6 +497,17 @@ class ViewStudent extends Component
             session()->flash('error', 'Payment not found');
         }
     }
+    public function deletePaymentHistory($paymentId)
+    {
+        $payment = Payment::find($paymentId);
+        if ($payment) {
+            $payment->delete();
+            session()->flash('success', 'Payment history deleted successfully');
+            $this->dispatch('paymentUpdated')->self(); 
+        } else {
+            session()->flash('error', 'Payment history not found');
+        }
+    }
     public function render()
     {
         $payments = Payment::where('student_id', $this->studentId)
