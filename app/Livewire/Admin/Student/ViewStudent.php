@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Admin\Student;
 
-use App\Livewire\Student\Course;
 use App\Models\Course as ModelsCourse;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
@@ -15,8 +14,8 @@ use App\Models\SubscriptionPlan;
 use App\Models\Subscription;
 use App\Models\Batch;
 use App\Services\GemService;
-use DB;
-use Log;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Picqer\Barcode\BarcodeGeneratorPNG;
 
 #[Layout('components.layouts.admin')]
@@ -24,18 +23,13 @@ use Picqer\Barcode\BarcodeGeneratorPNG;
 class ViewStudent extends Component
 {
     public $student;
+    public $studentId;
     public $isMember;
     public $purchasedCourses;
-    public $paymentsGroupedByCourse;
     public $isActive;
     public $paymentsWithWorkshops;
-    public $overdueDays;
-    public $isPaymentDue;
-    public $lastPayment;
     public $courses;
-    public $studentId;
     public $activeTab = 'courses';
-    public $dueDate;
     public $isModalOpen = false;
     public $availableCourses = [];
     public $subscriptionPlans;
@@ -50,72 +44,93 @@ class ViewStudent extends Component
     public $allCourses;
     public $barcodeImage;
     public $offlineCourse;
-
     public $showModal = false;
     public $paymentId;
     public $course_title;
     public $order_id;
     public $total_amount;
     public $selectedCourseId;
-
     public $isEditSubscriptionModalOpen = false;
     public $editSubscriptionId;
     public $editPlanId;
     public $editEndsAt;
     public $editStatus;
+    public $education_qualification;
+    public $isEditing = false;
+
+    public $isEditingCard = false;
+
+    public $name;
+    public $email;
+    public $contact;
+    public $gender;
+    
+    public $dob;
+    public $editingField = null;
     public function mount($id)
     {
         $this->studentId = $id;
-        $this->student = User::findOrFail($id); // Fixed typo: 'USer' to 'User'
-        $this->courses = $this->student->courses()
-            ->with([
-                'batches' => function ($query) {
+        $this->loadStudentData();
+    }
+
+    private function loadStudentData()
+    {
+        try {
+            $this->student = User::findOrFail($this->studentId);
+            $this->name = $this->student->name;
+            $this->email = $this->student->email;
+            $this->contact = $this->student->contact;
+            $this->gender = $this->student->gender;
+            $this->education_qualification = $this->student->education_qualification;
+            $this->dob = $this->student->dob;            $this->isMember = $this->student->is_member == 1;
+            $this->isActive = $this->student->is_active == 1;
+
+            $this->courses = $this->student->courses()
+                ->with(['batches' => function ($query) {
                     $query->whereDate('end_date', '>=', now());
-                }
-            ])
-            ->withPivot('created_at', 'batch_id')
-            ->get();
-        $this->isMember = $this->student->is_member == 1;
-        $this->isActive = $this->student->is_active == 1;
+                }])
+                ->withPivot('created_at', 'batch_id')
+                ->get();
 
-        $this->offlineCourse = ModelsCourse::whereHas('students', function ($query) {
-            $query->where('user_id', $this->studentId);
-        })->where('course_type', 'offline')->with('batches')->first();
+            $this->offlineCourse = ModelsCourse::whereHas('students', function ($query) {
+                $query->where('user_id', $this->studentId);
+            })->where('course_type', 'offline')->with('batches')->first();
 
-        $this->purchasedCourses = Payment::with('course')
-            ->where('student_id', $id)
-            ->where('status', 'captured')
-            ->whereNotNull('course_id')
-            ->latest()
-            ->get() ?? collect();
-        $this->paymentsWithWorkshops = Payment::where('student_id', $id)
-            ->whereNotNull('workshop_id')
-            ->get() ?? collect();
-        $this->availableCourses = ModelsCourse::all()->except($this->purchasedCourses->pluck('course_id')->toArray());
-        $this->fetchPayments();
+            $this->purchasedCourses = Payment::with('course')
+                ->where('student_id', $this->studentId)
+                ->where('status', 'captured')
+                ->whereNotNull('course_id')
+                ->latest()
+                ->get() ?? collect();
 
-        $this->subscriptionPlans = SubscriptionPlan::where('is_active', true)->get();
-        $this->activeSubscription = Subscription::where('user_id', $id)
-            ->where('status', 'active')
-            ->where('ends_at', '>', now())
-            ->with('plan')
-            ->first();
-        $this->subscriptionHistory = Subscription::where('user_id', $id)
-            ->with('plan')
-            ->orderBy('created_at', 'desc')
-            ->get();
-        $this->allCourses = ModelsCourse::orderBy('title')->get();
+            $this->paymentsWithWorkshops = Payment::where('student_id', $this->studentId)
+                ->whereNotNull('workshop_id')
+                ->get() ?? collect();
 
-        if ($this->student->barcode) {
-            $this->barcode = $this->student->barcode;
-            try {
-                $generator = new BarcodeGeneratorPNG();
-                $this->barcodeImage = base64_encode(
-                    $generator->getBarcode($this->barcode, $generator::TYPE_CODE_128)
-                );
-            } catch (\Exception $e) {
-                Log::error('Failed to load barcode image on mount: ' . $e->getMessage());
+            $this->availableCourses = ModelsCourse::all()->except($this->purchasedCourses->pluck('course_id')->toArray());
+            $this->subscriptionPlans = SubscriptionPlan::where('is_active', true)->get();
+            $this->loadSubscriptionData();
+            $this->allCourses = ModelsCourse::orderBy('title')->get();
+
+            if ($this->student->barcode) {
+                $this->barcode = $this->student->barcode;
+                $this->generateBarcodeImage();
             }
+        } catch (\Exception $e) {
+            Log::error('Failed to load student data: ' . $e->getMessage());
+            session()->flash('error', 'Failed to load student information.');
+            $this->redirectRoute('admin.students.index');
+        }
+    }
+
+    private function generateBarcodeImage()
+    {
+        try {
+            $generator = new BarcodeGeneratorPNG();
+            $this->barcodeImage = base64_encode($generator->getBarcode($this->barcode, $generator::TYPE_CODE_128));
+        } catch (\Exception $e) {
+            Log::error('Failed to generate barcode image: ' . $e->getMessage());
+            $this->barcodeImage = null;
         }
     }
 
@@ -123,37 +138,37 @@ class ViewStudent extends Component
     public function renderMembership()
     {
         $this->isMember = true;
-        $this->lastPayment = Payment::where('student_id', $this->studentId)
-            ->whereIn('status', ['captured', 'unpaid', 'overdue'])
-            ->latest()
-            ->get();
+        $this->fetchPayments();
     }
 
     public function createFuturePayment()
     {
-        $startDate = Carbon::now();
-        $studentId = $this->studentId;
-
-        for ($i = 1; $i <= 12; $i++) {
-            $dueDate = $startDate->copy()->addDays(28 * $i);
-            $year = $dueDate->year;
-            $month = $dueDate->month;
-
-            Payment::create([
-                'student_id' => $studentId,
-                'amount' => 700,
-                'receipt_no' => 'RCPT-' . $year . '-' . $month . '-' . $studentId,
-                'transaction_fee' => 700,
-                'due_date' => $dueDate,
-                'status' => 'unpaid',
-                'month' => $month,
-                'year' => $year,
-                'total_amount' => 700,
-            ]);
+        try {
+            DB::beginTransaction();
+            $startDate = Carbon::now();
+            for ($i = 1; $i <= 12; $i++) {
+                $dueDate = $startDate->copy()->addDays(28 * $i);
+                Payment::create([
+                    'student_id' => $this->studentId,
+                    'amount' => 700,
+                    'receipt_no' => 'RCPT-' . $dueDate->year . '-' . $dueDate->month . '-' . $this->studentId,
+                    'transaction_fee' => 700,
+                    'due_date' => $dueDate,
+                    'status' => 'unpaid',
+                    'month' => $dueDate->month,
+                    'year' => $dueDate->year,
+                    'total_amount' => 700,
+                ]);
+            }
+            $this->student->update(['is_member' => 1]);
+            DB::commit();
+            $this->dispatch('updateMembershipData')->self();
+            session()->flash('success', 'Future payments created successfully');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Failed to create future payments: ' . $e->getMessage());
+            session()->flash('error', 'Failed to create future payments');
         }
-        $this->student->is_member = 1;
-        $this->student->save();
-        $this->dispatch('updateMembershipData')->self();
     }
 
     #[On('courseEnrollDataUpdated')]
@@ -166,41 +181,107 @@ class ViewStudent extends Component
             ->latest()
             ->get() ?? collect();
         $this->availableCourses = ModelsCourse::all()->except($this->purchasedCourses->pluck('course_id')->toArray());
+        $this->reset(['selectedCourseId', 'total_amount', 'order_id']);
     }
 
     public function hasActiveBatch()
     {
-        if ($this->courses->isEmpty()) {
-            return false;
-        }
+        if ($this->courses->isEmpty()) return false;
 
         $currentDate = Carbon::today();
         foreach ($this->courses as $course) {
             $batchId = $course->pivot->batch_id ?? null;
-            $batch = $batchId
-                ? $course->batches->find($batchId)
-                : $course->batches->first();
-
-            if ($batch) {
-                $startDate = Carbon::parse($batch->start_date)->startOfDay();
-                $endDate = Carbon::parse($batch->end_date)->startOfDay();
-                if ($currentDate->between($startDate, $endDate)) {
-                    return true;
-                }
+            $batch = $batchId ? $course->batches->find($batchId) : $course->batches->first();
+            if ($batch && $currentDate->between(Carbon::parse($batch->start_date)->startOfDay(), Carbon::parse($batch->end_date)->startOfDay())) {
+                return true;
             }
         }
         return false;
     }
+
+    public function editField($field)
+    {
+        $this->editingField = $field;
+        $this->resetErrorBag($field);
+    }
+
+    public function cancelEdit()
+    {
+        $this->editingField = null;
+        $this->name = $this->student->name;
+        $this->email = $this->student->email;
+        $this->contact = $this->student->contact;
+        $this->gender = $this->student->gender;
+        $this->education_qualification = $this->student->education_qualification;
+        $this->dob = $this->student->dob;
+        $this->resetErrorBag();
+    }
+
+    public function saveField($field)
+    {
+        $rules = [
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . $this->studentId,
+            'contact' => 'nullable|string|max:20',
+            'gender' => 'nullable|in:Male,Female,Other',
+            'education_qualification' => 'required|string|max:255',
+            'dob' => 'nullable|date|before:today',
+        ];
+
+        $this->validateOnly($field, $rules);
+
+        try {
+            DB::beginTransaction();
+            $this->student->update([$field => $this->$field]);
+            DB::commit();
+
+            $this->editingField = null;
+            $this->resetErrorBag();
+            session()->flash('success', ucfirst($field) . ' updated successfully');
+            $this->dispatch('field-updated')->self();
+        } catch (\Illuminate\Database\QueryException $e) {
+            DB::rollBack();
+            Log::error("Database error updating $field: " . $e->getMessage());
+            session()->flash('error', 'Database error occurred while updating ' . $field . '.');
+            $this->addError($field, 'Failed to save changes.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error("Failed to update $field: " . $e->getMessage());
+            session()->flash('error', 'Failed to update ' . $field . '.');
+            $this->addError($field, 'An unexpected error occurred.');
+        }
+    }
+
+    // Legacy methods for education-specific editing (for backward compatibility with form)
+    public function edit()
+    {
+        $this->editField('education_qualification');
+    }
+
+    public function cancel()
+    {
+        $this->cancelEdit();
+    }
+
+    public function education()
+    {
+        $this->saveField('education_qualification');
+    }
     public function openEditSubscriptionModal($subscriptionId)
     {
-        $subscription = Subscription::findOrFail($subscriptionId);
-        $this->editSubscriptionId = $subscription->id;
-        $this->editPlanId = $subscription->plan_id;
-        $this->editEndsAt = $subscription->ends_at->format('Y-m-d');
-        $this->editStatus = $subscription->status;
-        $this->isEditSubscriptionModalOpen = true;
+        try {
+            $subscription = Subscription::findOrFail($subscriptionId);
+            $this->editSubscriptionId = $subscription->id;
+            $this->editPlanId = $subscription->plan_id;
+            $this->editEndsAt = $subscription->ends_at->format('Y-m-d');
+            $this->editStatus = $subscription->status;
+            $this->isEditSubscriptionModalOpen = true;
+        } catch (\Exception $e) {
+            Log::error('Failed to open edit subscription modal: ' . $e->getMessage());
+            session()->flash('error', 'Failed to load subscription data.');
+        }
     }
-    
+
     public function saveEditedSubscription()
     {
         $this->validate([
@@ -208,28 +289,33 @@ class ViewStudent extends Component
             'editEndsAt' => 'required|date|after_or_equal:today',
             'editStatus' => 'required|in:active,inactive,cancelled',
         ]);
-    
+
         try {
+            DB::beginTransaction();
             $subscription = Subscription::findOrFail($this->editSubscriptionId);
             $subscription->update([
                 'plan_id' => $this->editPlanId,
                 'ends_at' => Carbon::parse($this->editEndsAt),
                 'status' => $this->editStatus,
             ]);
-    
-            $this->loadSubscriptionData(); // Refresh subscription data
+            DB::commit();
+
+            $this->loadSubscriptionData();
             $this->isEditSubscriptionModalOpen = false;
             session()->flash('success', 'Subscription updated successfully');
         } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Failed to update subscription: ' . $e->getMessage());
             session()->flash('error', 'Failed to update subscription');
         }
     }
-    
+
     public function closeEditSubscriptionModal()
     {
         $this->isEditSubscriptionModalOpen = false;
         $this->reset(['editSubscriptionId', 'editPlanId', 'editEndsAt', 'editStatus']);
     }
+
     public function generateBarcode($studentId)
     {
         if (!$this->student || $this->courses->isEmpty()) {
@@ -242,15 +328,10 @@ class ViewStudent extends Component
             return;
         }
 
-        $this->barcode = 'LS' . str_pad($studentId, 8, '0', STR_PAD_LEFT);
-        $this->student->barcode = $this->barcode;
-        $this->student->save();
-
         try {
-            $generator = new BarcodeGeneratorPNG();
-            $this->barcodeImage = base64_encode(
-                $generator->getBarcode($this->barcode, $generator::TYPE_CODE_128)
-            );
+            $this->barcode = 'LS' . str_pad($studentId, 8, '0', STR_PAD_LEFT);
+            $this->student->update(['barcode' => $this->barcode]);
+            $this->generateBarcodeImage();
             $this->showBarcodeModal = true;
             session()->flash('success', 'Barcode generated successfully');
         } catch (\Exception $e) {
@@ -265,54 +346,54 @@ class ViewStudent extends Component
         $this->showBarcodeModal = false;
     }
 
-
     public function saveEnrollment()
     {
         $this->validate([
             'total_amount' => 'required|numeric|min:0',
+            'selectedCourseId' => 'required|exists:courses,id',
         ]);
 
         try {
-            $course = ModelsCourse::find($this->selectedCourseId);
-            if ($course) {
-                Payment::create([
-                    'student_id' => $this->studentId,
-                    'course_id' => $this->selectedCourseId,
-                    'payment_type' => 'course',
-                    'amount' => $this->total_amount,
-                    'total_amount' => $this->total_amount,
-                    'transaction_fee' => 0,
-                    'currency' => 'INR',
-                    'payment_method' => 'cash',
-                    'payment_status' => 'completed',
-                    'status' => 'captured',
-                    'order_id' => $this->order_id,
-                    'payment_id' => 'CASH-' . uniqid(),
-                    'receipt_no' => 'RCPT-CRS-' . time(),
-                    'notes' => "Course: {$course->title}",
-                    'payment_date' => now(),
-                    'month' => now()->month,
-                    'year' => now()->year,
-                    'ip_address' => request()->ip()
-                ]);
+            DB::beginTransaction();
+            $course = ModelsCourse::findOrFail($this->selectedCourseId);
+            $payment = Payment::create([
+                'student_id' => $this->studentId,
+                'course_id' => $this->selectedCourseId,
+                'payment_type' => 'course',
+                'amount' => $this->total_amount,
+                'total_amount' => $this->total_amount,
+                'transaction_fee' => 0,
+                'currency' => 'INR',
+                'payment_method' => 'cash',
+                'payment_status' => 'completed',
+                'status' => 'captured',
+                'order_id' => $this->order_id ?? 'ORD-' . uniqid(),
+                'payment_id' => 'CASH-' . uniqid(),
+                'receipt_no' => 'RCPT-CRS-' . time(),
+                'notes' => "Course: {$course->title}",
+                'payment_date' => now(),
+                'month' => now()->month,
+                'year' => now()->year,
+                'ip_address' => request()->ip(),
+            ]);
 
-                try {
-                    $gemService = new GemService($this->studentId);
-                    $gemsToAward = (int) ($this->total_amount * 0.10);
-                    $gemService->earnedGem($gemsToAward, 'Welcome bonus for enrolling in course');
-                } catch (\Exception $e) {
-                    Log::error('Failed to award enrollment gems: ' . $e->getMessage());
-                }
+            $gemService = new GemService($this->studentId);
+            $gemsToAward = (int) ($this->total_amount * 0.10);
+            $gemService->earnedGem($gemsToAward, 'Welcome bonus for enrolling in course');
 
-                $this->dispatch('courseEnrollDataUpdated')->self();
-                $this->isModalOpen = false;
-                $this->closeModal();
-                session()->flash('success', 'Course enrolled successfully');
-            }
+            DB::commit();
+
+            $this->dispatch('courseEnrollDataUpdated')->self();
+            $this->isModalOpen = false;
+            $this->closeModal();
+            session()->flash('success', 'Course enrolled successfully');
         } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Failed to enroll in course: ' . $e->getMessage());
             session()->flash('error', 'Failed to enroll in course');
         }
     }
+
     public function enrollButtonOpenModal()
     {
         $this->isModalOpen = true;
@@ -326,11 +407,6 @@ class ViewStudent extends Component
     #[On('paymentUpdated')]
     public function fetchPayments()
     {
-        $this->lastPayment = Payment::where('student_id', $this->studentId)
-            ->whereIn('status', ['captured', 'unpaid'])
-            ->orderBy('created_at')
-            ->get();
-        // Update purchasedCourses to reflect changes after payment updates
         $this->purchasedCourses = Payment::with('course')
             ->where('student_id', $this->studentId)
             ->where('status', 'captured')
@@ -341,17 +417,20 @@ class ViewStudent extends Component
 
     public function payWithCash($id)
     {
-        $payment = Payment::find($id);
-
-        if ($payment) {
-            $payment->status = 'captured';
-            $payment->payment_id = 'cash_payment';
-            $payment->payment_status = 'completed';
-            $payment->payment_method = 'cash'; // Fixed: Changed 'method' to 'payment_method'
-            $payment->payment_date = now();
-            $payment->save();
-
+        try {
+            $payment = Payment::findOrFail($id);
+            $payment->update([
+                'status' => 'captured',
+                'payment_id' => 'cash_payment',
+                'payment_status' => 'completed',
+                'payment_method' => 'cash',
+                'payment_date' => now(),
+            ]);
             $this->dispatch('paymentUpdated')->self();
+            session()->flash('success', 'Payment updated successfully');
+        } catch (\Exception $e) {
+            Log::error('Failed to process cash payment: ' . $e->getMessage());
+            session()->flash('error', 'Failed to process payment');
         }
     }
 
@@ -363,8 +442,8 @@ class ViewStudent extends Component
     public function subscribePlan($planId)
     {
         try {
+            DB::beginTransaction();
             $plan = SubscriptionPlan::findOrFail($planId);
-
             $subscription = Subscription::create([
                 'user_id' => $this->studentId,
                 'plan_id' => $planId,
@@ -373,7 +452,7 @@ class ViewStudent extends Component
                 'status' => 'active',
                 'payment_status' => 'completed',
                 'payment_method' => 'cash',
-                'transaction_id' => 'CASH-' . uniqid()
+                'transaction_id' => 'CASH-' . uniqid(),
             ]);
 
             Payment::create([
@@ -393,17 +472,18 @@ class ViewStudent extends Component
                 'payment_date' => now(),
                 'month' => now()->month,
                 'year' => now()->year,
-                'ip_address' => request()->ip()
+                'ip_address' => request()->ip(),
             ]);
 
-            $this->student->is_active = true;
-            $this->student->save();
+            $this->student->update(['is_active' => true]);
+            DB::commit();
 
             $this->loadSubscriptionData();
             $this->fetchPayments();
-
             session()->flash('success', 'Subscription activated successfully');
         } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Failed to activate subscription: ' . $e->getMessage());
             session()->flash('error', 'Failed to activate subscription');
         }
     }
@@ -431,127 +511,130 @@ class ViewStudent extends Component
 
     public function assignBatch($courseId, $batchId)
     {
+        if (empty($batchId)) return;
+
         try {
-            if (empty($batchId)) {
-                return;
-            }
+            DB::beginTransaction();
+            DB::table('course_student')->updateOrInsert(
+                ['user_id' => $this->studentId, 'course_id' => $courseId],
+                ['batch_id' => $batchId, 'updated_at' => now()]
+            );
+            DB::commit();
 
-            DB::table('course_student')
-                ->updateOrInsert(
-                    [
-                        'user_id' => $this->studentId,
-                        'course_id' => $courseId,
-                    ],
-                    [
-                        'batch_id' => $batchId,
-                        'updated_at' => now()
-                    ]
-                );
-
-            session()->flash('success', 'Batch assigned successfully');
             $this->courseBatches = [];
             $this->courses = $this->student->courses()->withPivot('created_at', 'batch_id')->get();
+            session()->flash('success', 'Batch assigned successfully');
         } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Failed to assign batch: ' . $e->getMessage());
             session()->flash('error', 'Failed to assign batch');
         }
     }
 
-    public function getFilteredCoursesProperty()
-    {
-        $query = ModelsCourse::query()
-            ->when($this->searchTerm, function ($query) {
-                $query->where('title', 'like', '%' . $this->searchTerm . '%')
-                    ->orWhere('description', 'like', '%' . $this->searchTerm . '%');
-            })
-            ->whereNotIn('id', $this->purchasedCourses->pluck('course_id')->toArray());
-
-        if ($this->courseFilter !== 'all') {
-            $query->where('id', $this->courseFilter);
-        }
-
-        return $query->orderBy('title')->get();
-    }
-
     public function updatedSearchTerm()
     {
-        $this->availableCourses = $this->filteredCourses;
+        $this->availableCourses = $this->getFilteredCoursesProperty();
     }
 
     public function updatedCourseFilter()
     {
-        $this->availableCourses = $this->filteredCourses;
+        $this->availableCourses = $this->getFilteredCoursesProperty();
+    }
+
+    public function getFilteredCoursesProperty()
+    {
+        return ModelsCourse::query()
+            ->when($this->searchTerm, fn($query) => $query->where('title', 'like', '%' . $this->searchTerm . '%')->orWhere('description', 'like', '%' . $this->searchTerm . '%'))
+            ->when($this->courseFilter !== 'all', fn($query) => $query->where('id', $this->courseFilter))
+            ->whereNotIn('id', $this->purchasedCourses->pluck('course_id')->toArray())
+            ->orderBy('title')
+            ->get();
     }
 
     public function openModal($paymentId)
     {
-        $payment = Payment::find($paymentId);
-        if ($payment) {
+        try {
+            $payment = Payment::findOrFail($paymentId);
             $this->paymentId = $payment->id;
             $this->course_title = $payment->course->title ?? 'Unknown Course';
             $this->order_id = $payment->order_id;
             $this->total_amount = $payment->total_amount;
             $this->showModal = true;
+        } catch (\Exception $e) {
+            Log::error('Failed to open payment modal: ' . $e->getMessage());
+            session()->flash('error', 'Failed to load payment data');
         }
     }
+
     public function openModalForEnrollment($courseId)
     {
-        $course = ModelsCourse::find($courseId);
-        if ($course) {
+        try {
+            $course = ModelsCourse::findOrFail($courseId);
             $this->selectedCourseId = $courseId;
             $this->course_title = $course->title;
-            $this->total_amount = $course->discounted_fees; // Pre-fill with discounted fees
-            $this->order_id = 'ORD-' . uniqid(); // Generate a default order ID
+            $this->total_amount = $course->discounted_fees ?? $course->fees;
+            $this->order_id = 'ORD-' . uniqid();
             $this->showModal = true;
+        } catch (\Exception $e) {
+            Log::error('Failed to open enrollment modal: ' . $e->getMessage());
+            session()->flash('error', 'Failed to load course data');
         }
     }
+
     public function closeModal()
     {
         $this->showModal = false;
-        $this->reset(['paymentId', 'course_title', 'order_id', 'total_amount']);
+        $this->reset(['paymentId', 'course_title', 'order_id', 'total_amount', 'selectedCourseId']);
     }
 
     public function save()
     {
         $this->validate([
-            'course_title' => 'required|string|max:255',
             'order_id' => 'required|string|max:255',
             'total_amount' => 'required|numeric|min:0',
         ]);
 
-        $payment = Payment::find($this->paymentId);
-        if ($payment) {
+        try {
+            $payment = Payment::findOrFail($this->paymentId);
             $payment->update([
                 'order_id' => $this->order_id,
                 'total_amount' => $this->total_amount,
             ]);
+            $this->closeModal();
+            $this->dispatch('paymentUpdated')->self();
+            session()->flash('success', 'Payment updated successfully');
+        } catch (\Exception $e) {
+            Log::error('Failed to save payment: ' . $e->getMessage());
+            session()->flash('error', 'Failed to update payment');
         }
-
-        $this->closeModal();
-        $this->dispatch('paymentUpdated')->self(); // Fixed: Replaced emit with dispatch
     }
 
     public function deletePayment($paymentId)
     {
-        $payment = Payment::find($paymentId);
-        if ($payment) {
+        try {
+            $payment = Payment::findOrFail($paymentId);
             $payment->delete();
+            $this->dispatch('paymentUpdated')->self();
             session()->flash('success', 'Payment deleted successfully');
-            $this->dispatch('paymentUpdated')->self(); // Fixed: Replaced emit with dispatch
-        } else {
-            session()->flash('error', 'Payment not found');
+        } catch (\Exception $e) {
+            Log::error('Failed to delete payment: ' . $e->getMessage());
+            session()->flash('error', 'Failed to delete payment');
         }
     }
+
     public function deletePaymentHistory($paymentId)
     {
-        $payment = Payment::find($paymentId);
-        if ($payment) {
+        try {
+            $payment = Payment::findOrFail($paymentId);
             $payment->delete();
-            session()->flash('success', 'Payment history deleted successfully');
             $this->dispatch('paymentUpdated')->self();
-        } else {
-            session()->flash('error', 'Payment history not found');
+            session()->flash('success', 'Payment history deleted successfully');
+        } catch (\Exception $e) {
+            Log::error('Failed to delete payment history: ' . $e->getMessage());
+            session()->flash('error', 'Failed to delete payment history');
         }
     }
+
     public function render()
     {
         $payments = Payment::where('student_id', $this->studentId)
