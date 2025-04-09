@@ -183,7 +183,51 @@
                     </div>
                 </div>
             </div>
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-4">
+                    <div class="px-6 py-4 flex items-center">
+                        <h2 class="text-lg font-semibold text-gray-900">Top Scorers</h2>
+                        <span class="text-sm text-gray-500 ml-auto">Gems</span>
+                    </div>
 
+                    <!-- Session Image Section -->
+                    @if($sessionImage)
+                        <div class="px-6 py-2 flex items-center border-b border-gray-200">
+                            <div class="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden">
+                                <img class="w-11 h-11 rounded-full ring-2 ring-purple-600 ..."
+                                    src="{{ $sessionImage ? asset($sessionImage) : asset('user.png') }}"
+                                    alt="User Profile" />
+                            </div>
+                            <span class="ml-3 text-md font-semibold text-gray-700">You</span>
+                        </div>
+                    @endif
+
+                    <!-- Top Scorers List -->
+                    <div class="px-6 py-4">
+                        @if($topScorers->isEmpty())
+                            <p>No top scorers available.</p>
+                        @else
+                            <ul class="space-y-3">
+                                @foreach($topScorers as $scorer)
+                                    <li class="flex items-center">
+                                        <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-full ...">
+                                            @if($scorer->image)
+                                                <img src="{{ asset('storage/' . $scorer->image) }}"
+                                                    alt="Profile picture of {{ $scorer->name }}"
+                                                    class="w-full h-full object-cover rounded-full">
+                                            @else
+                                                <svg class="w-6 h-6" fill="none" stroke="currentColor" ...>
+                                                    <path ... />
+                                                </svg>
+                                            @endif
+                                        </div>
+                                        <span class="ml-3 text-md font-semibold text-gray-900">{{ $scorer->name }}</span>
+                                        <span class="ml-auto text-sm text-gray-500">{{ $scorer->gem }} Gems</span>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @endif
+                    </div>
+                </div>
             <!-- Quick Actions Grid with animations -->
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 <a href="{{ route('admin.attendance') }}" wire:navigate class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all border border-gray-100 group

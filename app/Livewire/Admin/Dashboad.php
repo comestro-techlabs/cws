@@ -47,6 +47,9 @@ class Dashboad extends Component
     public $users;
     public $enquiries;
     public $subscriptions;
+    public $topScorers;
+
+    public $sessionImage;
 
 
 
@@ -60,6 +63,23 @@ class Dashboad extends Component
         $this->subscriptions = Subscription::where('status', 'active')
         ->whereBetween('ends_at', [Carbon::now(), Carbon::now()->addDays(15)])->take(4)
         ->get();
+
+        $this->topScorers = User::where('isAdmin', '!=', 1)
+            ->where('is_active', true)
+            ->where(DB::raw('CAST(gem AS UNSIGNED)'), '>', 0) 
+            ->orderBy(DB::raw('CAST(gem AS UNSIGNED)'), 'desc')
+            ->take(10)
+            ->get(['name', 'gem', 'image']);
+
+        $sessionImage = session('user_image');
+
+        foreach ($this->topScorers as $scorer) {
+            $dbImage = $scorer->image;
+            if ($sessionImage && $dbImage) {
+
+                \Log::info("Session Image: $sessionImage, DB Image: $dbImage");
+            }
+        }
     }
        
     
