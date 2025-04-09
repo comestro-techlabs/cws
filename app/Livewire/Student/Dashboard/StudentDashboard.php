@@ -68,16 +68,17 @@ class StudentDashboard extends Component
         $user = User::with('courses.batches')->findOrFail($studentId);
 
         // Get the top 3 scorers
-        $this->topScorers = User::where('isAdmin', '!=', 1)->where('is_active', true)
+        $this->topScorers = User::where('isAdmin', '!=', 1)->where('is_active', true)->where('gem', '>', 0)
+
             ->orderBy('gem', 'desc')
             ->take(3)
             ->get(['name', 'gem', 'image']);
 
-        
-        $sessionImage = session('user_image'); 
-        
+
+        $sessionImage = session('user_image');
+
         foreach ($this->topScorers as $scorer) {
-            $dbImage = $scorer->image; 
+            $dbImage = $scorer->image;
             if ($sessionImage && $dbImage) {
 
                 \Log::info("Session Image: $sessionImage, DB Image: $dbImage");
