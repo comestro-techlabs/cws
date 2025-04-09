@@ -53,7 +53,7 @@
                                                         <button 
                                                             wire:click="saveField('{{ $detail['field'] }}')"
                                                             wire:loading.attr="disabled"
-                                                            class="bg-blue-600 text-white text-sm px-3 py-1 rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none disabled:opacity-50 transition-all"
+                                                            class="bg-purple-600 text-white text-sm px-3 py-1 rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none disabled:opacity-50 transition-all"
                                                         >
                                                             <span wire:loading.remove>Save</span>
                                                             <span wire:loading>Saving...</span>

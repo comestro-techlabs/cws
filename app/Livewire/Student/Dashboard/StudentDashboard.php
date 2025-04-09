@@ -67,13 +67,12 @@ class StudentDashboard extends Component
         $this->studentId = $studentId;
         $user = User::with('courses.batches')->findOrFail($studentId);
 
-        // Get the top 3 scorers
-        $this->topScorers = User::where('isAdmin', '!=', 1)->where('is_active', true)->where('gem', '>', 0)
-
-            ->orderBy('gem', 'desc')
+        $this->topScorers = User::where('isAdmin', '!=', 1)
+            ->where('is_active', true)
+            ->where(DB::raw('CAST(gem AS UNSIGNED)'), '>', 0) 
+            ->orderBy(DB::raw('CAST(gem AS UNSIGNED)'), 'desc')
             ->take(3)
             ->get(['name', 'gem', 'image']);
-
 
         $sessionImage = session('user_image');
 
@@ -480,7 +479,7 @@ class StudentDashboard extends Component
         return view('livewire.student.dashboard.student-dashboard', [
             'courses' => $this->courses,
             'assignments' => $this->assignments,
-            'gems' => $this->gems,
+            'gyms' => $this->gems, // Note: You have a typo here ('gyms' instead of 'gems')
             'points' => $this->points,
             'attendance' => $this->attendance,
             'completedTasks' => $this->completedTasks,
@@ -497,6 +496,8 @@ class StudentDashboard extends Component
             'nextProductName' => $this->nextProductName,
             'nextProductImage' => $this->nextProductImage,
             'barcodeImage' => $this->barcodeImage,
+            'topScorers' => $this->topScorers, // Add this
+            'sessionImage' => $this->sessionImage, // Add this
         ]);
     }
 }
