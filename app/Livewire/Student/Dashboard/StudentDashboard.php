@@ -68,7 +68,7 @@ class StudentDashboard extends Component
         $user = User::with('courses.batches')->findOrFail($studentId);
 
         // Get the top 3 scorers
-        $this->topScorers = User::where('isAdmin', '!=', 1)
+        $this->topScorers = User::where('isAdmin', '!=', 1)->where('is_active', true)
             ->orderBy('gem', 'desc')
             ->take(3)
             ->get(['name', 'gem', 'image']);
