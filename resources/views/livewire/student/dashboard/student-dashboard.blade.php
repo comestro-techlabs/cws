@@ -314,7 +314,20 @@
                  onerror="this.src='https://www.zica.co.zm/wp-content/uploads/2021/02/dummy-profile-image.png'" />
         </div>
         <span class="ml-3 text-sm text-gray-900">{{ $scorer->name }}</span>
-        <span class="ml-auto text-sm text-gray-500">{{ $scorer->gem }} Gems</span>
+        <span class="flex items-center gap-2 ml-auto text-sm text-gray-500">{{ $scorer->gem }} 
+        <svg class="w-5 h-5" viewBox="0 0 24 24">
+                                                        <defs>
+                                                            <linearGradient id="gemGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                                <stop offset="0%" style="stop-color:#60A5FA" />
+                                                                <stop offset="50%" style="stop-color:#8B5CF6" />
+                                                                <stop offset="100%" style="stop-color:#EC4899" />
+                                                            </linearGradient>
+                                                        </defs>
+                                                        <path fill="url(#gemGradient)"
+                                                            d="M12 1L3 9l9 13l9-13l-9-8zm0 3.5L6.5 9h11L12 4.5zM5 10l7 10l7-10H5z" />
+                                                        <path fill="currentColor" opacity="0.2" d="M12 14L5 10h14l-7 4z" />
+                                                    </svg>
+        </span>
     </li>
 @endforeach
                                             </ul>

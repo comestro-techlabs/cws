@@ -64,7 +64,6 @@ class Dashboad extends Component
             ->whereBetween('ends_at', [Carbon::now(), Carbon::now()->addDays(15)])->take(4)
             ->get();
 
-
         $this->topScorers = User::where('isAdmin', '!=', 1)
             ->where('is_active', true)
             ->where(DB::raw('CAST(gem AS UNSIGNED)'), '>', 0)
