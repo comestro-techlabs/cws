@@ -13,7 +13,9 @@
                     </button>
 
                     <div class="flex-shrink-0 flex items-center lg:ml-0">
+                        <a wire:navigate href="/">
                         <img class="lg:h-6 h-5 w-auto" src="{{ asset('assets/LearnSyntax.png') }}" alt="Learn Syntax" />
+                        </a>
                     </div>
                 </div>
 
