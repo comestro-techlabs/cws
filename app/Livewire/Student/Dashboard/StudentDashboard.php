@@ -78,8 +78,8 @@ class StudentDashboard extends Component
         session(['user_avatar' => auth()->user()->image]);
         $authUserId = auth()->id();
 
-        $defaultMaleImage = 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659652_1280.png';
-        $defaultFemaleImage = 'https://www.aquasafemine.com/wp-content/uploads/2018/06/dummy-woman-570x570.png';
+        $defaultMaleImage = 'https://th.bing.com/th/id/OIP.0IFYK-E_j-bGLz9iSJFR9gHaHa?w=2000&h=2000&rs=1&pid=ImgDetMain';
+        $defaultFemaleImage = 'https://www.vhv.rs/dpng/d/426-4264903_user-avatar-png-picture-avatar-profile-dummy-transparent.png';
         $othergender = 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659652_1280.png';
         $nullgender = 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659652_1280.png';
 

@@ -303,28 +303,21 @@
                         @if($topScorers->isEmpty())
                             <p>No top scorers available.</p>
                         @else
-                            <ul class="space-y-3">
-                            @foreach($topScorers as $scorer)
+                                            <ul class="space-y-3">
+                                            @foreach($topScorers as $scorer)
     <li class="flex items-center">
         <div class="w-10 h-10 flex items-center rounded-full overflow-hidden">
-            <img 
-                class="w-11 h-11 rounded-full ring-2 ring-purple-600 ring-offset-2 transition-all duration-200 group-hover:ring-purple-500 group-hover:scale-105 object-cover"
-                src="{{ $scorer->displayImage ?? match($scorer->gender) {
-                    'male' => 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659652_1280.png',
-                    'female' => 'https://www.aquasafemine.com/wp-content/uploads/2018/06/dummy-woman-570x570.png',
-                    'other' => 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659652_1280.png',
-                    default => 'https://www.zica.co.zm/wp-content/uploads/2021/02/dummy-profile-image.png'
-                } }}"
-                alt="{{ $scorer->name }}'s Profile"
-                loading="lazy"
-                onerror="this.src='https://www.zica.co.zm/wp-content/uploads/2021/02/dummy-profile-image.png'"
-            />
+            <img class="w-11 h-11 rounded-full ring-2 ring-purple-600 ring-offset-2 transition-all duration-200 group-hover:ring-purple-500 group-hover:scale-105 object-cover"
+                 src="{{ $scorer->displayImage ?? 'https://www.zica.co.zm/wp-content/uploads/2021/02/dummy-profile-image.png' }}"
+                 alt="{{ $scorer->name }}'s Profile" 
+                 loading="lazy"
+                 onerror="this.src='https://www.zica.co.zm/wp-content/uploads/2021/02/dummy-profile-image.png'" />
         </div>
         <span class="ml-3 text-sm text-gray-900">{{ $scorer->name }}</span>
         <span class="ml-auto text-sm text-gray-500">{{ $scorer->gem }} Gems</span>
     </li>
 @endforeach
-                            </ul>
+                                            </ul>
                         @endif
                     </div>
                 </div>
@@ -387,7 +380,7 @@
                                         <div class="flex flex-col items-center">
                                             <div
                                                 class="w-8 h-8 rounded-full flex items-center justify-center mb-1
-                                                                                                                                                        {{ $day['present'] ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600' }}">
+                                                                                                                                                                {{ $day['present'] ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600' }}">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     @if($day['present'])
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -414,7 +407,7 @@
                                         <div class="flex flex-col items-center">
                                             <div
                                                 class="w-8 h-8 rounded-full flex items-center justify-center mb-1
-                                                                                                                                                        {{ $day['present'] ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600' }}">
+                                                                                                                                                                {{ $day['present'] ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600' }}">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     @if($day['present'])
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
