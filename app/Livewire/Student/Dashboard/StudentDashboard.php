@@ -69,20 +69,46 @@ class StudentDashboard extends Component
 
         $this->topScorers = User::where('isAdmin', '!=', 1)
             ->where('is_active', true)
-            ->where(DB::raw('CAST(gem AS UNSIGNED)'), '>', 0) 
+            ->where(DB::raw('CAST(gem AS UNSIGNED)'), '>', 0)
+            ->whereIn('gender', ['male', 'female', 'other', ''])
             ->orderBy(DB::raw('CAST(gem AS UNSIGNED)'), 'desc')
             ->take(3)
-            ->get(['name', 'gem', 'image']);
+            ->get(['name', 'gem', 'image', 'gender', 'id']);
 
-        $sessionImage = session('user_image');
+        session(['user_avatar' => auth()->user()->image]);
+        $authUserId = auth()->id();
+
+        $defaultMaleImage = 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659652_1280.png';
+        $defaultFemaleImage = 'https://www.aquasafemine.com/wp-content/uploads/2018/06/dummy-woman-570x570.png';
+        $othergender = 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659652_1280.png';
+        $nullgender = 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659652_1280.png';
+
+        $sessionImage = session('user_avatar');
 
         foreach ($this->topScorers as $scorer) {
             $dbImage = $scorer->image;
-            if ($sessionImage && $dbImage) {
 
-                \Log::info("Session Image: $sessionImage, DB Image: $dbImage");
+            if ($sessionImage && $scorer->id === $authUserId) {
+                $scorer->displayImage = $sessionImage; // Authenticated user's session image
+                \Log::info("Using session image for auth user {$scorer->id}: $sessionImage");
+            } elseif ($dbImage) {
+                $scorer->displayImage = $dbImage; // User's own database image
+                \Log::info("Using DB image for user {$scorer->id}: $dbImage");
+            } else {
+                // No session image (for non-auth user) or DB image, use gender default
+                $scorer->displayImage = match ($scorer->gender) {
+                    'male' => $defaultMaleImage,
+                    'female' => $defaultFemaleImage,
+                    'other' => $othergender,
+                    '' => $nullgender,
+                    null => $nullgender,
+                    default => $nullgender, // Catch any unexpected gender values
+                };
+                \Log::info("Using gender default for user {$scorer->id}, gender: {$scorer->gender}, image: {$scorer->displayImage}");
             }
         }
+
+
         // Get barcode from user model
         $this->barcode = $user->barcode;
 
@@ -498,6 +524,7 @@ class StudentDashboard extends Component
             'barcodeImage' => $this->barcodeImage,
             'topScorers' => $this->topScorers, // Add this
             'sessionImage' => $this->sessionImage, // Add this
+
         ]);
     }
 }
