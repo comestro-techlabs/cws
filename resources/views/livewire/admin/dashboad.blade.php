@@ -183,35 +183,7 @@
                     </div>
                 </div>
             </div>
-            <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-4">
-                <div class="px-6 py-4 flex items-center">
-                    <h2 class="text-lg font-semibold text-gray-900">Top Scorers</h2>
-                    <span class="text-sm text-gray-500 ml-auto">Gems</span>
-                </div>
 
-
-                <!-- Top Scorers List -->
-                <div class="px-6 py-4">
-                    @if($topScorers->isEmpty())
-                        <p>No top scorers available.</p>
-                    @else
-                        <ul class="space-y-3">
-                            @foreach($topScorers as $scorer)
-                                <li class="flex items-center">
-                                    <div class="w-10 h-10 flex items-center rounded-full overflow-hidden">
-                                        <img class="w-11 h-11 rounded-full ring-2 ring-purple-600 ring-offset-2 transition-all duration-200 group-hover:ring-purple-500 group-hover:scale-105 object-cover"
-                                            src="{{ $scorer->displayImage ?? 'https://www.zica.co.zm/wp-content/uploads/2021/02/dummy-profile-image.png' }}"
-                                            alt="{{ $scorer->name }}'s Profile" loading="lazy"
-                                            onerror="this.src='https://www.zica.co.zm/wp-content/uploads/2021/02/dummy-profile-image.png'" />
-                                    </div>
-                                    <span class="ml-3 text-sm text-gray-900">{{ $scorer->name }}</span>
-                                    <span class="ml-auto text-sm text-gray-500">{{ $scorer->gem }} Gems</span>
-                                </li>
-                            @endforeach
-                        </ul>
-                    @endif
-                </div>
-            </div>
             <!-- Quick Actions Grid with animations -->
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 <a href="{{ route('admin.attendance') }}" wire:navigate class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all border border-gray-100 group
@@ -374,6 +346,48 @@
                 </div>
             </div>
         </div>--}}
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-4">
+            <div class="px-6 py-4 flex items-center">
+                <h2 class="text-lg font-semibold text-gray-900">Top Scorers</h2>
+                <span class="text-sm text-gray-500 ml-auto">Gems</span>
+            </div>
+
+
+            <!-- Top Scorers List -->
+            <div class="px-6 py-4">
+                @if($topScorers->isEmpty())
+                    <p>No top scorers available.</p>
+                @else
+                    <ul class="space-y-3">
+                        @foreach($topScorers as $scorer)
+                            <li class="flex items-center">
+                                <div class="w-10 h-10 flex items-center rounded-full overflow-hidden">
+                                    <img class="w-11 h-11 rounded-full ring-2 ring-purple-600 ring-offset-2 transition-all duration-200 group-hover:ring-purple-500 group-hover:scale-105 object-cover"
+                                        src="{{ $scorer->displayImage ?? 'https://www.zica.co.zm/wp-content/uploads/2021/02/dummy-profile-image.png' }}"
+                                        alt="{{ $scorer->name }}'s Profile" loading="lazy"
+                                        onerror="this.src='https://www.zica.co.zm/wp-content/uploads/2021/02/dummy-profile-image.png'" />
+                                </div>
+                                <span class="ml-3 text-sm text-gray-900">{{ $scorer->name }}</span>
+                                <span class="flex items-center gap-2 ml-auto text-sm text-gray-500">{{ $scorer->gem }}
+                                    <svg class="w-5 h-5" viewBox="0 0 24 24">
+                                        <defs>
+                                            <linearGradient id="gemGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                <stop offset="0%" style="stop-color:#60A5FA" />
+                                                <stop offset="50%" style="stop-color:#8B5CF6" />
+                                                <stop offset="100%" style="stop-color:#EC4899" />
+                                            </linearGradient>
+                                        </defs>
+                                        <path fill="url(#gemGradient)"
+                                            d="M12 1L3 9l9 13l9-13l-9-8zm0 3.5L6.5 9h11L12 4.5zM5 10l7 10l7-10H5z" />
+                                        <path fill="currentColor" opacity="0.2" d="M12 14L5 10h14l-7 4z" />
+                                    </svg>
+                                </span>
+                            </li>
+                        @endforeach
+                    </ul>
+                @endif
+            </div>
+        </div>
         <div class="bg-white rounded-xl shadow-sm overflow-hidden">
             <div class="p-6 border-b border-gray-100 flex justify-between items-center">
                 <h2 class="text-lg font-semibold text-gray-900">Expiring Subscriptions</h2>
