@@ -1,7 +1,7 @@
 <div>
     <x-slot:title>Learn Syntax | Coding Classes in Purnea – C, C++, Python, JavaScript (Bihar)</x-slot>
         <x-slot:description>Learn Syntax – The best coding institute in Purnea, Bihar. Master C, C++, Python,
-            JavaScript, and more with expert-led courses and real-world projects. sourav</x-slot>
+            JavaScript, and more with expert-led courses and real-world projects.</x-slot>
 
             <!-- Programming Languages Section -->
             <div class="bg-white py-12">
