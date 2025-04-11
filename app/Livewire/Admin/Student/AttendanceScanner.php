@@ -26,6 +26,11 @@ class AttendanceScanner extends Component
     public $selectedStudentCourse;
     public $selectedStudentBatch;
     public $pendingStudent;
+    public $showViewModal = false;
+    public $viewCourse;
+    public $viewBatch;
+    public $viewStudents = [];
+    public $availableBatches = [];
 
     public function mount()
     {
@@ -35,24 +40,154 @@ class AttendanceScanner extends Component
     public function render()
     {
         return view('livewire.admin.student.attendance-scanner', [
-            'courses' => Course::all(),
+            'courses' => Course::where('course_type', 'offline')->get(),
             'batches' => $this->getBatches(),
             'todayStats' => $this->getTodayStats(),
-            'todayAttendance' => $this->getTodayAttendance()
+            'todayAttendance' => $this->getTodayAttendance(),
         ]);
+    }
+
+    public function view()
+    {
+        $this->showViewModal = true;
+        $this->viewCourse = '';
+        $this->viewBatch = '';
+        $this->viewStudents = [];
+        $this->availableBatches = [];
+        $this->message = null;
+    }
+
+    public function updatedViewCourse($courseId)
+    {
+        $this->viewBatch = '';
+        $this->viewStudents = [];
+        if ($courseId) {
+            $this->availableBatches = Batch::where('course_id', $courseId)
+                ->where(function ($q) {
+                    $q->whereNull('end_date')
+                      ->orWhere('end_date', '>=', Carbon::today());
+                })
+                ->get();
+            
+            if ($this->availableBatches->isEmpty()) {
+                $this->message = 'No active batches found for the selected course.';
+            } else {
+                $this->message = null;
+            }
+        } else {
+            $this->availableBatches = [];
+            $this->message = 'Please select a course.';
+        }
+    }
+
+    public function loadStudents()
+    {
+        $this->validate([
+            'viewCourse' => 'required',
+            'viewBatch' => 'required',
+        ]);
+
+        $batch = Batch::where('id', $this->viewBatch)
+            ->where('course_id', $this->viewCourse)
+            ->where(function ($q) {
+                $q->whereNull('end_date')
+                  ->orWhere('end_date', '>=', Carbon::today());
+            })->first();
+
+        if (!$batch) {
+            $this->message = 'Selected batch not found or has ended.';
+            $this->viewStudents = [];
+            return;
+        }
+
+        $this->viewStudents = User::whereHas('batches', function ($query) {
+            $query->where('batches.id', $this->viewBatch);
+        })->whereHas('courses', function ($query) {
+            $query->where('courses.id', $this->viewCourse);
+        })->get();
+
+        if ($this->viewStudents->isEmpty()) {
+            $this->message = 'No students found for this course and batch.';
+        } else {
+            $this->message = null;
+        }
+
+        $this->showViewModal = false;
+    }
+
+    public function markAttendanceByBarcode($studentId)
+    {
+        try {
+            // Find the student
+            $student = User::where('id', $studentId)
+                ->whereHas('courses', function ($query) {
+                    $query->where('courses.id', $this->viewCourse);
+                })
+                ->whereHas('batches', function ($query) {
+                    $query->where('batches.id', $this->viewBatch);
+                })
+                ->first();
+
+            if (!$student) {
+                $this->message = 'Student not found or not enrolled in this course/batch.';
+                return;
+            }
+
+            // Check if attendance is already marked for today
+            $existingAttendance = Attendance::where('user_id', $student->id)
+                ->whereDate('check_in', Carbon::today())
+                ->where('course_id', $this->viewCourse)
+                ->where('batch_id', $this->viewBatch)
+                ->exists();
+
+            if ($existingAttendance) {
+                $this->message = 'Attendance already marked for ' . $student->name . ' today.';
+                return;
+            }
+
+            // Verify the course is offline
+            $course = Course::find($this->viewCourse);
+            if (!$course || $course->course_type !== 'offline') {
+                $this->message = 'Attendance can only be marked for offline courses.';
+                return;
+            }
+
+            // Mark attendance
+            Attendance::create([
+                'user_id' => $student->id,
+                'course_id' => $this->viewCourse,
+                'batch_id' => $this->viewBatch,
+                'check_in' => now(),
+                'attendance_type' => 'offline',
+            ]);
+
+            $this->message = 'Attendance marked successfully for ' . $student->name . '.';
+            $this->student = $student; // Display student details
+            $this->refreshAttendance();
+
+        } catch (\Exception $e) {
+            \Log::error('Attendance Error: ' . $e->getMessage());
+            $this->message = 'Failed to mark attendance. Please try again.';
+        }
     }
 
     public function getBatches()
     {
         if ($this->selectedCourse) {
-            return Batch::where('course_id', $this->selectedCourse)->get();
+            return Batch::where('course_id', $this->selectedCourse)
+                        ->where(function ($q) {
+                            $q->whereNull('end_date')
+                              ->orWhere('end_date', '>=', Carbon::today());
+                        })->get();
         }
-        return Batch::all();
+        return Batch::where(function ($q) {
+            $q->whereNull('end_date')
+              ->orWhere('end_date', '>=', Carbon::today());
+        })->get();
     }
 
     public function getTodayStats()
     {
-        // Fix the query to use proper relationships
         $query = User::query()
             ->whereHas('courses', function($q) {
                 if ($this->selectedCourse) {
@@ -114,7 +249,7 @@ class AttendanceScanner extends Component
 
         $this->pendingStudent = User::where('barcode', $this->barcode)
             ->with(['courses' => function($q) {
-                $q->where('course_type', 'offline'); // Only get offline courses
+                $q->where('course_type', 'offline');
             }, 'batches'])
             ->first();
 
@@ -123,29 +258,45 @@ class AttendanceScanner extends Component
             return;
         }
 
-        // Check if student has offline courses
         if ($this->pendingStudent->courses->isEmpty()) {
             $this->message = 'Student is not enrolled in any offline course';
             return;
         }
 
-        // Check for existing attendance
-        $existingAttendance = Attendance::where('user_id', $this->pendingStudent->id)
-            ->whereDate('check_in', today())
-            ->where('course_id', $this->selectedStudentCourse)
-            ->where('batch_id', $this->selectedStudentBatch)
-            ->exists();
+        $this->studentCourses = $this->pendingStudent->courses;
 
-        if ($existingAttendance) {
-            $this->message = 'Attendance already marked for today';
-            return;
+        // If there's only one course, auto-select it
+        if ($this->studentCourses->count() === 1) {
+            $this->selectedStudentCourse = $this->studentCourses->first()->id;
+            $this->updatedSelectedStudentCourse($this->selectedStudentCourse);
+        } else {
+            $this->selectedStudentCourse = '';
+            $this->studentBatches = collect();
+            $this->selectedStudentBatch = '';
         }
 
-        $this->studentCourses = $this->pendingStudent->courses;
+        // Check if attendance is already marked for today if both course and batch are selected
+        if ($this->selectedStudentCourse && $this->selectedStudentBatch) {
+            $existingAttendance = Attendance::where('user_id', $this->pendingStudent->id)
+                ->whereDate('check_in', today())
+                ->where('course_id', $this->selectedStudentCourse)
+                ->where('batch_id', $this->selectedStudentBatch)
+                ->exists();
+
+            if ($existingAttendance) {
+                $this->message = 'Attendance already marked for today';
+                $this->resetSelections();
+                return;
+            }
+        }
+
         $this->showCourseSelection = true;
-        $this->message = 'Please select course and batch';
+        $this->message = $this->selectedStudentCourse && $this->selectedStudentBatch 
+            ? 'Ready to mark attendance'
+            : 'Please select course and batch';
     }
 
+    
     public function selectCourseAndBatch()
     {
         try {
@@ -205,28 +356,6 @@ class AttendanceScanner extends Component
         $this->barcode = '';
     }
 
-    private function markAttendance($student, $courseId, $batchId)
-    {
-        // Verify this is an offline course
-        $course = Course::find($courseId);
-        if (!$course || $course->course_type !== 'offline') {
-            throw new \Exception('Attendance can only be marked for offline courses');
-        }
-
-        Attendance::create([
-            'user_id' => $student->id,
-            'check_in' => now(),
-            'course_id' => $courseId,
-            'batch_id' => $batchId,
-            'attendance_type' => 'offline'
-        ]);
-
-        $this->student = $student;
-        $this->message = 'Attendance marked successfully';
-        $this->barcode = '';
-        $this->refreshAttendance();
-    }
-
     public function updatedSelectedStudentCourse($courseId)
     {
         if (!$courseId || !$this->pendingStudent) {
@@ -235,13 +364,22 @@ class AttendanceScanner extends Component
             return;
         }
 
-        // Get batches for selected course where student is enrolled
         $this->studentBatches = Batch::whereHas('course', function($query) use ($courseId) {
             $query->where('id', $courseId);
         })->whereHas('users', function($query) {
             $query->where('users.id', $this->pendingStudent->id);
+        })->where(function ($q) {
+            $q->whereNull('end_date')
+              ->orWhere('end_date', '>=', Carbon::today());
         })->get();
 
-        $this->selectedStudentBatch = '';
+        // Auto-select if only one batch
+        if ($this->studentBatches->count() === 1) {
+            $this->selectedStudentBatch = $this->studentBatches->first()->id;
+            $this->message = 'Batch auto-selected';
+        } else {
+            $this->selectedStudentBatch = '';
+            $this->message = 'Please select a batch';
+        }
     }
 }

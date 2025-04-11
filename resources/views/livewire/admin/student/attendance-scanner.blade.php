@@ -23,7 +23,10 @@
                 <!-- Scanner Card -->
                 <div class="bg-white rounded-2xl shadow-sm p-6">
                     <div class="mb-6">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Scan Attendance</h3>
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-4">Scan Attendance</h3>
+                            <button wire:click="view" class="text-teal-600 underline mb-4">View</button>
+                        </div>
                         <div class="relative">
                             <i class="fas fa-barcode absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                             <input type="text" wire:model="barcode" wire:keydown.enter="scanBarcode"
@@ -47,7 +50,7 @@
                                     <option value="{{ $course->id }}">{{ $course->title }}</option>
                                 @endforeach
                             </select>
-                            <select wire:model.live="selectedBatch"
+                            <select wire:model.live="selectedBatch" 
                                 class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-400 focus:border-teal-400">
                                 <option value="">All Batches</option>
                                 @foreach($batches as $batch)
@@ -111,7 +114,7 @@
                     </div>
                 @endif
 
-                <!-- Student Details Card (if scanned) -->
+                <!-- Student Details Card (if scanned or marked) -->
                 @if($student)
                     <div class="bg-white rounded-2xl shadow-sm p-6">
                         <div class="flex items-center justify-between mb-6">
@@ -122,8 +125,8 @@
                                 <div>
                                     <h4 class="text-2xl font-bold text-gray-800">{{ $student->name }}</h4>
                                     <p class="text-gray-500">
-                                        {{ $attendance->course->title ?? 'No Course' }} - 
-                                        {{ $attendance->batch->batch_name ?? 'No Batch' }}
+                                        {{ $student->courses->find($viewCourse)->title ?? 'No Course' }} - 
+                                        {{ $student->batches->find($viewBatch)->batch_name ?? 'No Batch' }}
                                     </p>
                                 </div>
                             </div>
@@ -152,6 +155,58 @@
                                     <span class="ml-2 text-gray-600">{{ now()->format('h:i:s A') }}</span>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                @endif
+
+                <!-- Students List (if viewed) -->
+                @if($viewStudents && $viewStudents->count() > 0)
+                    <div class="bg-white rounded-2xl shadow-sm p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-xl font-semibold text-gray-800">Students in Batch</h3>
+                            <button wire:click="view" class="text-teal-600 hover:text-teal-700">
+                                <i class="fas fa-sync-alt mr-2"></i> Change Course/Batch
+                            </button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead>
+                                    <tr class="bg-gray-50 text-gray-600 text-sm">
+                                        <th class="py-3 px-4 text-left">Name</th>
+                                        <th class="py-3 px-4 text-left">Email</th>
+                                        <th class="py-3 px-4 text-left">Barcode</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($viewStudents as $student)
+                                        <tr class="border-t border-gray-100 hover:bg-gray-50 transition-colors">
+                                            <td class="py-3 px-4 text-gray-600">{{ $student->name }}</td>
+                                            <td class="py-3 px-4 text-gray-600">{{ $student->barcode }}</td>
+                                            <td class="py-3 px-4 text-gray-600">
+                                                <button wire:click="markAttendanceByBarcode({{ $student->id }})"
+                                                    class="px-3 py-1 bg-teal-600 text-white rounded-lg hover:bg-teal-700">
+                                                    Attendance
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                @elseif($viewStudents && $viewStudents->count() == 0)
+                    <div class="bg-white rounded-2xl shadow-sm p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-xl font-semibold text-gray-800">Students in Batch</h3>
+                            <button wire:click="view" class="text-teal-600 hover:text-teal-700">
+                                <i class="fas fa-sync-alt mr-2"></i> Change Course/Batch
+                            </button>
+                        </div>
+                        <div class="text-center text-gray-500">
+                            <svg class="w-12 h-12 text-gray-400 mb-2 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            <p>No students found for this course and batch.</p>
                         </div>
                     </div>
                 @endif
@@ -206,12 +261,11 @@
                     </div>
                 </div>
 
-                <!-- Course Selection Modal -->
+                <!-- Course Selection Modal for Scanning -->
                 @if($showCourseSelection)
                     <div class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
                         <div class="bg-white rounded-xl p-6 max-w-md w-full mx-4">
                             <h3 class="text-xl font-semibold text-gray-900 mb-4">Select Course and Batch</h3>
-                            
                             <div class="space-y-4">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Course</label>
@@ -222,7 +276,6 @@
                                         @endforeach
                                     </select>
                                 </div>
-
                                 @if($studentBatches && $studentBatches->count() > 0)
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Batch</label>
@@ -237,13 +290,57 @@
                                     <p class="text-sm text-gray-500">No batches assigned for selected course</p>
                                 @endif
                             </div>
-
                             <div class="mt-6 flex justify-end space-x-3">
                                 <button wire:click="cancelSelection" class="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 border border-gray-300 rounded-lg">
                                     Cancel
                                 </button>
                                 <button wire:click="selectCourseAndBatch" class="px-4 py-2 text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 rounded-lg">
                                     Mark Attendance
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+                <!-- View Students Modal -->
+                @if($showViewModal)
+                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
+                        <div class="bg-white rounded-xl p-6 max-w-md w-full mx-4">
+                            <h3 class="text-xl font-semibold text-gray-900 mb-4">Select Course and Batch</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Course</label>
+                                    <select wire:model.live="viewCourse" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-400">
+                                        <option value="">Select Course</option>
+                                        @foreach($courses as $course)
+                                            <option value="{{ $course->id }}">{{ $course->title }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Batch</label>
+                                    <select wire:model="viewBatch" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-400">
+                                        <option value="">Select Batch</option>
+                                        @if($viewCourse)
+                                            @if($availableBatches->isEmpty())
+                                                <option value="" disabled>No active batches found</option>
+                                            @else
+                                                @foreach($availableBatches as $batch)
+                                                    <option value="{{ $batch->id }}">{{ $batch->batch_name }}</option>
+                                                @endforeach
+                                            @endif
+                                        @else
+                                            <option value="" disabled>Please select a course first</option>
+                                        @endif
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mt-6 flex justify-end space-x-3">
+                                <button wire:click="$set('showViewModal', false)" class="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 border border-gray-300 rounded-lg">
+                                    Cancel
+                                </button>
+                                <button wire:click="loadStudents" class="px-4 py-2 text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 rounded-lg">
+                                    View Students
                                 </button>
                             </div>
                         </div>
