@@ -163,7 +163,7 @@
                 @if($viewStudents && $viewStudents->count() > 0)
                     <div class="bg-white rounded-2xl shadow-sm p-6">
                         <div class="flex items-center justify-between mb-6">
-                            <h3 class="text-xl font-semibold text-gray-800">Students in Batch</h3>
+                            <h3 class="text-xl font-semibold text-gray-800">Students in Batch</h3>                            
                             <button wire:click="view" class="text-teal-600 hover:text-teal-700">
                                 <i class="fas fa-sync-alt mr-2"></i> Change Course/Batch
                             </button>
@@ -173,8 +173,8 @@
                                 <thead>
                                     <tr class="bg-gray-50 text-gray-600 text-sm">
                                         <th class="py-3 px-4 text-left">Name</th>
-                                        <th class="py-3 px-4 text-left">Email</th>
                                         <th class="py-3 px-4 text-left">Barcode</th>
+                                        <th class="py-3 px-4 text-left">Attendance</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -183,10 +183,24 @@
                                             <td class="py-3 px-4 text-gray-600">{{ $student->name }}</td>
                                             <td class="py-3 px-4 text-gray-600">{{ $student->barcode }}</td>
                                             <td class="py-3 px-4 text-gray-600">
+                                            @php
+
+                                                $checked = app\Models\Attendance::where('user_id', $student->id)
+                                                    ->where('course_id', $viewCourse)
+                                                    ->where('batch_id', $viewBatch)
+                                                    ->whereDate('check_in', \Carbon\Carbon::today())                                                    
+                                                    ->exists();
+                                            @endphp
+
+                                            @if ($checked)
+                                                <span class="ml-2 text-green-600 font-semibold">Done</span>
+                                            @else
                                                 <button wire:click="markAttendanceByBarcode({{ $student->id }})"
                                                     class="px-3 py-1 bg-teal-600 text-white rounded-lg hover:bg-teal-700">
                                                     Attendance
                                                 </button>
+                                            @endif
+
                                             </td>
                                         </tr>
                                     @endforeach
@@ -197,7 +211,7 @@
                 @elseif($viewStudents && $viewStudents->count() == 0)
                     <div class="bg-white rounded-2xl shadow-sm p-6">
                         <div class="flex items-center justify-between mb-6">
-                            <h3 class="text-xl font-semibold text-gray-800">Students in Batch</h3>
+                            <h3 class="text-xl font-semibold text-gray-800">Students in Batch</h3>                            
                             <button wire:click="view" class="text-teal-600 hover:text-teal-700">
                                 <i class="fas fa-sync-alt mr-2"></i> Change Course/Batch
                             </button>

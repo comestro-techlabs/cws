@@ -104,7 +104,7 @@ class AttendanceScanner extends Component
             $query->where('batches.id', $this->viewBatch);
         })->whereHas('courses', function ($query) {
             $query->where('courses.id', $this->viewCourse);
-        })->get();
+        })->where('barcode','!=','')->get();
 
         if ($this->viewStudents->isEmpty()) {
             $this->message = 'No students found for this course and batch.';
@@ -158,7 +158,7 @@ class AttendanceScanner extends Component
                 'course_id' => $this->viewCourse,
                 'batch_id' => $this->viewBatch,
                 'check_in' => now(),
-                'attendance_type' => 'offline',
+                
             ]);
 
             $this->message = 'Attendance marked successfully for ' . $student->name . '.';
