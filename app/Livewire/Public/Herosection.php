@@ -267,9 +267,10 @@ class Herosection extends Component
                                         <span class="text-sm text-gray-500">Gems</span>
                                     </div>
                                     <select wire:model.live="selectedWeekStart" class="w-full p-2 mb-4 border rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-600">
-                                        @foreach($weekOptions as $option)
-                                            <option value="{{ $option['value'] }}">{{ $option['label'] }}</option>
-                                        @endforeach
+                                    @foreach(array_slice($weekOptions, 0, 3) as $option)
+                                        <option value="{{ $option['value'] }}">{{ $option['label'] }}</option>
+                                    @endforeach
+
                                     </select>
                                     <p class="text-sm text-gray-600 mb-4">
                                         Showing results for {{ $this->weekStart->format('M d') }} - {{ $this->weekEnd->format('M d, Y') }}
