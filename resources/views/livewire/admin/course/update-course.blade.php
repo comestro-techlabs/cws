@@ -144,25 +144,50 @@
 
                         <!-- Modal -->
                         @if($showCourseModal)
-                        
-                            <div class=" fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
-                                <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-4xl">
+                            <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 transition-opacity duration-300"
+                                x-data="{ open: true }" 
+                                x-show="open"
+                                x-transition:enter="ease-out duration-300"
+                                x-transition:enter-start="opacity-0"
+                                x-transition:enter-end="opacity-100"
+                                x-transition:leave="ease-in duration-200"
+                                x-transition:leave-start="opacity-100"
+                                x-transition:leave-end="opacity-0"
+                                @keydown.escape.window="open = false; $wire.cancelEdit()">
+                                
+                                <div class="bg-white rounded-xl shadow-2xl max-w-3xl w-full mx-4 p-6 transform transition-all duration-300"
+                                    x-show="open"
+                                    x-transition:enter="ease-out duration-300"
+                                    x-transition:enter-start="scale-95 opacity-0"
+                                    x-transition:enter-end="scale-100 opacity-100"
+                                    x-transition:leave="ease-in duration-200"
+                                    x-transition:leave-start="scale-100 opacity-100"
+                                    x-transition:leave-end="scale-95 opacity-0"
+                                    role="dialog" 
+                                    aria-modal="true" 
+                                    aria-labelledby="modal-title">
+                                    
+                                    <!-- Modal Header -->
                                     <div class="flex justify-between items-center mb-4">
-                                        <h3 class="text-lg font-medium text-gray-900">Add/Edit Course Information</h3>
-                                        <button wire:click="closeModal" class="text-gray-500 hover:text-gray-700">
-                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                        <h2 id="modal-title" class="text-xl font-semibold text-gray-800">Edit Course</h2>
+                                        <button wire:click="closeModal" 
+                                                class="text-gray-500 hover:text-gray-700 transition-colors">
+                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                             </svg>
                                         </button>
                                     </div>
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                                    <!-- Modal Body -->
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-h-[70vh] overflow-y-auto">
                                         @foreach ([['title', 'Course Title'], ['course_code', 'Course Code'], ['instructor', 'Instructor Name'], ['duration', 'Duration (Weeks)'], ['fees', 'Course Fees'], ['discounted_fees', 'Discounted Fees'], ['course_type', 'Course Type'], ['category_id', 'Category']] as [$field, $label])
                                             <div class="space-y-2">
                                                 @if($field === 'course_type')
                                                     <label class="text-sm font-medium text-gray-700">{{ $label }}</label>
                                                     <div class="flex gap-2 mt-2 relative">
-                                                        <select wire:model.defer="{{ $field }}" @if($editingField !== $field) disabled @endif
-                                                                class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-1 focus:ring-purple-500 focus:border-purple-500 {{ $editingField !== $field ? 'bg-gray-50' : 'bg-white' }}">
+                                                        <select wire:model.defer="{{ $field }}" 
+                                                                @if($editingField !== $field) disabled @endif
+                                                                class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-1 focus:ring-purple-500 focus:border-purple-500 {{ $editingField !== $field ? 'bg-gray-50' : 'bg-white' }} transition-colors">
                                                             <option value="online">Online Course</option>
                                                             <option value="offline">Offline Course</option>
                                                         </select>
@@ -174,7 +199,8 @@
                                                         @else
                                                             <div class="flex gap-2">
                                                                 <button wire:click="saveField('{{ $field }}')"
-                                                                        wire:loading.attr="disabled" wire:target="saveField"
+                                                                        wire:loading.attr="disabled" 
+                                                                        wire:target="saveField"
                                                                         class="px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors disabled:opacity-50">
                                                                     <span wire:loading.remove wire:target="saveField">Save</span>
                                                                     <span wire:loading wire:target="saveField">Saving...</span>
@@ -192,8 +218,9 @@
                                                 @elseif($field === 'category_id')
                                                     <label class="text-sm font-medium text-gray-700">{{ $label }}</label>
                                                     <div class="flex gap-2 mt-2 relative">
-                                                        <select wire:model.defer="category_id" @if($editingField !== 'category_id') disabled @endif
-                                                                class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-1 focus:ring-purple-500 focus:border-purple-500 {{ $editingField !== 'category_id' ? 'bg-gray-50' : 'bg-white' }}">
+                                                        <select wire:model.defer="category_id" 
+                                                                @if($editingField !== 'category_id') disabled @endif
+                                                                class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-1 focus:ring-purple-500 focus:border-purple-500 {{ $editingField !== 'category_id' ? 'bg-gray-50' : 'bg-white' }} transition-colors">
                                                             <option value="">Select Category</option>
                                                             @foreach ($categories as $category)
                                                                 <option value="{{ $category->id }}">{{ $category->cat_title }}</option>
@@ -207,7 +234,8 @@
                                                         @else
                                                             <div class="flex gap-2">
                                                                 <button wire:click="saveField('category_id')"
-                                                                        wire:loading.attr="disabled" wire:target="saveField"
+                                                                        wire:loading.attr="disabled" 
+                                                                        wire:target="saveField"
                                                                         class="px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors disabled:opacity-50">
                                                                     <span wire:loading.remove wire:target="saveField">Save</span>
                                                                     <span wire:loading wire:target="saveField">Saving...</span>
@@ -225,8 +253,10 @@
                                                 @else
                                                     <label class="text-sm font-medium text-gray-700">{{ $label }}</label>
                                                     <div class="flex gap-2 mt-2 relative">
-                                                        <input type="text" wire:model.defer="{{ $field }}" @if($editingField !== $field) readonly @endif
-                                                            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-1 focus:ring-purple-500 focus:border-purple-500 {{ $editingField !== $field ? 'bg-gray-50' : 'bg-white' }}">
+                                                        <input type="text" 
+                                                            wire:model.defer="{{ $field }}" 
+                                                            @if($editingField !== $field) readonly @endif
+                                                            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-1 focus:ring-purple-500 focus:border-purple-500 {{ $editingField !== $field ? 'bg-gray-50' : 'bg-white' }} transition-colors">
                                                         @if($editingField !== $field)
                                                             <button wire:click="editField('{{ $field }}')"
                                                                     class="px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors">
@@ -235,7 +265,8 @@
                                                         @else
                                                             <div class="flex gap-2">
                                                                 <button wire:click="saveField('{{ $field }}')"
-                                                                        wire:loading.attr="disabled" wire:target="saveField"
+                                                                        wire:loading.attr="disabled" 
+                                                                        wire:target="saveField"
                                                                         class="px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors disabled:opacity-50">
                                                                     <span wire:loading.remove wire:target="saveField">Save</span>
                                                                     <span wire:loading wire:target="saveField">Saving...</span>
@@ -256,7 +287,6 @@
                                     </div>
                                 </div>
                             </div>
-                          
                         @endif
                     </div>
                     <div class="mb-8 mt-2 border-b border-gray-200">
