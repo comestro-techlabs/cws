@@ -17,7 +17,7 @@
     <meta property="og:url" content="{{ $url ?? url()->current() }}">
     <meta property="og:image" content="{{ $image ?? asset('storage/default_image.jpg') }}">
     <meta property="og:type" content="website">
-
+    <meta name="google-site-verification" content="gGe7I5XS6UHhbMc7rZ4DmK9OzixHDxoI4MWIofCIc0c" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>
