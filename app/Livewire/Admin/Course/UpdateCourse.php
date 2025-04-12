@@ -68,6 +68,9 @@ class UpdateCourse extends Component
     public $meeting_id;
     public $meeting_password;
     public $venue;
+    public $showCourseModal = false;
+
+    public $activeTab = 'addBatch';
 
     protected $rules = [
         'title' => 'nullable|min:3|max:255',
@@ -138,6 +141,20 @@ class UpdateCourse extends Component
         $this->tempData = [];
     }
 
+    public function setActiveTab($tab)
+    {
+        $this->activeTab = $tab;
+    }
+    public function courseEdit()
+    {
+        $this->showCourseModal = true;
+    }
+   
+    public function closeModal()
+    {
+        $this->showCourseModal = false; 
+        $this->editingField = null; 
+    }
     public function saveField($field)
     {
         try {
