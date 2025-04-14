@@ -135,7 +135,7 @@
                                                     <div class="flex items-center justify-between mb-4">
                                                         <p class="text-gray-500 text-sm">Category Type</p>
                                                         <p class="text-gray-800 text-sm font-medium">
-                                                            {{ $course->category->cat_title }}
+                                                            {{ $course->category->cat_title ?? ''}}
                                                         </p>
                                                     </div>
                                                 </div>
