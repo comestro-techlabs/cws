@@ -201,7 +201,7 @@
 
                                                                             @if ($checked)
                                                                                 <div class="flex gap-4 items-center">
-                                                                                <button wire:click="deleteAttendace({{ $student->id }})"
+                                                                                <button wire:click="deleteAttendance({{ $student->id }})"
                                                                                         class="px-3 py-1 bg-yellow-400 text-white rounded-lg hover:bg-yellow-500">
                                                                                     Undo
                                                                                 </button>

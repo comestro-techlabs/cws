@@ -116,31 +116,34 @@ class AttendanceScanner extends Component
         $this->showViewModal = false;
     }
 
-    public function deleteAttendace(){
+    public function deleteAttendance($studentId)
+    {
         $this->validate([
             'viewCourse' => 'required',
             'viewBatch' => 'required',
         ]);
-
+    
         $batch = Batch::where('id', $this->viewBatch)
             ->where('course_id', $this->viewCourse)
             ->where(function ($q) {
                 $q->whereNull('end_date')
                   ->orWhere('end_date', '>=', Carbon::today());
             })->first();
-
+    
         if (!$batch) {
             $this->message = 'Selected batch not found or has ended.';
             return;
         }
-
+    
+        // Delete attendance for the specific student
         Attendance::where('course_id', $this->viewCourse)
             ->where('batch_id', $this->viewBatch)
+            ->where('user_id', $studentId)
+            ->whereDate('check_in', Carbon::today())
             ->delete();
-        $this->message = 'Attendance deleted successfully.';
-        
+    
+        $this->message = 'Attendance for the student has been undone successfully.';
     }
-
     public function markAttendanceByBarcode($studentId)
     {
         try {
