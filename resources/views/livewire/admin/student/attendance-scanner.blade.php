@@ -28,7 +28,8 @@
                             <button wire:click="view" class="text-teal-600 underline mb-4">View</button>
                         </div>
                         <div class="relative">
-                            <i class="fas fa-barcode absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <i
+                                class="fas fa-barcode absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                             <input type="text" wire:model="barcode" wire:keydown.enter="scanBarcode"
                                 class="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-400 focus:border-teal-400 placeholder-gray-400 transition-all"
                                 placeholder="Scan Student Barcode" autofocus>
@@ -50,7 +51,7 @@
                                     <option value="{{ $course->id }}">{{ $course->title }}</option>
                                 @endforeach
                             </select>
-                            <select wire:model.live="selectedBatch" 
+                            <select wire:model.live="selectedBatch"
                                 class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-400 focus:border-teal-400">
                                 <option value="">All Batches</option>
                                 @foreach($batches as $batch)
@@ -71,8 +72,10 @@
                                 <p class="text-2xl font-bold text-green-700">{{ $todayStats['present'] }}</p>
                             </div>
                             <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                                <svg class="w-6 h-6 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                                <svg class="w-6 h-6 text-green-600" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
                                 </svg>
                             </div>
                         </div>
@@ -82,8 +85,10 @@
                                 <p class="text-2xl font-bold text-red-700">{{ $todayStats['absent'] }}</p>
                             </div>
                             <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
-                                <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12"></path>
                                 </svg>
                             </div>
                         </div>
@@ -93,8 +98,10 @@
                                 <p class="text-2xl font-bold text-blue-700">{{ $todayStats['total'] }}</p>
                             </div>
                             <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-3-3h-4a3 3 0 00-3 3v2h5zM9 20H4v-2a3 3 0 013-3h4a3 3 0 013 3v2H9zM16 11a4 4 0 100-8 4 4 0 000 8zM8 11a4 4 0 100-8 4 4 0 000 8z" />
+                                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17 20h5v-2a3 3 0 00-3-3h-4a3 3 0 00-3 3v2h5zM9 20H4v-2a3 3 0 013-3h4a3 3 0 013 3v2H9zM16 11a4 4 0 100-8 4 4 0 000 8zM8 11a4 4 0 100-8 4 4 0 000 8z" />
                                 </svg>
                             </div>
                         </div>
@@ -125,7 +132,7 @@
                                 <div>
                                     <h4 class="text-2xl font-bold text-gray-800">{{ $student->name }}</h4>
                                     <p class="text-gray-500">
-                                        {{ $student->courses->find($viewCourse)->title ?? 'No Course' }} - 
+                                        {{ $student->courses->find($viewCourse)->title ?? 'No Course' }} -
                                         {{ $student->batches->find($viewBatch)->batch_name ?? 'No Batch' }}
                                     </p>
                                 </div>
@@ -161,64 +168,73 @@
 
                 <!-- Students List (if viewed) -->
                 @if($viewStudents && $viewStudents->count() > 0)
-                    <div class="bg-white rounded-2xl shadow-sm p-6">
-                        <div class="flex items-center justify-between mb-6">
-                            <h3 class="text-xl font-semibold text-gray-800">Students in Batch</h3>                            
-                            <button wire:click="view" class="text-teal-600 hover:text-teal-700">
-                                <i class="fas fa-sync-alt mr-2"></i> Change Course/Batch
-                            </button>
-                        </div>
-                        <div class="overflow-x-auto">
-                            <table class="w-full">
-                                <thead>
-                                    <tr class="bg-gray-50 text-gray-600 text-sm">
-                                        <th class="py-3 px-4 text-left">Name</th>
-                                        <th class="py-3 px-4 text-left">Barcode</th>
-                                        <th class="py-3 px-4 text-left">Attendance</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($viewStudents as $student)
-                                        <tr class="border-t border-gray-100 hover:bg-gray-50 transition-colors">
-                                            <td class="py-3 px-4 text-gray-600">{{ $student->name }}</td>
-                                            <td class="py-3 px-4 text-gray-600">{{ $student->barcode }}</td>
-                                            <td class="py-3 px-4 text-gray-600">
-                                            @php
+                            <div class="bg-white rounded-2xl shadow-sm p-6">
+                                <div class="flex items-center justify-between mb-6">
+                                    <h3 class="text-xl font-semibold text-gray-800">Students in Batch</h3>
+                                    <button wire:click="view" class="text-teal-600 hover:text-teal-700">
+                                        <i class="fas fa-sync-alt mr-2"></i> Change Course/Batch
+                                    </button>
+                                </div>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full">
+                                        <thead>
+                                            <tr class="bg-gray-50 text-gray-600 text-sm">
+                                                <th class="py-3 px-4 text-left">Name</th>
+                                                <th class="py-3 px-4 text-left">Barcode</th>
+                                                <th class="py-3 px-4 text-left">Attendance</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($viewStudents as $student)
+                                                                        <tr class="border-t border-gray-100 hover:bg-gray-50 transition-colors">
+                                                                            <td class="py-3 px-4 text-gray-600">{{ $student->name }}</td>
+                                                                            <td class="py-3 px-4 text-gray-600">{{ $student->barcode }}</td>
+                                                                            <td class="py-3 px-4 text-gray-600">
+                                                                                @php
 
-                                                $checked = app\Models\Attendance::where('user_id', $student->id)
-                                                    ->where('course_id', $viewCourse)
-                                                    ->where('batch_id', $viewBatch)
-                                                    ->whereDate('check_in', \Carbon\Carbon::today())                                                    
-                                                    ->exists();
-                                            @endphp
+                                                                                    $checked = app\Models\Attendance::where('user_id', $student->id)
+                                                                                        ->where('course_id', $viewCourse)
+                                                                                        ->where('batch_id', $viewBatch)
+                                                                                        ->whereDate('check_in', \Carbon\Carbon::today())
+                                                                                        ->exists();
+                                                                                @endphp
 
-                                            @if ($checked)
-                                                <span class="ml-2 text-green-600 font-semibold">Done</span>
-                                            @else
-                                                <button wire:click="markAttendanceByBarcode({{ $student->id }})"
-                                                    class="px-3 py-1 bg-teal-600 text-white rounded-lg hover:bg-teal-700">
-                                                    Attendance
-                                                </button>
-                                            @endif
+                                                                            @if ($checked)
+                                                                                <div class="flex gap-4 items-center">
+                                                                                <button wire:click="deleteAttendace({{ $student->id }})"
+                                                                                        class="px-3 py-1 bg-yellow-400 text-white rounded-lg hover:bg-yellow-500">
+                                                                                    Undo
+                                                                                </button>
+                                                                              
+                                                                                    <span class="ml-2 text-green-600 font-semibold">Done</span>
+                                                                                </div>
+                                                                            @else
+                                                                                <button wire:click="markAttendanceByBarcode({{ $student->id }})"
+                                                                                        class="px-3 py-1 bg-teal-600 text-white rounded-lg hover:bg-teal-700">
+                                                                                    Attendance
+                                                                                </button>
+                                                                            @endif
 
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                                                                            </td>
+                                                                        </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                 @elseif($viewStudents && $viewStudents->count() == 0)
                     <div class="bg-white rounded-2xl shadow-sm p-6">
                         <div class="flex items-center justify-between mb-6">
-                            <h3 class="text-xl font-semibold text-gray-800">Students in Batch</h3>                            
+                            <h3 class="text-xl font-semibold text-gray-800">Students in Batch</h3>
                             <button wire:click="view" class="text-teal-600 hover:text-teal-700">
                                 <i class="fas fa-sync-alt mr-2"></i> Change Course/Batch
                             </button>
                         </div>
                         <div class="text-center text-gray-500">
-                            <svg class="w-12 h-12 text-gray-400 mb-2 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            <svg class="w-12 h-12 text-gray-400 mb-2 mx-auto" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                             <p>No students found for this course and batch.</p>
                         </div>
@@ -253,7 +269,8 @@
                                         </td>
                                         <td class="py-3 px-4 text-gray-600">{{ $record->course->title }}</td>
                                         <td class="py-3 px-4">
-                                            <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-semibold">
+                                            <span
+                                                class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-semibold">
                                                 Present
                                             </span>
                                         </td>
@@ -262,8 +279,10 @@
                                     <tr>
                                         <td colspan="4" class="py-8 text-center text-gray-500">
                                             <div class="flex flex-col items-center">
-                                                <svg class="w-12 h-12 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                <svg class="w-12 h-12 text-gray-400 mb-2" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                                 </svg>
                                                 <p>No attendance records for today</p>
                                             </div>
@@ -283,7 +302,8 @@
                             <div class="space-y-4">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Course</label>
-                                    <select wire:model.live="selectedStudentCourse" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-400">
+                                    <select wire:model.live="selectedStudentCourse"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-400">
                                         <option value="">Select Course</option>
                                         @foreach($studentCourses as $course)
                                             <option value="{{ $course->id }}">{{ $course->title }}</option>
@@ -293,7 +313,8 @@
                                 @if($studentBatches && $studentBatches->count() > 0)
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Batch</label>
-                                        <select wire:model="selectedStudentBatch" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-400">
+                                        <select wire:model="selectedStudentBatch"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-400">
                                             <option value="">Select Batch</option>
                                             @foreach($studentBatches as $batch)
                                                 <option value="{{ $batch->id }}">{{ $batch->batch_name }}</option>
@@ -305,10 +326,12 @@
                                 @endif
                             </div>
                             <div class="mt-6 flex justify-end space-x-3">
-                                <button wire:click="cancelSelection" class="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 border border-gray-300 rounded-lg">
+                                <button wire:click="cancelSelection"
+                                    class="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 border border-gray-300 rounded-lg">
                                     Cancel
                                 </button>
-                                <button wire:click="selectCourseAndBatch" class="px-4 py-2 text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 rounded-lg">
+                                <button wire:click="selectCourseAndBatch"
+                                    class="px-4 py-2 text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 rounded-lg">
                                     Mark Attendance
                                 </button>
                             </div>
@@ -324,7 +347,8 @@
                             <div class="space-y-4">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Course</label>
-                                    <select wire:model.live="viewCourse" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-400">
+                                    <select wire:model.live="viewCourse"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-400">
                                         <option value="">Select Course</option>
                                         @foreach($courses as $course)
                                             <option value="{{ $course->id }}">{{ $course->title }}</option>
@@ -333,7 +357,8 @@
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Batch</label>
-                                    <select wire:model="viewBatch" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-400">
+                                    <select wire:model="viewBatch"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-400">
                                         <option value="">Select Batch</option>
                                         @if($viewCourse)
                                             @if($availableBatches->isEmpty())
@@ -350,10 +375,12 @@
                                 </div>
                             </div>
                             <div class="mt-6 flex justify-end space-x-3">
-                                <button wire:click="$set('showViewModal', false)" class="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 border border-gray-300 rounded-lg">
+                                <button wire:click="$set('showViewModal', false)"
+                                    class="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 border border-gray-300 rounded-lg">
                                     Cancel
                                 </button>
-                                <button wire:click="loadStudents" class="px-4 py-2 text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 rounded-lg">
+                                <button wire:click="loadStudents"
+                                    class="px-4 py-2 text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 rounded-lg">
                                     View Students
                                 </button>
                             </div>

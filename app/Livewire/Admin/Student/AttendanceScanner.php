@@ -44,6 +44,7 @@ class AttendanceScanner extends Component
             'batches' => $this->getBatches(),
             'todayStats' => $this->getTodayStats(),
             'todayAttendance' => $this->getTodayAttendance(),
+            'undoAttendance' => $this->getTodayAttendance(),
         ]);
     }
 
@@ -113,6 +114,31 @@ class AttendanceScanner extends Component
         }
 
         $this->showViewModal = false;
+    }
+
+    public function deleteAttendace(){
+        $this->validate([
+            'viewCourse' => 'required',
+            'viewBatch' => 'required',
+        ]);
+
+        $batch = Batch::where('id', $this->viewBatch)
+            ->where('course_id', $this->viewCourse)
+            ->where(function ($q) {
+                $q->whereNull('end_date')
+                  ->orWhere('end_date', '>=', Carbon::today());
+            })->first();
+
+        if (!$batch) {
+            $this->message = 'Selected batch not found or has ended.';
+            return;
+        }
+
+        Attendance::where('course_id', $this->viewCourse)
+            ->where('batch_id', $this->viewBatch)
+            ->delete();
+        $this->message = 'Attendance deleted successfully.';
+        
     }
 
     public function markAttendanceByBarcode($studentId)
@@ -234,6 +260,7 @@ class AttendanceScanner extends Component
             ->latest()
             ->get();
     }
+
 
     public function refreshAttendance()
     {
