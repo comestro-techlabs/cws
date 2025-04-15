@@ -44,16 +44,17 @@ class MyAttendance extends Component
         $joinDate = $courseStudent->pivot->created_at ?? Carbon::now()->startOfMonth(); // Fallback to start of month
 
         $startDate = $joinDate->gt(Carbon::today()->startOfMonth()) ? $joinDate : Carbon::today()->startOfMonth();
-        $endDate = Carbon::now();
+        $endDate = Carbon::today(); // Use today as endDate to avoid processing future dates
 
         $this->attendances = Attendance::where('user_id', $this->studentId)
-            ->whereBetween('check_in', [$startDate, $endDate])
+            ->whereBetween('check_in', [$startDate, $endDate->copy()->endOfDay()])
             ->orderBy('check_in', 'asc')
             ->get();
 
         $this->presentCount = 0;
         $this->absentCount = 0;
         $this->events = [];
+        $this->todayStatus = 'Not Recorded'; // Default status for today
 
         $presentDays = [];
         foreach ($this->attendances as $record) {
@@ -75,17 +76,19 @@ class MyAttendance extends Component
             }
         }
 
+        // Process absent days, excluding today unless explicitly marked
         for ($date = $startDate->copy(); $date->lte($endDate); $date->addDay()) {
             if ($date->isWeekend()) {
-                continue; 
-            }
-
-            if ($date->gt($today)) {
-                continue; // Skip future dates
+                continue; // Skip weekends
             }
 
             $currentDate = $date->copy()->startOfDay();
             $currentDateString = $currentDate->toDateString();
+
+            // Skip today unless it has an explicit attendance record
+            if ($currentDate->eq($today)) {
+                continue;
+            }
 
             $isPresent = in_array($currentDateString, $presentDays);
 
@@ -97,13 +100,9 @@ class MyAttendance extends Component
                     'borderColor' => '#EF4444',
                 ];
                 $this->absentCount++;
-                if ($currentDate->eq($today)) {
-                    $this->todayStatus = 'Absent';
-                }
             }
         }
     }
-
     public function render()
     {
         return view('livewire.student.my-attendance', [
