@@ -34,9 +34,7 @@ class Herosection extends Component
     public function render()
     {
         return <<<'HTML'
-            <div class="relative mt-10 md:mt-5 bg-gradient-to-br from-purple-50 via-white to-purple-100">
-              
-                
+            <div class="relative mt-10 md:mt-5 bg-gradient-to-br from-purple-50 via-white to-purple-100">                              
                 <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 lg:py-32">
                     <!-- Hero Header -->
                     <div class="text-center mb-16">
