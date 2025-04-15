@@ -1,82 +1,192 @@
-<div>
-    <!-- Email Modal with CKEditor -->
-    <div id="emailModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden flex items-center justify-center z-50 transition-opacity duration-300" wire:ignore>
-        <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full m-4 transform transition-all duration-300 scale-95 opacity-0" id="emailModalContent">
-            <h3 class="text-lg font-bold text-teal-700 mb-4">Send Message to Student</h3>
-            <div id="ckeditor-container" class="mb-4">
-                <textarea id="emailMessage" class="hidden"></textarea> <!-- Hidden textarea for CKEditor -->
+<div class="min-h-screen bg-gray-50">
+    <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <!-- Header Section -->
+        <div class="mb-8">
+            <h1 class="text-2xl font-bold text-gray-900">Attendance Overview</h1>
+            <p class="mt-1 text-sm text-gray-500">Track your class attendance and performance</p>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 mb-8">
+            <!-- Present Days Card -->
+            <div class="bg-white overflow-hidden rounded-lg shadow-sm border border-green-100">
+                <div class="p-5">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <div class="bg-green-50 rounded-md p-3">
+                                <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">Present Days</dt>
+                                <dd class="flex items-baseline">
+                                    <div class="text-2xl font-semibold text-gray-900">{{ $presentCount }}</div>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="flex justify-end gap-2">
-                <button id="cancelEmail" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors duration-200">Cancel</button>
-                <button id="sendEmail" class="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors duration-200">Send</button>
+
+            <!-- Absent Days Card -->
+            <div class="bg-white overflow-hidden rounded-lg shadow-sm border border-red-100">
+                <div class="p-5">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <div class="bg-red-50 rounded-md p-3">
+                                <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">Absent Days</dt>
+                                <dd class="flex items-baseline">
+                                    <div class="text-2xl font-semibold text-gray-900">{{ $absentCount }}</div>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Today's Status Card -->
+            <div class="bg-white overflow-hidden rounded-lg shadow-sm border border-blue-100">
+                <div class="p-5">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <div class="bg-blue-50 rounded-md p-3">
+                                <svg class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">Today's Status</dt>
+                                <dd class="flex items-baseline">
+                                    @if($todayStatus === 'Present')
+                                        <div class="text-lg font-medium text-green-600">Present</div>
+                                    @elseif($todayStatus === 'Absent')
+                                        <div class="text-lg font-medium text-red-600">Absent</div>
+                                    @else
+                                        <div class="text-lg font-medium text-gray-400">Not Recorded</div>
+                                    @endif
+                                    <span class="ml-2 text-sm text-gray-500">
+                                        ({{ \Carbon\Carbon::today()->format('d M Y') }})
+                                    </span>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calendar Section -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="border-b border-gray-100 px-6 py-4">
+                <h2 class="text-lg font-medium text-gray-900">Attendance Calendar</h2>
+                <p class="mt-1 text-sm text-gray-500">View your attendance records and upcoming schedule</p>
+            </div>
+            <div class="p-6">
+                <div id="calendar" wire:ignore></div>
             </div>
         </div>
     </div>
 
-    <div class="p-2 sm:p-4 md:p-6 lg:p-8 rounded-2xl max-w-6xl mx-auto">
-        <h4 class="text-xl sm:text-2xl md:text-3xl font-bold text-teal-700 mb-3 sm:mb-4 md:mb-6">My Attendance</h4>
-
-        <div class="mb-4 sm:mb-6 md:mb-8 bg-white p-3 sm:p-4 md:p-6 rounded-lg shadow-sm">
-            <p class="text-sm sm:text-base md:text-lg text-gray-700 mb-2">
-                <span class="font-medium">Present Days:</span>
-                <span class="text-green-600 font-semibold">{{ $presentCount }}</span>
-            </p>
-            <p class="text-sm sm:text-base md:text-lg text-gray-700 mb-2">
-                <span class="font-medium">Absent Days:</span>
-                <span class="text-red-600 font-semibold">{{ $absentCount }}</span>
-            </p>
-            <p class="text-sm sm:text-base md:text-lg text-gray-700">
-                <span class="font-medium">Today’s Status ({{ \Carbon\Carbon::today()->toDateString() }}):</span>
-                @if($todayStatus === 'Present')
-                    <span class="text-green-600 font-semibold">Present</span>
-                @elseif($todayStatus === 'Absent')
-                    <span class="text-red-600 font-semibold">Absent</span>
-                @else
-                    <span class="text-gray-500 font-semibold">Not Recorded</span>
-                @endif
-            </p>
-        </div>
-
-        <div class="bg-white p-3 sm:p-4 md:p-6 rounded-lg shadow-sm">
-            <div id="calendar" wire:ignore></div>
-        </div>
-    </div>
 
     <!-- FullCalendar CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js" onerror="console.error('Failed to load FullCalendar')"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"
+        onerror="console.error('Failed to load FullCalendar')"></script>
     <!-- CKEditor CDN -->
     <script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>
 
     <style>
         @media (max-width: 640px) {
-            .fc .fc-button { padding: 0.2rem 0.4rem; font-size: 0.7rem; }
-            .fc .fc-toolbar-title { font-size: 0.9rem; }
-            .fc .fc-timegrid-slot { height: 1.5rem; }
-            .fc .fc-daygrid-day { font-size: 0.75rem; }
-            #calendar { font-size: 0.875rem; }
-            .fc-toolbar-chunk { display: flex; flex-wrap: wrap; gap: 0.25rem; }
+            .fc .fc-button {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.7rem;
+            }
+
+            .fc .fc-toolbar-title {
+                font-size: 0.9rem;
+            }
+
+            .fc .fc-timegrid-slot {
+                height: 1.5rem;
+            }
+
+            .fc .fc-daygrid-day {
+                font-size: 0.75rem;
+            }
+
+            #calendar {
+                font-size: 0.875rem;
+            }
+
+            .fc-toolbar-chunk {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.25rem;
+            }
         }
 
         @media (min-width: 641px) and (max-width: 1024px) {
-            .fc .fc-button { padding: 0.375rem 0.75rem; font-size: 0.875rem; }
-            .fc .fc-toolbar-title { font-size: 1.25rem; }
+            .fc .fc-button {
+                padding: 0.375rem 0.75rem;
+                font-size: 0.875rem;
+            }
+
+            .fc .fc-toolbar-title {
+                font-size: 1.25rem;
+            }
         }
 
         @media (min-width: 1025px) {
-            .fc .fc-button { padding: 0.5rem 1rem; font-size: 1rem; }
-            .fc .fc-toolbar-title { font-size: 1.5rem; }
+            .fc .fc-button {
+                padding: 0.5rem 1rem;
+                font-size: 1rem;
+            }
+
+            .fc .fc-toolbar-title {
+                font-size: 1.5rem;
+            }
         }
 
-        #emailModal.show { opacity: 1; }
-        #emailModal.show #emailModalContent { scale: 1; opacity: 1; }
-        .fc .fc-day-disabled { background: #f3f4f6; cursor: not-allowed; }
-        .ck-editor__editable { min-height: 150px; }
+        #emailModal.show {
+            opacity: 1;
+        }
+
+        #emailModal.show #emailModalContent {
+            scale: 1;
+            opacity: 1;
+        }
+
+        .fc .fc-day-disabled {
+            background: #f3f4f6;
+            cursor: not-allowed;
+        }
+
+        .ck-editor__editable {
+            min-height: 150px;
+        }
     </style>
 
     <script>
         let selectedDate = null;
         const studentJoinDate = @json(Carbon\Carbon::parse($student->created_at)->toDateString());
         let editorInstance = null;
+        let calendarInstance = null; // Store calendar instance
 
         document.addEventListener('DOMContentLoaded', () => {
             console.log('DOMContentLoaded');
@@ -84,18 +194,18 @@
         });
 
         function initializeCalendar() {
-            var calendarEl = document.getElementById('calendar');
-            if (!calendarEl || typeof FullCalendar === 'undefined') {
-                console.error('Calendar element or FullCalendar not ready yet.');
-                setTimeout(initializeCalendar, 50);
+            const calendarEl = document.getElementById('calendar');
+            if (!calendarEl) {
+                console.error('Calendar element not found.');
                 return;
             }
 
-            if (calendarEl.fullCalendar) {
-                calendarEl.fullCalendar.destroy();
+            // Destroy existing calendar instance if it exists
+            if (calendarInstance) {
+                calendarInstance.destroy();
             }
 
-            var calendar = new FullCalendar.Calendar(calendarEl, {
+            calendarInstance = new FullCalendar.Calendar(calendarEl, {
                 initialView: getInitialView(),
                 events: @json($events),
                 eventDisplay: 'block',
@@ -134,11 +244,18 @@
                 },
                 eventLongPressDelay: 500,
             });
-            calendar.render();
+
+            calendarInstance.render();
+            console.log('Calendar initialized.');
+
+            // Update calendar size after rendering
+            setTimeout(() => {
+                calendarInstance.updateSize();
+            }, 100);
 
             window.addEventListener('resize', () => {
-                calendar.updateSize();
-                calendar.changeView(getInitialView());
+                calendarInstance.updateSize();
+                calendarInstance.changeView(getInitialView());
             });
         }
 
@@ -148,7 +265,6 @@
             modal.classList.remove('hidden');
             setTimeout(() => {
                 modal.classList.add('show');
-                // Initialize CKEditor if not already initialized
                 if (!editorInstance) {
                     const element = document.getElementById('emailMessage');
                     if (!element) {
@@ -157,7 +273,7 @@
                     }
                     if (typeof ClassicEditor === 'undefined') {
                         console.error('CKEditor script not loaded yet.');
-                        setTimeout(() => openEmailModal(date, eventTitle), 200); // Retry after delay
+                        setTimeout(() => openEmailModal(date, eventTitle), 200);
                         return;
                     }
                     ClassicEditor
@@ -176,16 +292,16 @@
                         })
                         .then(editor => {
                             editorInstance = editor;
-                            editor.setData(''); // Clear content on first open
-                            editor.editing.view.focus(); // Focus the editor
+                            editor.setData('');
+                            editor.editing.view.focus();
                             console.log('CKEditor initialized successfully.');
                         })
                         .catch(error => {
                             console.error('CKEditor initialization failed:', error);
                         });
                 } else {
-                    editorInstance.setData(''); // Clear content for subsequent opens
-                    editorInstance.editing.view.focus(); // Focus the editor
+                    editorInstance.setData('');
+                    editorInstance.editing.view.focus();
                 }
             }, 10);
 
@@ -231,33 +347,27 @@
             return 'dayGridMonth';
         }
 
-        // Handle Livewire events
+        // Livewire event listeners
         document.addEventListener('livewire:navigated', () => {
             console.log('livewire:navigated');
-            initializeCalendar();
-
             setTimeout(() => {
-            initializeCKEditor();
-        }, 200);
-        });
-
-        document.addEventListener('livewire:init', () => {
-            console.log('Livewire is loading...');
-            initializeCalendar();
-        });
-
-        document.addEventListener('livewire:initialized', () => {
-            console.log('Livewire has initialized.');
-            initializeCalendar();
+                initializeCalendar();
+            }, 100);
         });
 
         document.addEventListener('livewire:updated', () => {
-            console.log('Livewire updated.');
-            initializeCalendar();
-
+            console.log('livewire:updated');
             setTimeout(() => {
-            initializeCKEditor();
-        }, 200);
+                initializeCalendar();
+            }, 100);
+        });
+
+        // Listen for tab switch event
+        window.addEventListener('show-attendance-tab', () => {
+            console.log('Attendance tab shown');
+            setTimeout(() => {
+                initializeCalendar();
+            }, 100);
         });
     </script>
 </div>

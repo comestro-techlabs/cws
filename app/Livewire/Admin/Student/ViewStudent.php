@@ -29,7 +29,7 @@ class ViewStudent extends Component
     public $isActive;
     public $paymentsWithWorkshops;
     public $courses;
-    public $activeTab = 'courses';
+    public $activeTab = 'attendance';
     public $isModalOpen = false;
     public $availableCourses = [];
     public $subscriptionPlans;
@@ -64,7 +64,7 @@ class ViewStudent extends Component
     public $email;
     public $contact;
     public $gender;
-    
+
     public $dob;
     public $editingField = null;
     public function mount($id)
@@ -82,13 +82,16 @@ class ViewStudent extends Component
             $this->contact = $this->student->contact;
             $this->gender = $this->student->gender;
             $this->education_qualification = $this->student->education_qualification;
-            $this->dob = $this->student->dob;            $this->isMember = $this->student->is_member == 1;
+            $this->dob = $this->student->dob;
+            $this->isMember = $this->student->is_member == 1;
             $this->isActive = $this->student->is_active == 1;
 
             $this->courses = $this->student->courses()
-                ->with(['batches' => function ($query) {
-                    $query->whereDate('end_date', '>=', now());
-                }])
+                ->with([
+                    'batches' => function ($query) {
+                        $query->whereDate('end_date', '>=', now());
+                    }
+                ])
                 ->withPivot('created_at', 'batch_id')
                 ->get();
 
@@ -186,7 +189,8 @@ class ViewStudent extends Component
 
     public function hasActiveBatch()
     {
-        if ($this->courses->isEmpty()) return false;
+        if ($this->courses->isEmpty())
+            return false;
 
         $currentDate = Carbon::today();
         foreach ($this->courses as $course) {
@@ -437,6 +441,9 @@ class ViewStudent extends Component
     public function setActiveTab($tab)
     {
         $this->activeTab = $tab;
+        if ($tab === 'attendance') {
+            $this->dispatch('show-attendance-tab');
+        }
     }
 
     public function subscribePlan($planId)
@@ -511,7 +518,8 @@ class ViewStudent extends Component
 
     public function assignBatch($courseId, $batchId)
     {
-        if (empty($batchId)) return;
+        if (empty($batchId))
+            return;
 
         try {
             DB::beginTransaction();

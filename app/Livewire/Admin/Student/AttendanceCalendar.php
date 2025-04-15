@@ -33,57 +33,74 @@ class AttendanceCalendar extends Component
 
     public function loadAttendance()
     {
-        $joinDate = Carbon::parse($this->student->created_at)->startOfDay();
         $today = Carbon::today();
-        $startDate = $joinDate->gt(Carbon::now()->startOfMonth()) ? $joinDate : Carbon::now()->startOfMonth();
-        $endDate = Carbon::now();
 
-        $attendance = Attendance::where('user_id', $this->student->id)
-            ->whereBetween('check_in', [$startDate, $endDate])
+        $course = $this->student->courses()->first();
+        if (!$course) {
+            session()->flash('error', 'No course found for this student.');
+            return;
+        }
+
+        $courseStudent = $this->student->courses()->where('courses.id', $course->id)->first();
+        $joinDate = $courseStudent->pivot->created_at ?? Carbon::now()->startOfMonth(); // Fallback to start of month
+
+        $startDate = $joinDate->gt(Carbon::today()->startOfMonth()) ? $joinDate : Carbon::today()->startOfMonth();
+        $endDate = Carbon::today(); // Use today as endDate to avoid processing future dates
+
+        $this->attendances = Attendance::where('user_id', $this->studentId)
+            ->whereBetween('check_in', [$startDate, $endDate->copy()->endOfDay()])
             ->orderBy('check_in', 'asc')
             ->get();
 
         $this->presentCount = 0;
         $this->absentCount = 0;
         $this->events = [];
+        $this->todayStatus = 'Not Recorded'; // Default status for today
 
-        foreach ($attendance as $record) {
-            $checkInDate = Carbon::parse($record->check_in)->startOfDay();
-            $this->events[] = [
-                'title' => 'Present',
-                'start' => $checkInDate->toDateString(),
-                'color' => '#10B981',
-            ];
-            if (!$checkInDate->isWeekend()) {
-                $this->presentCount++;
-            }
-
-            if ($checkInDate->eq($today)) {
-                $this->todayStatus = 'Present';
+        $presentDays = [];
+        foreach ($this->attendances as $record) {
+            $checkInDate = Carbon::parse($record->check_in)->startOfDay()->toDateString();
+            if (!in_array($checkInDate, $presentDays)) {
+                $presentDays[] = $checkInDate;
+                $this->events[] = [
+                    'title' => 'Present',
+                    'start' => $checkInDate,
+                    'backgroundColor' => '#10B981',
+                    'borderColor' => '#10B981',
+                ];
+                if (!Carbon::parse($checkInDate)->isWeekend()) {
+                    $this->presentCount++;
+                }
+                if (Carbon::parse($checkInDate)->eq($today)) {
+                    $this->todayStatus = 'Present';
+                }
             }
         }
 
+        // Process absent days, excluding today unless explicitly marked
         for ($date = $startDate->copy(); $date->lte($endDate); $date->addDay()) {
             if ($date->isWeekend()) {
+                continue; // Skip weekends
+            }
+
+            $currentDate = $date->copy()->startOfDay();
+            $currentDateString = $currentDate->toDateString();
+
+            // Skip today unless it has an explicit attendance record
+            if ($currentDate->eq($today)) {
                 continue;
             }
-            $currentDate = $date->copy()->startOfDay();
 
-            $isPresent = $attendance->contains(function ($record) use ($currentDate) {
-                return Carbon::parse($record->check_in)->startOfDay()->eq($currentDate);
-            });
+            $isPresent = in_array($currentDateString, $presentDays);
 
             if (!$isPresent) {
                 $this->events[] = [
                     'title' => 'Absent',
-                    'start' => $currentDate->toDateString(),
-                    'color' => '#EF4444',
+                    'start' => $currentDateString,
+                    'backgroundColor' => '#EF4444',
+                    'borderColor' => '#EF4444',
                 ];
                 $this->absentCount++;
-
-                if ($currentDate->eq($today)) {
-                    $this->todayStatus = 'Absent';
-                }
             }
         }
     }

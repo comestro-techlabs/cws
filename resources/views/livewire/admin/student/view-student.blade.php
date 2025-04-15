@@ -106,10 +106,10 @@
                 </div>
             @endif
 
-            <!-- Modified Tabs Navigation -->
+            <!-- Modified Tabs Navigation --> 
             <div class="mb-8 border-b border-gray-200">
                 <nav class="-mb-px flex flex-col sm:flex-row sm:space-x-8" aria-label="Tabs">
-                    @foreach(['courses' => 'Courses', 'subscription' => 'Subscription Plan', 'enrolled' => 'Enrolled Courses', 'payments' => 'Payment History'] as $tab => $label)
+                    @foreach(['attendance'=>'Attendance','courses' => 'Courses', 'subscription' => 'Subscription Plan', 'enrolled' => 'Enrolled Courses', 'payments' => 'Payment History'] as $tab => $label)
                                                                     <button wire:click="setActiveTab('{{ $tab }}')" class="whitespace-nowrap py-4 px-1 sm:px-4 border-b-2 font-medium text-sm transition-colors w-full sm:w-auto text-left
                                                                                                                     {{ $activeTab === $tab
                         ? 'border-blue-500 text-blue-600'
@@ -422,7 +422,9 @@
                                             </div>
                                         </div>
                 @endif
-
+                @if($activeTab === 'attendance')
+                    @livewire('admin.student.attendance-calendar', ['studentId' => $student->id], key('attendance-' . $student->id))
+                @endif
                 <!-- Payments Tab -->
                 @if($activeTab === 'payments')
                     <div class="p-6">
