@@ -57,16 +57,14 @@ class ViewStudent extends Component
     public $editStatus;
     public $education_qualification;
     public $isEditing = false;
-
     public $isEditingCard = false;
-
     public $name;
     public $email;
     public $contact;
     public $gender;
-
     public $dob;
     public $editingField = null;
+    public $amount;
     public function mount($id)
     {
         $this->studentId = $id;
@@ -256,7 +254,6 @@ class ViewStudent extends Component
         }
     }
 
-    // Legacy methods for education-specific editing (for backward compatibility with form)
     public function edit()
     {
         $this->editField('education_qualification');
@@ -271,6 +268,7 @@ class ViewStudent extends Component
     {
         $this->saveField('education_qualification');
     }
+
     public function openEditSubscriptionModal($subscriptionId)
     {
         try {
@@ -360,11 +358,28 @@ class ViewStudent extends Component
         try {
             DB::beginTransaction();
             $course = ModelsCourse::findOrFail($this->selectedCourseId);
+            $courseAmount = $course->discounted_fees ?? $course->fees;
+
+            if ($this->total_amount > $courseAmount) {
+                throw new \Exception('Paid amount cannot exceed course fees.');
+            }
+
+            $existingPayment = Payment::where('student_id', $this->studentId)
+                ->where('course_id', $this->selectedCourseId)
+                ->where('status', 'captured')
+                ->first();
+
+            if ($existingPayment) {
+                throw new \Exception('Student is already enrolled in this course.');
+            }
+
+            $dueAmount = $courseAmount - $this->total_amount;
+
             $payment = Payment::create([
                 'student_id' => $this->studentId,
                 'course_id' => $this->selectedCourseId,
                 'payment_type' => 'course',
-                'amount' => $this->total_amount,
+                'amount' => $courseAmount,
                 'total_amount' => $this->total_amount,
                 'transaction_fee' => 0,
                 'currency' => 'INR',
@@ -390,11 +405,11 @@ class ViewStudent extends Component
             $this->dispatch('courseEnrollDataUpdated')->self();
             $this->isModalOpen = false;
             $this->closeModal();
-            session()->flash('success', 'Course enrolled successfully');
+            session()->flash('success', 'Course enrolled successfully' . ($dueAmount > 0 ? ' with due amount of ' . $dueAmount : ''));
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Failed to enroll in course: ' . $e->getMessage());
-            session()->flash('error', 'Failed to enroll in course');
+            session()->flash('error', $e->getMessage() ?: 'Failed to enroll in course');
         }
     }
 
@@ -435,6 +450,55 @@ class ViewStudent extends Component
         } catch (\Exception $e) {
             Log::error('Failed to process cash payment: ' . $e->getMessage());
             session()->flash('error', 'Failed to process payment');
+        }
+    }
+
+    public function payDueAmount($paymentId)
+    {
+        try {
+            $payment = Payment::findOrFail($paymentId);
+            $dueAmount = $payment->amount - $payment->total_amount;
+
+            if ($dueAmount <= 0) {
+                throw new \Exception('No due amount to pay.');
+            }
+
+            $this->validate([
+                'total_amount' => 'required|numeric|min:0|max:' . $dueAmount,
+            ]);
+
+            DB::beginTransaction();
+
+            $payment->update([
+                'total_amount' => $payment->total_amount + $this->total_amount,
+                'payment_date' => now(),
+            ]);
+
+            DB::commit();
+
+            $this->dispatch('paymentUpdated')->self();
+            $this->closeModal();
+            session()->flash('success', 'Due amount paid successfully');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Failed to pay due amount: ' . $e->getMessage());
+            session()->flash('error', $e->getMessage() ?: 'Failed to pay due amount');
+        }
+    }
+
+    public function openDuePaymentModal($paymentId)
+    {
+        try {
+            $payment = Payment::findOrFail($paymentId);
+            $this->paymentId = $payment->id;
+            $this->course_title = $payment->course->title ?? 'Unknown Course';
+            $this->amount = $payment->amount;
+            $this->total_amount = $payment->amount - $payment->total_amount;
+            $this->order_id = 'ORD-' . uniqid();
+            $this->showModal = true;
+        } catch (\Exception $e) {
+            Log::error('Failed to open due payment modal: ' . $e->getMessage());
+            session()->flash('error', 'Failed to load payment data');
         }
     }
 
@@ -567,6 +631,7 @@ class ViewStudent extends Component
             $this->course_title = $payment->course->title ?? 'Unknown Course';
             $this->order_id = $payment->order_id;
             $this->total_amount = $payment->total_amount;
+            $this->amount = $payment->amount;
             $this->showModal = true;
         } catch (\Exception $e) {
             Log::error('Failed to open payment modal: ' . $e->getMessage());
@@ -580,7 +645,8 @@ class ViewStudent extends Component
             $course = ModelsCourse::findOrFail($courseId);
             $this->selectedCourseId = $courseId;
             $this->course_title = $course->title;
-            $this->total_amount = $course->discounted_fees ?? $course->fees;
+            $this->amount = $course->discounted_fees ?? $course->fees;
+            $this->total_amount = $this->amount;
             $this->order_id = 'ORD-' . uniqid();
             $this->showModal = true;
         } catch (\Exception $e) {
@@ -592,7 +658,7 @@ class ViewStudent extends Component
     public function closeModal()
     {
         $this->showModal = false;
-        $this->reset(['paymentId', 'course_title', 'order_id', 'total_amount', 'selectedCourseId']);
+        $this->reset(['paymentId', 'course_title', 'order_id', 'total_amount', 'selectedCourseId', 'amount']);
     }
 
     public function save()
@@ -604,16 +670,21 @@ class ViewStudent extends Component
 
         try {
             $payment = Payment::findOrFail($this->paymentId);
+            if ($this->total_amount > $payment->amount) {
+                throw new \Exception('Paid amount cannot exceed course fees.');
+            }
+
             $payment->update([
                 'order_id' => $this->order_id,
                 'total_amount' => $this->total_amount,
             ]);
+
             $this->closeModal();
             $this->dispatch('paymentUpdated')->self();
             session()->flash('success', 'Payment updated successfully');
         } catch (\Exception $e) {
             Log::error('Failed to save payment: ' . $e->getMessage());
-            session()->flash('error', 'Failed to update payment');
+            session()->flash('error', $e->getMessage() ?: 'Failed to update payment');
         }
     }
 
