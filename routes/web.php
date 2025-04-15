@@ -4,6 +4,7 @@ use App\Http\Controllers\PublicController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\WorkshopController;
+use App\Livewire\Public\TopGemsStudent;
 use Illuminate\Support\Facades\Artisan;
 // use Livewire\Livewire;
 
@@ -114,7 +115,7 @@ Route::get('/privacy-policy', PrivacyPolicy::class)->name('privacy-policy');
 Route::get('/practice-tests', PublicSelectMockTest::class)->name('public.mocktest');
 Route::get('/practice-tests/{mockTestId}', PublicShowMockTest::class)->name('public.mocktest.take');
 Route::get('/practice-tests/result/{mockTestId}', PublicMockTestResult::class)->name('public.mocktest.result');
-
+Route::get('/top-gems-student',TopGemsStudent::class)->name('public.top-gems-student');
 //blog courses routes
 Route::get('/course/{course_slug}/chapter/show', CourseWithChapterAndTopic::class)->name('v2.courses.show');
 Route::get('/course/{course_slug}/chapter/{chapter_slug?}/topic/{topic_slug?}/show', TopicWithPostContent::class)->name('v2.topics.show');
