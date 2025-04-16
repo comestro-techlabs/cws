@@ -76,100 +76,132 @@ class ViewAssigment extends Component
 
     private function checkConsecutiveSubmissions($studentId)
     {
-        $onTimeCount = Assignment_upload::where('student_id', $studentId)
-            ->whereHas('assignment', function($query) {
-                $query->whereRaw('submitted_at <= due_date');
-            })
-            ->count();
+       $submissions = Assignment_upload::where('student_id', $studentId)
+                    ->orderBy('submitted_at', 'desc')
+                    ->take(7)
+                    ->get();
 
-        return $onTimeCount % 7 === 0 ? true : false;
+        if($submissions->count() < 7){
+            return false;
+        }
+
+        foreach ($submissions as $submission){
+            $assignment = Assignments::find($submission->assignment_id);
+            if(!$assignment || $submission->submitted_at > $assignment->due_date){
+                return false;
+            }
+        }
+        $missedAssignments = Assignments::where('due_date', '<', now())
+        ->whereDoesntHave('uploads', function ($query) use ($studentId) {
+            $query->where('student_id', $studentId);
+        })
+        ->whereHas('course', function ($query) use ($studentId) {
+            $query->whereHas('users', function ($q) use ($studentId) {
+                $q->where('user_id', $studentId);
+            });
+        })
+        ->where('due_date', '>=', $submissions->last()->submitted_at)
+        ->exists();
+
+        if ($missedAssignments) {
+            return false;
+        }
+        return true;
     }
 
     public function submit()
-    {
-        if (!$this->hasAccess) {
-            session()->flash('error', 'You do not have access to submit assignments.');
-            return;
-        }
-        $this->validate([
-            'file' => 'required|file|mimes:pdf,doc,docx|max:10240',
+{
+    if (!$this->hasAccess) {
+        session()->flash('error', 'You do not have access to submit assignments.');
+        return;
+    }
+
+    // Check if the student has already submitted
+    $existingSubmission = Assignment_upload::where('student_id', auth()->id())
+        ->where('assignment_id', $this->assignment_id)
+        ->first();
+
+    if ($existingSubmission) {
+        session()->flash('error', 'You have already submitted this assignment.');
+        return;
+    }
+
+    $this->validate([
+        'file' => 'required|file|mimes:pdf,doc,docx|max:10240',
+    ]);
+
+    try {
+        $accessToken = $this->token();
+
+        // File details
+        $file = $this->file;
+        $mimeType = $file->getMimeType();
+        $fileName = $file->getClientOriginalName();
+        $fileContent = file_get_contents($file->getRealPath());
+
+        // Upload file metadata to Google Drive
+        $metadataResponse = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $accessToken,
+            'Content-Type' => 'application/json',
+        ])->post('https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable', [
+            'name' => $fileName,
+            'mimeType' => $mimeType,
+            'parents' => [config('services.google.folder_id')],
         ]);
 
-        try {
-            $accessToken = $this->token();
+        if (!$metadataResponse->successful()) {
+            $this->addError('file', 'Failed to initialize upload.');
+            return;
+        }
 
-            // File details
-            $file = $this->file;
-            $mimeType = $file->getMimeType();
-            $fileName = $file->getClientOriginalName();
-            $fileContent = file_get_contents($file->getRealPath());
+        $uploadUrl = $metadataResponse->header('Location');
 
-            // Upload file metadata to Google Drive
-            $metadataResponse = Http::withHeaders([
-                'Authorization' => 'Bearer ' . $accessToken,
-                'Content-Type' => 'application/json',
-            ])->post('https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable', [
-                'name' => $fileName,
-                'mimeType' => $mimeType,
-                'parents' => [config('services.google.folder_id')],
-            ]);
+        // Upload file content
+        $uploadResponse = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $accessToken,
+            'Content-Type' => $mimeType,
+        ])->withBody($fileContent, $mimeType)->put($uploadUrl);
 
-            if (!$metadataResponse->successful()) {
-                $this->addError('file', 'Failed to initialize upload.');
-                return;
-            }
+        if ($uploadResponse->successful()) {
+            // Get file ID from Google Drive
+            $fileId = json_decode($uploadResponse->body())->id;
 
-            $uploadUrl = $metadataResponse->header('Location');
+            // Save file details in the database
+            $assignment_upload = new Assignment_upload();
+            $assignment_upload->student_id = auth()->id();
+            $assignment_upload->file_path = $fileId;
+            $assignment_upload->assignment_id = $this->assignment_id;
+            $assignment_upload->submitted_at = now();
+            $assignment_upload->status = 'submitted';
+            $assignment_upload->save();
 
-            // Upload file content
-            $uploadResponse = Http::withHeaders([
-                'Authorization' => 'Bearer ' . $accessToken,
-                'Content-Type' => $mimeType,
-            ])->withBody($fileContent, $mimeType)->put($uploadUrl);
+            // Update the uploadedFile property
+            $this->uploadedFile = $assignment_upload;
 
-            if ($uploadResponse->successful()) {
-                // Get file ID from Google Drive
-                $fileId = json_decode($uploadResponse->body())->id;
+            // Generate new preview link
+            $this->previewUrl = $this->getPreviewUrl();
 
-                // Save file details in the database
-                $assignment_upload = new Assignment_upload();
-                $assignment_upload->student_id = auth()->id();
-                $assignment_upload->file_path = $fileId;
-                $assignment_upload->assignment_id = $this->assignment_id;
-                $assignment_upload->submitted_at = now();
-                $assignment_upload->status = 'submitted';
-                $assignment_upload->save();
+            // Handle gem awards
+            $studentId = auth()->id();
+            $gemService = new GemService();
 
-                // Generate new preview link
-                $this->previewUrl = $this->getPreviewUrl();
+            if ($this->assignment->isOverdue()) {
+                session()->flash('warning', 'Assignment submitted after due date.');
+            } else {
+                $gemService->earnedGem(10, 'Earned By Submitting Assignment.');
 
-                if ($this->assignment->isOverdue()) {
-                    session()->flash('warning', 'Assignment submitted after due date.');
+                if ($this->checkConsecutiveSubmissions($studentId)) {
+                    $gemService->earnedGem(100, 'Bonus for completing 7 consecutive on-time assignments!');
+                    session()->flash('success', 'Assignment submitted successfully. You earned 10 gems plus 100 bonus gems for completing 7 assignments on time!');
                 } else {
-                    try {
-                        $gemService = new GemService();
-                        $studentId = auth()->id();
-                        
-                        // Award regular 10 gems for on-time submission
-                        $gemService->earnedGem(10, 'Earned By Submitting Assignment.');
-                        
-                        // Check if student has completed 7 on-time submissions
-                        if ($this->checkConsecutiveSubmissions($studentId)) {
-                            // Award bonus 100 gems
-                            $gemService->earnedGem(100, 'Bonus for completing 7 on-time assignments!');
-                            session()->flash('success', 'Assignment submitted successfully. You earned 10 gems plus 100 bonus gems for completing 7 assignments on time!');
-                        } else {
-                            session()->flash('success', 'Assignment submitted successfully. You earned 10 gems!');
-                        }
-                    } catch (\Exception $e) {
-                        session()->flash('success', 'Assignment submitted successfully, but failed to award gems.');
-                    }
+                    session()->flash('success', 'Assignment submitted successfully. You earned 10 gems!');
                 }
             }
-        } catch (\Exception $e) {
-            session()->flash('error', 'Failed to upload assignment: ' . $e->getMessage());
         }
+    } catch (\Exception $e) {
+        session()->flash('error', 'Failed to upload assignment: ' . $e->getMessage());
     }
+}
 
     private function token()
     {
