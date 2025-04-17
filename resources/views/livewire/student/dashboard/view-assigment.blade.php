@@ -10,6 +10,7 @@
                     @if($hasAccess && $uploadedFile)
                         @php
                             $statusColors = [
+                                'pending' => ['bg' => 'bg-yellow-100', 'text' => 'text-yellow-800', 'dot' => 'bg-yellow-400'],
                                 'submitted' => ['bg' => 'bg-blue-100', 'text' => 'text-blue-800', 'dot' => 'bg-blue-400'],
                                 'graded' => ['bg' => 'bg-green-100', 'text' => 'text-green-800', 'dot' => 'bg-green-400'],
                                 'late' => ['bg' => 'bg-red-100', 'text' => 'text-red-800', 'dot' => 'bg-red-400'],
@@ -105,9 +106,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            @endif
-
-                            @if (!$uploadedFile)
+                            @else
                                 <!-- Upload form when no file has been submitted -->
                                 <form wire:submit.prevent="submit" class="space-y-6">
                                     <div class="bg-white rounded-lg border border-gray-200">
@@ -211,7 +210,6 @@
                                 @endforeach
                             </ul>
                             <div class="flex space-x-4">
-                              
                                 <a href="{{ route('student.assignments-view') }}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors">
                                     Back to Assignments
                                 </a>
