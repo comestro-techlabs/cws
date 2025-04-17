@@ -49,10 +49,21 @@
                                 <option value="{{ $course->id }}">{{ $course->title }}</option>
                                 @endforeach
                                 <option value="none">Not Enrolled</option>
-
                             </select>
                         </div>
 
+                        <!-- Due Filter -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Due Filter</label>
+                            <select wire:model.live="dueFilter"
+                                class="w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 py-2.5 px-3">
+                                <option value="">All Students</option>
+                                <option value="has_due">Students with Dues</option>
+                                <option value="no_payments">Not Enrolled</option>
+                            </select>
+                        </div>
+
+                        <!-- Status Filter -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
                             <select wire:model.live="statusFilter"
@@ -66,7 +77,7 @@
                     </div>
 
                     <!-- Active Filters -->
-                    @if($search || $subscriptionFilter || $courseFilter || $statusFilter)
+                    @if($search || $subscriptionFilter || $courseFilter || $statusFilter || $dueFilter)
                     <div class="flex items-center gap-2 mt-4">
                         <span class="text-sm text-gray-600">Active Filters:</span>
                         <button wire:click="resetFilters"
@@ -90,18 +101,15 @@
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Contact</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Subscription
-                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Subscription</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Courses</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Total Due</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Action</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                           
                             @forelse ($students as $student)
-                            
-
                             <tr class="hover:bg-gray-50">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $student->id }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $student->name }}</td>
@@ -111,7 +119,6 @@
                                     <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">
                                         {{ $student->subscriptions->first()->plan->name ?? 'No Subscription' }}
                                     </span>
-
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm">
                                     <div class="flex flex-wrap gap-1">
@@ -130,13 +137,22 @@
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                    @if($student->total_due > 0)
+                                        <span class="px-2 py-1 bg-red-100 text-red-800 rounded-full text-xs">
+                                        ₹{{ number_format($student->total_due, 2) }}
+                                        </span>
+                                    @else
+                                        <span class="text-gray-500">No dues</span>
+                                    @endif
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">
                                     <button wire:click="status({{ $student->id }})"
                                         class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium transition-colors duration-200 
-                                   {{ $student->is_active ? 'bg-green-100 text-green-800 hover:bg-green-200' : 'bg-red-100 text-red-800 hover:bg-red-200' }}"
+                                        {{ $student->is_active ? 'bg-green-100 text-green-800 hover:bg-green-200' : 'bg-red-100 text-red-800 hover:bg-red-200' }}"
                                         title="Click to toggle status">
                                         {{ $student->is_active ? 'Active' : 'Inactive' }}
                                     </button>
-                                </td> 
+                                </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm">
                                     <div class="flex gap-2">
                                         <a href="{{ route('admin.student.view', ['id' => $student->id]) }}"
@@ -148,7 +164,7 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="8" class="px-6 py-4 text-center text-gray-500">
+                                <td colspan="9" class="px-6 py-4 text-center text-gray-500">
                                     No students found matching the criteria.
                                 </td>
                             </tr>

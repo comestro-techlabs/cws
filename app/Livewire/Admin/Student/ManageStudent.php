@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\Student;
 
 use App\Models\Course;
+use App\Models\Payment;
 use App\Models\SubscriptionPlan;
 use App\Models\User;
 use Livewire\Component;
@@ -21,12 +22,13 @@ class ManageStudent extends Component
     public $courseFilter = '';
     public $membershipFilter = '';
     public $statusFilter = '';
+    public $dueFilter = '';
     public $courses;
     public $subscriptionPlans;
     public $barcode;
     public $showBarcodeModal = false;
     protected $paginationTheme = 'tailwind';
-    protected $queryString = ['filter', 'search'];
+    protected $queryString = ['filter', 'search', 'dueFilter'];
 
     public function mount()
     {
@@ -41,6 +43,7 @@ class ManageStudent extends Component
         $this->courseFilter = '';
         $this->membershipFilter = '';
         $this->statusFilter = '';
+        $this->dueFilter = '';
         $this->resetPage();
     }
 
@@ -55,7 +58,7 @@ class ManageStudent extends Component
         if ($student) {
             $student->is_active = !$student->is_active;
             $student->save();
-        }       
+        }
     }
 
     public function generateBarcode($studentId)
@@ -74,50 +77,73 @@ class ManageStudent extends Component
     }
 
     public function render()
-    {
-        $students = User::query()
-            ->where('isAdmin', false)
-            ->with(['courses', 'subscriptions' => function($query) {
+{
+    $students = User::query()
+        ->where('isAdmin', false)
+        ->with([
+            'payments' => function ($query) {
+                $query->with('course');
+            },
+            'subscriptions' => function ($query) {
                 $query->where('status', 'active')
                       ->whereDate('ends_at', '>=', now())
                       ->with('plan');
-            }])
-            ->when($this->search, function($query) {
-                $query->where(function($q) {
-                    $q->where('name', 'like', '%'.$this->search.'%')
-                      ->orWhere('email', 'like', '%'.$this->search.'%')
-                      ->orWhere('contact', 'like', '%'.$this->search.'%');
+            }
+        ])
+        ->when($this->search, function ($query) {
+            $query->where(function ($q) {
+                $q->where('name', 'like', '%' . $this->search . '%')
+                  ->orWhere('email', 'like', '%' . $this->search . '%')
+                  ->orWhere('contact', 'like', '%' . $this->search . '%');
+            });
+        })
+        ->when($this->subscriptionFilter, function ($query) {
+            $query->whereHas('subscriptions', function ($q) {
+                $q->where('plan_id', $this->subscriptionFilter)
+                  ->where('status', 'active')
+                  ->whereDate('ends_at', '>=', now());
+            });
+        })
+        ->when($this->courseFilter, function ($query) {
+            $query->whereHas('payments', function ($q) {
+                $q->where('course_id', $this->courseFilter);
+            });
+        })
+        ->when($this->membershipFilter, function ($query) {
+            $query->where('is_member', $this->membershipFilter === 'member');
+        })
+        ->when($this->statusFilter, function ($query) {
+            $query->where('is_active', $this->statusFilter === 'active');
+        })
+        ->when($this->dueFilter, function ($query) {
+            if ($this->dueFilter === 'has_due') {
+                $query->whereHas('payments', function ($q) {
+                    $q->whereRaw('payments.total_amount < courses.discounted_fees')
+                      ->join('courses', 'payments.course_id', '=', 'courses.id');
                 });
-            })
-            ->when($this->subscriptionFilter, function ($query) {
-               
-                    // Users with a specific active subscription
-                    $query->whereHas('subscriptions', function ($q) {
-                        $q->where('plan_id', $this->subscriptionFilter)
-                          ->where('status', 'active')
-                          ->whereDate('ends_at', '>=', now());
-                    });
-                
-            })
-            ->when($this->courseFilter, function ($query) {
-               
-                    // Students with a specific course
-                    $query->whereHas('courses', function ($q) {
-                        $q->where('courses.id', $this->courseFilter);
-                    });
-                
-            })
-            ->when($this->membershipFilter, function($query) {
-                $query->where('is_member', $this->membershipFilter === 'member');
-            })
-            ->when($this->statusFilter, function($query) {
-                $query->where('is_active', $this->statusFilter === 'active');
-            })
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+            } elseif ($this->dueFilter === 'no_payments') {
+                $query->whereDoesntHave('payments');
+            }
+        })
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
 
-        return view('livewire.admin.student.manage-student', [
-            'students' => $students,
-        ]);
+    foreach ($students as $student) {
+        $student->total_due = 0;
+        foreach ($student->payments as $payment) {
+            if ($payment->course) {
+                $coursePrice = $payment->course->discounted_fees;
+                $totalAmount = $payment->total_amount ?? 0;
+                $due = $coursePrice - $totalAmount;
+                if ($due > 0) {
+                    $student->total_due += $due;
+                }
+            }
+        }
     }
+
+    return view('livewire.admin.student.manage-student', [
+        'students' => $students,
+    ]);
+}
 }
