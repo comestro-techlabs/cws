@@ -494,7 +494,7 @@ class StudentDashboard extends Component
         return ExamUser::where('user_id', $userId)->exists()
             || Assignment_upload::where('student_id', $userId)->exists();
     }
-
+   
     public function gems()
     {
         return $this->gems;

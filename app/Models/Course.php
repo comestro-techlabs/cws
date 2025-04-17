@@ -21,7 +21,7 @@ class Course extends Model
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
-        'start_date' => 'datetime', 
+        'start_date' => 'datetime',
         'end_date' => 'datetime'
     ];
 
@@ -30,7 +30,7 @@ class Course extends Model
         return $this->course_type === 'online';
     }
 
-    public function isOffline() 
+    public function isOffline()
     {
         return $this->course_type === 'offline';
     }
@@ -87,8 +87,9 @@ class Course extends Model
     {
         return $this->hasMany(Quiz::class);
     }
-    public function rating(){
-        return $this->hasMany(CourseReview::class,'course_id','id');
+    public function rating()
+    {
+        return $this->hasMany(CourseReview::class, 'course_id', 'id');
     }
 
     public function users(): BelongsToMany
@@ -130,7 +131,10 @@ class Course extends Model
         // Ensure progress does not exceed 100%
         return min(100, max(0, round($progress)));
     }
-
+    public function payment()
+    {
+        return $this->hasOne(Payment::class);
+    }
     public function getProgressAttribute()
     {
         $payment = $this->payments()->latest()->first(); // Get latest payment
@@ -149,8 +153,8 @@ class Course extends Model
     public function students()
     {
         return $this->belongsToMany(User::class, 'course_student', 'course_id', 'user_id')
-                    ->withPivot('batch_id','batch_updated','is_subs')
-                    ->withTimestamps();
+            ->withPivot('batch_id', 'batch_updated', 'is_subs')
+            ->withTimestamps();
     }
 
     public function mockTests()

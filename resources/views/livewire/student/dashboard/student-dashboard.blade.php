@@ -130,6 +130,7 @@
                         </div>
                     </div>
                     <div class="divide-y divide-gray-200">
+                        
                         @forelse($courses as $course)
                             <div class="p-6">
                                 <h3 class="text-md font-semibold text-blue-600 mb-4">{{ $course->title }}</h3>
@@ -208,7 +209,20 @@
                                     @endif
                                 </div>
                             </div>
+
+                            @php
+                            $payment = \App\Models\Payment::where('course_id', $course->id)
+                                ->where('student_id', auth()->id())
+                                ->first();
+                            $hasDue = $payment && ($payment->amount > $payment->total_amount);
+                        @endphp
+
+                        @if ($hasDue)
+                            <livewire:student.due-course :course-id="$course->id" />
+                        @endif
+
                         @empty
+
                             <div class="text-center py-12">
                                 <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24"
                                     stroke="currentColor">
@@ -218,6 +232,7 @@
                                 <h3 class="mt-2 text-sm font-medium text-gray-900">No courses available</h3>
                                 <p class="mt-1 text-sm text-gray-500">Get started by enrolling in a course.</p>
                             </div>
+
                         @endforelse
                     </div>
                 </div>

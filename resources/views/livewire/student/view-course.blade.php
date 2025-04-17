@@ -187,6 +187,10 @@
                                     alt="Razorpay" class="w-6 h-6 object-contain">
                                 <span>Enroll Now with Razorpay</span>
                             </button>
+                            
+                            @if ($course->course_type === 'offline')
+                                <livewire:student.due-student :course-id="$course->id"/> 
+                            @endif
                         @endif
                     @endif
 
