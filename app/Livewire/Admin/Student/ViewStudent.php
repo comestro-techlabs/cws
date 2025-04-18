@@ -665,7 +665,7 @@ class ViewStudent extends Component
     {
         $this->validate([
             'order_id' => 'required|string|max:255',
-            'total_amount' => 'required|numeric|min:0',
+            'total_amount' => 'nullable|numeric|min:0',
         ]);
 
         try {
