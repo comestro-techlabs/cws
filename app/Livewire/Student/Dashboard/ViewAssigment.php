@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Student\Dashboard;
 
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Auth;
@@ -63,16 +64,16 @@ class ViewAssigment extends Component
     }
 
     private function getPreviewUrl()
-    {
-        if ($this->uploadedFile) {
-            $filePath = $this->uploadedFile->file_path; // File ID from Google Drive
+{
+    if ($this->uploadedFile) {
+        $filePath = $this->uploadedFile->file_path;
 
-            // Generate Google Drive Preview URL
-            return "https://drive.google.com/file/d/$filePath/preview";
-        }
-
-        return null;
+        // Generate S3 file URL
+        return Storage::disk('s3')->url($filePath);
     }
+
+    return null;
+}
 
     private function checkConsecutiveSubmissions($studentId)
     {
@@ -131,77 +132,51 @@ class ViewAssigment extends Component
     ]);
 
     try {
-        $accessToken = $this->token();
-
         // File details
         $file = $this->file;
-        $mimeType = $file->getMimeType();
-        $fileName = $file->getClientOriginalName();
+        $fileName = time() . '_' . $file->getClientOriginalName();
+        $filePath = "assignments/{$fileName}";
+
+        // Upload file to S3
         $fileContent = file_get_contents($file->getRealPath());
+        Storage::disk('s3')->put($filePath, $fileContent, 'public');
 
-        // Upload file metadata to Google Drive
-        $metadataResponse = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $accessToken,
-            'Content-Type' => 'application/json',
-        ])->post('https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable', [
-            'name' => $fileName,
-            'mimeType' => $mimeType,
-            'parents' => [config('services.google.folder_id')],
-        ]);
+        // Save file details in the database
+        $assignment_upload = new Assignment_upload();
+        $assignment_upload->student_id = auth()->id();
+        $assignment_upload->file_path = $filePath; // Store S3 file path
+        $assignment_upload->assignment_id = $this->assignment_id;
+        $assignment_upload->submitted_at = now();
+        $assignment_upload->status = 'submitted';
+        $assignment_upload->save();
 
-        if (!$metadataResponse->successful()) {
-            $this->addError('file', 'Failed to initialize upload.');
-            return;
-        }
+        // Update the uploadedFile property
+        $this->uploadedFile = $assignment_upload;
 
-        $uploadUrl = $metadataResponse->header('Location');
+        // Generate new preview link
+        $this->previewUrl = $this->getPreviewUrl();
 
-        // Upload file content
-        $uploadResponse = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $accessToken,
-            'Content-Type' => $mimeType,
-        ])->withBody($fileContent, $mimeType)->put($uploadUrl);
+        // Handle gem awards
+        $studentId = auth()->id();
+        $gemService = new GemService();
 
-        if ($uploadResponse->successful()) {
-            // Get file ID from Google Drive
-            $fileId = json_decode($uploadResponse->body())->id;
+        if ($this->assignment->isOverdue()) {
+            session()->flash('warning', 'Assignment submitted after due date.');
+        } else {
+            $gemService->earnedGem(10, 'Earned By Submitting Assignment.');
 
-            // Save file details in the database
-            $assignment_upload = new Assignment_upload();
-            $assignment_upload->student_id = auth()->id();
-            $assignment_upload->file_path = $fileId;
-            $assignment_upload->assignment_id = $this->assignment_id;
-            $assignment_upload->submitted_at = now();
-            $assignment_upload->status = 'submitted';
-            $assignment_upload->save();
-
-            // Update the uploadedFile property
-            $this->uploadedFile = $assignment_upload;
-
-            // Generate new preview link
-            $this->previewUrl = $this->getPreviewUrl();
-
-            // Handle gem awards
-            $studentId = auth()->id();
-            $gemService = new GemService();
-
-            if ($this->assignment->isOverdue()) {
-                session()->flash('warning', 'Assignment submitted after due date.');
+            if ($this->checkConsecutiveSubmissions($studentId)) {
+                $gemService->earnedGem(100, 'Bonus for completing 7 consecutive on-time assignments!');
+                session()->flash('success', 'Assignment submitted successfully. You earned 10 gems plus 100 bonus gems for completing 7 assignments on time!');
             } else {
-                $gemService->earnedGem(10, 'Earned By Submitting Assignment.');
-
-                if ($this->checkConsecutiveSubmissions($studentId)) {
-                    $gemService->earnedGem(100, 'Bonus for completing 7 consecutive on-time assignments!');
-                    session()->flash('success', 'Assignment submitted successfully. You earned 10 gems plus 100 bonus gems for completing 7 assignments on time!');
-                } else {
-                    session()->flash('success', 'Assignment submitted successfully. You earned 10 gems!');
-                }
+                session()->flash('success', 'Assignment submitted successfully. You earned 10 gems!');
             }
         }
     } catch (\Exception $e) {
         session()->flash('error', 'Failed to upload assignment: ' . $e->getMessage());
     }
 }
+
 
     private function token()
     {
