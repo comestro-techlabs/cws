@@ -15,13 +15,14 @@ class BatchManager extends Component
     public $batchName;
     public $startDate;
     public $endDate;
+    public $useAutoEndDate = true; // New property to toggle end date calculation
     public $editingBatchId = null;
     public $isEditing = false;
-    
 
     protected $rules = [
         'batchName' => 'required|string|max:255',
-        'startDate' => 'required|date|after_or_equal:today',        
+        'startDate' => 'required|date', // Removed after_or_equal:today to allow past dates
+        'endDate' => 'required_if:useAutoEndDate,false|date|after_or_equal:startDate', // Required only if not auto-calculated
     ];
 
     public function mount(Course $course)
@@ -31,8 +32,17 @@ class BatchManager extends Component
 
     public function updatedStartDate()
     {
-        if ($this->startDate) {
+        if ($this->startDate && $this->useAutoEndDate) {
             $this->calculateEndDate();
+        }
+    }
+
+    public function updatedUseAutoEndDate()
+    {
+        if ($this->useAutoEndDate && $this->startDate) {
+            $this->calculateEndDate();
+        } else {
+            $this->endDate = null; // Clear end date if switching to manual
         }
     }
 
@@ -55,14 +65,20 @@ class BatchManager extends Component
             $this->editingBatchId = $batchId;
             $this->batchName = $batch->batch_name;
             $this->startDate = $batch->start_date->format('Y-m-d');
-            $this->endDate = $batch->end_date->format('Y-m-d');            
+            $this->endDate = $batch->end_date->format('Y-m-d');
+            // Determine if end date was auto-calculated
+            $calculatedEndDate = (new \DateTime($this->startDate))
+                ->modify('+' . $this->course->duration . ' weeks')
+                ->format('Y-m-d');
+            $this->useAutoEndDate = ($this->endDate === $calculatedEndDate);
             $this->isEditing = true;
         }
     }
 
     public function cancelEdit()
     {
-        $this->reset(['editingBatchId', 'batchName', 'startDate', 'endDate', 'isEditing']);
+        $this->reset(['editingBatchId', 'batchName', 'startDate', 'endDate', 'isEditing', 'useAutoEndDate']);
+        $this->useAutoEndDate = true; // Reset to default
     }
 
     public function updateBatch()
@@ -71,12 +87,14 @@ class BatchManager extends Component
         
         $batch = Batch::find($this->editingBatchId);
         if ($batch) {
-            $this->calculateEndDate();
+            if ($this->useAutoEndDate) {
+                $this->calculateEndDate();
+            }
             
             $batch->update([
                 'batch_name' => $this->batchName,
                 'start_date' => $this->startDate,
-                'end_date' => $this->endDate,                
+                'end_date' => $this->endDate,
             ]);
 
             $this->cancelEdit();
@@ -88,16 +106,18 @@ class BatchManager extends Component
     {
         $this->validate();
         
-        $this->calculateEndDate();
+        if ($this->useAutoEndDate) {
+            $this->calculateEndDate();
+        }
 
         $this->course->batches()->create([
             'batch_name' => $this->batchName,
             'start_date' => $this->startDate,
             'end_date' => $this->endDate,
-            
         ]);
 
-        $this->reset(['batchName', 'startDate', 'endDate']);
+        $this->reset(['batchName', 'startDate', 'endDate', 'useAutoEndDate']);
+        $this->useAutoEndDate = true; // Reset to default
         $this->dispatch('notice', type: 'success', text: 'Batch added successfully!');
     }
 

@@ -114,7 +114,7 @@ class StudentDashboard extends Component
 
         // Add first login check using session
         if (!session()->has('welcomed')) {
-            session()->flash('welcome', 'Welcome to CWS Learning Dashboard! Start your learning journey.');
+            session()->flash('welcome', 'Welcome to LearnSyntax Learning Dashboard! Start your learning journey.');
             session()->put('welcomed', true);
         }
 

@@ -358,7 +358,24 @@
                                 </a>
                             @endif
                         @endif
-
+                        <a wire:navigate href="{{ route('student.v2edit.profile') }}"
+                        class="flex items-center px-4 py-2.5 text-sm font-medium {{   'text-gray-700 hover:bg-purple-50 hover:text-purple-700' }} group transition duration-200">
+                        @if(!auth()->user()->hasAccess())
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                        @else
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                            <circle cx="12" cy="7" r="4" fill="#4FC3F7"/>
+                            <path d="M4 20c0-2.5 2.5-4.5 6-4.5h4c3.5 0 6 2 6 4.5v1H4v-1z" fill="#0288D1"/>
+                            <path d="M14.5 8.5l1-1 3 3-1 1-3-3z" fill="#FFB300"/>
+                            <path d="M13.5 9.5l1-1 3 3-1 1-3-3z" fill="#F57C00"/>
+                            <path d="M12.5 10.5l1-1 3 3-1 1-3-3z" fill="#6D4C41"/>
+                          </svg>
+                          
+                        @endif
+                        <span class="flex-1 ms-3">Profile</span>
+                    </a>       
                     <form method="POST" action="{{ route('auth.logout') }}" class="inline-block">
                         @csrf
                         <button type="submit"

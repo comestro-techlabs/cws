@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Assignments extends Model
 {
@@ -11,6 +12,11 @@ class Assignments extends Model
 
     protected $guarded = [];
     protected $dates = ['due_date'];
+
+    protected $casts = [
+        'due_date' => 'datetime',
+        'status' => 'boolean'
+    ];
 
     // Define the relationship: An Assignment belongs to a Course
     public function course()

@@ -41,7 +41,6 @@ use App\Livewire\Student\ViewCourse;
 use App\Livewire\Student\MyCourse;
 use App\Livewire\Student\EditProfile;
 use App\Livewire\Student\Dashboard\ViewAssigment;
-use App\Livewire\Admin\Workshops\ManageWorkshop;
 use App\Livewire\Admin\Course\ManageCourse;
 use App\Livewire\Admin\Course\ShowBatch;
 use App\Livewire\Admin\Certificate\ManageCertificate;
@@ -61,7 +60,6 @@ use App\Livewire\Public\Course\Ourcourses;
 use App\Livewire\Public\Header;
 use App\Livewire\Public\Home;
 use App\Livewire\Public\Viewallcourses\AllCourses;
-use App\Livewire\Public\Workshops\Workshop;
 use App\Livewire\Public\Mocktest\SelectMockTest as PublicSelectMockTest;
 use App\Livewire\Public\Mocktest\ShowMockTest as PublicShowMockTest;
 use App\Livewire\Public\Mocktest\MockTestResult as PublicMockTestResult;
@@ -94,7 +92,6 @@ use App\Livewire\Public\AboutUs;
 use App\Livewire\Public\ContactUs;
 use App\Livewire\Public\TermsAndConditions;
 use App\Livewire\Public\PrivacyPolicy;
-use App\Livewire\Public\Workshops\ViewWorkshop;
 
 // Livewire::setUpdateRoute(function ($handle) {
 //     return Route::post('/learnsyntax/public/livewire/update', $handle);
@@ -105,8 +102,6 @@ Route::get('/', Home::class)->name('public.index');
 Route::get('/courses', AllCourses::class)->name('public.viewallcourses.all-courses');
 Route::get('/free-courses',FreeCourses::class)->name('public.free-courses');
 Route::get('/contact', ContactPage::class)->name('public.contactUs');
-Route::get('/workshops', Workshop::class)->name('public.workshop');
-Route::get('/workshops/{id}', ViewWorkshop::class)->name('workshops.view');
 
 Route::get('/about-us', AboutUs::class)->name('public.about.us');
 Route::get('/contact-us', ContactUs::class)->name('public.contact.us');
@@ -233,15 +228,12 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
         Route::get('/mock-test/{mockTestId}/questions', ManageQuestions::class)->name('admin.mock-test.questions');
         // Assignment Routes
         Route::get('/assignment/manage', ManageAssignment::class)->name('admin.assignment.manage');
-
+        Route::get('/assignments/{id}', App\Livewire\Admin\Assignment\ViewAssignment::class)->name('admin.assignments.view');
         Route::get('/assignments/review-work/{id}', ReviewWork::class)->name('assignment.reviewWork');//u
         //Certificate Routes
         Route::get('/certificate/course',ManageCertificate::class)->name('admin.certificate.course');
         Route::get('/certificate/view-detail/{studentId}/{courseId}', ViewDetail::class)->name('certificate.view-detail');
        
-
-        // Workshop Routes certificate/course
-        Route::get('/workshops', ManageWorkshop::class)->name('admin.workshops.index');
 
         // Placed Student Routes
         Route::get('/placedstudent/manage', CallingPlacedStudent::class)->name('admin.placedstudent.index');

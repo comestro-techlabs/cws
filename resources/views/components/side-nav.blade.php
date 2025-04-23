@@ -9,7 +9,6 @@
             $studentCount = App\Models\User::where('isAdmin', 0)->count();
             $placestudentCount = App\Models\PlacedStudent::get()->count();
             $examCount = App\Models\Exam::get()->count();
-            $workshopCount = App\Models\Workshop::get()->count();
             $notificationCount = App\Models\Enquiry::get()->count();
             $paymentCount = App\Models\Payment::with(['student', 'course'])
                 ->where('status', 'captured')->count();
@@ -182,28 +181,7 @@
                     </div>
                 </div>
 
-                <!-- Workshop Management -->
-                <div class="pt-2">
-                    <div x-show="expanded" class="px-3 mb-2">
-                        <h3 class="text-xs font-semibold text-gray-400 uppercase">Workshops</h3>
-                    </div>
-                    <div class="space-y-1">
-                        <a wire:navigate href="{{ route('admin.workshops.index') }}"
-                            class="flex items-center px-3 py-2.5 rounded-lg text-gray-600 transition-all hover:bg-purple-50 hover:text-purple-700">
-                            <svg class="w-4 h-4 shrink-0" xmlns="http://www.w3.org/2000/svg" width="14" height="16"
-                                fill="currentColor" class="bi bi-stickies" viewBox="0 0 16 16">
-                                <path d="M1.5 0A1.5 1.5 0 0 0 0 1.5V13a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1z" />
-                                <path
-                                    d="M3.5 2A1.5 1.5 0 0 0 2 3.5v11A1.5 1.5 0 0 0 3.5 16h6.086a1.5 1.5 0 0 0 1.06-.44l4.915-4.914A1.5 1.5 0 0 0 16 9.586V3.5A1.5 1.5 0 0 0 14.5 2zM3 3.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 .5.5V9h-4.5A1.5 1.5 0 0 0 9 10.5V15H3.5a.5.5 0 0 1-.5-.5zm7 11.293V10.5a.5.5 0 0 1 .5-.5h4.293z" />
-                            </svg>
-                            <div class="flex items-center justify-between flex-1 ml-3">
-                                <span class="text-sm">Manage Workshop</span>
-                                <span
-                                    class="px-2 py-0.5 text-xs bg-purple-100 text-purple-700 rounded-full">{{ $workshopCount }}</span>
-                            </div>
-                        </a>
-                    </div>
-                </div>
+               
 
                 <!-- Blog Management -->
                 <div class="pt-2">

@@ -38,15 +38,19 @@
                         </div>
 
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">End Date (Auto-calculated)</label>
-                            <input type="date" wire:model="endDate"
-                                class="mt-1 p-2 block w-full rounded-md border border-gray-300 bg-gray-50"
-                                readonly>
+                            <label class="flex items-center">
+                                <input type="checkbox" wire:model.live="useAutoEndDate" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                                <span class="ml-2 text-sm font-medium text-gray-700">Auto-calculate end date</span>
+                            </label>
                         </div>
 
-                       
-
-                       
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">End Date</label>
+                            <input type="date" wire:model="endDate"
+                                class="mt-1 p-2 block w-full rounded-md border border-gray-300 focus:border-purple-300 focus:ring focus:ring-purple-200 focus:ring-opacity-50 {{ $useAutoEndDate ? 'bg-gray-50' : '' }}"
+                                @if($useAutoEndDate) readonly @endif>
+                            @error('endDate') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                        </div>
 
                         <button type="submit"
                             class="w-full bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
@@ -71,7 +75,7 @@
                                 <!-- Batch Header -->
                                 <div class="flex justify-between items-start mb-3">
                                     <h4 class="font-semibold text-lg text-purple-600">{{ $batch->batch_name }}</h4>
-                                    <div class="flex space-x-2"> <!-- Removed opacity classes -->
+                                    <div class="flex space-x-2">
                                         <button wire:click="editBatch({{ $batch->id }})" 
                                             class="text-blue-600 hover:text-blue-800 p-1">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -102,7 +106,7 @@
                                     <div class="flex justify-between text-sm">
                                         <span class="text-gray-600">End Date:</span>
                                         <span class="font-medium">{{ \Carbon\Carbon::parse($batch->end_date)->format('M d, Y') }}</span>
-                                    </div>                                    
+                                    </div>
                                 </div>
 
                                 @if(DB::table('course_student')->where('batch_id', $batch->id)->exists())

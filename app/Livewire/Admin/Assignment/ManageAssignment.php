@@ -5,10 +5,11 @@ namespace App\Livewire\Admin\Assignment;
 use App\Jobs\SendNewAssignmentNotification;
 use Livewire\Component;
 use App\Models\Assignments;
-use App\Models\Assignment_upload;  // Add this import
+use App\Models\Assignment_upload;
 use App\Models\Batch;
 use App\Models\Course;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
@@ -33,6 +34,13 @@ class ManageAssignment extends Component
     public $activeTab = 'latest';
 
     protected $paginationTheme = 'tailwind';
+
+    public function mount()
+    {
+        if (request()->has('editId')) {
+            $this->edit(request()->editId);
+        }
+    }
     public function render()
     {
         $assignments = Assignments::query()
@@ -138,10 +146,14 @@ class ManageAssignment extends Component
     {
         if ($value) {
             $this->batches = Batch::where('course_id', $value)->get();
+            // Only reset batch_id if we're not editing
+            if (!$this->editingAssignment) {
+                $this->batch_id = '';
+            }
         } else {
             $this->batches = collect();
+            $this->batch_id = '';
         }
-        $this->batch_id = '';
     }
 
     public function create()
@@ -152,16 +164,26 @@ class ManageAssignment extends Component
  
     public function edit($assignmentId)
     {
-        $this->editingAssignment = Assignments::find($assignmentId);
-        if ($this->editingAssignment) {
-            $this->course_id = $this->editingAssignment->course_id;
-            $this->batch_id = $this->editingAssignment->batch_id;
-            $this->title = $this->editingAssignment->title;
-            $this->description = $this->editingAssignment->description;
-            $this->due_date = $this->editingAssignment->due_date;
-            $this->status = $this->editingAssignment->status;
-            $this->updatedCourseId($this->course_id);
-            $this->showModal = true;
+        try {
+            $this->editingAssignment = Assignments::find($assignmentId);
+            if ($this->editingAssignment) {
+                $this->course_id = $this->editingAssignment->course_id;
+                $this->updatedCourseId($this->course_id);
+                
+                $this->batch_id = $this->editingAssignment->batch_id;
+                $this->title = $this->editingAssignment->title;
+                $this->description = $this->editingAssignment->description;
+                
+                // Format the date for datetime-local input if it exists
+                if ($this->editingAssignment->due_date) {
+                    $this->due_date = Carbon::parse($this->editingAssignment->due_date)->format('Y-m-d\TH:i');
+                }
+                
+                $this->status = (bool)$this->editingAssignment->status;
+                $this->showModal = true;
+            }
+        } catch (\Exception $e) {
+            session()->flash('error', 'Failed to load assignment: ' . $e->getMessage());
         }
     }
 
@@ -223,4 +245,6 @@ class ManageAssignment extends Component
             $this->updatedCourseId($this->course_id);
         }
     }
+
+  
 }

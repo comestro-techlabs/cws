@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Livewire\Student;
 
 use App\Models\Batch;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Razorpay\Api\Api;
 use App\Services\GemService;
+use Illuminate\Support\Facades\Http;
 
 class ViewCourse extends Component
 {
@@ -24,7 +26,7 @@ class ViewCourse extends Component
     public $activeBatches;
 
     public $batch;
-
+    public $user;
     #[Layout('components.layouts.student')]
     public function mount($courseId)
     {
@@ -37,18 +39,18 @@ class ViewCourse extends Component
             ->pluck('courses.id')
             ->toArray();
 
-        $this->course = Course::with(['features', 'category', 'batches' => function($query) {
+        $this->course = Course::with(['features', 'category', 'batches' => function ($query) {
             $query->whereDate('end_date', '>=', now())
-                  ->orderBy('start_date');
+                ->orderBy('start_date');
         }])->findOrFail($courseId);
 
-        $this->activeBatches = $this->course->batches->map(function($batch) {
+        $this->activeBatches = $this->course->batches->map(function ($batch) {
             $batch->start_date = \Carbon\Carbon::parse($batch->start_date);
             $batch->end_date = \Carbon\Carbon::parse($batch->end_date);
             return $batch;
         });
-        
-        if($this->activeBatches->isNotEmpty()) {
+
+        if ($this->activeBatches->isNotEmpty()) {
             $this->selectedBatchId = $this->activeBatches->first()->id;
         }
 
@@ -120,7 +122,7 @@ class ViewCourse extends Component
                 'currency'        => 'INR',
                 'payment_capture' => 1 // Auto capture
             ];
-            
+
             $razorpayOrder = $api->order->create($orderData);
 
             // Create local payment record
@@ -158,14 +160,14 @@ class ViewCourse extends Component
     {
         try {
             $payment = Payment::where('id', $response['payment_id'])->first();
-            
+
             if (!$payment) {
                 return [
                     'success' => false,
                     'message' => 'Payment record not found'
                 ];
             }
-    
+
             $payment->update([
                 'razorpay_payment_id' => $response['razorpay_payment_id'],
                 'razorpay_order_id' => $response['razorpay_order_id'],
@@ -174,11 +176,11 @@ class ViewCourse extends Component
                 'status' => 'captured',
                 'payment_date' => now(),
             ]);
-    
+
             if (!$this->batch) {
                 throw new \Exception('No active batch available for this course.');
             }
-    
+
             DB::table('course_student')->insert([
                 'user_id'    => Auth::id(),
                 'course_id'  => $this->course->id,
@@ -195,12 +197,11 @@ class ViewCourse extends Component
             } catch (\Exception $e) {
                 \Log::error('Failed to award enrollment gems: ' . $e->getMessage());
             }
-    
+
             $this->payment_exist = true;
             $this->enrolledCourses[] = $this->course->id;
-    
-            return ['success' => true];
 
+            return ['success' => true];
         } catch (\Exception $e) {
             \Log::error('Payment Verification Error: ' . $e->getMessage());
             return [
@@ -212,21 +213,83 @@ class ViewCourse extends Component
     #[On('redirectToDashboard')]
     public function redirectToDashboard()
     {
-        return redirect()->route('student.dashboard')->with('success', 'You have successfully enrolled in the course.');
+        try {
+            $user = auth()->user();
+            $contact = $user->contact;
+            $user_name = $user->name;
+
+            // Check if contact exists and is valid
+            if (empty($contact) || strlen($contact) < 10) {
+                session()->flash('warning', 'Contact number is missing or invalid. SMS notification could not be sent.');
+                return redirect()->route('student.dashboard')
+                    ->with('success', 'You have successfully enrolled in the course.');
+            }
+
+            // Ensure contact number is clean (only numbers)
+            $contact = preg_replace('/[^0-9]/', '', $contact);
+
+            // Try to send SMS
+            try {
+                $response = Http::timeout(5)->withHeaders([
+                    'authkey' => env('MSG91_AUTH_KEY'),
+                    'Content-Type' => 'application/json',
+                    'Accept' => 'application/json',
+                ])->post('https://control.msg91.com/api/v5/flow', [
+                    'template_id' => '68026bbbd6fc0563fd0faa54',
+                    'short_url' => 0,
+                    'recipients' => [
+                        [
+                            'mobiles' => '91' . $contact,
+                            'name' => $user_name,
+                            'course' => $this->course->title,
+                        ]
+                    ]
+                ]);
+
+                if (!$response->successful()) {
+                    \Log::error('SMS sending failed', [
+                        'user_id' => $user->id,
+                        'error' => $response->body(),
+                        'status' => $response->status()
+                    ]);
+                    
+                    session()->flash('warning', 'Course enrollment successful but SMS notification failed.');
+                }
+            } catch (\Exception $e) {
+                \Log::error('SMS sending error', [
+                    'user_id' => $user->id,
+                    'error' => $e->getMessage()
+                ]);
+                
+                session()->flash('warning', 'Course enrollment successful but SMS notification failed.');
+            }
+
+            return redirect()->route('student.dashboard')
+                ->with('success', 'You have successfully enrolled in the course.');
+
+        } catch (\Exception $e) {
+            \Log::error('Redirect to dashboard error', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id()
+            ]);
+
+            return redirect()->route('student.dashboard')
+                ->with('error', 'An error occurred while processing your enrollment.');
+        }
     }
     public function enrollCourse($courseId)
     {
         try {
             $user = auth()->user();
-    
+
             if (!$user->is_active) {
                 return redirect()->back()->with('error', 'Your account is inactive. Please contact support.');
             }
-    
+
             if ($user->courses()->where('course_id', $courseId)->exists()) {
                 return redirect()->back()->with('error', 'You are already enrolled in this course.');
             }
-    
+
             $hasSubscription = $user->hasActiveSubscription();
             $subscriptionCourseCount = $user->courses()
                 ->whereHas('batches', function ($query) {
@@ -234,23 +297,23 @@ class ViewCourse extends Component
                 })
                 ->wherePivot('is_subs', 1)
                 ->count();
-    
+
             if (!$hasSubscription) {
                 return redirect()->back()->with('warning', 'You need to purchase this course to enroll.');
             }
-    
+
             if ($hasSubscription && $subscriptionCourseCount >= 1) {
                 return redirect()->back()->with('warning', 'You have already enrolled in one course with your subscription. Please purchase this course to enroll.');
             }
-    
+
             $batch = Batch::where('course_id', $courseId)
                 ->whereDate('end_date', '>=', now())
                 ->first();
-    
+
             if (!$batch) {
                 return redirect()->back()->with('error', 'No active batch available for this course.');
             }
-    
+
             $user->courses()->attach($courseId, [
                 'batch_id' => $batch->id,
                 'is_subs' => 1,
@@ -265,12 +328,11 @@ class ViewCourse extends Component
             } catch (\Exception $e) {
                 \Log::error('Failed to award enrollment gems: ' . $e->getMessage());
             }
-    
+
             $this->enrolledCourses[] = $courseId;
-    
+
             return redirect()->route('student.dashboard')
                 ->with('success', "You have successfully enrolled in the course and earned {$gemsToAward} gems!");
-
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Enrollment failed: ' . $e->getMessage());
         }
