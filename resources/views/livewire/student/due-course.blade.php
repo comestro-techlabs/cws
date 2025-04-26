@@ -46,7 +46,6 @@
                 </div>
 
                 <!-- Payment Deadline -->
-                @if (!\Carbon\Carbon::parse($payment->created_at)->addDays(7)->isPast())
                     <div class="mb-6">
                         <label for="due_amount" class="block text-sm font-medium text-gray-700 mb-1">Enter Amount to Pay</label>
                         <div class="relative">
@@ -75,12 +74,7 @@
                         <div>
                             <p>Current Input:</p>
                             <p class="font-medium">{{ $total_amount ? '₹' . number_format($total_amount, 2) : 'Not set' }}</p>
-                        </div>
-                        <div>
-                            <p>Deadline:</p>
-                            <p class="font-medium">
-                                {{ \Carbon\Carbon::parse($payment->created_at)->addDays(7)->format('d M Y') }}</p>
-                        </div>
+                        </div>                        
                     </div>
 
                     <!-- Pay Button -->
@@ -88,17 +82,7 @@
                         class="w-full px-6 py-3 bg-yellow-600 text-white font-semibold rounded-lg hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 transition duration-200">
                         <span wire:loading.remove>Pay Now</span>
                         <span wire:loading>Processing...</span>
-                    </button>
-                @else
-                    <div class="text-center py-4">
-                        <svg class="w-12 h-12 mx-auto text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <p class="mt-2 text-red-600 font-medium">Payment period has expired.</p>
-                    </div>
-                @endif
+                    </button>                
             </div>
         @else
             <div class="text-center py-8">

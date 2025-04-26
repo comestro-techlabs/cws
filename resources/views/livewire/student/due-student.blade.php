@@ -42,7 +42,7 @@
                     <div class="flex items-center">
                         <input type="radio" wire:model="paymentOption" value="request_access" id="request_access"
                             class="mr-2 focus:ring-yellow-500">
-                        <label for="request_access">Request Access (Pay within 7 days)</label>
+                        <label for="request_access">Request Access</label>
                     </div>
                 </div>
 
@@ -56,9 +56,7 @@
                         @error('total_amount') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     </div>
                 @else
-                    <div class="mb-4 p-3 bg-yellow-100 text-yellow-800 rounded-lg">
-                        <p>You will be granted access to the course immediately, but you must pay the full course fee (₹{{ number_format($amount, 2) }}) within 7 days from payment initiation. Failure to do so will result in account deactivation.</p>
-                    </div>
+                    
                 @endif
 
                 <div class="flex justify-end gap-3">
