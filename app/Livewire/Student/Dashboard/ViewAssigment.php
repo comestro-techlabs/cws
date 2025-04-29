@@ -63,17 +63,23 @@ class ViewAssigment extends Component
     }
     }
 
-    private function getPreviewUrl()
-{
-    if ($this->uploadedFile) {
-        $filePath = $this->uploadedFile->file_path;
-
-        // Generate S3 file URL
-        return Storage::disk('s3')->url($filePath);
+ private function getPreviewUrl()
+    {
+        if ($this->uploadedFile) {
+            $filePath = $this->uploadedFile->file_path;
+    
+            // Log the file path and S3 configuration
+            \Log::info('Generating S3 URL', [
+                'file_path' => $filePath,
+                's3_bucket' => config('filesystems.disks.s3.bucket'),
+            ]);
+    
+            // Generate S3 file URL
+            return Storage::disk('s3')->url($filePath);
+        }
+    
+        return null;
     }
-
-    return null;
-}
 
     private function checkConsecutiveSubmissions($studentId)
     {

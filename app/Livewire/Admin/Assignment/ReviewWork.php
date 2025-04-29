@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\Assignment;
 
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use App\Models\Assignment_upload;
 use App\Models\User;
@@ -163,13 +164,11 @@ class ReviewWork extends Component
             }
         }
     }
-
-    public function previewFile($fileId)
+    public function previewFile($filePath)
     {
-        $this->dispatch('loading');
-        $this->selectedFileId = $fileId;
+        $this->dispatch('loading'); // Show loader
+        $this->selectedFileId = $filePath ? Storage::disk('s3')->url($filePath) : null;
     }
-
     public function closePreview()
     {
         $this->selectedFileId = null;
@@ -199,6 +198,8 @@ class ReviewWork extends Component
 
     public function render()
     {
-        return view('livewire.admin.assignment.review-work');
+        return view('livewire.admin.assignment.review-work',[
+            'selectedFileUrl' => $this->selectedFileId,
+        ]);
     }
 }
