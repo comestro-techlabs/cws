@@ -92,75 +92,91 @@
 
         <!-- Main Content -->
         @if($activeTab === 'review')
-            <!-- Existing review interface -->
-            <div class="flex-1 flex overflow-hidden">
-                <!-- Left Side - File Preview -->
-                <div class="w-2/3 bg-gray-800 overflow-hidden">
-                    @if($selectedFileId)
-                        <iframe src="{{ $selectedFileId }}"
-                            class="w-full h-full border-0"></iframe>
-                    @else
-                        <div class="flex flex-col items-center justify-center h-full">
-                            <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                            </svg>
-                            <p class="mt-4 text-gray-400 text-lg">Select a submission file to preview</p>
-                            <p class="mt-2 text-gray-500 text-sm">Click on any submission from the right panel</p>
+            <div class="p-6 flex flex-col lg:flex-row gap-6 bg-gray-50">
+                <!-- File Preview Section -->
+                <div class="lg:flex-1">
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden h-[calc(100vh-20rem)]">
+                        <div class="bg-gray-100 px-4 py-2 flex items-center justify-between">
+                            <h3 class="font-medium text-gray-700">Document Preview</h3>
+                            @if($selectedFileId)
+                                <button wire:click="closePreview" class="text-gray-500 hover:text-gray-700">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                    </svg>
+                                </button>
+                            @endif
                         </div>
-                    @endif
+                        
+                        <div class="h-full bg-gray-800">
+                            @if($selectedFileId)
+                                <iframe src="{{ $selectedFileId }}" class="w-full h-full"></iframe>
+                            @else
+                                <div class="flex flex-col items-center justify-center h-full text-gray-400">
+                                    <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                    </svg>
+                                    <p class="mt-4 text-lg">Select a submission to preview</p>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Right Side - Student Info & Grading -->
-                <div class="w-1/3 bg-white border-l overflow-y-auto">
-                    @if($currentStudent)
-                    
-                        <div class="p-6">
-                            <!-- Student Navigation -->
-                            <div class="flex items-center justify-between mb-6">
-                                <button wire:click="previousStudent" 
-                                    class="p-2 text-gray-600 hover:text-gray-900 {{ $hasPreviousStudent ? '' : 'opacity-50 cursor-not-allowed' }}"
-                                    {{ $hasPreviousStudent ? '' : 'disabled' }}>
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                                    </svg>
-                                </button>
-                                <span class="text-sm text-gray-600">Student {{ $currentStudentIndex + 1 }} of {{ count($students) }}</span>
-                                <button wire:click="nextStudent" 
-                                    class="p-2 text-gray-600 hover:text-gray-900 {{ $hasNextStudent ? '' : 'opacity-50 cursor-not-allowed' }}"
-                                    {{ $hasNextStudent ? '' : 'disabled' }}>
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                    </svg>
-                                </button>
+                <!-- Student Info & Grading Section -->
+                <div class="lg:w-96">
+                    <div class="bg-white rounded-lg shadow-sm">
+                        @if($currentStudent)
+                            <div class="border-b px-4 py-3 flex items-center justify-between bg-gray-50">
+                                <div class="flex items-center gap-2">
+                                    <h3 class="font-medium text-gray-900">Student Review</h3>
+                                    <span class="text-sm text-gray-500">({{ $currentStudentIndex + 1 }}/{{ count($students) }})</span>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <button wire:click="previousStudent" class="p-1 rounded hover:bg-gray-200 {{ !$hasPreviousStudent ? 'opacity-50 cursor-not-allowed' : '' }}">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                                        </svg>
+                                    </button>
+                                    <button wire:click="nextStudent" class="p-1 rounded hover:bg-gray-200 {{ !$hasNextStudent ? 'opacity-50 cursor-not-allowed' : '' }}">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
 
-                            <!-- Student Details -->
-                            <div class="space-y-6">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700">Student Name</label>
-                                    <p class="mt-1 text-lg font-semibold text-gray-900">{{ $currentStudent['name'] }}</p>
-                                </div>
+                            <div class="p-4 space-y-6">
+                                <!-- Student Details -->
+                                <div class="space-y-4">
+                                    <div>
+                                        <h4 class="text-sm font-medium text-gray-700">Student Name</h4>
+                                        <p class="mt-1 text-base font-semibold text-gray-900">{{ $currentStudent['name'] }}</p>
+                                    </div>
 
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700">Submission Date</label>
-                                    <p class="mt-1 {{ $currentStudent['submitted_at'] > $assignment->due_date ? 'text-red-600 font-medium' : 'text-gray-900' }}">
-                                        {{ $currentStudent['submitted_at'] }}
-                                        @if($currentStudent['submitted_at'] > $assignment->due_date)
-                                            <span class="text-sm text-red-500 ml-2">(Late submission: -10 marks)</span>
-                                        @endif
-                                    </p>
+                                    <div>
+                                        <h4 class="text-sm font-medium text-gray-700">Submission Status</h4>
+                                        <p class="mt-1 {{ $currentStudent['submitted_at'] > $assignment->due_date ? 'text-red-600' : 'text-gray-900' }}">
+                                            {{ Carbon\Carbon::parse($currentStudent['submitted_at'])->format('M d, Y h:i A') }}
+                                            @if($currentStudent['submitted_at'] > $assignment->due_date)
+                                                <span class="text-sm text-red-500 block">Late submission (-10 marks)</span>
+                                            @endif
+                                        </p>
+                                    </div>
                                 </div>
 
                                 <!-- Submissions List -->
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Submitted Files</label>
-                                    <div class="space-y-2">
+                                    <h4 class="text-sm font-medium text-gray-700 mb-2">Submitted Files</h4>
+                                    <div class="space-y-2 max-h-40 overflow-y-auto">
                                         @foreach($currentStudent['uploads'] as $index => $upload)
                                             <button wire:click="previewFile('{{ $upload->file_path }}')"
-                                                class="w-full px-4 py-2 text-left text-sm {{ $selectedFileId === $upload->file_path ? 'bg-teal-50 text-teal-700 border-teal-500' : 'bg-gray-50 text-gray-700 border-gray-200' }} border rounded-lg hover:bg-gray-100">
-                                                Submission {{ $index + 1 }}
-                                                <span class="text-xs text-gray-500 ml-2">
-                                                    {{ \Carbon\Carbon::parse($upload->submitted_at)->format('M d, H:i') }}
+                                                class="w-full px-3 py-2 text-left text-sm flex items-center gap-2 {{ $selectedFileId === $upload->file_path ? 'bg-teal-50 text-teal-700 border-teal-500' : 'bg-gray-50 hover:bg-gray-100 text-gray-700' }} border rounded-md">
+                                                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                                </svg>
+                                                <span class="flex-1">Submission {{ $index + 1 }}</span>
+                                                <span class="text-xs text-gray-500">
+                                                    {{ Carbon\Carbon::parse($upload->submitted_at)->format('M d, H:i') }}
                                                 </span>
                                             </button>
                                         @endforeach
@@ -168,7 +184,7 @@
                                 </div>
 
                                 <!-- Grading -->
-                                <div class="border-t pt-6">
+                                <div class="pt-4 border-t">
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Grade</label>
                                     <div class="flex items-center space-x-4 mb-4">
                                         <input type="number" 
@@ -202,8 +218,12 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    @endif
+                        @else
+                            <div class="p-6 text-center text-gray-500">
+                                <p>No submissions to review</p>
+                            </div>
+                        @endif
+                    </div>
                 </div>
             </div>
         @else
