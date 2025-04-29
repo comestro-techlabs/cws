@@ -36,7 +36,7 @@
                 <!-- Left Side - File Preview -->
                 <div class="w-2/3 bg-gray-800 overflow-hidden">
                     @if($selectedFileId)
-                        <iframe src="https://drive.google.com/file/d/{{ $selectedFileId }}/preview"
+                        <iframe src="{{ $selectedFileId }}"
                             class="w-full h-full border-0"></iframe>
                     @else
                         <div class="flex flex-col items-center justify-center h-full">
