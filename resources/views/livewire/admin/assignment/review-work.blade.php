@@ -5,17 +5,7 @@
 
     <div class="flex flex-col h-screen">
         <!-- Header -->
-        <div class="bg-white border-b px-4 py-3">
-            <div class="flex items-center justify-between mb-4">
-                <div>
-                    <h2 class="text-lg font-semibold text-gray-900">{{ $assignment->title }}</h2>
-                    <p class="text-sm text-gray-500">{{ $assignment->course->title }} - {{ $assignment->batch->batch_name }}</p>
-                </div>
-                <button onclick="window.history.back()" class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700">
-                    Back
-                </button>
-            </div>
-
+        <div class="bg-white  px-4 py-3">
             <!-- Tabs -->
             <div class="flex space-x-4 border-b">
                 <button wire:click="switchTab('review')" 
@@ -30,7 +20,7 @@
         </div>
 
         <!-- Assignment Details Card -->
-        <div class="bg-white rounded-lg shadow mb-6">
+        <div class="bg-white">
             <div class="p-6">
                 <div class="flex justify-between items-start">
                     <div>
