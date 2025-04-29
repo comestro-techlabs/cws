@@ -260,10 +260,7 @@ class DueStudent extends Component
                 throw new \Exception('No due amount to pay.');
             }
 
-            $deadline = \Carbon\Carbon::parse($this->payment->created_at)->addDays(7);
-            if ($deadline->isPast()) {
-                throw new \Exception('Payment period has expired.');
-            }
+ 
 
             $minAmount = $this->payment->payment_status === 'requested' ? $dueAmount * 0.2 : $dueAmount * 0.4;
 

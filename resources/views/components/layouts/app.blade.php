@@ -18,7 +18,6 @@
     <meta property="og:image" content="{{ $image ?? asset('storage/default_image.jpg') }}">
     <meta property="og:type" content="website">
     <meta name="google-site-verification" content="gGe7I5XS6UHhbMc7rZ4DmK9OzixHDxoI4MWIofCIc0c" />
-
     <title>LearnSyntax | Coding, Programming, App & Website Development in Purnea, Bihar</title>
     <meta name="description" content="Join LearnSyntax in Purnea, Bihar, to master coding, programming, app development, and website creation. Transform your career with expert instructors!">
     <meta name="keywords" content="LearnSyntax, coding classes Purnea, programming institute Bihar, learn app development, website development Purnea, software development classes, coding school in Bihar, online coding courses, web designing classes, Python classes Purnea, JavaScript courses Bihar, HTML and CSS training, software programming tutorials, mobile app courses, full stack development classes, frontend development, backend development, programming bootcamp, IT training institute Bihar, tech education in Purnea, computer programming classes">
