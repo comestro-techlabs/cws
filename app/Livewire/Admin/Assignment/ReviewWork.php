@@ -25,6 +25,9 @@ class ReviewWork extends Component
     public $assignment;
     public $activeTab = 'review'; // 'review' or 'all-submissions'
     public $allStudents = [];
+    public $assignmentStats = [];
+    public $filterStatus = '';
+    public $showDescription = false;
 
     public function mount($id)
     {
@@ -34,6 +37,7 @@ class ReviewWork extends Component
         // Load students with their submissions
         $this->loadStudents();
         $this->loadAllStudents();
+        $this->loadAssignmentStats();
         
         // Set initial student if we have submissions
         if (!empty($this->students)) {
@@ -44,6 +48,14 @@ class ReviewWork extends Component
     private function loadStudents()
     {
         $uploads = Assignment_upload::where('assignment_id', $this->assignmentId)
+            ->when($this->filterStatus, function($query) {
+                return match($this->filterStatus) {
+                    'pending' => $query->whereNull('grade'),
+                    'late' => $query->where('submitted_at', '>', $this->assignment->due_date),
+                    'graded' => $query->whereNotNull('grade'),
+                    default => $query
+                };
+            })
             ->with('user')
             ->get()
             ->groupBy('student_id');
@@ -83,6 +95,22 @@ class ReviewWork extends Component
                 'status' => $submission ? $this->getSubmissionStatus($submission) : 'not_submitted'
             ];
         })->toArray();
+    }
+
+    private function loadAssignmentStats()
+    {
+        $totalStudents = count($this->allStudents);
+        $submissions = collect($this->allStudents);
+        
+        $this->assignmentStats = [
+            'total_students' => $totalStudents,
+            'submitted' => $submissions->where('submitted', true)->count(),
+            'pending' => $submissions->where('status', 'submitted')->count(),
+            'graded' => $submissions->where('status', 'graded')->count(),
+            'late_submissions' => $submissions->where('status', 'late')->count(),
+            'not_submitted' => $submissions->where('submitted', false)->count(),
+            'average_grade' => $submissions->where('grade', '>', 0)->avg('grade') ?? 0,
+        ];
     }
 
     public function loadCurrentStudent()
@@ -196,10 +224,16 @@ class ReviewWork extends Component
         return 'submitted';
     }
 
+    public function expandDescription()
+    {
+        $this->showDescription = !$this->showDescription;
+    }
+
     public function render()
     {
-        return view('livewire.admin.assignment.review-work',[
+        return view('livewire.admin.assignment.review-work', [
             'selectedFileUrl' => $this->selectedFileId,
+            'assignmentStats' => $this->assignmentStats
         ]);
     }
 }

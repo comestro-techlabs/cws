@@ -32,6 +32,7 @@ class ManageAssignment extends Component
     public $editingAssignment = null;
     public $batches = [];
     public $activeTab = 'latest';
+    public $groupBy = 'course'; // 'course' or 'batch'
 
     protected $paginationTheme = 'tailwind';
 
@@ -43,40 +44,56 @@ class ManageAssignment extends Component
     }
     public function render()
     {
-        $assignments = Assignments::query()
+        $query = Assignments::query()
             ->when($this->course_id, fn ($query) => 
                 $query->where('course_id', $this->course_id)
             )
             ->when($this->search, fn ($query) => 
                 $query->where('title', 'like', '%' . $this->search . '%')
-            )
-            ->when($this->activeTab === 'latest', fn ($query) => 
-                $query->whereHas('assignmentUploads', function ($q) {
-                    $q->where('status', 'submitted')
-                    ->whereNull('grade');
-                })
-            ) 
-            ->when($this->activeTab === 'graded', fn ($query) => 
-                $query->whereHas('uploads', function($q) {
-                    $q->where('status', 'graded');
-                })
-                ->whereDoesntHave('uploads', function($q) {
-                    $q->where('status', '!=', 'graded');
-                })
-                ->has('uploads') 
-                ->orderBy('updated_at', 'desc')
-            )
-            ->when($this->activeTab === 'all', fn ($query) => 
-                $query->orderBy('updated_at', 'desc')
-            )
-            ->with(['course', 'batch', 'uploads.user'])
-            ->paginate($this->perPage);
-
+            );
+            
+        // Apply tab filters
+        $query = $this->applyTabFilters($query);
+        
+        // Get assignments with relationships
+        $assignments = $query->with(['course', 'batch', 'uploads.user'])->get();
+        
+        // Group assignments
+        $groupedAssignments = $assignments->groupBy($this->groupBy === 'course' ? 'course.title' : 'batch.batch_name');
+        
         return view('livewire.admin.assignment.manage-assignment', [
-            'assignments' => $assignments,
+            'groupedAssignments' => $groupedAssignments,
             'courses' => Course::all(),
             'batches' => $this->batches,
         ]);
+    }
+    
+    private function applyTabFilters($query)
+    {
+        return $query->when($this->activeTab === 'latest', fn ($query) => 
+            $query->where('due_date', '>=', now())
+                ->orderBy('due_date', 'asc')
+        )
+        ->when($this->activeTab === 'graded', fn ($query) => 
+            $query->whereHas('uploads', function($q) {
+                $q->where('status', 'graded');
+            })
+            ->whereDoesntHave('uploads', function($q) {
+                $q->where('status', '!=', 'graded');
+            })
+            ->has('uploads')
+            ->orderBy('due_date', 'desc')
+        )
+        ->when($this->activeTab === 'all', fn ($query) => 
+            $query->orderBy('status', 'desc')
+                ->orderBy(function($query) {
+                    $query->selectRaw('CASE 
+                        WHEN due_date >= NOW() THEN 1 
+                        WHEN due_date < NOW() THEN 2 
+                        ELSE 3 END');
+                })
+                ->orderBy('due_date', 'desc')
+        );
     }
 
     public function toggleStatus($assignmentId)

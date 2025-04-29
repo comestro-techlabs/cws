@@ -25,11 +25,11 @@
                 <nav class=" flex space-x-4 sm:space-x-8 px-4 sm:px-0" aria-label="Tabs">
                     <button wire:click="$set('activeTab', 'latest')"
                         class="{{ $activeTab === 'latest' ? 'border-teal-500 text-teal-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
-                        Latest Assignments
+                        Active & Upcoming
                     </button>
                     <button wire:click="$set('activeTab', 'graded')"
                         class="{{ $activeTab === 'graded' ? 'border-teal-500 text-teal-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
-                        Fully Graded
+                        Completed
                     </button>
                     <button wire:click="$set('activeTab', 'all')"
                         class="{{ $activeTab === 'all' ? 'border-teal-500 text-teal-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
@@ -82,115 +82,139 @@
             </div>
         @endif
 
-        <!-- Assignments Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
-            @forelse($assignments as $assignment)
-                <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-all">
-                    <div class="p-4 sm:p-6">
-                        <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-4">
-                            <h3 class="text-base sm:text-lg font-semibold text-gray-900 flex-1">{{ $assignment->title }}
-                            </h3>
-                            <button wire:click="toggleStatus({{ $assignment->id }})"
-                                class="relative px-3 py-1 rounded-full text-sm {{ $assignment->status ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}"
-                                wire:loading.class="opacity-50 cursor-wait"
-                                wire:target="toggleStatus({{ $assignment->id }})">
-                                <span wire:loading.remove wire:target="toggleStatus({{ $assignment->id }})">
-                                    {{ $assignment->status ? 'Active' : 'Inactive' }}
-                                </span>
-                                <span wire:loading wire:target="toggleStatus({{ $assignment->id }})"
-                                    class="flex items-center">
-                                    Updating...
-                                </span>
-                            </button>
-                        </div>
+        <!-- Group Toggle -->
+        <div class="mb-4 flex justify-end">
+            <div class="inline-flex rounded-lg border border-gray-200">
+                <button wire:click="$set('groupBy', 'course')" 
+                    class="px-4 py-2 text-sm {{ $groupBy === 'course' ? 'bg-teal-500 text-white' : 'bg-white text-gray-700' }} rounded-l-lg">
+                    Group by Course
+                </button>
+                <button wire:click="$set('groupBy', 'batch')"
+                    class="px-4 py-2 text-sm {{ $groupBy === 'batch' ? 'bg-teal-500 text-white' : 'bg-white text-gray-700' }} rounded-r-lg">
+                    Group by Batch
+                </button>
+            </div>
+        </div>
+
+        <!-- Grouped Assignments -->
+        @forelse($groupedAssignments as $groupName => $assignments)
+            <div class="mb-8">
+                <h2 class="text-lg font-semibold text-gray-900 mb-4 px-4 py-2 bg-gray-50 rounded-lg">
+                    {{ $groupName ?? 'Ungrouped' }}
+                    <span class="text-sm text-gray-500 ml-2">({{ $assignments->count() }})</span>
+                </h2>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
+                    @foreach($assignments as $assignment)
+                        <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-all">
+                            <div class="p-4 sm:p-6">
+                                <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-4">
+                                    <h3 class="text-base sm:text-lg font-semibold text-gray-900 flex-1">
+                                        {{ $assignment->title }}
+                                        @if($assignment->due_date && Carbon\Carbon::parse($assignment->due_date) < now())
+                                            <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800">Past Due</span>
+                                        @elseif($assignment->due_date && Carbon\Carbon::parse($assignment->due_date)->diffInDays(now()) <= 3)
+                                            <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">Due Soon</span>
+                                        @endif
+                                    </h3>
+                                    <button wire:click="toggleStatus({{ $assignment->id }})"
+                                        class="relative px-3 py-1 rounded-full text-sm {{ $assignment->status ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}"
+                                        wire:loading.class="opacity-50 cursor-wait"
+                                        wire:target="toggleStatus({{ $assignment->id }})">
+                                        <span wire:loading.remove wire:target="toggleStatus({{ $assignment->id }})">
+                                            {{ $assignment->status ? 'Active' : 'Inactive' }}
+                                        </span>
+                                        <span wire:loading wire:target="toggleStatus({{ $assignment->id }})"
+                                            class="flex items-center">
+                                            Updating...
+                                        </span>
+                                    </button>
+                                </div>
  
-                        <div class="mt-3 sm:mt-4 space-y-2 sm:space-y-3">
-                            <div class="flex items-center text-sm text-gray-600">
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                </svg>
-                                {{ $assignment->course?->title ?? 'No Course' }}
-                            </div>
-
-                            <div class="flex items-center text-sm text-gray-600">
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                </svg>
-                                <span
-                                    class="{{ $assignment->due_date && Carbon\Carbon::parse($assignment->due_date) < now() ? 'text-red-600 font-medium' : 'text-gray-600' }}">
-                                    Due:
-                                    {{ $assignment->due_date ? Carbon\Carbon::parse($assignment->due_date)->format('M d, Y H:i') : 'No due date' }}
-                                    @if($assignment->due_date && Carbon\Carbon::parse($assignment->due_date) < now())
-                                        <span class="text-xs ml-1">(Overdue)</span>
-                                    @endif
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="mt-4 sm:mt-6 flex flex-wrap items-center gap-3">
-                            <div class="flex flex-wrap items-center gap-2 sm:gap-4">
-                                <a href="{{ route('admin.assignments.view', $assignment->id) }}"
-                                    wire:loading.class="opacity-50 cursor-wait"
-                                    class="text-gray-600 hover:text-gray-900 relative inline-block" title="View">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                    </svg>
-                                    <span wire:loading 
-                                        class="absolute -top-1 -right-1 h-2 w-2">
-                                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
-                                        <span class="relative inline-flex rounded-full h-2 w-2 bg-teal-500"></span>
-                                    </span>
-                                </a>
-
-                                @if($assignment->uploads->count() > 0)
-                                    <a href="{{ route('assignment.reviewWork', $assignment->id) }}"
-                                        class="inline-flex items-center text-sm text-blue-600 hover:text-blue-900">
+                                <div class="mt-3 sm:mt-4 space-y-2 sm:space-y-3">
+                                    <div class="flex items-center text-sm text-gray-600">
                                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                                         </svg>
-                                        Review Work ({{ $assignment->uploads->count() }})
-                                    </a>
-                                @endif
+                                        {{ $assignment->course?->title ?? 'No Course' }}
+                                    </div>
 
-                                <button wire:click="edit({{ $assignment->id }})" class="text-gray-600 hover:text-gray-900">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                    </svg>
-                                </button>
-                                <button wire:click="assignmentdelete({{ $assignment->id }})"
-                                    class="text-red-600 hover:text-red-900" title="Delete">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5-4h4M9 7h6" />
-                                    </svg>
-                                </button>
+                                    <div class="flex items-center text-sm text-gray-600">
+                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                        <span
+                                            class="{{ $assignment->due_date && Carbon\Carbon::parse($assignment->due_date) < now() ? 'text-red-600 font-medium' : 'text-gray-600' }}">
+                                            Due:
+                                            {{ $assignment->due_date ? Carbon\Carbon::parse($assignment->due_date)->format('M d, Y H:i') : 'No due date' }}
+                                            @if($assignment->due_date && Carbon\Carbon::parse($assignment->due_date) < now())
+                                                <span class="text-xs ml-1">(Overdue)</span>
+                                            @endif
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="mt-4 sm:mt-6 flex flex-wrap items-center gap-3">
+                                    <div class="flex flex-wrap items-center gap-2 sm:gap-4">
+                                        <a href="{{ route('admin.assignments.view', $assignment->id) }}"
+                                            wire:loading.class="opacity-50 cursor-wait"
+                                            class="text-gray-600 hover:text-gray-900 relative inline-block" title="View">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                            </svg>
+                                            <span wire:loading 
+                                                class="absolute -top-1 -right-1 h-2 w-2">
+                                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
+                                                <span class="relative inline-flex rounded-full h-2 w-2 bg-teal-500"></span>
+                                            </span>
+                                        </a>
+
+                                        @if($assignment->uploads->count() > 0)
+                                            <a href="{{ route('assignment.reviewWork', $assignment->id) }}"
+                                                class="inline-flex items-center text-sm text-blue-600 hover:text-blue-900">
+                                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                </svg>
+                                                Review Work ({{ $assignment->uploads->count() }})
+                                            </a>
+                                        @endif
+
+                                        <button wire:click="edit({{ $assignment->id }})" class="text-gray-600 hover:text-gray-900">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                            </svg>
+                                        </button>
+                                        <button wire:click="assignmentdelete({{ $assignment->id }})"
+                                            class="text-red-600 hover:text-red-900" title="Delete">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5-4h4M9 7h6" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @endforeach
                 </div>
-            @empty
-                <div class="col-span-full p-4 sm:p-6 text-center">
-                    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                    <h3 class="mt-2 text-sm font-medium text-gray-900">No assignments</h3>
-                    <p class="mt-1 text-sm text-gray-500">Get started by creating a new assignment.</p>
-                </div>
-            @endforelse
-        </div>
-
-        <!-- Pagination -->
-        <div class="mt-6">
-            {{ $assignments->links() }}
-        </div>
+            </div>
+        @empty
+            <div class="col-span-full p-4 sm:p-6 text-center">
+                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <h3 class="mt-2 text-sm font-medium text-gray-900">No assignments</h3>
+                <p class="mt-1 text-sm text-gray-500">Get started by creating a new assignment.</p>
+            </div>
+        @endforelse
     </div>
 
     <!-- Create/Edit Modal -->

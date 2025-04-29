@@ -29,6 +29,67 @@
             </div>
         </div>
 
+        <!-- Assignment Details Card -->
+        <div class="bg-white rounded-lg shadow mb-6">
+            <div class="p-6">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">{{ $assignment->title }}</h1>
+                        <div class="mt-2 text-sm text-gray-600 space-y-1">
+                            <p><span class="font-medium">Course:</span> {{ $assignment->course->title }}</p>
+                            <p><span class="font-medium">Batch:</span> {{ $assignment->batch->batch_name }}</p>
+                            <p><span class="font-medium">Due Date:</span> 
+                                <span class="{{ Carbon\Carbon::parse($assignment->due_date) < now() ? 'text-red-600' : 'text-gray-600' }}">
+                                    {{ Carbon\Carbon::parse($assignment->due_date)->format('M d, Y h:i A') }}
+                                </span>
+                            </p>
+                        </div>
+                        @if($assignment->description)
+                            <div class="mt-4">
+                                <h3 class="text-sm font-medium text-gray-900">Description</h3>
+                                <p class="mt-1 text-sm text-gray-600">{{ $assignment->description }}</p>
+                            </div>
+                        @endif
+                    </div>
+                    <div class="text-right">
+                        <span class="inline-flex items-center rounded-full px-3 py-0.5 text-sm font-medium {{ $assignment->status ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                            {{ $assignment->status ? 'Active' : 'Inactive' }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics -->
+            <div class="border-t border-gray-200 px-6 py-4">
+                <dl class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500">Total Students</dt>
+                        <dd class="mt-1 text-2xl font-semibold text-gray-900">{{ $assignmentStats['total_students'] }}</dd>
+                    </div>
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500">Submissions</dt>
+                        <dd class="mt-1 text-2xl font-semibold text-teal-600">{{ $assignmentStats['submitted'] }}</dd>
+                    </div>
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500">Pending Review</dt>
+                        <dd class="mt-1 text-2xl font-semibold text-yellow-600">{{ $assignmentStats['pending'] }}</dd>
+                    </div>
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500">Graded</dt>
+                        <dd class="mt-1 text-2xl font-semibold text-green-600">{{ $assignmentStats['graded'] }}</dd>
+                    </div>
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500">Late Submissions</dt>
+                        <dd class="mt-1 text-2xl font-semibold text-red-600">{{ $assignmentStats['late_submissions'] }}</dd>
+                    </div>
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500">Average Grade</dt>
+                        <dd class="mt-1 text-2xl font-semibold text-blue-600">{{ number_format($assignmentStats['average_grade'], 1) }}</dd>
+                    </div>
+                </dl>
+            </div>
+        </div>
+
         <!-- Main Content -->
         @if($activeTab === 'review')
             <!-- Existing review interface -->
