@@ -89,21 +89,23 @@
                                                 </div>
                                             </div>
                                         @endif
-                                        <div>
-                                            <h3 class="text-sm font-medium text-gray-500">File</h3>
-                                            <div class="mt-2 flex items-center">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                                                    <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
-                                                </svg>
-                                                @if ($previewUrl)
-                                                    <iframe src="{{ $previewUrl }}" class="w-full h-64 border border-gray-300 rounded-lg"></iframe>
-                                                @else
-                                                    <div class="text-gray-500 text-center">
-                                                        <p>No file uploaded or preview not available.</p>
-                                                    </div>
-                                                @endif
+                                        @if ($previewUrl)
+                                            @if (str_ends_with($previewUrl, '.pdf'))
+                                                <iframe src="{{ $previewUrl }}" class="w-full h-64 border border-gray-300 rounded-lg"></iframe>
+                                            @elseif (str_ends_with($previewUrl, '.docx') || str_ends_with($previewUrl, '.doc'))
+                                                <iframe src="https://docs.google.com/viewer?url={{ urlencode($previewUrl) }}&embedded=true" class="w-full h-64 border border-gray-300 rounded-lg"></iframe>
+                                            @elseif (str_ends_with($previewUrl, '.jpg') || str_ends_with($previewUrl, '.png') || str_ends_with($previewUrl, '.jpeg'))
+                                                <img src="{{ $previewUrl }}" alt="Preview" class="w-full h-64 object-contain border border-gray-300 rounded-lg">
+                                            @else
+                                                <div class="text-gray-500 text-center">
+                                                    <p>Unsupported file type for preview.</p>
+                                                </div>
+                                            @endif
+                                        @else
+                                            <div class="text-gray-500 text-center">
+                                                <p>No file uploaded or preview not available.</p>
                                             </div>
-                                        </div>
+                                        @endif
                                     </div>
                                 </div>
                             @else
