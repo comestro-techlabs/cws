@@ -53,7 +53,7 @@
                                 </button>
                                 <a href="{{ route('blog.chapters', $course->id) }}"
                                     class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600">
-                                    Chapters
+                                    Chapters&Topics
                                 </a>
                                 <button wire:click="delete({{ $course->id }})"
                                     wire:confirm="Are you sure you want to delete this course?"
