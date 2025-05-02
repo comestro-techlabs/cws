@@ -26,6 +26,7 @@ class ManageChapter extends Component
     public $course_title = '';
     public $topics = [['topic_name' => '', 'topic_description' => '', 'id' => null]];
     public $currentStep = 1;
+    public $isopenTopic = false;
     protected $rules = [
         'chapter_name' => 'required|string|max:255',
         'chapter_description' => 'nullable|string',
@@ -54,6 +55,13 @@ class ManageChapter extends Component
         $this->resetForm();
     }
 
+    public function openTopic(){
+        
+        $this->isopenTopic = true;
+    }
+    public function closeTopic(){
+        $this->isopenTopic = false;
+    }
     public function nextStep()
     {
         // Validate chapter details before moving to topics
