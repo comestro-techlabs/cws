@@ -46,7 +46,7 @@
  
                                         <div class="flex items-center justify-center h-32">
                                             @if ($previewImage || $course->course_image)
-                                                <img src="{{ $previewImage ?? asset('storage/' . $course->course_image) }}"
+                                                <img src="{{ $course->course_image }}"
                                                     class="max-h-full object-contain rounded" alt="Course preview">
                                             @else 
                                                 <span class="text-gray-500">No image selected</span>

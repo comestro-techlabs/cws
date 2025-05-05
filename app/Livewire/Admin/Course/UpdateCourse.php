@@ -92,7 +92,6 @@ class UpdateCourse extends Component
 
     public function updatedTempImage()
     {
-        // dd("shaique");
         $this->validate([
             'tempImage' => 'nullable|image|max:2048',
         ]);
@@ -103,26 +102,31 @@ class UpdateCourse extends Component
             privateKey: env('IMAGEKIT_PRIVATE_KEY'),
             urlEndpoint: env('IMAGEKIT_URL_ENDPOINT')
         );
-        // Upload image
+
+        if ($this->course->imagekit_file_id) {
+            $imagekit->deleteFile($this->course->imagekit_file_id);
+        }
+
         $filePath = $this->tempImage->getRealPath();
         $fileName = $this->tempImage->getClientOriginalName();
-        // dd($fileName);
+
         $response = $imagekit->upload([
             'file' => fopen($filePath, 'r'),
             'fileName' => $fileName,
             'folder' => '/cws/course_images/',
             'useUniqueFileName' => true,
         ]);
-        // dd($response);
+
         if (isset($response->result->url)) {
             $this->previewImage = $response->result->url;
             $this->course->course_image = $response->result->url;
+            $this->course->imagekit_file_id = $response->result->fileId;
             $this->course->save();
         } else {
             $this->addError('tempImage', 'ImageKit upload failed.');
-            // $this->progress = 0;
         }
     }
+
 
 
     public function editField($field)
