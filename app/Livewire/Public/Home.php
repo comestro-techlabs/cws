@@ -11,7 +11,7 @@ use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Str;
 
-class Home extends Component
+class Home extends Component 
 {
     public $courses, $placedStudents, $title;
     public $blogCourses;

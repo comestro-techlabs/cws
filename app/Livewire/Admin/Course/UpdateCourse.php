@@ -8,6 +8,7 @@ use App\Models\Course;
 use App\Models\Category;
 use App\Models\Feature;
 use Illuminate\Support\Facades\Storage;
+use ImageKit\ImageKit;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
@@ -69,6 +70,7 @@ class UpdateCourse extends Component
     public $meeting_password;
     public $venue;
     public $showCourseModal = false;
+    public $image;
 
     public $activeTab = 'addBatch';
 
@@ -90,41 +92,38 @@ class UpdateCourse extends Component
 
     public function updatedTempImage()
     {
+        // dd("shaique");
         $this->validate([
             'tempImage' => 'nullable|image|max:2048',
         ]);
 
-        if ($this->tempImage) {
-            try {
-                $this->progress = 0;
-
-                $this->js("
-                    let progress = 0;
-                    const interval = setInterval(() => {
-                        progress += 10;
-                        if (progress <= 90) {
-                            $wire.set('progress', progress);
-                        } else {
-                            clearInterval(interval);
-                        }
-                    }, 200);
-                ");
-
-                $imagePath = $this->tempImage->store('course_images', 'public');
-                $this->progress = 100;
-                $this->previewImage = asset('storage/' . $imagePath);
-
-                $this->js("
-                    setTimeout(() => {
-                        $wire.set('progress', 0);
-                    }, 1000);
-                ");
-            } catch (\Exception $e) {
-                $this->addError('tempImage', 'Error uploading preview image.');
-                $this->progress = 0;
-            }
+        // Initialize ImageKit
+        $imagekit = new ImageKit(
+            publicKey: env('IMAGEKIT_PUBLIC_KEY'),
+            privateKey: env('IMAGEKIT_PRIVATE_KEY'),
+            urlEndpoint: env('IMAGEKIT_URL_ENDPOINT')
+        );
+        // Upload image
+        $filePath = $this->tempImage->getRealPath();
+        $fileName = $this->tempImage->getClientOriginalName();
+        // dd($fileName);
+        $response = $imagekit->upload([
+            'file' => fopen($filePath, 'r'),
+            'fileName' => $fileName,
+            'folder' => '/cws/course_images/',
+            'useUniqueFileName' => true,
+        ]);
+        // dd($response);
+        if (isset($response->result->url)) {
+            $this->previewImage = $response->result->url;
+            $this->course->course_image = $response->result->url;
+            $this->course->save();
+        } else {
+            $this->addError('tempImage', 'ImageKit upload failed.');
+            // $this->progress = 0;
         }
     }
+
 
     public function editField($field)
     {
@@ -149,11 +148,11 @@ class UpdateCourse extends Component
     {
         $this->showCourseModal = true;
     }
-   
+
     public function closeModal()
     {
-        $this->showCourseModal = false; 
-        $this->editingField = null; 
+        $this->showCourseModal = false;
+        $this->editingField = null;
     }
     public function saveField($field)
     {
@@ -239,6 +238,7 @@ class UpdateCourse extends Component
 
     public function handleImageUpload()
     {
+        // dd("Shaique");
         $this->validate([
             'tempImage' => 'nullable|image|max:2048',
         ]);

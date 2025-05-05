@@ -160,11 +160,11 @@
 
                     <div class="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
                         @foreach ($courses as $course)
-                            <div
+                            <div 
                                 class="flex flex-col rounded-lg shadow-sm  border border-slate-100 overflow-hidden transform transition duration-500 hover:scale-105">
                                 <div class="flex-shrink-0">
                                     <img class="h-48 w-full object-cover"
-                                        src="{{ asset('storage/' . $course->course_image) }}" alt="{{ $course->title }}">
+                                        src="{{ $course->course_image }}" alt="{{ $course->title }}">
                                 </div>
                                 <div class="flex-1 bg-white p-6 flex flex-col justify-between">
                                     <div class="flex-1">

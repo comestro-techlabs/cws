@@ -9,7 +9,7 @@
 @section('content')
 
 
-    {{-- latest course --}}
+    {{-- latest course --}} 
     <div class="">
         <div class="flex flex-col items-center mt-10 md:mt-10 text-center px-5 md:px-[10%]">
             <h2 class="text-3xl text-gray-900 font-sans font-bold mb-4">Our Courses </h2>

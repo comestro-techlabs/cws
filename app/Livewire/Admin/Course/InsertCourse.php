@@ -26,7 +26,7 @@ class InsertCourse extends Component
     public $instructor;
     public $description;
     public $categories; // Add this property
-
+ 
     protected $rules = [
         'title' => 'required|min:3|max:255|unique:courses,title',
     ];
@@ -34,7 +34,7 @@ class InsertCourse extends Component
     public function mount()
     {
         $this->categories = Category::all(); // Load categories in mount
-    }
+    } 
 
     public function createCourse()
     {
