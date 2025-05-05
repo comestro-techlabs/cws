@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\Course;
 
 use App\Models\Course;
+use ImageKit\ImageKit;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\Layout;
@@ -45,9 +46,20 @@ class ManageCourse extends Component
 
     public function deleteCourse()
     {
-        if ($this->courseToDelete) {
+        $imagekit = new ImageKit(
+            publicKey: env('IMAGEKIT_PUBLIC_KEY'),
+            privateKey: env('IMAGEKIT_PRIVATE_KEY'),
+            urlEndpoint: env('IMAGEKIT_URL_ENDPOINT')
+        );
+
+       
+        if ($this->courseToDelete) { 
             $this->courseToDelete->delete();
             $this->dispatch('alert', 'Course deleted successfully.');
+        }
+
+        if ($this->courseToDelete->imagekit_file_id) {
+            $imagekit->deleteFile($this->courseToDelete->imagekit_file_id);
         }
 
         $this->reset(['confirmingDelete', 'courseToDelete']);
