@@ -272,7 +272,7 @@
                                             <div class="flex items-center">
                                                 @if($student->image)
                                                     <img class="h-12 w-12 rounded-full object-cover"
-                                                        src="{{ $student->image }}" alt="{{ $student->name }}">
+                                                        src="{{ $student->image }}?tr=w-300,h-300,fo-auto" alt="{{ $student->name }}">
                                                 @else
                                                     <div
                                                         class="h-12 w-12 rounded-full bg-[#662d91] flex items-center justify-center">

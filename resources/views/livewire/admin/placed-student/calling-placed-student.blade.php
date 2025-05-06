@@ -158,7 +158,7 @@
                             <div class="w-24 h-24 border-2 border-dashed border-gray-300 rounded-md overflow-hidden bg-gray-50 flex items-center justify-center">
                              @if ($image)
                                 @if (is_string($image))
-                                    <img src="{{$image}}" class="h-full w-full object-cover" />
+                                    <img src="{{ $image }}?tr=w-300,h-300,fo-auto" class="h-full w-full object-cover" />
                                 @else
                                 <img src="{{ $image->temporaryUrl() }}" class="h-full w-full object-cover" />
                                 @endif

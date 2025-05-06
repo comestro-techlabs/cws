@@ -43,7 +43,7 @@
                                                 Uploading... {{ $progress }}%
                                             </p>
                                         </div>
- 
+  
                                         <div class="flex items-center justify-center h-32">
                                             @if ($previewImage || $course->course_image)
                                                 <img src="{{ $course->course_image }}"
