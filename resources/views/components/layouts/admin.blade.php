@@ -5,11 +5,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <!-- Replace Tailwind browser script with CDN -->
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <meta name="livewire:script-url" content="{{ asset('livewire/livewire.js') }}">
-
+    
+    <script src="https://js.pusher.com/8.4.0/pusher.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script>
         tailwind.config = {
@@ -24,7 +26,6 @@
         }
     </script>
 
-    <!-- Add Tailwind CSS base styles -->
     <style type="text/tailwindcss">
         @layer base {
             html {
@@ -33,12 +34,11 @@
         }
     </style>
 
-    <!-- Your existing styles -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Parisienne&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
     <style>
-        *{
+        * {
             font-family: "Poppins", sans-serif!important;
         }
     </style>
@@ -71,8 +71,7 @@
         </div>
     </main>
 
-    {{-- toastr --}}
-    <div class="flex justify-end items-center ">
+    <div class="flex justify-end items-center">
         <div
             x-data="noticesHandler()"
             class="fixed top-5 right-5 flex flex-col items-end space-y-3 p-4 z-50"
@@ -88,8 +87,7 @@
                     x-transition:leave-start="transform opacity-100 translate-x-0"
                     x-transition:leave-end="transform opacity-0 translate-x-5"
                     @click="remove(notice.id)"
-                    class="rounded-lg px-4 py-3 w-72 bg-gray-400  shadow-lg text-black font-medium text-sm cursor-pointer flex items-center justify-between"
-
+                    class="rounded-lg px-4 py-3 w-72 bg-gray-400 shadow-lg text-black font-medium text-sm cursor-pointer flex items-center justify-between"
                     style="pointer-events:all">
                     <span x-text="notice.text"></span>
                     <button @click="remove(notice.id)" class="ml-2 text-white font-bold">×</button>
@@ -98,10 +96,84 @@
         </div>
     </div>
 
-    <!-- Scripts -->
-    {{-- toastr --}}
-
     <script>
+      
+        let lastToastTime = 0;
+        const TOAST_COOLDOWN_MS = 10000;
+
+        var pusher = new Pusher('fd3ed3ccbe3088d32dbc', {
+            cluster: 'ap2',
+            authEndpoint: '/broadcasting/auth',
+            auth: {
+                headers: {
+                    'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+                }
+            }
+        });
+
+        // User registration listener
+        var userChannel = pusher.subscribe('my-channel');
+        userChannel.bind('user-registered', function (data) {
+            console.log('User-registered event handler triggered:', data);
+            try {
+                const now = Date.now();
+                if (now - lastToastTime >= TOAST_COOLDOWN_MS) {
+                    lastToastTime = now;
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'New User Registered!',
+                        text: `Welcome, ${data.user.name ?? 'User'}! Your account has been created successfully.`,
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 4000,
+                        timerProgressBar: true
+                    }).then(() => {
+                        console.log('SweetAlert2 toast displayed successfully');
+                        confetti({
+                            particleCount: 100,
+                            spread: 150,
+                            origin: { y: 0.6 }
+                        });
+                    });
+                }
+            } catch (error) {
+                console.error('SweetAlert2 or confetti error:', error);
+            }
+        });
+
+        // Assignment upload listener
+        console.log(pusher);
+        var assignmentChannel = pusher.subscribe('assignment-channel');
+        assignmentChannel.bind('assignment-uploaded', function (data) {
+            console.log('Assignment-uploaded event handler triggered:', data);
+            try {
+                const now = Date.now();
+                if (now - lastToastTime >= TOAST_COOLDOWN_MS) {
+                    lastToastTime = now;
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Assignment Uploaded!',
+                        text: `Assignment "${data.assignment_uploaded.assignment_title ?? 'Untitled'}" uploaded successfully by ${data.assignment_uploaded.student_name ?? 'User'}.`,
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 4000,
+                        timerProgressBar: true
+                    }).then(() => {
+                        console.log('SweetAlert2 toast displayed successfully');
+                        confetti({
+                            particleCount: 100,
+                            spread: 150,
+                            origin: { y: 0.6 }
+                        });
+                    });
+                }
+            } catch (error) {
+                console.error('SweetAlert2 or confetti error:', error);
+            }
+        });
+
         function noticesHandler() {
             return {
                 notices: [],
@@ -115,7 +187,7 @@
                     this.visible.push(this.notices.find(notice => notice.id === id));
                     setTimeout(() => {
                         this.remove(id);
-                    }, 1000);
+                    }, 3000);
                 },
                 remove(id) {
                     this.visible = this.visible.filter(notice => notice.id !== id);
@@ -136,12 +208,10 @@
 
     @livewireScripts
     <script>
-        // Add Livewire configuration
         window.livewire_app_url = "{{ config('app.url') }}";
         window.livewire_token = "{{ csrf_token() }}";
     </script>
-        <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
     @stack('scripts')
 </body>
-
 </html>

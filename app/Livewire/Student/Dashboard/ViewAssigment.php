@@ -11,7 +11,7 @@ use App\Models\Assignments;
 use App\Models\Assignment_upload;
 use Livewire\Attributes\Layout;
 use App\Services\GemService;
-
+use App\Events\StudentAssignmentNotification;
 class ViewAssigment extends Component
 {
     use WithFileUploads;
@@ -117,72 +117,66 @@ class ViewAssigment extends Component
     }
 
     public function submit()
-{
-    if (!$this->hasAccess) {
-        session()->flash('error', 'You do not have access to submit assignments.');
-        return;
-    }
-
-    // Check if the student has already submitted
-    $existingSubmission = Assignment_upload::where('student_id', auth()->id())
-        ->where('assignment_id', $this->assignment_id)
-        ->first();
-
-    if ($existingSubmission) {
-        session()->flash('error', 'You have already submitted this assignment.');
-        return;
-    }
-
-    $this->validate([
-        'file' => 'required|file|mimes:pdf,doc,docx|max:10240',
-    ]);
-
-    try {
-        // File details
-        $file = $this->file;
-        $fileName = time() . '_' . $file->getClientOriginalName();
-        $filePath = "assignments/{$fileName}";
-
-        // Upload file to S3
-        $fileContent = file_get_contents($file->getRealPath());
-        Storage::disk('s3')->put($filePath, $fileContent, 'public');
-
-        // Save file details in the database
-        $assignment_upload = new Assignment_upload();
-        $assignment_upload->student_id = auth()->id();
-        $assignment_upload->file_path = $filePath; // Store S3 file path
-        $assignment_upload->assignment_id = $this->assignment_id;
-        $assignment_upload->submitted_at = now();
-        $assignment_upload->status = 'submitted';
-        $assignment_upload->save();
-
-        // Update the uploadedFile property
-        $this->uploadedFile = $assignment_upload;
-
-        // Generate new preview link
-        $this->previewUrl = $this->getPreviewUrl();
-
-        // Handle gem awards
-        $studentId = auth()->id();
-        $gemService = new GemService();
-
-        if ($this->assignment->isOverdue()) {
-            session()->flash('warning', 'Assignment submitted after due date.');
-        } else {
-            $gemService->earnedGem(10, 'Earned By Submitting Assignment.');
-
-            if ($this->checkConsecutiveSubmissions($studentId)) {
-                $gemService->earnedGem(100, 'Bonus for completing 7 consecutive on-time assignments!');
-                session()->flash('success', 'Assignment submitted successfully. You earned 10 gems plus 100 bonus gems for completing 7 assignments on time!');
-            } else {
-                session()->flash('success', 'Assignment submitted successfully. You earned 10 gems!');
-            }
+    {
+        if (!$this->hasAccess) {
+            session()->flash('error', 'You do not have access to submit assignments.');
+            return;
         }
-    } catch (\Exception $e) {
-        session()->flash('error', 'Failed to upload assignment: ' . $e->getMessage());
-    }
-}
 
+        $existingSubmission = Assignment_upload::where('student_id', auth()->id())
+            ->where('assignment_id', $this->assignment_id)
+            ->first();
+
+        if ($existingSubmission) {
+            session()->flash('error', 'You have already submitted this assignment.');
+            return;
+        }
+
+        $this->validate([
+            'file' => 'required|file|mimes:pdf,doc,docx|max:10240',
+        ]);
+
+        try {
+            $fileName = time() . '_' . $this->file->getClientOriginalName();
+            $filePath = "assignments/{$fileName}";
+
+            // Upload to S3
+            Storage::disk('s3')->put($filePath, file_get_contents($this->file->getRealPath()), 'public');
+
+            // Save to database with transaction
+            $assignment_upload = \DB::transaction(function () use ($filePath) {
+                return Assignment_upload::create([
+                    'student_id' => auth()->id(),
+                    'file_path' => $filePath,
+                    'assignment_id' => $this->assignment_id,
+                    'submitted_at' => now(),
+                    'status' => 'submitted',
+                ]);
+            });
+
+            $this->uploadedFile = $assignment_upload;
+            $this->previewUrl = $this->getPreviewUrl();
+
+            \Log::info('Dispatching StudentAssignmentNotification for assignment ID: ' . $assignment_upload->id);
+            // Dispatch event
+            event(new StudentAssignmentNotification($assignment_upload, auth()->user()));
+            $gemService = new GemService();
+            if ($this->assignment->isOverdue()) {
+                session()->flash('warning', 'Assignment submitted after due date.');
+            } else {
+                $gemService->earnedGem(10, 'Earned By Submitting Assignment.');
+                if ($this->checkConsecutiveSubmissions(auth()->id())) {
+                    $gemService->earnedGem(100, 'Bonus for completing 7 consecutive on-time assignments!');
+                    session()->flash('success', 'Assignment submitted successfully. You earned 10 gems plus 100 bonus gems for completing 7 assignments on time!');
+                } else {
+                    session()->flash('success', 'Assignment submitted successfully. You earned 10 gems!');
+                }
+            }
+        } catch (\Exception $e) {
+            \Log::error('Assignment upload failed: ' . $e->getMessage());
+            session()->flash('error', 'Failed to upload assignment: ' . $e->getMessage());
+        }
+    }
 
     private function token()
     {
