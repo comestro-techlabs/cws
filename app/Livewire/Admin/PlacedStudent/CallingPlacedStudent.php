@@ -36,7 +36,7 @@ class CallingPlacedStudent extends Component
         'name' => 'required|min:2|max:100',
         'content' => 'required|max:500',
         'position' => 'required|max:100',
-        'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        'image' => 'image|max:2048',
     ];
 
     public function toggleStatus($id)
