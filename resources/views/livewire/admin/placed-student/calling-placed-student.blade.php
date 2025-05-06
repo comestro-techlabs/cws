@@ -39,7 +39,7 @@
                         <th class="border border-gray-300 px-4 py-2 text-center">Actions</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody> 
                     @forelse ($placedStudents as $key => $student)
                     <tr>
                         <td class="border border-gray-300 px-4 py-2">{{ $key + 1 }}</td>
@@ -55,7 +55,7 @@
                         </td>
                         <td class="border border-gray-300 px-4 py-2">
                             @if ($student->image)
-                            <img src="{{ asset('storage/' . $student->image) }}" alt="{{ $student->name }}"
+                            <img src="{{  $student->image }}" alt="{{ $student->name }}"
                                 class="w-16 h-16 rounded">
                             @else
                             N/A
@@ -158,7 +158,7 @@
                             <div class="w-24 h-24 border-2 border-dashed border-gray-300 rounded-md overflow-hidden bg-gray-50 flex items-center justify-center">
                              @if ($image)
                                 @if (is_string($image))
-                                    <img src="{{ asset('storage/'.$image) }}" class="h-full w-full object-cover" />
+                                    <img src="{{$image}}" class="h-full w-full object-cover" />
                                 @else
                                 <img src="{{ $image->temporaryUrl() }}" class="h-full w-full object-cover" />
                                 @endif

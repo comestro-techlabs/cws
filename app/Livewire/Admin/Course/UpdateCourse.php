@@ -90,7 +90,7 @@ class UpdateCourse extends Component
         'venue' => 'nullable|string',
     ];
 
-    public function updatedTempImage()
+    public function updatedTempImage() 
     {
         $this->validate([
             'tempImage' => 'nullable|image|max:2048',
