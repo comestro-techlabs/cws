@@ -59,7 +59,7 @@
                     <div class="bg-white rounded-xl shadow-xl overflow-hidden">
                         <!-- Course Preview Image -->
                         <div class="overflow-hidden">
-                            <img src="{{ asset('storage/' . $course->course_image) }}"
+                            <img src="{{  $course->course_image }}"
                                 alt="{{ $course->title }}" class="w-full h-56 object-cover">
                         </div>
 

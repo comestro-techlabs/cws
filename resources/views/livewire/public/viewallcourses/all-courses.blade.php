@@ -119,7 +119,7 @@
                                 <div class="bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 flex" :class="{'flex-col': gridView, 'items-center': !gridView}">
                                     <!-- Course Card Content -->
                                     <div class="relative" :class="{'w-full': gridView, 'w-1/3': !gridView}">
-                                        <img src="{{ asset('storage/' . $course->course_image) }}"
+                                        <img src="{{ $course->course_image }}"
                                             alt="{{ $course->title }}"
                                             class="object-cover rounded-t-2xl"
                                             :class="{'w-full h-48': gridView, 'h-full rounded-l-2xl rounded-tr-none': !gridView}">
