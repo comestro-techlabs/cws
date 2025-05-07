@@ -123,8 +123,8 @@ $dashOffset = $totalQuestions > 0
                                             : 'hover:bg-gray-50' }}">
                                         <input type="radio" 
                                             name="answer_{{ $questions[$currentQuestionIndex]['id'] }}" 
-                                            value="{{ $option }}"
-                                            wire:click="saveAnswer('{{ $questions[$currentQuestionIndex]['id'] }}', '{{ $option }}')"
+                                            value="{{ e($option) }}"
+                                            wire:click="saveAnswer('{{ $questions[$currentQuestionIndex]['id'] }}', '{{ addslashes($option) }}')"
                                             {{ isset($answers[$questions[$currentQuestionIndex]['id']]) && $answers[$questions[$currentQuestionIndex]['id']] === $option ? 'checked' : '' }}
                                             class="mr-3 text-blue-600 focus:ring-blue-500">
                                         <span class="text-gray-700">{{ $option }}</span>
