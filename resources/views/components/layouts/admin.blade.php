@@ -97,11 +97,8 @@
     </div>
 
     <script>
-      
-        let lastToastTime = 0;
-        const TOAST_COOLDOWN_MS = 10000;
-
-        var pusher = new Pusher('fd3ed3ccbe3088d32dbc', {
+        // Initialize Pusher only once
+        const pusher = new Pusher('fd3ed3ccbe3088d32dbc', {
             cluster: 'ap2',
             authEndpoint: '/broadcasting/auth',
             auth: {
@@ -110,70 +107,61 @@
                 }
             }
         });
-
-        // User registration listener
-        var userChannel = pusher.subscribe('my-channel');
+    
+        // Notification handler with cooldown
+        const NotificationHandler = {
+            lastToastTime: 0,
+            TOAST_COOLDOWN_MS: 10000,
+    
+            showToast({ icon, title, text }) {
+                const now = Date.now();
+                if (now - this.lastToastTime >= this.TOAST_COOLDOWN_MS) {
+                    this.lastToastTime = now;
+                    Swal.fire({
+                        icon,
+                        title,
+                        text,
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 4000,
+                        timerProgressBar: true
+                    }).then(() => {
+                        console.log('SweetAlert2 toast displayed successfully');
+                        confetti({
+                            particleCount: 100,
+                            spread: 150,
+                            origin: { y: 0.6 }
+                        });
+                    }).catch(error => {
+                        console.error('SweetAlert2 or confetti error:', error);
+                    });
+                }
+            }
+        };
+    
+        // Subscribe to channels and bind events
+        const userChannel = pusher.subscribe('my-channel');
         userChannel.bind('user-registered', function (data) {
             console.log('User-registered event handler triggered:', data);
-            try {
-                const now = Date.now();
-                if (now - lastToastTime >= TOAST_COOLDOWN_MS) {
-                    lastToastTime = now;
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'New User Registered!',
-                        text: `Welcome, ${data.user.name ?? 'User'}! Your account has been created successfully.`,
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 4000,
-                        timerProgressBar: true
-                    }).then(() => {
-                        console.log('SweetAlert2 toast displayed successfully');
-                        confetti({
-                            particleCount: 100,
-                            spread: 150,
-                            origin: { y: 0.6 }
-                        });
-                    });
-                }
-            } catch (error) {
-                console.error('SweetAlert2 or confetti error:', error);
-            }
+            NotificationHandler.showToast({
+                icon: 'success',
+                title: 'New User Registered!',
+                text: `Welcome, ${data.user?.name ?? 'User'}! Your account has been created successfully.`
+            });
         });
-
-        // Assignment upload listener
-        console.log(pusher);
-        var assignmentChannel = pusher.subscribe('assignment-channel');
+    
+        const assignmentChannel = pusher.subscribe('assignment-channel');
         assignmentChannel.bind('assignment-uploaded', function (data) {
             console.log('Assignment-uploaded event handler triggered:', data);
-            try {
-                const now = Date.now();
-                if (now - lastToastTime >= TOAST_COOLDOWN_MS) {
-                    lastToastTime = now;
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Assignment Uploaded!',
-                        text: `Assignment "${data.assignment_uploaded.assignment_title ?? 'Untitled'}" uploaded successfully by ${data.assignment_uploaded.student_name ?? 'User'}.`,
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 4000,
-                        timerProgressBar: true
-                    }).then(() => {
-                        console.log('SweetAlert2 toast displayed successfully');
-                        confetti({
-                            particleCount: 100,
-                            spread: 150,
-                            origin: { y: 0.6 }
-                        });
-                    });
-                }
-            } catch (error) {
-                console.error('SweetAlert2 or confetti error:', error);
-            }
+            NotificationHandler.showToast({
+                icon: 'success',
+                title: 'Assignment Uploaded!',
+                text: `Assignment "${data.assignment_uploaded?.assignment_title ?? 'Untitled'}" uploaded successfully by ${data.assignment_uploaded?.student_name ?? 'User'}.`
+            }); 
         });
-
+    
+        // Notices handler for custom notifications
         function noticesHandler() {
             return {
                 notices: [],
@@ -191,25 +179,20 @@
                 },
                 remove(id) {
                     this.visible = this.visible.filter(notice => notice.id !== id);
-                },
+                }
             };
         }
-    </script>
-
-    <script>
+    
+        // Livewire success event listener
         document.addEventListener('livewire:initialized', () => {
             Livewire.on('success', (data) => {
-                const message = data[0].message;
-                toastr.success(message, 'Success');
+                if (data && data[0]?.message) {
+                    toastr.success(data[0].message, 'Success');
+                } else {
+                    console.warn('Invalid or missing data in Livewire success event:', data);
+                }
             });
         });
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    @livewireScripts
-    <script>
-        window.livewire_app_url = "{{ config('app.url') }}";
-        window.livewire_token = "{{ csrf_token() }}";
     </script>
     <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
     @stack('scripts')

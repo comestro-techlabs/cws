@@ -8,11 +8,12 @@ use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class StudentAssignmentNotification implements ShouldBroadcastNow
+class StudentAssignmentNotification implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -28,23 +29,27 @@ class StudentAssignmentNotification implements ShouldBroadcastNow
 
     public function broadcastOn()
     {
-        // Use PrivateChannel for security
         return new Channel('assignment-channel');
     }
 
     public function broadcastAs()
     {
-        return 'assignment-uploaded'; 
+        return 'assignment-uploaded';
     }
 
     public function broadcastWith()
     {
+        $assignment = Assignments::find($this->assignment_uploaded->assignment_id);
+        \Log::info('Broadcasting assignment data:', [
+            'assignment_id' => $this->assignment_uploaded->assignment_id,
+            'assignment_title' => $assignment->title ?? 'Untitled',
+        ]);
+
         return [
             'assignment_uploaded' => [
                 'id' => $this->assignment_uploaded->id,
                 'assignment_id' => $this->assignment_uploaded->assignment_id,
-                'assignment_title' => $this->assignment_uploaded->assignment_title
-                ?? 'Untitled',
+                'assignment_title' => $assignment->title ?? 'Untitled',
                 'file_path' => $this->assignment_uploaded->file_path,
                 'submitted_at' => $this->assignment_uploaded->submitted_at?->toIso8601String(),
                 'status' => $this->assignment_uploaded->status,
