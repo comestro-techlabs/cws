@@ -19,7 +19,9 @@
         "@fullcalendar/interaction": "^6.1.15",
         "@tailwindcss/vite": "^4.0.9",
         "flowbite": "^2.5.2",
+        "laravel-echo": "^2.0.2",
         "preline": "^2.7.0",
+        "pusher-js": "^8.4.0",
         "toastr": "^2.1.4"
     }
 }

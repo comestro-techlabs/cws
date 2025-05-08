@@ -58,6 +58,7 @@ class ShowMockTest extends Component
 
     public function nextQuestion()
     {
+
         if ($this->currentQuestionIndex < count($this->questions) - 1) {
             $this->currentQuestionIndex++;
         }

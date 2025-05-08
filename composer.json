@@ -21,6 +21,7 @@
         "livewire/volt": "^1.6.7",
         "milon/barcode": "^12.0",
         "picqer/php-barcode-generator": "^3.2",
+        "pusher/pusher-php-server": "*",
         "razorpay/razorpay": "^2.9"
     },
     "require-dev": {
