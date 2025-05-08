@@ -130,7 +130,7 @@
             <div class="bg-white rounded-lg shadow-lg overflow-hidden sticky top-24">
                 <!-- Course Preview Image -->
                 <div class="relative h-48">
-                    <img src="{{ asset('storage/' . $course->course_image) }}" alt="{{ $course->title }}"
+                    <img src="{{ $course->course_image }}" alt="{{ $course->title }}"
                         class="w-full h-full object-cover">
                     <!-- Gradient Overlay -->
                     <div class="absolute inset-0 bg-gradient-to-t from-gray-900/70 to-transparent"></div>
