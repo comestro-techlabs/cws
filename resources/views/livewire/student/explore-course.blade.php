@@ -45,7 +45,7 @@
                     <a href="{{ route('student.viewCourses', ['courseId' => $course->id]) }}" class="relative">
                         <!-- Course Image -->
                         <div class="relative aspect-w-16 aspect-h-9">
-                            <img src="{{ asset('storage/' . $course->course_image) }}"
+                            <img src="{{ $course->course_image }}"
                                 class="w-full h-48 object-cover transform group-hover:scale-105 transition-transform duration-300"
                                 alt="{{ $course->title }}">
                         </div>
