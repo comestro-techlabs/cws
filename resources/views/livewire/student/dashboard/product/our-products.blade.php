@@ -68,7 +68,7 @@
                 @if($product->status == 'active' && $product->category->isActive)
                     <div class="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100 hover:border-purple-200 hover:shadow-md transition duration-200 flex flex-col">
                         <div class="relative h-48">
-                            <img src="{{ asset('storage/'.$product->imageUrl) }}" alt="{{ $product->name }}" class="w-full h-full object-cover" />
+                            <img src="{{ $product->imageUrl }}" alt="{{ $product->name }}" class="w-full h-full object-cover" />
                             <div class="absolute top-2 right-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded-full">
                                 Popular
                             </div>

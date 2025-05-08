@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\Store;
 
+use App\Helpers\ImageKitHelper;
 use App\Models\Category;
 use App\Models\ProductCategories;
 use App\Models\Products;
@@ -102,14 +103,17 @@ class ManageProducts extends Component
         if ($this->product_image) {
             // Delete old image if exists (only during editing)
             if ($this->isEditing && $this->product_image) {
-                Storage::delete('storage/' . $this->product_image);
-            }
+                ImageKitHelper::deleteImage($product->image_file_id);            }
 
             // Store new image
-            $imagePath = $this->product_image->store('products', 'public');
-            $product->imageUrl = $imagePath; 
-        }
-
+            $imageUrl = ImageKitHelper::uploadImage($this->product_image, '/cws/products');
+            // $imagePath = $this->product_image->store('products', 'public');
+            if ($imageUrl && isset($imageUrl['url'])) {
+                $product->imageUrl = $imageUrl['url'];
+            } 
+            }
+        
+        
         $product->name = $this->product_name;
         $product->description = $this->product_description;
         $product->points = $this->product_gems;

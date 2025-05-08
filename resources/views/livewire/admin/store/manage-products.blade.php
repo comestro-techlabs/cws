@@ -86,7 +86,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div class="h-10 w-10 flex-shrink-0">
-                                            <img class="h-10 w-10 rounded-md object-cover" src="{{ asset('storage/'.$product->imageUrl) }}" alt="">
+                                            <img class="h-10 w-10 rounded-md object-cover" src="{{ $product->imageUrl }}" alt="">
                                         </div>
                                         <div class="ml-4">
                                             <div class="text-sm font-medium text-gray-900">{{ $product->name }}</div>
@@ -171,7 +171,7 @@
                                         @if ($product_image)
                                         <!-- Show Existing Image -->
                                             @if(is_string($product_image))
-                                                <img src="{{ asset('storage/'.$product_image) }}" class="h-full w-full object-cover" />
+                                                <img src="{{ $product_image }}" class="h-full w-full object-cover" />
                                             @else
                                                 <img src="{{ $product_image->temporaryUrl() }}" class="h-full w-full object-cover" />
                                             @endif                                      
