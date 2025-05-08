@@ -16,7 +16,8 @@ class Products extends Model
         'imageUrl',
         'availableQuantity',
         'slug',       
-        'status'      
+        'status',
+        'image_file_id'     
     ];
         public function category()
     {

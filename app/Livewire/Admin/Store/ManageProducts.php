@@ -110,6 +110,7 @@ class ManageProducts extends Component
             // $imagePath = $this->product_image->store('products', 'public');
             if ($imageUrl && isset($imageUrl['url'])) {
                 $product->imageUrl = $imageUrl['url'];
+                $product->image_file_id = $imageUrl['fileId'];
             } 
             }
         
