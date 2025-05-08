@@ -13,7 +13,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class StudentAssignmentNotification implements ShouldBroadcast
+class StudentAssignmentNotification implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -29,11 +29,13 @@ class StudentAssignmentNotification implements ShouldBroadcast
 
     public function broadcastOn()
     {
+        \Log::info('Broadcasting on assignment channel for student ID: ' . $this->student_id->id);
         return new Channel('assignment-channel');
     }
 
     public function broadcastAs()
     {
+        \Log::info('Broadcasting as assignment-uploaded for student ID: ' . $this->student_id->id);
         return 'assignment-uploaded';
     }
 

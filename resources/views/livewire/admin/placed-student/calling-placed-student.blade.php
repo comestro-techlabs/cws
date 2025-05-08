@@ -79,6 +79,9 @@
                 </tbody>
             </table>
         </div>
+        <div class="mt-4">
+        {{ $placedStudents->links() }}
+    </div>
 
     </div>
     <!-- working on edit and add functionality -->
