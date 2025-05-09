@@ -7,7 +7,8 @@ use App\Models\ExamUser;
 use App\Models\Answer;
 use App\Models\Quiz;
 use Illuminate\Support\Facades\Auth;
-
+use Livewire\Attributes\Title;
+#[Title('Result')]
 #[Layout('components.layouts.student')]
 class Result extends Component
 {
@@ -16,7 +17,7 @@ class Result extends Component
     public $answers;
     public $stats = [];
     public $quizzes;
-
+   
     public function mount($examId)
     {
         $user = Auth::user();
@@ -42,14 +43,17 @@ class Result extends Component
 
         $this->answers = Answer::where('user_id', Auth::id())
             ->where('exam_id', $this->examId)
-            ->with('quiz') // Load quiz relationship
+            ->with(['quiz' => function($query) {
+                $query->select('id', 'question', 'marks', 'option1', 'option2', 'option3', 'option4', 'correct_answer');
+            }])
+            ->select('id', 'quiz_id', 'selected_option', 'obtained_marks', 'exam_id', 'user_id')
             ->get();
-
+        // dd($this->answers);
         $this->quizzes = Quiz::where('exam_id', $this->examId)->get();
 
         $this->calculateStats();
     }
-
+    
     private function calculateStats()
     {
         $totalQuestions = $this->answers->count();

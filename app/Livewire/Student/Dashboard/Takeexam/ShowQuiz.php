@@ -11,7 +11,8 @@ use Livewire\Component;
 use App\Models\Course;
 use Carbon\Carbon;
 use App\Services\GemService;
-
+use Livewire\Attributes\Title;
+#[Title('Exam')]
 #[Layout('components.layouts.exam')]
 class ShowQuiz extends Component
 {
@@ -27,17 +28,16 @@ class ShowQuiz extends Component
     public $answers = []; // Array to store answers, keyed by quiz ID
     public $currentAnswer = null; // Temporary storage for the current question's answer
     public $isFullscreen = false;
-
+    public $timeRemainingInSeconds = 30 * 60; // 30 minutes in seconds
+    public $endTime;
+    public $tabSwitched = false;
 
     protected $listeners = [
         'startTimer' => 'startTimer',
-        'fullscreenChanged' => 'handleFullscreenChange'
+        'fullscreenChanged' => 'handleFullscreenChange',
+        'tabSwitched' => 'handleTabSwitch'
     ];
-
-    public $timeRemainingInSeconds = 30 * 60; // 30 minutes in seconds
-    public $endTime;
-
-
+    public $hasAccess = false;
     public function mount($courseId)
     {
         try {
@@ -109,7 +109,7 @@ public function verifyPasscode()
         $this->passcodeVerified = true;
         $this->passcodeError = null;
         $this->examId = $exam->id;
-        $this->quizzes = collect($exam->quizzes)->shuffle()->take(10);
+        $this->quizzes = collect($exam->quizzes)->shuffle()->take(50);
         
         $this->answers = array_fill_keys($this->quizzes->pluck('id')->toArray(), null);
         $this->currentAnswer = $this->answers[$this->quizzes[$this->currentQuestion]->id] ?? null;
@@ -190,10 +190,19 @@ public function verifyPasscode()
     {
         // Update the answers array for the current question
         $this->answers[$this->quizzes[$this->currentQuestion]->id] = $value;
+        
+        // Auto advance to next question after a brief delay
+        if ($this->currentQuestion < $this->quizzes->count() - 1) {
+            $this->dispatch('loading');
+            $this->nextQuestion();
+        }
     }
 
     public function submitExam()
     {
+        if ($this->tabSwitched) {
+            $this->dispatch('exitFullscreen');
+        }
         $this->dispatch('loading');
         if (!$this->courseId || !$this->examId) {
             return redirect()->route('student.takeExam');
@@ -274,6 +283,21 @@ public function verifyPasscode()
             $this->submitExam();
         }
     }
+
+    #[On('tabSwitched')]
+    public function handleTabSwitch()
+    {
+        if (!$this->submitted && $this->passcodeVerified) {
+            // Save current answer if any
+            if (isset($this->quizzes[$this->currentQuestion])) {
+                $this->answers[$this->quizzes[$this->currentQuestion]->id] = $this->currentAnswer;
+            }
+            $this->tabSwitched = true;
+            $this->submitExam();
+            session()->flash('error', 'Exam auto-submitted because you switched tabs.');
+        }
+    }
+
     #[On('timerStarted')]
     public function enableTimer()
     {
@@ -290,6 +314,7 @@ public function verifyPasscode()
             'quizzes' => $this->quizzes ?? collect(),
             'passcodeVerified' => $this->passcodeVerified,
             'passcodeError' => $this->passcodeError,
+            'tabSwitched' => $this->tabSwitched,
         ]);
     }
 }

@@ -1,4 +1,7 @@
-<div class="min-h-screen bg-gray-50" x-data="{ isFullscreen: @entangle('isFullscreen') }">
+<div class="min-h-screen bg-gray-50" x-data="{ isFullscreen: @entangle('isFullscreen') }" 
+    oncopy="return false" 
+    oncut="return false" 
+    onpaste="return false">
     <!-- @include('components.loader') -->
     @if (!$passcodeVerified)
     <div class="container mx-auto py-12 px-6">
@@ -136,11 +139,14 @@
                             <form>
                                 @foreach(range(1,4) as $optionNum)
                                 <label class="relative block mb-3">
-                                    <input type="radio" wire:model.live="currentAnswer" value="option{{ $optionNum }}"
-                                        name="question_{{ $quizzes[$currentQuestion]->id }}" class="peer sr-only">
-                                    <div
-                                        class="w-full p-4 border rounded-lg cursor-pointer transition-all duration-200
-                                                    {{ $currentAnswer === 'option'.$optionNum ? 'border-purple-500 bg-purple-50 ring-2 ring-purple-500' : 'border-gray-300 hover:bg-gray-50' }}">
+                                    <input type="radio" 
+                                        wire:model.live="currentAnswer" 
+                                        value="option{{ $optionNum }}"
+                                        name="question_{{ $quizzes[$currentQuestion]->id }}" 
+                                        class="peer sr-only"
+                                        wire:loading.attr="disabled">
+                                    <div class="w-full p-4 border rounded-lg cursor-pointer transition-all duration-200
+                                        {{ $currentAnswer === 'option'.$optionNum ? 'border-purple-500 bg-purple-50 ring-2 ring-purple-500' : 'border-gray-300 hover:bg-gray-50' }}">
                                         <div class="flex items-center gap-3">
                                             <div
                                                 class="w-6 h-6 rounded-full border-2 flex items-center justify-center
@@ -237,6 +243,36 @@ document.addEventListener('livewire:initialized', () => {
     document.addEventListener('fullscreenerror', (event) => {
         console.error('Fullscreen error occurred:', event);
         alert('An error occurred while trying to enable fullscreen mode.');
+    });
+
+    // Add tab switch detection
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'hidden') {
+            Livewire.dispatch('tabSwitched');
+        }
+    });
+
+    // Prevent copy/paste/cut
+    document.addEventListener('keydown', (e) => {
+        if (e.ctrlKey || e.metaKey) {
+            // Prevent: ctrl/cmd + c, ctrl/cmd + v, ctrl/cmd + x
+            if (['c', 'v', 'x'].includes(e.key.toLowerCase())) {
+                e.preventDefault();
+                return false;
+            }
+        }
+    });
+
+    // Prevent right click
+    document.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+        return false;
+    });
+
+    // Prevent drag and drop
+    document.addEventListener('dragstart', (e) => {
+        e.preventDefault();
+        return false;
     });
 });
 </script>
