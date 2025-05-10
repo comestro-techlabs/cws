@@ -128,6 +128,15 @@
                                     <span class="text-red-500 text-sm">{{ $message }}</span>
                                 @enderror
                             </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Total Questions</label>
+                                <input wire:model="total_questions" type="number"
+                                    class="mt-1 w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-300 focus:border-purple-300 transition-all duration-200">
+                                @error('total_questions')
+                                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                                @enderror
+                            </div>
                         </div>
 
                         <div class="flex items-center space-x-2">
@@ -165,6 +174,7 @@
                                 "exam_date": "2024-03-20",
                                 "status": true,
                                 "passcode": "123456",
+                                "total_questions": 20,
                                 "questions": [
                                     {
                                     "question": "First question?",
@@ -209,6 +219,7 @@
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Course</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Batch</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Questions</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
                         <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
                     </tr>
@@ -220,6 +231,7 @@
                             <td class="px-6 py-4">{{ $exam->course->title }}</td>
                             <td class="px-6 py-4">{{ $exam->batch->batch_name }}</td>
                             <td class="px-6 py-4">{{ $exam->exam_date }}</td>
+                            <td class="px-6 py-4">{{ $exam->total_questions }}</td>
                             <td class="px-6 py-4">
                                 <button wire:click="toggleStatus({{ $exam->id }})"
                                     class="px-3 py-1.5 rounded-full text-xs font-semibold transition-colors duration-200

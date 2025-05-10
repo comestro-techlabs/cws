@@ -109,8 +109,18 @@ public function verifyPasscode()
         $this->passcodeVerified = true;
         $this->passcodeError = null;
         $this->examId = $exam->id;
-        $this->quizzes = collect($exam->quizzes)->shuffle()->take(50);
-        
+// Fetch quizzes limited to total_questions with shuffling
+            $this->quizzes = Quiz::where('exam_id', $this->examId)
+                ->where('status', true)
+                ->inRandomOrder()
+                ->take($exam->total_questions)
+                ->get();
+
+            if ($this->quizzes->isEmpty()) {
+                $this->passcodeError = 'No active questions available for this exam.';
+                $this->passcodeVerified = false;
+                return;
+            }        
         $this->answers = array_fill_keys($this->quizzes->pluck('id')->toArray(), null);
         $this->currentAnswer = $this->answers[$this->quizzes[$this->currentQuestion]->id] ?? null;
         

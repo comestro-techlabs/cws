@@ -17,7 +17,8 @@ class Result extends Component
     public $answers;
     public $stats = [];
     public $quizzes;
-   
+    public $hasAccess = false;
+    public $showAccessModal = false;
     public function mount($examId)
     {
         $user = Auth::user();
@@ -39,6 +40,7 @@ class Result extends Component
     {
         $this->examUser = ExamUser::where('user_id', Auth::id())
             ->where('exam_id', $this->examId)
+            ->with('exam') // Include exam relationship
             ->firstOrFail();
 
         $this->answers = Answer::where('user_id', Auth::id())
@@ -48,23 +50,20 @@ class Result extends Component
             }])
             ->select('id', 'quiz_id', 'selected_option', 'obtained_marks', 'exam_id', 'user_id')
             ->get();
-        // dd($this->answers);
-        $this->quizzes = Quiz::where('exam_id', $this->examId)->get();
 
         $this->calculateStats();
     }
     
     private function calculateStats()
     {
-        $totalQuestions = $this->answers->count();
         $correctAnswers = $this->answers->where('obtained_marks', '>', 0)->count();
+        $totalQuestions = $this->examUser->exam->total_questions; // Use exam's total_questions
         $incorrectAnswers = $totalQuestions - $correctAnswers;
-        $totalPossibleMarks = $this->answers->count();
-        $obtainedMarks = $this->examUser->total_marks; 
+        $obtainedMarks = $this->examUser->total_marks;
 
         $this->stats = [
-            'percentage' => $totalPossibleMarks > 0 ? round(($obtainedMarks / $totalPossibleMarks) * 100, 2) : 0,
-            'marks' => "$obtainedMarks/$totalPossibleMarks",
+            'percentage' => $totalQuestions > 0 ? round(($obtainedMarks / $totalQuestions) * 100, 2) : 0,
+            'marks' => "$obtainedMarks/$totalQuestions",
             'correct' => $correctAnswers,
             'incorrect' => $incorrectAnswers,
         ];

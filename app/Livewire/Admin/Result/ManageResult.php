@@ -31,7 +31,6 @@ class ManageResult extends Component
     public $attempts;
     public $answers;
     public $userData;
-    public $certificateData;
 
     protected $queryString = [
         'search' => ['except' => ''],
@@ -66,16 +65,6 @@ class ManageResult extends Component
         $this->viewMode = 'details';
     }
 
-    public function showCertificates()
-    {
-        $this->viewMode = 'certificates';
-    }
-
-    public function showCertificate($userId)
-    {
-        $this->selectedUserId = $userId;
-        $this->viewMode = 'certificate';
-    }
 
     public function goBack()
     {
@@ -85,9 +74,7 @@ class ManageResult extends Component
             $this->viewMode = 'examUsers';
         } elseif ($this->viewMode === 'details') {
             $this->viewMode = 'attempts';
-        } elseif ($this->viewMode === 'certificate') {
-            $this->viewMode = 'certificates';
-        }
+        } 
         $this->selectedAttempt = null;
     }
 
@@ -130,55 +117,7 @@ class ManageResult extends Component
                     ->get();
                 break;
 
-            case 'certificates':
-                $users = User::where('isadmin', 0)->get();
-                $this->userData = [];
-                foreach ($users as $user) {
-                    $examUser = ExamUser::where('user_id', $user->id)->first();
-                    $examTotal = $examUser ? $examUser->total_marks : 0;
-                    $assignmentTotal = Assignment_upload::where('student_id', $user->id)->sum('grade') ?? 0;
-                    $examName = $examUser ? $examUser->exam->exam_name : 'N/A';
-                    $maxAssignmentMarks = 100;
-                    $maxExamMarks = 20;
-                    $assignmentPercentage = ($assignmentTotal / $maxAssignmentMarks) * 100;
-                    $examPercentage = ($examTotal / $maxExamMarks) * 100;
-                    $percentage = ($assignmentPercentage + $examPercentage) / 2;
-                    if ($percentage >= 75) {
-                        $this->userData[] = [
-                            'name' => $user->name,
-                            'examName' => $examName,
-                            'assignmentTotal' => $assignmentTotal,
-                            'examTotal' => $examTotal,
-                            'percentage' => $percentage,
-                            'id' => $user->id
-                        ];
-                    }
-                }
-                break;
-
-            case 'certificate':
-                $this->user = User::findOrFail($this->selectedUserId);
-                $examUser = ExamUser::where('user_id', $this->selectedUserId)->first();
-                $examTotal = $examUser ? $examUser->total_marks : 0;
-                $assignmentTotal = Assignment_upload::where('student_id', $this->selectedUserId)->sum('grade') ?? 0;
-                $examName = $examUser ? $examUser->exam->exam_name : 'N/A';
-                $maxAssignmentMarks = 100;
-                $maxExamMarks = 20;
-                $assignmentPercentage = ($assignmentTotal / $maxAssignmentMarks) * 100;
-                $examPercentage = ($examTotal / $maxExamMarks) * 100;
-                $percentage = ($assignmentPercentage + $examPercentage) / 2;
-                $this->certificateData = [
-                    'userName' => $this->user->name,
-                    'examName' => $examName,
-                    'assignmentTotal' => $assignmentTotal,
-                    'examTotal' => $examTotal,
-                    'assignmentPercentage' => $assignmentPercentage,
-                    'examPercentage' => $examPercentage,
-                    'percentage' => $percentage,
-                    'date' => now()->toFormattedDateString(),
-                    'year' => now()->year
-                ];
-                break;
+            
         }
         return view('livewire.admin.result.manage-result', [
             'exams' => $exams

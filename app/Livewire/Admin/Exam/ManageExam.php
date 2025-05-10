@@ -36,6 +36,7 @@ class ManageExam extends Component
     public $showPasscodeModal = false;
     public $selectedExamId;
     public $generatedPasscode;
+    public $total_questions = 0;
     public $filters = [
         'course' => '',
         'batch' => '',
@@ -51,7 +52,8 @@ class ManageExam extends Component
         'course_id' => 'required|exists:courses,id',
         'batch_id' => 'required|exists:batches,id',
         'exam_date' => 'required|date|after_or_equal:today',
-        'status' => 'nullable|boolean'
+        'status' => 'nullable|boolean',
+        'total_questions' => 'required|integer|min:0',
     ];
 
     // Enforce one exam per course-batch combination
@@ -76,7 +78,7 @@ class ManageExam extends Component
     {
         $this->showForm = !$this->showForm;
         if (!$this->showForm) {
-            $this->reset(['exam_name', 'course_id', 'batch_id', 'exam_date', 'status', 'isEditing', 'editingExamId']);
+            $this->reset(['exam_name', 'course_id', 'batch_id', 'exam_date', 'status', 'total_questions', 'isEditing', 'editingExamId']);
         }
     }
 
@@ -107,10 +109,11 @@ class ManageExam extends Component
             'batch_id' => $this->batch_id,
             'exam_date' => $this->exam_date,
             'status' => $this->status,
-            'passcode' => null 
+            'passcode' => null,
+            'total_questions' => $this->total_questions, 
         ]);
 
-        $this->reset(['exam_name', 'course_id', 'batch_id', 'exam_date', 'status']);
+        $this->reset(['exam_name', 'course_id', 'batch_id', 'exam_date', 'status', 'total_questions']);
         $this->dispatch('notice', type: 'info', text: 'Exam created successfully!');
     }
 
@@ -127,6 +130,7 @@ class ManageExam extends Component
         $this->batch_id = $exam->batch_id;
         $this->exam_date = $exam->exam_date;
         $this->status = $exam->status;
+        $this->total_questions = $exam->total_questions;
     }
 
     public function update()
@@ -144,10 +148,11 @@ class ManageExam extends Component
             'course_id' => $this->course_id,
             'batch_id' => $this->batch_id,
             'exam_date' => $this->exam_date,
-            'status' => $this->status
+            'status' => $this->status,
+            'total_questions' => $this->total_questions,
         ]);
 
-        $this->reset(['exam_name', 'course_id', 'batch_id', 'exam_date', 'status', 'isEditing', 'editingExamId']);
+        $this->reset(['exam_name', 'course_id', 'batch_id', 'exam_date', 'status', 'isEditing', 'editingExamId', 'total_questions']);
         $this->dispatch('notice', type: 'info', text: 'Exam updated successfully!');
     }
 
@@ -243,6 +248,7 @@ class ManageExam extends Component
                 'exam_date' => 'required|date|after_or_equal:today',
                 'status' => 'nullable|boolean',
                 'passcode' => 'nullable|string',
+                'total_questions' => 'required|integer|min:0',
             ];
     
             // Extract exam data from JSON
@@ -253,6 +259,7 @@ class ManageExam extends Component
                 'exam_date' => $data['exam_date'] ?? null,
                 'status' => $data['status'] ?? false,
                 'passcode' => $data['passcode'] ?? null,
+                'total_questions' => $data['total_questions'] ?? 0,
             ];
     
             // Validate the exam data
@@ -276,6 +283,7 @@ class ManageExam extends Component
                 'exam_date' => $examData['exam_date'],
                 'status' => $examData['status'],
                 'passcode' => $examData['passcode'],
+                'total_questions' => $examData['total_questions'],
             ]);
     
             // Handle questions if present

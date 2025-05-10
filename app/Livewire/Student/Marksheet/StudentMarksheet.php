@@ -62,8 +62,8 @@ class StudentMarksheet extends Component
 
         return $exams->map(function($exam) {
             $examUser = $exam->examUser->first();
-            $totalQuestions = $exam->quizzes->count();
-            $maxMarks =  10;
+            $totalQuestions = $exam->total_questions; 
+            $maxMarks = $totalQuestions;
 
             return [
                 'title' => $exam->exam_name,

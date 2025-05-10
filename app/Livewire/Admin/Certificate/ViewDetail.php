@@ -11,6 +11,7 @@ use App\Models\Assignment_upload;
 use App\Models\MockTestResult;
 use Carbon\Carbon;
 use Livewire\Attributes\Layout;
+use App\Models\Assignments;
 
 #[Layout('components.layouts.admin')]
 class ViewDetail extends Component
@@ -73,22 +74,48 @@ class ViewDetail extends Component
 
     public function getExamDetails()
     {
-        return ExamUser::where('user_id', $this->studentId)
+        $examUser = ExamUser::where('user_id', $this->studentId)
             ->whereHas('exam', function($query) {
                 $query->where('course_id', $this->courseId);
             })
-            ->with('exam')
+            ->with(['exam' => function($query) {
+                $query->select('id', 'exam_name', 'course_id', 'total_questions');
+            }])
             ->get();
+
+        return $examUser->map(function($result) {
+            return [
+                'exam_name' => $result->exam->exam_name,
+                'total_marks' => $result->total_marks,
+                'total_questions' => $result->exam->total_questions,
+                'percentage' => $result->exam->total_questions > 0 
+                    ? ($result->total_marks / $result->exam->total_questions) * 100 
+                    : 0
+            ];
+        });
     }
 
     public function getAssignmentDetails()
     {
-        return Assignment_upload::where('student_id', $this->studentId)
-            ->whereHas('assignment', function($query) {
-                $query->where('course_id', $this->courseId);
-            })
-            ->with('assignment')
+        // Get all course assignments
+        $courseAssignments = Assignments::where('course_id', $this->courseId)
+            ->where('status', true)
             ->get();
+
+        return $courseAssignments->map(function($assignment) {
+            // Find student's submission for this assignment if exists
+            $submission = Assignment_upload::where('student_id', $this->studentId)
+                ->where('assignment_id', $assignment->id)
+                ->first();
+
+            return [
+                'assignment_name' => $assignment->title,
+                'due_date' => $assignment->due_date ? $assignment->due_date->format('Y-m-d') : 'No due date',
+                'status' => $submission ? $submission->status : 'Not submitted',
+                'grade' => $submission && $submission->grade ? $submission->grade : null,
+                'submitted_at' => $submission ? $submission->submitted_at->format('Y-m-d H:i') : null,
+            ];
+        });
     }
 
     public function getMockTestDetails()

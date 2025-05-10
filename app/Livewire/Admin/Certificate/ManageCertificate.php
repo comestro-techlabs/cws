@@ -70,8 +70,8 @@ class ManageCertificate extends Component
 
         if (!$examUser) return 0;
 
-        $totalQuestions = $exam->quizzes->count();
-        return $totalQuestions > 0 ? ($examUser->total_marks / 10) * 100 : 0;
+        $totalQuestions = $exam->total_questions; 
+        return $totalQuestions > 0 ? ($examUser->total_marks / $totalQuestions) * 100 : 0;
     }
 
     public function calculatePercentage($user, $course)

@@ -58,27 +58,28 @@
 
             <!-- Tab Content -->
             @if($activeTab === 'exam')
-            
-                @if($examDetails->count() > 0)
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead>
-                            <tr>
-                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Exam Name</th>
-                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Total Marks</th>
-                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Percentage</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            @foreach($examDetails as $exam)
-                            <tr>
-                                <td class="px-6 py-4">{{ $exam->exam->exam_name }}</td>
-                                <td class="px-6 py-4">{{ $exam->total_marks }}</td>
-                                <td class="px-6 py-4">{{ number_format(($exam->total_marks / 10) * 100, 2) }}%</td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                @else
+             @if($examDetails->count() > 0)
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead>
+                        <tr>
+                            <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Exam Name</th>
+                            <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Total Marks</th>
+                            <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Total Questions</th>
+                            <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Percentage</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @foreach($examDetails as $exam)
+                        <tr>
+                            <td class="px-6 py-4">{{ $exam['exam_name'] }}</td>
+                            <td class="px-6 py-4">{{ $exam['total_marks'] }}/{{ $exam['total_questions'] }}</td>
+                            <td class="px-6 py-4">{{ $exam['total_questions'] }}</td>
+                            <td class="px-6 py-4">{{ number_format($exam['percentage'], 2) }}%</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                 @else
                     <div class="text-center py-12">
                         <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -88,26 +89,36 @@
                     </div>
                 @endif
             @elseif($activeTab === 'assignment')
-                @if($assignmentDetails->count() > 0)
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead>
-                            <tr>
-                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Assignment Name</th>
-                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Grade</th>
-                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            @foreach($assignmentDetails as $assignment)
-                            <tr>
-                                <td class="px-6 py-4">{{ $assignment->assignment->title }}</td>
-                                <td class="px-6 py-4">{{ $assignment->grade }}/100</td>
-                                <td class="px-6 py-4">{{ $assignment->status }}</td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                @else
+             @if($assignmentDetails->count() > 0)
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead>
+                        <tr>
+                            <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Assignment Name</th>
+                            <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Due Date</th>
+                            <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                            <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Grade</th>
+                            <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Submitted At</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @foreach($assignmentDetails as $assignment)
+                        <tr>
+                            <td class="px-6 py-4">{{ $assignment['assignment_name'] }}</td>
+                            <td class="px-6 py-4">{{ $assignment['due_date'] }}</td>
+                            <td class="px-6 py-4">
+                                <span class="px-2 py-1 text-xs rounded-full
+                                    {{ $assignment['status'] === 'graded' ? 'bg-green-100 text-green-800' : 
+                                       ($assignment['status'] === 'submitted' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800') }}">
+                                    {{ ucfirst($assignment['status']) }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4">{{ $assignment['grade'] ? $assignment['grade'] . '/100' : 'Not graded' }}</td>
+                            <td class="px-6 py-4">{{ $assignment['submitted_at'] ?? 'Not submitted' }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                 @else
                     <div class="text-center py-12">
                         <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
