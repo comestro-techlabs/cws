@@ -21,7 +21,7 @@ class ManageAssignment extends Component
     public $course_id = '';
     public $search = '';
     public $perPage = 10;
-    
+
     // New properties for assignment creation/editing
     public $showModal = false;
     public $title;
@@ -45,70 +45,78 @@ class ManageAssignment extends Component
     public function render()
     {
         $query = Assignments::query()
-            ->when($this->course_id, fn ($query) => 
+            ->when(
+                $this->course_id,
+                fn($query) =>
                 $query->where('course_id', $this->course_id)
             )
-            ->when($this->search, fn ($query) => 
+            ->when(
+                $this->search,
+                fn($query) =>
                 $query->where('title', 'like', '%' . $this->search . '%')
             );
-            
+
         // Apply tab filters
         $query = $this->applyTabFilters($query);
-        
+
         // Get assignments with relationships
         $assignments = $query->with(['course', 'batch', 'uploads.user'])->get();
-        
+
         // Group assignments
         $groupedAssignments = $assignments->groupBy($this->groupBy === 'course' ? 'course.title' : 'batch.batch_name');
-        
+
         return view('livewire.admin.assignment.manage-assignment', [
             'groupedAssignments' => $groupedAssignments,
             'courses' => Course::all(),
             'batches' => $this->batches,
         ]);
     }
-    
+
     private function applyTabFilters($query)
     {
-        return $query->when($this->activeTab === 'latest', fn ($query) => 
+        return $query->when(
+            $this->activeTab === 'latest',
+            fn($query) =>
             $query->where('due_date', '>=', now())
                 ->orderBy('due_date', 'asc')
         )
-        ->when($this->activeTab === 'graded', fn ($query) => 
-            $query->whereHas('uploads', function($q) {
-                $q->where('status', 'graded');
-            })
-            ->whereDoesntHave('uploads', function($q) {
-                $q->where('status', '!=', 'graded');
-            })
-            ->has('uploads')
-            ->orderBy('due_date', 'desc')
-        )
-        ->when($this->activeTab === 'all', fn ($query) => 
-            $query->orderBy('status', 'desc')
-                ->orderBy(function($query) {
-                    $query->selectRaw('CASE 
-                        WHEN due_date >= NOW() THEN 1 
-                        WHEN due_date < NOW() THEN 2 
-                        ELSE 3 END');
-                })
-                ->orderBy('due_date', 'desc')
-        );
-    }
-
-    public function toggleStatus($assignmentId)
-    {
-        $assignment = Assignments::findOrFail($assignmentId);        
-        $assignment->update(['status' => !$assignment->status]);
-
-        if ($assignment->status) {
-            // dd('shaiquw');
-            $this->notifyStudents($assignment);
-            // $this->notifyStudents();
-
-        }
-
-        session()->flash('success', 'Assignment status updated successfully!');
+            ->when(
+                $this->activeTab === 'graded',
+                fn($query) =>
+                $query
+                    ->whereRaw('(
+                SELECT COUNT(*) FROM assignment_uploads 
+                WHERE assignment_uploads.assignment_id = assignments.id
+            ) > 0') 
+                    ->whereRaw('(
+                SELECT COUNT(*) FROM assignment_uploads 
+                WHERE assignment_uploads.assignment_id = assignments.id
+            ) = (
+                SELECT COUNT(*) FROM assignment_uploads 
+                WHERE assignment_uploads.assignment_id = assignments.id 
+                AND assignment_uploads.status = "graded"
+            )') 
+                    ->whereRaw('(
+                SELECT COUNT(*) FROM assignment_uploads 
+                WHERE assignment_uploads.assignment_id = assignments.id
+            ) = (
+                SELECT COUNT(*) FROM course_student 
+                WHERE course_student.batch_id = assignments.batch_id
+            )') 
+                    ->orderBy('due_date', 'desc')
+            )
+            ->when(
+                $this->activeTab === 'all',
+                fn($query) =>
+                $query->orderBy('status', 'desc')
+                    ->orderBy(function ($query) {
+                        $query->selectRaw('CASE 
+                    WHEN due_date >= NOW() THEN 1 
+                    WHEN due_date < NOW() THEN 2 
+                    ELSE 3 END');
+                    })
+                    ->orderBy('due_date', 'desc')
+            );
     }
 
     public function delete($assignmentId)
@@ -116,8 +124,7 @@ class ManageAssignment extends Component
         try {
             Assignments::destroy($assignmentId);
             session()->flash('success', 'Assignment deleted successfully!');
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             session()->flash('error', 'Failed to delete assignment!');
         }
     }
@@ -127,26 +134,28 @@ class ManageAssignment extends Component
         $this->course_id = '';
         $this->search = '';
     }
- 
+
     private function notifyStudents(Assignments $assignment)
     {
 
         //jo v students us particular course k assignment me enrolled hoga unsbko mail jaiga
-        $students = User::whereHas('courses', fn ($query) => 
+        $students = User::whereHas(
+            'courses',
+            fn($query) =>
             $query->where('course_id', $assignment->course_id)
         )->get();
 
-        
+
 
         foreach ($students as $student) {
             try {
-                dispatch(new SendNewAssignmentNotification($student,$assignment));
+                dispatch(new SendNewAssignmentNotification($student, $assignment));
             } catch (\Exception $e) {
                 \Log::warning("Failed to send notification to {$student->email}: {$e->getMessage()}");
             }
         }
     }
- 
+
     protected function rules()
     {
         return [
@@ -178,7 +187,7 @@ class ManageAssignment extends Component
         $this->resetForm();
         $this->showModal = true;
     }
- 
+
     public function edit($assignmentId)
     {
         try {
@@ -186,17 +195,17 @@ class ManageAssignment extends Component
             if ($this->editingAssignment) {
                 $this->course_id = $this->editingAssignment->course_id;
                 $this->updatedCourseId($this->course_id);
-                
+
                 $this->batch_id = $this->editingAssignment->batch_id;
                 $this->title = $this->editingAssignment->title;
                 $this->description = $this->editingAssignment->description;
-                
+
                 // Format the date for datetime-local input if it exists
                 if ($this->editingAssignment->due_date) {
                     $this->due_date = Carbon::parse($this->editingAssignment->due_date)->format('Y-m-d\TH:i');
                 }
-                
-                $this->status = (bool)$this->editingAssignment->status;
+
+                $this->status = (bool) $this->editingAssignment->status;
                 $this->showModal = true;
             }
         } catch (\Exception $e) {
@@ -263,5 +272,5 @@ class ManageAssignment extends Component
         }
     }
 
-  
+
 }
