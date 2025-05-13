@@ -42,15 +42,13 @@
                                 $hasAttempts = false;
                             @endphp
 
-                            @foreach ($course->exams as $exam)
-                                @if ($exam->exam_date === now()->toDateString())
+                            @foreach ($course->exams as $exam)                              
                                     @php
                                         $quizAvailable = true;
                                         $todayExam = $exam;
                                         $attemptCount = $attempts[$exam->id] ?? 0;
                                         $hasAttempts = $attemptCount >= 1;
-                                    @endphp
-                                @endif
+                                    @endphp                              
                             @endforeach
 
                             <div class="mt-3 mb-4">
