@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\Student;
 
 use App\Models\Course as ModelsCourse;
+use Illuminate\Support\Facades\Http;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -348,6 +349,7 @@ class ViewStudent extends Component
         $this->showBarcodeModal = false;
     }
 
+
     public function saveEnrollment()
     {
         $this->validate([
@@ -406,10 +408,60 @@ class ViewStudent extends Component
             $this->isModalOpen = false;
             $this->closeModal();
             session()->flash('success', 'Course enrolled successfully' . ($dueAmount > 0 ? ' with due amount of ' . $dueAmount : ''));
+
+            // Send SMS notification
+            $this->sendEnrollmentNotification($course->title);
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Failed to enroll in course: ' . $e->getMessage());
             session()->flash('error', $e->getMessage() ?: 'Failed to enroll in course');
+        }
+    }
+
+    private function sendEnrollmentNotification($courseTitle)
+    {
+        $user = User::find($this->studentId);
+        if (!$user) {
+            session()->flash('error', 'User not found');
+            return;
+        }
+
+        $contact = preg_replace('/[^0-9]/', '', $user->contact);
+        $userName = $user->name;
+
+        try {
+            $response = Http::timeout(5)->withHeaders([
+                'authkey' => env('MSG91_AUTH_KEY'),
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+            ])->post('https://control.msg91.com/api/v5/flow', [
+                        'template_id' => '68026bbbd6fc0563fd0faa54',
+                        'short_url' => 0,
+                        'recipients' => [
+                            [
+                                'mobiles' => '91' . $contact,
+                                'name' => $userName,
+                                'course' => $courseTitle,
+                            ]
+                        ]
+                    ]);
+
+            if (!$response->successful()) {
+                Log::error('SMS sending failed', [
+                    'user_id' => $user->id,
+                    'error' => $response->body(),
+                    'status' => $response->status()
+                ]);
+
+                session()->flash('warning', 'Course enrollment successful but SMS notification failed.');
+            }
+        } catch (\Exception $e) {
+            Log::error('SMS sending error', [
+                'user_id' => $user->id,
+                'error' => $e->getMessage()
+            ]);
+
+            session()->flash('warning', 'Course enrollment successful but SMS notification failed.');
         }
     }
 
