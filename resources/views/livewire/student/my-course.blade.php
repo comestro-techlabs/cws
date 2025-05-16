@@ -46,7 +46,7 @@
                                         <div class="flex flex-col sm:flex-row">
                                             <!-- Course Image with Progress -->
                                             <div class="relative w-full sm:w-48 h-48">
-                                                <img src="{{ asset('storage/' . $course->course_image) }}" alt="{{ $course->title }}"
+                                                <img src="{{ $course->course_image }}" alt="{{ $course->title }}"
                                                     class="h-full w-full object-cover">
                                                 <!-- New Progress Overlay -->
                                                 <div
