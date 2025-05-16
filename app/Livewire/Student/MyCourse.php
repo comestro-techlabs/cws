@@ -171,35 +171,49 @@ class MyCourse extends Component
     }
 
     private function calculateProgress()
-    {
-        $currentDate = now();
-        foreach ($this->courses as $course) {
-            $purchaseDate = $course->pivot->created_at ?? null;
+{
+    $currentDate = now();
+    
+    foreach ($this->courses as $course) {
+        $this->progress[$course->id] = 0;
 
-            if (!$purchaseDate || !$course->duration) {
-                $this->progress[$course->id] = 0;
-                continue;
-            }
+        if (!$course->pivot || empty($course->pivot->batch_id)) {
+            continue;
+        }
 
-            $durationInDays = (int) $course->duration;
+        $batch = Batch::where('id', $course->pivot->batch_id)
+            ->where('course_id', $course->id)
+            ->first();
 
-            $endDate = $purchaseDate->copy()->addDays($durationInDays);
+        if (!$batch || !$batch->start_date || !$batch->end_date) {
+            continue;
+        }
 
-            $totalDays = $purchaseDate->diffInDays($endDate);
+        $startDate = $batch->start_date;
+        $endDate = $batch->end_date;
 
-            $daysElapsed = $purchaseDate->diffInDays($currentDate);
+        if (!$startDate instanceof \DateTime || !$endDate instanceof \DateTime) {
+            continue;
+        }
 
-            if ($currentDate->greaterThan($endDate)) {
-                $this->progress[$course->id] = 100;
-            } elseif ($currentDate->lessThan($purchaseDate)) {
-                $this->progress[$course->id] = 0;
-            } else {
-                $progressPercentage = ($daysElapsed / $totalDays) * 100;
-                $this->progress[$course->id] = min(100, max(0, round($progressPercentage)));
-            }
+        $totalDays = $startDate->diffInDays($endDate);
+
+        if ($totalDays == 0) {
+            continue;
+        }
+
+        $daysElapsed = $startDate->diffInDays($currentDate);
+
+        if ($currentDate->greaterThan($endDate)) {
+            $this->progress[$course->id] = 100;
+        } elseif ($currentDate->lessThan($startDate)) {
+            $this->progress[$course->id] = 0;
+        } else {
+            $progressPercentage = ($daysElapsed / $totalDays) * 100;
+            $this->progress[$course->id] = min(100, max(0, round($progressPercentage)));
         }
     }
-
+}
     public function toggleEdit($courseId)
     {
         $this->editingCourseId = $this->editingCourseId === $courseId ? null : $courseId;
