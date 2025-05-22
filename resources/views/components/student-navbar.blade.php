@@ -133,6 +133,8 @@
                         } else {
                             $message = null; // No message if not past and not in active subscription block
                         }
+
+                       
                     @endphp
                     
                     @if($message)
@@ -155,23 +157,30 @@
                         </div>
                     @endif
                 @else
-                    <div class="w-full mt-2 p-2 bg-yellow-50 rounded-lg border border-yellow-200">
-                        <div class="flex flex-col space-y-2">
-                            <div class="flex items-center justify-between">
-                                <span class="text-sm text-yellow-700">No Active Plan</span>
-                            </div>
-                            <div class="flex items-center justify-between space-x-2">
-                                <a wire:navigate href="{{ route('student.exploreCourses') }}"
-                                class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded hover:bg-purple-200">
-                                    Buy Course
-                                </a>
-                                <a wire:navigate href="{{ route('student.subscriptions.plans') }}"
-                                class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded hover:bg-green-200">
-                                    Subscribe
-                                </a>
+                       @php
+                        $atleastOneCourse = auth()->user()->courses()->exists();
+                    @endphp
+                    @if($atleastOneCourse)
+                        <div class="w-full mt-2 p-2 bg-yellow-50 rounded-lg border border-yellow-200">
+                            <div class="flex flex-col space-y-2">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm text-yellow-700">No Active Plan</span>
+                                </div>
+                                <div class="flex items-center justify-between space-x-2">
+                                    <a wire:navigate href="{{ route('student.exploreCourses') }}"
+                                    class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded hover:bg-purple-200">
+                                        Buy Course
+                                    </a>
+                                    <a wire:navigate href="{{ route('student.subscriptions.plans') }}"
+                                    class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded hover:bg-green-200">
+                                        Subscribe
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @else
+                        
+                    @endif
                 @endif
 
             <nav class="space-y-1 mt-2">
