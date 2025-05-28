@@ -39,8 +39,15 @@ class AttendanceScanner extends Component
 
     public function render()
     {
+        $activeCourses = Course::where('course_type', 'offline')
+            ->whereHas('batches', function ($q) {
+                $q->whereNull('end_date')
+                  ->orWhere('end_date', '>=', Carbon::today());
+            })
+            ->get();
+
         return view('livewire.admin.student.attendance-scanner', [
-            'courses' => Course::where('course_type', 'offline')->get(),
+            'courses' => $activeCourses,
             'batches' => $this->getBatches(),
             'todayStats' => $this->getTodayStats(),
             'todayAttendance' => $this->getTodayAttendance(),
