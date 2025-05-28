@@ -117,14 +117,29 @@
                                         </div>
                                         <div class="p-5">
                                             <div class="w-full"
-                                                x-data="{ isUploading: false, progress: 0, filename: '' }"
+                                                x-data="{
+                                                    isUploading: false,
+                                                    progress: 0,
+                                                    filename: '',
+                                                    previewUrl: '',
+                                                    updatePreview(event) {
+                                                        const file = event.target.files[0];
+                                                        this.filename = file ? file.name : '';
+                                                        if (file && (file.type.startsWith('image/') || file.type === 'application/pdf')) {
+                                                            this.previewUrl = URL.createObjectURL(file);
+                                                        } else {
+                                                            this.previewUrl = '';
+                                                        }
+                                                    }
+                                                }"
                                                 x-on:livewire-upload-start="isUploading = true"
                                                 x-on:livewire-upload-finish="isUploading = false; progress = 0"
                                                 x-on:livewire-upload-error="isUploading = false"
-                                                x-on:livewire-upload-progress="progress = $event.detail.progress">
+                                                x-on:livewire-upload-progress="progress = $event.detail.progress"
+                                            >
                                                 <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-500 transition-colors duration-200 relative">
-                                                    <input type="file" wire:model="file" class="hidden" id="file-upload" 
-                                                        x-on:change="filename = $event.target.files[0].name">
+                                                    <input type="file" wire:model="file" class="hidden" id="file-upload"
+                                                        x-on:change="updatePreview($event)">
                                                     <label for="file-upload" class="cursor-pointer block">
                                                         <template x-if="!filename">
                                                             <div>
@@ -145,6 +160,17 @@
                                                             </div>
                                                         </template>
                                                     </label>
+                                                    <!-- Preview Section -->
+                                                    <template x-if="previewUrl">
+                                                        <div class="mt-4">
+                                                            <template x-if="filename.toLowerCase().endsWith('.pdf')">
+                                                                <iframe :src="previewUrl" class="w-full h-64 border border-gray-300 rounded-lg"></iframe>
+                                                            </template>
+                                                            <template x-if="filename.toLowerCase().match(/\.(jpg|jpeg|png)$/)">
+                                                                <img :src="previewUrl" alt="Preview" class="w-full h-64 object-contain border border-gray-300 rounded-lg">
+                                                            </template>
+                                                        </div>
+                                                    </template>
                                                     <div x-show="isUploading" class="mt-4">
                                                         <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
                                                             <div class="h-full bg-blue-600 rounded-full transition-all duration-300"
