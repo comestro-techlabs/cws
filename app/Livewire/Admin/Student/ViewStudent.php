@@ -744,12 +744,17 @@ class ViewStudent extends Component
     {
         try {
             $payment = Payment::findOrFail($paymentId);
+
+            \DB::table('course_student')
+                ->where('user_id', $payment->student_id)
+                ->where('course_id', $payment->course_id)
+                ->delete();
+
             $payment->delete();
             $this->dispatch('paymentUpdated')->self();
-            session()->flash('success', 'Payment deleted successfully');
+            session()->flash('success', 'Purchased course and enrollment deleted successfully!');
         } catch (\Exception $e) {
-            Log::error('Failed to delete payment: ' . $e->getMessage());
-            session()->flash('error', 'Failed to delete payment');
+            session()->flash('error', 'Failed to delete purchased course: ' . $e->getMessage());
         }
     }
 
