@@ -110,6 +110,9 @@ class ViewCourse extends Component
     {
         try {
             $courseAmount = $this->course->discounted_fees;
+            $gstRate = 0.18; // 18% GST
+            $gstAmount = round($courseAmount * $gstRate, 2);
+            $totalAmount = $courseAmount + $gstAmount;
             $receipt_no = 'COURSE_' . time();
 
             // Initialize Razorpay API
@@ -118,7 +121,7 @@ class ViewCourse extends Component
             // Create Razorpay Order
             $orderData = [
                 'receipt'         => $receipt_no,
-                'amount'          => $courseAmount * 100, // Convert to paise
+                'amount'          => $totalAmount * 100, // Convert to paise
                 'currency'        => 'INR',
                 'payment_capture' => 1 // Auto capture
             ];
@@ -131,7 +134,8 @@ class ViewCourse extends Component
                 'course_id' => $this->course->id,
                 'receipt_no' => $receipt_no,
                 'amount' => $courseAmount,
-                'total_amount' => $courseAmount,
+                'gst_amount' => $gstAmount, // Store GST amount
+                'total_amount' => $totalAmount,
                 'transaction_fee' => 0,
                 'payment_type' => 'course',
                 'currency' => 'INR',
@@ -144,9 +148,17 @@ class ViewCourse extends Component
                 'order_id' => $razorpayOrder->id
             ]);
 
+            // Return payment breakdown for Razorpay modal
             return [
                 'payment_id' => $payment->id,
-                'order_id' => $razorpayOrder->id
+                'order_id' => $razorpayOrder->id,
+                'gst_amount' => $gstAmount,
+                'total_amount' => $totalAmount,
+                'breakdown' => [
+                    'Course Fee' => $courseAmount,
+                    'GST (18%)' => $gstAmount,
+                    'Total' => $totalAmount
+                ]
             ];
         } catch (\Exception $e) {
             \Log::error('Payment Initiation Error: ' . $e->getMessage());

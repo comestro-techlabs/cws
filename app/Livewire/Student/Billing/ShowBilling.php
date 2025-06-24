@@ -19,6 +19,14 @@ class ShowBilling extends Component
             ->firstOrFail();
     }
 
+    public function downloadInvoice()
+    {
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('livewire.student.billing.show-billing-pdf', ['payment' => $this->payment]);
+        return response()->streamDownload(function () use ($pdf) {
+            echo $pdf->stream();
+        }, 'Invoice_' . ($this->payment->order_id ?? $this->payment->id) . '.pdf');
+    }
+
     public function render()
     {
         return view('livewire.student.billing.show-billing');

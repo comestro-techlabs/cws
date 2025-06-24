@@ -32,23 +32,18 @@
                 <nav class="flex -mb-px">
                     <button @click="activeTab = 'all'" 
                             :class="{ 'border-purple-500 text-purple-600': activeTab === 'all', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'all' }" 
-                            class="w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm">
+                            class="w-1/3 py-4 px-1 text-center border-b-2 font-medium text-sm">
                         All Transactions
                     </button>
                     <button @click="activeTab = 'courses'" 
                             :class="{ 'border-purple-500 text-purple-600': activeTab === 'courses', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'courses' }" 
-                            class="w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm">
+                            class="w-1/3 py-4 px-1 text-center border-b-2 font-medium text-sm">
                         Course Payments
                     </button>
                     <button @click="activeTab = 'subscription'" 
                             :class="{ 'border-purple-500 text-purple-600': activeTab === 'subscription', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'subscription' }" 
-                            class="w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm">
+                            class="w-1/3 py-4 px-1 text-center border-b-2 font-medium text-sm">
                         Subscription Payments
-                    </button>
-                    <button @click="activeTab = 'workshops'" 
-                            :class="{ 'border-purple-500 text-purple-600': activeTab === 'workshops', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'workshops' }" 
-                            class="w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm">
-                        Workshop Payments
                     </button>
                 </nav>
             </div>
@@ -73,13 +68,6 @@
             <!-- Subscription Payments -->
             <div x-show="activeTab === 'subscription'">
                 @foreach ($paymentsWithWorkshops->whereNull('course_id')->whereNull('workshop_id')->sortByDesc('created_at') as $payment)
-                    @include('components.payment-record-card', ['payment' => $payment])
-                @endforeach
-            </div>
-
-            <!-- Workshop Payments -->
-            <div x-show="activeTab === 'workshops'">
-                @foreach ($paymentsWithWorkshops->where('workshop_id', '!=', null)->sortByDesc('created_at') as $payment)
                     @include('components.payment-record-card', ['payment' => $payment])
                 @endforeach
             </div>

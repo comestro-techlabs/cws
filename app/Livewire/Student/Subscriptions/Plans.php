@@ -32,11 +32,17 @@ class Plans extends Component
 
             $receipt = 'SUB_' . time();
             // dd($plan->price);
+            // Calculate GST (18%)
+            $gstAmount = round($plan->price * 0.18, 2);
+            $baseAmount = round($plan->price , 2);
+            $totalAmount = $baseAmount + $gstAmount;
+        //    dd($totalAmount);
             // Create payment record
             $payment = Payment::create([
                 'student_id' => auth()->id(),
-                'amount' => $plan->price,
-                'total_amount' => $plan->price,
+                'amount' => $baseAmount,
+                'gst_amount' => $gstAmount,
+                'total_amount' => $totalAmount,
                 'transaction_fee' => 0,
                 'status' => 'pending',
                 'payment_status' => 'initiated',
@@ -51,7 +57,7 @@ class Plans extends Component
             $api = new Api(config('services.razorpay.key'), config('services.razorpay.secret'));
             
             $orderData = [
-                'amount' => $plan->price * 100,
+                'amount' => $totalAmount * 100,
                 'currency' => 'INR',
                 'receipt' => $receipt,
                 'payment_capture' => 1
@@ -67,26 +73,36 @@ class Plans extends Component
 
             $eventData = [
                 'key' => config('services.razorpay.key'),
-                'amount' => $plan->price * 100,
+                'amount' => $totalAmount * 100,
                 'order_id' => $razorpayOrder->id,
                 'payment_id' => $payment->id,
                 'plan_type' => $plan->slug,
                 'duration' => $plan->duration_in_days,
                 'name' => auth()->user()->name,
                 'email' => auth()->user()->email,
-                'description' => "Subscription - {$plan->name}"
+                'description' => "Subscription - {$plan->name}",
+                'breakdown' => [
+                    'Course Fee' => $baseAmount,
+                    'GST (18%)' => $gstAmount,
+                    'Total' => $totalAmount
+                ],
             ];
 
             Log::info('Dispatching event with data:', $eventData); // Log event data
             return $this->dispatch('initSubscriptionPayment', [
                 'key' => config('services.razorpay.key'),
-                'amount' => $plan->price * 100,
+                'amount' => $totalAmount * 100,
                 'order_id' => $razorpayOrder->id,
                 'payment_id' => $payment->id,
                 'plan_type' => $plan->slug,
                 'duration' => $plan->duration_in_days,
                 'name' => auth()->user()->name,
-                'email' => auth()->user()->email
+                'email' => auth()->user()->email,
+                'breakdown' => [
+                    'Course Fee' => $baseAmount,
+                    'GST (18%)' => $gstAmount,
+                    'Total' => $totalAmount
+                ],
             ]);
 
         } catch (\Exception $e) {

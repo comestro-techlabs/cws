@@ -236,51 +236,71 @@
             const response = await @this.initiatePayment();
 
             if (response && response.payment_id && response.order_id) {
-                const amountToPay = {{ $course->discounted_fees ?? 0 }} > 0 ? {{ $course->discounted_fees ?? 0 }} : {{ $course->fees }};                
-                var options = {
-                    "key": "{{ env('RAZORPAY_KEY') }}",
-                    "amount": amountToPay * 100,
-                    "currency": "INR",
-                    "name": "LearnSyntax",
-                    "description": "{{ $course->title }}",
-                    "image": "{{ asset('front_assets/img/logo/logo.png') }}",
-                    "order_id": response.order_id,
-                    "handler": async function (razorpayResponse) {
-                        const result = await @this.handlePaymentResponse({
-                            payment_id: response.payment_id,
-                            razorpay_payment_id: razorpayResponse.razorpay_payment_id,
-                            razorpay_order_id: razorpayResponse.razorpay_order_id,
-                            razorpay_signature: razorpayResponse.razorpay_signature
-                        });
+                // Show dynamic price summary in a modal before opening Razorpay
+                Swal.fire({
+                    title: 'Price Summary',
+                    html: `
+                        <table class='w-full text-sm text-left'>
+                            <tr><td>Course Fee</td><td class='text-right'>₹${parseFloat(response.breakdown['Course Fee']).toFixed(2)}</td></tr>
+                            <tr><td>GST (18%)</td><td class='text-right'>₹${parseFloat(response.breakdown['GST (18%)']).toFixed(2)}</td></tr>
+                            <tr class='font-bold border-t'><td>Total</td><td class='text-right'>₹${parseFloat(response.breakdown['Total']).toFixed(2)}</td></tr>
+                        </table>
+                    `,
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonText: 'Proceed to Pay',
+                    cancelButtonText: 'Cancel',
+                    confirmButtonColor: '#2563EB',
+                    cancelButtonColor: '#aaa',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var options = {
+                            "key": "{{ env('RAZORPAY_KEY') }}",
+                            "amount": response.breakdown['Total'] * 100,
+                            "currency": "INR",
+                            "name": "LearnSyntax",
+                            "description": "{{ $course->title }}",
+                            "image": "{{ asset('front_assets/img/logo/logo.png') }}",
+                            "order_id": response.order_id,
+                            "handler": async function (razorpayResponse) {
+                                const result = await @this.handlePaymentResponse({
+                                    payment_id: response.payment_id,
+                                    razorpay_payment_id: razorpayResponse.razorpay_payment_id,
+                                    razorpay_order_id: razorpayResponse.razorpay_order_id,
+                                    razorpay_signature: razorpayResponse.razorpay_signature
+                                });
 
-                        if (result.success) {
-                            @this.dispatch('redirectToDashboard');
-                        } else {
-                            Swal.fire({
-                                title: 'Error!',
-                                text: result.message || 'Payment verification failed',
-                                icon: 'error',
-                                confirmButtonText: 'OK',
-                                confirmButtonColor: '#2563EB'
-                            });
-                        }
-                    },
-                    "prefill": {
-                        "name": "{{ Auth::user()->name }}",
-                        "email": "{{ Auth::user()->email }}"
-                    },
-                    "theme": {
-                        "color": "#2563EB"
-                    },
-                    "modal": {
-                        "ondismiss": function () {
-                            payButton.disabled = false;
-                        }
+                                if (result.success) {
+                                    @this.dispatch('redirectToDashboard');
+                                } else {
+                                    Swal.fire({
+                                        title: 'Error!',
+                                        text: result.message || 'Payment verification failed',
+                                        icon: 'error',
+                                        confirmButtonText: 'OK',
+                                        confirmButtonColor: '#2563EB'
+                                    });
+                                }
+                            },
+                            "prefill": {
+                                "name": "{{ Auth::user()->name }}",
+                                "email": "{{ Auth::user()->email }}"
+                            },
+                            "theme": {
+                                "color": "#2563EB"
+                            },
+                            "modal": {
+                                "ondismiss": function () {
+                                    payButton.disabled = false;
+                                }
+                            }
+                        };
+                        var rzp1 = new Razorpay(options);
+                        rzp1.open();
+                    } else {
+                        payButton.disabled = false;
                     }
-                };
-
-                var rzp1 = new Razorpay(options);
-                rzp1.open();
+                });
             } else {
                 throw new Error('Payment initialization failed');
             }

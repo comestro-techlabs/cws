@@ -61,54 +61,81 @@
             }
 
             try {
-                const options = {
-                    key: paymentData.key,
-                    amount: paymentData.amount,
-                    currency: "INR",
-                    name: "LearnSyntax",
-                    description: paymentData.description || "Subscription Payment",
-                    image: "{{ asset('front_assets/img/logo/logo.png') }}",
-                    order_id: paymentData.order_id,
-                    handler: function(response) {
-                        fetch("{{ route('student.subscriptions.process') }}", {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                            },
-                            body: JSON.stringify({
-                                payment_id: paymentData.payment_id,
-                                razorpay_payment_id: response.razorpay_payment_id,
-                                razorpay_order_id: response.razorpay_order_id,
-                                razorpay_signature: response.razorpay_signature,
-                                plan_type: paymentData.plan_type,
-                                duration: paymentData.duration
-                            })
-                        })
-                        .then(response => response.json())
-                        .then(result => {
-                            if (result.success) {
-                                window.location.href = '/student/dashboard';
-                            } else {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Payment Failed',
-                                    text: result.message || 'Payment processing failed'
-                                });
-                            }
-                        });
-                    },
-                    prefill: {
-                        name: paymentData.name,
-                        email: paymentData.email
-                    },
-                    theme: {
-                        color: "#662d91"
-                    }
-                };
+                // Show price summary modal before opening Razorpay
+                if (paymentData.breakdown) {
+                    Swal.fire({
+                        title: 'Price Summary',
+                        html: `
+                            <table class='w-full text-sm text-left'>
+                                <tr><td>Subscription Fee</td><td class='text-right'>₹${parseFloat(paymentData.breakdown['Course Fee']).toFixed(2)}</td></tr>
+                                <tr><td>GST (18%)</td><td class='text-right'>₹${parseFloat(paymentData.breakdown['GST (18%)']).toFixed(2)}</td></tr>
+                                <tr class='font-bold border-t'><td>Total</td><td class='text-right'>₹${parseFloat(paymentData.breakdown['Total']).toFixed(2)}</td></tr>
+                            </table>
+                        `,
+                        icon: 'info',
+                        showCancelButton: true,
+                        confirmButtonText: 'Proceed to Pay',
+                        cancelButtonText: 'Cancel',
+                        confirmButtonColor: '#662d91',
+                        cancelButtonColor: '#aaa',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            openRazorpay(paymentData);
+                        }
+                    });
+                } else {
+                    openRazorpay(paymentData);
+                }
 
-                const rzp = new Razorpay(options);
-                rzp.open();
+                function openRazorpay(paymentData) {
+                    const options = {
+                        key: paymentData.key,
+                        amount: paymentData.amount,
+                        currency: "INR",
+                        name: "LearnSyntax",
+                        description: paymentData.description || "Subscription Payment",
+                        image: "{{ asset('front_assets/img/logo/logo.png') }}",
+                        order_id: paymentData.order_id,
+                        handler: function(response) {
+                            fetch("{{ route('student.subscriptions.process') }}", {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                },
+                                body: JSON.stringify({
+                                    payment_id: paymentData.payment_id,
+                                    razorpay_payment_id: response.razorpay_payment_id,
+                                    razorpay_order_id: response.razorpay_order_id,
+                                    razorpay_signature: response.razorpay_signature,
+                                    plan_type: paymentData.plan_type,
+                                    duration: paymentData.duration
+                                })
+                            })
+                            .then(response => response.json())
+                            .then(result => {
+                                if (result.success) {
+                                    window.location.href = '/student/dashboard';
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Payment Failed',
+                                        text: result.message || 'Payment processing failed'
+                                    });
+                                }
+                            });
+                        },
+                        prefill: {
+                            name: paymentData.name,
+                            email: paymentData.email
+                        },
+                        theme: {
+                            color: "#662d91"
+                        }
+                    };
+                    const rzp = new Razorpay(options);
+                    rzp.open();
+                }
             } catch (error) {
                 console.error('Razorpay initialization error:', error);
                 Swal.fire({

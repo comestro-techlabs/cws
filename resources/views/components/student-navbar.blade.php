@@ -332,6 +332,15 @@
                 <div class="py-2">
                     <p class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Account</p>
 
+                    <!-- Billing -->
+                    <a wire:navigate href="{{ route('student.billing') }}"
+                        class="flex items-center px-4 py-2.5 text-sm font-medium {{ request()->routeIs('student.billing') ? 'text-purple-700 bg-purple-50' : 'text-gray-700 hover:bg-purple-50 hover:text-purple-700' }} rounded-lg transition duration-200">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.75V6.75A2.25 2.25 0 0018.75 4.5H5.25A2.25 2.25 0 003 6.75v11.25A2.25 2.25 0 005.25 20.25h13.5A2.25 2.25 0 0021 18V12.75z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 8.25h18M7.5 15.75h.008v.008H7.5v-.008zM12 15.75h.008v.008H12v-.008zM16.5 15.75h.008v.008H16.5v-.008z" />
+                        </svg>
+                        <span class="flex-1 ms-3">Billing</span>
+                    </a>
 
                     <a wire:navigate href="{{ route('v2.student.products') }}"
                         class="flex items-center px-4 py-2.5 text-sm font-medium {{   'text-gray-700 hover:bg-purple-50 hover:text-purple-700' }} group transition duration-200">
