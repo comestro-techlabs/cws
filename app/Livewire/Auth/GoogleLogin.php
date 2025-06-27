@@ -17,12 +17,18 @@ class GoogleLogin extends Component
     // Method to initiate Google login
     public function redirectToGoogle() 
     {
+        $redirectUrl = config('services.googleAuth.redirect');
+        \Log::info('Redirecting to Google. Current GOOGLE_REDIRECT_URI:', [
+            'GOOGLE_REDIRECT_URI' => $redirectUrl
+        ]);
+       
         return redirect()->to(Socialite::driver('googleAuth')->redirect()->getTargetUrl());
     }
     
     public function handleGoogleCallback() 
     {
         try {
+            
             $googleUser = Socialite::driver('googleAuth')->stateless()->user();
             \Log::info('google User: ', (array) $googleUser);
 
