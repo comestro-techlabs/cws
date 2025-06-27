@@ -15,19 +15,12 @@ class GoogleLogin extends Component
     public $errorMessage = '';
 
     // Method to initiate Google login
-    public function redirectToGoogle()
+    public function redirectToGoogle() 
     {
-        $callbackUrl = url('/auth/google/callback'); // builds full URL with current domain
-        return redirect()->to(
-            Socialite::driver('googleAuth')
-                ->redirectUrl($callbackUrl)
-                ->stateless()
-                ->redirect()
-                ->getTargetUrl()
-        );
+        return redirect()->to(Socialite::driver('googleAuth')->redirect()->getTargetUrl());
     }
-
-    public function handleGoogleCallback()
+    
+    public function handleGoogleCallback() 
     {
         try {
             $googleUser = Socialite::driver('googleAuth')->stateless()->user();
@@ -39,7 +32,7 @@ class GoogleLogin extends Component
                 Auth::login($existingUser);
             } else {
                 $newUser = User::create([
-                    'name' => $googleUser->getName() ?? $googleUser->getNickname(),
+                    'name' => $googleUser->getName() ?? $googleUser->getNickname(), 
                     'email' => $googleUser->getEmail(),
                     'image' => $googleUser->getAvatar(),
                     'isAdmin' => 0,
@@ -47,8 +40,8 @@ class GoogleLogin extends Component
                     'password' => bcrypt('123456dummy'),
                 ]);
                 Auth::login($newUser);
-                // Send email to the user
-                Mail::to($newUser->email)->send(new UserRegisterMail($newUser));
+                 // Send email to the user
+                 Mail::to($newUser->email)->send(new UserRegisterMail($newUser));
             }
             session(['user_avatar' => $googleUser->getAvatar()]);
 
@@ -56,7 +49,7 @@ class GoogleLogin extends Component
         } catch (\Exception $e) {
             \Log::error('google login error: ' . $e->getMessage());
             $this->errorMessage = 'Unable to login with google, please try again.';
-            return null;
+            return null; 
         }
     }
     public function render()
