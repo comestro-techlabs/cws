@@ -21,11 +21,8 @@ class GoogleLogin extends Component
         \Log::info('Redirecting to Google. Current GOOGLE_REDIRECT_URI:', [
             'GOOGLE_REDIRECT_URI' => $redirectUrl
         ]);
-        Socialite::driver('googleAuth')
-        ->stateless()
-        ->redirectUrl('https://www.learnsyntax.com/auth/google/callback')
-        ->redirect();
-        // return redirect()->to(Socialite::driver('googleAuth')->redirect()->getTargetUrl());
+       
+        return redirect()->to(Socialite::driver('googleAuth')->redirect()->getTargetUrl());
     }
     
     public function handleGoogleCallback() 
