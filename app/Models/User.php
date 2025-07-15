@@ -36,6 +36,10 @@ class User extends Authenticatable
         'status',
         'barcode',
         'is_active',
+        'google_id',
+        'github_id',
+        'facebook_id',
+        'linkedin_id',
     ];
 
     /**

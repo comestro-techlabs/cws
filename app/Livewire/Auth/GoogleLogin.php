@@ -35,6 +35,10 @@ class GoogleLogin extends Component
             $existingUser = User::where('email', $googleUser->getEmail())->first();
 
             if ($existingUser) {
+                // Update existing user with Google ID if not set
+                if (!$existingUser->google_id) {
+                    $existingUser->update(['google_id' => $googleUser->getId()]);
+                }
                 Auth::login($existingUser);
             } else {
                 $newUser = User::create([
@@ -44,18 +48,26 @@ class GoogleLogin extends Component
                     'isAdmin' => 0,
                     'google_id' => $googleUser->getId(),
                     'password' => bcrypt('123456dummy'),
+                    'email_verified_at' => now(), // Mark email as verified since it's verified by Google
                 ]);
                 Auth::login($newUser);
-                 // Send email to the user
-                 Mail::to($newUser->email)->send(new UserRegisterMail($newUser));
+                
+                // Try to send email, but don't fail if it doesn't work
+                try {
+                    Mail::to($newUser->email)->send(new UserRegisterMail($newUser));
+                } catch (\Exception $mailException) {
+                    \Log::warning('Failed to send registration email: ' . $mailException->getMessage());
+                    // Continue with login process even if email fails
+                }
             }
+            
             session(['user_avatar' => $googleUser->getAvatar()]);
 
             return redirect()->intended(Auth::user()->isAdmin == 1 ? '/v2/admin/dashboard' : '/');
         } catch (\Exception $e) {
             \Log::error('google login error: ' . $e->getMessage());
             $this->errorMessage = 'Unable to login with google, please try again.';
-            return null; 
+            return redirect()->route('auth.login')->with('error', $this->errorMessage);
         }
     }
     public function render()

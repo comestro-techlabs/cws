@@ -8,7 +8,7 @@
                 <!-- Left Section (Course Details) -->
                 <div class="md:w-8/12 w-full pr-0 md:pr-8">
                     <!-- Breadcrumb -->
-                    <nav class="text-sm mb-6">
+                     <nav class="text-sm mb-6">
                         <ol class="list-reset flex text-purple-200">
                             <li>
                                 <a href="{{ route('public.index') }}" class="hover:text-white transition duration-200">Home</a>
@@ -59,7 +59,7 @@
                     <div class="bg-white rounded-xl shadow-xl overflow-hidden">
                         <!-- Course Preview Image -->
                         <div class="overflow-hidden">
-                            <img src="{{  $course->course_image }}"
+                             <img src="{{  $course->course_image }}"
                                 alt="{{ $course->title }}" class="w-full h-56 object-cover">
                         </div>
 
@@ -72,6 +72,9 @@
                                         <span class="text-gray-500 line-through ml-2">₹{{ $course->fees }}</span>
                                         <span class="text-green-600 ml-2 text-sm font-medium">({{ round((($course->fees - $course->discounted_fees) / $course->fees) * 100, 2) }}% off)</span>
                                     </div>
+                                    <p class="text-gray-600 text-sm text-center mt-2">
+                                        Course Fee: ₹{{ $course->discounted_fees }} + GST (18%): ₹{{ round($course->discounted_fees * 0.18, 2) }} = Total: ₹{{ $course->discounted_fees + round($course->discounted_fees * 0.18, 2) }}
+                                    </p>
                                 @else
                                     <p class="text-green-600 font-semibold text-xl text-center">Free</p>
                                 @endif
@@ -93,7 +96,7 @@
                                             wire:loading.attr="disabled"
                                             class="w-full flex justify-center items-center px-4 py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition-colors disabled:opacity-50">
                                         <span wire:loading.remove wire:target="initiatePayment">
-                                            Enroll Now - ₹{{ $course->discounted_fees }}
+                                            Enroll Now - ₹{{ $course->discounted_fees + round($course->discounted_fees * 0.18, 2) }}
                                         </span>
                                         <span wire:loading wire:target="initiatePayment" class="flex items-center">
                                             <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -253,7 +256,7 @@
                             <div class="flex items-start space-x-3">
                                 <div class="flex-shrink-0">
                                     <div class="p-3 bg-purple-100 rounded-lg">
-                                        <svg class="w-5 h-5 text-[#662d91]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                         <svg class="w-5 h-5 text-[#662d91]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v.5M12 14v.5M16 14v.5M12 2v2M12 22v-2M20 12h2M2 12h2M19.071 19.071l-1.414-1.414M6.343 6.343L4.929 4.929M19.071 4.929l-1.414 1.414M6.343 17.657L4.929 19.071"/>
                                             <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/>
                                         </svg>

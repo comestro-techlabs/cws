@@ -12,17 +12,17 @@ use Illuminate\Support\Facades\DB;
 
 class Ourcourses extends Component
 {
+    public $courses, $placedStudents, $title, $course, $course_id, $payment_exist;
 
-    public $courses,$placedStudents,$title,$course,$course_id,$payment_exist;
-
-    public function mount($slug){
+    public function mount($slug)
+    {
         $this->courses = Course::where("published", true)->latest()->take(6)->get();
-        $this->course = Course::where('slug', $slug)->first(); // replace 1 with course id
+        $this->course = Course::where('slug', $slug)->first();
         $this->course_id = $this->course->id;
         $this->payment_exist = Payment::where("student_id", Auth::id())
-        ->where("course_id", $this->course_id)
-        ->where("status", "captured")
-        ->exists();
+            ->where("course_id", $this->course_id)
+            ->where("status", "captured")
+            ->exists();
     }
 
     public function initiatePayment()
@@ -38,12 +38,20 @@ class Ourcourses extends Component
             $receipt = 'CRS_' . time();
             Log::info('Generated receipt:', ['receipt' => $receipt]);
             
-            // Create payment record first
+            // --- START OF CHANGES: Add GST calculation ---
+            $courseAmount = $this->course->discounted_fees;
+            $gstRate = 0.18; // 18% GST
+            $gstAmount = round($courseAmount * $gstRate, 2);
+            $totalAmount = $courseAmount + $gstAmount;
+            // --- END OF CHANGES ---
+
+            // --- MODIFIED: Include GST and total amount in payment record ---
             $payment = Payment::create([
                 'student_id' => Auth::id(),
                 'course_id' => $this->course->id,
-                'amount' => $this->course->discounted_fees,
-                'total_amount' => $this->course->discounted_fees,
+                'amount' => $courseAmount,
+                'gst_amount' => $gstAmount, // Store GST amount
+                'total_amount' => $totalAmount, // Store total amount including GST
                 'payment_type' => 'course',
                 'currency' => 'INR',
                 'status' => 'pending',
@@ -59,8 +67,9 @@ class Ourcourses extends Component
             $api = new Api(config('services.razorpay.key'), config('services.razorpay.secret'));
             Log::info('Razorpay API initialized');
             
+            // --- MODIFIED: Use totalAmount for Razorpay order ---
             $orderData = [
-                'amount' => $this->course->discounted_fees * 100,
+                'amount' => $totalAmount * 100, // Use total amount including GST
                 'currency' => 'INR',
                 'receipt' => $receipt,
                 'payment_capture' => 1
@@ -79,9 +88,10 @@ class Ourcourses extends Component
             }
 
             $user = Auth::user();
+            // --- MODIFIED: Include payment breakdown in data dispatched ---
             $data = [
                 'key' => $razorpayKey,
-                'amount' => (int)($this->course->discounted_fees * 100), // Ensure amount is integer
+                'amount' => (int)($totalAmount * 100), // Use total amount
                 'currency' => 'INR',
                 'name' => 'LearnSyntax',
                 'description' => "Payment for {$this->course->title}",
@@ -91,10 +101,16 @@ class Ourcourses extends Component
                 'prefill' => [
                     'name' => $user ? $user->name : '',
                     'email' => $user ? $user->email : ''
+                ],
+                'breakdown' => [ // Add payment breakdown
+                    'Course Fee' => $courseAmount,
+                    'GST (18%)' => $gstAmount,
+                    'Total' => $totalAmount
                 ]
             ];
 
             Log::info('Payment data:', $data);
+            // --- MODIFIED: Dispatch payment data with breakdown ---
             return $this->dispatch('initCoursePayment', [$data]);
 
         } catch (\Exception $e) {
