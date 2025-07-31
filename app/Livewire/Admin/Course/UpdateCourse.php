@@ -9,9 +9,11 @@ use App\Models\Category;
 use App\Models\Feature;
 use Illuminate\Support\Facades\Storage;
 use ImageKit\ImageKit;
+use App\Helpers\ImageKitHelper;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
+
 
 #[Layout('components.layouts.admin')]
 #[Title('Update Course')]
@@ -19,8 +21,10 @@ class UpdateCourse extends Component
 {
     use WithFileUploads;
 
+    // Core Models
     public Course $course;
 
+    // Course Basic Information
     #[Validate('required|string|max:255')]
     public $title;
 
@@ -45,34 +49,35 @@ class UpdateCourse extends Component
     #[Validate('required|exists:categories,id')]
     public $category_id;
 
+    // Image Management
     #[Validate('nullable|image|max:2048')]
     public $tempImage;
-
-    // Feature-related properties
-    public $allFeatures;
-    #[Validate('array')]
-    public $selectedFeatures = [];
-    public $showFeaturesModal = false;
-    public $categories;
-    public $isPublished = false;
     public $previewImage = null;
 
-    public $editingField = null;
-    public $tempData = [];
-
-    // Add new property for progress
-    public $progress = 0;
-
-    // New properties for course type
+    // Course Type & Meeting Details
     public $course_type;
     public $meeting_link;
     public $meeting_id;
     public $meeting_password;
     public $venue;
-    public $showCourseModal = false;
-    public $image;
 
+    // Features Management
+    public $allFeatures;
+    #[Validate('array')]
+    public $selectedFeatures = [];
+    public $showFeaturesModal = false;
+
+    // UI State Management
+    public $categories;
+    public $isPublished = false;
+    public $editingField = null;
+    public $tempData = [];
+    public $showCourseModal = false;
     public $activeTab = 'addBatch';
+    
+    // Legacy/Unused properties (consider removing)
+    public $progress = 0;
+    public $image;
 
     protected $rules = [
         'title' => 'nullable|min:3|max:255',
@@ -96,34 +101,16 @@ class UpdateCourse extends Component
             'tempImage' => 'nullable|image|max:2048',
         ]);
 
-        // Initialize ImageKit
-        $imagekit = new ImageKit(
-            publicKey: env('IMAGEKIT_PUBLIC_KEY'),
-            privateKey: env('IMAGEKIT_PRIVATE_KEY'),
-            urlEndpoint: env('IMAGEKIT_URL_ENDPOINT')
-        );
-
-        if ($this->course->imagekit_file_id) {
-            $imagekit->deleteFile($this->course->imagekit_file_id);
+        if (!$this->tempImage) {
+            return;
         }
 
-        $filePath = $this->tempImage->getRealPath();
-        $fileName = $this->tempImage->getClientOriginalName();
-
-        $response = $imagekit->upload([
-            'file' => fopen($filePath, 'r'),
-            'fileName' => $fileName,
-            'folder' => '/cws/course_images/',
-            'useUniqueFileName' => true,
-        ]);
-
-        if (isset($response->result->url)) {
-            $this->previewImage = $response->result->url;
-            $this->course->course_image = $response->result->url;
-            $this->course->imagekit_file_id = $response->result->fileId;
-            $this->course->save();
+        $result = $this->uploadImageToImageKit($this->tempImage);
+        
+        if ($result['success']) {
+            $this->dispatch('notice', type: 'success', text: $result['message']);
         } else {
-            $this->addError('tempImage', 'ImageKit upload failed.');
+            $this->addError('tempImage', $result['message']);
         }
     }
 
@@ -165,26 +152,32 @@ class UpdateCourse extends Component
 
             $updateData = [$field => $this->{$field}];
 
+            // Handle course type specific logic
             if ($field === 'course_type') {
                 if ($this->course_type === 'online') {
                     $updateData['venue'] = null;
+                    $this->venue = null;
                 } else {
-                    $updateData['meeting_link'] = null;
-                    $updateData['meeting_id'] = null;
-                    $updateData['meeting_password'] = null;
+                    $updateData = array_merge($updateData, [
+                        'meeting_link' => null,
+                        'meeting_id' => null,
+                        'meeting_password' => null
+                    ]);
+                    $this->meeting_link = null;
+                    $this->meeting_id = null;
+                    $this->meeting_password = null;
                 }
             }
 
-            $success = $this->course->update($updateData);
-
-            if (!$success) {
-                throw new \Exception('Failed to update the course.');
-            }
+            $this->course->update($updateData);
 
             $this->editingField = null;
             $this->tempData = [];
 
-            $this->dispatch('notice', type: 'success', text: 'Field updated successfully!');
+            $this->dispatch('notice', type: 'success', text: ucfirst(str_replace('_', ' ', $field)) . ' updated successfully!');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Re-throw validation exceptions to show field errors
+            throw $e;
         } catch (\Exception $e) {
             $this->dispatch('notice', type: 'error', text: 'Failed to update: ' . $e->getMessage());
         }
@@ -213,9 +206,8 @@ class UpdateCourse extends Component
         $this->allFeatures = Feature::all();
         $this->selectedFeatures = $this->course->features->pluck('id')->toArray();
 
-        $this->previewImage = $this->course->course_image
-            ? asset('storage/' . $this->course->course_image)
-            : null;
+        // Use direct ImageKit URL for preview
+        $this->previewImage = $this->course->course_image ?: null;
     }
 
     public function openFeaturesModal()
@@ -234,37 +226,63 @@ class UpdateCourse extends Component
             $this->validateOnly('selectedFeatures');
             $this->course->features()->sync($this->selectedFeatures);
             $this->closeFeaturesModal();
-            $this->dispatch('notice', type: 'info', text: 'Features Updated Successfully!');
+            $this->dispatch('notice', type: 'success', text: 'Features Updated Successfully!');
         } catch (\Exception $e) {
-            $this->dispatch('notice', type: 'info', text: 'Failed to update features!');
+            $this->dispatch('notice', type: 'error', text: 'Failed to update features: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Private method to handle image upload operations
+     */
+    private function uploadImageToImageKit($file, $resetTempImage = false)
+    {
+        try {
+            // Delete old image from ImageKit if it exists
+            if ($this->course->imagekit_file_id) {
+                ImageKitHelper::deleteImage($this->course->imagekit_file_id);
+            }
+
+            // Use ImageKitHelper for upload
+            $result = ImageKitHelper::uploadImage($file, '/cws/course_images');
+
+            if ($result && isset($result['url'], $result['fileId'])) {
+                // Update course with new image data
+                $this->course->update([
+                    'course_image' => $result['url'],
+                    'imagekit_file_id' => $result['fileId']
+                ]);
+
+                // Update preview
+                $this->previewImage = $result['url'];
+
+                // Reset temp data if requested
+                if ($resetTempImage) {
+                    $this->reset('tempImage');
+                }
+
+                return ['success' => true, 'message' => 'Image uploaded successfully!'];
+            } else {
+                return ['success' => false, 'message' => 'ImageKit upload failed.'];
+            }
+        } catch (\Exception $e) {
+            return ['success' => false, 'message' => 'Upload failed: ' . $e->getMessage()];
         }
     }
 
     public function handleImageUpload()
     {
-        // dd("Shaique");
         $this->validate([
             'tempImage' => 'nullable|image|max:2048',
         ]);
 
         if ($this->tempImage) {
-            try {
-                // Delete old image if it exists
-                if ($this->course->course_image) {
-                    Storage::disk('public')->delete($this->course->course_image);
-                }
-
-                // Use the temporary image path from updatedTempImage
-                $imagePath = $this->tempImage->store('course_images', 'public');
-                $this->course->update(['course_image' => $imagePath]);
-
-                // Reset temp data
-                $this->reset('tempImage');
-                $this->previewImage = asset('storage/' . $imagePath);
-
-                $this->dispatch('notice', type: 'info', text: 'Course image updated successfully!');
-            } catch (\Exception $e) {
-                $this->dispatch('notice', type: 'error', text: 'Failed to update image: ' . $e->getMessage());
+            $result = $this->uploadImageToImageKit($this->tempImage, true);
+            
+            if ($result['success']) {
+                $this->dispatch('notice', type: 'success', text: 'Course image updated successfully!');
+            } else {
+                $this->addError('tempImage', $result['message']);
             }
         }
     }
@@ -272,24 +290,32 @@ class UpdateCourse extends Component
     public function checkAndPublish()
     {
         $requiredFields = [
-            'title',
-            'description',
-            'duration',
-            'instructor',
-            'fees',
-            'discounted_fees',
-            'category_id',
-            'course_code',
-            'course_image'
+            'title' => 'Title',
+            'description' => 'Description',
+            'duration' => 'Duration',
+            'instructor' => 'Instructor',
+            'fees' => 'Fees',
+            'discounted_fees' => 'Discounted Fees',
+            'category_id' => 'Category',
+            'course_code' => 'Course Code',
+            'course_image' => 'Course Image'
         ];
 
-        $allFieldsFilled = collect($requiredFields)
-            ->every(fn($field) => !empty($this->course->$field));
+        $missingFields = collect($requiredFields)
+            ->filter(fn($label, $field) => empty($this->course->$field))
+            ->values();
 
-        if ($allFieldsFilled && !$this->isPublished) {
+        if ($missingFields->isNotEmpty()) {
+            $this->dispatch('notice', type: 'warning', text: 'Please fill all required fields: ' . $missingFields->join(', '));
+            return;
+        }
+
+        if (!$this->isPublished) {
             $this->course->update(['published' => true]);
             $this->isPublished = true;
-            $this->dispatch('notice', type: 'info', text: 'Course published successfully!');
+            $this->dispatch('notice', type: 'success', text: 'Course published successfully!');
+        } else {
+            $this->dispatch('notice', type: 'info', text: 'Course is already published.');
         }
     }
 
@@ -304,11 +330,30 @@ class UpdateCourse extends Component
 
     public function deleteImage()
     {
-        if ($this->course->course_image) {
-            Storage::disk('public')->delete($this->course->course_image);
-            $this->course->update(['course_image' => null]);
-            $this->previewImage = null;
-            $this->dispatch('notice', type: 'info', text: 'Course image removed successfully!');
+        try {
+            if ($this->course->imagekit_file_id) {
+                // Delete from ImageKit
+                ImageKitHelper::deleteImage($this->course->imagekit_file_id);
+                
+                // Update database
+                $this->course->update([
+                    'course_image' => null,
+                    'imagekit_file_id' => null
+                ]);
+                
+                $this->previewImage = null;
+                $this->dispatch('notice', type: 'success', text: 'Course image removed successfully!');
+            } elseif ($this->course->course_image) {
+                // Fallback for old images stored locally
+                Storage::disk('public')->delete($this->course->course_image);
+                $this->course->update(['course_image' => null]);
+                $this->previewImage = null;
+                $this->dispatch('notice', type: 'success', text: 'Course image removed successfully!');
+            } else {
+                $this->dispatch('notice', type: 'info', text: 'No image to delete.');
+            }
+        } catch (\Exception $e) {
+            $this->dispatch('notice', type: 'error', text: 'Failed to delete image: ' . $e->getMessage());
         }
     }
 
