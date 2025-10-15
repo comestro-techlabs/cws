@@ -234,7 +234,7 @@
                 <div class="max-w-7xl mx-auto py-12 px-4 sm:py-16 sm:px-6 lg:px-8">
                     <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
                         <div class="text-center">
-                            <p class="text-5xl font-extrabold text-white">95%</ </p>
+                            <p class="text-5xl font-extrabold text-white">95%</p>
                             <p class="mt-2 text-xl font-semibold text-purple-200">Placement Rate</p>
                         </div>
                         <div class="text-center">
