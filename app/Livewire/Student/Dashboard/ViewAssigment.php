@@ -25,8 +25,36 @@ class ViewAssigment extends Component
     public $accessStatus = [];
     public $showAccessModal = false;
 
-    public function mount($id)
+    public function mount($id = null)
     {
+        // If $id wasn't injected (BindingResolutionException scenario), try to
+        // resolve it from the current request or route parameters. This handles
+        // cases where the URL is like /student/view-assigment?81= or when JavaScript
+        // tried to load the component without passing the parameter.
+        if (is_null($id)) {
+            $request = request();
+
+            // Try common places: route parameter named id or assignment_id, or
+            // any numeric query parameter (like ?81=) where key is empty/unknown.
+            $id = $request->route('id') ?? $request->route('assignment') ?? $request->query('id') ?? $request->query('assignment_id');
+
+            // If still null, scan query parameters and take the first numeric key or value.
+            if (is_null($id)) {
+                foreach ($request->query() as $key => $value) {
+                    // If the key looks like a number (e.g. "81"), use it.
+                    if (is_numeric($key)) {
+                        $id = (int) $key;
+                        break;
+                    }
+
+                    // If the value looks numeric, prefer that.
+                    if (is_numeric($value)) {
+                        $id = (int) $value;
+                        break;
+                    }
+                }
+            }
+        }
         $user = Auth::user();
         if (!Auth::check()) {
             return redirect()->route('auth.login')->with('error', 'You must be logged in to access this page.');
