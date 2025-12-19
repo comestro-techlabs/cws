@@ -80,7 +80,7 @@ class ManageCertificate extends Component
         $examPercentage = $this->getExamPercentage($user, $course);
         
         // Only calculate overall if exam percentage is at least 60%
-        if ($examPercentage < 60) {
+        if ($examPercentage < 50) {
             return null;
         }
 
