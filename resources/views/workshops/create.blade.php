@@ -1,43 +1,325 @@
-@extends('admin.base')
-
-@section('title', 'Create Workshop')
-
-@section('content')
-
-<div class="max-w-3xl mx-auto bg-white shadow-md rounded-lg p-6 mt-8">
-
-
-
-    @if(session('success'))
-    <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4" role="alert">
-        <p class="font-bold">Success</p>
-        <p>{{ session('success') }}</p>
-    </div>
-    @endif
-
-    <h1 class="text-2xl font-bold mb-6 text-center text-gray-800">Create Workshop</h1>
-
-    <livewire:admin.workshops.create-workshop/>
-</div>
-
-<script>
-    function previewImage() {
-        const fileInput = document.getElementById('image');
-        const file = fileInput.files[0];
-        const previewContainer = document.getElementById('imagePreviewContainer');
-        const previewImage = document.getElementById('imagePreview');
-
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                previewImage.src = e.target.result;
-                previewImage.classList.remove('hidden');
-            }
-            reader.readAsDataURL(file);
-        } else {
-            previewImage.classList.add('hidden');
-        }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>My Bank – Deposit</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
-</script>
 
-@endsection
+    body {
+      background: #0f172a;
+      color: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+
+    .phone {
+      width: 100%;
+      max-width: 380px;
+      background: #1e293b;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.5);
+    }
+
+    .screen {
+      display: none;
+      padding: 32px 24px 40px;
+      min-height: 520px;
+      flex-direction: column;
+    }
+
+    .screen.active {
+      display: flex;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .bank-name {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .account {
+      margin-top: 8px;
+      color: #94a3b8;
+      font-size: 14px;
+    }
+
+    .title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 28px;
+      text-align: center;
+    }
+
+    .amount-input {
+      background: #0f172a;
+      border: 2px solid #334155;
+      border-radius: 16px;
+      padding: 18px 20px;
+      font-size: 28px;
+      font-weight: 600;
+      color: #f8fafc;
+      text-align: center;
+      width: 100%;
+      outline: none;
+      margin-bottom: 32px;
+    }
+
+    .amount-input:focus {
+      border-color: #38bdf8;
+    }
+
+    .btn {
+      background: #38bdf8;
+      color: #0f172a;
+      border: none;
+      border-radius: 14px;
+      padding: 16px;
+      font-size: 16px;
+      font-weight: 700;
+      width: 100%;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .methods {
+      display: grid;
+      gap: 12px;
+    }
+
+    .method {
+      background: #0f172a;
+      border: 2px solid #334155;
+      border-radius: 16px;
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .method:hover, .method.selected {
+      border-color: #38bdf8;
+      background: #0c4a6e;
+    }
+
+    .method span {
+      font-size: 24px;
+    }
+
+    .verify-list {
+      list-style: none;
+      margin: 20px 0 40px;
+    }
+
+    .verify-list li {
+      display: flex;
+      justify-content: space-between;
+      padding: 14px 0;
+      border-bottom: 1px solid #334155;
+      font-size: 15px;
+    }
+
+    .check {
+      color: #4ade80;
+      font-weight: 700;
+    }
+
+    .progress-container {
+      margin: 40px 0;
+    }
+
+    .progress-bar {
+      height: 12px;
+      background: #334155;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #38bdf8, #0ea5e9);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .amount-display {
+      font-size: 36px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .success-icon {
+      width: 90px;
+      height: 90px;
+      background: #4ade80;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      margin: 0 auto 28px;
+      color: #0f172a;
+      font-weight: 700;
+    }
+
+    .success-title {
+      font-size: 24px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .success-amount {
+      font-size: 32px;
+      font-weight: 700;
+      text-align: center;
+      color: #4ade80;
+      margin-bottom: 40px;
+    }
+
+    .back {
+      background: transparent;
+      border: 2px solid #475569;
+      color: #e2e8f0;
+      margin-top: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="phone">
+
+    <!-- 1. Welcome -->
+    <div class="screen active" id="screen1">
+      <div class="header">
+        <div class="bank-name">🏦 MY BANK</div>
+        <div class="account">Account: **** 4582</div>
+      </div>
+      <div style="flex:1; display:flex; align-items:center; justify-content:center;">
+        <button class="btn" onclick="goTo(2)">Deposit Money</button>
+      </div>
+    </div>
+
+    <!-- 2. Enter Amount -->
+    <div class="screen" id="screen2">
+      <div class="title">💰 Enter Deposit Amount</div>
+      <input type="text" class="amount-input" id="amountInput" value="₹ 10,000" readonly>
+      <button class="btn" onclick="goTo(3)">Continue</button>
+      <button class="btn back" onclick="goTo(1)">Back</button>
+    </div>
+
+    <!-- 3. Select Method -->
+    <div class="screen" id="screen3">
+      <div class="title">How do you want to deposit?</div>
+      <div class="methods">
+        <div class="method" onclick="selectMethod(this)">
+          <span>💵</span> Cash
+        </div>
+        <div class="method" onclick="selectMethod(this)">
+          <span>🏧</span> ATM
+        </div>
+        <div class="method" onclick="selectMethod(this)">
+          <span>📱</span> UPI
+        </div>
+        <div class="method" onclick="selectMethod(this)">
+          <span>🏦</span> Bank Transfer
+        </div>
+      </div>
+      <button class="btn" id="methodBtn" style="margin-top:28px" disabled onclick="goTo(4)">Continue</button>
+      <button class="btn back" onclick="goTo(2)">Back</button>
+    </div>
+
+    <!-- 4. Verification -->
+    <div class="screen" id="screen4">
+      <div class="title">🔐 Verifying Transaction...</div>
+      <ul class="verify-list">
+        <li><span>Account</span> <span class="check">✓</span></li>
+        <li><span>Amount</span> <span class="check">✓</span></li>
+        <li><span>Security Check</span> <span class="check">✓</span></li>
+      </ul>
+      <button class="btn" onclick="startProcessing()">Continue</button>
+    </div>
+
+    <!-- 5. Processing -->
+    <div class="screen" id="screen5">
+      <div class="title">💸 Deposit Processing...</div>
+      <div class="amount-display">₹10,000</div>
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress"></div>
+        </div>
+        <div style="text-align:center; margin-top:12px; color:#94a3b8;" id="percent">0%</div>
+      </div>
+    </div>
+
+    <!-- 6. Success -->
+    <div class="screen" id="screen6">
+      <div class="success-icon">✓</div>
+      <div class="success-title">Deposit Successful</div>
+      <div class="success-amount">₹10,000</div>
+      <button class="btn" onclick="location.reload()">Done</button>
+    </div>
+
+  </div>
+
+  <script>
+    function goTo(n) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById('screen' + n).classList.add('active');
+    }
+
+    function selectMethod(el) {
+      document.querySelectorAll('.method').forEach(m => m.classList.remove('selected'));
+      el.classList.add('selected');
+      document.getElementById('methodBtn').disabled = false;
+    }
+
+    function startProcessing() {
+      goTo(5);
+      let progress = 0;
+      const bar = document.getElementById('progress');
+      const percent = document.getElementById('percent');
+
+      const interval = setInterval(() => {
+        progress += 4;
+        if (progress > 100) progress = 100;
+        bar.style.width = progress + '%';
+        percent.textContent = progress + '%';
+
+        if (progress === 100) {
+          clearInterval(interval);
+          setTimeout(() => goTo(6), 600);
+        }
+      }, 80);
+    }
+  </script>
+</body>
+</html>
